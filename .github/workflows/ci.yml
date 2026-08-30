@@ -1,0 +1,54 @@
+name: Backend CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+        env:
+          DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/kanto_test?schema=public'
+
+      - name: Check TypeScript Build
+        run: npm run build
+        env:
+          DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/kanto_test?schema=public'
+          BETTER_AUTH_SECRET: 'ci_test_secret_32_characters_long_min_value'
+          BETTER_AUTH_URL: 'http://localhost:3000'
+
+      - name: Run Unit Tests
+        run: npm run test
+        env:
+          DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/kanto_test?schema=public'
+          BETTER_AUTH_SECRET: 'ci_test_secret_32_characters_long_min_value'
+          BETTER_AUTH_URL: 'http://localhost:3000'

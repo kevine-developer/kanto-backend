@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -11,3 +6,815 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+// ======================================================
+// 1. ÉNUMÉRATIONS
+// ======================================================
+
+enum CategoryType {
+  PROVERBE     // Ohabolana
+  EXPRESSION   // Oha-pitenenana
+  DICTON       // Fomba fiteny / Fady
+}
+
+enum ContentStatus {
+  DRAFT        // Brouillon
+  PUBLISHED    // Publié et visible
+  ARCHIVED     // Archivé
+}
+
+enum DifficultyLevel {
+  EASY         // Courant / Débutant
+  MEDIUM       // Intermédiaire
+  HARD         // Littéraire / Ancien
+  EXPERT       // Expert / Spécialiste
+}
+
+enum UserRole {
+  USER
+  CONTRIBUTOR
+  MODERATOR
+  ADMIN
+}
+
+enum SubscriptionTier {
+  FREE
+  PREMIUM
+}
+
+enum ReportReason {
+  TRANSLATION_ERROR   // Erreur de traduction
+  TYPO                // Faute d'orthographe
+  INCORRECT_MEANING   // Sens inexact
+  INAPPROPRIATE       // Contenu inapproprié
+  OTHER               // Autre
+}
+
+// ======================================================
+// 2. UTILISATEURS & AUTHENTIFICATION (Better Auth)
+// ======================================================
+
+model User {
+  id            String           @id @default(cuid())
+  email         String           @unique
+  name          String
+  emailVerified Boolean          @default(false)
+  image         String?
+  role          UserRole         @default(USER)
+  tier          SubscriptionTier @default(FREE)
+  banned        Boolean?
+  banReason     String?
+  banExpires    DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  // Better Auth relations
+  sessions      Session[]
+  accounts      Account[]
+
+  // Relations d'activité
+  favorites     Favorite[]
+  likes         Like[]
+  viewHistories ViewHistory[]
+  reports       ContentReport[]
+  contributions Contribution[]
+  notifications Notification[]
+
+  @@map("users")
+}
+
+model Session {
+  id          String   @id @default(cuid())
+  expiresAt   DateTime
+  token       String   @unique
+  ipAddress   String?
+  userAgent   String?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Account {
+  id                    String   @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?  @db.Text
+  refreshToken          String?  @db.Text
+  idToken               String?  @db.Text
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  issuer                String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String   @db.Text
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verifications")
+}
+
+
+// ======================================================
+// 3. TAXONOMIE (Thèmes & Régions de Madagascar)
+// ======================================================
+
+model Theme {
+  id          String   @id @default(cuid())
+  nameMg      String   // Ex: "Fihavanana", "Fahendrena", "Fianakaviana"
+  nameFr      String   // Ex: "Solidarité", "Sagesse", "Famille"
+  slug        String   @unique
+  description String?  @db.Text
+  icon        String?  // Nom de l'icône (Ionicons)
+  color       String?  // Code couleur hexa (ex: "#E0533C")
+  createdAt   DateTime @default(now())
+
+  // Relations Many-to-Many
+  items       MalagasyItemTheme[]
+  citations   CitationTheme[]
+  contes      ConteTheme[]
+  kabaries    KabaryTheme[]
+
+  @@map("themes")
+}
+
+model Region {
+  id          String   @id @default(cuid())
+  name        String   @unique // Ex: "Merina", "Betsimisaraka", "Sakalava", "Antandroy"
+  capital     String?  // Ex: "Toamasina", "Toliara"
+  description String?  @db.Text
+  createdAt   DateTime @default(now())
+
+  variants    DialectVariant[]
+
+  @@map("regions")
+}
+
+// ======================================================
+// 4. PROVERBES, EXPRESSIONS ET DICTONS (MalagasyItem)
+// ======================================================
+
+model MalagasyItem {
+  id              String              @id @default(cuid())
+  slug            String              @unique // Ex: "ny-fihavanana-tahaka-ny-ketsa"
+  malagasy        String              @db.Text
+  french          String              @db.Text
+  meaning         String              @db.Text
+  example         String?             @db.Text
+  phonetic        String?             // Aide à la prononciation
+  audioUrl        String?             // Fichier audio Cloudinary
+
+  category        CategoryType
+  difficulty      DifficultyLevel     @default(EASY)
+  status          ContentStatus       @default(PUBLISHED)
+  isPremium       Boolean             @default(false)
+  isFeatured      Boolean             @default(false)
+
+  // Origines libres ou traditionnelles
+  origins         String[]            @default([])
+
+  // Compteurs & Statistiques
+  viewCount       Int                 @default(0)
+  likesCount      Int                 @default(0)
+  shareCount      Int                 @default(0)
+  reportCount     Int                 @default(0)
+
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  // Relations
+  themes          MalagasyItemTheme[]
+  dialectVariants DialectVariant[]
+  dailyProverbs   DailyProverb[]
+  favorites       Favorite[]
+  likes           Like[]
+  viewHistories   ViewHistory[]
+  reports         ContentReport[]
+
+  @@index([category, status])
+  @@index([difficulty])
+  @@index([isFeatured])
+  @@index([createdAt])
+  @@map("malagasy_items")
+}
+
+model MalagasyItemTheme {
+  itemId  String
+  themeId String
+  item    MalagasyItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  theme   Theme        @relation(fields: [themeId], references: [id], onDelete: Cascade)
+
+  @@id([itemId, themeId])
+  @@map("malagasy_item_themes")
+}
+
+model DialectVariant {
+  id          String       @id @default(cuid())
+  dialectName String       // Ex: "Betsimisaraka", "Tsimihety"
+  text        String       @db.Text
+  audioUrl    String?
+  notes       String?      @db.Text
+
+  itemId      String
+  item        MalagasyItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  regionId    String?
+  region      Region?      @relation(fields: [regionId], references: [id], onDelete: SetNull)
+
+  createdAt   DateTime     @default(now())
+
+  @@index([itemId])
+  @@index([regionId])
+  @@map("dialect_variants")
+}
+
+// ======================================================
+// 5. CITATIONS & FIGURES HISTORIQUES
+// ======================================================
+
+model Author {
+  id        String     @id @default(cuid())
+  name      String     @unique // Ex: "Jean-Joseph Rabearivelo", "Didier Ratsiraka"
+  bio       String?    @db.Text
+  birthYear Int?
+  deathYear Int?
+  avatarUrl String?
+  createdAt DateTime   @default(now())
+
+  citations Citation[]
+
+  @@map("authors")
+}
+
+model Citation {
+  id          String          @id @default(cuid())
+  citationMg  String          @db.Text
+  citationFr  String          @db.Text
+  sourceName  String          // Nom de la source ou ouvrage
+  contexte    String?         @db.Text
+  audioUrl    String?
+  status      ContentStatus   @default(PUBLISHED)
+  isPremium   Boolean         @default(false)
+
+  // Statistiques
+  viewCount   Int             @default(0)
+  likesCount  Int             @default(0)
+  shareCount  Int             @default(0)
+  reportCount Int             @default(0)
+
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  authorId    String?
+  author      Author?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  themes      CitationTheme[]
+  favorites   Favorite[]
+  likes       Like[]
+  reports     ContentReport[]
+
+  @@index([authorId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("citations")
+}
+
+model CitationTheme {
+  citationId String
+  themeId    String
+  citation   Citation @relation(fields: [citationId], references: [id], onDelete: Cascade)
+  theme      Theme    @relation(fields: [themeId], references: [id], onDelete: Cascade)
+
+  @@id([citationId, themeId])
+  @@map("citation_themes")
+}
+
+// ======================================================
+// 6. PROVERBE DU JOUR (Rotation & Archive)
+// ======================================================
+
+model DailyProverb {
+  id        String       @id @default(cuid())
+  date      DateTime     @unique @db.Date
+  editorial String?      @db.Text
+  itemId    String
+  item      MalagasyItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime     @default(now())
+
+  @@index([date])
+  @@map("daily_proverbs")
+}
+
+// ======================================================
+// 7. INTERACTIONS UTILISATEURS (Favoris, Likes, Historique)
+// ======================================================
+
+model Favorite {
+  id         String        @id @default(cuid())
+  userId     String
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  itemId     String?
+  item       MalagasyItem? @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  citationId String?
+  citation   Citation?     @relation(fields: [citationId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime      @default(now())
+
+  @@unique([userId, itemId])
+  @@unique([userId, citationId])
+  @@index([userId])
+  @@map("favorites")
+}
+
+model Like {
+  id         String        @id @default(cuid())
+  userId     String
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  itemId     String?
+  item       MalagasyItem? @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  citationId String?
+  citation   Citation?     @relation(fields: [citationId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime      @default(now())
+
+  @@unique([userId, itemId])
+  @@unique([userId, citationId])
+  @@index([userId])
+  @@map("likes")
+}
+
+model ViewHistory {
+  id       String       @id @default(cuid())
+  userId   String
+  user     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  itemId   String
+  item     MalagasyItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  viewedAt DateTime     @default(now())
+
+  @@index([userId, viewedAt])
+  @@map("view_histories")
+}
+
+// ======================================================
+// 8. MODÉRATION & CONTRIBUTIONS COMMUNAUTAIRES
+// ======================================================
+
+model ContentReport {
+  id          String        @id @default(cuid())
+  reason      ReportReason
+  description String?       @db.Text
+  resolved    Boolean       @default(false)
+
+  userId      String?
+  user        User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  itemId      String?
+  item        MalagasyItem? @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  citationId  String?
+  citation    Citation?     @relation(fields: [citationId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime      @default(now())
+
+  @@index([resolved])
+  @@map("content_reports")
+}
+
+model Contribution {
+  id        String        @id @default(cuid())
+  category  CategoryType
+  textMg    String        @db.Text
+  textFr    String        @db.Text
+  meaning   String        @db.Text
+  region    String?
+  status    ContentStatus @default(DRAFT)
+
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@map("contributions")
+}
+
+// ======================================================
+// 9. CONTES TRADITIONNELS (Angano)
+// ======================================================
+
+model Conte {
+  id              String            @id @default(cuid())
+  slug            String            @unique
+  title           String
+  titleFr         String
+  subtitle        String?
+  subtitleFr      String?
+  author          String?           @default("Angano Malagasy")
+  source          String?
+  illustration    String?
+  status          ContentStatus     @default(PUBLISHED)
+  isFeatured      Boolean           @default(false)
+  isPremium       Boolean           @default(false)
+
+  // Morale de l'histoire
+  moralMg         String?           @db.Text
+  moralFr         String?           @db.Text
+
+  // Audio haute définition généré par Google Gemini TTS
+  audioUrlMg      String?
+  audioUrlFr      String?
+
+  // Identifiants de contes variantes
+  variantIds      String[]          @default([])
+
+  // Compteurs & Statistiques
+  viewCount       Int               @default(0)
+  likesCount      Int               @default(0)
+  shareCount      Int               @default(0)
+  reportCount     Int               @default(0)
+
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  paragraphs      ConteParagraph[]
+  themes          ConteTheme[]
+
+  @@index([status])
+  @@index([isFeatured])
+  @@index([createdAt])
+  @@map("contes")
+}
+
+model ConteParagraph {
+  id              String            @id @default(cuid())
+  paragraphNumber Int
+  textMg          String            @db.Text
+  textFr          String            @db.Text
+  illustration    String?
+
+  conteId         String
+  conte           Conte             @relation(fields: [conteId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime          @default(now())
+
+  @@unique([conteId, paragraphNumber])
+  @@index([conteId])
+  @@map("conte_paragraphs")
+}
+
+model ConteTheme {
+  conteId         String
+  themeId         String
+  conte           Conte             @relation(fields: [conteId], references: [id], onDelete: Cascade)
+  theme           Theme             @relation(fields: [themeId], references: [id], onDelete: Cascade)
+
+  @@id([conteId, themeId])
+  @@map("conte_themes")
+}
+
+// ======================================================
+// 10. DISCOURS TRADITIONNELS (Kabary)
+// ======================================================
+
+model Kabary {
+  id                  String            @id @default(cuid())
+  slug                String            @unique
+  title               String
+  titleFr             String
+  subtitle            String?
+  subtitleFr          String?
+  occasion            String
+  occasionFr          String?
+  speakerRoleMg       String?
+  speakerRoleFr       String?
+  recipientRoleMg     String?
+  recipientRoleFr     String?
+  region              String?
+  illustration        String?
+  status              ContentStatus     @default(PUBLISHED)
+  isFeatured          Boolean           @default(false)
+  isPremium           Boolean           @default(false)
+
+  // Proverbe / Pensée de conclusion
+  concludingProverbMg String?           @db.Text
+  concludingProverbFr String?           @db.Text
+
+  // Conseils et protocole rituel
+  etiquetteNotesMg    String?           @db.Text
+  etiquetteNotesFr    String?           @db.Text
+
+  // Compteurs & Statistiques
+  viewCount           Int               @default(0)
+  likesCount          Int               @default(0)
+  shareCount          Int               @default(0)
+  reportCount         Int               @default(0)
+
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  steps               KabaryStep[]
+  themes              KabaryTheme[]
+
+  @@index([status])
+  @@index([occasion])
+  @@index([createdAt])
+  @@map("kabaries")
+}
+
+model KabaryStep {
+  id              String            @id @default(cuid())
+  stepNumber      Int
+  stepNameMg      String
+  stepNameFr      String
+  explanationMg   String?           @db.Text
+  explanationFr   String?           @db.Text
+  textMg          String            @db.Text
+  textFr          String            @db.Text
+
+  kabaryId        String
+  kabary          Kabary            @relation(fields: [kabaryId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime          @default(now())
+
+  @@unique([kabaryId, stepNumber])
+  @@index([kabaryId])
+  @@map("kabary_steps")
+}
+
+model KabaryTheme {
+  kabaryId        String
+  themeId         String
+  kabary          Kabary            @relation(fields: [kabaryId], references: [id], onDelete: Cascade)
+  theme           Theme             @relation(fields: [themeId], references: [id], onDelete: Cascade)
+
+  @@id([kabaryId, themeId])
+  @@map("kabary_themes")
+}
+
+// ======================================================
+// 11. JEUX : VRAI OU FAUX (Marina sa Diso)
+// ======================================================
+
+enum TrueFalseTheme {
+  GEN    // Connaissances Générales
+  CULT   // Culture & Traditions
+  GEO    // Géographie & Nature
+  HIST   // Histoire & Société
+  LITT   // Littérature & Arts
+  PROV   // Proverbes & Expressions
+}
+
+model TrueFalseQuestion {
+  id              String            @id @default(cuid())
+  questionMg      String            @db.Text
+  questionFr      String?           @db.Text
+  isTrue          Boolean
+  explanationMg   String            @db.Text
+  explanationFr   String?           @db.Text
+  theme           TrueFalseTheme    @default(GEN)
+  difficulty      DifficultyLevel   @default(EASY)
+  source          String?
+  image           String?
+  status          ContentStatus     @default(PUBLISHED)
+  timesPlayed     Int               @default(0)
+  timesCorrect    Int               @default(0)
+
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  answers         TrueFalseAnswer[]
+
+  @@index([theme])
+  @@index([difficulty])
+  @@index([status])
+  @@map("true_false_questions")
+}
+
+model TrueFalseSession {
+  id              String            @id @default(cuid())
+  userId          String?
+  theme           TrueFalseTheme    @default(GEN)
+  difficulty      DifficultyLevel   @default(EASY)
+  score           Int               @default(0)
+  totalQuestions  Int               @default(10)
+  streakMax       Int               @default(0)
+  durationSeconds Int               @default(0)
+  isCompleted     Boolean           @default(false)
+  xpEarned        Int               @default(0)
+
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  answers         TrueFalseAnswer[]
+
+  @@index([userId])
+  @@index([createdAt])
+  @@map("true_false_sessions")
+}
+
+model TrueFalseAnswer {
+  id              String            @id @default(cuid())
+  sessionId       String
+  session         TrueFalseSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  questionId      String
+  question        TrueFalseQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  userAnswer      Boolean
+  isCorrect       Boolean
+  answeredAt      DateTime          @default(now())
+
+  @@index([sessionId])
+  @@index([questionId])
+  @@map("true_false_answers")
+}
+
+// ======================================================
+// 10. VERROUILLAGE DES MODULES (JEUX, CATÉGORIES, FEATURES)
+// ======================================================
+
+enum ModuleType {
+  GAME
+  CATEGORY
+  FEATURE
+}
+
+model ModuleLock {
+  id          String     @id @default(cuid())
+  key         String     @unique // ex: "game:trueFalseGame", "category:conte", "feature:subscription"
+  type        ModuleType
+  nameFr      String     // Nom français
+  nameMg      String     // Nom malgache
+  isLocked    Boolean    @default(false)
+  lockReason  String?    // Ex: "En cours de maintenance", "Bientôt disponible"
+  imageUrl    String?    // Image / illustration du jeu ou de la catégorie
+  minTier     String?    @default("FREE")
+  updatedAt   DateTime   @updatedAt
+  createdAt   DateTime   @default(now())
+
+  @@map("module_locks")
+}
+
+// ======================================================
+// 11. SLIDES ET PHOTOS D'ONBOARDING DYNAMIQUES
+// ======================================================
+
+model OnboardingSlide {
+  id          String   @id @default(cuid())
+  order       Int      @default(0)
+  title       String   // Titre en français (ex: "Angano")
+  titleMg     String   // Titre en malgache (ex: "Contes Traditionnels")
+  subtitle    String?  // Phrase d'accroche (ex: "Les récits ancestraux de Madagascar")
+  description String   @db.Text
+  imageUrl    String?  // Photo Cloudinary CDN ou URL relative locale
+  accentColor String?  @default("#4A6741")
+  iconName    String?  @default("BookOpen") // Icône de secours
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+  @@index([isActive])
+  @@map("onboarding_slides")
+}
+
+// ======================================================
+// 15. NOTIFICATIONS & ALERTES
+// ======================================================
+
+model Notification {
+  id          String   @id @default(cuid())
+  titleMg     String   // Titre en malgache (ex: "Ohabolana anio")
+  titleFr     String?  // Titre en français (ex: "Proverbe du jour")
+  messageMg   String   @db.Text // Message / description en malgache
+  messageFr   String?  @db.Text // Message / description en français
+  category    String   @default("culture") // culture, game, civic, community, system
+  badgeText   String?  // Badge text (ex: "Ohabolana", "+25 Pts", "Vaovao")
+  badgeType   String?  @default("new") // new, streak, reward, civic, info
+  iconName    String?  @default("bulb-outline") // Ionicons glyph name
+  iconColor   String?  @default("#C0392B") // Couleur de l'icône
+  targetRoute String?  // Route deep-link optionnelle
+  isBroadcast Boolean  @default(true) // Visible pour tous les utilisateurs
+  userId      String?  // Cible utilisateur optionnelle
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@index([category])
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+// ======================================================
+// 16. JEUX : REMETS DANS L'ORDRE (Puzzle Word)
+// ======================================================
+
+model WordPuzzleLevel {
+  id             String               @id @default(cuid())
+  levelNumber    Int                  @unique // 1, 2, 3, 4... (affiché en Romain I, II, III...)
+  titleMg        String               // Ex: "Firaisankina sy Fihavanana"
+  titleFr        String?              // Ex: "Solidarité et Harmonie"
+  description    String?              @db.Text
+  difficulty     DifficultyLevel      @default(EASY)
+  passThreshold  Int                  @default(5) // Au moins 5 phrases réussies sur 10 (50%)
+  totalSentences Int                  @default(10) // Standard : 10 phrases par niveau
+  status         ContentStatus        @default(PUBLISHED)
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  sentences      WordPuzzleSentence[]
+
+  @@index([levelNumber])
+  @@index([status])
+  @@map("word_puzzle_levels")
+}
+
+model WordPuzzleSentence {
+  id             String          @id @default(cuid())
+  levelId        String
+  level          WordPuzzleLevel @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  orderIndex     Int             @default(1) // 1 à 10
+  malagasy       String          @db.Text    // Phrase malgache à remettre dans l'ordre
+  french         String          @db.Text    // Traduction française
+  hint           String?         // Indice optionnel
+  explanationMg  String?         @db.Text    // Explication culturelle malgache
+  explanationFr  String?         @db.Text    // Explication culturelle française
+  status         ContentStatus   @default(PUBLISHED)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@index([levelId])
+  @@index([orderIndex])
+  @@map("word_puzzle_sentences")
+}
+
+// ======================================================
+// 17. JEUX : MOT MANQUANT (Fenoy ny banga)
+// ======================================================
+
+model MissingWordLevel {
+  id             String               @id @default(cuid())
+  levelNumber    Int                  @unique // 1, 2, 3, 4, 5... (I, II, III, IV, V)
+  titleMg        String               // Ex: "Mora", "Antonony", "Sarotra"
+  titleFr        String?              // Ex: "Débutant", "Intermédiaire"
+  description    String?              @db.Text
+  difficulty     DifficultyLevel      @default(EASY)
+  passThreshold  Int                  @default(5) // Au moins 50% de réussite
+  totalQuestions Int                  @default(10) // 10 questions tirées au sort par session
+  status         ContentStatus        @default(PUBLISHED)
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  questions      MissingWordQuestion[]
+
+  @@index([levelNumber])
+  @@index([status])
+  @@map("missing_word_levels")
+}
+
+model MissingWordQuestion {
+  id             String            @id @default(cuid())
+  levelId        String
+  level          MissingWordLevel  @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  orderIndex     Int               @default(1)
+  template       String[]          // Tableau des mots de la phrase avec "" pour le mot manquant
+  correctWord    String            // Mot manquant (au moins 3 caractères)
+  choices        String[]          // 4 choix de mots (au moins 3 caractères chacun)
+  french         String            @db.Text // Traduction française
+  explanation    String?           @db.Text // Explication culturelle
+  hint           String?           // Indice optionnel
+  status         ContentStatus     @default(PUBLISHED)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  @@index([levelId])
+  @@index([orderIndex])
+  @@map("missing_word_questions")
+}
+
+
+
+
