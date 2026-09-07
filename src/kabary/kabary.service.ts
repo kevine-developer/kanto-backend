@@ -11,6 +11,7 @@ import {
   formatPaginatedResponse,
 } from '../common/utils/pagination.util.js';
 import { CACHE_KEYS } from '../common/constants/cache.constant.js';
+import { ReportContentDto } from '../common/dto/report-content.dto.js';
 
 @Injectable()
 export class KabaryService {
@@ -288,7 +289,11 @@ export class KabaryService {
     return kabary;
   }
 
-  async like(idOrSlug: string) {
+  async like(idOrSlug: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
     const existing = await this.prisma.kabary.findFirst({
       where: {
         OR: [{ id: idOrSlug }, { slug: idOrSlug }],
@@ -300,13 +305,34 @@ export class KabaryService {
       throw new NotFoundException(`Discours "${idOrSlug}" introuvable`);
     }
 
-    const kabary = await this.prisma.kabary.update({
-      where: { id: existing.id },
-      data: {
-        likesCount: { increment: 1 },
+    const existingLike = await this.prisma.like.findUnique({
+      where: {
+        userId_kabaryId: {
+          userId,
+          kabaryId: existing.id,
+        },
       },
-      select: { id: true, slug: true, likesCount: true },
     });
+
+    if (existingLike) {
+      return existing;
+    }
+
+    const [, kabary] = await this.prisma.$transaction([
+      this.prisma.like.create({
+        data: {
+          userId,
+          kabaryId: existing.id,
+        },
+      }),
+      this.prisma.kabary.update({
+        where: { id: existing.id },
+        data: {
+          likesCount: { increment: 1 },
+        },
+        select: { id: true, slug: true, likesCount: true },
+      }),
+    ]);
 
     await this.redis.del([
       `${CACHE_KEYS.KABARY_DETAIL_PREFIX}${existing.id}`,
@@ -315,12 +341,16 @@ export class KabaryService {
     await this.redis.delByPattern(CACHE_KEYS.KABARY_LIST_PATTERN);
 
     this.logger.log(
-      `❤️ [Kabary] Like ajouté sur discours ID ${existing.id} (total: ${kabary.likesCount})`,
+      `❤️ [Kabary] Like ajouté sur discours ID ${existing.id} par ${userId} (total: ${kabary.likesCount})`,
     );
     return kabary;
   }
 
-  async unlike(idOrSlug: string) {
+  async unlike(idOrSlug: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
     const existing = await this.prisma.kabary.findFirst({
       where: {
         OR: [{ id: idOrSlug }, { slug: idOrSlug }],
@@ -332,12 +362,30 @@ export class KabaryService {
       throw new NotFoundException(`Discours "${idOrSlug}" introuvable`);
     }
 
-    const newCount = Math.max(0, existing.likesCount - 1);
-    const kabary = await this.prisma.kabary.update({
-      where: { id: existing.id },
-      data: { likesCount: newCount },
-      select: { id: true, slug: true, likesCount: true },
+    const existingLike = await this.prisma.like.findUnique({
+      where: {
+        userId_kabaryId: {
+          userId,
+          kabaryId: existing.id,
+        },
+      },
     });
+
+    if (!existingLike) {
+      return existing;
+    }
+
+    const newCount = Math.max(0, existing.likesCount - 1);
+    const [, kabary] = await this.prisma.$transaction([
+      this.prisma.like.delete({
+        where: { id: existingLike.id },
+      }),
+      this.prisma.kabary.update({
+        where: { id: existing.id },
+        data: { likesCount: newCount },
+        select: { id: true, slug: true, likesCount: true },
+      }),
+    ]);
 
     await this.redis.del([
       `${CACHE_KEYS.KABARY_DETAIL_PREFIX}${existing.id}`,
@@ -346,9 +394,75 @@ export class KabaryService {
     await this.redis.delByPattern(CACHE_KEYS.KABARY_LIST_PATTERN);
 
     this.logger.log(
-      `💔 [Kabary] Unlike sur discours ID ${existing.id} (total: ${kabary.likesCount})`,
+      `💔 [Kabary] Unlike sur discours ID ${existing.id} par ${userId} (total: ${kabary.likesCount})`,
     );
     return kabary;
+  }
+
+  async favorite(id: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
+    const existing = await this.prisma.kabary.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`Discours "${id}" introuvable`);
+    }
+
+    const existingFavorite = await this.prisma.favorite.findUnique({
+      where: {
+        userId_kabaryId: {
+          userId,
+          kabaryId: id,
+        },
+      },
+    });
+
+    if (existingFavorite) {
+      return { success: true };
+    }
+
+    await this.prisma.favorite.create({
+      data: {
+        userId,
+        kabaryId: id,
+      },
+    });
+
+    this.logger.log(
+      `⭐ [Kabary] Ajout aux favoris du discours ID ${id} par ${userId}`,
+    );
+    return { success: true };
+  }
+
+  async unfavorite(id: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
+    const existingFavorite = await this.prisma.favorite.findUnique({
+      where: {
+        userId_kabaryId: {
+          userId,
+          kabaryId: id,
+        },
+      },
+    });
+
+    if (existingFavorite) {
+      await this.prisma.favorite.delete({
+        where: { id: existingFavorite.id },
+      });
+      this.logger.log(
+        `🗑️ [Kabary] Retrait des favoris du discours ID ${id} par ${userId}`,
+      );
+    }
+
+    return { success: true };
   }
 
   async incrementView(idOrSlug: string) {
@@ -372,7 +486,7 @@ export class KabaryService {
       data: {
         viewCount: { increment: 1 },
       },
-      select: { id: true, slug: true, viewCount: true },
+      select: { id: true, slug: true, viewCount: true, likesCount: true },
     });
 
     await this.redis.del([
@@ -393,5 +507,33 @@ export class KabaryService {
       ...kabary,
       viewCount: finalViews,
     };
+  }
+
+  async report(id: string, dto: ReportContentDto, userId?: string) {
+    const existing = await this.prisma.kabary.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`Discours "${id}" introuvable`);
+    }
+
+    await this.prisma.contentReport.create({
+      data: {
+        reason: dto.reason,
+        description: dto.description,
+        kabaryId: id,
+        userId,
+      },
+    });
+
+    await this.prisma.kabary.update({
+      where: { id },
+      data: { reportCount: { increment: 1 } },
+    });
+
+    this.logger.log(`🚨 [Kabary] Signalement créé pour le discours ID ${id}`);
+    return { success: true };
   }
 }

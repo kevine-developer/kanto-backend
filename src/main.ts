@@ -1,7 +1,11 @@
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import helmet from 'helmet';
 import { AppModule } from './app.module.js';
-import { LoggingInterceptor } from './common/interceptors/logging.interceptor.js';
+import {
+  LoggingInterceptor,
+  TrafficRegulationInterceptor,
+} from './common/interceptors/index.js';
 import {
   HttpExceptionFilter,
   PrismaExceptionFilter,
@@ -44,8 +48,22 @@ async function bootstrap() {
     bodyParser: false,
   });
 
-  app.useGlobalInterceptors(new LoggingInterceptor());
+  app.useGlobalInterceptors(
+    new LoggingInterceptor(),
+    new TrafficRegulationInterceptor(),
+  );
   app.useGlobalFilters(new HttpExceptionFilter(), new PrismaExceptionFilter());
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      forbidNonWhitelisted: false, // Don't throw errors, just strip unknown fields to avoid breaking the frontend
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
 
   // ─── CORS ─────────────────────────────────────────────────────────────────
   // En production, définir CORS_ORIGINS avec les domaines autorisés séparés par des virgules.
@@ -104,27 +122,8 @@ async function bootstrap() {
   });
 
   // ─── Sécurité HTTP ────────────────────────────────────────────────────────
-  // Headers de sécurité minimaux sans dépendance tierce (Helmet non installé)
-  app.use(
-    (
-      _req: express.Request,
-      res: express.Response,
-      next: express.NextFunction,
-    ) => {
-      res.setHeader('X-Content-Type-Options', 'nosniff');
-      res.setHeader('X-Frame-Options', 'DENY');
-      res.setHeader('X-XSS-Protection', '1; mode=block');
-      res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-      // HSTS : forcer HTTPS en production (ignoré en HTTP local)
-      if (process.env.NODE_ENV === 'production') {
-        res.setHeader(
-          'Strict-Transport-Security',
-          'max-age=31536000; includeSubDomains',
-        );
-      }
-      next();
-    },
-  );
+  app.use(helmet());
+  app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
 
   // Servir les fichiers audio et médias téléchargeables
   app.use('/uploads', express.static(path.resolve(process.cwd(), 'uploads')));

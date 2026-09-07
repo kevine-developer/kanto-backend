@@ -38,6 +38,26 @@ export const CACHE_KEYS = {
 
   // Notifications
   NOTIFICATIONS_PREFIX: 'kanto:notifications:',
+
+  // Poésies
+  POESIES_LIST_PATTERN: 'kanto:poesies:*',
+  POESIES_LIST_PREFIX: 'kanto:poesies:list:',
+  POESIES_DETAIL_PREFIX: 'kanto:poesies:detail:',
+
+  // Récitations
+  RECITATIONS_LIST_PATTERN: 'kanto:recitations:*',
+  RECITATIONS_LIST_PREFIX: 'kanto:recitations:list:',
+  RECITATIONS_DETAIL_PREFIX: 'kanto:recitations:detail:',
+
+  // Contenus Civiques
+  CIVIC_LIST_PATTERN: 'kanto:civic:*',
+  CIVIC_LIST_PREFIX: 'kanto:civic:list:',
+  CIVIC_DETAIL_PREFIX: 'kanto:civic:detail:',
+
+  // Quiz Civique
+  CIVIC_QUIZ_LIST_PATTERN: 'kanto:civic-quiz:*',
+  CIVIC_QUIZ_LIST_PREFIX: 'kanto:civic-quiz:list:',
+  CIVIC_QUIZ_DETAIL_PREFIX: 'kanto:civic-quiz:detail:',
 } as const;
 
 export const CACHE_TTL = {

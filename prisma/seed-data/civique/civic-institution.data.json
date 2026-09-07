@@ -1,0 +1,1141 @@
+[
+  {
+    "id": "civic-institutions-001",
+    "title": {
+      "mg": "Filohan’ny Repoblika",
+      "fr": "Le Président de la République"
+    },
+    "summary": {
+      "mg": "Izy no lehiben’ny Fanjakana, mpitari-dalana ny firenena, ary solontenan’ny vahoaka amin’ny sehatra rehetra.",
+      "fr": "Il est le Chef de l'État, le garant de la Constitution et le représentant de la nation sur toutes les scènes."
+    },
+    "content": {
+      "mg": [
+        "**Fahefana Mpanatanteraka**: Manao sonia sy mampihatra ny lalàna sy didim-panjakana, manendry ny Praiminisitra sy ny governemanta.",
+        "**Solontena Iraisam-pirenena**: Misolo tena an’i Madagasikara amin’ny fifandraisana iraisam-pirenena (fanao sonia fifanarahana, fanatrehana fihaonambe).",
+        "**Mpiantoka ny Andrim-panjakana**: Miantoka ny fanajana ny Lalàm-panorenana sy ny fampandehanana ara-dalàna ny fahefam-panjakana.",
+        "**Lehiben’ny Tafika**: Lehiben’ny Tafika sy ny Foloalindahy ary ny Fandriam-pahalemana, miantoka ny fiarovam-pirenena."
+      ],
+      "fr": [
+        "**Pouvoir Exécutif**: Promulgue et exécute les lois et décrets, nomme le Premier Ministre et le Gouvernement.",
+        "**Représentation Internationale**: Représente Madagascar dans les relations internationales (signature de traités, participation aux sommets).",
+        "**Garant des Institutions**: Assure le respect de la Constitution et le fonctionnement régulier des pouvoirs publics.",
+        "**Chef Suprême des Armées**: Est le Chef suprême des Forces Armées et des forces de sécurité, garant de la défense nationale."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "Le Président de la République",
+          "mg": "Filohan’ny Repoblika"
+        },
+        "role": {
+          "fr": "Chef de l'État, garant de la Constitution, nomme le Premier Ministre, dirige la diplomatie, chef suprême des armées.",
+          "mg": "Lehiben’ny Fanjakana, mpiantoka ny Lalàm-panorenana, manendry ny Praiminisitra, mitarika ny fifandraisana iraisam-pirenena, lehiben’ny tafika."
+        }
+      },
+      {
+        "title": {
+          "fr": "Conseiller Présidentiel",
+          "mg": "Mpanolo-tsaina eo anivon’ny Fiadidiana"
+        },
+        "role": {
+          "fr": "Assiste le Président dans l’élaboration des décisions politiques, économiques et diplomatiques.",
+          "mg": "Manampy ny Filoha amin’ny fanapahan-kevitra ara-politika, ara-toekarena ary iraisam-pirenena."
+        }
+      },
+      {
+        "title": {
+          "fr": "Chef du Cabinet Civil",
+          "mg": "Lehiben’ny Kabinetra Sivily"
+        },
+        "role": {
+          "fr": "Coordonne les activités administratives de la Présidence et supervise les services civils de l’institution.",
+          "mg": "Mandrindra ny asam-pitantanana sy ny sampandraharaha sivily eo anivon’ny Fiadidiana."
+        }
+      },
+      {
+        "title": {
+          "fr": "Chef du Cabinet Militaire",
+          "mg": "Lehiben’ny Kabinetra Miaramila"
+        },
+        "role": {
+          "fr": "Assure la liaison avec les forces armées et conseille le Président sur les questions de défense nationale.",
+          "mg": "Miandraikitra ny fifandraisana amin’ny tafika sy manolotra torohevitra momba ny fiarovam-pirenena."
+        }
+      }
+    ],
+
+    "sources": [
+      "Constitution de la Quatrième République de Madagascar (2010), Titre IV – Du Pouvoir Exécutif"
+    ]
+  },
+  {
+    "id": "civic-institutions-002",
+    "title": {
+      "mg": "Ny Governemanta",
+      "fr": "Le Gouvernement"
+    },
+    "summary": {
+      "mg": "Tarihin’ny Praiminisitra, ny Governemanta dia mampihatra ny politikam-panjakana sy mitantana ny raharaham-pirenena amin’ny alalan’ireo Minisitera isan-tsokajiny.",
+      "fr": "Dirigé par le Premier Ministre, le Gouvernement met en œuvre la politique de l'État et gère les affaires publiques à travers ses différents Ministères."
+    },
+    "content": {
+      "mg": [
+        "**Fanolorana sy Fampihatra Politika**: Manomana sy mampihatra ny fandaharan’asan’ny Filohan’ny Repoblika sy ny politikam-panjakana (toekarena, sosialy, kolontsaina, fiarovana, sns.).",
+        "**Fizara-draharaha an- Minisitera**: Mizarazara ho minisitera maro (ohatra: Minisiteran'ny Fanabeazam-pirenena, Minisiteran'ny Fahasalamam-bahoaka) izay samy manana ny sehatra iandraiketany.",
+        "**Fitantanana ny Sampan-draharaham-panjakana**: Mifehy sy mitantana ny sampan-draharaham-panjakana rehetra manerana ny firenena, miantoka ny fanomezana tolotra ho an'ny vahoaka.",
+        "**Tantaram-bola sy Fampandrosoana**: Mamolavola sy manatanteraka ny tetibola nasionaly, ary mitarika ny fampandrosoana ara-toekarena sy sosialy."
+      ],
+      "fr": [
+        "**Élaboration et Exécution des Politiques**: Prépare et met en œuvre le programme du Président de la République et les politiques nationales (économiques, sociales, culturelles, sécuritaires, etc.).",
+        "**Organisation en Ministères**: Composé de divers Ministères (ex: Ministère de l'Éducation Nationale, Ministère de la Santé Publique) chacun ayant son domaine de compétence spécifique.",
+        "**Gestion des Services Publics**: Supervise et gère l'ensemble des administrations publiques à travers le pays, assurant la prestation des services aux citoyens.",
+        "**Budget et Développement**: Prépare et exécute le budget de l'État, et conduit le développement économique et social."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "Le Premier Ministre",
+          "mg": "Praiminisitra"
+        },
+        "role": {
+          "fr": "Chef du Gouvernement, responsable de l'exécution des lois et de l'administration du pays.",
+          "mg": "Lehiben’ny Governemanta, tompon’andraikitra amin’ny fampiharana ny lalàna sy ny fitantanana ny firenena."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Ministres",
+          "mg": "Ny Minisitra"
+        },
+        "role": {
+          "fr": "Chaque Ministre est responsable d'un domaine spécifique (ex: Éducation, Santé, Finances) et met en œuvre les politiques de son département.",
+          "mg": "Tompon’andraikitra amin’ny sehatra manokana ny Minisitra tsirairay (ohatra: Fanabeazana, Fahasalamana, Fitantanam-bola) ary mampihatra ny politikam-panjakana eo amin’ny sehatra misy azy."
+        }
+      },
+      {
+        "title": {
+          "fr": "Conseil du Gouvernement",
+          "mg": "Filankevitry ny Governemanta"
+        },
+        "role": {
+          "fr": "Réunit le Premier Ministre et les Ministres pour discuter et adopter les projets de lois, décrets et politiques publiques.",
+          "mg": "Mampivondrona ny Praiminisitra sy ny Minisitra mba handinihana sy hankatoavana ny volavolan-dalàna, didim-panjakana ary ny politikam-panjakana."
+        }
+      }
+    ],
+
+    "sources": [
+      "Constitution de la Quatrième République de Madagascar (2010), Titre V – Du Gouvernement",
+      "Décrets portant organisation des Ministères et des attributions des membres du Gouvernement"
+    ]
+  },
+  {
+    "id": "civic-institutions-003",
+    "title": {
+      "mg": "Ny Antenimierampirenena sy ny Antenimierandoholona (Parlemanta)",
+      "fr": "L'Assemblée Nationale et le Sénat (Parlement)"
+    },
+    "summary": {
+      "mg": "Izy ireo no mpanao lalàna, misolo tena ny vahoaka sy ny faritra, ary manara-maso ny asan’ny Governemanta.",
+      "fr": "Ils constituent le pouvoir législatif, représentant le peuple et les collectivités territoriales, et exercent le contrôle sur l'action du Gouvernement."
+    },
+    "content": {
+      "mg": [
+        "**Fandaniana Lalàna**: Mandrafitra, mandinika ary mifidy ny volavolan-dalàna sy tolo-dalàna mifehy ny fiainam-pirenena.",
+        "**Fanaraha-maso ny Governemanta**: Manadihady, manontany ary manara-maso ny asan’ny Governemanta mba hiantohana ny mangarahara sy ny fampiharana ny lalàna.",
+        "**Fandaniana ny Tetibola**: Mandinika sy mandany ny tetibola nasionaly isan-taona, mamaritra ny fampiasam-bolam-panjakana.",
+        "**Fisoloan-tena ny Vahoaka**: Antenimierampirenena misolo tena ny vahoaka mivantana; Antenimierandoholona misolo tena ny Collectivités Territoriales Décentralisées sy ny Hery Velona isan-tokony."
+      ],
+      "fr": [
+        "**Vote des Lois**: Élaborent, examinent et votent les projets et propositions de lois qui régissent le pays.",
+        "**Contrôle du Gouvernement**: Interpellent, questionnent et supervisent les actions du Gouvernement pour assurer la transparence et l'application des lois.",
+        "**Vote du Budget**: Examinent et votent le budget national chaque année, déterminant les dépenses publiques.",
+        "**Représentation Nationale**: L'Assemblée Nationale représente directement le peuple; le Sénat représente les Collectivités Territoriales Décentralisées et les forces vives de la Nation."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "L'Assemblée Nationale",
+          "mg": "Antenimierampirenena"
+        },
+        "role": {
+          "fr": "Composée de députés élus au suffrage universel direct, elle vote les lois et contrôle le Gouvernement.",
+          "mg": "Foronina solombavam-bahoaka voafidy mivantana, mandany ny lalàna ary manara-maso ny Governemanta."
+        }
+      },
+      {
+        "title": {
+          "fr": "Le Sénat",
+          "mg": "Antenimierandoholona"
+        },
+        "role": {
+          "fr": "Représente les collectivités territoriales et les forces vives de la nation. Participe à l'élaboration et au vote des lois.",
+          "mg": "Misolo tena ny vondrom-paritra sy ny hery velona eto amin'ny firenena. Mandray anjara amin’ny famolavolana sy ny fandaniana ny lalàna."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Commissions Parlementaires",
+          "mg": "Vaomieran'ny Parlemanta"
+        },
+        "role": {
+          "fr": "Groupes de travail spécialisés qui examinent les projets de lois avant leur vote en séance plénière.",
+          "mg": "Vondron'asa manokana mandinika ny volavolan-dalàna alohan'ny fandaniana azy any amin’ny fivoriana ankapobeny."
+        }
+      }
+    ],
+
+    "sources": [
+      "Constitution de la Quatrième République de Madagascar (2010), Titre VI – Du Pouvoir Législatif",
+      "Loi organique relative au mode d'élection des députés et des sénateurs"
+    ]
+  },
+  {
+    "id": "civic-institutions-004",
+    "title": {
+      "mg": "Ny Fitsarana sy ny Fitsarana Avo",
+      "fr": "La Justice et les Tribunaux"
+    },
+    "summary": {
+      "mg": "Fahefana mahaleo tena miantoka ny fampiharana ny lalàna, mamaha ny disadisa, ary miaro ny zon’ny olom-pirenena.",
+      "fr": "Pouvoir indépendant qui assure l'application des lois, résout les litiges et protège les droits des citoyens."
+    },
+    "content": {
+      "mg": [
+        "**Fampiharana sy Fandikana ny Lalàna**: Mampihatra sy mandika ny lalàna araka ny raharaha tsirairay, mba hamahana ny ady sy ny fifanolanana.",
+        "**Fiarovana ny Zo sy ny Fahalalahana**: Miaro ny zon’olombelona sy ny fahalalahana fototra voarakitra ao anaty Lalàm-panorenana sy ny lalàna.",
+        "**Fanamelohana sy Fanarenana**: Manameloka ireo nanao heloka ary miandraikitra ny fanarenana ireo voaheloka, na mampodiana azy ireo amin’ny toerany.",
+        "**Fitsarana tsy Miangatra**: Miantoka ny fitsarana tsy miangatra sy mahaleo tena, tsy azon’ny fahefana hafa tsabahina, ho an’ny rehetra."
+      ],
+      "fr": [
+        "**Application et Interprétation des Lois**: Appliquent et interprètent les lois selon les cas, pour résoudre les conflits et les litiges.",
+        "**Protection des Droits et Libertés**: Protègent les droits humains et les libertés fondamentales garantis par la Constitution et les lois.",
+        "**Sanction et Réhabilitation**: Sanctionnent les auteurs d'infractions et veillent à la réhabilitation des condamnés, ou à leur remise en état.",
+        "**Justice Impartiale**: Assurent une justice impartiale et indépendante, à l'abri de toute ingérence des autres pouvoirs, pour tous."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "La Cour Suprême",
+          "mg": "Fitsarana Tampony"
+        },
+        "role": {
+          "fr": "Plus haute juridiction de l'ordre judiciaire, elle unifie la jurisprudence et assure le respect de la loi par les tribunaux inférieurs.",
+          "mg": "Fitsarana ambony indrindra eo amin'ny rafi-pitsarana, mampiray ny didim-pitsarana ary miantoka ny fanajan'ny fitsarana ambany ny lalàna."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Cours d'Appel",
+          "mg": "Fitsarana Ambaratonga Faharoa"
+        },
+        "role": {
+          "fr": "Examinent les jugements rendus par les tribunaux de première instance qui font l'objet d'un appel.",
+          "mg": "Mandinika ireo didy navoakan'ny fitsarana ambaratonga voalohany izay nanaovana fampakarana."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Tribunaux de Première Instance",
+          "mg": "Fitsarana Ambaratonga Voalohany"
+        },
+        "role": {
+          "fr": "Juge les affaires en première instance, tant en matière civile que pénale.",
+          "mg": "Mitsarana ny raharaha amin’ny ambaratonga voalohany, na ara-pitsarana sivily na ara-pitsarana famaizana."
+        }
+      },
+      {
+        "title": {
+          "fr": "La Haute Cour Constitutionnelle (HCC)",
+          "mg": "Fitsarana Avo Momba ny Lalàm-panorenana (HCC)"
+        },
+        "role": {
+          "fr": "Veille au respect de la Constitution, contrôle la constitutionnalité des lois, et proclame les résultats des élections nationales.",
+          "mg": "Miantoka ny fanajana ny Lalàm-panorenana, manara-maso ny fifanarahan'ny lalàna amin'ny Lalàm-panorenana, ary manambara ny voka-pifidianana nasionaly."
+        }
+      }
+    ],
+
+    "sources": [
+      "Constitution de la Quatrième République de Madagascar (2010), Titre VII – Du Pouvoir Judiciaire",
+      "Code de Procédure Pénale et Code de Procédure Civile",
+      "Lois portant organisation des juridictions"
+    ]
+  },
+  {
+    "id": "civic-institutions-005",
+    "title": {
+      "mg": "Ny Minisitera Public (Mpampanoa Lalàna)",
+      "fr": "Le Ministère Public (Procureur)"
+    },
+    "summary": {
+      "mg": "Ny Minisitera Public, tarihin’ny Mpampanoa Lalàna, dia miaro ny tombontsoan’ny fiarahamonina ary miantoka ny fampiharana ny lalàna.",
+      "fr": "Le Ministère Public, dirigé par le Procureur, défend les intérêts de la société et veille à l'application de la loi."
+    },
+    "content": {
+      "mg": [
+        "**Fiarovana ny Lalàna**: Miaro ny lamina ara-dalàna sy ny tombontsoan’ny fiarahamonina.",
+        "**Fandraisana Fanapahan-kevitra ara-pitsarana**: Mandray fanapahan-kevitra momba ny fanenjehana heloka, manome toromarika ho an’ny mpitandro filaminana.",
+        "**Fisoloan-tena ny Fanjakana**: Misolo tena ny Fanjakana eo anoloan’ny Fitsarana, indrindra amin’ny raharaha heloka bevava.",
+        "**Fanaraha-maso ny Fampiharana ny Didim-pitsarana**: Manara-maso ny fampiharana ny didim-pitsarana sy ny sazy."
+      ],
+      "fr": [
+        "**Défense de la Loi**: Défend l'ordre public et les intérêts de la société.",
+        "**Décision d'Engager des Poursuites**: Décide de l'opportunité des poursuites pénales, donne des directives aux forces de l'ordre.",
+        "**Représentation de l'État**: Représente l'État devant les tribunaux, notamment dans les affaires pénales.",
+        "**Contrôle de l'Exécution des Peines**: Veille à l'exécution des jugements et des peines prononcées."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "Le Procureur Général",
+          "mg": "Mpampanoa Lalàna Lehibe"
+        },
+        "role": {
+          "fr": "Dirige le Ministère Public au niveau des Cours d'Appel et assure la coordination des actions des procureurs subalternes.",
+          "mg": "Mitarika ny Minisitera Public eo amin’ny ambaratongan’ny Fitsarana Ambaratonga Faharoa ary miantoka ny fandrindrana ny asan’ny mpampanoa lalàna ambany."
+        }
+      },
+      {
+        "title": {
+          "fr": "Le Procureur de la République",
+          "mg": "Mpampanoa Lalàna eo anivon'ny Repoblika"
+        },
+        "role": {
+          "fr": "Représente le Ministère Public au niveau des tribunaux de première instance, dirige les enquêtes et engage les poursuites pénales.",
+          "mg": "Misolo tena ny Minisitera Public eo amin’ny fitsarana ambaratonga voalohany, mitarika ny fanadihadiana ary manenjika ny mpanao heloka."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Substituts du Procureur",
+          "mg": "Ireo Mpisolo toerana ny Mpampanoa Lalàna"
+        },
+        "role": {
+          "fr": "Assistent le Procureur dans ses fonctions et le remplacent en cas d'absence ou d'empêchement.",
+          "mg": "Manampy ny Mpampanoa Lalàna amin’ny asany ary misolo toerana azy raha tsy eo na misy manakana azy."
+        }
+      }
+    ],
+
+    "sources": [
+      "Code de Procédure Pénale",
+      "Loi portant statut de la Magistrature"
+    ]
+  },
+  {
+    "id": "civic-institutions-006",
+    "title": {
+      "mg": "Ny Huissier de Justice",
+      "fr": "L'Huissier de Justice"
+    },
+    "summary": {
+      "mg": "Manamboninahitra mpanao didy fitsarana, miandraikitra ny fampiharana ny didim-pitsarana sy ny fanatanterahana ireo taratasy ara-pitsarana.",
+      "fr": "Officier ministériel chargé de l'exécution des décisions de justice et de la signification des actes judiciaires."
+    },
+    "content": {
+      "mg": [
+        "**Fampiharana Didim-pitsarana**: Mampihatra ny didim-pitsarana (ohatra: fakana fananana, fandroahana olona, fanagiazana).",
+        "**Fanaterana Taratasy**: Manatitra ara-dalàna ny taratasy ara-pitsarana (citations, jugements) amin’ireo olona voakasika.",
+        "**Fanamarinana Zava-misy**: Manao tatitra momba ny zava-misy ara-dalàna (constats) izay azo ampiasaina ho porofo eo anoloan’ny Fitsarana.",
+        "**Fanolorana Torohevitra**: Afaka manome torohevitra ara-dalàna momba ny fampiharana ny didy sy ny zon’ny olona."
+      ],
+      "fr": [
+        "**Exécution des Décisions de Justice**: Met en œuvre les jugements et ordonnances des tribunaux (ex: saisies, expulsions, recouvrement de créances).",
+        "**Signification des Actes**: Notifie légalement les actes de procédure (citations à comparaître, jugements) aux personnes concernées.",
+        "**Constats**: Établit des procès-verbaux de constatation de faits qui peuvent servir de preuve devant les tribunaux.",
+        "**Conseil Juridique**: Peut donner des conseils juridiques sur l'exécution des décisions et les droits des parties."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "L'Huissier de Justice",
+          "mg": "Huissier de Justice"
+        },
+        "role": {
+          "fr": "Officier ministériel exerçant une profession libérale réglementée. Il est habilité à signifier les actes et à exécuter les décisions de justice.",
+          "mg": "Manamboninahitra mpanao didy fitsarana, miasa amin’ny fomba mahaleo tena sy voafehin’ny lalàna. Manana fahefana manatitra taratasy sy mampihatra ny didim-pitsarana."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Clercs d'Huissier",
+          "mg": "Mpanampy Huissier"
+        },
+        "role": {
+          "fr": "Assistent l'Huissier de Justice dans ses tâches administratives et lors des opérations sur le terrain.",
+          "mg": "Manampy ny Huissier de Justice amin’ny asa fitantanam-pitondrana sy amin’ny asa eny ifotony."
+        }
+      }
+    ],
+
+    "sources": [
+      "Ordonnance n° 62-041 du 19 septembre 1962 portant statut des Huissiers de Justice",
+      "Code de Procédure Civile"
+    ]
+  },
+  {
+    "id": "civic-institutions-007",
+    "title": {
+      "mg": "Ny Faritra (Collectivité Territoriale Décentralisée)",
+      "fr": "La Région (Collectivité Territoriale Décentralisée)"
+    },
+    "summary": {
+      "mg": "Vatam-panjakana eo an-toerana manana fahefana manokana amin’ny fampandrosoana ara-toekarena, sosialy, kolontsaina ary tontolo iainana, tarihin’ny Filohan’ny Filankevitry ny Faritra voafidy.",
+      "fr": "Collectivité territoriale décentralisée dotée de compétences spécifiques en matière de développement économique, social, culturel et environnemental, dirigée par le Président du Conseil Régional élu."
+    },
+    "content": {
+      "mg": [
+        "**Fampandrosoana Isam-paritra**: Mandrafitra sy mampihatra ny planin’ny fampandrosoana sy ny fampitaovana ho an’ny faritra misy azy (fambolena, fiompiana, fanabeazana, fitsaboana, fotodrafitrasa).",
+        "**Fitantanana ny Lohatenin’ny Faritra**: Mitantana ny fananana sy ny loharanon-karenan’ny Faritra, ary miandraikitra ny tetibola manokana.",
+        "**Fampandraisana Anjara ny Olom-pirenena**: Mamporisika ny fandraisana anjaran’ny vahoaka sy ny fiaraha-miasa amin'ireo sehatra hafa amin’ny fanapahan-kevitra eo an-toerana sy ny famolavolana tetikasa."
+      ],
+      "fr": [
+        "**Développement Régional**: Élabore et met en œuvre les plans de développement et d'équipement propres à sa région (agriculture, élevage, éducation, santé, infrastructures).",
+        "**Gestion des Ressources Régionales**: Gère les biens et les ressources propres à la Région, et administre un budget spécifique.",
+        "**Participation Citoyenne**: Encourage la participation des citoyens et la collaboration avec d'autres acteurs aux décisions locales qui les concernent et à l'élaboration de projets."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "Le Président du Conseil Régional",
+          "mg": "Filohan’ny Filankevitry ny Faritra"
+        },
+        "role": {
+          "fr": "Organe exécutif de la Région, élu par les conseillers régionaux. Il prépare et exécute les délibérations du Conseil Régional.",
+          "mg": "Sampan-draharaha mpanatanteraka ny Faritra, fidina amin’ireo mpanolotsaina ao amin’ny Filankevitry ny Faritra. Manomana sy mampihatra ny fanapahan-kevitry ny Filankevitry ny Faritra."
+        }
+      },
+      {
+        "title": {
+          "fr": "Le Conseil Régional",
+          "mg": "Filankevitry ny Faritra"
+        },
+        "role": {
+          "fr": "Organe délibérant de la Région, composé de conseillers élus. Il vote le budget et les plans de développement régional.",
+          "mg": "Sampan-draharaha mandray fanapahan-kevitra eo anivon’ny Faritra, foronin’ireo mpanolotsaina voafidy. Mandany ny tetibola sy ny planin’ny fampandrosoana isam-paritra."
+        }
+      }
+    ],
+
+    "sources": [
+      "Loi n° 2014-020 du 27 septembre 2014 relative aux Régions et à leurs attributions",
+      "Code Général des Collectivités Territoriales Décentralisées (CGCTD)",
+      "Loi électorale des Collectivités Territoriales Décentralisées"
+    ]
+  },
+  {
+    "id": "civic-institutions-008",
+    "title": {
+      "mg": "Ny Governemanta eo anivon’ny Faritra (Gouverneur)",
+      "fr": "Le Gouverneur de Région (Représentant de l'État)"
+    },
+    "summary": {
+      "mg": "Solontenam-panjakana tendren’ny Filohan’ny Repoblika, miantoka ny fanatanterahana ny politikam-panjakana sy ny fandrindrana ny asam-panjakana eo anivon’ny Faritra.",
+      "fr": "Représentant de l'État nommé par le Président de la République, il assure la mise en œuvre des politiques nationales et la coordination des services déconcentrés de l'État dans la Région."
+    },
+    "content": {
+      "mg": [
+        "**Fanatanterahana ny Politika Nasionaly**: Miantoka ny fampiharana sy ny fanarahana ny lalàna sy ny fitsipika mifehy ny asam-panjakana ao amin’ny faritra.",
+        "**Fandrindrana ny Asa**: Mandrindra ny asan’ireo sampan-draharaham-panjakana (Minisitera) miasa eo anivon’ny Faritra.",
+        "**Fametrahana ny Filaminana**: Tompon’andraikitra amin’ny fitandroana ny filaminam-bahoaka sy ny fandriampahalemana ao anatin’ny Faritra.",
+        "**Fiaraha-miasa amin’ny CTD**: Miara-miasa amin’ireo Collectivités Territoriales Décentralisées mba hahazoana antoka ny firindran’ny asan’ny fanjakana sy ny an’ny CTD."
+      ],
+      "fr": [
+        "**Mise en œuvre des Politiques Nationales**: Assure l'application et le respect des lois et règlements de l'État dans la région.",
+        "**Coordination des Services**: Coordonne les activités des services déconcentrés de l'État (Ministères) opérant au niveau régional.",
+        "**Maintien de l'Ordre Public**: Est responsable du maintien de l'ordre public et de la sécurité dans la Région.",
+        "**Collaboration avec les CTD**: Collabore avec les Collectivités Territoriales Décentralisées pour assurer la cohérence des actions de l'État et des CTD."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "Le Gouverneur de Région",
+          "mg": "Governemanta eo anivon’ny Faritra"
+        },
+        "role": {
+          "fr": "Représentant de l'État au niveau régional, nommé par le Président. Il veille à l'application des lois et des politiques nationales.",
+          "mg": "Solontenan’ny Fanjakana eo amin'ny ambaratonga Faritra, tendren’ny Filoha. Miantoka ny fampiharana ny lalàna sy ny politikam-panjakana."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Services Déconcentrés de l'État",
+          "mg": "Sampan-draharaham-panjakana Voatsinjara"
+        },
+        "role": {
+          "fr": "Représentent les Ministères au niveau régional (ex: Directions Régionales de la Santé, de l'Éducation) et mettent en œuvre les politiques sectorielles sous l'autorité du Gouverneur.",
+          "mg": "Misolo tena ny Minisitera eo amin'ny ambaratonga Faritra (ohatra: Sampan-draharaham-paritry ny Fahasalamana, Fanabeazana) ary mampihatra ny politika arak'asa eo ambany fahefan'ny Governemanta."
+        }
+      }
+    ],
+
+    "sources": [
+      "Constitution de la Quatrième République de Madagascar (2010)",
+      "Décret n° 2020-092 du 29 janvier 2020 relatif aux attributions du Gouverneur de Région",
+      "Lois sur l'administration territoriale"
+    ]
+  },
+  {
+    "id": "civic-institutions-009",
+    "title": {
+      "mg": "Ny Distrika (Circonscription Administrative)",
+      "fr": "Le District (Circonscription Administrative)"
+    },
+    "summary": {
+      "mg": "Fizaram-paritany ara-panjakana miantoka ny fanatanterahana ny asan’ny Fanjakana sy ny fandrindrana eo anelanelan’ny Faritra sy ny Kaominina.",
+      "fr": "Circonscription administrative chargée de la mise en œuvre des politiques de l'État et de la coordination entre la Région et les Communes."
+    },
+    "content": {
+      "mg": [
+        "**Fanatanterahana ny Politika Nasionaly**: Manampy amin’ny fampiharana ny fanapahan-kevitra sy ny politikam-panjakana avy any an-tampony eo amin’ny faritra misy azy.",
+        "**Fandrindrana sy Fanaraha-maso**: Mpitari-dalana sy mpanara-maso ny asan’ny Kaominina eo ambany fifehezany, miantoka ny firindran’ny asa.",
+        "**Fandraisana sy Fizarana Antontan-taratasy**: Manome fahazoan-dalana isan-karazany sy mandamina ny antontan-taratasy samihafa ho an’ny mponina."
+      ],
+      "fr": [
+        "**Mise en œuvre des Politiques Nationales**: Contribue à l'application des décisions et politiques de l'État à son échelon territorial.",
+        "**Coordination et Supervision**: Sert d'interface et de superviseur pour les activités des Communes relevant de sa juridiction, assurant la cohérence des actions.",
+        "**Délivrance de Documents**: Délivre diverses autorisations et gère des documents administratifs pour les citoyens."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "Le Chef de District",
+          "mg": "Lehiben’ny Distrika"
+        },
+        "role": {
+          "fr": "Représentant de l'État au niveau du District, il assure l'application des directives nationales et la coordination des services de l'État local.",
+          "mg": "Solontenan’ny Fanjakana eo amin'ny ambaratongan’ny Distrika, miantoka ny fampiharana ny toromarika nasionaly sy ny fandrindrana ny sampan-draharaham-panjakana eo an-toerana."
+        }
+      },
+      {
+        "title": {
+          "fr": "Services Techniques du District",
+          "mg": "Sampan-draharaha Teknika ao amin’ny Distrika"
+        },
+        "role": {
+          "fr": "Relais des services déconcentrés de l'État pour des actions spécifiques (ex: agriculture, santé) au niveau du District.",
+          "mg": "Mpanatanteraka ny asan’ireo sampan-draharaham-panjakana voatsinjara ho an'ny asa manokana (ohatra: fambolena, fahasalamana) eo amin'ny ambaratonga Distrika."
+        }
+      }
+    ],
+
+    "sources": [
+      "Loi n° 2014-021 du 27 septembre 2014 relative aux Districts et à leurs attributions",
+      "Code Général des Collectivités Territoriales Décentralisées (CGCTD)"
+    ]
+  },
+  {
+    "id": "civic-institutions-010",
+    "title": {
+      "mg": "Ny Chef de District (Lehiben’ny Distrika)",
+      "fr": "Le Chef de District (Représentant de l'État)"
+    },
+    "summary": {
+      "mg": "Solontenam-panjakana tendrena ao amin’ny Distrika, miantoka ny fampiharana ny fanapahan-kevitry ny Governemanta sy ny filaminam-bahoaka eo an-toerana.",
+      "fr": "Représentant de l'État nommé au niveau du District, il assure l'application des décisions du Gouvernement et le maintien de l'ordre public local."
+    },
+    "content": {
+      "mg": [
+        "**Fampiharana ny Politika Nasionaly**: Manatanteraka ny toromarika sy ny politikam-panjakana avy amin'ny Governemanta sy ny Governemanta eo anivon'ny Faritra.",
+        "**Fanaraha-maso ny Asa**: Manara-maso ny asam-panjakana rehetra eo amin’ny sehatry ny Distrika ary miara-miasa amin’ny Kaominina.",
+        "**Fametrahana ny Filaminana**: Tompon’andraikitra amin’ny filaminam-bahoaka sy ny fandriampahalemana ao anatin’ny Distrika, mandrindra ny asan’ny mpitandro filaminana eo an-toerana.",
+        "**Fandraisana sy Fizarana Vaovao**: Mampita ny vaovao sy ny toromarika avy any ambony ho an’ny Kaominina sy ny Fokontany, ary mifamadika amin’izany."
+      ],
+      "fr": [
+        "**Application des Politiques Nationales**: Exécute les directives et les politiques du Gouvernement et du Gouverneur de Région.",
+        "**Supervision Administrative**: Supervise l'ensemble des services de l'État au niveau du District et collabore avec les Communes.",
+        "**Maintien de l'Ordre Public**: Est responsable du maintien de l'ordre public et de la sécurité au sein du District, coordonnant l'action des forces de l'ordre locales.",
+        "**Relais d'Information**: Transmet les informations et directives du niveau supérieur aux Communes et Fokontany, et vice-versa."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "Le Chef de District",
+          "mg": "Lehiben’ny Distrika"
+        },
+        "role": {
+          "fr": "Représentant de l'État nommé, il est le principal responsable de l'administration et de la sécurité au sein de sa circonscription.",
+          "mg": "Solontenan’ny Fanjakana voatendry, izy no tompon’andraikitra voalohany amin’ny fitantanam-panjakana sy ny filaminana ao anatin’ny fizaram-paritany misy azy."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Services Administratifs du District",
+          "mg": "Sampan-draharaham-pitantanan’ny Distrika"
+        },
+        "role": {
+          "fr": "Assistent le Chef de District dans la gestion quotidienne des affaires administratives et la délivrance des documents.",
+          "mg": "Manampy ny Lehiben’ny Distrika amin’ny fitantanana ny raharaham-pitantanam-panjakana isan’andro sy ny famoahana taratasy."
+        }
+      }
+    ],
+
+    "sources": [
+      "Décrets et arrêtés relatifs aux Chefs de District",
+      "Lois sur l'administration territoriale",
+      "Code Général des Collectivités Territoriales Décentralisées (CGCTD)"
+    ]
+  },
+  {
+    "id": "civic-institutions-011",
+    "title": {
+      "mg": "Ny Kaominina sy ny Ben'ny Tanàna",
+      "fr": "La Commune et le Maire (Collectivité Territoriale Décentralisée)"
+    },
+    "summary": {
+      "mg": "Vatam-panjakana ifotony sy akaiky indrindra ny vahoaka, miandraikitra mivantana ny fiainam-bahoaka, tarihin’ny Ben’ny Tanàna voafidy.",
+      "fr": "Collectivité territoriale de base, la plus proche des citoyens, gérant directement les affaires de la population locale, dirigée par le Maire élu."
+    },
+    "content": {
+      "mg": [
+        "**Fitantanana ny Asa Public eo an-toerana**: Miantoka ny rano, jiro, fanadiovana, lalana, fitantanana ny tsena, ary serivisy hafa ilain’ny mponina.",
+        "**Fanabeazana sy Fahasalamana**: Manampy amin’ny fanatsarana sy fikojakojana ny sekoly, ny toeram-pitsaboana ary ny fotodrafitrasa ara-tsosialy ao anatin’ny Kaominina.",
+        "**Fandraisana sy Fanomezana antontan-taratasy**: Miandraikitra ny tolotra ara-panjakana toy ny famoahana sora-pahaterahana, fanambadiana, fahafatesana, sy ny taratasy fanamarinam-ponenana.",
+        "**Fametrahana ny Fampandrosoana**: Mandrafitra sy mampihatra ny tetikasa fampandrosoana eo an-toerana mifanaraka amin’ny filan’ny mponina."
+      ],
+      "fr": [
+        "**Gestion des Services Publics Locaux**: Assure les services essentiels comme l'eau, l'électricité, l'assainissement, l'entretien des routes, la gestion des marchés, et d'autres services de proximité.",
+        "**Éducation et Santé**: Contribue à l'amélioration et à l'entretien des écoles, des centres de santé et des infrastructures sociales au sein de la Commune.",
+        "**Services d'État Civil**: Est en charge des services administratifs de proximité tels que la délivrance des actes de naissance, mariage, décès, et des certificats de résidence.",
+        "**Mise en œuvre du Développement**: Élabore et met en œuvre des projets de développement local adaptés aux besoins de la population."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "Le Maire",
+          "mg": "Ben'ny Tanàna"
+        },
+        "role": {
+          "fr": "Chef de l'exécutif communal, élu au suffrage universel direct. Il gère les affaires de la Commune et représente l'État dans certains domaines.",
+          "mg": "Lehiben’ny mpanatanteraka eo anivon’ny Kaominina, voafidy mivantana. Izy no mitantana ny raharahan’ny Kaominina ary misolo tena ny Fanjakana amin’ny sehatra sasany."
+        }
+      },
+      {
+        "title": {
+          "fr": "Le Conseil Communal",
+          "mg": "Filankevitry ny Kaominina"
+        },
+        "role": {
+          "fr": "Organe délibérant de la Commune, composé de conseillers élus. Il vote le budget communal et les décisions importantes.",
+          "mg": "Sampan-draharaha mandray fanapahan-kevitra eo anivon’ny Kaominina, foronin’ny mpanolotsaina voafidy. Mandany ny tetibolam-kaominina sy ny fanapahan-kevitra lehibe."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Services Administratifs Communaux",
+          "mg": "Sampan-draharaham-pitantanan’ny Kaominina"
+        },
+        "role": {
+          "fr": "Assistent le Maire et le Conseil Communal dans la gestion des services publics locaux (état civil, urbanisme, etc.).",
+          "mg": "Manampy ny Ben'ny Tanàna sy ny Filankevitry ny Kaominina amin’ny fitantanana ny tolotra ho an'ny daholobe eo an-toerana (fizika ny olom-pirenena, fandrindrana ny tanàna, sns.)."
+        }
+      }
+    ],
+
+    "sources": [
+      "Loi n° 2014-010 du 7 août 2014 relative aux Communes et à leurs attributions",
+      "Code des Collectivités Territoriales Décentralisées (CGCTD)",
+      "Loi électorale (pour l'élection du Maire et des Conseillers Communaux)"
+    ]
+  },
+  {
+    "id": "civic-institutions-012",
+    "title": {
+      "mg": "Ny Fokontany sy ny Lehiben’ny Fokontany",
+      "fr": "Le Fokontany et le Chef de Fokontany"
+    },
+    "summary": {
+      "mg": "Ny Fokontany no rantsam-panjakana fototra indrindra sy akaiky indrindra ny vahoaka, tantanin’ny Lehiben’ny Fokontany.",
+      "fr": "Le Fokontany est la plus petite entité administrative et la plus proche des citoyens, servant de lien essentiel entre la population et la Commune."
+    },
+    "content": {
+      "mg": [
+        "**Fitantanana ny Vahoaka**: Manao fanisam-bahoaka, manome taratasy fanamarinam-ponenana, ary manampy amin’ny fitantanana ny mponina ao anatin’ny faritra misy azy.",
+        "**Fametrahana ny Fifandraisana**: Mpanelanelana mivantana eo amin’ny mponina sy ny Kaominina na ny manam-pahefana ambony, mampita ny filàna sy ny fanampim-baovao.",
+        "**Fahadiovana sy Filaminana eo an-toerana**: Mandamina sy manara-maso ny asa fanadiovana sy fandrindrana ny tanàna, ary manampy ny mpitandro filaminana amin’ny fitandroana ny filaminana ifotony.",
+        "**Fanentanana sy Fampahalalana**: Manentana ny vahoaka amin’ny hetsika fampandrosoana sy ara-tsosialy, ary mampahafantatra ny fanapahan-kevitry ny Fanjakana.",
+        "**Fametrahana ny firaisankina**: Mandrindra ny fiaraha-monina sy mamaha ny olana madinika eo anivon’ny fiaraha-monina amin’ny alalan’ny fifampiresahana."
+      ],
+      "fr": [
+        "**Gestion de la Population**: Effectue les recensements, délivre les certificats de résidence, et contribue à la gestion des habitants au sein de son périmètre.",
+        "**Lien de Proximité**: Sert d'intermédiaire direct entre les habitants et la Commune ou les autorités supérieures, transmettant les besoins et les informations.",
+        "**Propreté et Sécurité Locale**: Organise et supervise les actions d'assainissement et d'aménagement du quartier, et appuie les forces de l'ordre dans le maintien de la sécurité de proximité.",
+        "**Mobilisation et Information**: Sensibilise la population aux actions de développement et sociales, et transmet les décisions des autorités.",
+        "**Cohésion Sociale**: Coordonne la vie communautaire et aide à la résolution des petits problèmes au sein du quartier par la médiation."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "Le Chef de Fokontany",
+          "mg": "Lehiben’ny Fokontany"
+        },
+        "role": {
+          "fr": "Représentant de l'administration locale au niveau du Fokontany, il est le principal interlocuteur des habitants et le relais entre la population et la Commune.",
+          "mg": "Solontenan’ny fitantanam-panjakana eo amin'ny Fokontany, izy no tena ifandraisana amin'ny mponina ary mampifandray ny vahoaka sy ny Kaominina."
+        }
+      },
+      {
+        "title": {
+          "fr": "Le Comité du Fokontany",
+          "mg": "Komitin'ny Fokontany"
+        },
+        "role": {
+          "fr": "Organe consultatif qui assiste le Chef de Fokontany dans la gestion des affaires locales et la résolution des problèmes communautaires.",
+          "mg": "Sampan-draharaha mpanolo-tsaina manampy ny Lehiben’ny Fokontany amin’ny fitantanana ny raharaha eo an-toerana sy ny famahana ny olana eo anivon'ny fiaraha-monina."
+        }
+      }
+    ],
+
+    "sources": [
+      "Loi n° 2014-022 du 27 septembre 2014 relative aux Fokontany et à leurs attributions",
+      "Code des Collectivités Territoriales Décentralisées (CGCTD)"
+    ]
+  },
+  {
+    "id": "civic-ministry-001",
+    "title": {
+      "mg": "Minisiteran'ny Fanabeazam-pirenena",
+      "fr": "Ministère de l'Éducation Nationale"
+    },
+    "summary": {
+      "mg": "Miandraikitra ny rafi-pampianarana rehetra eto Madagasikara, manomboka amin’ny sekoly ambaratonga fototra ka hatrany amin’ny lisea.",
+      "fr": "Responsable de l'ensemble du système éducatif à Madagascar, de l'enseignement préscolaire au secondaire."
+    },
+    "content": {
+      "mg": [
+        "**Famolavolana sy Fampihatra Politika**: Mamolavola sy mampihatra ny politikam-panjakana momba ny fanabeazana, ao anatin’izany ny fandaharam-pianarana sy ny fomba fanombanana.",
+        "**Fitantanana ny Sekoly**: Manara-maso sy mitantana ny sekolim-panjakana rehetra (fanorenana, fikojakojana, fizarana fitaovam-pianarana).",
+        "**Fanofanana sy Fitantanana Mpampianatra**: Miandraikitra ny fanofanana, ny fandraisana ary ny fitantanana ny mpiasa rehetra eo amin’ny sehatry ny fanabeazana (mpampianatra, mpiandraikitra).",
+        "**Fanomezana Vatsim-pianarana**: Manome vatsim-pianarana sy fanohanana ho an’ny mpianatra sy ny sekoly."
+      ],
+      "fr": [
+        "**Élaboration et Exécution des Politiques**: Conçoit et met en œuvre les politiques éducatives, incluant les programmes scolaires et les méthodes d'évaluation.",
+        "**Gestion des Établissements Scolaires**: Supervise et gère toutes les écoles publiques (construction, entretien, distribution de fournitures scolaires).",
+        "**Formation et Gestion des Enseignants**: Est responsable de la formation, du recrutement et de la gestion de tout le personnel éducatif (enseignants, administrateurs).",
+        "**Octroi de Bourses et Soutiens**: Accorde des bourses et des soutiens aux élèves et aux établissements."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "Le Ministre de l'Éducation Nationale",
+          "mg": "Minisitry ny Fanabeazam-pirenena"
+        },
+        "role": {
+          "fr": "Dirige le Ministère, élabore et met en œuvre la politique éducative nationale.",
+          "mg": "Mitarika ny Minisitera, mamolavola sy mampihatra ny politikam-pirenena momba ny fanabeazana."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Directions Générales",
+          "mg": "Tale Jeneraly"
+        },
+        "role": {
+          "fr": "Organisent et supervisent les activités spécifiques du Ministère (ex: enseignement primaire, secondaire, formation des enseignants).",
+          "mg": "Mandamina sy manara-maso ny asa manokana ao amin’ny Minisitera (ohatra: fampianarana ambaratonga fototra, faharoa, fanofanana mpampianatra)."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Directions Régionales de l'Éducation Nationale (DREN)",
+          "mg": "Tale Foibe Rantsana Faritra misahana ny Fanabeazam-pirenena (DREN)"
+        },
+        "role": {
+          "fr": "Représentent le Ministère au niveau régional et coordonnent les activités éducatives sur le terrain.",
+          "mg": "Misolo tena ny Minisitera eo amin'ny ambaratonga faritra ary mandrindra ny asa fanabeazana eny ifotony."
+        }
+      }
+    ],
+
+    "sources": [
+      "Décret portant organisation du Ministère de l'Éducation Nationale et fixant ses attributions",
+      "Loi d'orientation du système éducatif"
+    ]
+  },
+  {
+    "id": "civic-ministry-002",
+    "title": {
+      "mg": "Minisiteran'ny Fahasalamam-bahoaka",
+      "fr": "Ministère de la Santé Publique"
+    },
+    "summary": {
+      "mg": "Miandraikitra ny fahasalamam-bahoaka, manomboka amin’ny fisorohana aretina ka hatrany amin’ny fikarakarana ny marary ary ny fampiroboroboana ny fahasalamana.",
+      "fr": "Chargé de la santé publique, de la prévention des maladies aux soins curatifs, et de la promotion du bien-être général de la population."
+    },
+    "content": {
+      "mg": [
+        "**Famolavolana Politika ara-pahasalamana**: Mamolavola sy mampihatra ny politikam-pirenena momba ny fahasalamana (fisoroana aretina, fitaizana zaza, fahadiovana).",
+        "**Fitantanana ny Fotodrafitrasa ara-pahasalamana**: Manara-maso sy mitantana ny hôpitaly, ny tobim-pitsaboana, ary ny toeram-pahasalamana hafa.",
+        "**Fanofanana Mpiasan’ny Fahasalamana**: Miandraikitra ny fanofanana sy ny fitantanana ny dokotera, infirmiers, sy ny mpiasa hafa eo amin’ny sehatry ny fahasalamana.",
+        "**Fiarovana ny Mponina**: Miaro ny mponina amin’ny valan’aretina, manome fanafody ilaina, ary manao fanentanana ara-pahasalamana."
+      ],
+      "fr": [
+        "**Élaboration de Politiques de Santé**: Conçoit et met en œuvre les politiques nationales de santé (prévention des maladies, santé maternelle et infantile, hygiène).",
+        "**Gestion des Infrastructures de Santé**: Supervise et gère les hôpitaux, les centres de santé et autres établissements médicaux.",
+        "**Formation du Personnel de Santé**: Est responsable de la formation et de la gestion des médecins, infirmiers et autres professionnels de la santé.",
+        "**Protection de la Population**: Protège la population contre les épidémies, assure la disponibilité des médicaments essentiels, et mène des campagnes de sensibilisation à la santé."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "Le Ministre de la Santé Publique",
+          "mg": "Minisitry ny Fahasalamam-bahoaka"
+        },
+        "role": {
+          "fr": "Dirige le Ministère, définit et met en œuvre la politique de santé nationale.",
+          "mg": "Mitarika ny Minisitera, mamaritra sy mampihatra ny politikam-pahasalamana nasionaly."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Directions Générales de la Santé",
+          "mg": "Tale Jeneraly misahana ny Fahasalamana"
+        },
+        "role": {
+          "fr": "Organisent et supervisent les programmes de santé (ex: programmes de vaccination, lutte contre les maladies).",
+          "mg": "Mandamina sy manara-maso ny fandaharan’asa ara-pahasalamana (ohatra: fandaharan’asa vaksiny, ady amin’ny aretina)."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Directions Régionales de la Santé Publique (DRSP)",
+          "mg": "Tale Foibe Rantsana Faritra misahana ny Fahasalamam-bahoaka (DRSP)"
+        },
+        "role": {
+          "fr": "Représentent le Ministère au niveau régional et assurent la mise en œuvre des politiques de santé sur le terrain.",
+          "mg": "Misolo tena ny Minisitera eo amin'ny ambaratonga faritra ary miantoka ny fampiharana ny politikam-pahasalamana eny ifotony."
+        }
+      }
+    ],
+
+    "sources": [
+      "Décret portant organisation du Ministère de la Santé Publique et fixant ses attributions",
+      "Code de la Santé Publique"
+    ]
+  },
+  {
+    "id": "civic-ministry-003",
+    "title": {
+      "mg": "Minisiteran’ny Atitany sy ny Fitsinjaram-pahefana",
+      "fr": "Ministère de l'Intérieur et de la Décentralisation"
+    },
+    "summary": {
+      "mg": "Miandraikitra ny fitantanam-paritany, ny fifandraisana amin’ireo Collectivités Territoriales Décentralisées (CTD), ary ny filaminam-bahoaka.",
+      "fr": "Chargé de l'administration territoriale, des relations avec les Collectivités Territoriales Décentralisées (CTD), et du maintien de l'ordre public."
+    },
+    "content": {
+      "mg": [
+        "**Fitantanana ny Faritra sy ny Distrika**: Manara-maso ny asan’ny Governemanta isam-paritra (Gouverneur) sy ny Chef de District, ary miantoka ny firindran’ny asam-panjakana any ifotony.",
+        "**Fandrindrana ny Fitsinjaram-pahefana**: Manomana sy mampihatra ny politikam-panjakana momba ny fitsinjaram-pahefana, manohana ny CTD (Kaominina, Faritra, Fokontany) amin’ny asany.",
+        "**Filaminam-bahoaka**: Miara-miasa amin’ny mpitandro filaminana amin’ny fitandroana ny filaminam-bahoaka sy ny fandriampahalemana an-tanindrazana.",
+        "**Fikarakarana ny Fifidianana**: Mandray anjara amin’ny fikarakarana sy ny fanaraha-maso ny fifidianana rehetra eto Madagasikara miaraka amin’ny CENI."
+      ],
+      "fr": [
+        "**Administration Territoriale**: Supervise l'action des Gouverneurs de Région et des Chefs de District, assurant la cohérence de l'action de l'État sur le terrain.",
+        "**Mise en œuvre de la Décentralisation**: Élabore et applique les politiques de décentralisation, apportant un soutien aux CTD (Communes, Régions, Fokontany) dans leurs missions.",
+        "**Ordre Public**: Collabore avec les forces de l'ordre pour le maintien de l'ordre public et de la sécurité intérieure du pays.",
+        "**Organisation des Élections**: Participe à l'organisation et à la supervision des diverses élections sur le territoire, en collaboration avec la CENI."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "Le Ministre de l'Intérieur et de la Décentralisation",
+          "mg": "Minisitry ny Atitany sy ny Fitsinjaram-pahefana"
+        },
+        "role": {
+          "fr": "Dirige le Ministère, formule et met en œuvre la politique du gouvernement en matière d'administration territoriale, de décentralisation et de sécurité intérieure.",
+          "mg": "Mitarika ny Minisitera, mamolavola sy mampihatra ny politikam-panjakana momba ny fitantanam-paritany, ny fitsinjaram-pahefana ary ny filaminana anatiny."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Directions Générales de l'Administration Territoriale",
+          "mg": "Tale Jeneraly misahana ny Fitantanam-paritany"
+        },
+        "role": {
+          "fr": "Supervisent l'organisation et le fonctionnement des services de l'État au niveau régional et local (Préfectures, Districts).",
+          "mg": "Manara-maso ny fandaminana sy ny fampandehanana ny asam-panjakana eo amin'ny ambaratonga faritra sy eo an-toerana (Prefektiora, Distrika)."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Directions de la Décentralisation",
+          "mg": "Tale misahana ny Fitsinjaram-pahefana"
+        },
+        "role": {
+          "fr": "Accompagnent et soutiennent les Collectivités Territoriales Décentralisées dans l'exercice de leurs compétences.",
+          "mg": "Manampy sy manohana ny Vondrom-paritra Mitsinjaram-pahefana amin'ny fampiharana ny fahefany."
+        }
+      }
+    ],
+    "sources": [
+      "Décret portant organisation du Ministère de l'Intérieur et de la Décentralisation et fixant ses attributions",
+      "Lois sur la Décentralisation et les Collectivités Territoriales Décentralisées"
+    ]
+  },
+  {
+    "id": "civic-security-001",
+    "title": {
+      "mg": "Ny Zandarimariam-pirenena",
+      "fr": "La Gendarmerie Nationale"
+    },
+    "summary": {
+      "mg": "Hery mpitandro filaminana miaramila, miandraikitra ny filaminam-bahoaka indrindra any ambanivohitra sy ny fanatanterahana ny polisy fitsarana manerana ny firenena.",
+      "fr": "Force militaire de sécurité, responsable de l'ordre public principalement en zone rurale et périurbaine, et exerçant des fonctions de police judiciaire sur l'ensemble du territoire."
+    },
+    "content": {
+      "mg": [
+        "**Filaminam-bahoaka**: Miantoka ny filaminam-bahoaka sy ny fiarovana ny olona sy ny fananany any amin'ny faritra ambanivohitra sy semi-urbain.",
+        "**Polisy Fitsarana**: Manatanteraka fanadihadiana, misambotra, ary manolotra ny mpanao heloka amin'ny fitsarana. Miasa eo ambany fifehezan'ny Mpampanoa Lalàna.",
+        "**Fiarovana ny Sisintany sy ny Lalana**: Miandraikitra ny fiarovana ny sisintany sy ny fiarovana ara-dalana, miaraka amin'ny fiarovana ny lalàm-pirenena.",
+        "**Fidirana an-tsehatra amin'ny Loza**: Vonona hiditra an-tsehatra amin'ny toe-javatra loza voajanahary na loza hafa."
+      ],
+      "fr": [
+        "**Ordre Public**: Assure la sécurité publique et la protection des personnes et des biens en zones rurales et semi-urbaines.",
+        "**Police Judiciaire**: Mène des enquêtes, procède à des arrestations et défère les suspects devant la justice. Agit sous l'autorité du Procureur.",
+        "**Sécurité Frontalière et Routière**: Responsable de la surveillance des frontières et de la sécurité routière, y compris l'application du code de la route.",
+        "**Intervention d'Urgence**: Intervient lors de catastrophes naturelles ou autres situations d'urgence."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "Le Commandant de la Gendarmerie Nationale",
+          "mg": "Kaomandin’ny Zandarimariam-pirenena"
+        },
+        "role": {
+          "fr": "Dirige l'ensemble des unités de la Gendarmerie Nationale et assure l'exécution de ses missions.",
+          "mg": "Mitarika ny vondrona rehetra ao amin'ny Zandarimariam-pirenena ary miantoka ny fanatanterahana ny iraka ampanaovina azy."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Groupements de Gendarmerie Territoriaux",
+          "mg": "Vondron-Zandarimaria ara-Paritra"
+        },
+        "role": {
+          "fr": "Organisent et coordonnent les activités de la Gendarmerie au niveau des régions et des districts.",
+          "mg": "Mandamina sy mandrindra ny asan'ny Zandarimaria eo amin'ny ambaratonga faritra sy distrika."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Brigades de Gendarmerie",
+          "mg": "Borigadin’ny Zandarimaria"
+        },
+        "role": {
+          "fr": "Unités de base de la Gendarmerie, chargées des missions de proximité (patrouilles, enquêtes locales).",
+          "mg": "Vondrona fototra ao amin’ny Zandarimaria, miandraikitra ny asa akaiky ny vahoaka (fiarovan-tena, fanadihadiana eo an-toerana)."
+        }
+      }
+    ],
+    "sources": [
+      "Loi n° 2019-011 du 10 juin 2019 portant organisation générale de la défense et des forces armées",
+      "Code de Procédure Pénale"
+    ]
+  },
+  {
+    "id": "civic-security-002",
+    "title": {
+      "mg": "Ny Polisim-pirenena",
+      "fr": "La Police Nationale"
+    },
+    "summary": {
+      "mg": "Hery mpitandro filaminana sivily, miandraikitra indrindra ny filaminam-bahoaka sy ny fitsarana any an-tanàn-dehibe, ary miantoka ny fifamoivoizana.",
+      "fr": "Force de sécurité civile, principalement responsable de l'ordre public et de la police judiciaire en milieu urbain, et chargée de la sécurité routière en agglomération."
+    },
+    "content": {
+      "mg": [
+        "**Filaminam-bahoaka an-tanàn-dehibe**: Miantoka ny filaminana sy ny fandriampahalemana ao an-tanàn-dehibe, miaro ny olona sy ny fananany.",
+        "**Polisy Fitsarana**: Manao fanadihadiana momba ny heloka bevava sy ny fandikan-dalàna, misambotra ny mpanao ratsy, ary manolotra azy ireo amin'ny fitsarana.",
+        "**Fitsipiky ny Fifamoivoizana**: Miandraikitra ny fanaraha-maso sy ny fampiharana ny fitsipiky ny fifamoivoizana an-tanàn-dehibe.",
+        "**Famoahana Taratasy ara-panjakana**: Mamoaka sy manara-maso ny fahazoan-dalana mitondra fiara sy ny taratasy hafa mifandraika amin'ny fiara."
+      ],
+      "fr": [
+        "**Ordre Public Urbain**: Assure la sécurité et la tranquillité publique dans les zones urbaines, protégeant les personnes et les biens.",
+        "**Police Judiciaire**: Mène des enquêtes sur les crimes et délits, arrête les suspects et les présente devant la justice.",
+        "**Régulation du Trafic**: Est en charge de la régulation et de l'application des règles de circulation en milieu urbain.",
+        "**Délivrance de Documents Administratifs**: Délivre et contrôle les permis de conduire et autres documents liés aux véhicules."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "Le Directeur Général de la Police Nationale",
+          "mg": "Tale Jeneralin’ny Polisim-pirenena"
+        },
+        "role": {
+          "fr": "Dirige l'ensemble des services de la Police Nationale et met en œuvre la politique de sécurité urbaine.",
+          "mg": "Mitarika ny sampan-draharaha rehetra ao amin'ny Polisim-pirenena ary mampihatra ny politikam-piarovana an-tanàn-dehibe."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Commissariats de Police",
+          "mg": "Kaomisarian’ny Polisy"
+        },
+        "role": {
+          "fr": "Structures de base de la Police, chargées de l'accueil du public, des enquêtes de proximité et du maintien de l'ordre local.",
+          "mg": "Fototra ao amin'ny Polisy, miandraikitra ny fandraisana ny vahoaka, ny fanadihadiana eo an-toerana ary ny fitandroana ny filaminana eo an-toerana."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Unités Spécialisées",
+          "mg": "Vondrona manokana"
+        },
+        "role": {
+          "fr": "Interviennent pour des missions spécifiques (ex: lutte contre le grand banditisme, sécurité routière).",
+          "mg": "Miditra an-tsehatra amin'ny iraka manokana (ohatra: ady amin'ny jiolahy lehibe, fiarovana ny fifamoivoizana)."
+        }
+      }
+    ],
+
+    "sources": [
+      "Loi n° 2019-009 du 10 juin 2019 portant statut de la Police Nationale",
+      "Code de Procédure Pénale",
+      "Code de la Route"
+    ]
+  },
+  {
+    "id": "civic-security-003",
+    "title": {
+      "mg": "Ny Tafika Malagasy (Foloalindahy)",
+      "fr": "Les Forces Armées Malagasy"
+    },
+    "summary": {
+      "mg": "Miaro ny fahaleovantena sy ny fiandrianam-pirenena, miantoka ny fiarovana ny faritany ary manampy amin'ny fitandroana ny filaminana anatiny rehefa ilaina izany.",
+      "fr": "Garante de l'indépendance et de la souveraineté nationale, assure la défense du territoire et participe au maintien de l'ordre intérieur en cas de besoin."
+    },
+    "content": {
+      "mg": [
+        "**Fiarovam-pirenena**: Miaro ny firenena amin'ny fandrahonana avy any ivelany sy anatiny, miantoka ny fahamarinan-toeran'ny faritany.",
+        "**Fahatongavana eo amin'ny Fandriam-pahalemana Anatiny**: Afaka antsoina hanampy amin'ny fitandroana ny filaminam-bahoaka sy ny famerenana ny filaminana rehefa misy krizy lehibe.",
+        "**Fanampiana ny Vahoaka**: Manome fanampiana amin'ny toe-javatra loza voajanahary (fanampiana, famonjena) ary mandray anjara amin'ny asa fampandrosoana sasany.",
+        "**Fanolorana Fahasoavana Iraisam-pirenena**: Mandray anjara amin'ny iraka fandriampahalemana iraisam-pirenena sy ny fiaraha-miasa ara-miaramila."
+      ],
+      "fr": [
+        "**Défense Nationale**: Protège le pays contre les menaces extérieures et intérieures, assurant l'intégrité territoriale.",
+        "**Appui à l'Ordre Intérieur**: Peut être appelée en renfort pour le maintien de l'ordre public et le rétablissement de la sécurité en cas de crise majeure.",
+        "**Assistance à la Population**: Fournit une assistance lors de catastrophes naturelles (aide humanitaire, sauvetage) et participe à certains projets de développement.",
+        "**Contribution à la Paix Internationale**: Participe aux opérations de maintien de la paix internationales et à la coopération militaire."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "Le Chef d'État-Major Général des Armées (CEMGAM)",
+          "mg": "Lehiben’ny Etamazaoro Jeneralin’ny Tafika (LEJETA)"
+        },
+        "role": {
+          "fr": "Commandant en chef des Forces Armées, responsable de la préparation et de l'emploi des forces.",
+          "mg": "Komandin’ny Tafika, tompon’andraikitra amin’ny fanomanana sy ny fampiasana ny hery miaramila."
+        }
+      },
+      {
+        "title": {
+          "fr": "L'Armée de Terre",
+          "mg": "Tafika an-tanety"
+        },
+        "role": {
+          "fr": "Chargée de la défense terrestre du territoire et des opérations intérieures.",
+          "mg": "Miandraikitra ny fiarovam-pirenena an-tanety sy ny asa anatiny."
+        }
+      },
+      {
+        "title": {
+          "fr": "La Marine Nationale",
+          "mg": "Tafika an-dranomasina"
+        },
+        "role": {
+          "fr": "Assure la protection des côtes, des eaux territoriales et participe à la surveillance maritime.",
+          "mg": "Miaro ny morontsiraka, ny ranomasina an-toerana ary mandray anjara amin’ny fanaraha-maso ny ranomasina."
+        }
+      },
+      {
+        "title": {
+          "fr": "L'Armée de l'Air",
+          "mg": "Tafika an’habakabaka"
+        },
+        "role": {
+          "fr": "Chargée de la défense aérienne, de la surveillance et du transport aérien militaire.",
+          "mg": "Miandraikitra ny fiarovana an’habakabaka, ny fanaraha-maso ary ny fitaterana an’habakabaka miaramila."
+        }
+      }
+    ],
+
+    "sources": [
+      "Constitution de la Quatrième République de Madagascar (2010)",
+      "Loi n° 2019-011 du 10 juin 2019 portant organisation générale de la défense et des forces armées",
+      "Décrets relatifs à l'organisation et aux attributions du Ministère de la Défense Nationale"
+    ]
+  },
+  {
+    "id": "civic-security-004",
+    "title": {
+      "mg": "Ny Polisy Monisipaly",
+      "fr": "La Police Municipale"
+    },
+    "summary": {
+      "mg": "Hery mpitandro filaminana eo ambany fifehezan’ny Kaominina, miandraikitra ny filaminana sy ny fitsipika eo an-toerana.",
+      "fr": "Force de police sous l'autorité de la Commune, chargée du respect des règlements municipaux et de la tranquillité locale."
+    },
+    "content": {
+      "mg": [
+        "**Fampiharana ny Fitsipika Monisipaly**: Miantoka ny fanajana ny didy aman-dalàna navoakan’ny Ben'ny Tanàna (ohatra: momba ny tsena, ny fahadiovana, ny fifamoivoizana eo an-toerana).",
+        "**Filaminana Ifotony**: Manampy amin'ny fitandroana ny filaminam-bahoaka amin’ny alalan’ny fitaomana sy fisorohana, miaraka amin'ny Polisim-pirenena sy ny Zandarimaria.",
+        "**Fiarovana ny Fananan’ny Kaominina**: Miaro sy manara-maso ny fananan’ny Kaominina (ohatra: toerana malalaka, fanorenana).",
+        "**Fanampiana ny Vahoaka**: Manampy ny mponina amin'ny lafiny samihafa eo an-toerana ary miasa akaiky amin'ny Fokontany."
+      ],
+      "fr": [
+        "**Application des Règlements Municipaux**: Veille au respect des arrêtés et règlements édictés par le Maire (ex: gestion des marchés, propreté, stationnement local).",
+        "**Sécurité de Proximité**: Contribue à la tranquillité publique par la prévention et la dissuasion, en complément de la Police Nationale et de la Gendarmerie.",
+        "**Protection des Biens Communaux**: Assure la protection et la surveillance des propriétés de la Commune (ex: espaces verts, bâtiments communaux).",
+        "**Assistance à la Population**: Apporte assistance aux citoyens dans divers aspects de la vie locale et travaille en étroite collaboration avec les Fokontany."
+      ]
+    },
+    "structure": [
+      {
+        "title": {
+          "fr": "Le Chef de la Police Municipale",
+          "mg": "Lehiben’ny Polisy Monisipaly"
+        },
+        "role": {
+          "fr": "Dirige les agents de la Police Municipale et assure la coordination des missions de sécurité locale.",
+          "mg": "Mitarika ny mpiasan’ny Polisy Monisipaly ary miantoka ny fandrindrana ny iraka fiarovana eo an-toerana."
+        }
+      },
+      {
+        "title": {
+          "fr": "Les Agents de Police Municipale",
+          "mg": "Mpiasan’ny Polisy Monisipaly"
+        },
+        "role": {
+          "fr": "Exécutent les missions de terrain (surveillance, application des règlements, assistance aux citoyens).",
+          "mg": "Manatanteraka ny iraka eny ifotony (fanaraha-maso, fampiharana ny fitsipika, fanampiana ny vahoaka)."
+        }
+      }
+    ],
+    "sources": [
+      "Code Général des Collectivités Territoriales Décentralisées (CGCTD), notamment les dispositions relatives aux compétences du Maire et de la Commune",
+      "Décrets et arrêtés municipaux portant organisation de la Police Municipale"
+    ]
+  }
+]

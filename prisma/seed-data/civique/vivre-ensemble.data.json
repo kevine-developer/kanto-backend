@@ -1,0 +1,50 @@
+[
+  {
+    "id": "viv-001",
+    "title": {
+      "fr": "La Tolérance et le Respect Mutuel",
+      "mg": "Ny Fifanajana sy ny Fandeferana"
+    },
+    "summary": {
+      "fr": "Accepter les différences d'opinions, de croyances et d'origines pour bâtir une société harmonieuse.",
+      "mg": "Fandraisana sy fanajana ny fahasamihafan-kevitra sy ny fiaviana mba hiaraha-monina am-pilaminana."
+    },
+    "content": {
+      "fr": [
+        "La diversité culturelle des 18 ethnies de Madagascar constitue une force collective.",
+        "Le dialogue calme et la bienveillance désamorcent les tensions au sein de la communauté.",
+        "Le respect des personnes âgées et la protection des enfants sont des valeurs sacrées."
+      ],
+      "mg": [
+        "Harena lehibe ny fahasamihafan'ny foko 18 eto Madagasikara.",
+        "Ny fifampiresahana am-panajana no vahaolana amin'ny olana eo amin'ny fiarahamonina.",
+        "Soatoavina fototra ny fanajana ny zokiolona sy ny fiarovana ny zaza."
+      ]
+    },
+    "theme": ["solidarite", "tolerance", "harmonie"]
+  },
+  {
+    "id": "viv-002",
+    "title": {
+      "fr": "L'Entraide et la Solidarité Communautaire (Valin-tanana)",
+      "mg": "Ny Valin-tanana sy ny Firaisankina"
+    },
+    "summary": {
+      "fr": "Tradition ancestrale d'entraide réciproque pour les travaux agricoles et les moments difficiles.",
+      "mg": "Fomba amam-panao malagasy amin'ny fifanampiana amin'ny asa aman-draharaha sy ny fahoriana."
+    },
+    "content": {
+      "fr": [
+        "Le Valin-tanana permet de réaliser ensemble les travaux que nul ne peut achever seul.",
+        "La solidarité active renforce la résilience face aux épreuves de la vie.",
+        "Proverbe : « Ny tanana iray tsy mahavita afon-dasy »."
+      ],
+      "mg": [
+        "Ny valin-tanana dia ahafahana manatontosa asa goavana amin'ny alalan'ny fiaraha-mientana.",
+        "Ny firaisankina dia manamafy ny herin'ny fiarahamonina.",
+        "Ohabolana : « Ny tanana iray tsy mahavita afon-dasy »."
+      ]
+    },
+    "theme": ["solidarite", "entraide", "tradition"]
+  }
+]

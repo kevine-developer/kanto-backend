@@ -13,7 +13,8 @@ import { KabaryService } from './kabary.service.js';
 import { FindKabaryQueryDto } from './dto/find-kabary.dto.js';
 import { CreateKabaryDto } from './dto/create-kabary.dto.js';
 import { UpdateKabaryDto } from './dto/update-kabary.dto.js';
-import { AuthGuard, Roles } from '../auth/index.js';
+import { AuthGuard, Roles, Session, type UserSession } from '../auth/index.js';
+import { ReportContentDto } from '../common/dto/report-content.dto.js';
 
 @Controller('kabary')
 export class KabaryController {
@@ -51,17 +52,41 @@ export class KabaryController {
   }
 
   @Post(':id/like')
-  like(@Param('id') id: string) {
-    return this.kabaryService.like(id);
+  @UseGuards(AuthGuard)
+  like(@Param('id') id: string, @Session() session?: UserSession) {
+    return this.kabaryService.like(id, session!.user.id);
   }
 
   @Post(':id/unlike')
-  unlike(@Param('id') id: string) {
-    return this.kabaryService.unlike(id);
+  @UseGuards(AuthGuard)
+  unlike(@Param('id') id: string, @Session() session?: UserSession) {
+    return this.kabaryService.unlike(id, session!.user.id);
+  }
+
+  @Post(':id/favorite')
+  @UseGuards(AuthGuard)
+  favorite(@Param('id') id: string, @Session() session?: UserSession) {
+    return this.kabaryService.favorite(id, session!.user.id);
+  }
+
+  @Post(':id/unfavorite')
+  @UseGuards(AuthGuard)
+  unfavorite(@Param('id') id: string, @Session() session?: UserSession) {
+    return this.kabaryService.unfavorite(id, session!.user.id);
   }
 
   @Post(':id/view')
   incrementView(@Param('id') id: string) {
     return this.kabaryService.incrementView(id);
+  }
+
+  @Post(':id/report')
+  @UseGuards(AuthGuard)
+  report(
+    @Param('id') id: string,
+    @Body() body: ReportContentDto,
+    @Session() session?: UserSession,
+  ) {
+    return this.kabaryService.report(id, body, session?.user?.id);
   }
 }

@@ -19,20 +19,31 @@ import { LocksModule } from './locks/locks.module.js';
 import { OnboardingModule } from './onboarding/onboarding.module.js';
 import { NotificationsModule } from './notifications/notifications.module.js';
 import { IntegrationsModule } from './integrations/integrations.module.js';
+import { ProgressionModule } from './progression/progression.module.js';
+import { UsersModule } from './users/users.module.js';
+import { ContributionsModule } from './contributions/contributions.module.js';
+import { PoesiesModule } from './poesies/poesies.module.js';
+import { RecitationModule } from './recitations/recitations.module.js';
+import { CivicModule } from './civic/civic.module.js';
 
 @Module({
   imports: [
-    // Rate limiting global : 60 requêtes par minute par IP (protection brute-force)
+    // Rate limiting multi-paliers : régularisation des flux concurrents et protection anti-burst
     ThrottlerModule.forRoot([
       {
+        name: 'burst',
+        ttl: 1000, // 1 seconde
+        limit: 60, // max 60 requêtes par seconde par IP (navigation fluide / chargement simultané)
+      },
+      {
         name: 'default',
-        ttl: 60000, // fenêtre de 1 minute (ms)
-        limit: 60, // 60 requêtes max par IP par fenêtre
+        ttl: 60000, // 1 minute
+        limit: 600, // max 600 requêtes par minute par IP
       },
       {
         name: 'auth',
-        ttl: 60000, // fenêtre de 1 minute (ms)
-        limit: 10, // 10 tentatives d'authentification max par IP par minute
+        ttl: 60000, // 1 minute
+        limit: 20, // max 20 tentatives d'authentification par minute
       },
     ]),
     PrismaModule,
@@ -51,6 +62,12 @@ import { IntegrationsModule } from './integrations/integrations.module.js';
     LocksModule,
     OnboardingModule,
     NotificationsModule,
+    ProgressionModule,
+    UsersModule,
+    ContributionsModule,
+    PoesiesModule,
+    RecitationModule,
+    CivicModule,
   ],
   controllers: [AppController],
   providers: [

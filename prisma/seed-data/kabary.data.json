@@ -1,0 +1,115 @@
+[
+  {
+    "id": "KABARY-001",
+    "title": "Kabary am-panambadiana : Fangatahana",
+    "titleFr": "Discours de fiançailles et demande en mariage",
+    "subtitle": "Ny fomba fiteny rehefa mangataka ny ampakarina",
+    "subtitleFr": "Le discours traditionnel pour demander la main de la mariée",
+    "occasion": "Fampakaram-bady",
+    "occasionFr": "Mariage traditionnel / Fiançailles",
+    "speakerRoleMg": "Mpandahateny avy amin'ny tovolahy (Mpangataka)",
+    "speakerRoleFr": "Orateur de la famille du marié",
+    "recipientRoleMg": "Fianakavian'ny ampakarina",
+    "recipientRoleFr": "Famille de la mariée",
+    "region": "Imerina / Afovoan-tany",
+    "illustration": "https://res.cloudinary.com/dhe585mze/image/upload/v1752952347/Photoroom-20250719_204052441_vlyahm.png",
+    "steps": [
+      {
+        "stepNumber": 1,
+        "stepNameMg": "Fialan-tsiny am-bava",
+        "stepNameFr": "Les excuses préliminaires (Fialan-tsiny)",
+        "explanationMg": "Fomba fanao alohan'ny handraisana fitenenana mba hanajana ireo zoky sy olobe eo an-toerana.",
+        "explanationFr": "Étape rituelle obligatoire pour demander humblement la permission de parler devant les aînés et les dignitaires.",
+        "textMg": "Mialon-tsiny tompoko, miala tsiny eo anatrehan'Andriamanitra Andriananahary, miala tsiny eo anatrehan'ny Razana nitarika ny aina, ary miala tsiny eo anatrehan'ny masoandro amam-bolana.\n\nTsy ny fahaizana mandaha-teny loatra akory no hitsanganako eto anivonareo Ray aman-dReny sy Olobe, fa ny adidy sy ny teny napetraka no mahatonga ahy hisolo vava ny fianakaviana.",
+        "textFr": "Je présente mes plus humbles excuses, devant le Créateur, devant les Ancêtres bienveillants et devant cette honorable assemblée.\n\nCe n'est point par vanité ou par maîtrise oratoire que je me tiens devant vous chers aînés, mais pour porter fidèlement la voix et le devoir de notre famille."
+      },
+      {
+        "stepNumber": 2,
+        "stepNameMg": "Arahaba sy Tsodrano",
+        "stepNameFr": "Salutations et bénédictions solennelles",
+        "explanationMg": "Fiarahabana ny mpanatrika sy fanomezana hasina ny toerana.",
+        "explanationFr": "Salutations chaleureuses accordées à chaque membre et invocation des bénédictions.",
+        "textMg": "Manolotra ny arahaba manokan-tena ho anareo Ray aman-dReny niteraka, ny Havana manodidina, ary ny Fiaraha-monina rehetra vory eto anio.\n\nHo salama anie ny vatanareo, ho lava andro iainana, ary hahita fahombiazana amin'izay rehetra kasaina.",
+        "textFr": "Nous adressons nos salutations respectueuses aux parents, à la parentèle réunie et à toute la communauté présente ce jour.\n\nQue la santé, la longévité et la prospérité accompagnent tous vos projets."
+      },
+      {
+        "stepNumber": 3,
+        "stepNameMg": "Ny Votoatin'ny Kabary (Fangatahana)",
+        "stepNameFr": "Le cœur du discours (La demande en mariage)",
+        "explanationMg": "Famelabelarana ny anton-dian'ny fianakaviana sy fiderana ny soa toavina ananan'ilay tovovavy.",
+        "explanationFr": "Exposé du motif de la visite : célébrer l'amour et demander formellement l'union.",
+        "textMg": "Ny anton-dia tompoko dia tsy inona fa nahita rano madio teto an-tanànanareo ny zanakay ka maniry hisotro ; nahita voninkazo kanto ka maniry hioty.\n\nTonga izahay manatona anareo am-panajana, maniry ny hikambanan'ny fianakaviantsika roa tonta ho iray, toy ny rano sy vary : an-tsaha tsy mifandao, an-tanàna tsy mifandao.",
+        "textFr": "La raison de notre venue, vénérables aînés, est simple : notre fils a trouvé une source d'eau pure dans votre demeure et souhaite s'y abreuver ; il a aperçu une fleur rare et désire en prendre soin.\n\nNous venons à vous avec humilité, désireux d'unir nos deux familles pour ne former qu'une seule entité, à l'image du riz et de l'eau : inséparables aux champs comme au village."
+      },
+      {
+        "stepNumber": 4,
+        "stepNameMg": "Fisaorana sy Famaranana",
+        "stepNameFr": "Remerciements et conclusion",
+        "explanationMg": "Famaranana amin'ny teny mamy sy fanolorana ny feo ho an'ny ankilany.",
+        "explanationFr": "Clôture chaleureuse en passant la parole aux hôtes.",
+        "textMg": "Misaotra betsaka tompoko tamin'ny fandraisana am-pitiavana sy am-panajana. Mametraka ny teny eo am-pelatananareo izahay, ary manome toerana ny valin-teny feno fahendrena avy aminareo.",
+        "textFr": "Nous vous remercions infiniment pour cet accueil chaleureux et bienveillant. Nous remettons nos paroles entre vos mains bienveillantes et attendons avec déférence votre sage réponse."
+      }
+    ],
+    "concludingProverb": {
+      "mg": "Ny firaisankina no hery, ary ny fihavanana no lova sarobidy indrindra.",
+      "fr": "L'union fait la force, et la fraternité (Fihavanana) est le plus précieux des héritages."
+    },
+    "etiquetteNotes": {
+      "mg": "Aoka ho tony ny fitenenana, aza mihoa-pefy, ary mitafia lamba landy na fitafiana mendrika fomban-drazana.",
+      "fr": "Parlez d'une voix posée et respectueuse, évitez toute précipitation et portez le lamba traditionnel."
+    }
+  },
+  {
+    "id": "KABARY-002",
+    "title": "Kabary fisaorana amin'ny fotoam-pifaliana",
+    "titleFr": "Discours de remerciement lors d'une célébration",
+    "subtitle": "Fanehoana fankasitrahana ny vahiny sy ny mpanampy",
+    "subtitleFr": "Expression de gratitude envers les invités et bienfaiteurs",
+    "occasion": "Fisaorana / Fety",
+    "occasionFr": "Célébration / Fête familiale",
+    "speakerRoleMg": "Tompon-draharaha (Ray aman-dReny)",
+    "speakerRoleFr": "Maître de maison / Parents",
+    "recipientRoleMg": "Ireo Vahiny rehetra tonga nanome voninahitra",
+    "recipientRoleFr": "Tous les invités et convives",
+    "region": "Madagasikara iray manontolo",
+    "illustration": "https://res.cloudinary.com/dhe585mze/image/upload/v1752952347/Photoroom-20250719_204052441_vlyahm.png",
+    "steps": [
+      {
+        "stepNumber": 1,
+        "stepNameMg": "Fisaorana an'Andriamanitra",
+        "stepNameFr": "Gratitude envers le Créateur",
+        "explanationMg": "Fanomezana voninahitra ny Tompo noho ny andro tsara.",
+        "explanationFr": "Rendre grâce pour la tenue de l'événement et la météo favorable.",
+        "textMg": "Dera sy laza no atolotra an'Andriamanitra Andriananahary, nahatontosa izao andro manan-tantara izao tao anatin'ny fiadanana sy ny fifaliana.",
+        "textFr": "Louange et gloire au Créateur, qui a permis la pleine réussite de cette journée mémorable dans la paix et l'allégresse."
+      },
+      {
+        "stepNumber": 2,
+        "stepNameMg": "Fisaorana ireo Vahiny",
+        "stepNameFr": "Remerciements chaleureux aux invités",
+        "explanationMg": "Fankasitrahana ny ezaka sy ny fanatrehana.",
+        "explanationFr": "Témoignage de reconnaissance pour la présence et l'honneur accordé.",
+        "textMg": "Misaotra anareo havana sy sakaiza tonga maro namaly ny antso. Ny fahatongavanareo no nanome haja sy hasina ity lanonana ity.\n\nIzay nandrava fotoana, izay nanao sorona ny harerahana, dia mankasitraka indrindra tompoko.",
+        "textFr": "Merci à vous chers parents et amis venus si nombreux à notre invitation. Votre présence donne tout son éclat et son honneur à cette fête.\n\nÀ tous ceux qui ont aménagé leur emploi du temps et bravé la fatigue, nous disons du fond du cœur merci."
+      },
+      {
+        "stepNumber": 3,
+        "stepNameMg": "Tsodrano sy Faran-teny",
+        "stepNameFr": "Bénédiction et vœux de retour",
+        "explanationMg": "Firariantsoa ho an'ny fodian'ny rehetra.",
+        "explanationFr": "Vœux de bon retour en sécurité dans chaque foyer.",
+        "textMg": "Mandra-pihaona amin'ny manaraka tompoko, ho soa aman-tsara anie ny fodian'ny tsirairay any amin'ny tokatranony avy.",
+        "textFr": "Dans l'attente de nos prochaines retrouvailles, que chacun rentre en toute quiétude et bénédiction dans son foyer."
+      }
+    ],
+    "concludingProverb": {
+      "mg": "Ny fisaorana toy ny volamena : tsy lany latsa-bidy, mampifaly ny fo.",
+      "fr": "La gratitude est comme l'or : elle ne perd jamais de sa valeur et réjouit le cœur."
+    },
+    "etiquetteNotes": {
+      "mg": "Aoka haseho amin'ny endrika mitsiky sy feno hafaliana ny fisaorana.",
+      "fr": "Adressez vos remerciements avec un visage souriant et une bienveillance communicative."
+    }
+  }
+]

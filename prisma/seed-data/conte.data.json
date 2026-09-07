@@ -1,0 +1,712 @@
+[
+  {
+    "id": "CONTEID-1",
+    "title": "Ikotofetsy sy Imahakà",
+    "titleFr": "L'Histoire d'Ikotofetsy et Imahakà",
+    "subtitle": "Tafahoana ny samy fetsy",
+    "subtitleFr": "La rencontre des deux voyageurs",
+    "author": "Angano Malagasy",
+    "source": "Inconnue",
+    "illustration": "",
+    "themes": [
+      "Ruse",
+      "Philosophie",
+      "Relation humaine"
+    ],
+    "content": [
+      {
+        "paragraph": 1,
+        "textMg": "Niainga, hono, Ikotofetsy sy Imahakà, ka Ikotofetsy mponina avy any andrefana ary Imahakà mponina avy any atsinanana. Ikotofetsy moa andeha hiantsinanana ary Imahakà kosa andeha hiankandrefana, ka tafahaona teo an-dohasaha izy roa lahy dia nifampiarahaba.Imahakà nitondra angady tanimanga voahosotra manjarano, fa Ikotofetsy kosa nitondra goaika tao anaty harona. Nifanantsafa izy roa lahy hoe « inona izato entina, raondriana ? ».",
+        "textFr": "Il était une fois Ikotofetsy et Imahakà. Ikotofetsy habitait à l'ouest et Imahakà à l'est. Ikotofetsy se dirigeait vers l'est et Imahakà vers l'ouest. Ils se rencontrèrent au milieu de la plaine et se saluèrent.Imahakà portait une bêche neuve au manche rouge brillant, tandis qu'Ikotofetsy portait un coq dans un panier. Ils se demandèrent mutuellement : « Qu'est-ce que tu portes là, mon ami ? »",
+        "illustration": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=250"
+      },
+      {
+        "paragraph": 2,
+        "textMg": "Dia hoy ny navalin'Imahakà « angady no entiko, 'ndeha hatakaloko akoho ». Fa niteny Ikotofetsy hoe « ny ahy kosa akoho 'ndeha hatakaloko angady ». « Raikitra izany » hoy Imahakà, « 'ndeha ary itsy izy hafanakalo ».« Kanefa » hoy Ikotofetsy « aza sokafana ety an-dalana ny harona, fa akoho kaody sady tsy mifatotra, ka andao rifatra mandositra ka manahirana anao ». Fa namaly kosa Imahakà hoe « angady vao naofana izy, fa vao notsinina, ka avelao hiotrika kely aloha, fa aza malaky atombotomboka, fandrao banga ».",
+        "textFr": "Imahakà répondit : « Je porte une bêche, je veux l'échanger contre un coq ». Ikotofetsy dit : « Moi j'ai un coq que je veux l'échanger contre une bêche ». « C'est parfait ! » dit Imahakà, « échangeons donc ! »« Cependant », dit Ikotofetsy, « n'ouvre pas le panier en chemin, car c'est un coq fougueux qui n'est pas attaché, il pourrait s'échapper et te causer des ennuis ». Imahakà répondit : « Cette bêche vient d'être forgée et affûtée, laisse-la sécher un peu, ne la plante pas trop vite dans le sol, sinon elle pourrait se casser ».",
+        "illustration": "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=400&h=250"
+      },
+      {
+        "paragraph": 3,
+        "textMg": "Dia samy lasa nody izy roa lahy. Rehefa samy tonga tany an-tranony avy izy dia nosokafana ny an'Imahakà ka riatra nanidina ny goaika, ary nahombo tamin'ny zarany kosa ny angadin'Ikotofotsy, ka nony natontona tamin'ny tany dia torotoro.Dia samy vaky vava hoe izy : « Adray izany hafetsentsika roa lahy izany ! ». Taorian'izany dia tafahaona indray izy miaotra ka hoy Imahakà : « raha dia hisakaiza tokoa ary isika miaotra, 'ndeha kely hifampiady karajia ».",
+        "textFr": "Ils rentrèrent chacun chez eux. Quand Imahakà ouvrit le panier, le coq s'envola aussitôt. Quand Ikotofetsy frappa le sol avec la bêche, elle se brisa en morceaux.Ils s'exclamèrent tous deux : « Nous nous sommes bien fait avoir ! » Plus tard, ils se rencontrèrent à nouveau et Imahakà dit : « Si nous devons vraiment être amis, battons-nous un peu pour nous tester ! »",
+        "illustration": "https://images.unsplash.com/photo-1518135714426-c18f5ffb6f4d?w=400&h=250"
+      },
+      {
+        "paragraph": 4,
+        "textMg": "« Izao ary ny zavatra mahagaga ahy » hoy Imahakà, « ka raha fantatr'ialahy ny heviny, dia ekeko fa lalin-tsaina noho izaho ialahy : mahagaga ahy ity omby mainty tokam-bolo, ka fotsy ny rononony ». « Asa iky » hoy Ikotofetsy, « tsy fantatro izay mahatonga izany ».« Fa izao kosa no mba mahagaga ahy, ka raha fantatr'ialahy ny fotony, dia lalin-tsaina noho izaho ialahy : mahagaga ahy ity omby sy ondry, samy vilona ihany no haniny, ka ny iray lava marotsaka ny rambony, ary ny iray kosa be hogaka ». « Asa lahy ! » hoy ny navalin'Imahakà, « tsy fantatro izay mahatonga izany ».",
+        "textFr": "« Voici ce qui m'étonne », dit Imahakà, « si tu connais la réponse, j'admettrai que tu es plus sage que moi : pourquoi cette vache noire à poil unique donne-t-elle du lait blanc ? » « Hélas ! » dit Ikotofetsy, « je ne sais pas ce qui cause cela ».« Mais voici ce qui m'étonne aussi », dit Ikotofetsy, « si tu en connais la cause, tu seras plus sage que moi : pourquoi le bœuf et le mouton mangent tous deux de l'herbe, mais l'un a une queue longue et touffue, et l'autre a une queue courte ? » « Hélas ! » répondit Imahakà, « je ne sais pas non plus ».",
+        "illustration": "https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=400&h=250"
+      },
+      {
+        "paragraph": 5,
+        "textMg": "Dia samy nikoy izy roa lahy ka nanao hoe : « mitovy saranga isika miaotra izany, ka 'ndeha hifankatia tsara ». Dia nanao nahandro tsara izy hirahan-komana, hampiseho ny fifankatiavany, ka raha vao nihinana dia nifampiera hoe « 'ndeha isika roa lahy samy hatory aloha, ka izay tsara nofy no aoka hihinana io hanina io ».Ary nony avy nifoha izy dia niteny Imahakà hoe « nofiko niakatra tany an-danitra aho ka nahita zavatra nahafinaritra sy nahasondriana ahy tokoa. Ka mba lazao hoe izay nofin'ialahy tsara noho izany ? ».",
+        "textFr": "Ils convinrent tous deux : « Nous sommes égaux en sagesse, aimons-nous donc bien ». Ils préparèrent un bon repas ensemble pour montrer leur amitié. Après avoir mangé, ils se dirent : « Allons dormir tous les deux, et celui qui aura fait le plus beau rêve mangera ce repas ».Quand ils se réveillèrent, Imahakà dit : « J'ai rêvé que je montais au ciel et j'ai vu des choses merveilleuses et extraordinaires. Dis-moi donc si ton rêve était plus beau que le mien ? »",
+        "illustration": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=250"
+      },
+      {
+        "paragraph": 6,
+        "textMg": "Fa hoy ny navalin'Ikotofetsy : « nofiko nahita an'ialahy niakatra nankany an-danitra aho, ka sondriana tany, hono, ialahy, ka nifoha 'ndeha hihinana ny hanina aho, fa hoy izaho anakampo : efa sondriana any izay ilehiny ka tsy hety hidina aty intsony, kanjo hay ialahy ity eto ihany indray ! ka 'ndeha itsy izy hiara-komana ny hanina ».",
+        "textFr": "Ikotofetsy répondit : « J'ai rêvé que je te voyais monter au ciel, et on disait que tu étais honoré là-haut. Je me suis réveillé pour manger le repas en me disant : il est maintenant honoré là-haut et ne voudra plus redescendre ici. Mais te voilà encore ici ! Alors partageons ce repas ensemble ».",
+        "illustration": "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=250"
+      }
+    ],
+    "moral": {
+      "textMg": "Ny fahaiza-miteny sy ny fahendrena dia mitovy lanja, ary ny fisakaizana marina dia miforona amin'ny fifankahafinaretana.",
+      "textFr": "L'art de bien parler et la sagesse ont la même valeur, et la vraie amitié naît du respect mutuel."
+    },
+    "varient": []
+  },
+  {
+    "id": "CONTEID-2",
+    "title": "Ny Fandry sy ny Boa",
+    "titleFr": "Le Lièvre et le Boa",
+    "subtitle": "Ny fahendrena mandresy ny hery",
+    "subtitleFr": "La sagesse l'emporte sur la force",
+    "author": "Collectage Oral Malgache",
+    "source": "Contes de Madagascar, par Jean-Pierre Domenichini",
+    "illustration": "",
+    "themes": [
+      "Animaux",
+      "Ruse",
+      "Nature"
+    ],
+    "content": [
+      {
+        "paragraph": 1,
+        "textMg": "Indray andro, nifanehatra ny Fandry sy ny Boa. Ny Boa, nirehareha tamin'ny heriny, dia nanambara fa izy no mahery indrindra teto an-tany. Ny Fandry kosa, fantatra amin'ny hafetseny, dia nanolotra fanamby: izay mahavita misintona ny ilany hafa amin'ny tady no tena mahery.",
+        "textFr": "Un jour, le Lièvre et le Boa se rencontrèrent. Le Boa, se vantant de sa force, déclara qu'il était le plus puissant de la terre. Le Lièvre, connu pour sa ruse, proposa un défi : celui qui parviendrait à tirer l'autre extrémité d'une corde serait le plus fort.",
+        "illustration": "https://images.unsplash.com/photo-1547841243-ea752496739f?w=400&h=250"
+      },
+      {
+        "paragraph": 2,
+        "textMg": "Nanaiky ny Boa sady nitsiky, satria natoky tanteraka ny heriny. Nankany amin'ny rano lalina ny Fandry ary niteny tamin'ny trozona lehibe iray hoe: « Manamby anao aho, ry Trozona, raha vitanao ny misintona ity tady ity hiala amiko. » Ny Trozona, saika tsy nahafantatra ny hafetsen'ny Fandry, dia nanaiky.",
+        "textFr": "Le Boa accepta en souriant, certain de sa victoire. Le Lièvre se rendit au bord d'une rivière profonde et dit à une grande baleine : « Je te défie, Baleine, si tu peux tirer cette corde de mon côté. » La Baleine, ignorant la ruse du Lièvre, accepta.",
+        "illustration": "https://images.unsplash.com/photo-1549488346-bf0198c60813?w=400&h=250"
+      },
+      {
+        "paragraph": 3,
+        "textMg": "Nomena ilany amin'ny tady ny Boa, ary ny ilany hafa kosa napetrak'ilay Fandry tao anaty rano. Nanome famantarana ny Fandry, ary samy nisintona mafy ny Boa sy ny Trozona. Nifampisintona tamin'ny hery rehetra izy roa lahy, samy nihevitra fa ny Fandry no ilany hafa amin'ny tady.",
+        "textFr": "Le Boa reçut une extrémité de la corde, et l'autre fut plongée dans l'eau par le Lièvre. Sur un signal du Lièvre, le Boa et la Baleine commencèrent à tirer de toutes leurs forces. Ils s'affrontaient avec vigueur, chacun pensant que le Lièvre était à l'autre bout de la corde.",
+        "illustration": "https://images.unsplash.com/photo-1560940428-c1169a8e9e4f?w=400&h=250"
+      },
+      {
+        "paragraph": 4,
+        "textMg": "Rehefa vizana tanteraka ny Boa sy ny Trozona, dia nitsahatra izy roa lahy. Nipoitra ny Fandry sady nitsiky ary niteny hoe: « Izao no mampiseho fa ny fahendrena dia mahery lavitra noho ny hery. » Gaga ny Boa sy ny Trozona, ary niondrika teo anoloan'ny hafetsen'ny Fandry.",
+        "textFr": "Quand le Boa et la Baleine furent épuisés, ils cessèrent de tirer. Le Lièvre apparut, souriant, et dit : « Cela prouve que la sagesse est bien plus puissante que la force. » Le Boa et la Baleine furent stupéfaits et s'inclinèrent devant la ruse du Lièvre.",
+        "illustration": "https://images.unsplash.com/photo-1518135714426-c18f5ffb6f4d?w=400&h=250"
+      },
+      {
+        "paragraph": 5,
+        "textMg": "Hatramin'izay ka hatramin'izao, ny Fandry no nomem-boninahitra ho iray amin'ireo biby fetsy indrindra amin'ny angano malagasy, mampianatra fa ny saina dia afaka mandresy ny herin'ny vatana.",
+        "textFr": "Depuis ce jour, le Lièvre est célébré comme l'un des animaux les plus rusés des contes malgaches, enseignant que l'esprit peut triompher de la force physique.",
+        "illustration": "https://images.unsplash.com/photo-1549488346-bf0198c60813?w=400&h=250"
+      }
+    ],
+    "moral": {
+      "textMg": "Ny fahendrena sy ny hafetsena dia afaka mandresy ny hery sy ny fanjakazakan'ny vatana.",
+      "textFr": "L'intelligence et la ruse peuvent triompher de la force brute."
+    }
+  },
+  {
+    "id": "CONTEID-3",
+    "title": "Ny Kadradra sy ny Dia",
+    "titleFr": "Le Petit Caméléon et le Voyage",
+    "subtitle": "Ny faharetana sy ny fahatokisana tena",
+    "subtitleFr": "La persévérance et la confiance en soi",
+    "author": "Collectage Oral Malgache",
+    "source": "Contes populaires de Madagascar, par Lars Dahle",
+    "illustration": "",
+    "themes": [
+      "Animaux",
+      "Ruse",
+      "Nature"
+    ],
+    "content": [
+      {
+        "paragraph": 1,
+        "textMg": "Nisy Kadradra kely iray naniry ny hitsangatsangana lavitra. Nihomehy azy ny biby lehibe rehetra, satria fantatra fa miadana dia miadana ny mandeha ny Kadradra. Niteny taminy ny Sokina hoe: « Tsy ho afaka hanana dia lavitra ianao, fa miadana loatra. »",
+        "textFr": "Il était une fois un petit caméléon qui rêvait de voyager loin. Tous les grands animaux se moquaient de lui, car les caméléons sont connus pour leur lenteur. La Tortue lui dit : « Tu ne pourras jamais faire un long voyage, tu es trop lent. »",
+        "illustration": "https://images.unsplash.com/photo-1555138138-04f5e7f1e6b8?w=400&h=250"
+      },
+      {
+        "paragraph": 2,
+        "textMg": "Na dia teo aza ny fanesoana, dia nanapa-kevitra ny Kadradra fa tsy maintsy hanatanteraka ny nofiny. Isan'andro, nandeha an-tsakany sy an-davany izy, na dia kely aza ny fandrosoany. Nifindra loko izy mba hiova endrika amin'ny tontolo manodidina, ary nampiasa ny tongony kely mba hiraikitra mafy amin'ny sampana sy ny vato.",
+        "textFr": "Malgré les moqueries, le Caméléon décida de réaliser son rêve. Chaque jour, il avançait pas à pas, même si ses progrès étaient minimes. Il changeait de couleur pour se fondre dans son environnement, et utilisait ses petites pattes pour s'accrocher fermement aux branches et aux rochers.",
+        "illustration": "https://images.unsplash.com/photo-1621379965042-4f3b7f1e4b9f?w=400&h=250"
+      },
+      {
+        "paragraph": 3,
+        "textMg": "Volana maro taty aoriana, gaga ny biby hafa rehefa nahita ny Kadradra niverina. Efa nahavita niampita tendrombohitra sy renirano maro izy. Tsy nisy nino fa io Kadradra kely miadana io no nahavita izany dia lavitra izany.",
+        "textFr": "Des mois plus tard, les autres animaux furent surpris de voir le Caméléon revenir. Il avait traversé des montagnes et des rivières. Personne ne croyait que ce lent petit caméléon avait réussi un si long voyage.",
+        "illustration": "https://images.unsplash.com/photo-1555138138-04f5e7f1e6b8?w=400&h=250"
+      },
+      {
+        "paragraph": 4,
+        "textMg": "Nangataka azy ny biby mba hizara ny tsiambaratelony. Namaly ny Kadradra hoe: « Tsy misy tsiambaratelo afa-tsy ny faharetana sy ny fahatokisana tena. Na dia miadana aza aho, dia tsy kivy mihitsy. Isaky ny dingana kely dia nanakaiky ny tanjoko aho. »",
+        "textFr": "Les animaux lui demandèrent de partager son secret. Le Caméléon répondit : « Il n'y a de secret que la persévérance et la confiance en soi. Même si je suis lent, je n'ai jamais abandonné. Chaque petit pas me rapprochait de mon objectif. »",
+        "illustration": "https://images.unsplash.com/photo-1555138138-04f5e7f1e6b8?w=400&h=250"
+      },
+      {
+        "paragraph": 5,
+        "textMg": "Nianatra lesona lehibe ny biby hafa tamin'izay andro izay: ny haben'ny nofy dia tsy voafetran'ny haben'ny vatana, ary ny faharetana no lakilen'ny fahombiazana.",
+        "textFr": "Les autres animaux apprirent une grande leçon ce jour-là : la taille du rêve n'est pas limitée par la taille du corps, et la persévérance est la clé du succès.",
+        "illustration": "https://images.unsplash.com/photo-1555138138-04f5e7f1e6b8?w=400&h=250"
+      }
+    ],
+    "moral": {
+      "textMg": "Ny faharetana sy ny fahatokisana tena dia afaka mitondra anao lavitra, na inona na inona sakana.",
+      "textFr": "La persévérance et la confiance en soi peuvent vous mener loin, quelles que soient les difficultés."
+    }
+  },
+  {
+    "id": "CONTEID-5",
+    "title": "Ny Saka sy ny Totozy",
+    "titleFr": "Le Chat et la Souris",
+    "subtitle": "Ny fifandraisana rava",
+    "subtitleFr": "L'amitié brisée",
+    "author": "Angano Malagasy",
+    "source": "E-monsite (Manager.e-monsite.com)",
+    "illustration": "",
+    "themes": [
+      "Animaux",
+      "Ruse",
+      "Nature"
+    ],
+    "content": [
+      {
+        "paragraph": 1,
+        "textMg": "Fony tamin'ny andro taloha elabe hono ny saka sy ny totozy dia mpinamana tsy misy toy izany. Niarahan'izy ireo natao daholo ny rehetra: niaraka natory, nisakafo, nilalao, sinisisa... Indray andro tao an-trano niresaka ny saka sy ny totozy ka toy izao: => totozy : Andao isika mba hanao fanenjika e! => saka : Andao, dia iza no boka ? => totozy : Tsy maninona fa aleo ary izaho no boka e!",
+        "textFr": "Il était une fois, il y a très longtemps, le chat et la souris étaient des amis inséparables. Ils faisaient tout ensemble : dormir, manger, jouer, et bien plus encore... Un jour, à la maison, le chat et la souris discutèrent et dirent : => Souris : Et si nous jouions à la poursuite ! => Chat : D'accord, alors qui est le chasseur ? => Souris : Ce n'est pas grave, je serai le chasseur !",
+        "illustration": "https://images.unsplash.com/photo-1548247065-ef597e742e97?w=400&h=250"
+      },
+      {
+        "paragraph": 2,
+        "textMg": "Dia nanao kilalao fanenjika izy ireo. Tsy lasa lavitra akory ny saka dia tratran'ny totozy; satria ny totozy kely dia afaka manivaka any ambanin'ny fanaka. Dia saka indray no boka. Nitohy ny lalao. Somary sahirana ny saka nisambotra ny totozy satria laozany nitsorika anaty lavaka sy niafina ambany fanaka lehibe. Ka leo ny saka ka hoy izy: => saka : Za tsy hanao tsony. => totozy : Fa maninona ? => saka : Tsy afaka mikisika anaty lavaka sy ambany fanaka dia manao aho.",
+        "textFr": "Alors ils commencèrent à jouer à la poursuite. Le chat n'alla pas loin avant d'être attrapé par la souris ; car la petite souris pouvait se faufiler sous les meubles. Ce fut alors au tour du chat d'être le chasseur. Le jeu continua. Le chat eut du mal à attraper la souris car elle se glissait dans les trous et se cachait sous les grands meubles. Le chat en eut marre et dit : => Chat : Je ne joue plus. => Souris : Pourquoi ? => Chat : Je ne peux pas me faufiler dans les trous et sous les meubles.",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      },
+      {
+        "paragraph": 3,
+        "textMg": "=> totozy : Andao ovaina miafina ary e! => saka : Andao ary dia izaho no miafina voalohany. => totozy : (natahotra) Alefaso ary e! Dia nanao kilalao miafina izy ireo. Vetivety moa dia hitan'ny totozy ny saka; satria lehibe loatra izy eo anatrehan'ny totozy ka mora hita. Dia ny saka indray no boka.",
+        "textFr": "=> Souris : Changeons de jeu et jouons à cache-cache ! => Chat : D'accord, et je me cache en premier. => Souris : (effrayée) Allons-y ! Alors ils jouèrent à cache-cache. La souris trouva vite le chat ; car il était trop grand par rapport à la souris et facile à voir. Ce fut alors au tour du chat d'être le chasseur.",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 4,
+        "textMg": "Nitohy ny lalao. Somary sahirana ny saka nikaroka ny totozy satria laozany niafina anaty lavaka sy nitsorika ambany fanaka lehibe. Ka leo ny saka ka hoy izy: => saka : Afapo za ry totozy fa mipoitra amin'izay. Ny totozy kosa tsy nipoitra fa resin-tory tanaty fihafenana tany, satria ela loatra ny fitadiavan'ny saka azy. Niantsoantso hatrany ny saka fa tsy nisy vokany.",
+        "textFr": "Le jeu continua. Le chat eut du mal à chercher la souris car elle se cachait dans les trous et se glissait sous les grands meubles. Le chat en eut marre et dit : => Chat : J'en ai assez, souris, sors maintenant. La souris ne sortit pas car elle s'était endormie dans sa cachette, le chat l'ayant cherchée trop longtemps. Le chat continua d'appeler, mais en vain.",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 5,
+        "textMg": "Nony afaka ora maromaro dia resin-tory ny saka fa vizana nitady sy niantsoantso. Ny totozy kosa taitra tamin'ny toromasony ka avy nanaitra ny saka. Ny saka nefa tanaty torimaso sy nofy mamy. Tapaka tampoka izany nohon'ny fanairan'ny totozy azy. Nifamaly ela teo ny saka sy ny totozy ka rava hatramin'ny fihavanan'izy roa. Tezitra mafy ny saka ka nisambotra ny totozy. Ny totozy kosa netin'ny tahotra ka nitsaoka mafy nitady toerana hiafenana. Ka nanomboka teo ny saka sy ny totozy dia nanjary nifanenjika sy nanao miafina foana. Hatramin'izao fotoana izao.",
+        "textFr": "Après plusieurs heures, le chat s'endormit, fatigué de chercher et d'appeler. La souris se réveilla de son sommeil et alla réveiller le chat. Le chat était en plein sommeil et faisait de beaux rêves. Ce sommeil fut brusquement interrompu par la souris. Le chat et la souris se disputèrent longuement, et leur amitié fut brisée. Le chat, très en colère, attrapa la souris. La souris, prise de peur, s'enfuit en courant pour trouver un endroit où se cacher. Et depuis ce jour, le chat et la souris ne font que se poursuivre et jouer à cache-cache. Jusqu'à aujourd'hui.",
+        "illustration": "https://images.unsplash.com/photo-15148888065-2766e48c772c?w=400&h=250"
+      }
+    ],
+    "moral": {
+      "textMg": "Misy fotoana ny lalao tsotra dia afaka manimba ny fifandraisana lalina. Tandremo ny fifandraisana ary aza avela ny zavatra kely hanimba azy.",
+      "textFr": "Parfois, un simple jeu peut briser des liens profonds. Prenez soin de vos relations et ne laissez pas de petites choses les détruire."
+    }
+  },
+  {
+    "id": "CONTEID-6",
+    "title": "Ifaramalemy sy Ikotobekibo",
+    "titleFr": "Ifaramalemy et Ikotobekibo",
+    "subtitle": "Ny sorisory sy ny fankatoavana",
+    "subtitleFr": "Le fardeau et la reconnaissance",
+    "author": "Angano Malagasy",
+    "source": "E-monsite (Manager.e-monsite.com)",
+    "illustration": "",
+    "themes": [
+      "Humain",
+      "Famille",
+      "Justice"
+    ],
+    "content": [
+      {
+        "paragraph": 1,
+        "textMg": "Nisy, hono, fahiny olona mivady niteraka maromaro. Ny faralahy tamin’izy ireo dia kibotaina ka nantsoiny hoe Ikotobekibo, ary ny fara vavy kosa nalemy ka nataony hoe Ifaramalemy. Tsy mba nahavita na inona na inona mihitsy izy mianadahy farany ireo ka tsy tian’ny ray aman-dreniny, ary nony farany aza dia nananany hevitra halevim-belona fa nanorisory azy loatra. Efa nihady lavaka tokoa àry izy mivady taty aoriana. Nanontany, hono, izy mianadahy isany ny anton’io lavaka io, fa novalian’izy mivady hoe : « Hanotrehana akondro e! ». Kanjo mba fantatr’iretsy zokin’Ifara sy Ikoto nony ela fa handevenam-belona azy mianadahy farany. Nalahelo tokoa ireo no sady very hevitra.",
+        "textFr": "Il était une fois un couple qui eut plusieurs enfants. Le dernier de leurs fils avait un gros ventre et fut nommé Ikotobekibo, et leur dernière fille était faible et fut nommée Ifaramalemy. Ces deux derniers ne pouvaient rien faire et n'étaient pas aimés de leurs parents. Finalement, leurs parents décidèrent de les enterrer vivants, car ils les trouvaient trop encombrants. Les parents avaient déjà creusé un trou. Les deux enfants demandèrent la raison de ce trou, et leurs parents répondirent : « Pour y planter des bananes ! » Mais les frères et sœurs aînés d'Ifara et d'Ikoto finirent par comprendre que le trou était destiné à les enterrer vivants. Ils furent très tristes et ne savaient que faire.",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      },
+      {
+        "paragraph": 2,
+        "textMg": "Nilazan’iretsy zokiny Ifara sy Ikoto ny ampitson’io. Ary hoy izy mianadahy kely hoe : « Andeha handositra izahay raha izany, fa sao dia matimaty foana eto ! » Dia nanaiky iretsy zokiny no sady nangoraka azy mafy. Nisy aza nanolotra vatsy kely ho azy ireo fa sao noana ka mijaly foana eny an-dàlana eny.",
+        "textFr": "Les aînés informèrent Ifara et Ikoto le lendemain. Les deux petits dirent : « Alors, nous allons fuir, de peur de mourir ici pour rien ! » Leurs aînés acceptèrent et eurent beaucoup de pitié pour eux. Certains leur offrirent même des provisions de voyage, de peur qu'ils n'aient faim et ne souffrent en chemin.",
+        "illustration": "https://images.unsplash.com/photo-1606787680786-ffc0e5a6c3f0?w=400&h=250"
+      },
+      {
+        "paragraph": 3,
+        "textMg": "Dia lasa tokoa ary Ifaramalemy sy Ikotobekibo, ka ny iray nikolepadepaka nitondra tehina fa malemy moa, ny iray kosa isoneninenika foana noho ny havesatry ny kibony. Nafana be ny andro tamin’izay ka tsembo-dratsy mihitsy izy mianadahy teny an-dàlana. Ikoto dia tena nahatsiaro vizana tamin’izany. Nony efa lasa lavidavitra izy ireo, dia nitomany Ikoto fa tsy afaka intsony. Dia hoy Ifara hoe : « Etsy babeko aloha àry, razandry, mandrapahazonao aina »! Dia nobabeny Ikoto ary lasa indray izy mianadahy nitety tokony ho tanety iray. Nikotrifatrifa ery Ifara amin’izany fa sady malemy no reraky ny nibaby an-jandriny.",
+        "textFr": "Ifaramalemy et Ikotobekibo partirent donc. L'une marchait avec difficulté, s'appuyant sur une canne car elle était faible, tandis que l'autre gémissait constamment à cause de son gros ventre. Il faisait très chaud ce jour-là et ils transpiraient beaucoup en chemin. Ikoto était vraiment épuisé. Quand ils eurent marché un peu plus loin, Ikoto pleura, ne pouvant plus continuer. Alors Ifara dit : « Laisse-moi te porter un peu, petit frère, le temps que tu reprennes des forces ! » Elle porta Ikoto et ils marchèrent encore, traversant probablement une colline. Ifara peinait terriblement, car elle était faible et épuisée de porter son frère.",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 4,
+        "textMg": "Rehefa afaka hateloana (telo andro) no nandehanan’izy ireo, dia nahita tany lemademaka tsara izy mianadahy ka mba nijanona niala sasatra. Nahatamàna azy ireo fatratra anefa ilay toerana, koa dia nanangom-pako sy rantsan-kazo ary bainga izy mianadahy, ka nanao tranobongo kely teo amin’ilay toerana mahafinaritra.",
+        "textFr": "Après trois jours de marche, ils trouvèrent un endroit agréable et plat où ils s'arrêtèrent pour se reposer. L'endroit leur plut tellement qu'ils ramassèrent des débris, des branches et des mottes de terre, et construisirent une petite hutte à cet endroit charmant.",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      },
+      {
+        "paragraph": 5,
+        "textMg": "Nony efa vita àry ilay tranobongo, dia nipetraka tao izy mianadahy. Taty aoriana anefa dia nanjary kinga ery Ikoto tamin’ny fahaizana mihaza, ka isaky ny nody avy any izy dia notreroniny foana Ifara fa hoe : « Atsangano ny efitra, ry Fara », ary tsy nesoriny indray raha tsy efa lany ny haza nandrahoiny. Nalahelo mafy tokoa Ifara tamin’izany. Tsy naharitra anefa Ifara indray andro fa mba lasa nitady haza fa efa lany avokoa ny handrahoina tao an-trano. Nony lasa lavidaitra izy dia nahita tsy nahy ny tranon’Itrimobe. Tsy tao indrindra Itrimobe tamin’io fotoana io, ka rehefa avy nitsidika tao an-trano Ifara dia nongahany ny hanina sy ny entana tao ka nentiny nody. Mbola nanao ny fanaony indray Ikotobekibo teo am-pihinanana ny androtr’io, fa Ifara kosa dia mbola nentim-pitiavana azy ihany ka tsy nanafina ny vary amin-dronono sy tantely ary ny varangan’amalona azony tany amin’ny tranon’Itrimobe. Gaga foana Ikoto raha nahita izany ka tapa-kevitra fa ho any izy mianadahy. Nony tonga tany amin’Itrimobe izy ireo dia nambosimbosika izaitsizy Ikoto fa tsy nahalala voky. Tena tsy zakany intsony ny kibony nony efa avy eo ka very hevitra Ifara. Dia nakariny tao an-toeram-bary Ikoto ka notolorany lefona sy antsibe tao an-trano fa hoe : « Raha tonga Itrimobe dia asio ho faty fa raha tsy izany dia laniny ». Dia lasa izy. »MAIMBO OLOMBELONA !!! MAIMBO OLOMBELONA !!!! » hoy ny fitreron’Itrimobe nony tonga izy sady niakatra tany an-toeram-bary. Vao nitranga anefa ny lohany dia notrobaran’Ikoto ny lefona ka niaraka tamin’izay dia jemby, nefa mbola nikiry ihany ka vao mainka nasian’Ikoto ary farany dia nidaraboka dangy tery amin’ny tany mihitsy. Maty Itrimobe ! Ren’Ifara ny nahafatesan’Itrimobe ka nifindra tao amin’ny tranony izy mianadahy ary lasany avokoa ny fananan’Itrimobe, ka nanjary mpanankarena be mihitsy izy ireo. Ren’ireo ray aman-dreniny koa izany ka mba nanatona ireo no sady nanambitamby azy fatratra. Dia niadana be tao hono, izy mianakavy kely. Angano, angano ! arira, arira !.",
+        "textFr": "Une fois la hutte terminée, les deux s'y installèrent. Plus tard, Ikoto devint très habile à la chasse, et chaque fois qu'il revenait, il ordonnait à Ifara : « Lève le rideau, Fara », et il ne le retirait qu'une fois la viande cuite consommée. Ifara était très triste. Un jour, Ifara ne put plus supporter et partit chasser, car il n'y avait plus rien à cuisiner à la maison. Après avoir marché un long chemin, elle découvrit par hasard la maison d'Itrimobe. Itrimobe n'était pas là à ce moment-là. Ifara visita la maison, prit la nourriture et les affaires, et les emporta chez elle. Ikotobekibo continua de manger à sa guise ce jour-là, mais Ifara, toujours affectueuse, ne cacha pas le riz au lait, le miel et les anguilles fumées qu'elle avait trouvés chez Itrimobe. Ikoto fut surpris de voir cela et décida qu'ils iraient tous les deux là-bas. Arrivés chez Itrimobe, Ikoto mangea avec voracité, sans connaître la satiété. Son ventre était si gros qu'Ifara fut désespérée. Elle plaça Ikoto dans le grenier à riz et lui donna une lance et une machette en disant : « Si Itrimobe arrive, tue-le, sinon il te mangera. » Puis elle partit. « ÇA SENT L'HUMAIN !!! ÇA SENT L'HUMAIN !!!! » hurla Itrimobe en arrivant et en montant dans le grenier à riz. Dès que sa tête apparut, Ikoto lui transperça la lance et il s'effondra immédiatement, mais il s'entêta, alors Ikoto frappa encore plus fort et finalement, il tomba lourdement au sol. Itrimobe était mort ! Ifara entendit la mort d'Itrimobe et ils emménagèrent dans sa maison, prenant toutes ses possessions, devenant très riches. Leurs parents apprirent cela et vinrent les voir, les cajolant beaucoup. Ils vécurent alors très heureux là-bas, la petite famille. Conte, conte ! Raconte, raconte !",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      }
+    ],
+    "moral": {
+      "textMg": "Na dia eo aza ny fitsiriritana sy ny fankahalana, ny faharetana sy ny firaisankina dia afaka mitondra amin'ny fahasambarana sy ny fanambinana.",
+      "textFr": "Malgré l'envie et le ressentiment, la persévérance et la solidarité peuvent mener au bonheur et à la prospérité."
+    }
+  },
+  {
+    "id": "CONTEID-7",
+    "title": "Rapeto sy Rasoala",
+    "titleFr": "Rapeto et Rasoala",
+    "subtitle": "Angano momba ny Vazimba mahery",
+    "subtitleFr": "Légende des puissants Vazimba",
+    "author": "Angano Malagasy",
+    "source": "E-monsite (Manager.e-monsite.com)",
+    "illustration": "",
+    "themes": [
+      "Légende",
+      "Histoire",
+      "Mythologie"
+    ],
+    "content": [
+      {
+        "paragraph": 1,
+        "textMg": "Rapeto, hono, dia Vazimba talohan’izany Andriamanelo, mpanjaka teto Gasikara fony fahagola. Teo Ambohidrapeo andrefan’Antananarivo, no vohitra nitoerany. Lavabe nahatakatra ny lanitra izy. Tany anaty ala atsinana no nandrahoiny ny variny, nefa tany Ambohidrapeto no nihinanany azy.",
+        "textFr": "Rapeto, dit-on, était un Vazimba avant Andriamanelo, un roi de Madagascar dans les temps anciens. Ambohidrapeo, à l'ouest d'Antananarivo, était le village où il résidait. Il était si grand qu'il atteignait le ciel. Il cuisait son riz dans la forêt à l'est, mais le mangeait à Ambohidrapeto.",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 2,
+        "textMg": "Tany Ambohitrarahaba, avaratr’Antananarivo, no filalaovany, ka nataony indray mandingana fotsiny ihany hatreny Ambohidrapeto ka hatreny Ambohitrarahaba. Izy no nanao ny tsentsin-drano vato vaventibe ao am-bodin’Itasy, ka namboariny ho farihy lehibe, hisotroan’ny ombin-dRasoalao vadiny.",
+        "textFr": "Il jouait à Ambohitrarahaba, au nord d'Antananarivo, et il y allait en une seule enjambée d'Ambohidrapeto à Ambohitrarahaba. C'est lui qui a fait le barrage de pierre géant au pied du lac Itasy, le transformant en un grand lac pour que les zébus de sa femme Rasoalao puissent y boire.",
+        "illustration": "https://images.unsplash.com/photo-1518135714426-c18f5ffb6f4d?w=400&h=250"
+      },
+      {
+        "paragraph": 3,
+        "textMg": "Ilay vato loaka tahaka ny dian-tongotr’olona ao an-dalamben’Ambohitrarahaba dia nohitsahin’ny faladiany sy niankinan’ny ranjony, hono, hampisehoany ny heriny. Ary ny loadoaka eny amin’ny vatolampy maro dia lazaina hoe diany avokoa. Indray mandeha izay dia nanampatra ny heriny loatra izy ka naka ny volana holalaovin’ny zanany; kanjo nasian’ny volana diamanga izy ka dangy nitsitra tery. Lazain’ny sasany kosa anefa fa nankany atsinanan’Amorokay izy, ka tany no nahafatesany.",
+        "textFr": "La pierre creuse en forme d'empreinte humaine sur le chemin d'Ambohitrarahaba aurait été foulée par ses pieds et ses jambes, pour montrer sa force. Et les creux dans de nombreux rochers sont tous considérés comme ses empreintes. Une fois, il abusa tellement de sa force qu'il prit la lune pour que ses enfants y jouent ; mais la lune le marqua d'une tache bleue et il tomba lourdement. D'autres disent cependant qu'il est allé à l'est d'Amorokay, et c'est là qu'il est mort.",
+        "illustration": "https://images.unsplash.com/photo-1549488346-bf0198c60813?w=400&h=250"
+      },
+      {
+        "paragraph": 4,
+        "textMg": "Rasoalao kosa, hono, dia Vazimbavavy avy any Ankaratra, ka niankandrefana nankany Ambohiiangara ary nanambady an-dRapeto, ka niteraka vavy roa, dia Rasoavolandrainy sy Rangorimanga. Tao Ambohimiangara sy Ikasige any Mandridrano ary tao Ambatomanjaka sy Ambohiby, any Mamolakazo, no nisy vohitra fonenan’izy mivady. Mbola ao an-tampon’Ambohimiangara mandra’ankehitriny, hono, ny vilany vin-dRasoalao sy ny fahitr’ombiny ary ny fatoran-janakombiny.",
+        "textFr": "Quant à Rasoalao, dit-on, c'était une Vazimbavavy (femme Vazimba) d'Ankaratra. Elle se rendit à l'ouest, à Ambohimiangara, et épousa Rapeto, et ils eurent deux filles, Rasoavolandrainy et Rangorimanga. Ambohimiangara et Ikasige à Mandridrano, ainsi qu'Ambatomanjaka et Ambohiby à Mamolakazo, étaient les villages où ils résidaient. Le pot de Rasoalao, la mangeoire de ses zébus et les liens de ses veaux seraient encore aujourd'hui au sommet d'Ambohimiangara.",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 5,
+        "textMg": "Ny ombimanga rehetra any Antsakalava dia atao hoe: « ombimangan-dRasoalao »; ary raha handeha hisambotra ireny ny mpanonta, dia mitaraina amin-dRasoalao sy Iktofotsy (vorompotsy) mpiandry ny ombiny mba hanome ombimanga azy, vao sahy mandroso manenjika.",
+        "textFr": "Tous les zébus noirs d'Antsakalava sont appelés : « les zébus noirs de Rasoalao » ; et si les chasseurs veulent les capturer, ils se plaignent à Rasoalao et à Iktofotsy (le héron blanc), les gardiens de ses zébus, pour qu'ils leur donnent des zébus noirs, avant d'oser avancer pour les chasser.",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      }
+    ],
+    "moral": {
+      "textMg": "Ny hery lehibe dia tsy midika fa tsy misy fetrany, ary ny angano dia mampahatsiahy ny tantara sy ny fomba amam-panao taloha.",
+      "textFr": "Une grande puissance ne signifie pas l'absence de limites, et les légendes rappellent l'histoire et les coutumes anciennes."
+    }
+  },
+  {
+    "id": "CONTEID-8",
+    "title": "Ny Vorona Nifidy Mpanjaka",
+    "titleFr": "Les Oiseaux qui ont choisi un Roi",
+    "subtitle": "Ny fahendrena sy ny endrika tsara",
+    "subtitleFr": "La sagesse et la beauté",
+    "author": "Angano Malagasy",
+    "source": "E-monsite (Manager.e-monsite.com)",
+    "illustration": "",
+    "themes": [
+      "Animaux"
+    ],
+    "content": [
+      {
+        "paragraph": 1,
+        "textMg": "Niainga hono, ny voro-manidina rehetra teto ambonin’ny tany ka nifanaiky hifidy mpanjaka, nefa tsy mba tonga ny vorondolo, fa sendra nampifana ny vadiny. Dia nifanaiky ny vorona rehetra fa izay mahita ny vorondolo ka tsy mamono azy, dia hariana amim-pihavanana ka hatao fahavalo mihitsy.",
+        "textFr": "Il était une fois, tous les oiseaux du monde se réunirent et convinrent de choisir un roi, mais le hibou ne vint pas, car il était en train de donner naissance à sa femme. Tous les oiseaux convinrent alors que quiconque verrait le hibou et ne le tuerait pas serait rejeté amicalement et serait même considéré comme un ennemi.",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 2,
+        "textMg": "Izany hono, no tsy andehanana’ny vorondolo antoandro, satria izay vorona mahita azy dia mifandrombaka mamono azy avokoa. Dia nanendry tena ho mpanjaka kosa ny voromahery, nefa tsy neken’ny be sy ny maro, satria mahery setra loatra, ka dia nifandrafy taminy izy; koa izany vorona hitany dia paohiny avokoa.",
+        "textFr": "C'est pourquoi, dit-on, le hibou ne sort pas le jour, car tout oiseau qui le voit se précipite pour le tuer. L'aigle se nomma roi, mais il ne fut pas accepté par la majorité, car il était trop agressif, et ils devinrent ses ennemis ; ainsi, tout oiseau qu'il voyait, il le capturait.",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      },
+      {
+        "paragraph": 3,
+        "textMg": "Ka dia nifanara-kevitra ny vorona fa ny railovy no hofidiana mpanjakany, satria izy no tsara tarehy sy lava sanga no mahay feo samy hafa. Izany hono, no nanaovan'ny olona ny railovy hoe Mpanjakan’ny vorona rehetra.",
+        "textFr": "Alors les oiseaux convinrent de choisir le drongo comme leur roi, car il était le plus beau, avait une longue crête et pouvait produire différents sons. C'est pourquoi, dit-on, les gens appellent le drongo le Roi de tous les oiseaux.",
+        "illustration": "https://images.unsplash.com/photo-1518135714426-c18f5ffb6f4d?w=400&h=250"
+      }
+    ],
+    "moral": {
+      "textMg": "Tsy ny hery na ny herisetra no mahatonga ny olona ho mpanjaka, fa ny hatsaran-toetra sy ny fahendrena.",
+      "textFr": "Ce n'est pas la force ni la violence qui font un roi, mais la gentillesse et la sagesse."
+    },
+    "audioUrlFr": "https://res.cloudinary.com/dhe585mze/video/upload/v1788024442/kanto/audio/contes/ny-vorona-nifidy-mpanjaka-7-fr.mp3"
+  },
+  {
+    "id": "CONTEID-9",
+    "title": "Ny Ratsan-tanana Dimy",
+    "titleFr": "Les Cinq Doigts",
+    "subtitle": "Ny antony mahatonga ny rantsan-tanana ho lava sy fohy",
+    "subtitleFr": "La raison de la longueur et de la brièveté des doigts",
+    "author": "Angano Malagasy",
+    "source": "E-monsite (Manager.e-monsite.com)",
+    "illustration": "",
+    "themes": [
+      "Humain",
+      "Valeurs",
+      "Comportement"
+    ],
+    "content": [
+      {
+        "paragraph": 1,
+        "textMg": "Samy nanana ny heviny, hono, ny rantsana dimy, ka toy izao: Hoy ny ankihikely : « Noana aho izany », namaly kosa ny manaraka hoe : « Noana ka tsy mangalatra! », fa hoy kosa ny manaraka : « Mangalatra ka tsy very! »",
+        "textFr": "Chacun des cinq doigts, dit-on, avait son opinion, et voici comment : Le petit doigt dit : « J'ai faim », le suivant répondit : « J'ai faim et je ne vole pas ! », mais le suivant dit : « Je vole et je ne me perds pas ! »",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 2,
+        "textMg": "Dia hoy ny fanondro : « Very tsy avotana ». Fa hoy kosa ny ankihibe : « Hihatakataka aho fa olon-dehibe ».",
+        "textFr": "Alors l'index dit : « Perdu et non secouru ». Mais le pouce dit : « Je vais me retirer car je suis un adulte ».",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      },
+      {
+        "paragraph": 3,
+        "textMg": "Izany, hono no nampisaraka ny rantsana ho dimy sy nahatonga azy ho lava sy fohy. Ny ankihikely no kely indrindra dia noana lalandava; ny manaraka sy ny fanondro no fohy dia botrin’ny sain-dratsiny; ary ny ankihibe sy ny tondro ampovoany no lava sy lehibe dia noho ny hamarinany.",
+        "textFr": "C'est pourquoi, dit-on, les doigts se sont séparés en cinq et sont devenus longs et courts. Le petit doigt est le plus petit et a toujours faim ; le suivant et l'index sont courts et sont la proie de leurs mauvaises pensées ; et le pouce et le majeur sont longs et grands en raison de leur droiture.",
+        "illustration": "https://images.unsplash.com/photo-1518135714426-c18f5ffb6f4d?w=400&h=250"
+      }
+    ],
+    "moral": {
+      "textMg": "Ny angano dia mampianatra antsika fa ny fahasamihafana eo amin'ny tsirairay dia manana ny dikany manokana, ary ny safidy tsara dia mitondra soa.",
+      "textFr": "Les contes nous enseignent que les différences de chacun ont leur propre signification, et que les bons choix apportent des bienfaits."
+    }
+  },
+  {
+    "id": "CONTEID-10",
+    "title": "Farakely sy Itrimobe",
+    "titleFr": "Farakely et Itrimobe",
+    "subtitle": "Ny tovovavy tsara tarehy sy ny orim-boafady",
+    "subtitleFr": "La belle jeune fille et l'ogre",
+    "author": "Angano Malagasy",
+    "source": "E-monsite (Manager.e-monsite.com)",
+    "illustration": "",
+    "themes": [
+      "Humain",
+      "Animaux",
+      "Cohabitation"
+    ],
+    "content": [
+      {
+        "paragraph": 1,
+        "textMg": "Angano, angano, arira, arira, izaho mitantara ianareo mihaino… Nisy, hono, fahiny i Farakely, zanakavavin’ny mpivady nanan-karena be ary nanana rahavavy roa. I Farakely no zandriny indrindra sy tsara tarehy indrindra.",
+        "textFr": "Conte, conte, légende, légende, je raconte, vous écoutez… Il était une fois Farakely, fille d’un couple très riche et qui avait deux sœurs. Farakely était la plus jeune et la plus jolie.",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 2,
+        "textMg": "Indray andro dia nitantara ny nofiny tamin’ireo rahavaviny izy: – Henoy, omaly alina aho nanonofy fa nidina ny Printsin’ny lanitra ary nitady vady teo anivonay ary jereo hoe iza no nofidiny? Izaho fa tsy ianareo. Tezitra ireo rahavavy ary nifampiresaka: – Tsara tarehy kokoa noho isika io zandriny io ary marina fa raha misy Printsy tonga dia azo antoka fa hisafidy azy. Tsy maintsy manao zavatra isika.",
+        "textFr": "Un jour elle raconta son rêve à ses sœurs: – Écoutez cette nuit j’ai rêvé que le Prince du ciel était descendu et recherchait une épouse parmi nous et voyez qui il a choisi? Moi et non vous. Les sœurs furent vexées et se dirent: – La petite est plus belle que nous et il est vrai que si quelconque Prince venait il la choisirait à coup sûr. Il faut faire quelque chose.",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      },
+      {
+        "paragraph": 3,
+        "textMg": "Niantso an'i Farakely hilalao izy ireo. Nihaona tamin'ny vehivavy antitra iray teny an-dalana izy ireo: – Lazao, ry Neny, iza no tsara tarehy indrindra aminay telo mianadahy? – Oh! Tsy ratsy tarehy ianao na ny rahavavinao fa i Farakely no tena tsara tarehy. Lavidavitra kely, nihaona tamin'ny lehilahy antitra iray izy ireo: – Lazao, ry Dada, iza no tsara tarehy indrindra aminay? – Farakely, mazava ho azy! – Ah! Farakely, Farakely foana, hoy ny roa vavy tezitra.",
+        "textFr": "Elles appelèrent Farakely pour jouer. Elles rencontrèrent une vieille femme sur le chemin: – Dites, mère, qui est la plus jolie d’entre nous trois? – Oh! Tu n’es pas moche ni ta sœur non plus mais Farakely est très jolie. Plus loin, elles rencontrèrent un vieux monsieur: – Dites, père, qui est la plus jolie d’entre nous? – Farakely, évidemment ! – Ah! Farakely, toujours Farakely, se fâchèrent les deux.",
+        "illustration": "https://images.unsplash.com/photo-1518135714426-c18f5ffb6f4d?w=400&h=250"
+      },
+      {
+        "paragraph": 4,
+        "textMg": "Nankany amin'i Itrimobe, ilay orim-boafady antsasaky ny olombelona antsasaky ny biby manana rambony lava, izy ireo. – Lazao, Itrimobe, iza no tsara tarehy indrindra aminay? Ary ny valiny dia nirohotra: Farakely! Nofongarin'ireo rahavavy roa izy. – Raha vonointsika izy, dia ho fantatry ny ray aman-drenintsika izany ary hovonoina azo antoka isika. Raha avelantsika hiampanga azy ho nangalatra legioma tamin'i Itrimobe isika, dia hohaniny izy. Nikiakiaka an'i Farakely izy ireo:",
+        "textFr": "Ainsi elles se rendirent chez Itrimobe, l’ogre mi-homme mi-animal avec une longue queue. – Dis, Itrimobe, laquelle d’entre nous est la plus jolie? Et la réponse fusa : Farakely ! Les deux sœurs étaient déterminées. – Si nous la tuons, nos parents vont l’apprendre et nous tuerons sûrement. Si nous la laissons accuser de vol de légumes auprès de Itrimobe, il va la manger. Ainsi elles hélèrent Farakely:",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 5,
+        "textMg": "– Ry Farakely, tokony hanangona voankazo sy legioma ho an’ny ray aman-drenintsika isika. Ny tsara tarehy indrindra dia izay nanangona ny voankazo sy legioma tsara tarehy indrindra sy vaovao indrindra! Nanomboka niasa izy ireo. – Tsy tsara ny nalainao, hoy izy ireo tamin'i Farakely, misy tsara kokoa. Ary natorony azy ny zaridainan’i Itrimobe. Nihazakazaka nankany Farakely mba hanangona ary tratran’i Itrimobe – He! Tratratro ianao mpangalatra, hohaniko ianao!",
+        "textFr": "– Dis Farakely, nous devrions récolter des fruits et des légumes pour nos parents. La plus jolie sera celle qui aura récolté les fruits et légumes les plus beaux et les plus frais! Elles se mirent à l’œuvre. – Ce que tu as pris n’est pas bon, dirent-elles à Farakely, il y en a de meilleur. Et elles lui indiquèrent le jardin de Itrimobe. Farakely y courut pour sa récolte et fut attrapé par Itrimobe – He! Je t’attrape voleuse, je vais te manger !",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      },
+      {
+        "paragraph": 6,
+        "textMg": "– Miangavy anao aho aza manao izany, hoy i Farakely niangavy, ho mpanompovavinao aho. – Eny ary, mety amiko izany, araho aho, hoy i Itrimobe namaly. Raha ny marina, nieritreritra ny hitondra azy hiverina izy mba hampahalehibe azy sy hohanina any aoriana. Nihevitra ireo rahavavy roa fa afaka tamin'i Farakely ary niverina niteny tamin'ny ray aman-dreniny fa i Farakely dia tratran'i Itrimobe nangalatra tao amin'ny saha voankazony ary nohanin'i Itrimobe.",
+        "textFr": "– Je t’en prie ne fais pas ça supplia Farakely, je serai ta servante. – Bon cela me va, suis moi répondit Itrimobe. En vérité, il pensait la ramener pour l’engraisser et la manger plus tard. Les deux sœurs pensèrent être débarrassées de Farakely et rentrèrent raconter à leurs parents que Farakely a été surprise par Itrimobe volant dans son verger et que Itrimobe l’a mangée.",
+        "illustration": "https://images.unsplash.com/photo-1518135714426-c18f5ffb6f4d?w=400&h=250"
+      },
+      {
+        "paragraph": 7,
+        "textMg": "Nandritra izany fotoana izany, nangeja an'i Farakely i Itrimobe ary nankany an'ala nihaza biby mba hanomezany azy hohanina hampahalehibe azy. Indray andro, nihevitra izy fa efa ampy tsara hohanina izy. Tamin'io andro io dia nisy totozy nandalo teo akaikin'ny tsihy an'i Farakely ary nilaza taminy: – Omeo vary kely aho dia holazaiko aminao izay tokony hataonao. – Ahoana no ahafahanao manao izany, ry kely?",
+        "textFr": "Entretemps Itrimobe enferma Farakely et s’enquit dans la forêt chasser le gibier afin de lui donner à manger pour l’engraisser. Puis un jour, il la jugea assez bonne à manger. Ce jour là une souris passa à côté de la natte de Farakely et lui dit: – Donne-moi un peu de riz et je te dirai ce que tu devrais faire. – Comment le pourrais-tu, petite?",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 8,
+        "textMg": "– Tsia, tsy maninona, avelao i Itrimobe hihinana anao raha tsy te hihaino ahy ianao. – Ity misy vary ary mitenena! – Mandehana ary makà atody iray miaraka aminao, kifafa, hazo ary vato, mihazakazaha mankany atsimo. Nanafaka ny tenany i Farakely tamin'ny fanampian'ny totozy, nameno ny tsihy ary nanidy ny varavarana.",
+        "textFr": "– Eh bien, tant pis, que Itrimobe te dévore si tu ne veux pas m’écouter. – Tiens voilà du riz et parle ! – Vas-t-en et prends un œuf avec toi, un balai, un bâton et une pierre, cours vers le sud. Farakely se libéra avec l’aide de la souris, rembourra la natte et referma la porte.",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      },
+      {
+        "paragraph": 9,
+        "textMg": "Rehefa niverina i Itrimobe, nandondona ny varavarana izy. Tsy nisy valiny. – Lasa matavy loatra izy ary tsy afaka mihetsika intsony! Noravany ny varavarana ary natsatohany teo amin'ny tsihy feno akondro. – Tena matavy tokoa, niditra tsara ilay hazo. Navoakany indray ilay hazo ary nihevitra izy fa tsy nisy tsirony ny ran'i Farakely. Fa rehefa nosokafany ny tsihy, dia hitany ny salaka akondro!",
+        "textFr": "A son retour, Itrimobe frappa à la porte. Pas de réponse. – Elle est devenue trop grasse et ne peut même plus bouger! Il démolit la porte et enfonça un pieu dans la natte rembourrée d’un régime de bananes. – Tiens que c’est gras, le pieu s’est bien enfoncé. Il ressortit le pieu et jugea que le sang de Farakely n’avait aucun goût. Mais quand il ouvrit la natte, il découvrit le régime de bananes !",
+        "illustration": "https://images.unsplash.com/photo-1518135714426-c18f5ffb6f4d?w=400&h=250"
+      },
+      {
+        "paragraph": 10,
+        "textMg": "Ary nitady nankany Atsinanana, nankany Andrefana, nankany Avaratra i Itrimobe ary tsy nahita an'i Farakely. Avy eo nankany Atsimo dia azony antoka fa ho hitany. Vetivety dia tratrany izy. Narian'i Farakely ny kifafa teny an-dalana ary niova ho kirihitr'ala misy tsilo. Fa noroahin'i Itrimobe tamin'ny fihetsika mahery ny kirihitr'ala tamin'ny rambony.",
+        "textFr": "Et Itrimobe chercha vers l’Est, vers l’Ouest, vers le Nord et ne trouva pas Farakely. Puis allant vers le Sud il était sûr de la trouver. Bientôt, il la rattrapa. Farakely jeta le balai à travers le chemin et il se transforma en buisson épineux. Mais Itrimobe balaya le buisson d’un fort mouvement de sa queue.",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 11,
+        "textMg": "Narian'i Farakely ny atody tamin'ny tany ary niova ho ranomasina. Fa nisotro ny rano i Itrimobe tao anatin'ny tselatra ary nahatratra an'i Farakely. Natsatohin'i Farakely ny hazo tamin'ny tany ary niova ho ala. Fa nahavita nanao lalana indray i Itrimobe tamin'ny rambony mahery.",
+        "textFr": "Farakely jeta l’œuf à terre qui se transforma en une mer. Mais Itrimobe boit l’eau en un clin d’œil et rattrapa Farakely. Farakely enfonça le bâton à terre qui se transforma en foret. Mais Itrimobe réussit encore une fois à se frayer un chemin grâce à sa queue puissante.",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      },
+      {
+        "paragraph": 12,
+        "textMg": "Amin'ny farany, natsipy an'i Farakely ny vato izay nitsangana ho hantsana. Niakatra avy hatrany i Itrimobe fa nitsirara tsy afaka niankina tamin'ny rambony na niraikitra tamin'ny hoho. Dia niantso izy: – Farakely, ry Farakely kely malalako avia aty amiko, tsy hanao ratsy anao aho! – Tsy nieritreritra izany aho, tsy ho tonga hanompo anao aho. – Dia ampio aho hiakatra. – Tsia, atsangano aloha ny lefonao ety an-tany. – Vita izay. – Avia ary hotazomiko ny tananao. Naninjitra ny tanany i Itrimobe ary niakatra, fa tamin'ny fotoana nahazoany azy, nalefan'i Farakely izy ary nianjera tamin'ny lefona ka maty. Nipetraka teo amoron'ny hantsana i Farakely ary nitomany. Nieritreritra ny ray aman-dreniny izy.",
+        "textFr": "En dernier recours, Farakely lança la pierre qui s’érigea en falaise. Itrimobe grimpa aussitôt mais glissa sans pouvoir s’appuyer sur sa queue ni s’agripper avec ses griffes. Alors il appela: – Farakely, ma chère petite Farakely viens à moi, je ne te ferai pas de mal ! – Je n’y pense pas, je ne viens pas te servir. – Alors aide-moi à remonter. – Non, enfonce d’abord ta lance à terre. – Ça y est je l’ai fait. – Viens et je te prends la main. Itrimobe lui tendit la main et se hissa mais au moment où il était agrippé, Farakely le lâcha et il retomba sur sa lance et mourut. Farakely s’assit sur le bord de la falaise et pleura. Elle songea à ses parents.",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 13,
+        "textMg": "Nisy goaika nandalo, nihira taminy izy ary nangataka azy hitondra azy ho any amin'ny rainy. – Fa iza no heverinao ho ahy, hoy ny valin'ny goaika, nahoana aho no hitondra anao, tsara ianao eto. Nisy hitsikitsika nandalo izay nihira an'i Farakely hira mitovy, fa tsy nety nitondra azy koa izy. Avy eo nandalo Ravorondreo izay nihira taminy hira mitovy. Nitondra azy ho any amin'ny loharanon'ny ray aman-dreniny Ravorondreo.",
+        "textFr": "Un corbeau passait, elle lui chanta et lui demanda de le porter vers son père. – Mais tu me prends pour qui, lui répondit le corbeau, pourquoi te porterai-je, tu es bien là. Un épervier passait auquel Farakely chanta la même chanson, mais il ne voulut pas la porter non plus. Puis passa Ravorondreo à qui elle chanta la même complainte. Ravorondreo le porta vers la fontaine de ses parents.",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      },
+      {
+        "paragraph": 14,
+        "textMg": "Nisy mpanompovavy tanora iray tonga naka rano ary gaga nahita an'i Farakely ary namoaka ny siny rano. – Tsy mandoa anao ny ray aman-dreniko mba hanapahanao ny siny rano, hoy i Farakely taminy! Nihazakazaka nankany amin'ny tompony ilay mpanompovavy ary nanambara fa « misy olona ao amin'ny lavadrano izay manana feo mitovy amin'i Farakely! »",
+        "textFr": "Une jeune servante vint chercher de l’eau et s’étonna de voir Farakely et laissa tomber la cruche d’eau. – Mes parents ne te paient pas pour que tu casses les cruches d’eau lui dit Farakely! La servante courut vers ses maîtres et annonça que « il y a quelqu’un au puits qui a la même voix que Farakely ! »",
+        "illustration": "https://images.unsplash.com/photo-1518135714426-c18f5ffb6f4d?w=400&h=250"
+      },
+      {
+        "paragraph": 15,
+        "textMg": "Dia afaka niverina tany amin'ny ray aman-dreniny i Farakely, nifamihina tamim-pifaliana sy nitomany izy ireo. Notantaran'i Farakely ny ratsy nataon'ireo rahavaviny izay noroahina tao an-trano. Angano, angano, tsy izaho no mpandainga… Ireo razambe. Angano, angano, arira, arira, izaho mitantara ianareo mihaino…",
+        "textFr": "Ainsi Farakely put retrouver ses parents, ils s’étreignirent avec joie dans les pleurs. Farakely raconta les méfaits de ses sœurs qui furent chassées de la maison. Conte, conte, ce n’est pas moi qui suis le Menteur…Ce sont les ancêtres. Angano, angano, arira, arira, izaho mitantara ianareo mihaino…",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      }
+    ],
+    "moral": {
+      "textMg": "Ny angano dia mampianatra fa ny hatsaram-panahy sy ny fahaizana mamaha olana dia mahery kokoa noho ny fialonana sy ny ratsy fanahy, ary ny fahamarinana dia mivoaka mandrakariva.",
+      "textFr": "Le conte enseigne que la gentillesse et la ruse sont plus puissantes que la jalousie et la malice, et que la vérité finit toujours par éclater."
+    },
+    "audioUrlMg": "https://res.cloudinary.com/dhe585mze/video/upload/v1788024037/kanto/audio/contes/farakely-sy-itrimobe-9-mg.wav",
+    "audioUrlFr": "https://res.cloudinary.com/dhe585mze/video/upload/v1788023737/kanto/audio/contes/farakely-sy-itrimobe-9-fr.wav"
+  },
+  {
+    "id": "CONTEID-11",
+    "title": "Rapeto sy Rasoala",
+    "titleFr": "Rapeto et Rasoala",
+    "subtitle": "Ny Vazimba mahery sy ny vadiny",
+    "subtitleFr": "Le puissant Vazimba et son épouse",
+    "author": "Angano Malagasy",
+    "source": "Tantara nifampitana",
+    "illustration": "",
+    "themes": [
+      "Légende",
+      "Histoire",
+      "Mythologie"
+    ],
+    "content": [
+      {
+        "paragraph": 1,
+        "textMg": "Rapeto hono, dia Vazimba talohan’izany Andriamanelo, mpanjaka taty fony fahagola. Teo Ambohidrapeo andrefan’Antananarivo, no vohitra nitoerany. Lavabe nahatakatra ny lanitra izy. Tany anaty ala atsinana no nandrahoiny ny variny, nefa tany Ambohidrapeto no nihinanany azy.",
+        "textFr": "Rapeto, dit-on, était un Vazimba avant Andriamanelo, un roi d'ici dans les temps anciens. Ambohidrapeo, à l'ouest d'Antananarivo, était le village où il résidait. Il était si grand qu'il atteignait le ciel. Il cuisait son riz dans la forêt à l'est, mais le mangeait à Ambohidrapeto.",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 2,
+        "textMg": "Tany Ambohitrarahaba, avaratr’Antananarivo, no filalaovany, ka nataony indray mandingana ihany hatreny Ambohidrapeto ka hatreny Ambohitrarahaba. Izy no nanao ny tsentsin-drano vato vaventibe ao am-bodin’Itasy, ka namboariny ho farihy lehibe, hisotroan’ny ombin-dRasoalao vadiny.",
+        "textFr": "Il jouait à Ambohitrarahaba, au nord d'Antananarivo, et il y allait en une seule enjambée d'Ambohidrapeto à Ambohitrarahaba. C'est lui qui a fait le barrage de pierre géant au pied du lac Itasy, le transformant en un grand lac pour que les zébus de sa femme Rasoalao puissent y boire.",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      },
+      {
+        "paragraph": 3,
+        "textMg": "Ilay vato loaka tahaka ny dian-tongotr’olona ao an-dalamben’Ambohitrarahaba dia nohitsahin’ny faladiany sy niankinan’ny ranjony, hono, hampisehoany ny heriny. Ary ny loadoaka eny amin’ny vatolampy maro dia lazaina hoe diany avokoa.",
+        "textFr": "La pierre creuse en forme d'empreinte humaine sur le chemin d'Ambohitrarahaba aurait été foulée par ses pieds et ses jambes, pour montrer sa force. Et les creux dans de nombreux rochers sont tous considérés comme ses empreintes.",
+        "illustration": "https://images.unsplash.com/photo-1518135714426-c18f5ffb6f4d?w=400&h=250"
+      },
+      {
+        "paragraph": 4,
+        "textMg": "Indray mandeha izay dia nanampatra ny heriny loatra izy ka naka ny volana holalaovin’ny zanany; kanjo nasian’ny volana diamanga izy ka dangy nitsitra tery. Lazain’ny sasany kosa anefa fa nankany atsinanan’Amorokay izy, ka tany no nahafatesany.",
+        "textFr": "Une fois, il abusa tellement de sa force qu'il prit la lune pour que ses enfants y jouent ; mais la lune le marqua d'une tache bleue et il tomba lourdement. D'autres disent cependant qu'il est allé à l'est d'Amorokay, et c'est là qu'il est mort.",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 5,
+        "textMg": "Rasoalao kosa, hono, dia Vazimbavavy avy any Ankaratra, ka niankandrefana nankany Ambohiiangara ary nanambady an-dRapeto, ka niteraka vavy roa, dia Rasoavolandrainy sy Rangorimanga. Tao Ambohimiangara sy Ikasige any Mandridrano ary tao Ambatomanjaka sy Ambohiby, any Mamolakazo, no nisy vohitra fonenan’izy mivady. Mbola ao an-tampon’Ambohimiangara mandra’ankehitriny, hono, ny vilany vin-dRasoalao sy ny fahitr’ombiny ary ny fatoran-janakombiny.",
+        "textFr": "Quant à Rasoalao, dit-on, c'était une Vazimbavavy (femme Vazimba) d'Ankaratra. Elle se rendit à l'ouest, à Ambohimiangara, et épousa Rapeto, et ils eurent deux filles, Rasoavolandrainy et Rangorimanga. Ambohimiangara et Ikasige à Mandridrano, ainsi qu'Ambatomanjaka et Ambohiby à Mamolakazo, étaient les villages où ils résidaient. Le pot de Rasoalao, la mangeoire de ses zébus et les liens de ses veaux seraient encore aujourd'hui au sommet d'Ambohidrapeo.",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      },
+      {
+        "paragraph": 6,
+        "textMg": "Ny ombimanga rehetra any Antsakalava dia atao hoe « ombimangan-dRasoalao »; ary raha handeha hisambotra ireny ny mpanonta, dia mitaraina amin-dRasoalao sy Iktofotsy (vorompotsy) mpiandry ny ombiny mba hanome ombimanga azy, vao sahy mandroso manenjika. Angano ihany izany…",
+        "textFr": "Tous les zébus noirs d'Antsakalava sont appelés « les zébus noirs de Rasoalao » ; et si les chasseurs veulent les capturer, ils se plaignent à Rasoalao et à Iktofotsy (le héron blanc), les gardiens de ses zébus, pour qu'ils leur donnent des zébus noirs, avant d'oser avancer pour les chasser. C'est juste un conte…",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      }
+    ],
+    "moral": {
+      "textMg": "Ny angano momba an'i Rapeto sy Rasoala dia mampahatsiahy ny hery sy ny fanomezam-pahasoavan'ny Vazimba fahiny, ary ny fifandraisan'izy ireo amin'ny tontolo voajanahary sy ny biby fiompy.",
+      "textFr": "Les légendes de Rapeto et Rasoala rappellent la puissance et les dons des anciens Vazimba, ainsi que leur lien avec le monde naturel et le bétail."
+    }
+  },
+  {
+    "id": "CONTEID-12",
+    "title": "Ny Nofin'izy Telo Mirahalahy",
+    "titleFr": "Le Rêve des Trois Frères",
+    "subtitle": "Ny fahendrena amin'ny fizarana harena sy ny toetra",
+    "subtitleFr": "La sagesse dans la répartition des biens et le caractère",
+    "author": "Angano Malagasy",
+    "source": "Tantara nifampitana",
+    "illustration": "",
+    "themes": [
+      "Humain",
+      "Valeurs",
+      "Comportement"
+    ],
+    "content": [
+      {
+        "paragraph": 1,
+        "textMg": "Angano, angano, arira, arira, izaho manoratra ianareo mamaky… Nanan-janaka telo mirahalahy hono, ity Rangahy; ary indray mandeha, nony narary izy, dia nampaka azy ireo ho eo anatrehany. Rehefa tonga teo izy dia hoy rainy taminy : « izao, lehiretsy, no ambarako aminareo telo mirahalahy, fa avy ity izay aretina atsindrin’Andrimanitra, ka tsy fantatro na dia ho lasa amin’izao aho, na tsia. Ka ndeha hianareo samia mody any amin’ny vady aman-janakareo avy, ary samia maka nofy sy tsidrimandry hianareo telo mirahalahy anio alina; ka rehefa maraina ny andro dia tongava aty milaza izay nofinareo avy ».",
+        "textFr": "Conte, conte, légende, légende, j'écris, vous lisez… Il était une fois un homme qui avait trois fils ; et un jour, lorsqu'il tomba malade, il les fit venir devant lui. Quand ils arrivèrent, leur père leur dit : « Écoutez, mes garçons, ce que je vous dis à vous trois, car cette maladie envoyée par Dieu est là, et je ne sais pas si je vais mourir maintenant ou non. Alors, allez chacun chez votre femme et vos enfants, et chacun de vous trois aura un rêve et une vision cette nuit ; et quand le jour se lèvera, venez ici me raconter vos rêves respectifs ».",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 2,
+        "textMg": "Nony maraina ny andro, dia tonga izy telo mirahalahy hilaza ny nofiny sy tsidrimandry izay efa azony tamin’ny alina iny. Dia niteny Andriamatoa ka nanao hoe : « nofiko ry Ikaky, fa nampakatra voay sy mamba avy tany anaty rano, hono, aho ». Fa izao kosa no filazan’Andrianaivo : « nofiko, ry Ikaky, fa nahazaka akondro fito reny hono aho ». Ary Ifaralahy kosa nanao hoe : « Izaho iky, ry Ikaky, nanonofy nandrary herana sy vondrona ».",
+        "textFr": "Quand le jour se leva, les trois frères vinrent raconter leurs rêves et visions qu'ils avaient eus la nuit. Alors Andriamatoa prit la parole et dit : « Mon rêve, père, c'est que j'ai remonté un crocodile et un caïman de l'eau, dit-on. » Voici ce que dit Andrianaivo : « Mon rêve, père, c'est que j'ai porté sept régimes de bananes, dit-on. » Et Ifaralahy dit : « Moi, père, j'ai rêvé que je tissais de l'herbe et des paquets. »",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      },
+      {
+        "paragraph": 3,
+        "textMg": "Nony nahare ireo nofin-janany ireo rainy dia niteny hoe : « Ndeha ary vorionareo telo mirahalahy ny fokonolona fa handidy harena ho anareo aho izao ». Dia namory ny fokonolona izy ireo; ka nony efa tonga teo anatrehan-dRangahy ny olona, dia niteny izy hoe : « Aza mahafady lahy, fa nanainga kely anareo aho mba hanatrika ny didim-pananako, ka izao no andidiako ny hareko amin’ireo zanako telo mirahalahy, araka ny nofiny nolazainy tamiko avy, ka ataoko mahare hianareo tany ama-monina rehetra :",
+        "textFr": "Quand leur père entendit les rêves de ses fils, il dit : « Alors, vous trois, rassemblez les villageois, car je vais maintenant vous diviser mes biens. » Ils rassemblèrent les villageois ; et quand les gens furent devant le vieil homme, il dit : « Ne vous offensez pas, mais je vous ai fait venir pour assister à la division de ma fortune, et voici comment je divise mes biens entre mes trois fils, selon les rêves qu'ils m'ont racontés, et je veux que vous l'entendiez tous, partout dans le pays : »",
+        "illustration": "https://images.unsplash.com/photo-1518135714426-c18f5ffb6f4d?w=400&h=250"
+      },
+      {
+        "paragraph": 4,
+        "textMg": "« Ny androatokony dia omeko an’Ifaralahy, ary ny ampahatelony sisa kosa omeko azy mirahalahy zokiny ».",
+        "textFr": "« La majeure partie je la donne à Ifaralahy, et le tiers restant je le donne à ses deux frères aînés ».",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 5,
+        "textMg": "« Andriamatoa no tsy omeko be, dia fantatro araka ny nofiny hoe nampakatra voay sy mamba tany anaty rano, fa mila hanao an-tana-mamba ny herin’ny madinika; ka izany no nanofisany toy izany.",
+        "textFr": "« Andriamatoa n'aura pas beaucoup, car je sais, d'après son rêve d'avoir remonté des crocodiles et des caïmans de l'eau, qu'il abusera du pouvoir des petits ; c'est pourquoi il a rêvé ainsi.",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      },
+      {
+        "paragraph": 6,
+        "textMg": "Andrianaivo no tsy tolorako be koa satria fantatro amin’ny nofiny, fa ho ratsy koa izy ka ila hipaoka ny anjaran’ny sasany, ary hitondra izay tsy tokony ho entiny. Aiza izy no hahazaka akondro fito reny ? Fa raha mahazaka izy dia mba telo ahay; na anankiray lolohaviny, ary ny roa sakelehiny ».",
+        "textFr": "Andrianaivo n'aura pas beaucoup non plus, car je sais d'après son rêve qu'il sera mauvais et qu'il voudra s'approprier la part des autres, et qu'il portera ce qu'il ne devrait pas. Comment pourrait-il porter sept régimes de bananes ? S'il en porte, ce serait peut-être trois ; ou un sur sa tête, et deux sous ses bras ».",
+        "illustration": "https://images.unsplash.com/photo-1518135714426-c18f5ffb6f4d?w=400&h=250"
+      },
+      {
+        "paragraph": 7,
+        "textMg": "« Ary Ifaralahy no tolorako be kosa, fantatro fa izy no nanonofy nandrary herana sy vondrona, dia tsy hanao soa am-po samy irery izy , fa hiera sy hidinidinika tsara vao manao izay raharaha tiany hatao, ka izy no hahatondra ny anarako sy hamelo-maso ny tanindrazako; tsy hanary loloha izy, fa hahafefy vody tatatra ».",
+        "textFr": "« Et c'est Ifaralahy que je donne beaucoup, car je sais qu'il a rêvé de tisser de l'herbe et des paquets, il ne fera pas le bien tout seul, mais il consultera et discutera bien avant de faire ce qu'il veut faire, et c'est lui qui portera mon nom et fera prospérer ma patrie ; il ne laissera pas tomber ce qu'il porte, mais saura réparer le fond d'un canal ».",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 8,
+        "textMg": "Izany hono no nisehoan’ilay fitenin’ny Ntaolo hoe : « Tombo Ifaralahy, fa nateraka » Angano, angano, arira, arira, izaho mitantara ianareo mamaky",
+        "textFr": "C'est pourquoi, dit-on, l'expression des Anciens est apparue : « Ifaralahy est favorisé, car il est né » Conte, conte, légende, légende, je raconte, vous lisez",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      }
+    ],
+    "moral": {
+      "textMg": "Ity angano ity dia mampianatra fa ny fahendrena sy ny fitondran-tena tsara dia mendrika ny valisoa, fa ny fanambinana sy ny fitiavan-tena kosa dia mety hitarika amin'ny fatiantoka.",
+      "textFr": "Ce conte enseigne que la sagesse et le bon comportement sont dignes de récompense, tandis que l'avidité et l'égoïsme peuvent mener à la perte."
+    },
+    "audioUrlFr": "https://res.cloudinary.com/dhe585mze/video/upload/v1788024448/kanto/audio/contes/ny-nofinizy-telo-mirahalahy-11-fr.wav"
+  },
+  {
+    "id": "CONTEID-13",
+    "title": "Ny bitro sy ny rambony",
+    "titleFr": "Le lièvre et sa queue",
+    "subtitle": "Ny tantaran'ny hakamoana sy ny voka-dratsy",
+    "subtitleFr": "L'histoire de la paresse et de ses conséquences",
+    "author": "Esther Rasoloarimalala Randriamamonjy",
+    "source": "Angano Tetsy sy Teroa",
+    "illustration": "",
+    "themes": [
+      "Animaux"
+    ],
+    "content": [
+      {
+        "paragraph": 1,
+        "textMg": "Taloha elabe, hono, ny biby rehetra na kely na lebibe dia tsy mbola nisy rambo ary nampalahelo ny besinimaro izany, nampalahelo ny liona mpanjaka koa.",
+        "textFr": "Il y a très longtemps, dit-on, tous les animaux, petits et grands, n'avaient pas encore de queue et cela rendait la majorité triste, même le lion roi.",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 2,
+        "textMg": "Ny liona anefa dia tapa-kevitra fa hanamboatra rambo ho an’ ny tenany mba ho mendrika ny maha mpanjaka azy. Dia nahavita rambo tsara tarehy tokoa izy.",
+        "textFr": "Cependant, le lion était déterminé à se fabriquer une queue pour être digne de sa royauté. Et il a réussi à faire une très belle queue.",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      },
+      {
+        "paragraph": 3,
+        "textMg": "Hatramin’ izay dia nimenomenona kosa ny biby sisa rehetra fa mba te-hanan-drambo avokoa. Noho izany dia tapa-kevitra ny besinimaro fa ny liona sy ny orsa izay mpisakaiza no hanamboatra rambo ho an’ ny biby sisa rehetra.",
+        "textFr": "À partir de ce moment-là, tous les autres animaux se sont plaints, car ils voulaient tous avoir une queue. C'est pourquoi la majorité décida que le lion et l'ours, qui étaient amis, fabriqueraient des queues pour tous les autres animaux.",
+        "illustration": "https://images.unsplash.com/photo-1518135714426-c18f5ffb6f4d?w=400&h=250"
+      },
+      {
+        "paragraph": 4,
+        "textMg": "Vetivety foana dia vita ny rambo nilaina ary ny ekiorely no nitondra hafatra hilaza amin’ ny mponina an’ ala rehetra.",
+        "textFr": "Très vite, les queues nécessaires furent faites et l'écureuil fut celui qui apporta le message pour informer tous les habitants de la forêt.",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 5,
+        "textMg": "Nony tonga ny andro fizarana rambo dia samy nihazakazaka namonjy fotoana avokoa ny biby rehetra fa hisy lanonana lehibe amin’ izany. Koa samy niakanjo ny fitafiana hitondra mianjaika avokoa izy rehetra.",
+        "textFr": "Quand vint le jour de la distribution des queues, tous les animaux se sont précipités pour être à l'heure, car il y aurait une grande fête. Et ils portaient tous leurs plus beaux vêtements pour l'occasion.",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      },
+      {
+        "paragraph": 6,
+        "textMg": "Ny bitro kosa, hono, tsy mba taitra fa mbola natory tao an-davaka. Tsy naharitra ny rajako fa namoha azy nanao hoe: – Ndeha re hiaraka amiko! – Mandehana aloha ianao fa tratrako vetivety foana, hoy ny bitro.",
+        "textFr": "Le lièvre, cependant, ne s'est pas pressé, car il dormait encore dans son terrier. Le singe n'a pas pu attendre et l'a réveillé en disant : – Viens avec moi ! – Vas-y d'abord, je te rattraperai très vite, dit le lièvre.",
+        "illustration": "https://images.unsplash.com/photo-1518135714426-c18f5ffb6f4d?w=400&h=250"
+      },
+      {
+        "paragraph": 7,
+        "textMg": "Lasa ihany ny fotoana nefa mbola nilaozan’ ny bitro nanenjika lolo sy nioty voninkazo. Avy indray ny orana dia hoy ny eritreriny ny bitro: «Angamba hahemotra ny lanonana noho ny orana ka hody aho aloha. »",
+        "textFr": "Le temps passa, mais le lièvre était encore en train de chasser des papillons et de cueillir des fleurs. Il pleuvait à nouveau et le lièvre pensa : « Peut-être que la fête sera reportée à cause de la pluie, alors je vais rentrer à la maison d'abord. »",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      },
+      {
+        "paragraph": 8,
+        "textMg": "Nony nitsahatra ny orana vao mba niainga indray ny bitro, saingy teny an- dalana nahita ny amboadia nihazakazaka hamonjy lanonana izy ka niantso azy hoe: – Efa ho any ihany re ianao ka mba itondray rambo anankiray aho e! Dia lasa indray ny bitro niverina hatory tany an-tranony. Ny biby sisa rehetra kosa efa nikorana fatratra.",
+        "textFr": "Ce n'est que lorsque la pluie cessa que le lièvre repartit, mais en chemin, il vit le loup courir pour assister à la fête et il l'appela en disant : – Tu vas bientôt y être, alors apporte-moi une queue, s'il te plaît ! Et le lièvre retourna dormir dans son terrier. Tous les autres animaux faisaient déjà la fête avec enthousiasme.",
+        "illustration": "https://images.unsplash.com/photo-1579302636830-22c6e8e8e7a7?w=400&h=250"
+      },
+      {
+        "paragraph": 9,
+        "textMg": "Na dia tratra aoriana, tsy nahita ny fanombohana ny lano­nana aza ny amboadia dia mba nahazo rambo anankiroa ihany ka ny anankiray ho an’ ny tenany ary ilay faharoa ho an’ ny bitro. Nita rano ilay amboadia nony niverina ary nibolisatra teo amin’ ny tetezana ka lasan’ ny rano ilay rambo nentiny ho an’ ny bitro. Dia nanezaka nitomany ny bitro nony hitany fa tsy nitondra rambo ho azy ny amboadia.",
+        "textFr": "Même s'il était en retard et n'avait pas vu le début de la fête, le loup a tout de même réussi à obtenir deux queues : l'une pour lui-même et l'autre pour le lièvre. Le loup traversa une rivière en revenant et glissa sur le pont, et la queue qu'il apportait pour le lièvre fut emportée par le courant. Le lièvre se mit à pleurer lorsqu'il vit que le loup ne lui avait pas apporté de queue.",
+        "illustration": "https://images.unsplash.com/photo-1518135714426-c18f5ffb6f4d?w=400&h=250"
+      },
+      {
+        "paragraph": 10,
+        "textMg": "Ny saka sy ny alika kosa, hono, nifampidera rambo, samy nandoka tena ary farany dia raikitra ny ady. Nokaikerin’ ny alika indray mandeha ny rambon’ ny saka ka tapaka ary iny tapaky ny rambon-tsaka iny no nihazakazahan’ ny bitro nentiny nandositra mba ho azy. Dia izany, hono, no nahatonga ny bitro tsy hanana afa-tsy rambo kely sady fohy, fa noho ny hakamoany dia voatery hihafy izy ka tapa-drambon-tsaka no iny mba hanaovany iny. Angano Tetsy sy Teroa",
+        "textFr": "Le chat et le chien, dit-on, se vantaient de leurs queues, chacun se flattant, et finalement une bagarre éclata. Le chien mordit une fois la queue du chat et elle se cassa. Et c'est ce morceau de queue de chat que le lièvre s'empressa de prendre et s'enfuit avec pour qu'il soit sien. C'est pourquoi, dit-on, le lièvre n'a qu'une petite queue courte, car à cause de sa paresse, il a été obligé de se contenter de ce morceau de queue de chat. Conte de ci de là.",
+        "illustration": "https://images.unsplash.com/photo-1543852786-1cf662423c8e?w=400&h=250"
+      }
+    ],
+    "moral": {
+      "textMg": "Ny angano dia mampianatra fa ny hakamoana dia mety hitarika ho amin'ny fatiantoka sy ny fahavakisana, ary ny asa mafy sy ny fikirizana no mitondra soa.",
+      "textFr": "Ce conte enseigne que la paresse peut entraîner des pertes et des revers, tandis que le travail acharné et la persévérance apportent de bons résultats."
+    },
+    "audioUrlFr": "https://res.cloudinary.com/dhe585mze/video/upload/v1788024445/kanto/audio/contes/ny-bitro-sy-ny-rambony-12-fr.wav"
+  }
+]

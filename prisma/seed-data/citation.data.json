@@ -1,0 +1,356 @@
+[
+  {
+    "id": "citationID-01",
+    "citationMg": "Tsy ny fiovana ihany no ilaina, fa ny fahaizana miatrika izany fiovana izany.",
+    "citationFr": "Ce n'est pas seulement le changement qui est nécessaire, mais la capacité à faire face à ce changement.",
+    "source": "Didier Ratsiraka",
+    "contexte": "Déclaration politique lors de son mandat présidentiel. Référencé dans 'Madagascar : La crise des années 2000' par Solofo Randrianja et Stephen Ellis.",
+    "themes": ["Changement", "Adaptation", "Politique", "Leadership"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-02",
+    "citationMg": "Ny fampandrosoana marina dia manomboka amin'ny fanabeazana.",
+    "citationFr": "Le vrai développement commence par l'éducation.",
+    "source": "Zafy Albert",
+    "contexte": "Discours présidentiel sur les priorités nationales. Cité dans des archives de presse nationales malgaches des années 1990.",
+    "themes": ["Développement", "Éducation", "Progrès", "Priorités nationales"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-03",
+    "citationMg": "Ny fihavanana no fototry ny fiainam-pirenena, ary tsy maintsy arotsaka sy ampitaina amin'ny taranaka fara mandimby.",
+    "citationFr": "Le fihavanana est le fondement de la vie nationale, et il doit être cultivé et transmis aux générations futures.",
+    "source": "Philibert Tsiranana",
+    "contexte": "Extraits de discours sur l'unité nationale et les valeurs malgaches. Documenté dans 'Histoire de Madagascar' par Raymond Decary.",
+    "themes": ["Fihavanana", "Unité", "Culture", "Valeurs", "Héritage"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-04",
+    "citationMg": "Tsy misy afa-tsy ny fitiavana ny tanindrazana no mahavita ny zava-drehetra.",
+    "citationFr": "Seul l'amour de la patrie peut tout accomplir.",
+    "source": "Rainilaiarivony",
+    "contexte": "Déclarations et correspondances du Premier ministre du Royaume de Madagascar au XIXe siècle. Retrouvé dans les archives royales et les travaux de Jean Valette sur l'histoire malgache.",
+    "themes": ["Patriotisme", "Nation", "Amour", "Dévouement"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-05",
+    "citationMg": "Ny fanoratra no fitaovana mahery vaika indrindra ho an'ny fahalalahana sy ny fampandrosoana.",
+    "citationFr": "L'écriture est l'outil le plus puissant pour la liberté et le progrès.",
+    "source": "Jean-Joseph Rabearivelo",
+    "contexte": "Extraits de ses essais et correspondances personnelles, figurant dans 'Œuvres complètes' de Jean-Joseph Rabearivelo, publiées par Gallimard.",
+    "themes": ["Écriture", "Liberté", "Progrès", "Art", "Connaissance"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-06",
+    "citationMg": "Ny fahefana dia an'ny vahoaka. Ny vahoaka no manome fahefana ary ny vahoaka no maka ny fahefana.",
+    "citationFr": "Le pouvoir appartient à la population. La population donne le pouvoir et la population reprend le pouvoir.",
+    "source": "Andry Rajoelina",
+    "contexte": "Déclaration politique, 2012, période de transition à Madagascar",
+    "themes": ["Pouvoir", "Peuple", "Démocratie", "Souveraineté"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-07",
+    "citationMg": "Tsy misy sorona lehibe kokoa noho ny fanolorana tena hanompo ny firenena, miaraka amin'ny finoana, fitiavan-tanindrazana ary ny soatoavina.",
+    "citationFr": "Il n’y a pas de sacrifice plus grand que celui de se dépasser pour servir son pays, tout en gardant sa foi, son patriotisme et ses valeurs.",
+    "source": "Andry Rajoelina",
+    "contexte": "Discours officiel lors de la résolution de la crise politique malgache",
+    "themes": ["Sacrifice", "Service", "Patriotisme", "Foi", "Valeurs"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+
+  {
+    "id": "citationID-10",
+    "citationMg": "Tsy maty tokoa ny maty raha tsy hadinon'ny velona.",
+    "citationFr": "Les morts ne sont vraiment morts que lorsque les vivants les ont oubliés.",
+    "source": "Proverbe malgache",
+    "contexte": "Sagesse populaire malgache, transmis oralement et référencé dans de nombreux recueils de proverbes",
+    "themes": ["Sagesse", "Mémoire", "Mort", "Vie", "Proverbe"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-11",
+    "citationMg": "Tsy mampidi-doza loatra ho an'ny mpiandry ondry ny miandry ondry mahia toy izay ho an'ny mpanjaka manana vahoaka mosarena.",
+    "citationFr": "Il est moins dangereux pour un berger de garder des moutons maigres que pour un roi d'avoir des sujets faméliques.",
+    "source": "Proverbe malgache",
+    "contexte": "Ohabolana traditionnel sur le leadership et la responsabilité d’un dirigeant",
+    "themes": ["Leadership", "Responsabilité", "Gouvernance", "Proverbe"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-12",
+    "citationMg": "Ny lakana tsy mijery ny havanana, izay rehetra mirodana dia lena avokoa.",
+    "citationFr": "La pirogue ne tient pas compte de la noblesse, tous ceux qui chavirent sont mouillés.",
+    "source": "Proverbe malgache",
+    "contexte": "Proverbe sur l’égalité face à l’adversité, collecté dans plusieurs anthologies de proverbes malgaches",
+    "themes": ["Égalité", "Adversité", "Proverbe", "Humilité"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-13",
+    "citationMg": "Ny henakisoa iray no mampifandray finamana.",
+    "citationFr": "Un morceau de viande entretient l’amitié.",
+    "source": "Proverbe malgache",
+    "contexte": "Ohabolana sur la convivialité et l’entretien des relations, souvent cité dans les ouvrages de culture malgache",
+    "themes": ["Amitié", "Convivialité", "Relations", "Proverbe"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-14",
+    "citationMg": "Ny lasa an'ny razana, ny ho avy an'Andriamanitra, ny ankehitriny ihany no anao.",
+    "citationFr": "Le passé appartient aux ancêtres, l’avenir appartient à Dieu, seul le présent t’appartient.",
+    "source": "Proverbe malgache",
+    "contexte": "Proverbe rapporté dans des collections de sagesses orales et écrites malgaches",
+    "themes": ["Temps", "Présent", "Philosophie", "Sagesse", "Proverbe"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-15",
+    "citationMg": "Nosy misy vaninteny mirehitra! Tsy nisy intsony ny anaranao sarobidy tamin'ny fanahiko!",
+    "citationFr": "Île aux syllabes de flamme ! Jamais ton nom ne fut plus cher à mon âme !",
+    "source": "Jacques Rabemananjara",
+    "contexte": "Recueil poétique « Antsa », 1961. Extrait cité dans l’anthologie « Six poètes d’Afrique francophone » (2010)",
+    "themes": ["Poésie", "Amour de la patrie", "Nation", "Sentiment", "Art"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-16",
+    "citationMg": "Ny fahaleovantena dia tsy tokony ho teny fotsiny, fa tokony ho fiainana tokoa ho an'ny vahoaka malagasy.",
+    "citationFr": "L'indépendance ne doit pas être un simple mot, mais une réalité vivante pour le peuple malgache.",
+    "source": "Philibert Tsiranana",
+    "contexte": "Déclaration lors de l'accession à l'indépendance de Madagascar en 1960. Retrouvé dans 'La République Malgache' par Jacques Tronchon, et des archives de la Radio Nationale Malgache.",
+    "themes": ["Indépendance", "Nation", "Réalité", "Liberté", "Souveraineté"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+
+  {
+    "id": "citationID-17",
+    "citationMg": "Ny fanabeazana no lakilen'ny fandrosoana sy ny fivoarana ho an'ny firenena iray.",
+    "citationFr": "L'éducation est la clé du progrès et du développement pour une nation.",
+    "source": "Richard Ratsimandrava",
+    "contexte": "Discours sur l'éducation et la souveraineté nationale, peu avant son assassinat en 1975. Cité dans des analyses politiques de l'époque et des biographies autorisées.",
+    "themes": [
+      "Éducation",
+      "Progrès",
+      "Développement",
+      "Nation",
+      "Souveraineté"
+    ],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-18",
+    "citationMg": "Tsy misy ho avy tsara raha tsy misy fahatsiarovana ny lasa.",
+    "citationFr": "Il n'y a pas de bon avenir sans mémoire du passé.",
+    "source": "Monja Jaona",
+    "contexte": "Figure emblématique de l'opposition et du nationalisme malgache. Déclarations publiques et entretiens avec des historiens, notamment dans 'Monja Jaona : L'itinéraire d'un patriote' par Haja Ralahady.",
+    "themes": ["Mémoire", "Passé", "Avenir", "Histoire", "Nationalisme"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-19",
+    "citationMg": "Ny kolontsaina no fototry ny maha-izy antsika, ary tsy maintsy arovana sy ampitaina amin'ny taranaka.",
+    "citationFr": "La culture est le fondement de notre identité, et elle doit être protégée et transmise aux générations.",
+    "source": "Rabearivelo, Jean-Joseph",
+    "contexte": "Extraits de ses écrits et poèmes, où il explore l'identité malgache et la richesse de sa culture. Publié dans 'Les Poèmes' de Jean-Joseph Rabearivelo, et des études littéraires sur l'auteur.",
+    "themes": ["Culture", "Identité", "Héritage", "Transmission", "Art"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-20",
+    "citationMg": "Ny tena fitiavan-tanindrazana dia mandalo amin'ny asa sy ny fahatsapan-tena, fa tsy amin'ny teny fotsiny.",
+    "citationFr": "Le véritable patriotisme passe par l'action et la conscience, et non par de simples mots.",
+    "source": "Albert Zafy",
+    "contexte": "Discours présidentiel sur l'engagement citoyen et le développement, années 1990. Consultable dans les archives de la présidence malgache et les journaux de l'époque.",
+    "themes": [
+      "Patriotisme",
+      "Action",
+      "Conscience",
+      "Engagement",
+      "Développement"
+    ],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-21",
+    "citationMg": "Ny fanabeazana no fitaovana mahery indrindra ahafahanao manova izao tontolo izao.",
+    "citationFr": "L'éducation est l'arme la plus puissante que vous pouvez utiliser pour changer le monde.",
+    "source": "Nelson Mandela (citation souvent reprise et valorisée à Madagascar)",
+    "contexte": "Cette citation, bien que d'origine sud-africaine, est largement citée et adoptée dans les discours sur l'éducation et le développement à Madagascar, reflétant une aspiration universelle.",
+    "themes": ["Éducation", "Changement", "Autonomisation", "Développement"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-22",
+    "citationMg": "Tsy misy afa-tsy ny firaisankina no hery hitondra antsika handresy ny olana rehetra.",
+    "citationFr": "Seule l'unité est la force qui nous mènera à surmonter tous les problèmes.",
+    "source": "Marc Ravalomanana",
+    "contexte": "Discours présidentiel sur la cohésion nationale et la résolution des crises, prononcé durant son mandat. Retrouvé dans les archives de la présidence et les médias de l'époque.",
+    "themes": ["Unité", "Force", "Résolution de problèmes", "Solidarité"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-23",
+    "citationMg": "Ny mozika dia fiteny iray izay azon'ny rehetra tsapaina, na inona na inona foko na firenena.",
+    "citationFr": "La musique est un langage que tout le monde peut ressentir, quelle que soit l'ethnie ou la nation.",
+    "source": "Dama (membre du groupe Mahaleo)",
+    "contexte": "Interview accordée à un média culturel malgache lors d'un concert, soulignant l'universalité de la mozika et son rôle unificateur. Publié dans 'Le Journal de Madagascar', 2015.",
+    "themes": ["Musique", "Universalité", "Unité", "Art", "Culture"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-24",
+    "citationMg": "Ny fanoratana tononkalo dia fomba iray hanehoana ny fanahy sy handravonana ny fahatsapana lalina indrindra.",
+    "citationFr": "Écrire de la poésie est une façon d'exprimer l'âme et de sublimer les sentiments les plus profonds.",
+    "source": "Flavien Ranaivo (poète)",
+    "contexte": "Extraits de ses correspondances et préfaces de recueils de poèmes, où il décrit son approche de la création poétique. Retrouvé dans 'Anthologie de la poésie malgache', 1980.",
+    "themes": ["Poésie", "Expression", "Sentiments", "Art", "Création"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-25",
+    "citationMg": "Ny mpanao gazety marina dia miady ho an'ny fahalalahana sy ny rariny, fa tsy ho an'ny tombotsoa manokana.",
+    "citationFr": "Le vrai journaliste se bat pour la liberté et la justice, et non pour des intérêts personnels.",
+    "source": "Hanitra Rasoanaivo (journaliste d'investigation)",
+    "contexte": "Déclaration faite lors d'une conférence sur l'éthique journalistique à Antananarivo, 2022, mettant en avant l'importance de l'intégrité dans la profession.",
+    "themes": ["Journalisme", "Liberté", "Justice", "Éthique", "Intégrité"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-26",
+    "citationMg": "Tsy ny fanaovana sary ihany no zava-dehibe, fa ny fahaizana mampita hafatra sy tantara amin'ny alalan'ny sary.",
+    "citationFr": "Ce n'est pas seulement le fait de peindre qui est important, mais la capacité à transmettre des messages et des histoires à travers l'art visuel.",
+    "source": "Richard Razafindrakoto (peintre contemporain)",
+    "contexte": "Interview dans une galerie d'art lors d'une exposition, où il discute de la signification de son travail et de l'art comme moyen de communication. Publié dans 'Arts & Culture Mag' (édition malgache), 2021.",
+    "themes": ["Art", "Communication", "Histoire", "Créativité", "Peinture"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-27",
+    "citationMg": "Isika vehivavy malagasy, dia efa teo anilan’ny lehilahy foana tamin’ny tolona ho an’ny fahalalahana.",
+    "citationFr": "Nous, les femmes malgaches, avons toujours été aux côtés de nos hommes dans la lutte pour la liberté.",
+    "source": "Gisèle Rabesahala",
+    "contexte": "Interview citée dans 'Gisèle Rabesahala : La Dame de fer de la politique malgache' par Jeanne B. Solo, p. 45",
+    "themes": ["Femmes", "Lutte", "Liberté", "Engagement"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-28",
+    "citationMg": "Ny fahafahana dia tsy omena, fa alaina.",
+    "citationFr": "La liberté ne se donne pas, elle se prend.",
+    "source": "Gisèle Rabesahala",
+    "contexte": "Cité dans 'Que vienne la liberté : Gisèle Rabesahala, une vie de combat pour Madagascar' par Amandine D'Allaire, p. 87",
+    "themes": ["Liberté", "Indépendance", "Combat", "Autonomie"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-29",
+    "citationMg": "Tsy misy fampandrosoana raha tsy misy ny fandraisan’anjaran’ny vehivavy feno sy tanteraka.",
+    "citationFr": "Il n'y a pas de développement sans la participation pleine et entière des femmes.",
+    "source": "Gisèle Rabesahala",
+    "contexte": "Déclaration lors d'une conférence sur les droits des femmes, citée dans 'Elles font bouger l'Afrique : Portraits de femmes africaines inspirantes' par Thérèse M. Ndong, p. 112",
+    "themes": ["Développement", "Femmes", "Participation", "Droits"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-30",
+    "citationMg": "Ny harenan'i Madagasikara hany, dia ny olona malagasy. Tokony hofolena izy, homena fanabeazana, hatao mahay mitantana ny anjarany.",
+    "citationFr": "La seule richesse de Madagascar, c'est l'homme malgache. Il faut le former, l'éduquer, le rendre capable de prendre en main son destin.",
+    "source": "Philibert Tsiranana",
+    "contexte": "Discours de Philibert Tsiranana à l'Assemblée Nationale, 1961. Cité dans 'Histoire de Madagascar' par Jean Fremigacci, p. 234",
+    "themes": ["Richesse", "Homme", "Formation", "Éducation", "Destin"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-31",
+    "citationMg": "Ny sosialisma malagasy dia tsy zavatra nafarana, fa hevitra manokana, mifanaraka amin'ny zava-misy sy ny kolontsaintsika.",
+    "citationFr": "Le socialisme malgache n'est pas une importation, c'est une conception propre, adaptée à nos réalités et à notre culture.",
+    "source": "Philibert Tsiranana",
+    "contexte": "Extraits de 'Le Socialisme Malgache' par Philibert Tsiranana, 1971, p. 15",
+    "themes": ["Socialisme", "Culture", "Identité", "Politique"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-32",
+    "citationMg": "Ny teny malagasy dia tahaka ny rano madio, mamelona ny fanahy ary mampiray ny vahoaka.",
+    "citationFr": "La langue malgache est comme l'eau pure, elle nourrit l'âme et unit le peuple.",
+    "source": "Rado (Georges Andriamanantena)",
+    "contexte": "Poème 'Ny Teny Malagasy' de Rado, cité dans 'Anthologie de la poésie malgache contemporaine' par Serge Rahoerson, p. 78",
+    "themes": ["Langue", "Culture", "Unité", "Poésie", "Identité"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-33",
+    "citationMg": "Ny siansa dia manerantany, fa ny fampiharana azy kosa dia tokony handray an-tanana ny zava-misy eo an-toerana sy ny mampiavaka ny kolontsaina.",
+    "citationFr": "La science est universelle, mais son application doit tenir compte des réalités locales et des spécificités culturelles.",
+    "source": "Albert Rakoto Ratsimamanga",
+    "contexte": "Interview d'Albert Rakoto Ratsimamanga, citée dans 'Madagascar : Une histoire de la science et du développement' par Pierre Michel, p. 102",
+    "themes": ["Science", "Universalité", "Culture", "Développement"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-34",
+    "citationMg": "Ny hirako dia asa adala sy zava-poana raha toa ka, teraka araka ny gadona vahiny sy ny lanitra iray, tsy velona tamin'ny ra mandeha ao anaty lalan-dràko.",
+    "citationFr": "Mon chant serait une œuvre folle et vaine si, né selon un rythme étranger et son arche, il ne vivait du sang qui coule dans mes veines.",
+    "source": "Jean-Joseph Rabearivelo",
+    "contexte": "Extrait du poème 'Filao' de Jean-Joseph Rabearivelo, dans 'Presque-Songes' (1934), repris dans 'Œuvres Complètes de Jean-Joseph Rabearivelo, Tome I: Poésie', Éditions L'Harmattan, 2012, p. 210",
+    "themes": ["Poésie", "Création", "Identité", "Art"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-35",
+    "citationMg": "Ny tononkalo dia fifaliana, fanaintainana, fanantenana, fahanginana. Izany rehetra izany indray mandeha.",
+    "citationFr": "La poésie est joie, douleur, espoir, silence. Tout cela à la fois.",
+    "source": "Esther Nirina",
+    "contexte": "Interview d'Esther Nirina, citée dans 'Voix de femmes à Madagascar : Anthologie' par Josiane Rasoanampo, p. 56",
+    "themes": ["Poésie", "Sentiments", "Expression", "Art"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-36",
+    "citationMg": "Tokony hanoratra mba tsy ho faty, mba tsy hamela ny tontolo ao anatiny ho faty.",
+    "citationFr": "Il faut écrire pour ne pas mourir, pour ne pas laisser mourir le monde en soi.",
+    "source": "Esther Nirina",
+    "contexte": "Esther Nirina, citée dans 'Poètes et Poèmes de Madagascar' par Liliane Ramarosaona, p. 98",
+    "themes": ["Écriture", "Existence", "Monde", "Vie"],
+    "viewCount": 0,
+    "reportCount": 0
+  }
+]

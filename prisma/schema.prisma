@@ -12,22 +12,25 @@ datasource db {
 // ======================================================
 
 enum CategoryType {
-  PROVERBE     // Ohabolana
-  EXPRESSION   // Oha-pitenenana
-  DICTON       // Fomba fiteny / Fady
+  PROVERBE // Ohabolana
+  EXPRESSION // Oha-pitenenana
+  DICTON // Fomba fiteny / Fady
+  CITATION
+  CONTE
+  KABARY
 }
 
 enum ContentStatus {
-  DRAFT        // Brouillon
-  PUBLISHED    // Publié et visible
-  ARCHIVED     // Archivé
+  DRAFT // Brouillon
+  PUBLISHED // Publié et visible
+  ARCHIVED // Archivé
 }
 
 enum DifficultyLevel {
-  EASY         // Courant / Débutant
-  MEDIUM       // Intermédiaire
-  HARD         // Littéraire / Ancien
-  EXPERT       // Expert / Spécialiste
+  EASY // Courant / Débutant
+  MEDIUM // Intermédiaire
+  HARD // Littéraire / Ancien
+  EXPERT // Expert / Spécialiste
 }
 
 enum UserRole {
@@ -43,11 +46,19 @@ enum SubscriptionTier {
 }
 
 enum ReportReason {
-  TRANSLATION_ERROR   // Erreur de traduction
-  TYPO                // Faute d'orthographe
-  INCORRECT_MEANING   // Sens inexact
-  INAPPROPRIATE       // Contenu inapproprié
-  OTHER               // Autre
+  TRANSLATION_ERROR // Erreur de traduction
+  TYPO // Faute d'orthographe
+  INCORRECT_MEANING // Sens inexact
+  INAPPROPRIATE // Contenu inapproprié
+  OTHER // Autre
+}
+
+enum CivicSubCategory {
+  INSTITUTION
+  DROITS_VOTE
+  ECOLOGIE_CIVISME
+  SYMBOLES_HISTOIRE
+  VIVRE_ENSEMBLE
 }
 
 // ======================================================
@@ -69,51 +80,58 @@ model User {
   updatedAt     DateTime         @updatedAt
 
   // Better Auth relations
-  sessions      Session[]
-  accounts      Account[]
+  sessions Session[]
+  accounts Account[]
 
   // Relations d'activité
-  favorites     Favorite[]
-  likes         Like[]
-  viewHistories ViewHistory[]
-  reports       ContentReport[]
-  contributions Contribution[]
-  notifications Notification[]
+  favorites         Favorite[]
+  likes             Like[]
+  viewHistories     ViewHistory[]
+  reports           ContentReport[]
+  contributions        Contribution[]
+  contributionVotes    ContributionVote[]
+  contributionComments ContributionComment[]
+  notifications        Notification[]
+
+  // Progression & Gamification
+  progress       UserProgress?
+  gameProgress   GameProgression[]
+  xpTransactions XpTransaction[]
 
   @@map("users")
 }
 
 model Session {
-  id          String   @id @default(cuid())
-  expiresAt   DateTime
-  token       String   @unique
-  ipAddress   String?
-  userAgent   String?
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@map("sessions")
 }
 
 model Account {
-  id                    String   @id @default(cuid())
+  id                    String    @id @default(cuid())
   accountId             String
   providerId            String
   userId                String
-  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?  @db.Text
-  refreshToken          String?  @db.Text
-  idToken               String?  @db.Text
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?   @db.Text
+  refreshToken          String?   @db.Text
+  idToken               String?   @db.Text
   accessTokenExpiresAt  DateTime?
   refreshTokenExpiresAt DateTime?
   scope                 String?
   password              String?
   issuer                String?
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 
   @@index([userId])
   @@map("accounts")
@@ -130,26 +148,25 @@ model Verification {
   @@map("verifications")
 }
 
-
 // ======================================================
 // 3. TAXONOMIE (Thèmes & Régions de Madagascar)
 // ======================================================
 
 model Theme {
   id          String   @id @default(cuid())
-  nameMg      String   // Ex: "Fihavanana", "Fahendrena", "Fianakaviana"
-  nameFr      String   // Ex: "Solidarité", "Sagesse", "Famille"
+  nameMg      String // Ex: "Fihavanana", "Fahendrena", "Fianakaviana"
+  nameFr      String // Ex: "Solidarité", "Sagesse", "Famille"
   slug        String   @unique
   description String?  @db.Text
-  icon        String?  // Nom de l'icône (Ionicons)
-  color       String?  // Code couleur hexa (ex: "#E0533C")
+  icon        String? // Nom de l'icône (Ionicons)
+  color       String? // Code couleur hexa (ex: "#E0533C")
   createdAt   DateTime @default(now())
 
   // Relations Many-to-Many
-  items       MalagasyItemTheme[]
-  citations   CitationTheme[]
-  contes      ConteTheme[]
-  kabaries    KabaryTheme[]
+  items     MalagasyItemTheme[]
+  citations CitationTheme[]
+  contes    ConteTheme[]
+  kabaries  KabaryTheme[]
 
   @@map("themes")
 }
@@ -157,11 +174,11 @@ model Theme {
 model Region {
   id          String   @id @default(cuid())
   name        String   @unique // Ex: "Merina", "Betsimisaraka", "Sakalava", "Antandroy"
-  capital     String?  // Ex: "Toamasina", "Toliara"
+  capital     String? // Ex: "Toamasina", "Toliara"
   description String?  @db.Text
   createdAt   DateTime @default(now())
 
-  variants    DialectVariant[]
+  variants DialectVariant[]
 
   @@map("regions")
 }
@@ -171,32 +188,32 @@ model Region {
 // ======================================================
 
 model MalagasyItem {
-  id              String              @id @default(cuid())
-  slug            String              @unique // Ex: "ny-fihavanana-tahaka-ny-ketsa"
-  malagasy        String              @db.Text
-  french          String              @db.Text
-  meaning         String              @db.Text
-  example         String?             @db.Text
-  phonetic        String?             // Aide à la prononciation
-  audioUrl        String?             // Fichier audio Cloudinary
+  id       String  @id @default(cuid())
+  slug     String  @unique // Ex: "ny-fihavanana-tahaka-ny-ketsa"
+  malagasy String  @db.Text
+  french   String  @db.Text
+  meaning  String  @db.Text
+  example  String? @db.Text
+  phonetic String? // Aide à la prononciation
+  audioUrl String? // Fichier audio Cloudinary
 
-  category        CategoryType
-  difficulty      DifficultyLevel     @default(EASY)
-  status          ContentStatus       @default(PUBLISHED)
-  isPremium       Boolean             @default(false)
-  isFeatured      Boolean             @default(false)
+  category   CategoryType
+  difficulty DifficultyLevel @default(EASY)
+  status     ContentStatus   @default(PUBLISHED)
+  isPremium  Boolean         @default(false)
+  isFeatured Boolean         @default(false)
 
   // Origines libres ou traditionnelles
-  origins         String[]            @default([])
+  origins String[] @default([])
 
   // Compteurs & Statistiques
-  viewCount       Int                 @default(0)
-  likesCount      Int                 @default(0)
-  shareCount      Int                 @default(0)
-  reportCount     Int                 @default(0)
+  viewCount   Int @default(0)
+  likesCount  Int @default(0)
+  shareCount  Int @default(0)
+  reportCount Int @default(0)
 
-  createdAt       DateTime            @default(now())
-  updatedAt       DateTime            @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relations
   themes          MalagasyItemTheme[]
@@ -225,19 +242,19 @@ model MalagasyItemTheme {
 }
 
 model DialectVariant {
-  id          String       @id @default(cuid())
-  dialectName String       // Ex: "Betsimisaraka", "Tsimihety"
-  text        String       @db.Text
+  id          String  @id @default(cuid())
+  dialectName String // Ex: "Betsimisaraka", "Tsimihety"
+  text        String  @db.Text
   audioUrl    String?
-  notes       String?      @db.Text
+  notes       String? @db.Text
 
-  itemId      String
-  item        MalagasyItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId String
+  item   MalagasyItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
-  regionId    String?
-  region      Region?      @relation(fields: [regionId], references: [id], onDelete: SetNull)
+  regionId String?
+  region   Region? @relation(fields: [regionId], references: [id], onDelete: SetNull)
 
-  createdAt   DateTime     @default(now())
+  createdAt DateTime @default(now())
 
   @@index([itemId])
   @@index([regionId])
@@ -249,13 +266,13 @@ model DialectVariant {
 // ======================================================
 
 model Author {
-  id        String     @id @default(cuid())
-  name      String     @unique // Ex: "Jean-Joseph Rabearivelo", "Didier Ratsiraka"
-  bio       String?    @db.Text
+  id        String   @id @default(cuid())
+  name      String   @unique // Ex: "Jean-Joseph Rabearivelo", "Didier Ratsiraka"
+  bio       String?  @db.Text
   birthYear Int?
   deathYear Int?
   avatarUrl String?
-  createdAt DateTime   @default(now())
+  createdAt DateTime @default(now())
 
   citations Citation[]
 
@@ -263,31 +280,32 @@ model Author {
 }
 
 model Citation {
-  id          String          @id @default(cuid())
-  citationMg  String          @db.Text
-  citationFr  String          @db.Text
-  sourceName  String          // Nom de la source ou ouvrage
-  contexte    String?         @db.Text
-  audioUrl    String?
-  status      ContentStatus   @default(PUBLISHED)
-  isPremium   Boolean         @default(false)
+  id         String        @id @default(cuid())
+  citationMg String        @db.Text
+  citationFr String        @db.Text
+  sourceName String // Nom de la source ou ouvrage
+  contexte   String?       @db.Text
+  audioUrl   String?
+  status     ContentStatus @default(PUBLISHED)
+  isPremium  Boolean       @default(false)
 
   // Statistiques
-  viewCount   Int             @default(0)
-  likesCount  Int             @default(0)
-  shareCount  Int             @default(0)
-  reportCount Int             @default(0)
+  viewCount   Int @default(0)
+  likesCount  Int @default(0)
+  shareCount  Int @default(0)
+  reportCount Int @default(0)
 
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  authorId    String?
-  author      Author?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  authorId String?
+  author   Author? @relation(fields: [authorId], references: [id], onDelete: SetNull)
 
-  themes      CitationTheme[]
-  favorites   Favorite[]
-  likes       Like[]
-  reports     ContentReport[]
+  themes        CitationTheme[]
+  favorites     Favorite[]
+  likes         Like[]
+  viewHistories ViewHistory[]
+  reports       ContentReport[]
 
   @@index([authorId])
   @@index([status])
@@ -316,7 +334,7 @@ model DailyProverb {
   itemId    String
   item      MalagasyItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime     @default(now())
+  createdAt DateTime @default(now())
 
   @@index([date])
   @@map("daily_proverbs")
@@ -327,50 +345,99 @@ model DailyProverb {
 // ======================================================
 
 model Favorite {
-  id         String        @id @default(cuid())
-  userId     String
-  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  itemId     String?
-  item       MalagasyItem? @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId String?
+  item   MalagasyItem? @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
   citationId String?
-  citation   Citation?     @relation(fields: [citationId], references: [id], onDelete: Cascade)
+  citation   Citation? @relation(fields: [citationId], references: [id], onDelete: Cascade)
 
-  createdAt  DateTime      @default(now())
+  conteId String?
+  conte   Conte?  @relation(fields: [conteId], references: [id], onDelete: Cascade)
+
+  kabaryId String?
+  kabary   Kabary? @relation(fields: [kabaryId], references: [id], onDelete: Cascade)
+
+  poesieId String?
+  poesie   Poesie? @relation(fields: [poesieId], references: [id], onDelete: Cascade)
+
+  recitationId String?
+  recitation   Recitation? @relation(fields: [recitationId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
 
   @@unique([userId, itemId])
   @@unique([userId, citationId])
+  @@unique([userId, conteId])
+  @@unique([userId, kabaryId])
+  @@unique([userId, poesieId])
+  @@unique([userId, recitationId])
   @@index([userId])
   @@map("favorites")
 }
 
 model Like {
-  id         String        @id @default(cuid())
-  userId     String
-  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  itemId     String?
-  item       MalagasyItem? @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId String?
+  item   MalagasyItem? @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
   citationId String?
-  citation   Citation?     @relation(fields: [citationId], references: [id], onDelete: Cascade)
+  citation   Citation? @relation(fields: [citationId], references: [id], onDelete: Cascade)
 
-  createdAt  DateTime      @default(now())
+  conteId String?
+  conte   Conte?  @relation(fields: [conteId], references: [id], onDelete: Cascade)
+
+  kabaryId String?
+  kabary   Kabary? @relation(fields: [kabaryId], references: [id], onDelete: Cascade)
+
+  poesieId String?
+  poesie   Poesie? @relation(fields: [poesieId], references: [id], onDelete: Cascade)
+
+  recitationId String?
+  recitation   Recitation? @relation(fields: [recitationId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
 
   @@unique([userId, itemId])
   @@unique([userId, citationId])
+  @@unique([userId, conteId])
+  @@unique([userId, kabaryId])
+  @@unique([userId, poesieId])
+  @@unique([userId, recitationId])
   @@index([userId])
   @@map("likes")
 }
 
 model ViewHistory {
-  id       String       @id @default(cuid())
-  userId   String
-  user     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  itemId   String
-  item     MalagasyItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
-  viewedAt DateTime     @default(now())
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  itemId String?
+  item   MalagasyItem? @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  citationId String?
+  citation   Citation? @relation(fields: [citationId], references: [id], onDelete: Cascade)
+
+  conteId String?
+  conte   Conte?  @relation(fields: [conteId], references: [id], onDelete: Cascade)
+
+  kabaryId String?
+  kabary   Kabary? @relation(fields: [kabaryId], references: [id], onDelete: Cascade)
+
+  poesieId String?
+  poesie   Poesie? @relation(fields: [poesieId], references: [id], onDelete: Cascade)
+
+  recitationId String?
+  recitation   Recitation? @relation(fields: [recitationId], references: [id], onDelete: Cascade)
+
+  viewedAt DateTime @default(now())
 
   @@index([userId, viewedAt])
   @@map("view_histories")
@@ -381,44 +448,98 @@ model ViewHistory {
 // ======================================================
 
 model ContentReport {
-  id          String        @id @default(cuid())
+  id          String       @id @default(cuid())
   reason      ReportReason
-  description String?       @db.Text
-  resolved    Boolean       @default(false)
+  description String?      @db.Text
+  resolved    Boolean      @default(false)
 
-  userId      String?
-  user        User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-  itemId      String?
-  item        MalagasyItem? @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId String?
+  item   MalagasyItem? @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
-  citationId  String?
-  citation    Citation?     @relation(fields: [citationId], references: [id], onDelete: Cascade)
+  citationId String?
+  citation   Citation? @relation(fields: [citationId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime      @default(now())
+  conteId String?
+  conte   Conte?  @relation(fields: [conteId], references: [id], onDelete: Cascade)
+
+  kabaryId String?
+  kabary   Kabary? @relation(fields: [kabaryId], references: [id], onDelete: Cascade)
+
+  poesieId String?
+  poesie   Poesie? @relation(fields: [poesieId], references: [id], onDelete: Cascade)
+
+  recitationId String?
+  recitation   Recitation? @relation(fields: [recitationId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
 
   @@index([resolved])
   @@map("content_reports")
 }
 
 model Contribution {
-  id        String        @id @default(cuid())
-  category  CategoryType
-  textMg    String        @db.Text
-  textFr    String        @db.Text
-  meaning   String        @db.Text
-  region    String?
+  id       String        @id @default(cuid())
+  category CategoryType
+  textMg   String        @db.Text
+  textFr   String        @db.Text
+  meaning  String        @db.Text
+  region   String?
   status    ContentStatus @default(DRAFT)
+  score     Int           @default(0)
+  viewCount Int           @default(0)
 
-  userId    String
-  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  votes    ContributionVote[]
+  comments ContributionComment[]
 
   @@index([userId])
   @@index([status])
   @@map("contributions")
+}
+
+model ContributionVote {
+  id             String       @id @default(cuid())
+  value          Int          // 1 pour Upvote, -1 pour Downvote
+  
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  contributionId String
+  contribution   Contribution @relation(fields: [contributionId], references: [id], onDelete: Cascade)
+  
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([userId, contributionId])
+  @@index([contributionId])
+  @@map("contribution_votes")
+}
+
+model ContributionComment {
+  id             String       @id @default(cuid())
+  content        String       @db.Text
+  
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  contributionId String
+  contribution   Contribution @relation(fields: [contributionId], references: [id], onDelete: Cascade)
+  
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([contributionId])
+  @@index([userId])
+  @@index([createdAt])
+  @@map("contribution_comments")
 }
 
 // ======================================================
@@ -426,41 +547,47 @@ model Contribution {
 // ======================================================
 
 model Conte {
-  id              String            @id @default(cuid())
-  slug            String            @unique
-  title           String
-  titleFr         String
-  subtitle        String?
-  subtitleFr      String?
-  author          String?           @default("Angano Malagasy")
-  source          String?
-  illustration    String?
-  status          ContentStatus     @default(PUBLISHED)
-  isFeatured      Boolean           @default(false)
-  isPremium       Boolean           @default(false)
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  title        String
+  titleFr      String
+  subtitle     String?
+  subtitleFr   String?
+  author       String?       @default("Angano Malagasy")
+  source       String?
+  illustration String?
+  status       ContentStatus @default(PUBLISHED)
+  isFeatured   Boolean       @default(false)
+  isPremium    Boolean       @default(false)
 
   // Morale de l'histoire
-  moralMg         String?           @db.Text
-  moralFr         String?           @db.Text
+  moralMg String? @db.Text
+  moralFr String? @db.Text
 
   // Audio haute définition généré par Google Gemini TTS
-  audioUrlMg      String?
-  audioUrlFr      String?
+  audioUrlMg String?
+  audioUrlFr String?
 
   // Identifiants de contes variantes
-  variantIds      String[]          @default([])
+  variantIds String[] @default([])
 
   // Compteurs & Statistiques
-  viewCount       Int               @default(0)
-  likesCount      Int               @default(0)
-  shareCount      Int               @default(0)
-  reportCount     Int               @default(0)
+  viewCount   Int @default(0)
+  likesCount  Int @default(0)
+  shareCount  Int @default(0)
+  reportCount Int @default(0)
 
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  paragraphs      ConteParagraph[]
-  themes          ConteTheme[]
+  paragraphs ConteParagraph[]
+  themes     ConteTheme[]
+
+  // Relations d'activité
+  favorites      Favorite[]
+  likes          Like[]
+  viewHistories  ViewHistory[]
+  contentReports ContentReport[]
 
   @@index([status])
   @@index([isFeatured])
@@ -469,16 +596,16 @@ model Conte {
 }
 
 model ConteParagraph {
-  id              String            @id @default(cuid())
+  id              String  @id @default(cuid())
   paragraphNumber Int
-  textMg          String            @db.Text
-  textFr          String            @db.Text
+  textMg          String  @db.Text
+  textFr          String  @db.Text
   illustration    String?
 
-  conteId         String
-  conte           Conte             @relation(fields: [conteId], references: [id], onDelete: Cascade)
+  conteId String
+  conte   Conte  @relation(fields: [conteId], references: [id], onDelete: Cascade)
 
-  createdAt       DateTime          @default(now())
+  createdAt DateTime @default(now())
 
   @@unique([conteId, paragraphNumber])
   @@index([conteId])
@@ -486,10 +613,10 @@ model ConteParagraph {
 }
 
 model ConteTheme {
-  conteId         String
-  themeId         String
-  conte           Conte             @relation(fields: [conteId], references: [id], onDelete: Cascade)
-  theme           Theme             @relation(fields: [themeId], references: [id], onDelete: Cascade)
+  conteId String
+  themeId String
+  conte   Conte  @relation(fields: [conteId], references: [id], onDelete: Cascade)
+  theme   Theme  @relation(fields: [themeId], references: [id], onDelete: Cascade)
 
   @@id([conteId, themeId])
   @@map("conte_themes")
@@ -500,43 +627,49 @@ model ConteTheme {
 // ======================================================
 
 model Kabary {
-  id                  String            @id @default(cuid())
-  slug                String            @unique
-  title               String
-  titleFr             String
-  subtitle            String?
-  subtitleFr          String?
-  occasion            String
-  occasionFr          String?
-  speakerRoleMg       String?
-  speakerRoleFr       String?
-  recipientRoleMg     String?
-  recipientRoleFr     String?
-  region              String?
-  illustration        String?
-  status              ContentStatus     @default(PUBLISHED)
-  isFeatured          Boolean           @default(false)
-  isPremium           Boolean           @default(false)
+  id              String        @id @default(cuid())
+  slug            String        @unique
+  title           String
+  titleFr         String
+  subtitle        String?
+  subtitleFr      String?
+  occasion        String
+  occasionFr      String?
+  speakerRoleMg   String?
+  speakerRoleFr   String?
+  recipientRoleMg String?
+  recipientRoleFr String?
+  region          String?
+  illustration    String?
+  status          ContentStatus @default(PUBLISHED)
+  isFeatured      Boolean       @default(false)
+  isPremium       Boolean       @default(false)
 
   // Proverbe / Pensée de conclusion
-  concludingProverbMg String?           @db.Text
-  concludingProverbFr String?           @db.Text
+  concludingProverbMg String? @db.Text
+  concludingProverbFr String? @db.Text
 
   // Conseils et protocole rituel
-  etiquetteNotesMg    String?           @db.Text
-  etiquetteNotesFr    String?           @db.Text
+  etiquetteNotesMg String? @db.Text
+  etiquetteNotesFr String? @db.Text
 
   // Compteurs & Statistiques
-  viewCount           Int               @default(0)
-  likesCount          Int               @default(0)
-  shareCount          Int               @default(0)
-  reportCount         Int               @default(0)
+  viewCount   Int @default(0)
+  likesCount  Int @default(0)
+  shareCount  Int @default(0)
+  reportCount Int @default(0)
 
-  createdAt           DateTime          @default(now())
-  updatedAt           DateTime          @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  steps               KabaryStep[]
-  themes              KabaryTheme[]
+  steps  KabaryStep[]
+  themes KabaryTheme[]
+
+  // Relations d'activité
+  favorites      Favorite[]
+  likes          Like[]
+  viewHistories  ViewHistory[]
+  contentReports ContentReport[]
 
   @@index([status])
   @@index([occasion])
@@ -545,19 +678,19 @@ model Kabary {
 }
 
 model KabaryStep {
-  id              String            @id @default(cuid())
-  stepNumber      Int
-  stepNameMg      String
-  stepNameFr      String
-  explanationMg   String?           @db.Text
-  explanationFr   String?           @db.Text
-  textMg          String            @db.Text
-  textFr          String            @db.Text
+  id            String  @id @default(cuid())
+  stepNumber    Int
+  stepNameMg    String
+  stepNameFr    String
+  explanationMg String? @db.Text
+  explanationFr String? @db.Text
+  textMg        String  @db.Text
+  textFr        String  @db.Text
 
-  kabaryId        String
-  kabary          Kabary            @relation(fields: [kabaryId], references: [id], onDelete: Cascade)
+  kabaryId String
+  kabary   Kabary @relation(fields: [kabaryId], references: [id], onDelete: Cascade)
 
-  createdAt       DateTime          @default(now())
+  createdAt DateTime @default(now())
 
   @@unique([kabaryId, stepNumber])
   @@index([kabaryId])
@@ -565,10 +698,10 @@ model KabaryStep {
 }
 
 model KabaryTheme {
-  kabaryId        String
-  themeId         String
-  kabary          Kabary            @relation(fields: [kabaryId], references: [id], onDelete: Cascade)
-  theme           Theme             @relation(fields: [themeId], references: [id], onDelete: Cascade)
+  kabaryId String
+  themeId  String
+  kabary   Kabary @relation(fields: [kabaryId], references: [id], onDelete: Cascade)
+  theme    Theme  @relation(fields: [themeId], references: [id], onDelete: Cascade)
 
   @@id([kabaryId, themeId])
   @@map("kabary_themes")
@@ -579,33 +712,33 @@ model KabaryTheme {
 // ======================================================
 
 enum TrueFalseTheme {
-  GEN    // Connaissances Générales
-  CULT   // Culture & Traditions
-  GEO    // Géographie & Nature
-  HIST   // Histoire & Société
-  LITT   // Littérature & Arts
-  PROV   // Proverbes & Expressions
+  GEN // Connaissances Générales
+  CULT // Culture & Traditions
+  GEO // Géographie & Nature
+  HIST // Histoire & Société
+  LITT // Littérature & Arts
+  PROV // Proverbes & Expressions
 }
 
 model TrueFalseQuestion {
-  id              String            @id @default(cuid())
-  questionMg      String            @db.Text
-  questionFr      String?           @db.Text
-  isTrue          Boolean
-  explanationMg   String            @db.Text
-  explanationFr   String?           @db.Text
-  theme           TrueFalseTheme    @default(GEN)
-  difficulty      DifficultyLevel   @default(EASY)
-  source          String?
-  image           String?
-  status          ContentStatus     @default(PUBLISHED)
-  timesPlayed     Int               @default(0)
-  timesCorrect    Int               @default(0)
+  id            String          @id @default(cuid())
+  questionMg    String          @db.Text
+  questionFr    String?         @db.Text
+  isTrue        Boolean
+  explanationMg String          @db.Text
+  explanationFr String?         @db.Text
+  theme         TrueFalseTheme  @default(GEN)
+  difficulty    DifficultyLevel @default(EASY)
+  source        String?
+  image         String?
+  status        ContentStatus   @default(PUBLISHED)
+  timesPlayed   Int             @default(0)
+  timesCorrect  Int             @default(0)
 
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  answers         TrueFalseAnswer[]
+  answers TrueFalseAnswer[]
 
   @@index([theme])
   @@index([difficulty])
@@ -614,21 +747,21 @@ model TrueFalseQuestion {
 }
 
 model TrueFalseSession {
-  id              String            @id @default(cuid())
+  id              String          @id @default(cuid())
   userId          String?
-  theme           TrueFalseTheme    @default(GEN)
-  difficulty      DifficultyLevel   @default(EASY)
-  score           Int               @default(0)
-  totalQuestions  Int               @default(10)
-  streakMax       Int               @default(0)
-  durationSeconds Int               @default(0)
-  isCompleted     Boolean           @default(false)
-  xpEarned        Int               @default(0)
+  theme           TrueFalseTheme  @default(GEN)
+  difficulty      DifficultyLevel @default(EASY)
+  score           Int             @default(0)
+  totalQuestions  Int             @default(10)
+  streakMax       Int             @default(0)
+  durationSeconds Int             @default(0)
+  isCompleted     Boolean         @default(false)
+  xpEarned        Int             @default(0)
 
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  answers         TrueFalseAnswer[]
+  answers TrueFalseAnswer[]
 
   @@index([userId])
   @@index([createdAt])
@@ -636,14 +769,14 @@ model TrueFalseSession {
 }
 
 model TrueFalseAnswer {
-  id              String            @id @default(cuid())
-  sessionId       String
-  session         TrueFalseSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  questionId      String
-  question        TrueFalseQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  userAnswer      Boolean
-  isCorrect       Boolean
-  answeredAt      DateTime          @default(now())
+  id         String            @id @default(cuid())
+  sessionId  String
+  session    TrueFalseSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  questionId String
+  question   TrueFalseQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  userAnswer Boolean
+  isCorrect  Boolean
+  answeredAt DateTime          @default(now())
 
   @@index([sessionId])
   @@index([questionId])
@@ -661,17 +794,17 @@ enum ModuleType {
 }
 
 model ModuleLock {
-  id          String     @id @default(cuid())
-  key         String     @unique // ex: "game:trueFalseGame", "category:conte", "feature:subscription"
-  type        ModuleType
-  nameFr      String     // Nom français
-  nameMg      String     // Nom malgache
-  isLocked    Boolean    @default(false)
-  lockReason  String?    // Ex: "En cours de maintenance", "Bientôt disponible"
-  imageUrl    String?    // Image / illustration du jeu ou de la catégorie
-  minTier     String?    @default("FREE")
-  updatedAt   DateTime   @updatedAt
-  createdAt   DateTime   @default(now())
+  id         String     @id @default(cuid())
+  key        String     @unique // ex: "game:trueFalseGame", "category:conte", "feature:subscription"
+  type       ModuleType
+  nameFr     String // Nom français
+  nameMg     String // Nom malgache
+  isLocked   Boolean    @default(false)
+  lockReason String? // Ex: "En cours de maintenance", "Bientôt disponible"
+  imageUrl   String? // Image / illustration du jeu ou de la catégorie
+  minTier    String?    @default("FREE")
+  updatedAt  DateTime   @updatedAt
+  createdAt  DateTime   @default(now())
 
   @@map("module_locks")
 }
@@ -683,11 +816,11 @@ model ModuleLock {
 model OnboardingSlide {
   id          String   @id @default(cuid())
   order       Int      @default(0)
-  title       String   // Titre en français (ex: "Angano")
-  titleMg     String   // Titre en malgache (ex: "Contes Traditionnels")
-  subtitle    String?  // Phrase d'accroche (ex: "Les récits ancestraux de Madagascar")
+  title       String // Titre en français (ex: "Angano")
+  titleMg     String // Titre en malgache (ex: "Contes Traditionnels")
+  subtitle    String? // Phrase d'accroche (ex: "Les récits ancestraux de Madagascar")
   description String   @db.Text
-  imageUrl    String?  // Photo Cloudinary CDN ou URL relative locale
+  imageUrl    String? // Photo Cloudinary CDN ou URL relative locale
   accentColor String?  @default("#4A6741")
   iconName    String?  @default("BookOpen") // Icône de secours
   isActive    Boolean  @default(true)
@@ -705,18 +838,18 @@ model OnboardingSlide {
 
 model Notification {
   id          String   @id @default(cuid())
-  titleMg     String   // Titre en malgache (ex: "Ohabolana anio")
-  titleFr     String?  // Titre en français (ex: "Proverbe du jour")
+  titleMg     String // Titre en malgache (ex: "Ohabolana anio")
+  titleFr     String? // Titre en français (ex: "Proverbe du jour")
   messageMg   String   @db.Text // Message / description en malgache
   messageFr   String?  @db.Text // Message / description en français
   category    String   @default("culture") // culture, game, civic, community, system
-  badgeText   String?  // Badge text (ex: "Ohabolana", "+25 Pts", "Vaovao")
+  badgeText   String? // Badge text (ex: "Ohabolana", "+25 Pts", "Vaovao")
   badgeType   String?  @default("new") // new, streak, reward, civic, info
   iconName    String?  @default("bulb-outline") // Ionicons glyph name
   iconColor   String?  @default("#C0392B") // Couleur de l'icône
-  targetRoute String?  // Route deep-link optionnelle
+  targetRoute String? // Route deep-link optionnelle
   isBroadcast Boolean  @default(true) // Visible pour tous les utilisateurs
-  userId      String?  // Cible utilisateur optionnelle
+  userId      String? // Cible utilisateur optionnelle
   user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   isRead      Boolean  @default(false)
   createdAt   DateTime @default(now())
@@ -733,19 +866,19 @@ model Notification {
 // ======================================================
 
 model WordPuzzleLevel {
-  id             String               @id @default(cuid())
-  levelNumber    Int                  @unique // 1, 2, 3, 4... (affiché en Romain I, II, III...)
-  titleMg        String               // Ex: "Firaisankina sy Fihavanana"
-  titleFr        String?              // Ex: "Solidarité et Harmonie"
-  description    String?              @db.Text
-  difficulty     DifficultyLevel      @default(EASY)
-  passThreshold  Int                  @default(5) // Au moins 5 phrases réussies sur 10 (50%)
-  totalSentences Int                  @default(10) // Standard : 10 phrases par niveau
-  status         ContentStatus        @default(PUBLISHED)
-  createdAt      DateTime             @default(now())
-  updatedAt      DateTime             @updatedAt
+  id             String          @id @default(cuid())
+  levelNumber    Int             @unique // 1, 2, 3, 4... (affiché en Romain I, II, III...)
+  titleMg        String // Ex: "Firaisankina sy Fihavanana"
+  titleFr        String? // Ex: "Solidarité et Harmonie"
+  description    String?         @db.Text
+  difficulty     DifficultyLevel @default(EASY)
+  passThreshold  Int             @default(5) // Au moins 5 phrases réussies sur 10 (50%)
+  totalSentences Int             @default(10) // Standard : 10 phrases par niveau
+  status         ContentStatus   @default(PUBLISHED)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 
-  sentences      WordPuzzleSentence[]
+  sentences WordPuzzleSentence[]
 
   @@index([levelNumber])
   @@index([status])
@@ -753,18 +886,18 @@ model WordPuzzleLevel {
 }
 
 model WordPuzzleSentence {
-  id             String          @id @default(cuid())
-  levelId        String
-  level          WordPuzzleLevel @relation(fields: [levelId], references: [id], onDelete: Cascade)
-  orderIndex     Int             @default(1) // 1 à 10
-  malagasy       String          @db.Text    // Phrase malgache à remettre dans l'ordre
-  french         String          @db.Text    // Traduction française
-  hint           String?         // Indice optionnel
-  explanationMg  String?         @db.Text    // Explication culturelle malgache
-  explanationFr  String?         @db.Text    // Explication culturelle française
-  status         ContentStatus   @default(PUBLISHED)
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  id            String          @id @default(cuid())
+  levelId       String
+  level         WordPuzzleLevel @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  orderIndex    Int             @default(1) // 1 à 10
+  malagasy      String          @db.Text // Phrase malgache à remettre dans l'ordre
+  french        String          @db.Text // Traduction française
+  hint          String? // Indice optionnel
+  explanationMg String?         @db.Text // Explication culturelle malgache
+  explanationFr String?         @db.Text // Explication culturelle française
+  status        ContentStatus   @default(PUBLISHED)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 
   @@index([levelId])
   @@index([orderIndex])
@@ -776,19 +909,19 @@ model WordPuzzleSentence {
 // ======================================================
 
 model MissingWordLevel {
-  id             String               @id @default(cuid())
-  levelNumber    Int                  @unique // 1, 2, 3, 4, 5... (I, II, III, IV, V)
-  titleMg        String               // Ex: "Mora", "Antonony", "Sarotra"
-  titleFr        String?              // Ex: "Débutant", "Intermédiaire"
-  description    String?              @db.Text
-  difficulty     DifficultyLevel      @default(EASY)
-  passThreshold  Int                  @default(5) // Au moins 50% de réussite
-  totalQuestions Int                  @default(10) // 10 questions tirées au sort par session
-  status         ContentStatus        @default(PUBLISHED)
-  createdAt      DateTime             @default(now())
-  updatedAt      DateTime             @updatedAt
+  id             String          @id @default(cuid())
+  levelNumber    Int             @unique // 1, 2, 3, 4, 5... (I, II, III, IV, V)
+  titleMg        String // Ex: "Mora", "Antonony", "Sarotra"
+  titleFr        String? // Ex: "Débutant", "Intermédiaire"
+  description    String?         @db.Text
+  difficulty     DifficultyLevel @default(EASY)
+  passThreshold  Int             @default(5) // Au moins 50% de réussite
+  totalQuestions Int             @default(10) // 10 questions tirées au sort par session
+  status         ContentStatus   @default(PUBLISHED)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 
-  questions      MissingWordQuestion[]
+  questions MissingWordQuestion[]
 
   @@index([levelNumber])
   @@index([status])
@@ -796,25 +929,233 @@ model MissingWordLevel {
 }
 
 model MissingWordQuestion {
-  id             String            @id @default(cuid())
-  levelId        String
-  level          MissingWordLevel  @relation(fields: [levelId], references: [id], onDelete: Cascade)
-  orderIndex     Int               @default(1)
-  template       String[]          // Tableau des mots de la phrase avec "" pour le mot manquant
-  correctWord    String            // Mot manquant (au moins 3 caractères)
-  choices        String[]          // 4 choix de mots (au moins 3 caractères chacun)
-  french         String            @db.Text // Traduction française
-  explanation    String?           @db.Text // Explication culturelle
-  hint           String?           // Indice optionnel
-  status         ContentStatus     @default(PUBLISHED)
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @updatedAt
+  id          String           @id @default(cuid())
+  levelId     String
+  level       MissingWordLevel @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  orderIndex  Int              @default(1)
+  template    String[] // Tableau des mots de la phrase avec "" pour le mot manquant
+  correctWord String // Mot manquant (au moins 3 caractères)
+  choices     String[] // 4 choix de mots (au moins 3 caractères chacun)
+  french      String           @db.Text // Traduction française
+  explanation String?          @db.Text // Explication culturelle
+  hint        String? // Indice optionnel
+  status      ContentStatus    @default(PUBLISHED)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
 
   @@index([levelId])
   @@index([orderIndex])
   @@map("missing_word_questions")
 }
 
+// ======================================================
+// 18. GAMIFICATION & PROGRESSION
+// ======================================================
 
+model UserProgress {
+  userId     String   @id
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totalXp    Float    @default(0)
+  level      Int      @default(1)
+  coins      Int      @default(0)
+  streakDays Int      @default(0)
+  updatedAt  DateTime @updatedAt
 
+  @@map("user_progress")
+}
 
+model GameProgression {
+  id                 String @id @default(cuid())
+  userId             String
+  user               User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gameType           String // Ex: "QUIZ", "MISSING_WORD", "PUZZLE_WORD", "RIDDLE"
+  unlockedLevelIndex Int    @default(0)
+  levelStars         Json   @default("{}") // Ex: {"lvl_1": 3, "lvl_2": 2}
+
+  @@unique([userId, gameType])
+  @@map("game_progressions")
+}
+
+model XpTransaction {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount      Float
+  source      String // Ex: "quiz_level_1", "daily_login", "reading_citation_123"
+  description String?
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@map("xp_transactions")
+}
+
+// ======================================================
+// 19. POÉSIE & HAINTENY (Tononkalo)
+// ======================================================
+
+model Poesie {
+  id            String        @id @default(cuid())
+  slug          String        @unique
+  title         String
+  titleFr       String
+  author        String?
+  period        String? // Ex: "1930s", "Ntaolo"
+  category      String?       @default("tononkalo") // tononkalo, hainteny, etc.
+  explanationMg String?       @db.Text
+  explanationFr String?       @db.Text
+  status        ContentStatus @default(PUBLISHED)
+  isPremium     Boolean       @default(false)
+  isFeatured    Boolean       @default(false)
+
+  // Compteurs & Statistiques
+  viewCount   Int @default(0)
+  likesCount  Int @default(0)
+  shareCount  Int @default(0)
+  reportCount Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  stanzas PoesieStanza[]
+
+  // Relations d'activité
+  favorites      Favorite[]
+  likes          Like[]
+  viewHistories  ViewHistory[]
+  contentReports ContentReport[]
+
+  @@index([status])
+  @@index([isFeatured])
+  @@index([createdAt])
+  @@map("poesies")
+}
+
+model PoesieStanza {
+  id           String   @id @default(cuid())
+  stanzaNumber Int
+  versesMg     String[] // Vers en malgache
+  versesFr     String[] // Vers en français
+
+  poesieId String
+  poesie   Poesie @relation(fields: [poesieId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([poesieId, stanzaNumber])
+  @@index([poesieId])
+  @@map("poesie_stanzas")
+}
+
+// ======================================================
+// 20. RÉCITATIONS & TSIANJERY
+// ======================================================
+
+model Recitation {
+  id              String        @id @default(cuid())
+  slug            String        @unique
+  title           String
+  titleFr         String
+  author          String?
+  description     String?       @db.Text
+  durationMinutes Int?
+  contentLines    String[] // Lignes du texte à réciter
+  references      String[] @default([]) // Sources et références
+  tags            String[] @default([])
+  status          ContentStatus @default(PUBLISHED)
+  isPremium       Boolean       @default(false)
+  isFeatured      Boolean       @default(false)
+
+  // Compteurs & Statistiques
+  viewCount   Int @default(0)
+  likesCount  Int @default(0)
+  shareCount  Int @default(0)
+  reportCount Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations d'activité
+  favorites      Favorite[]
+  likes          Like[]
+  viewHistories  ViewHistory[]
+  contentReports ContentReport[]
+
+  @@index([status])
+  @@index([isFeatured])
+  @@index([createdAt])
+  @@map("recitations")
+}
+
+// ======================================================
+// 21. CONTENUS CIVIQUES BILINGUES
+// ======================================================
+
+model CivicContent {
+  id          String           @id @default(cuid())
+  slug        String           @unique
+  subCategory CivicSubCategory
+  titleFr     String
+  titleMg     String
+  summaryFr   String?          @db.Text
+  summaryMg   String?          @db.Text
+  contentFr   String[] // Paragraphes en français
+  contentMg   String[] // Paragraphes en malgache
+  themes      String[]         @default([])
+  sources     String[]         @default([])
+  status      ContentStatus    @default(PUBLISHED)
+
+  // Compteurs
+  viewCount Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  structureRoles CivicStructureRole[]
+
+  @@index([subCategory])
+  @@index([status])
+  @@index([createdAt])
+  @@map("civic_contents")
+}
+
+model CivicStructureRole {
+  id         String @id @default(cuid())
+  orderIndex Int    @default(0)
+  titleFr    String
+  titleMg    String
+  roleFr     String @db.Text
+  roleMg     String @db.Text
+
+  civicContentId String
+  civicContent   CivicContent @relation(fields: [civicContentId], references: [id], onDelete: Cascade)
+
+  @@index([civicContentId])
+  @@map("civic_structure_roles")
+}
+
+// ======================================================
+// 22. QUIZ CIVIQUE ÉDUCATIF (QCM)
+// ======================================================
+
+model CivicQuizQuestion {
+  id          String          @id @default(cuid())
+  category    String // Ex: "droits_devoirs_vote", "symboles_identite"
+  prompt      String          @db.Text
+  choices     String[] // 4 choix de réponse
+  answerIndex Int // Index de la bonne réponse (0-3)
+  explanation String          @db.Text
+  difficulty  DifficultyLevel @default(EASY)
+  tags        String[]        @default([])
+  status      ContentStatus   @default(PUBLISHED)
+
+  timesPlayed  Int @default(0)
+  timesCorrect Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([difficulty])
+  @@index([status])
+  @@map("civic_quiz_questions")
+}

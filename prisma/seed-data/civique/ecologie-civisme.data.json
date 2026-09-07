@@ -1,0 +1,50 @@
+[
+  {
+    "id": "eco-001",
+    "title": {
+      "fr": "La Protection de l'Environnement et de la Biodiversité",
+      "mg": "Fiarovana ny Tontolo Iainana sy ny Zavaboary"
+    },
+    "summary": {
+      "fr": "Madagascar abrite une faune et une flore uniques au monde qu'il est du devoir de chaque citoyen de préserver.",
+      "mg": "Manana biby sy zava-maniry miavaka eran-tany i Madagasikara izay adidin'ny tsirairay ny miaro azy."
+    },
+    "content": {
+      "fr": [
+        "Plus de 80% des espèces animales et végétales malgaches sont endémiques.",
+        "Le reboisement et la lutte contre les feux de brousse (doro tanety) sont des priorités nationales.",
+        "Protéger la nature assure l'accès durable à l'eau douce et aux ressources vivrières."
+      ],
+      "mg": [
+        "Mihoatra ny 80% amin'ny biby sy zava-maniry eto Madagasikara no tsy hita any an-kafa.",
+        "Ny fambolen-kazo sy ny ady amin'ny doro tanety dia laharam-pahamehana ho an'ny firenena.",
+        "Ny fiarovana ny zavaboary dia miantoka ny fisian'ny rano sy ny sakafo."
+      ]
+    },
+    "theme": ["ecologie", "biodiversite", "nature"]
+  },
+  {
+    "id": "eco-002",
+    "title": {
+      "fr": "La Propreté Publique et la Gestion des Déchets",
+      "mg": "Ny Fahadiovana sy ny Fitantanana ny Fako"
+    },
+    "summary": {
+      "fr": "Garder nos quartiers et nos cours d'eau propres pour prévenir les maladies et respecter l'espace commun.",
+      "mg": "Fikajiana ny fahadiovan'ny tanàna sy ny lakandrano mba hisorohana ny aretina sy hanajana ny besinimaro."
+    },
+    "content": {
+      "fr": [
+        "Ne pas jeter les ordures dans les canaux d'évacuation prévient les inondations en saison des pluies.",
+        "Le civisme au quotidien commence par le ramassage et le tri des déchets.",
+        "La salubrité publique est une responsabilité partagée entre l'État et chaque citoyen."
+      ],
+      "mg": [
+        "Ny tsy fanariana fako any an-tatatra dia misoroka ny tondra-drano amin'ny fahavaratra.",
+        "Ny fahaiza-miaina dia manomboka amin'ny fanariana fako amin'ny toerana voatondro.",
+        "Andraikitra iombonana ny fitandroana ny fahadiovana iombonana."
+      ]
+    },
+    "theme": ["civisme", "proprete", "sante"]
+  }
+]

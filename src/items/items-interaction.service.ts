@@ -16,7 +16,11 @@ export class ItemsInteractionService {
   /**
    * Ajoute un like sur un item.
    */
-  async like(id: string) {
+  async like(id: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
     const existing = await this.prisma.malagasyItem.findUnique({
       where: { id },
       select: { id: true, likesCount: true },
@@ -29,13 +33,37 @@ export class ItemsInteractionService {
       throw new NotFoundException(`Élément "${id}" introuvable`);
     }
 
-    const item = await this.prisma.malagasyItem.update({
-      where: { id },
-      data: {
-        likesCount: { increment: 1 },
+    // Vérifier si l'utilisateur a déjà liké
+    const existingLike = await this.prisma.like.findUnique({
+      where: {
+        userId_itemId: {
+          userId,
+          itemId: id,
+        },
       },
-      select: { id: true, likesCount: true },
     });
+
+    if (existingLike) {
+      // Déjà liké, on retourne l'item tel quel
+      return existing;
+    }
+
+    // Créer le like et incrémenter le compteur atomiquement via transaction
+    const [, item] = await this.prisma.$transaction([
+      this.prisma.like.create({
+        data: {
+          userId,
+          itemId: id,
+        },
+      }),
+      this.prisma.malagasyItem.update({
+        where: { id },
+        data: {
+          likesCount: { increment: 1 },
+        },
+        select: { id: true, likesCount: true },
+      }),
+    ]);
 
     await this.redis.del([
       `${CACHE_KEYS.ITEMS_DETAIL_PREFIX}${id}`,
@@ -44,7 +72,7 @@ export class ItemsInteractionService {
     await this.redis.delByPattern(CACHE_KEYS.ITEMS_LIST_PATTERN);
 
     this.logger.log(
-      `❤️ [Items] Like ajouté sur ID ${id} (total: ${item.likesCount})`,
+      `❤️ [Items] Like ajouté sur ID ${id} par ${userId} (total: ${item.likesCount})`,
     );
     return item;
   }
@@ -52,7 +80,11 @@ export class ItemsInteractionService {
   /**
    * Retire un like sur un item.
    */
-  async unlike(id: string) {
+  async unlike(id: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
     const existing = await this.prisma.malagasyItem.findUnique({
       where: { id },
       select: { id: true, likesCount: true },
@@ -65,12 +97,31 @@ export class ItemsInteractionService {
       throw new NotFoundException(`Élément "${id}" introuvable`);
     }
 
-    const newCount = Math.max(0, existing.likesCount - 1);
-    const item = await this.prisma.malagasyItem.update({
-      where: { id },
-      data: { likesCount: newCount },
-      select: { id: true, likesCount: true },
+    const existingLike = await this.prisma.like.findUnique({
+      where: {
+        userId_itemId: {
+          userId,
+          itemId: id,
+        },
+      },
     });
+
+    if (!existingLike) {
+      return existing; // Pas de like à retirer
+    }
+
+    const newCount = Math.max(0, existing.likesCount - 1);
+
+    const [, item] = await this.prisma.$transaction([
+      this.prisma.like.delete({
+        where: { id: existingLike.id },
+      }),
+      this.prisma.malagasyItem.update({
+        where: { id },
+        data: { likesCount: newCount },
+        select: { id: true, likesCount: true },
+      }),
+    ]);
 
     await this.redis.del([
       `${CACHE_KEYS.ITEMS_DETAIL_PREFIX}${id}`,
@@ -79,9 +130,75 @@ export class ItemsInteractionService {
     await this.redis.delByPattern(CACHE_KEYS.ITEMS_LIST_PATTERN);
 
     this.logger.log(
-      `💔 [Items] Unlike sur ID ${id} (total: ${item.likesCount})`,
+      `💔 [Items] Unlike sur ID ${id} par ${userId} (total: ${item.likesCount})`,
     );
     return item;
+  }
+
+  async favorite(id: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
+    const existing = await this.prisma.malagasyItem.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`Élément "${id}" introuvable`);
+    }
+
+    const existingFavorite = await this.prisma.favorite.findUnique({
+      where: {
+        userId_itemId: {
+          userId,
+          itemId: id,
+        },
+      },
+    });
+
+    if (existingFavorite) {
+      return { success: true };
+    }
+
+    await this.prisma.favorite.create({
+      data: {
+        userId,
+        itemId: id,
+      },
+    });
+
+    this.logger.log(
+      `⭐ [Items] Ajout aux favoris de l'item ID ${id} par ${userId}`,
+    );
+    return { success: true };
+  }
+
+  async unfavorite(id: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
+    const existingFavorite = await this.prisma.favorite.findUnique({
+      where: {
+        userId_itemId: {
+          userId,
+          itemId: id,
+        },
+      },
+    });
+
+    if (existingFavorite) {
+      await this.prisma.favorite.delete({
+        where: { id: existingFavorite.id },
+      });
+      this.logger.log(
+        `🗑️ [Items] Retrait des favoris de l'item ID ${id} par ${userId}`,
+      );
+    }
+
+    return { success: true };
   }
 
   /**
@@ -107,7 +224,7 @@ export class ItemsInteractionService {
       data: {
         viewCount: { increment: 1 },
       },
-      select: { id: true, slug: true, viewCount: true },
+      select: { id: true, slug: true, viewCount: true, likesCount: true },
     });
 
     await this.redis.del([
@@ -125,6 +242,7 @@ export class ItemsInteractionService {
     return {
       id: item.id,
       viewCount: finalViews,
+      likesCount: item.likesCount,
     };
   }
 

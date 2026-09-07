@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { PrismaClient } from '../generated/prisma/client.js';
+import { PrismaClient, DifficultyLevel, CivicSubCategory } from '../generated/prisma/client.js';
 import { PrismaPg } from '@prisma/adapter-pg';
 import pg from 'pg';
 import * as fs from 'node:fs';
@@ -54,7 +54,15 @@ const DEFAULT_REGIONS = [
 async function main() {
   console.log('🌱 Démarrage du seed de la base de données Kanto...');
 
-  // 1. Nettoyage initial (optionnel en dev)
+  const seedDataDir = path.resolve(__dirname, 'seed-data');
+
+  // 1. Nettoyage initial
+  await prisma.civicStructureRole.deleteMany();
+  await prisma.civicContent.deleteMany();
+  await prisma.civicQuizQuestion.deleteMany();
+  await prisma.poesieStanza.deleteMany();
+  await prisma.poesie.deleteMany();
+  await prisma.recitation.deleteMany();
   await prisma.malagasyItemTheme.deleteMany();
   await prisma.citationTheme.deleteMany();
   await prisma.conteTheme.deleteMany();
@@ -98,13 +106,12 @@ async function main() {
   console.log(`✅ ${DEFAULT_REGIONS.length} régions créées`);
 
   // 4. Import des Citations
-  const citationFilePath = path.resolve(__dirname, '../../kanto-app/data/citation.data.json');
+  const citationFilePath = path.join(seedDataDir, 'citation.data.json');
   if (fs.existsSync(citationFilePath)) {
     const rawCitations = JSON.parse(fs.readFileSync(citationFilePath, 'utf-8'));
     console.log(`📖 Chargement de ${rawCitations.length} citations depuis ${citationFilePath}`);
 
     for (const c of rawCitations) {
-      // Créer ou récupérer l'auteur
       let authorId: string | null = null;
       if (c.source && c.source.trim()) {
         const author = await prisma.author.upsert({
@@ -125,7 +132,6 @@ async function main() {
         },
       });
 
-      // Lier aux thèmes correspondants
       if (Array.isArray(c.themes)) {
         for (const tName of c.themes) {
           const tSlug = slugify(tName);
@@ -201,7 +207,6 @@ async function main() {
           firstProverbId = createdItem.id;
         }
 
-        // Variantes dialectales
         if (Array.isArray(item.dialectVariants)) {
           for (const v of item.dialectVariants) {
             if (v.dialect && v.text) {
@@ -216,7 +221,6 @@ async function main() {
           }
         }
 
-        // Association des Thèmes
         if (Array.isArray(item.themes)) {
           for (const tName of item.themes) {
             const tSlug = slugify(tName);
@@ -248,7 +252,7 @@ async function main() {
     }
   }
 
-  // 6. Proverbe du jour pour aujourd'hui
+  // 6. Proverbe du jour
   if (firstProverbId) {
     const today = new Date();
     await prisma.dailyProverb.create({
@@ -262,7 +266,7 @@ async function main() {
   }
 
   // 7. Import des Contes (Angano)
-  const conteFilePath = path.resolve(__dirname, '../../kanto-app/data/conte.data.json');
+  const conteFilePath = path.join(seedDataDir, 'conte.data.json');
   if (fs.existsSync(conteFilePath)) {
     const rawContes = JSON.parse(fs.readFileSync(conteFilePath, 'utf-8'));
     console.log(`📖 Chargement de ${rawContes.length} contes depuis ${conteFilePath}`);
@@ -293,7 +297,6 @@ async function main() {
         },
       });
 
-      // Paragraphes
       if (Array.isArray(c.content)) {
         for (let pIdx = 0; pIdx < c.content.length; pIdx++) {
           const p = c.content[pIdx];
@@ -309,7 +312,6 @@ async function main() {
         }
       }
 
-      // Thèmes
       if (Array.isArray(c.themes)) {
         for (const tName of c.themes) {
           const tSlug = slugify(tName);
@@ -338,7 +340,7 @@ async function main() {
   }
 
   // 8. Import des Discours (Kabary)
-  const kabaryFilePath = path.resolve(__dirname, '../../kanto-app/data/kabary.data.json');
+  const kabaryFilePath = path.join(seedDataDir, 'kabary.data.json');
   if (fs.existsSync(kabaryFilePath)) {
     const rawKabaries = JSON.parse(fs.readFileSync(kabaryFilePath, 'utf-8'));
     console.log(`🗣️ Chargement de ${rawKabaries.length} discours (Kabary) depuis ${kabaryFilePath}`);
@@ -375,7 +377,6 @@ async function main() {
         },
       });
 
-      // Étapes
       if (Array.isArray(k.steps)) {
         for (let sIdx = 0; sIdx < k.steps.length; sIdx++) {
           const s = k.steps[sIdx];
@@ -394,7 +395,6 @@ async function main() {
         }
       }
 
-      // Thèmes
       if (Array.isArray(k.themes)) {
         for (const tName of k.themes) {
           const tSlug = slugify(tName);
@@ -422,9 +422,167 @@ async function main() {
     console.log(`✅ ${rawKabaries.length} discours (Kabary) importés`);
   }
 
-  console.log(`✅ Total de ${totalImported} contenus culturels importés`);
+  // 9. Import des Poésies (Tononkalo)
+  const poesieFilePath = path.join(seedDataDir, 'poesie.data.json');
+  if (fs.existsSync(poesieFilePath)) {
+    const rawPoesies = JSON.parse(fs.readFileSync(poesieFilePath, 'utf-8'));
+    console.log(`📜 Chargement de ${rawPoesies.length} poésies depuis ${poesieFilePath}`);
 
-  console.log('🎉 Seed de la base de données terminé avec succès !');
+    for (let i = 0; i < rawPoesies.length; i++) {
+      const p = rawPoesies[i];
+      const baseSlug = slugify(p.title);
+      const uniqueSlug = `${baseSlug}-${i + 1}`;
+
+      const createdPoesie = await prisma.poesie.create({
+        data: {
+          id: p.id || undefined,
+          slug: uniqueSlug,
+          title: p.title,
+          titleFr: p.titleFr,
+          author: p.author || null,
+          period: p.period || null,
+          category: p.category || 'tononkalo',
+          explanationMg: p.explanationMg || null,
+          explanationFr: p.explanationFr || null,
+          isFeatured: i === 0,
+        },
+      });
+
+      if (Array.isArray(p.stanzas)) {
+        for (let sIdx = 0; sIdx < p.stanzas.length; sIdx++) {
+          const s = p.stanzas[sIdx];
+          await prisma.poesieStanza.create({
+            data: {
+              poesieId: createdPoesie.id,
+              stanzaNumber: sIdx + 1,
+              versesMg: Array.isArray(s.versesMg) ? s.versesMg : [],
+              versesFr: Array.isArray(s.versesFr) ? s.versesFr : [],
+            },
+          });
+        }
+      }
+    }
+    console.log(`✅ ${rawPoesies.length} poésies importées`);
+  }
+
+  // 10. Import des Récitations (Tsianjery)
+  const recitationFilePath = path.join(seedDataDir, 'recitation.data.json');
+  if (fs.existsSync(recitationFilePath)) {
+    const rawRecitations = JSON.parse(fs.readFileSync(recitationFilePath, 'utf-8'));
+    console.log(`🎤 Chargement de ${rawRecitations.length} récitations depuis ${recitationFilePath}`);
+
+    for (let i = 0; i < rawRecitations.length; i++) {
+      const r = rawRecitations[i];
+      const baseSlug = slugify(r.title);
+      const uniqueSlug = `${baseSlug}-${i + 1}`;
+
+      await prisma.recitation.create({
+        data: {
+          id: r.id || undefined,
+          slug: uniqueSlug,
+          title: r.title,
+          titleFr: r.titleFr,
+          author: r.author || null,
+          description: r.description || null,
+          durationMinutes: r.durationMinutes || null,
+          contentLines: Array.isArray(r.content) ? r.content : [],
+          references: Array.isArray(r.references) ? r.references : [],
+          tags: Array.isArray(r.tags) ? r.tags : [],
+          isFeatured: i === 0,
+        },
+      });
+    }
+    console.log(`✅ ${rawRecitations.length} récitations importées`);
+  }
+
+  // 11. Import des Contenus Civiques
+  const civicFiles: { file: string; subCategory: CivicSubCategory }[] = [
+    { file: 'civic-institution.data.json', subCategory: CivicSubCategory.INSTITUTION },
+    { file: 'droits-et-vote.data.json', subCategory: CivicSubCategory.DROITS_VOTE },
+    { file: 'ecologie-civisme.data.json', subCategory: CivicSubCategory.ECOLOGIE_CIVISME },
+    { file: 'symboles-histoire.data.json', subCategory: CivicSubCategory.SYMBOLES_HISTOIRE },
+    { file: 'vivre-ensemble.data.json', subCategory: CivicSubCategory.VIVRE_ENSEMBLE },
+  ];
+
+  let totalCivicImported = 0;
+  for (const { file, subCategory } of civicFiles) {
+    const fullPath = path.join(seedDataDir, 'civique', file);
+    if (fs.existsSync(fullPath)) {
+      const items = JSON.parse(fs.readFileSync(fullPath, 'utf-8'));
+      console.log(`🏛️ Chargement de ${items.length} éléments civiques (${subCategory}) depuis ${file}`);
+
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        const titleFr = item.title?.fr || item.titleFr || `Contenu ${i + 1}`;
+        const titleMg = item.title?.mg || item.titleMg || titleFr;
+        const baseSlug = slugify(titleFr || titleMg);
+        const uniqueSlug = `${subCategory.toLowerCase()}-${baseSlug}-${i + 1}`;
+
+        const createdCivic = await prisma.civicContent.create({
+          data: {
+            id: item.id || undefined,
+            slug: uniqueSlug,
+            subCategory,
+            titleFr,
+            titleMg,
+            summaryFr: item.summary?.fr || item.summaryFr || null,
+            summaryMg: item.summary?.mg || item.summaryMg || null,
+            contentFr: Array.isArray(item.content?.fr) ? item.content.fr : [],
+            contentMg: Array.isArray(item.content?.mg) ? item.content.mg : [],
+            themes: Array.isArray(item.theme) ? item.theme : Array.isArray(item.themes) ? item.themes : [],
+            sources: Array.isArray(item.sources) ? item.sources : [],
+          },
+        });
+
+        if (Array.isArray(item.structure)) {
+          for (let sIdx = 0; sIdx < item.structure.length; sIdx++) {
+            const st = item.structure[sIdx];
+            await prisma.civicStructureRole.create({
+              data: {
+                civicContentId: createdCivic.id,
+                orderIndex: sIdx + 1,
+                titleFr: st.title?.fr || '',
+                titleMg: st.title?.mg || '',
+                roleFr: st.role?.fr || '',
+                roleMg: st.role?.mg || '',
+              },
+            });
+          }
+        }
+        totalCivicImported++;
+      }
+    }
+  }
+  console.log(`✅ Total de ${totalCivicImported} contenus civiques importés`);
+
+  // 12. Import du Quiz Civique
+  const quizFilePath = path.join(seedDataDir, 'civic-quiz.data.json');
+  if (fs.existsSync(quizFilePath)) {
+    const rawQuestions = JSON.parse(fs.readFileSync(quizFilePath, 'utf-8'));
+    console.log(`🎯 Chargement de ${rawQuestions.length} questions de quiz civique depuis ${quizFilePath}`);
+
+    for (const q of rawQuestions) {
+      let diff: DifficultyLevel = DifficultyLevel.EASY;
+      if (q.difficulty?.toLowerCase() === 'medium') diff = DifficultyLevel.MEDIUM;
+      if (q.difficulty?.toLowerCase() === 'hard') diff = DifficultyLevel.HARD;
+
+      await prisma.civicQuizQuestion.create({
+        data: {
+          id: q.id || undefined,
+          category: q.category || 'droits_devoirs_vote',
+          prompt: q.prompt,
+          choices: Array.isArray(q.choices) ? q.choices : [],
+          answerIndex: typeof q.answerIndex === 'number' ? q.answerIndex : 0,
+          explanation: q.explanation || '',
+          difficulty: diff,
+          tags: Array.isArray(q.tags) ? q.tags : [],
+        },
+      });
+    }
+    console.log(`✅ ${rawQuestions.length} questions de quiz civique importées`);
+  }
+
+  console.log('🎉 Seed de la base de données Kanto terminé avec succès !');
 }
 
 main()
