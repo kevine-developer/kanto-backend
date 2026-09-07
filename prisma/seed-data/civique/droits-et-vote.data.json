@@ -1,0 +1,1546 @@
+[
+  {
+    "id": "droits-001",
+    "title": {
+      "fr": "Qu’est-ce qu’un droit ?",
+      "mg": "Inona no atao hoe zo ?"
+    },
+    "summary": {
+      "fr": "Les droits sont des libertés et protections fondamentales garanties à chaque individu, assurant sa dignité et son épanouissement.",
+      "mg": "Ny zo dia fahafahana sy fiarovana fototra omen’ny lalàna ny tsirairay, miantoka ny voninahiny sy ny fivoarany."
+    },
+    "content": {
+      "fr": [
+        "Un droit est une prérogative légale ou morale qui permet à une personne de faire ou d'avoir quelque chose, ou d'être protégée.",
+        "Ces droits sont universels, inaliénables et interdépendants, signifiant qu'ils s'appliquent à tous, ne peuvent être retirés, et sont liés les uns aux autres.",
+        "Ils sont essentiels pour vivre dans une société juste et respectueuse de la dignité humaine.",
+        "Les droits incluent, par exemple, le droit à la vie, à la liberté, à la sécurité, à l'éducation, et à la santé."
+      ],
+      "mg": [
+        "Ny zo dia tombontsoa ara-dalàna na ara-moraly izay mamela ny olona iray hanao na hanana zavatra iray, na ho voaaro.",
+        "Ireo zo ireo dia iraisam-pirenena, tsy azo odian-tsy hita, ary mifamatotra, midika izany fa mihatra amin'ny rehetra izy ireo, tsy azo esorina, ary mifandray.",
+        "Tena ilaina izy ireo mba hiainana ao anatin'ny fiaraha-monina ara-drariny sy manaja ny voninahitr'olombelona.",
+        "Tafiditra ao anatin'ny zo, ohatra, ny zo ho amin'ny fiainana, ny fahalalahana, ny fiarovana, ny fanabeazana, ary ny fahasalamana."
+      ]
+    },
+    "theme": ["citoyenneté", "liberté", "égalité", "justice", "fondamentaux"],
+    "sources": [
+      "Déclaration Universelle des Droits de l’Homme (1948)",
+      "Constitution de Madagascar (2010)",
+      "Pactes internationaux relatifs aux droits de l'homme"
+    ]
+  },
+  {
+    "id": "droits-002",
+    "title": {
+      "fr": "Les devoirs, c’est quoi ?",
+      "mg": "Inona avy ireo adidy ?"
+    },
+    "summary": {
+      "fr": "Les devoirs sont les obligations et responsabilités que chaque citoyen doit respecter pour vivre harmonieusement en société.",
+      "mg": "Ny adidy dia andraikitra sy fandraisan'andraikitra tokony ho tanterahin’ny olom-pirenena tsirairay mba hiaina am-pilaminana ao anatin’ny fiaraha-monina."
+    },
+    "content": {
+      "fr": [
+        "Un devoir est une obligation morale, sociale ou légale qui incombe à un individu envers la collectivité ou d'autres individus.",
+        "Ils sont le pendant des droits : pour que chacun bénéficie de ses droits, il est nécessaire que chacun respecte ses devoirs.",
+        "Parmi les devoirs civiques, on trouve le respect des lois, la participation à la vie publique, le paiement des impôts, et la protection de l'environnement.",
+        "Le respect des devoirs contribue à la cohésion sociale et au bien-être commun."
+      ],
+      "mg": [
+        "Ny adidy dia andraikitra ara-moraly, ara-tsosialy na ara-dalàna izay tokony hotanterahin’ny tsirairay ho an’ny fiaraha-monina na ho an’ny hafa.",
+        "Izy ireo no ampifanarahana amin'ny zo: mba hahazoana tombontsoa amin'ny zony ny tsirairay, dia ilaina ny manaja ny adidiny.",
+        "Amin'ireo adidy sivika, ahitana ny fanajana ny lalàna, ny fandraisana anjara amin'ny fiainam-bahoaka, ny fandoavana ny hetra, ary ny fiarovana ny tontolo iainana.",
+        "Ny fanatanterahana ny adidy dia manampy amin'ny firaisankina ara-tsosialy sy ny fiahiana iombonana."
+      ]
+    },
+    "theme": ["civisme", "valeurs", "responsabilité", "citoyenneté", "société"],
+    "sources": [
+      "Constitution de Madagascar (2010)",
+      "Code Civil Malagasy",
+      "Principes de philosophie politique"
+    ]
+  },
+  {
+    "id": "droits-003",
+    "title": {
+      "fr": "Droit à l’éducation",
+      "mg": "Zo hahazo fanabeazana"
+    },
+    "summary": {
+      "fr": "Chaque enfant a le droit fondamental d'accéder à une éducation de qualité, essentielle pour son développement et son avenir.",
+      "mg": "Ny ankizy tsirairay dia manana zo fototra hahazo fanabeazana tsara kalitao, izay tena ilaina amin’ny fivoarany sy ny hoaviny."
+    },
+    "content": {
+      "fr": [
+        "Le droit à l'éducation est un pilier pour l'épanouissement personnel et professionnel.",
+        "L'État a la responsabilité de mettre en place un système éducatif inclusif, gratuit et accessible à tous, sans discrimination.",
+        "Cela inclut l'accès à l'école primaire, secondaire et supérieure, ainsi qu'à l'éducation non formelle.",
+        "L'éducation permet d'acquérir des connaissances, de développer des compétences critiques et de former des citoyens éclairés."
+      ],
+      "mg": [
+        "Ny zo amin’ny fanabeazana dia andry iray ho an’ny fivoaran’ny tena manokana sy ny fahaizana miasa.",
+        "Ny Fanjakana dia manana andraikitra hametraka rafitra fanabeazana tafiditra, maimaim-poana ary azo idirana ho an’ny rehetra, tsy misy fanavakavahana.",
+        "Tafiditra ao anatin’izany ny fidirana amin’ny sekoly ambaratonga fototra, ambaratonga faharoa sy ambony, ary koa ny fanabeazana tsy ara-dalàna.",
+        "Ny fanabeazana dia ahafahana mahazo fahalalana, mampivelatra fahaizana mandinika ary mamolavola olom-pirenena mahay."
+      ]
+    },
+    "theme": ["éducation", "égalité", "développement", "jeunesse", "accès"],
+    "sources": [
+      "Convention relative aux Droits de l’Enfant (1989)",
+      "Constitution de Madagascar (2010)",
+      "Pacte international relatif aux droits économiques, sociaux et culturels"
+    ]
+  },
+  {
+    "id": "droits-004",
+    "title": {
+      "fr": "Le droit d’être protégé",
+      "mg": "Zo ho voaaro"
+    },
+    "summary": {
+      "fr": "Chaque individu, en particulier les enfants, a le droit d'être protégé contre toutes les formes de violence, d'abus et de négligence.",
+      "mg": "Ny olona tsirairay, indrindra fa ny ankizy, dia manana zo ho voaaro amin'ny endrika herisetra, fanararaotana, ary fanamparam-pahefana rehetra."
+    },
+    "content": {
+      "fr": [
+        "Le droit à la protection signifie que personne ne doit être soumis à la torture, à des traitements cruels, inhumains ou dégradants, ni à l'exploitation.",
+        "Les enfants sont particulièrement vulnérables et nécessitent une protection renforcée contre la maltraitance physique, émotionnelle et sexuelle, ainsi que le travail des enfants et les mariages forcés.",
+        "Les gouvernements ont le devoir de mettre en place des lois et des mécanismes pour assurer cette protection et punir les contrevenants.",
+        "La protection vise à garantir la sécurité physique et psychologique de chaque personne, favorisant ainsi son bien-être et son développement."
+      ],
+      "mg": [
+        "Ny zo amin’ny fiarovana dia midika fa tsy misy olona tokony hiharan’ny fampijaliana, fitsaboana feno habibiana, tsy maha-olombelona na manala baraka, na fanararaotana.",
+        "Tena mora voa mafy ny ankizy ary mila fiarovana mafy orina amin’ny fanararaotana ara-batana, ara-pihetseham-po ary ara-nofo, ary koa ny asa ankizy sy ny fanambadiana an-terivozona.",
+        "Manana adidy ny governemanta hametraka lalàna sy fomba fiasa mba hiantohana izany fiarovana izany sy hanasaziana ireo mpandika lalàna.",
+        "Ny fiarovana dia mikendry ny hiantoka ny fiarovana ara-batana sy ara-tsaina ny olona tsirairay, ka mampiroborobo ny fahasalamany sy ny fivoarany."
+      ]
+    },
+    "theme": ["sécurité", "famille", "protection de l'enfance", "droits humains", "justice"],
+    "sources": [
+      "Convention relative aux Droits de l’Enfant (1989)",
+      "Code Pénal Malagasy",
+      "Déclaration Universelle des Droits de l’Homme (1948)"
+    ]
+  },
+  {
+    "id": "droits-005",
+    "title": {
+      "fr": "Pourquoi voter ?",
+      "mg": "Nahoana no ilaina mifidy ?"
+    },
+    "summary": {
+      "fr": "Voter est un droit et un devoir citoyen essentiel pour choisir nos représentants et influencer les décisions qui affectent notre société.",
+      "mg": "Ny fifidianana dia zo sy adidy sivika tena ilaina mba hisafidianana ireo solontenantsika sy hisy fiantraikany amin'ireo fanapahan-kevitra izay misy fiantraikany amin'ny fiaraha-monina misy antsika."
+    },
+    "content": {
+      "fr": [
+        "Le vote est le principal moyen par lequel les citoyens d'une démocratie peuvent exprimer leur volonté et participer au processus politique.",
+        "Il permet de désigner les dirigeants qui seront responsables de la gestion du pays, de l'élaboration des lois et de la mise en œuvre des politiques publiques.",
+        "Voter, c'est exercer son pouvoir citoyen, faire entendre sa voix, et contribuer à la construction de l'avenir de sa nation.",
+        "C'est aussi une opportunité de soutenir des programmes et des valeurs qui nous tiennent à cœur."
+      ],
+      "mg": [
+        "Ny fifidianana no fitaovana lehibe indrindra ahafahan'ny olom-pirenena ao anatin'ny demokrasia maneho ny sitrapony sy mandray anjara amin'ny fizotry ny politika.",
+        "Izy io dia ahafahana manendry ireo mpitondra izay ho tompon'andraikitra amin'ny fitantanana ny firenena, amin'ny famolavolana ny lalàna ary amin'ny fampiharana ny politika ho an'ny daholobe.",
+        "Ny fifidianana dia fampiasana ny fahefana sivika, fanehoana ny hevitra, ary fandraisana anjara amin'ny fananganana ny hoavin'ny firenena.",
+        "Fotoana iray ihany koa izy io hanohanana ireo programa sy soatoavina izay tena ankafizintsika."
+      ]
+    },
+    "theme": ["vote", "participation", "démocratie", "citoyenneté", "responsabilité"],
+    "sources": [
+      "Code Électoral Malagasy",
+      "Constitution de Madagascar (2010)",
+      "Principes de la démocratie"
+    ]
+  },
+  {
+    "id": "droits-006",
+    "title": {
+      "fr": "Les conditions pour voter",
+      "mg": "Fepetra ahafahana mifidy"
+    },
+    "summary": {
+      "fr": "Pour pouvoir voter, il est nécessaire de remplir certaines conditions légales, comme être majeur et inscrit sur les listes électorales.",
+      "mg": "Mba hahafahana mifidy, dia ilaina ny manatanteraka fepetra ara-dalàna sasany, toy ny feno taona sy ny fisoratana anarana ao amin'ny lisitry ny mpifidy."
+    },
+    "content": {
+      "fr": [
+        "L'âge légal pour voter à Madagascar est de 18 ans révolus.",
+        "Il est impératif d'avoir la nationalité malgache et de jouir de ses droits civiques et politiques.",
+        "L'inscription sur les listes électorales est une démarche obligatoire qui atteste de la capacité d'une personne à exercer son droit de vote.",
+        "Ces conditions garantissent que le vote est un acte responsable et organisé, reflétant la volonté des citoyens éligibles."
+      ],
+      "mg": [
+        "Ny taona ara-dalàna ahafahana mifidy eto Madagasikara dia 18 taona feno.",
+        "Tsy maintsy manana ny zom-pirenena malagasy ary mankafy ny zony sivika sy politika.",
+        "Ny fisoratana anarana ao amin'ny lisitry ny mpifidy dia dingana tsy maintsy atao izay manamarina ny fahaizan'ny olona iray mampiasa ny zony hifidy.",
+        "Ireo fepetra ireo dia miantoka fa ny fifidianana dia hetsika tompon'andraikitra sy voalamina, izay maneho ny sitrapon'ireo olom-pirenena afaka mifidy."
+      ]
+    },
+    "theme": ["vote", "civisme", "législation", "citoyenneté", "procédure"],
+    "sources": [
+      "Code Électoral Malagasy",
+      "Constitution de Madagascar (2010)"
+    ]
+  },
+  {
+    "id": "droits-007",
+    "title": {
+      "fr": "Liberté d’expression",
+      "mg": "Fahalalahana maneho hevitra"
+    },
+    "summary": {
+      "fr": "La liberté d'expression est le droit de chacun de communiquer ses idées et opinions sans crainte de censure, dans le respect de la loi et des autres.",
+      "mg": "Ny fahalalahana maneho hevitra dia ny zon’ny tsirairay hifampiresaka ny heviny sy ny fiheverany tsy misy tahotra ny fanenjehana, araka ny lalàna sy manaja ny hafa."
+    },
+    "content": {
+      "fr": [
+        "Ce droit fondamental permet de s'exprimer oralement, par écrit, ou par tout autre moyen, y compris l'art et les médias.",
+        "Toutefois, la liberté d'expression n'est pas absolue ; elle est encadrée par la loi pour prévenir l'incitation à la haine, la diffamation, l'atteinte à la vie privée ou la violence.",
+        "Il est crucial d'exercer ce droit de manière responsable, en respectant les droits et la réputation d'autrui.",
+        "La liberté d'expression est un pilier de la démocratie et du dialogue social."
+      ],
+      "mg": [
+        "Io zo fototra io dia ahafahana maneho hevitra am-bava, an-tsoratra, na amin’ny fomba hafa rehetra, ao anatin’izany ny zavakanto sy ny media.",
+        "Na izany aza, tsy feno tanteraka ny fahalalahana maneho hevitra; voafehin’ny lalàna izy io mba hisorohana ny famporisihana ny fankahalana, ny fanenjehana, ny fanitsakitsahana ny fiainana manokana na ny herisetra.",
+        "Tena ilaina ny mampiasa ity zo ity amin'ny fomba tompon'andraikitra, manaja ny zon'ny hafa sy ny laza malalany.",
+        "Ny fahalalahana maneho hevitra dia andry iray amin'ny demokrasia sy ny fifanakalozan-kevitra ara-tsosialy."
+      ]
+    },
+    "theme": ["liberté", "respect", "démocratie", "communication", "droits humains"],
+    "sources": [
+      "Déclaration Universelle des Droits de l’Homme (1948)",
+      "Constitution de Madagascar (2010)",
+      "Pacte international relatif aux droits civils et politiques"
+    ]
+  },
+  {
+    "id": "droits-008",
+    "title": {
+      "fr": "Droits des enfants",
+      "mg": "Zo ho an’ny ankizy"
+    },
+    "summary": {
+      "fr": "Les enfants ont des droits spécifiques et fondamentaux qui leur garantissent protection, développement, participation et non-discrimination.",
+      "mg": "Manana zo manokana sy fototra ny ankizy izay miantoka ny fiarovany, ny fivoarany, ny fandraisany anjara ary ny tsy fanavakavahana."
+    },
+    "content": {
+      "fr": [
+        "La Convention relative aux Droits de l'Enfant (CIDE) est le traité international le plus ratifié, définissant les droits de chaque enfant.",
+        "Ces droits incluent le droit à une identité, à la survie et au développement, à l'éducation, à la santé, au jeu et aux loisirs.",
+        "Ils comprennent également la protection contre la violence, l'exploitation et la discrimination, ainsi que le droit d'être entendu et de participer aux décisions qui les concernent.",
+        "Les parents et l'État ont la responsabilité conjointe de garantir la pleine réalisation de ces droits."
+      ],
+      "mg": [
+        "Ny Fifanarahana momba ny Zon’ny Ankizy (CIDE) no fifanarahana iraisam-pirenena be mpankato indrindra, mamaritra ny zon’ny ankizy tsirairay.",
+        "Tafiditra ao anatin’ireo zo ireo ny zo amin’ny maha-izy azy, ny fahavelomana sy ny fivoarana, ny fanabeazana, ny fahasalamana, ny lalao sy ny fialam-boly.",
+        "Tafiditra ao anatin’izy ireo ihany koa ny fiarovana amin’ny herisetra, ny fanararaotana ary ny fanavakavahana, ary koa ny zo hihainoana sy handray anjara amin’ireo fanapahan-kevitra mahakasika azy ireo.",
+        "Ny ray aman-dreny sy ny Fanjakana dia manana andraikitra iraisana mba hiantohana ny fanatanterahana tanteraka ireo zo ireo."
+      ]
+    },
+    "theme": ["famille", "protection", "enfance", "éducation", "santé", "développement"],
+    "sources": [
+      "Convention relative aux Droits de l’Enfant (1989)",
+      "Constitution de Madagascar (2010)",
+      "Code de l'Enfance Malagasy"
+    ]
+  },
+  {
+    "id": "droits-009",
+    "title": {
+      "fr": "Le droit à la santé",
+      "mg": "Zo hahazo fitsaboana"
+    },
+    "summary": {
+      "fr": "Le droit à la santé assure à chaque personne l'accès aux services de santé nécessaires pour atteindre le meilleur état de santé physique et mentale possible.",
+      "mg": "Ny zo amin’ny fahasalamana dia miantoka ho an’ny olona tsirairay ny fidirana amin’ireo tolotra ara-pahasalamana ilaina mba hahatratrarana ny fahasalamana ara-batana sy ara-tsaina tsara indrindra azo atao."
+    },
+    "content": {
+      "fr": [
+        "Ce droit inclut l'accès à l'eau potable, à l'assainissement, à une alimentation saine, à un logement décent et à des conditions de travail saines.",
+        "Les États doivent garantir des services de santé accessibles, abordables, acceptables et de qualité pour tous, y compris les médicaments essentiels et les soins de santé primaires.",
+        "La prévention des maladies et la promotion d'un mode de vie sain sont des composantes clés de ce droit.",
+        "Le droit à la santé est un droit inclusif, englobant une gamme de facteurs sous-jacents déterminants de la santé."
+      ],
+      "mg": [
+        "Tafiditra ao anatin’ity zo ity ny fidirana amin’ny rano fisotro madio, ny fanadiovana, ny sakafo ara-pahasalamana, ny trano fonenana mendrika ary ny toe-piasana salama.",
+        "Tokony hiantoka ny tolotra ara-pahasalamana mora idirana, azo vidiana, azo ekena ary tsara kalitao ho an’ny rehetra ny Fanjakana, ao anatin’izany ny fanafody tena ilaina sy ny fikarakarana ara-pahasalamana fototra.",
+        "Ny fisorohana ny aretina sy ny fampiroboroboana ny fomba fiaina ara-pahasalamana dia singa fototra amin’ity zo ity.",
+        "Ny zo amin’ny fahasalamana dia zo feno, ahitana karazana antony fototra mamaritra ny fahasalamana."
+      ]
+    },
+    "theme": ["santé", "solidarité", "bien-être", "accès aux soins", "prévention"],
+    "sources": [
+      "Organisation Mondiale de la Santé (OMS)",
+      "Constitution de Madagascar (2010)",
+      "Pacte international relatif aux droits économiques, sociaux et culturels"
+    ]
+  },
+  {
+    "id": "droits-010",
+    "title": {
+      "fr": "Le droit à la vie privée",
+      "mg": "Zo manokana ho an’ny tsirairay"
+    },
+    "summary": {
+      "fr": "Chacun a le droit au respect de sa vie privée, familiale, de son domicile et de sa correspondance.",
+      "mg": "Ny tsirairay dia manana zo hohajaina ny fiainany manokana, ny fiainany ao an-tokantrano, ny fonenany ary ny fifandraisany."
+    },
+    "content": {
+      "fr": [
+        "Ce droit protège l'individu contre les ingérences arbitraires de l'État ou d'autres personnes dans sa vie personnelle.",
+        "Il inclut la protection des données personnelles, la confidentialité des communications et le droit de ne pas être exposé publiquement sans consentement.",
+        "Le respect de la vie privée est essentiel pour la dignité et l'autonomie de chaque personne.",
+        "Il est cependant parfois limité pour des raisons de sécurité publique ou de justice, mais ces limitations doivent être nécessaires et proportionnées."
+      ],
+      "mg": [
+        "Miaro ny tsirairay amin’ny fitsabahan’ny fanjakana na olon-kafa amin’ny fiainany manokana izany zo izany.",
+        "Tafiditra ao anatin’izany ny fiarovana ny angon-drakitra manokana, ny tsiambaratelon’ny fifandraisana ary ny zo tsy hiharihary ampahibemaso tsy misy fanekena.",
+        "Tena ilaina ho an’ny voninahitra sy ny fahaleovan-tenan’ny olona tsirairay ny fanajana ny fiainana manokana.",
+        "Na izany aza, indraindray voafetra izy io noho ny antony fiarovana ny vahoaka na ny rariny, saingy tsy maintsy ilaina sy mifanaraka amin’ny zava-misy ireo fameperana ireo."
+      ]
+    },
+    "theme": ["liberté", "protection", "vie privée", "dignité", "données personnelles"],
+    "sources": [
+      "Déclaration Universelle des Droits de l’Homme (1948)",
+      "Constitution de Madagascar (2010)",
+      "Code de la communication"
+    ]
+  },
+  {
+    "id": "droits-011",
+    "title": {
+      "fr": "Le droit au travail",
+      "mg": "Zo amin’ny asa"
+    },
+    "summary": {
+      "fr": "Chaque personne a le droit de travailler librement, dans des conditions justes et favorables, et de choisir son emploi.",
+      "mg": "Ny olona tsirairay dia manana zo hiasa malalaka, amin’ny fepetra ara-drariny sy tsara, ary hisafidy ny asany."
+    },
+    "content": {
+      "fr": [
+        "Le droit au travail implique la possibilité de gagner sa vie par un travail librement choisi ou accepté.",
+        "Il comprend le droit à des conditions de travail équitables, incluant un salaire juste, des horaires raisonnables, la sécurité et l'hygiène au travail, et l'égalité de rémunération pour un travail de valeur égale.",
+        "Les États doivent œuvrer pour garantir le plein emploi et offrir des opportunités de formation professionnelle.",
+        "Ce droit est essentiel pour l'autonomie économique et la participation sociale des individus."
+      ],
+      "mg": [
+        "Ny zo amin’ny asa dia midika fa afaka miasa sy mahazo karama amin’ny asa voafidy malalaka na nekena.",
+        "Tafiditra ao anatin’izany ny zo amin’ny fepetra fiasa ara-drariny, ao anatin’izany ny karama ara-drariny, ny ora fiasa mety, ny fiarovana sy ny fahadiovana eo amin’ny toeram-piasana, ary ny fitovian’ny karama ho an’ny asa mitovy sanda.",
+        "Tokony hiasa ny Fanjakana mba hiantohana ny fahafenoan’ny asa sy hanomezana fahafahana amin’ny fiofanana arak’asa.",
+        "Tena ilaina ho an’ny fahaleovan-tena ara-toekarena sy ny fandraisana anjara ara-tsosialy ny olona ity zo ity."
+      ]
+    },
+    "theme": ["travail", "économie", "droits sociaux", "égalité", "dignité"],
+    "sources": [
+      "Déclaration Universelle des Droits de l’Homme (1948)",
+      "Pacte international relatif aux droits économiques, sociaux et culturels",
+      "Code du Travail Malagasy"
+    ]
+  },
+  {
+    "id": "droits-012",
+    "title": {
+      "fr": "Le droit à la propriété",
+      "mg": "Zo manana fananana"
+    },
+    "summary": {
+      "fr": "Chacun a le droit de posséder des biens, seul ou en association, et de ne pas en être arbitrairement privé.",
+      "mg": "Ny tsirairay dia manana zo hanana fananana, irery na miaraka amin'ny hafa, ary tsy hisy hanala azy amin'ny fomba tsy ara-drariny."
+    },
+    "content": {
+      "fr": [
+        "Ce droit fondamental garantit aux individus la possibilité d'acquérir, de posséder et de disposer de biens matériels et immatériels.",
+        "Il est essentiel pour la sécurité économique et l'autonomie des personnes, leur permettant de construire un patrimoine et d'assurer leur subsistance.",
+        "Bien que le droit à la propriété soit protégé, il peut être limité dans l'intérêt général (ex: expropriation pour cause d'utilité publique, réglementations urbaines, impôts).",
+        "Ces limitations doivent être justes, légales et compensatoires en cas de privation."
+      ],
+      "mg": [
+        "Ity zo fototra ity dia miantoka ny fahafahan'ny tsirairay mahazo, manana, ary mandamina ny fananana ara-nofo sy tsy ara-nofo.",
+        "Tena ilaina ho an'ny fiarovana ara-toekarena sy ny fahaleovan-tenan'ny olona izany, mamela azy ireo hanorina fananana sy hiantoka ny fivelomany.",
+        "Na dia arovana aza ny zo amin'ny fananana, dia azo ferana izany ho tombontsoan'ny besinimaro (ohatra: fanafoanana ny fananana noho ny tombontsoam-bahoaka, fitsipika momba ny tanàn-dehibe, hetra).",
+        "Tsy maintsy ara-drariny, ara-dalàna ary misy tambiny ireo fameperana ireo raha misy fanafoanana."
+      ]
+    },
+    "theme": ["propriété", "économie", "droits économiques", "sécurité", "législation"],
+    "sources": [
+      "Déclaration Universelle des Droits de l’Homme (1948)",
+      "Constitution de Madagascar (2010)",
+      "Code Civil Malagasy"
+    ]
+  },
+  {
+    "id": "droits-013",
+    "title": {
+      "fr": "Le droit à un procès équitable",
+      "mg": "Zo hahazo fitsarana ara-drariny"
+    },
+    "summary": {
+      "fr": "Toute personne accusée a le droit d'être jugée équitablement, publiquement et par un tribunal indépendant et impartial.",
+      "mg": "Ny olona rehetra voampanga dia manana zo hotsaraina ara-drariny, ampahibemaso ary amin'ny alalan'ny fitsarana mahaleo tena sy tsy miangatra."
+    },
+    "content": {
+      "fr": [
+        "Ce droit garantit l'accès à la justice pour tous et assure que les procédures judiciaires sont menées de manière juste et transparente.",
+        "Il inclut des principes tels que la présomption d'innocence, le droit à être informé des charges, le droit à un avocat et le droit de faire appel d'une décision.",
+        "Personne ne peut être détenu arbitrairement ou subir une peine sans un jugement conforme aux lois.",
+        "Ce droit est fondamental pour l'État de droit et la protection des libertés individuelles."
+      ],
+      "mg": [
+        "Miantoka ny fahafahan'ny rehetra miditra amin'ny rariny sy miantoka fa ny fizotry ny fitsarana dia tanterahana amin'ny fomba ara-drariny sy mangarahara ity zo ity.",
+        "Tafiditra ao anatin’izany ny fitsipika toy ny fiheverana ho tsy manan-tsiny, ny zo ho fampahafantarana ny fiampangana, ny zo hanana mpisolovava ary ny zo hampiakatra fitsarana ambony ny fanapahan-kevitra.",
+        "Tsy misy olona azo tazonina an-keriny na hihatra sazy tsy misy fitsarana mifanaraka amin'ny lalàna.",
+        "Ity zo ity dia fototra ho an'ny Fanjakana tan-dalàna sy ny fiarovana ny fahalalahana manokana."
+      ]
+    },
+    "theme": ["justice", "droits civils", "État de droit", "procès", "législation"],
+    "sources": [
+      "Déclaration Universelle des Droits de l’Homme (1948)",
+      "Pacte international relatif aux droits civils et politiques",
+      "Constitution de Madagascar (2010)",
+      "Code de Procédure Pénale Malagasy"
+    ]
+  },
+  {
+    "id": "droits-014",
+    "title": {
+      "fr": "Le droit d'être traité pareil",
+      "mg": "Zo hitovy fitondrana"
+    },
+    "summary": {
+      "fr": "Chaque enfant ou jeune a le droit d'être traité avec respect, sans être mis de côté à cause de sa couleur de peau, de sa religion, ou de son sexe. On est tous égaux !",
+      "mg": "Manana zo hitovy fitondrana amin'ny fanajana ny ankizy na tanora tsirairay, tsy misy fanavakavahana amin'ny lokon-koditra, fivavahana, na lahy sy vavy. Mitovy daholo isika rehetra!"
+    },
+    "content": {
+      "fr": [
+        "Personne n'a le droit de te juger ou de te traiter différemment parce que tu es différent(e).",
+        "Que tu sois un garçon ou une fille, que tu viennes d'ici ou d'ailleurs, tu as les mêmes droits que tout le monde.",
+        "Si quelqu'un te fait sentir mal à cause de tes différences, ce n'est pas normal et tu peux en parler à un adulte de confiance.",
+        "Le plus important, c'est de se respecter les uns les autres pour qui l'on est."
+      ],
+      "mg": [
+        "Tsy misy olona manana zo hitsara anao na hitondra anao amin'ny fomba hafa noho ianao tsy mitovy.",
+        "Na zazalahy ianao na zazavavy, na avy eto na avy any an-kafa, manana zo mitovy amin'ny olon-drehetra ianao.",
+        "Raha misy olona mampijaly anao noho ny tsy fitovianao, dia tsy ara-dalàna izany ary afaka miresaka amin'ny olon-dehibe atokisanao ianao.",
+        "Ny zava-dehibe indrindra dia ny fifanajana amin'ny maha-isika antsika."
+      ]
+    },
+    "theme": ["égalité", "respect", "non-discrimination", "vivre ensemble"],
+    "sources": [
+      "Déclaration Universelle des Droits de l’Homme (1948)",
+      "Convention relative aux Droits de l’Enfant (1989)"
+    ]
+  },
+  {
+    "id": "droits-015",
+    "title": {
+      "fr": "Protéger la planète, c'est notre devoir",
+      "mg": "Miarova ny planeta, adidintsika izany"
+    },
+    "summary": {
+      "fr": "Chacun doit aider à protéger la nature et l'environnement pour que la Terre reste belle et saine pour nous et les générations futures.",
+      "mg": "Tokony hanampy hiaro ny natiora sy ny tontolo iainana ny tsirairay mba hitazonana ny tany ho tsara sy salama ho antsika sy ny taranaka ho avy."
+    },
+    "content": {
+      "fr": [
+        "Jeter ses déchets dans une poubelle, trier, éteindre la lumière en sortant d'une pièce, ne pas gaspiller l'eau... ce sont des gestes simples et importants.",
+        "Les plantes, les animaux, les forêts, les océans... tout est précieux et a besoin de notre aide.",
+        "Si on ne prend pas soin de la planète, elle peut devenir malade, et cela peut nous rendre malades aussi.",
+        "Protéger l'environnement, c'est comme prendre soin de sa maison, mais à l'échelle de la Terre entière !"
+      ],
+      "mg": [
+        "Fahazaran-dratsy amin'ny famoahana fako, fanadiovana, famonoana ny jiro rehefa miala ao anaty efitrano, tsy mandany rano... ireo dia fihetsika tsotra sy manan-danja.",
+        "Ny zava-maniry, ny biby, ny ala, ny ranomasina... sarobidy daholo ary mila fanampiana avy amintsika.",
+        "Raha tsy mikarakara ny planeta isika, dia mety ho marary izy, ary mety hahatonga antsika ho marary koa izany.",
+        "Ny fiarovana ny tontolo iainana dia toy ny mikarakara ny tranonao, fa amin'ny sehatry ny tany manontolo!"
+      ]
+    },
+    "theme": ["environnement", "nature", "écologie", "responsabilité"],
+    "sources": [
+      "Constitution de Madagascar (2010)",
+      "Accords internationaux sur l'environnement (ex: Accord de Paris)"
+    ]
+  },
+  {
+    "id": "droits-016",
+    "title": {
+      "fr": "Le droit de savoir et de comprendre",
+      "mg": "Zo hahafantatra sy hahatakatra"
+    },
+    "summary": {
+      "fr": "Tu as le droit d'avoir des informations sur ce qui se passe autour de toi, d'apprendre des choses vraies et de comprendre le monde.",
+      "mg": "Manana zo hahazo vaovao momba izay mitranga manodidina anao ianao, hianatra zavatra marina ary hahatakatra izao tontolo izao."
+    },
+    "content": {
+      "fr": [
+        "Que ce soit à l'école, à la maison ou dans les journaux (ou sur internet avec un adulte !), tu dois pouvoir avoir accès à des informations claires.",
+        "C'est important pour te faire ta propre idée des choses et pour comprendre comment fonctionne la société.",
+        "Les adultes doivent t'aider à trouver des informations fiables et à te poser des questions pour bien comprendre.",
+        "Savoir et comprendre te rend plus fort et plus autonome."
+      ],
+      "mg": [
+        "Na any an-tsekoly, na any an-trano, na any amin'ny gazety (na amin'ny internet miaraka amin'ny olon-dehibe!), dia tokony ho afaka hahazo vaovao mazava ianao.",
+        "Zava-dehibe izany mba hahazoana hevitrao manokana momba ny zavatra ary hahatakarana ny fomba fiasan'ny fiaraha-monina.",
+        "Tokony hanampy anao hitady vaovao azo itokisana sy hametraka fanontaniana mba hahatakarana tsara ny olon-dehibe.",
+        "Ny fahalalana sy ny fahatakarana dia mampatanjaka sy mahaleo tena anao."
+      ]
+    },
+    "theme": ["information", "connaissance", "compréhension", "apprentissage"],
+    "sources": [
+      "Déclaration Universelle des Droits de l’Homme (1948)",
+      "Convention relative aux Droits de l’Enfant (1989)"
+    ]
+  },
+  {
+    "id": "droits-017",
+    "title": {
+      "fr": "S'entraider, c'est important",
+      "mg": "Manampy ny hafa, zava-dehibe izany"
+    },
+    "summary": {
+      "fr": "Aider les autres, surtout ceux qui en ont besoin, est un devoir. C'est ça, la solidarité !",
+      "mg": "Manampy ny hafa, indrindra ireo sahirana, dia adidy. Izany no firaisankina!"
+    },
+    "content": {
+      "fr": [
+        "Si tu vois quelqu'un en difficulté, l'aider si tu peux est une bonne chose. Ça peut être un ami, un voisin, ou même quelqu'un que tu ne connais pas.",
+        "Partager tes jouets, tes goûters, ou simplement écouter un ami qui est triste, c'est aussi de la solidarité.",
+        "Quand on s'entraide, on construit une communauté plus forte et plus heureuse.",
+        "Pense à comment tu aimerais qu'on t'aide si tu étais en difficulté."
+      ],
+      "mg": [
+        "Raha mahita olona sahirana ianao, dia tsara raha manampy azy raha afaka ianao. Mety ho namana, mpiara-monina, na olona tsy fantatrao aza izany.",
+        "Ny fizarana ny kilalao, ny sakafo kely, na ny fihainoana fotsiny ny namana malahelo, dia firaisankina koa.",
+        "Rehefa mifampiankinana isika, dia manangana fiaraha-monina matanjaka sy sambatra kokoa.",
+        "Eritrereto ny fomba tianao hanampiana anao raha sahirana ianao."
+      ]
+    },
+    "theme": ["solidarité", "entraide", "amitié", "responsabilité"],
+    "sources": [
+      "Principes de philosophie sociale",
+      "Valeurs morales et éthiques"
+    ]
+  },
+  {
+    "id": "droits-018",
+    "title": {
+      "fr": "Le droit d'être en sécurité",
+      "mg": "Zo ho voaro"
+    },
+    "summary": {
+      "fr": "Tu as le droit de te sentir en sécurité partout où tu vas, à la maison, à l'école, et dans la rue. Personne ne doit te faire de mal.",
+      "mg": "Manana zo hahatsapa ho voaro na aiza na aiza ianao, ao an-trano, any an-tsekoly, ary eny an-dalana. Tsy misy tokony hanao ratsy anao."
+    },
+    "content": {
+      "fr": [
+        "Les adultes, tes parents, tes professeurs, la police, sont là pour te protéger.",
+        "Si tu te sens en danger, ou si quelqu'un te menace, tu dois le dire à un adulte de confiance tout de suite.",
+        "Les règles et les lois sont là pour nous protéger tous et nous permettre de vivre tranquillement.",
+        "Être en sécurité, c'est pouvoir jouer, apprendre et grandir sans peur."
+      ],
+      "mg": [
+        "Ny olon-dehibe, ny ray aman-dreninao, ny mpampianatra anao, ny polisy, dia eto hiaro anao.",
+        "Raha mahatsiaro ho tandindomin-doza ianao, na misy mandrahona anao, dia tokony hilaza izany amin'ny olon-dehibe atokisanao avy hatrany ianao.",
+        "Ny fitsipika sy ny lalàna dia eto hiaro antsika rehetra ary hahafahantsika miaina am-pilaminana.",
+        "Ny fiarovana dia ny fahafahana milalao, mianatra ary mitombo tsy misy tahotra."
+      ]
+    },
+    "theme": ["sécurité", "protection", "famille", "confiance"],
+    "sources": [
+      "Convention relative aux Droits de l’Enfant (1989)",
+      "Code Pénal Malagasy"
+    ]
+  },
+  {
+    "id": "droits-019",
+    "title": {
+      "fr": "Respecter les règles de notre pays",
+      "mg": "Manaja ny fitsipiky ny firenentsika"
+    },
+    "summary": {
+      "fr": "On doit tous respecter les lois et les symboles de notre pays, comme le drapeau, car cela aide le pays à bien fonctionner.",
+      "mg": "Tokony hanaja ny lalàna sy ny mariky ny firenentsika daholo isika, toy ny saina, satria manampy ny firenena hiasa tsara izany."
+    },
+    "content": {
+      "fr": [
+        "Les lois sont comme les règles d'un jeu : elles sont là pour que tout le monde joue équitablement et que personne ne triche.",
+        "Les symboles comme l'hymne national ou le drapeau représentent notre pays et ce qui nous unit.",
+        "Respecter ces règles, c'est aider les gens qui dirigent le pays à faire leur travail pour le bien de tous.",
+        "C'est une façon de montrer qu'on aime son pays et qu'on veut qu'il soit fort."
+      ],
+      "mg": [
+        "Ny lalàna dia toy ny fitsipiky ny lalao: eto izy ireo mba hilalaovan'ny rehetra amin'ny fomba ara-drariny ary tsy hisy hosoka.",
+        "Ny marika toy ny hiram-pirenena na ny saina dia maneho ny firenentsika sy izay mampiray antsika.",
+        "Ny fanajana ireo fitsipika ireo dia manampy ny olona mitantana ny firenena hanao ny asany ho an'ny tombontsoan'ny rehetra.",
+        "Fomba iray hanehoana fa tia ny firenentsika isika ary te hahita azy ho matanjaka."
+      ]
+    },
+    "theme": ["civisme", "patriotisme", "règles", "respect", "pays"],
+    "sources": [
+      "Constitution de Madagascar (2010)",
+      "Éducation civique"
+    ]
+  },
+  {
+    "id": "droits-020",
+    "title": {
+      "fr": "Libre de croire (ou non)",
+      "mg": "Afaka mino (na tsia)"
+    },
+    "summary": {
+      "fr": "Tu as le droit de choisir ta religion ou de ne pas en avoir, et de croire ce que tu veux, tant que tu respectes les autres.",
+      "mg": "Manana zo hisafidy ny fivavahanao ianao na tsy hanana izany, ary hino izay tianao, raha manaja ny hafa ianao."
+    },
+    "content": {
+      "fr": [
+        "Personne ne peut t'obliger à croire en quelque chose si tu n'en as pas envie.",
+        "Tu peux pratiquer ta religion, lire des livres sacrés, ou aller dans des lieux de culte si tu le souhaites.",
+        "Mais ta liberté s'arrête là où celle des autres commence. Tu ne peux pas te moquer des autres religions ou les insulter.",
+        "Le plus important est de vivre en paix, même si on ne croit pas les mêmes choses."
+      ],
+      "mg": [
+        "Tsy misy olona afaka manery anao hino zavatra raha tsy tianao izany.",
+        "Afaka manao ny fivavahanao ianao, mamaky boky masina, na mandeha any amin'ny toeram-pivavahana raha tianao izany.",
+        "Saingy mifarana eo amin'ny fiandohan'ny fahafahan'ny hafa ny fahalalahanao. Tsy afaka maneso fivavahana hafa ianao na manaratsy azy ireo.",
+        "Ny zava-dehibe indrindra dia ny miaina am-pilaminana, na dia tsy mitovy finoana aza isika."
+      ]
+    },
+    "theme": ["liberté", "religion", "tolérance", "respect"],
+    "sources": [
+      "Déclaration Universelle des Droits de l’Homme (1948)",
+      "Constitution de Madagascar (2010)"
+    ]
+  },
+  {
+    "id": "droits-021",
+    "title": {
+      "fr": "Aider son pays si besoin",
+      "mg": "Manampy ny firenena raha ilaina izany"
+    },
+    "summary": {
+      "fr": "Aider à défendre son pays est un devoir, si un jour c'est nécessaire, pour le protéger.",
+      "mg": "Manampy hiaro ny firenena dia adidy, raha misy fotoana ilaina izany, mba hiaro azy."
+    },
+    "content": {
+      "fr": [
+        "Si notre pays est en danger, on doit tous être prêts à l'aider, chacun à sa manière.",
+        "Pour les adultes, cela peut être le service militaire ou d'autres missions pour la sécurité.",
+        "Pour les jeunes, c'est aussi apprendre l'importance de la paix et de la protection de son pays.",
+        "C'est comme une grande équipe où chacun joue son rôle pour la sécurité de tous."
+      ],
+      "mg": [
+        "Raha tandindomin-doza ny firenentsika, dia tokony ho vonona hanampy azy daholo isika, samy amin'ny fombany avy.",
+        "Ho an'ny olon-dehibe, mety ho ny fanompoana miaramila izany na asa hafa ho an'ny fiarovana.",
+        "Ho an'ny tanora, dia ny fianarana ny maha zava-dehibe ny fandriampahalemana sy ny fiarovana ny fireneny koa izany.",
+        "Toy ny ekipa lehibe iray izay samy manana ny anjara toerany ho an'ny fiarovana ny rehetra."
+      ]
+    },
+    "theme": ["patriotisme", "sécurité", "défense", "devoir"],
+    "sources": [
+      "Constitution de Madagascar (2010)",
+      "Lois sur le service national"
+    ]
+  },
+  {
+    "id": "droits-022",
+    "title": {
+      "fr": "Le droit de découvrir et de créer",
+      "mg": "Zo hahita sy hamorona"
+    },
+    "summary": {
+      "fr": "Tu as le droit de découvrir la musique, les tableaux, les livres, les inventions et de créer tes propres choses.",
+      "mg": "Manana zo hahita mozika, sary hosodoko, boky, zavatra noforonina ary hamorona zavatra manokana ianao."
+    },
+    "content": {
+      "fr": [
+        "Aller au musée, lire des histoires, écouter de la musique, dessiner, inventer des jeux... tout ça fait partie de ce droit !",
+        "La culture et les arts sont importants pour t'aider à t'exprimer et à comprendre le monde d'une autre façon.",
+        "Les adultes doivent t'offrir des opportunités de découvrir et de faire de l'art.",
+        "Créer, c'est magique : tu peux inventer ton propre monde et partager tes idées."
+      ],
+      "mg": [
+        "Mandeha any amin'ny tranombakoka, mamaky tantara, mihaino mozika, manao sary, mamorona lalao... tafiditra ao anatin'ity zo ity daholo izany!",
+        "Manan-danja ny kolontsaina sy ny zavakanto mba hanampiana anao haneho ny tenanao sy hahatakatra izao tontolo izao amin'ny fomba hafa.",
+        "Tokony hanome fahafahana anao hahita sy hanao zavakanto ny olon-dehibe.",
+        "Mahagaga ny mamorona: afaka mamorona ny tontolonao manokana ianao ary mizara ny hevitrao."
+      ]
+    },
+    "theme": ["culture", "créativité", "arts", "loisirs", "apprentissage"],
+    "sources": [
+      "Convention relative aux Droits de l’Enfant (1989)",
+      "Pacte international relatif aux droits économiques, sociaux et culturels"
+    ]
+  },
+  {
+    "id": "droits-023",
+    "title": {
+      "fr": "Payer les impôts, c'est aider tout le monde",
+      "mg": "Mandoa hetra, manampy ny rehetra izany"
+    },
+    "summary": {
+      "fr": "Quand on est adulte, payer ses impôts, c'est un devoir pour que l'argent serve à construire des écoles, des hôpitaux, des routes pour tous.",
+      "mg": "Rehefa olon-dehibe isika, dia adidy ny mandoa hetra mba hampiasana ny vola hananganana sekoly, hopitaly, lalana ho an'ny rehetra."
+    },
+    "content": {
+      "fr": [
+        "Les impôts, c'est de l'argent que les adultes donnent à l'État (le gouvernement).",
+        "Cet argent sert à faire fonctionner le pays, comme payer les pompiers, les médecins, les professeurs, ou construire des ponts et des parcs.",
+        "Si personne ne payait d'impôts, on n'aurait pas de bonnes routes, ni d'écoles gratuites. C'est un peu comme une tirelire géante pour le pays.",
+        "Chacun contribue pour le bien de tous."
+      ],
+      "mg": [
+        "Ny hetra dia vola omen'ny olon-dehibe ny Fanjakana (governemanta).",
+        "Ampiasaina hampandehanana ny firenena io vola io, toy ny fandoavana ny mpamono afo, ny dokotera, ny mpampianatra, na ny fananganana tetezana sy zaridaina.",
+        "Raha tsy misy olona nandoa hetra, dia tsy hanana lalana tsara isika, na sekoly maimaim-poana. Toy ny vola be ho an'ny firenena izany.",
+        "Ny tsirairay dia mandray anjara ho an'ny tombontsoan'ny rehetra."
+      ]
+    },
+    "theme": ["argent", "impôts", "services publics", "devoir", "citoyenneté"],
+    "sources": [
+      "Code Général des Impôts de Madagascar",
+      "Éducation civique"
+    ]
+  },
+  {
+    "id": "droits-024",
+    "title": {
+      "fr": "Le droit de se regrouper et de parler",
+      "mg": "Zo hivory sy hiresaka"
+    },
+    "summary": {
+      "fr": "Tu as le droit de te réunir avec tes amis pour discuter, faire des activités ou même créer un club, du moment que c'est fait en paix.",
+      "mg": "Manana zo hivory amin'ny namanao ianao hiresaka, hanao hetsika na hanangana klioba, raha mbola atao am-pilaminana izany."
+    },
+    "content": {
+      "fr": [
+        "Que ce soit à l'école ou en dehors, tu peux former un groupe avec d'autres enfants pour partager des idées ou faire des choses ensemble.",
+        "C'est une façon d'apprendre à travailler en équipe et de faire entendre ta voix ou celle de ton groupe.",
+        "Mais attention, ce droit doit toujours être utilisé pour des choses positives et sans faire de mal aux autres.",
+        "C'est comme une mini-démocratie où chacun peut s'exprimer."
+      ],
+      "mg": [
+        "Na any an-tsekoly na any ivelany, afaka manangana vondrona miaraka amin'ny ankizy hafa ianao hizarana hevitra na hanao zavatra miaraka.",
+        "Fomba iray hianarana miara-miasa sy hanehoana ny feonao na ny an'ny vondronao izany.",
+        "Saingy mitandrema, ity zo ity dia tsy maintsy ampiasaina foana ho an'ny zavatra tsara ary tsy manimba ny hafa.",
+        "Toy ny demokrasia kely izay afaka maneho ny heviny ny tsirairay."
+      ]
+    },
+    "theme": ["liberté", "participation", "groupe", "expression"],
+    "sources": [
+      "Déclaration Universelle des Droits de l’Homme (1948)",
+      "Convention relative aux Droits de l’Enfant (1989)"
+    ]
+  },
+  {
+    "id": "droits-025",
+    "title": {
+      "fr": "Respecter les règles de la route",
+      "mg": "Manaja ny fitsipiky ny lalana"
+    },
+    "summary": {
+      "fr": "Quand tu es à pied, à vélo ou en voiture, tu dois respecter les feux, les panneaux et les passages piétons pour ta sécurité et celle des autres.",
+      "mg": "Rehefa mandeha an-tongotra ianao, na bisikileta, na fiara, dia tokony hanaja ny jiro, ny famantarana ary ny fizarana mpandeha an-tongotra mba ho fiarovanao sy ny fiarovan'ny hafa."
+    },
+    "content": {
+      "fr": [
+        "Les règles de la route sont là pour éviter les accidents. Ce n'est pas pour embêter, c'est pour protéger !",
+        "Un feu rouge, ça veut dire STOP ! Une ligne blanche, ça veut dire qu'il faut traverser ici. Il faut bien les connaître et les appliquer.",
+        "Si tout le monde respecte ces règles, la route est plus sûre pour tout le monde : pour les piétons, les cyclistes et les voitures.",
+        "C'est un devoir simple qui peut sauver des vies."
+      ],
+      "mg": [
+        "Ny fitsipiky ny lalana dia natao hisorohana ny lozam-pifamoivoizana. Tsy natao hanelingelina izany, fa hiarovana!",
+        "Ny jiro mena, midika hoe STOP izany! Ny tsipika fotsy, midika izany fa tokony hiampita eto. Tokony ho fantatra tsara sy hampiharina izany.",
+        "Raha manaja ireo fitsipika ireo ny rehetra, dia ho azo antoka kokoa ny lalana ho an'ny rehetra: ho an'ny mpandeha an-tongotra, ny mpitaingina bisikileta ary ny fiara.",
+        "Adidy tsotra izay mety hamonjy aina izany."
+      ]
+    },
+    "theme": ["sécurité", "règles", "route", "prévention"],
+    "sources": [
+      "Code de la Route Malagasy",
+      "Éducation à la sécurité routière"
+    ]
+  },
+  {
+    "id": "droits-026",
+    "title": {
+      "fr": "Participer aux décisions du pays",
+      "mg": "Mandray anjara amin'ny fanapahan-kevitry ny firenena"
+    },
+    "summary": {
+      "fr": "Quand tu seras plus grand, tu auras le droit de choisir qui dirige le pays en votant, et de donner ton avis sur ce qui est important pour notre société.",
+      "mg": "Rehefa lehibe ianao, dia hanana zo hisafidy izay hitantana ny firenena amin'ny alalan'ny fifidianana, ary haneho hevitra momba izay zava-dehibe ho an'ny fiaraha-monina misy antsika."
+    },
+    "content": {
+      "fr": [
+        "Le vote, c'est comme choisir son chef d'équipe, mais pour tout le pays. C'est très important !",
+        "Tu pourras aussi participer à des discussions, donner ton avis sur des problèmes, et même devenir toi-même un responsable si tu le souhaites.",
+        "C'est ta façon de faire partie de la vie de ton pays et d'aider à le rendre meilleur.",
+        "Chaque voix compte en démocratie."
+      ],
+      "mg": [
+        "Ny fifidianana dia toy ny fisafidianana ny mpitarika ny ekipa, fa ho an'ny firenena manontolo. Tena zava-dehibe izany!",
+        "Afaka mandray anjara amin'ny adihevitra koa ianao, maneho ny hevitrao momba ny olana, ary mety ho lasa tompon'andraikitra mihitsy aza ianao raha tianao izany.",
+        "Izany no fomba handraisanao anjara amin'ny fiainam-pireneny ary hanampiana azy ho tsara kokoa.",
+        "Misy lanjany ny feo tsirairay ao anatin'ny demokrasia."
+      ]
+    },
+    "theme": ["démocratie", "vote", "participation", "citoyenneté"],
+    "sources": [
+      "Constitution de Madagascar (2010)",
+      "Éducation civique"
+    ]
+  },
+  {
+    "id": "droits-027",
+    "title": {
+      "fr": "Aider quelqu'un en danger",
+      "mg": "Manampy olona tandindomin-doza"
+    },
+    "summary": {
+      "fr": "Si tu vois quelqu'un en danger (qui tombe, qui se noie...), tu dois prévenir un adulte ou appeler les secours si tu peux.",
+      "mg": "Raha mahita olona tandindomin-doza ianao (lavo, maty an-drano...), dia tokony hampandre olon-dehibe na hiantso vonjy raha afaka ianao."
+    },
+    "content": {
+      "fr": [
+        "C'est un devoir très important : si tu peux aider quelqu'un qui est en difficulté et que tu ne te mets pas en danger toi-même, tu dois le faire.",
+        "Si tu es trop jeune, le plus important est d'aller chercher de l'aide auprès d'un adulte tout de suite (parents, professeurs, voisins).",
+        "Ne jamais laisser quelqu'un seul s'il a besoin d'aide. C'est un signe de courage et de gentillesse.",
+        "Chaque vie compte."
+      ],
+      "mg": [
+        "Adidy tena manan-danja izany: raha afaka manampy olona sahirana ianao ary tsy mametraka ny tenanao amin'ny loza, dia tokony hanao izany ianao.",
+        "Raha mbola tanora loatra ianao, ny zava-dehibe indrindra dia ny mitady fanampiana avy amin'ny olon-dehibe avy hatrany (ray aman-dreny, mpampianatra, mpiara-monina).",
+        "Aza avela irery mihitsy ny olona raha mila fanampiana izy. Famantarana ny herim-po sy ny hatsaram-panahy izany.",
+        "Manan-danja ny aina rehetra."
+      ]
+    },
+    "theme": ["sécurité", "solidarité", "urgence", "aide", "responsabilité"],
+    "sources": [
+      "Code Pénal Malagasy (non-assistance à personne en danger)",
+      "Principes moraux"
+    ]
+  },
+  {
+    "id": "droits-028",
+    "title": {
+      "fr": "Le droit de bouger librement",
+      "mg": "Zo hivezivezy malalaka"
+    },
+    "summary": {
+      "fr": "Tu as le droit d'aller où tu veux dans ton pays, de changer de ville si ta famille déménage, et de voyager.",
+      "mg": "Manana zo handeha izay tianao ao amin'ny firenenao ianao, hanova tanàna raha mifindra monina ny fianakavianao, ary hivezivezy."
+    },
+    "content": {
+      "fr": [
+        "Ton pays est grand, et tu as le droit de le découvrir ! Tu peux te déplacer d'un endroit à un autre.",
+        "Si tes parents déménagent pour le travail, tu as le droit de les suivre et de t'installer dans une nouvelle ville.",
+        "Ce droit est important pour ta liberté, mais il y a parfois des règles à respecter, comme ne pas aller dans des endroits dangereux.",
+        "C'est ta liberté d'explorer et de choisir où tu vis."
+      ],
+      "mg": [
+        "Lehibe ny firenenao, ary manana zo hahita azy ianao! Afaka mihetsika avy amin'ny toerana iray mankany amin'ny iray hafa ianao.",
+        "Raha mifindra monina ny ray aman-dreninao noho ny asa, dia manana zo hanaraka azy ireo sy hipetraka amin'ny tanàna vaovao ianao.",
+        "Manan-danja ho an'ny fahalalahanao ity zo ity, saingy misy fitsipika tokony harahina indraindray, toy ny tsy mandeha any amin'ny toerana mampidi-doza.",
+        "Izany no fahalalahanao mikaroka sy misafidy izay toerana hipetrahanao."
+      ]
+    },
+    "theme": ["liberté", "mouvement", "voyage", "droits individuels"],
+    "sources": [
+      "Déclaration Universelle des Droits de l’Homme (1948)",
+      "Constitution de Madagascar (2010)"
+    ]
+  },
+  {
+    "id": "droits-029",
+    "title": {
+      "fr": "Prendre soin des affaires de tout le monde",
+      "mg": "Mikarakara ny raharahan'ny rehetra"
+    },
+    "summary": {
+      "fr": "Les parcs, les écoles, les rues, ce sont des choses qui appartiennent à tout le monde. On doit en prendre soin et ne pas les abîmer.",
+      "mg": "Ny zaridaina, ny sekoly, ny lalana, ireo dia zavatra an'ny rehetra. Tokony hikarakara azy ireo isika ary tsy hanimba azy ireo."
+    },
+    "content": {
+      "fr": [
+        "Si tu casses quelque chose dans un parc ou une école, ce n'est pas seulement grave pour toi, mais pour tous ceux qui l'utilisent.",
+        "Jeter des papiers par terre, gribouiller sur les murs, ce n'est pas respecter les affaires de la communauté.",
+        "Quand on prend soin des choses publiques, ça veut dire qu'on se soucie des autres et qu'on veut que notre environnement soit agréable pour tous.",
+        "C'est comme une grande propriété partagée où chacun est gardien."
+      ],
+      "mg": [
+        "Raha mamaky zavatra ao anaty zaridaina na sekoly ianao, dia tsy hoe ho anao ihany no mampidi-doza izany, fa ho an'ny rehetra izay mampiasa azy koa.",
+        "Ny fanariana taratasy amin'ny tany, ny fanoratana amin'ny rindrina, dia tsy fanajana ny raharaham-piarahamonina.",
+        "Rehefa mikarakara ny fananam-bahoaka isika, dia midika izany fa mikarakara ny hafa isika ary te hahita ny tontolo iainantsika ho mahafinaritra ho an'ny rehetra.",
+        "Toy ny fananana lehibe iray izay zaraina ary samy mpiambina azy ny tsirairay."
+      ]
+    },
+    "theme": ["civisme", "respect", "environnement", "responsabilité", "bien public"],
+    "sources": [
+      "Éducation civique",
+      "Règles de vie en collectivité"
+    ]
+  },
+  {
+    "id": "droits-030",
+    "title": {
+      "fr": "Aide quand on est malade ou âgé",
+      "mg": "Fanampiana rehefa marary na efa antitra"
+    },
+    "summary": {
+      "fr": "Quand on est malade, vieux ou qu'on ne peut pas travailler, la société doit aider pour les soins, la nourriture et un peu d'argent.",
+      "mg": "Rehefa marary isika, antitra na tsy afaka miasa, dia tokony hanampy amin'ny fitsaboana, sakafo ary vola kely ny fiaraha-monina."
+    },
+    "content": {
+      "fr": [
+        "C'est comme une grande assurance pour tout le monde. On cotise tous un peu, et si quelqu'un a un problème, il est aidé.",
+        "Cela permet aux personnes malades d'être soignées, aux personnes âgées d'avoir une retraite, et à ceux qui perdent leur travail d'être un peu aidés.",
+        "L'idée, c'est que personne ne doit être laissé de côté quand il est en difficulté.",
+        "La solidarité, c'est aussi prendre soin des plus fragiles."
+      ],
+      "mg": [
+        "Toy ny fiantohana lehibe ho an'ny rehetra izany. Manao latsakemboka kely daholo isika, ary raha misy olana ny olona iray, dia ampiana izy.",
+        "Izany dia mamela ny olona marary hotsaboina, ny olon-dehibe hanana fisotroan-dronono, ary ireo very asa mba ho ampiana kely.",
+        "Ny hevitra dia ny tsy tokony havela an-kilabao ny olona rehefa sahirana.",
+        "Ny firaisankina dia ny fikarakarana ireo marefo indrindra koa."
+      ]
+    },
+    "theme": ["santé", "solidarité", "aide sociale", "responsabilité collective"],
+    "sources": [
+      "Convention relative aux Droits de l’Enfant (1989)",
+      "Pacte international relatif aux droits économiques, sociaux et culturels"
+    ]
+  },
+  {
+    "id": "droits-031",
+    "title": {
+      "fr": "Faire attention aux fausses infos",
+      "mg": "Mitandrina amin'ny vaovao diso"
+    },
+    "summary": {
+      "fr": "Il faut vérifier si ce qu'on lit ou entend est vrai, surtout sur internet, et ne pas partager des choses fausses. C'est notre devoir de bien s'informer.",
+      "mg": "Tokony hojerena raha marina ny zavatra vakiana na henoina, indrindra fa amin'ny internet, ary tsy hizarana zavatra diso. Adidintsika ny mahazo vaovao tsara."
+    },
+    "content": {
+      "fr": [
+        "Quand tu vois une info incroyable sur les réseaux sociaux, demande-toi : est-ce que c'est vraiment vrai ? Qui l'a dit ? Est-ce que cette personne est sérieuse ?",
+        "Si tu n'es pas sûr, ne partage pas ! Une fausse information peut faire du mal ou créer des problèmes.",
+        "Parle-en à tes parents ou à tes professeurs, ils peuvent t'aider à vérifier.",
+        "C'est comme être un petit détective de l'information pour ne pas se faire piéger."
+      ],
+      "mg": [
+        "Rehefa mahita vaovao tsy mampino amin'ny tambajotra sosialy ianao, anontanio ny tenanao: marina ve izany? Iza no nilaza izany? Marina ve io olona io?",
+        "Raha tsy azonao antoka, aza mizara! Mety hiteraka fahasimbana na olana ny vaovao diso.",
+        "Miresaha amin'ny ray aman-dreninao na ny mpampianatra anao, afaka manampy anao hijery izy ireo.",
+        "Toy ny mpitsikilo kely momba ny vaovao izany mba tsy ho voafandrika."
+      ]
+    },
+    "theme": ["information", "internet", "esprit critique", "responsabilité"],
+    "sources": [
+      "Éducation aux médias",
+      "Principes de la désinformation"
+    ]
+  },
+  {
+    "id": "droits-032",
+    "title": {
+      "fr": "Vivre dans un environnement sain",
+      "mg": "Miaina amin'ny tontolo iainana salama"
+    },
+    "summary": {
+      "fr": "Tu as le droit de vivre dans un endroit où l'air est pur, l'eau est propre et la nature est respectée, pour être en bonne santé.",
+      "mg": "Manana zo hiaina amin'ny toerana izay madio ny rivotra, madio ny rano ary hajaina ny natiora, mba ho salama."
+    },
+    "content": {
+      "fr": [
+        "Un environnement sain, c'est un endroit où il fait bon respirer, où on peut boire de l'eau sans danger, et où il n'y a pas trop de bruit ou de pollution.",
+        "C'est important pour que tu ne tombes pas malade et que tu puisses jouer dehors en toute sécurité.",
+        "Les adultes doivent prendre des décisions pour protéger la planète et les lieux où nous vivons.",
+        "C'est un droit qui nous lie tous à la nature."
+      ],
+      "mg": [
+        "Ny tontolo iainana salama dia toerana izay tsara ny mifoka rivotra, azo sotroina tsy misy atahorana ny rano, ary tsy misy tabataba na fandotoana be loatra.",
+        "Zava-dehibe izany mba tsy harary ianao ary hahafahanao milalao any ivelany amin'ny fiarovana tanteraka.",
+        "Tokony handray fanapahan-kevitra hiaro ny planeta sy ny toerana iainantsika ny olon-dehibe.",
+        "Zo iray mampifandray antsika rehetra amin'ny natiora izany."
+      ]
+    },
+    "theme": ["environnement", "santé", "nature", "qualité de vie"],
+    "sources": [
+      "Convention relative aux Droits de l’Enfant (1989)",
+      "Constitution de Madagascar (2010)"
+    ]
+  },
+  {
+    "id": "droits-033",
+    "title": {
+      "fr": "Respecter les différences culturelles",
+      "mg": "Manaja ny fahasamihafan'ny kolontsaina"
+    },
+    "summary": {
+      "fr": "On doit respecter les traditions, les langues et les façons de vivre des autres, même si elles sont différentes des nôtres. C'est ça la richesse !",
+      "mg": "Tokony hanaja ny fomba amam-panao, ny fiteny ary ny fomba fiainan'ny hafa isika, na dia tsy mitovy amin'ny antsika aza izy ireo. Izany no harena!"
+    },
+    "content": {
+      "fr": [
+        "Ton ami(e) ne parle pas la même langue que toi à la maison ? Il/elle fête des fêtes différentes ? C'est super ! Cela rend le monde plus intéressant.",
+        "Ne te moque jamais de la culture des autres. Au contraire, essaie de comprendre et d'apprendre d'eux.",
+        "On peut apprendre tellement de choses les uns des autres quand on est ouvert d'esprit.",
+        "Le monde est comme une grande mosaïque de cultures, et chacune est belle et unique."
+      ],
+      "mg": [
+        "Tsy miteny fiteny mitovy aminao ao an-trano ve ny namanao? Mankalaza fety samihafa ve izy? Mahafinaritra izany! Mampientanentana kokoa ny tontolo izany.",
+        "Aza maneso ny kolontsain'ny hafa mihitsy. Mifanohitra amin'izany, miezaha hahatakatra sy hianatra avy amin'izy ireo.",
+        "Afaka mianatra zavatra maro isika amin'ny fifampivoizana rehefa manana saina misokatra.",
+        "Toy ny mosaika goavana amin'ny kolontsaina maro ny tontolo, ary tsara sy miavaka ny tsirairay."
+      ]
+    },
+    "theme": ["culture", "diversité", "tolérance", "respect", "vivre ensemble"],
+    "sources": [
+      "Éducation à la citoyenneté mondiale",
+      "Principes de respect mutuel"
+    ]
+  },
+  {
+    "id": "droits-034",
+    "title": {
+      "fr": "Le droit d'avoir un bon toit",
+      "mg": "Zo manana tafon-trano tsara"
+    },
+    "summary": {
+      "fr": "Chaque enfant a le droit d'avoir un endroit sûr et confortable pour vivre, avec de l'eau, de l'électricité et de quoi se protéger.",
+      "mg": "Manana zo hanana toerana azo antoka sy ahazoana aina hipetrahana ny ankizy tsirairay, misy rano, herinaratra ary fiarovana."
+    },
+    "content": {
+      "fr": [
+        "Ta maison (ou l'endroit où tu vis) doit être un lieu où tu te sens bien, en sécurité, et où tu as ce qu'il faut pour vivre.",
+        "Cela veut dire avoir un toit qui protège de la pluie, un endroit pour dormir, de l'eau propre pour boire et se laver.",
+        "Les parents et l'État doivent s'assurer que tous les enfants ont un logement décent.",
+        "Avoir un bon toit sur la tête, c'est la base pour bien grandir."
+      ],
+      "mg": [
+        "Ny tranonao (na ny toerana ipetrahanao) dia tokony ho toerana ahazoanao aina, azo antoka, ary izay ilainao hiainana.",
+        "Midika izany fa misy tafo miaro amin'ny orana, toerana hatoriana, rano madio hisotro sy hidiovana.",
+        "Tokony hiantoka ny ray aman-dreny sy ny Fanjakana fa manana trano fonenana mendrika ny ankizy rehetra.",
+        "Ny fananana tafo tsara eo ambonin'ny loha dia fototra ho an'ny fitomboana tsara."
+      ]
+    },
+    "theme": ["logement", "sécurité", "bien-être", "famille", "dignité"],
+    "sources": [
+      "Convention relative aux Droits de l’Enfant (1989)",
+      "Pacte international relatif aux droits économiques, sociaux et culturels"
+    ]
+  },
+  {
+    "id": "droits-035",
+    "title": {
+      "fr": "Respecter ce qui n'est pas à toi",
+      "mg": "Manaja izay tsy anao"
+    },
+    "summary": {
+      "fr": "Tu ne dois pas voler, casser ou abîmer les affaires des autres, que ce soient leurs jouets, leurs vélos ou les objets publics.",
+      "mg": "Tsy tokony hangalatra, hanimba na hanaratsy ny fananan'ny hafa ianao, na kilalaony izany, na bisikiletany, na zavatra ho an'ny daholobe."
+    },
+    "content": {
+      "fr": [
+        "Tes jouets t'appartiennent, et tu n'aimerais pas qu'on te les prenne ou qu'on les casse, n'est-ce pas ?",
+        "C'est pareil pour les affaires des autres enfants et des adultes. Il faut demander avant de prendre, et faire attention quand tu touches.",
+        "Respecter les affaires des autres, c'est montrer que tu les respectes, et ça aide à ce que tout le monde s'entende bien.",
+        "C'est une règle d'or pour vivre en harmonie."
+      ],
+      "mg": [
+        "An'ny kilalaonao ianao, ary tsy tianao raha misy maka na manimba azy ireo, sa tsy izany?",
+        "Mitovy amin'izany koa ny fananan'ny ankizy hafa sy ny olon-dehibe. Tokony hangataka alalana alohan'ny hakana, ary hitandrina rehefa mikasika.",
+        "Ny fanajana ny fananan'ny hafa dia fanehoana fa manaja azy ireo ianao, ary manampy amin'ny fifankahazoana tsara ny rehetra izany.",
+        "Fitsipika volamena ho an'ny fiainana am-pilaminana izany."
+      ]
+    },
+    "theme": ["respect", "propriété", "règles", "honnêteté"],
+    "sources": [
+      "Code Pénal Malagasy",
+      "Éducation civique et morale"
+    ]
+  },
+  {
+    "id": "droits-036",
+    "title": {
+      "fr": "Le droit de se reposer et de s'amuser",
+      "mg": "Zo miala sasatra sy mikarakara"
+    },
+    "summary": {
+      "fr": "Tu as le droit d'avoir du temps pour jouer, te reposer, faire du sport ou tes activités préférées, et aussi d'avoir des vacances.",
+      "mg": "Manana zo hanana fotoana hilalaovana, hialana sasatra, hanao fanatanjahantena na ny asanao tianao indrindra ianao, ary hanana fialan-tsasatra koa."
+    },
+    "content": {
+      "fr": [
+        "Après l'école ou le week-end, il est important d'avoir du temps pour toi, pour te détendre et faire ce que tu aimes.",
+        "Jouer, lire, faire du sport, passer du temps avec ta famille ou tes amis... tout ça est bon pour ta santé et ton bonheur.",
+        "Les parents et l'école doivent t'aider à trouver un bon équilibre entre le travail et les loisirs.",
+        "Ce temps de repos te permet de bien apprendre et d'être en forme."
+      ],
+      "mg": [
+        "Rehefa avy nianatra na amin'ny faran'ny herinandro, dia zava-dehibe ny manana fotoana ho anao, hialana sasatra sy hanao izay tianao.",
+        "Milalao, mamaky boky, manao fanatanjahantena, mandany fotoana amin'ny fianakavianao na ny namanao... tsara daholo izany ho an'ny fahasalamanao sy ny fahasambaranao.",
+        "Tokony hanampy anao hahita fifandanjana tsara eo amin'ny asa sy ny fialam-boly ny ray aman-dreny sy ny sekoly.",
+        "Mamela anao hianatra tsara sy ho salama ity fotoana fialan-tsasatra ity."
+      ]
+    },
+    "theme": ["loisirs", "repos", "santé", "bien-être", "enfance"],
+    "sources": [
+      "Convention relative aux Droits de l’Enfant (1989)",
+      "Déclaration Universelle des Droits de l’Homme (1948)"
+    ]
+  },
+  {
+    "id": "droits-037",
+    "title": {
+      "fr": "Respecter les décisions de justice",
+      "mg": "Manaja ny fanapahan-kevitry ny fitsarana"
+    },
+    "summary": {
+      "fr": "Si un juge prend une décision, on doit la respecter, même si on n'est pas d'accord, car c'est pour l'ordre de la société.",
+      "mg": "Raha mandray fanapahan-kevitra ny mpitsara, dia tokony hanaja izany isika, na dia tsy manaiky aza isika, satria ho an'ny filaminana eo amin'ny fiaraha-monina izany."
+    },
+    "content": {
+      "fr": [
+        "Quand il y a un problème difficile entre des personnes, on va voir un juge qui est là pour décider ce qui est juste.",
+        "Une fois que le juge a parlé, sa décision doit être suivie par tout le monde, même si c'est difficile.",
+        "C'est important pour que la justice fonctionne et que chacun sache ce qu'il a le droit de faire ou non.",
+        "Le respect de la justice, c'est la base pour une société où les problèmes sont réglés de manière juste."
+      ],
+      "mg": [
+        "Rehefa misy olana sarotra eo amin'ny olona, dia mandeha any amin'ny mpitsara isika izay eto hanapaka izay rariny.",
+        "Rehefa avy niteny ny mpitsara, dia tsy maintsy harahin'ny rehetra ny fanapahan-keviny, na dia sarotra aza izany.",
+        "Zava-dehibe izany mba hiasan'ny fitsarana sy hahafantaran'ny tsirairay izay zon'ny sy tsy tokony hatao.",
+        "Ny fanajana ny fitsarana no fototra ho an'ny fiaraha-monina izay voavaha amin'ny fomba ara-drariny ny olana."
+      ]
+    },
+    "theme": ["justice", "règles", "respect", "loi"],
+    "sources": [
+      "Constitution de Madagascar (2010)",
+      "Éducation civique"
+    ]
+  },
+  {
+    "id": "droits-038",
+    "title": {
+      "fr": "Le droit d'avoir une nationalité",
+      "mg": "Zo manana zom-pirenena"
+    },
+    "summary": {
+      "fr": "Dès ta naissance, tu as le droit d'avoir une nationalité (par exemple, être Malgache) pour faire partie d'un pays et être protégé par lui.",
+      "mg": "Hatrany am-pahaterahanao, manana zo hanana zom-pirenena ianao (ohatra, ho Malagasy) mba ho anisan'ny firenena iray sy hiarovan'izany."
+    },
+    "content": {
+      "fr": [
+        "Avoir une nationalité, c'est comme avoir une carte d'identité pour ton pays. Ça montre que tu en fais partie.",
+        "Cela te donne des droits importants, comme celui d'aller à l'école, d'être soigné, et plus tard, de voter.",
+        "Le gouvernement doit s'assurer que chaque enfant a une nationalité et qu'il ne soit pas **sans pays**.",
+        "Ta nationalité te donne un lien avec ton histoire, ta culture et ton peuple."
+      ],
+      "mg": [
+        "Manana zom-pirenena dia toy ny manana kara-panondrom-pirenena ho an'ny firenenao. Izany dia mampiseho fa anisan'izany ianao.",
+        "Manome anao zo manan-danja izany, toy ny zo handeha any an-tsekoly, ho tsaboina, ary any aoriana, hifidy.",
+        "Tokony hiantoka ny governemanta fa manana zom-pirenena ny ankizy tsirairay ary tsy 'tsy manana firenena'.",
+        "Ny zom-pirenenao dia manome anao fifandraisana amin'ny tantaranao, ny kolontsainao ary ny firenenao."
+      ]
+    },
+    "theme": ["nationalité", "identité", "citoyenneté", "protection"],
+    "sources": [
+      "Convention relative aux Droits de l’Enfant (1989)",
+      "Constitution de Madagascar (2010)"
+    ]
+  },
+  {
+    "id": "droits-039",
+    "title": {
+      "fr": "Protéger notre histoire et nos traditions",
+      "mg": "Miarova ny tantarantsika sy ny fomba amam-panaontsika"
+    },
+    "summary": {
+      "fr": "Les monuments anciens, les contes, les danses, ce sont des trésors de notre histoire. On doit les protéger et les respecter.",
+      "mg": "Ny tsangambato fahiny, ny angano, ny dihy, ireo dia harena avy amin'ny tantarantsika. Tokony hiaro sy hanaja azy ireo isika."
+    },
+    "content": {
+      "fr": [
+        "Nos ancêtres nous ont laissé de belles choses : des vieilles maisons, des statues, des histoires racontées de génération en génération.",
+        "C'est notre devoir de ne pas les abîmer, de ne pas les voler, et d'apprendre à les connaître.",
+        "Ces trésors nous rappellent d'où nous venons et qui nous sommes en tant que peuple.",
+        "Prendre soin du patrimoine, c'est prendre soin de notre mémoire collective."
+      ],
+      "mg": [
+        "Namela zavatra tsara tarehy ho antsika ny razantsika: trano tranainy, sary sokitra, tantara nolazaina tamin'ny taranaka fara mandimby.",
+        "Adidintsika ny tsy hanimba azy ireo, tsy hangalatra azy ireo, ary hianatra hahafantatra azy ireo.",
+        "Mampahatsiahy antsika ny fiaviana sy ny maha-isika antsika amin'ny maha-firenena azy ireo harena ireo.",
+        "Ny fikarakarana ny lova dia fikarakarana ny fahatsiarovantsika iombonana."
+      ]
+    },
+    "theme": ["histoire", "culture", "patrimoine", "respect", "traditions"],
+    "sources": [
+      "Lois malgaches sur le patrimoine culturel",
+      "Éducation historique"
+    ]
+  },
+  {
+    "id": "droits-040",
+    "title": {
+      "fr": "Le droit de demander l'asile (refuge)",
+      "mg": "Zo hangataka fialofana"
+    },
+    "summary": {
+      "fr": "Si une personne est en très grand danger dans son pays, elle a le droit de demander de l'aide et d'être protégée dans un autre pays.",
+      "mg": "Raha tandindomin-doza lehibe ao amin'ny fireneny ny olona iray, dia manana zo hangataka fanampiana sy hiaroana any amin'ny firenena hafa izy."
+    },
+    "content": {
+      "fr": [
+        "Imagine que ton pays soit en guerre ou que tu sois menacé(e) pour tes idées. Ce droit te permet de trouver un endroit sûr.",
+        "Quand on demande l'asile, c'est qu'on a vraiment peur et qu'on ne peut plus vivre en sécurité chez soi.",
+        "Les pays doivent examiner la demande de ces personnes et les aider si elles sont vraiment en danger.",
+        "C'est un droit important pour protéger les vies quand tout va mal."
+      ],
+      "mg": [
+        "Alao sary an-tsaina fa miady ny firenenao na ianao dia tandindomin-doza noho ny hevitrao. Ity zo ity dia mamela anao hitady toerana azo antoka.",
+        "Rehefa mangataka fialofana isika, dia tena matahotra isika ary tsy afaka miaina am-pilaminana intsony ao an-trano.",
+        "Tokony handinika ny fangatahan'ireo olona ireo ny firenena ary hanampy azy ireo raha tena tandindomin-doza izy ireo.",
+        "Zo manan-danja izany hiarovana ny aina rehefa ratsy daholo ny zava-drehetra."
+      ]
+    },
+    "theme": ["réfugiés", "protection", "sécurité", "solidarité internationale"],
+    "sources": [
+      "Convention de Genève relative au statut des réfugiés (1951)",
+      "Déclaration Universelle des Droits de l’Homme (1948)"
+    ]
+  },
+  {
+    "id": "droits-041",
+    "title": {
+      "fr": "Respecter les idées et inventions des autres",
+      "mg": "Manaja ny hevitra sy ny famoronana ny hafa"
+    },
+    "summary": {
+      "fr": "Quand quelqu'un invente une chanson, un jeu, ou une idée, c'est sa création. On ne doit pas la voler ou dire que c'est la nôtre.",
+      "mg": "Rehefa misy olona mamorona hira, lalao, na hevitra, dia famoronana azy izany. Tsy tokony hangalarina izany na hilazana fa antsika."
+    },
+    "content": {
+      "fr": [
+        "Un écrivain écrit un livre, un musicien compose une chanson, un ingénieur invente un robot... leur travail leur appartient.",
+        "Tu ne peux pas copier leur travail et dire que c'est le tien, ou le diffuser sans leur permission.",
+        "C'est une façon de respecter le travail et l'effort des autres, et d'encourager la création.",
+        "Chaque idée originale est un trésor qui doit être protégé."
+      ],
+      "mg": [
+        "Mpanoratra manoratra boky, mpitendry mozika mamorona hira, injeniera mamorona robot... an'ny asany izany.",
+        "Tsy afaka mandika ny asany ianao ary milaza fa anao izany, na mizara izany tsy nahazoana alalana.",
+        "Fomba iray hanajana ny asan'ny sy ny ezaky ny hafa izany, ary hamporisihana ny famoronana.",
+        "Ny hevitra tany am-boalohany tsirairay dia harena iray tokony harovana."
+      ]
+    },
+    "theme": ["créativité", "respect", "propriété", "règles", "innovation"],
+    "sources": [
+      "Loi sur le droit d'auteur et les brevets",
+      "Éducation civique"
+    ]
+  },
+  {
+    "id": "droits-042",
+    "title": {
+      "fr": "Le droit de vivre en paix",
+      "mg": "Zo hiaina am-pilaminana"
+    },
+    "summary": {
+      "fr": "Tu as le droit de vivre sans guerre, sans violence et sans peur. La paix, c'est important pour tout le monde.",
+      "mg": "Manana zo hiaina tsy misy ady, tsy misy herisetra ary tsy misy tahotra ianao. Zava-dehibe ho an'ny rehetra ny fandriampahalemana."
+    },
+    "content": {
+      "fr": [
+        "La guerre et la violence sont terribles. Chacun a le droit de grandir dans un monde calme et sûr.",
+        "Les pays doivent travailler ensemble pour éviter les conflits et résoudre les problèmes sans se battre.",
+        "C'est un rêve pour beaucoup de gens dans le monde, et c'est un droit essentiel pour que les enfants puissent jouer et apprendre.",
+        "La paix commence par le respect et la compréhension entre les personnes."
+      ],
+      "mg": [
+        "Mampahatsiravina ny ady sy ny herisetra. Manana zo hitombo ao anatin'ny tontolo mangina sy azo antoka ny tsirairay.",
+        "Tokony hiara-hiasa ny firenena mba hisorohana ny fifandonana sy hamahana ny olana tsy miady.",
+        "Noa-n'ny olona maro eran-tany izany, ary zo tena ilaina mba hahafahan'ny ankizy milalao sy mianatra.",
+        "Manomboka amin'ny fanajana sy ny fifankahazoana eo amin'ny olona ny fandriampahalemana."
+      ]
+    },
+    "theme": ["paix", "sécurité", "non-violence", "harmonie", "droits humains"],
+    "sources": [
+      "Charte des Nations Unies",
+      "Convention relative aux Droits de l’Enfant (1989)"
+    ]
+  },
+  {
+    "id": "droits-043",
+    "title": {
+      "fr": "Respecter les personnes âgées",
+      "mg": "Manaja ny zokiolona"
+    },
+    "summary": {
+      "fr": "Nos grands-parents et toutes les personnes âgées ont le droit d'être respectées, écoutées et aidées si elles en ont besoin.",
+      "mg": "Manana zo hohajaina, hihainoana ary hanampiana raha ilaina ny raibentsika sy ny olona rehetra efa antitra."
+    },
+    "content": {
+      "fr": [
+        "Les personnes âgées ont beaucoup d'expérience et de choses à nous apprendre. Elles ont vécu des choses que nous n'avons pas encore vécues.",
+        "Il faut être poli avec elles, leur tenir la porte, les aider à porter leurs courses si elles sont fatiguées.",
+        "Les écouter, c'est aussi leur montrer qu'on les respecte et qu'on apprend d'elles.",
+        "Prendre soin de nos aînés, c'est aussi prendre soin de notre propre avenir."
+      ],
+      "mg": [
+        "Manana traikefa sy zavatra maro hampianarina antsika ny zokiolona. Efa niaina zavatra tsy mbola niainantsika izy ireo.",
+        "Tokony hanao izay tsara amin'izy ireo isika, mitazona ny varavarana ho azy ireo, manampy azy ireo hitondra ny entany raha reraka izy ireo.",
+        "Ny fihainoana azy ireo dia fanehoana fa manaja azy ireo isika ary mianatra avy amin'izy ireo.",
+        "Ny fikarakarana ny zokiolona dia fikarakarana ny hoavintsika ihany koa."
+      ]
+    },
+    "theme": ["respect", "famille", "générations", "solidarité", "valeurs"],
+    "sources": [
+      "Traditions culturelles et sociales",
+      "Principes éthiques"
+    ]
+  },
+  {
+    "id": "droits-044",
+    "title": {
+      "fr": "Avoir un nom et une nationalité",
+      "mg": "Manana anarana sy zom-pirenena"
+    },
+    "summary": {
+      "fr": "Dès que tu nais, tu as le droit d'avoir un nom et d'être enregistré dans ton pays, pour savoir qui tu es et d'où tu viens.",
+      "mg": "Raha vao teraka ianao, dia manana zo hanana anarana sy hisoratra anarana ao amin'ny firenenao, mba hahafantatra hoe iza ianao ary avy aiza ianao."
+    },
+    "content": {
+      "fr": [
+        "C'est comme avoir un prénom et un nom de famille qui te rendent unique et te lient à ta famille.",
+        "L'enregistrement de ta naissance permet à l'État de savoir que tu existes et de te donner tes droits (école, santé).",
+        "Avoir une nationalité, c'est être un citoyen de ton pays. Cela te donne des protections et des avantages.",
+        "C'est la première étape pour exister officiellement et être reconnu."
+      ],
+      "mg": [
+        "Toy ny manana anarana voalohany sy anarana farany izay mampiavaka anao sy mampifandray anao amin'ny fianakavianao izany.",
+        "Ny fisoratana anarana ny fahaterahanao dia mamela ny Fanjakana hahafantatra fa misy ianao ary hanome anao ny zon'ny (sekoly, fahasalamana).",
+        "Manana zom-pirenena dia midika hoe olom-pirenena ao amin'ny firenenao. Manome fiarovana sy tombontsoa ho anao izany.",
+        "Izany no dingana voalohany amin'ny fisiana ara-dalàna sy ny fanekena."
+      ]
+    },
+    "theme": ["identité", "naissance", "nom", "nationalité", "droits de l'enfant"],
+    "sources": [
+      "Convention relative aux Droits de l’Enfant (1989)",
+      "Code Civil Malagasy (état civil)"
+    ]
+  },
+  {
+    "id": "droits-045",
+    "title": {
+      "fr": "Participer à la vie de ton quartier",
+      "mg": "Mandray anjara amin'ny fiainan'ny fokontany"
+    },
+    "summary": {
+      "fr": "Tu peux aider à rendre ton quartier plus beau et plus agréable en participant à des activités, en signalant des problèmes ou en proposant des idées.",
+      "mg": "Afaka manampy amin'ny fanaovana ny fokontaninao ho tsara tarehy sy mahafinaritra kokoa ianao amin'ny alalan'ny fandraisana anjara amin'ny hetsika, fanambarana olana na fanolorana hevitra."
+    },
+    "content": {
+      "fr": [
+        "Que ce soit en ramassant les déchets, en aidant un voisin âgé, ou en proposant des idées pour un nouveau jeu au parc, ta participation est utile.",
+        "C'est ton quartier, ta ville, et tu as le pouvoir de les rendre meilleurs avec tes actions.",
+        "Quand les habitants s'impliquent, le quartier devient plus agréable et les problèmes se résolvent plus facilement.",
+        "C'est comme être un acteur dans un petit film où tu peux changer l'histoire de ton quartier."
+      ],
+      "mg": [
+        "Na amin'ny fanangonana fako, fanampiana mpiara-monina antitra, na fanolorana hevitra ho an'ny lalao vaovao any amin'ny zaridaina, dia ilaina ny fandraisanao anjara.",
+        "Fokontaninao izany, tanànanao, ary manana hery hanatsara azy ireo ianao amin'ny alalan'ny asanao.",
+        "Rehefa mandray anjara ny mponina, dia lasa mahafinaritra kokoa ny fokontany ary mora kokoa ny mamaha ny olana.",
+        "Toy ny mpilalao sarimihetsika kely izay afaka manova ny tantaran'ny fokontaninao izany."
+      ]
+    },
+    "theme": ["quartier", "participation", "communauté", "civisme", "responsabilité"],
+    "sources": [
+      "Éducation civique",
+      "Exemples d'initiatives locales"
+    ]
+  },
+  {
+    "id": "droits-046",
+    "title": {
+      "fr": "Le droit de demander de l'aide quand ça ne va pas",
+      "mg": "Zo mangataka fanampiana rehefa tsy mety ny zava-drehetra"
+    },
+    "summary": {
+      "fr": "Si tes droits ne sont pas respectés, ou si tu as un gros problème, tu as le droit de demander de l'aide à un juge ou à d'autres personnes pour que la justice soit faite.",
+      "mg": "Raha tsy hajaina ny zon'ny, na raha misy olana lehibe ianao, dia manana zo hangataka fanampiana amin'ny mpitsara na olon-kafa mba hahazoana ny rariny."
+    },
+    "content": {
+      "fr": [
+        "Si quelqu'un te fait du mal, si tu es victime d'injustice, tu ne dois pas rester seul(e).",
+        "Tu peux en parler à un adulte de confiance (parents, professeur, directeur, association d'aide aux enfants).",
+        "Ils peuvent t'aider à comprendre la situation et à trouver des solutions pour que la justice soit respectée.",
+        "Demander de l'aide, c'est être fort et courageux."
+      ],
+      "mg": [
+        "Raha misy olona manao ratsy anao, raha niharan'ny tsy rariny ianao, dia tsy tokony hijanona irery ianao.",
+        "Afaka miresaka amin'ny olon-dehibe atokisanao ianao (ray aman-dreny, mpampianatra, talen-tsekoly, fikambanana mpanampy ny ankizy).",
+        "Afaka manampy anao hahatakatra ny toe-javatra izy ireo ary hitady vahaolana mba hanajana ny rariny.",
+        "Ny fangatahana fanampiana dia fahaizana sy herim-po."
+      ]
+    },
+    "theme": ["justice", "aide", "protection", "droits de l'enfant", "confiance"],
+    "sources": [
+      "Convention relative aux Droits de l’Enfant (1989)",
+      "Code de Procédure Pénale Malagasy"
+    ]
+  },
+  {
+    "id": "droits-047",
+    "title": {
+      "fr": "Être honnête avec l'argent du pays",
+      "mg": "Manao marina amin'ny volam-panjakana"
+    },
+    "summary": {
+      "fr": "Quand tu seras adulte, tu devras déclarer tes revenus et payer tes impôts honnêtement. C'est aider ton pays.",
+      "mg": "Rehefa lehibe ianao, dia tsy maintsy manambara ny vola miditra aminao sy mandoa ny hetra am-pahamarinana. Manampy ny firenenao izany."
+    },
+    "content": {
+      "fr": [
+        "L'argent des impôts sert à faire de grandes choses pour tout le monde (hôpitaux, écoles, routes).",
+        "Si des personnes ne déclarent pas tout leur argent ou ne paient pas leurs impôts, il y a moins d'argent pour ces services publics.",
+        "Être **civique fiscalement**, c'est être un citoyen responsable qui participe à la construction de son pays.",
+        "L'honnêteté avec l'argent est importante pour que la société soit juste."
+      ],
+      "mg": [
+        "Ampiasaina hanaovana zavatra lehibe ho an'ny rehetra (hopitaly, sekoly, lalana) ny vola hetra.",
+        "Raha misy olona tsy manambara ny volany rehetra na tsy mandoa ny hetra, dia kely kokoa ny vola ho an'ireo tolotra ho an'ny daholobe ireo.",
+        "Ny maha 'olompirenena ara-bola' dia midika hoe olom-pirenena tompon'andraikitra izay mandray anjara amin'ny fananganana ny fireneny.",
+        "Zava-dehibe ny fahamarinana amin'ny vola mba hahatonga ny fiaraha-monina ho ara-drariny."
+      ]
+    },
+    "theme": ["impôts", "honnêteté", "responsabilité", "civisme", "argent"],
+    "sources": [
+      "Code Général des Impôts de Madagascar",
+      "Éducation civique"
+    ]
+  },
+  {
+    "id": "droits-048",
+    "title": {
+      "fr": "Le droit de faire partie d'un syndicat",
+      "mg": "Zo hiditra amin'ny sendikà"
+    },
+    "summary": {
+      "fr": "Quand tu travailleras, tu auras le droit de te regrouper avec d'autres travailleurs pour défendre vos droits et améliorer vos conditions de travail.",
+      "mg": "Rehefa miasa ianao, dia hanana zo hivory amin'ny mpiasa hafa mba hiaro ny zon'ny sy hanatsarana ny fepetran'ny asa."
+    },
+    "content": {
+      "fr": [
+        "Un syndicat, c'est comme une association de travailleurs. Ensemble, ils sont plus forts pour parler avec les patrons.",
+        "Ils peuvent demander de meilleurs salaires, des horaires justes, ou des conditions de travail plus sûres.",
+        "Ce droit permet de s'assurer que les travailleurs sont bien traités et ne sont pas exploités.",
+        "C'est une façon de protéger tout le monde dans le monde du travail."
+      ],
+      "mg": [
+        "Ny sendikà dia toy ny fikambanan'ny mpiasa. Miaraka, matanjaka kokoa izy ireo hiresahana amin'ny mpampiasa.",
+        "Afaka mangataka karama tsara kokoa izy ireo, ora fiasa ara-drariny, na fepetra fiasa azo antoka kokoa.",
+        "Ity zo ity dia mamela ny olona hiantoka fa voatendry tsara ny mpiasa ary tsy voarara.",
+        "Fomba iray hiarovana ny rehetra eo amin'ny tontolon'ny asa izany."
+      ]
+    },
+    "theme": ["travail", "droits", "syndicat", "justice sociale"],
+    "sources": [
+      "Code du Travail Malagasy",
+      "Organisation Internationale du Travail (OIT)"
+    ]
+  },
+  {
+    "id": "droits-049",
+    "title": {
+      "fr": "L'État est neutre sur les religions (si applicable à Madagascar)",
+      "mg": "Tsy miandany amin'ny fivavahana ny Fanjakana (raha misy eto Madagasikara)"
+    },
+    "summary": {
+      "fr": "Dans notre pays (si c'est le cas), l'État ne favorise aucune religion et respecte toutes les croyances. Chacun est libre de croire ou non.",
+      "mg": "Ao amin'ny firenentsika (raha izany no izy), tsy miandany amin'ny fivavahana na inona na inona ny Fanjakana ary manaja ny finoana rehetra. Afaka mino na tsia ny tsirairay."
+    },
+    "content": {
+      "fr": [
+        "Cela veut dire que l'école publique, par exemple, n'enseigne pas une religion en particulier, mais respecte toutes les religions.",
+        "Les lois sont les mêmes pour tout le monde, qu'on soit croyant ou non. Personne n'est avantagé ou désavantagé pour ses croyances.",
+        "Ce principe permet à chacun de vivre sa religion en paix sans que l'État ne s'en mêle.",
+        "C'est une façon de garantir la liberté de chacun et de vivre ensemble sans conflit religieux."
+      ],
+      "mg": [
+        "Midika izany fa ny sekolim-panjakana, ohatra, dia tsy mampianatra fivavahana manokana, fa manaja ny fivavahana rehetra.",
+        "Mitovy daholo ny lalàna ho an'ny rehetra, na mpino na tsia. Tsy misy tombontsoa na fanavakavahana noho ny finoana.",
+        "Mamela ny tsirairay hiaina ny fivavahany am-pilaminana tsy misy fitsabahan'ny Fanjakana ity fitsipika ity.",
+        "Fomba iray hiantohana ny fahalalahan'ny tsirairay sy hiara-miaina tsy misy fifandonana ara-pivavahana izany."
+      ]
+    },
+    "theme": ["laïcité", "religion", "liberté", "neutralité", "État"],
+    "sources": [
+      "Constitution de Madagascar (si mention de laïcité)",
+      "Principes du droit public"
+    ]
+  },
+  {
+    "id": "droits-050",
+    "title": {
+      "fr": "Participer à la façon dont le pays est géré",
+      "mg": "Mandray anjara amin'ny fomba fitantanana ny firenena"
+    },
+    "summary": {
+      "fr": "Chaque citoyen a le droit de donner son avis et de participer à la manière dont le pays est dirigé, que ce soit en votant ou en s'impliquant.",
+      "mg": "Manana zo haneho hevitra sy handray anjara amin'ny fomba fitantanana ny firenena ny olom-pirenena tsirairay, na amin'ny alalan'ny fifidianana na amin'ny fandraisana anjara."
+    },
+    "content": {
+      "fr": [
+        "Quand tu seras grand, tu auras le droit de voter pour élire les personnes qui vont prendre les décisions pour le pays.",
+        "Mais tu peux aussi, dès maintenant, donner ton avis sur des choses qui te concernent, par exemple à l'école ou dans ton quartier.",
+        "C'est important que les dirigeants écoutent ce que les citoyens pensent pour bien gouverner.",
+        "C'est ta voix qui compte pour construire un pays qui te ressemble."
+      ],
+      "mg": [
+        "Rehefa lehibe ianao, dia hanana zo hifidy izay olona handray fanapahan-kevitra ho an'ny firenena.",
+        "Saingy afaka manome ny hevitrao koa ianao izao, momba ny zavatra mahakasika anao, ohatra any an-tsekoly na ao amin'ny fokontany misy anao.",
+        "Zava-dehibe ny hihainoan'ny mpitondra ny hevitry ny olom-pirenena mba hitantana tsara.",
+        "Ny feonao no zava-dehibe amin'ny fananganana firenena izay mitovy aminao."
+      ]
+    },
+    "theme": ["démocratie", "participation", "citoyenneté", "gouvernement"],
+    "sources": [
+      "Constitution de Madagascar (2010)",
+      "Éducation civique"
+    ]
+  },
+  {
+    "id": "droits-051",
+    "title": {
+      "fr": "Connaître et comprendre les lois",
+      "mg": "Mahafantatra sy mahatakatra ny lalàna"
+    },
+    "summary": {
+      "fr": "C'est notre devoir de savoir quelles sont les lois de notre pays pour pouvoir les respecter et ne pas faire d'erreurs.",
+      "mg": "Adidintsika ny mahafantatra izay lalàna mifehy ny firenentsika mba hahafahantsika manaja azy ireo ary tsy manao fahadisoana."
+    },
+    "content": {
+      "fr": [
+        "Les lois sont les règles du jeu de la société. Si tu ne connais pas les règles, tu peux faire des erreurs sans le vouloir.",
+        "Demande à tes parents ou à tes professeurs de t'expliquer ce qui est permis et ce qui ne l'est pas.",
+        "C'est comme apprendre les règles d'un sport : une fois que tu les connais, tu peux jouer correctement et éviter les fautes.",
+        "Connaître la loi, c'est aussi mieux comprendre tes droits."
+      ],
+      "mg": [
+        "Ny lalàna dia fitsipiky ny lalaon'ny fiaraha-monina. Raha tsy fantatrao ny fitsipika, dia mety hanao fahadisoana ianao nefa tsy nahy.",
+        "Angataho ny ray aman-dreninao na ny mpampianatra anao hanazava izay azo atao sy izay tsy azo atao.",
+        "Toy ny mianatra ny fitsipiky ny fanatanjahantena izany: rehefa fantatrao izany, dia afaka milalao tsara ianao ary misoroka ny fahadisoana.",
+        "Ny fahalalana ny lalàna dia midika koa hoe mahatakatra tsara kokoa ny zon'ny."
+      ]
+    },
+    "theme": ["lois", "règles", "apprentissage", "civisme", "responsabilité"],
+    "sources": [
+      "Éducation civique",
+      "Principes du droit"
+    ]
+  }
+
+]

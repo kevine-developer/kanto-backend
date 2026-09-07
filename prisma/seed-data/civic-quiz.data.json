@@ -1,0 +1,236 @@
+[
+  {
+    "id": "dv_001",
+    "category": "droits_devoirs_vote",
+    "prompt": "Pourquoi voter est-il important dans une démocratie ?",
+    "choices": [
+      "Pour donner son avis et participer aux décisions du pays",
+      "Pour avoir des cadeaux après l'élection",
+      "Parce que tout le monde le fait",
+      "Pour éviter d'aller à l'école"
+    ],
+    "answerIndex": 0,
+    "explanation": "Voter permet aux citoyens d'exprimer leur choix et d'influencer l'avenir de la communauté.",
+    "difficulty": "easy",
+    "tags": [
+      "démocratie",
+      "participation"
+    ]
+  },
+  {
+    "id": "dv_002",
+    "category": "droits_devoirs_vote",
+    "prompt": "Quel est un devoir fondamental du citoyen ?",
+    "choices": [
+      "Respecter les lois et la constitution",
+      "Ignorer les règles établies",
+      "Décider seul pour tout le monde",
+      "Ne jamais participer aux débats"
+    ],
+    "answerIndex": 0,
+    "explanation": "Respecter les lois protège chacun et permet de vivre ensemble en sécurité et harmonie.",
+    "difficulty": "easy",
+    "tags": [
+      "devoirs",
+      "citoyenneté"
+    ]
+  },
+  {
+    "id": "dv_003",
+    "category": "droits_devoirs_vote",
+    "prompt": "Que faire si tu ne comprends pas un bulletin de vote ?",
+    "choices": [
+      "Demander de l'aide aux agents électoraux",
+      "Inventer une réponse au hasard",
+      "Ne rien écrire sur le bulletin",
+      "Prendre une photo du bulletin"
+    ],
+    "answerIndex": 0,
+    "explanation": "Les agents électoraux sont là pour expliquer le processus, sans influencer ton choix personnel.",
+    "difficulty": "medium",
+    "tags": [
+      "vote",
+      "procédure"
+    ]
+  },
+  {
+    "id": "dv_004",
+    "category": "droits_devoirs_vote",
+    "prompt": "À partir de quel âge peut-on voter à Madagascar ?",
+    "choices": [
+      "16 ans",
+      "17 ans",
+      "18 ans",
+      "21 ans"
+    ],
+    "answerIndex": 2,
+    "explanation": "La majorité civique est atteinte à 18 ans, âge où l'on peut exercer son droit de vote.",
+    "difficulty": "easy",
+    "tags": [
+      "âge",
+      "droit de vote"
+    ]
+  },
+  {
+    "id": "si_001",
+    "category": "symboles_identite",
+    "prompt": "Quelle est la capitale de Madagascar ?",
+    "choices": [
+      "Toamasina",
+      "Antananarivo",
+      "Fianarantsoa",
+      "Mahajanga"
+    ],
+    "answerIndex": 1,
+    "explanation": "Antananarivo, surnommée 'Tana', est la capitale politique et économique du pays.",
+    "difficulty": "easy",
+    "tags": [
+      "géographie",
+      "capitale"
+    ]
+  },
+  {
+    "id": "si_002",
+    "category": "symboles_identite",
+    "prompt": "Que représentent les couleurs du drapeau malgache ?",
+    "choices": [
+      "Uniquement les équipes sportives",
+      "L'histoire, la liberté et l'unité du peuple",
+      "Les saisons de l'année",
+      "Les différentes régions"
+    ],
+    "answerIndex": 1,
+    "explanation": "Le blanc symbolise la pureté, le rouge la souveraineté, et le vert l'espérance du peuple malgache.",
+    "difficulty": "medium",
+    "tags": [
+      "drapeau",
+      "symboles"
+    ]
+  },
+  {
+    "id": "si_003",
+    "category": "symboles_identite",
+    "prompt": "Quel est l'hymne national de Madagascar ?",
+    "choices": [
+      "Ry Tanindrazanay malala ô",
+      "Marseillaise malgache",
+      "Chant de l'indépendance",
+      "Hymne des ancêtres"
+    ],
+    "answerIndex": 0,
+    "explanation": "'Ry Tanindrazanay malala ô' signifie 'Ô notre chère patrie' et exprime l'amour du pays.",
+    "difficulty": "medium",
+    "tags": [
+      "hymne",
+      "culture"
+    ]
+  },
+  {
+    "id": "ec_001",
+    "category": "ecologie_civisme",
+    "prompt": "Quel geste quotidien aide le plus la nature ?",
+    "choices": [
+      "Jeter les déchets par terre",
+      "Éteindre la lumière en sortant d'une pièce",
+      "Laisser couler l'eau du robinet",
+      "Brûler les plastiques dans le jardin"
+    ],
+    "answerIndex": 1,
+    "explanation": "Économiser l'énergie réduit la pollution et préserve les ressources naturelles pour l'avenir.",
+    "difficulty": "easy",
+    "tags": [
+      "énergie",
+      "économie"
+    ]
+  },
+  {
+    "id": "ec_002",
+    "category": "ecologie_civisme",
+    "prompt": "Pourquoi est-il important de trier les déchets ?",
+    "choices": [
+      "Pour polluer davantage",
+      "Pour recycler et garder la ville propre",
+      "Pour faire joli dans les poubelles",
+      "Parce que c'est à la mode"
+    ],
+    "answerIndex": 1,
+    "explanation": "Le tri permet le recyclage et réduit considérablement les déchets dans la nature.",
+    "difficulty": "easy",
+    "tags": [
+      "recyclage",
+      "propreté"
+    ]
+  },
+  {
+    "id": "ec_003",
+    "category": "ecologie_civisme",
+    "prompt": "Quelle est la meilleure façon de protéger les forêts ?",
+    "choices": [
+      "Couper tous les arbres",
+      "Planter de nouveaux arbres et éviter le gaspillage de papier",
+      "Utiliser plus de plastique",
+      "Ignorer la déforestation"
+    ],
+    "answerIndex": 1,
+    "explanation": "La reforestation et la réduction de la consommation de papier aident à préserver les écosystèmes.",
+    "difficulty": "medium",
+    "tags": [
+      "forêt",
+      "conservation"
+    ]
+  },
+  {
+    "id": "vs_001",
+    "category": "vivre_ensemble_solidarite",
+    "prompt": "Quel comportement favorise le mieux le vivre-ensemble à l'école ?",
+    "choices": [
+      "Se moquer des différences des autres",
+      "Écouter et respecter chaque personne",
+      "Parler seulement à ses meilleurs amis",
+      "Couper la parole constamment"
+    ],
+    "answerIndex": 1,
+    "explanation": "Le respect et l'écoute active construisent un climat de confiance et d'amitié durable.",
+    "difficulty": "easy",
+    "tags": [
+      "respect",
+      "école"
+    ]
+  },
+  {
+    "id": "vs_002",
+    "category": "vivre_ensemble_solidarite",
+    "prompt": "Qu'est-ce que la solidarité signifie concrètement ?",
+    "choices": [
+      "Aider les autres quand on peut le faire",
+      "Ignorer les difficultés des autres",
+      "Se moquer des plus faibles",
+      "Prendre tout pour soi sans partager"
+    ],
+    "answerIndex": 0,
+    "explanation": "Être solidaire, c'est se soutenir mutuellement pour avancer ensemble vers un monde meilleur.",
+    "difficulty": "easy",
+    "tags": [
+      "solidarité",
+      "entraide"
+    ]
+  },
+  {
+    "id": "vs_003",
+    "category": "vivre_ensemble_solidarite",
+    "prompt": "Comment réagir face à une injustice à l'école ?",
+    "choices": [
+      "Fermer les yeux et ne rien dire",
+      "En parler à un adulte de confiance",
+      "Se venger soi-même",
+      "Encourager l'injustice"
+    ],
+    "answerIndex": 1,
+    "explanation": "Signaler une injustice aux autorités compétentes permet de trouver une solution équitable.",
+    "difficulty": "medium",
+    "tags": [
+      "justice",
+      "courage"
+    ]
+  }
+]

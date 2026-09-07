@@ -14,6 +14,7 @@ import { FindCitationsQueryDto } from './dto/find-citations.dto.js';
 import { CreateCitationDto } from './dto/create-citation.dto.js';
 import { UpdateCitationDto } from './dto/update-citation.dto.js';
 import { AuthGuard, Roles, Session, type UserSession } from '../auth/index.js';
+import { ReportContentDto } from '../common/dto/report-content.dto.js';
 
 @Controller('citations')
 export class CitationsController {
@@ -51,13 +52,27 @@ export class CitationsController {
   }
 
   @Post(':id/like')
-  like(@Param('id') id: string) {
-    return this.citationsService.like(id);
+  @UseGuards(AuthGuard)
+  like(@Param('id') id: string, @Session() session?: UserSession) {
+    return this.citationsService.like(id, session!.user.id);
   }
 
   @Post(':id/unlike')
-  unlike(@Param('id') id: string) {
-    return this.citationsService.unlike(id);
+  @UseGuards(AuthGuard)
+  unlike(@Param('id') id: string, @Session() session?: UserSession) {
+    return this.citationsService.unlike(id, session!.user.id);
+  }
+
+  @Post(':id/favorite')
+  @UseGuards(AuthGuard)
+  favorite(@Param('id') id: string, @Session() session?: UserSession) {
+    return this.citationsService.favorite(id, session!.user.id);
+  }
+
+  @Post(':id/unfavorite')
+  @UseGuards(AuthGuard)
+  unfavorite(@Param('id') id: string, @Session() session?: UserSession) {
+    return this.citationsService.unfavorite(id, session!.user.id);
   }
 
   @Post(':id/view')
@@ -69,7 +84,7 @@ export class CitationsController {
   @UseGuards(AuthGuard)
   report(
     @Param('id') id: string,
-    @Body() body: { reason?: string; description?: string },
+    @Body() body: ReportContentDto,
     @Session() session?: UserSession,
   ) {
     return this.citationsService.report(id, body, session?.user?.id);

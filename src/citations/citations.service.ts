@@ -10,6 +10,7 @@ import {
   formatPaginatedResponse,
 } from '../common/utils/pagination.util.js';
 import { CACHE_KEYS } from '../common/constants/cache.constant.js';
+import { ReportContentDto } from '../common/dto/report-content.dto.js';
 
 @Injectable()
 export class CitationsService {
@@ -235,7 +236,11 @@ export class CitationsService {
     return citation;
   }
 
-  async like(id: string) {
+  async like(id: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
     const existing = await this.prisma.citation.findUnique({
       where: { id },
       select: { id: true, likesCount: true },
@@ -248,24 +253,49 @@ export class CitationsService {
       throw new NotFoundException(`Citation "${id}" non trouvée`);
     }
 
-    const citation = await this.prisma.citation.update({
-      where: { id },
-      data: {
-        likesCount: { increment: 1 },
+    const existingLike = await this.prisma.like.findUnique({
+      where: {
+        userId_citationId: {
+          userId,
+          citationId: id,
+        },
       },
-      select: { id: true, likesCount: true },
     });
+
+    if (existingLike) {
+      return existing;
+    }
+
+    const [, citation] = await this.prisma.$transaction([
+      this.prisma.like.create({
+        data: {
+          userId,
+          citationId: id,
+        },
+      }),
+      this.prisma.citation.update({
+        where: { id },
+        data: {
+          likesCount: { increment: 1 },
+        },
+        select: { id: true, likesCount: true },
+      }),
+    ]);
 
     await this.redis.del(`${CACHE_KEYS.CITATIONS_DETAIL_PREFIX}${id}`);
     await this.redis.delByPattern(CACHE_KEYS.CITATIONS_LIST_PATTERN);
 
     this.logger.log(
-      `❤️ [Citations] Like ajouté sur ID ${id} (total: ${citation.likesCount})`,
+      `❤️ [Citations] Like ajouté sur ID ${id} par ${userId} (total: ${citation.likesCount})`,
     );
     return citation;
   }
 
-  async unlike(id: string) {
+  async unlike(id: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
     const existing = await this.prisma.citation.findUnique({
       where: { id },
       select: { id: true, likesCount: true },
@@ -278,20 +308,104 @@ export class CitationsService {
       throw new NotFoundException(`Citation "${id}" non trouvée`);
     }
 
-    const newCount = Math.max(0, existing.likesCount - 1);
-    const citation = await this.prisma.citation.update({
-      where: { id },
-      data: { likesCount: newCount },
-      select: { id: true, likesCount: true },
+    const existingLike = await this.prisma.like.findUnique({
+      where: {
+        userId_citationId: {
+          userId,
+          citationId: id,
+        },
+      },
     });
+
+    if (!existingLike) {
+      return existing;
+    }
+
+    const newCount = Math.max(0, existing.likesCount - 1);
+    const [, citation] = await this.prisma.$transaction([
+      this.prisma.like.delete({
+        where: { id: existingLike.id },
+      }),
+      this.prisma.citation.update({
+        where: { id },
+        data: { likesCount: newCount },
+        select: { id: true, likesCount: true },
+      }),
+    ]);
 
     await this.redis.del(`${CACHE_KEYS.CITATIONS_DETAIL_PREFIX}${id}`);
     await this.redis.delByPattern(CACHE_KEYS.CITATIONS_LIST_PATTERN);
 
     this.logger.log(
-      `💔 [Citations] Unlike sur ID ${id} (total: ${citation.likesCount})`,
+      `💔 [Citations] Unlike sur ID ${id} par ${userId} (total: ${citation.likesCount})`,
     );
     return citation;
+  }
+
+  async favorite(id: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
+    const existing = await this.prisma.citation.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`Citation "${id}" introuvable`);
+    }
+
+    const existingFavorite = await this.prisma.favorite.findUnique({
+      where: {
+        userId_citationId: {
+          userId,
+          citationId: id,
+        },
+      },
+    });
+
+    if (existingFavorite) {
+      return { success: true };
+    }
+
+    await this.prisma.favorite.create({
+      data: {
+        userId,
+        citationId: id,
+      },
+    });
+
+    this.logger.log(
+      `⭐ [Citations] Ajout aux favoris de la citation ID ${id} par ${userId}`,
+    );
+    return { success: true };
+  }
+
+  async unfavorite(id: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
+    const existingFavorite = await this.prisma.favorite.findUnique({
+      where: {
+        userId_citationId: {
+          userId,
+          citationId: id,
+        },
+      },
+    });
+
+    if (existingFavorite) {
+      await this.prisma.favorite.delete({
+        where: { id: existingFavorite.id },
+      });
+      this.logger.log(
+        `🗑️ [Citations] Retrait des favoris de la citation ID ${id} par ${userId}`,
+      );
+    }
+
+    return { success: true };
   }
 
   async incrementView(id: string) {
@@ -314,7 +428,7 @@ export class CitationsService {
       data: {
         viewCount: { increment: 1 },
       },
-      select: { id: true, viewCount: true },
+      select: { id: true, viewCount: true, likesCount: true },
     });
 
     await this.redis.del(`${CACHE_KEYS.CITATIONS_DETAIL_PREFIX}${id}`);
@@ -334,11 +448,7 @@ export class CitationsService {
     };
   }
 
-  async report(
-    id: string,
-    data: { reason?: string; description?: string },
-    userId?: string,
-  ) {
+  async report(id: string, dto: ReportContentDto, userId?: string) {
     const existing = await this.prisma.citation.findUnique({
       where: { id },
       select: { id: true },
@@ -355,34 +465,17 @@ export class CitationsService {
       },
     });
 
-    const reportReasonMap: Record<
-      string,
-      | 'TRANSLATION_ERROR'
-      | 'TYPO'
-      | 'INCORRECT_MEANING'
-      | 'INAPPROPRIATE'
-      | 'OTHER'
-    > = {
-      translation: 'TRANSLATION_ERROR',
-      spelling: 'TYPO',
-      meaning: 'INCORRECT_MEANING',
-      inappropriate: 'INAPPROPRIATE',
-      other: 'OTHER',
-    };
-
-    const reason = (data.reason && reportReasonMap[data.reason]) || 'OTHER';
-
     const report = await this.prisma.contentReport.create({
       data: {
         citationId: id,
         userId: userId || null,
-        reason,
-        description: data.description || null,
+        reason: dto.reason,
+        description: dto.description || null,
       },
     });
 
     this.logger.log(
-      `🚩 [Citations] Signalement reçu pour ID ${id} par utilisateur ${userId || 'anonyme'} (Raison: ${reason})`,
+      `🚩 [Citations] Signalement reçu pour ID ${id} par utilisateur ${userId || 'anonyme'} (Raison: ${dto.reason})`,
     );
     return { success: true, reportId: report.id };
   }

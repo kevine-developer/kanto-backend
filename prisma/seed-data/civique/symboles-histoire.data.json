@@ -1,0 +1,76 @@
+[
+  {
+    "id": "symb-001",
+    "title": {
+      "fr": "Le Drapeau Malgache",
+      "mg": "Ny Sainam-pirenena Malagasy"
+    },
+    "summary": {
+      "fr": "Le drapeau tricolore Blanc, Rouge et Vert incarne la souveraineté, la pureté, la royauté et la terre fertile de Madagascar.",
+      "mg": "Ny saina fotsy, mena ary maitso dia mariky ny fahaleovantena, ny fahadiovana, ny fiandrianana ary ny tany lonaka."
+    },
+    "content": {
+      "fr": [
+        "Le drapeau national de Madagascar a été adopté le 14 octobre 1958, lors de la proclamation de la République.",
+        "Le blanc symbolise la pureté morale et le riz.",
+        "Le rouge rappelle la royauté mérina et le lamba traditionnel.",
+        "Le vert représente l'espoir, l'agriculture et les peuples de la côte."
+      ],
+      "mg": [
+        "Nolaniana tamin'ny 14 Oktobra 1958 ny sainam-pirenena malagasy tamin'ny fanambarana ny Repoblika.",
+        "Ny fotsy dia maneho ny fahadiovana sy ny vary.",
+        "Ny mena dia mampahatsiahy ny fiandrianana sy ny lamba landy.",
+        "Ny maitso kosa dia manambara ny fanantenana, ny fambolena ary ny mponina any amin'ny morontsiraka."
+      ]
+    },
+    "theme": ["symboles", "patrie", "histoire"]
+  },
+  {
+    "id": "symb-002",
+    "title": {
+      "fr": "L'Hymne National : Ry Tanindrazanay Malala",
+      "mg": "Ny Hiran'ny Tanindrazana : Ry Tanindrazanay Malala"
+    },
+    "summary": {
+      "fr": "Composé par Norbert Raharisoa et écrit par le pasteur Rahajason, il exprime l'amour ardent pour la patrie.",
+      "mg": "Noforonin'i Norbert Raharisoa sy Pastora Rahajason, maneho ny fitiavana tanindrazana marina."
+    },
+    "content": {
+      "fr": [
+        "L'hymne national retentit lors de chaque cérémonie officielle et rassemblement républicain.",
+        "Il invite à l'amour fraternel et à l'élévation de la nation sous la bénédiction divine.",
+        "C'est un devoir patriotique de se tenir debout avec respect lors de son exécution."
+      ],
+      "mg": [
+        "Ny hiram-pirenena dia velomina amin'ny fotoam-panjakana rehetra.",
+        "Miantso firaisankina, fitiavana ary fampandrosoana ny firenena izy.",
+        "Adidy ny mijoro am-panajana rehefa heno ny hiram-pirenena."
+      ]
+    },
+    "theme": ["symboles", "patrie", "hymne"]
+  },
+  {
+    "id": "symb-003",
+    "title": {
+      "fr": "Le Fihavanana : Pilier de la Nation",
+      "mg": "Ny Fihavanana : Andry iankinan'ny Firenena"
+    },
+    "summary": {
+      "fr": "Concept philosophique et social central reliant chaque citoyen par le respect mutuel et l'entraide.",
+      "mg": "Foto-kevitra sy fahendrena mampiray ny Malagasy amin'ny fifanajana sy ny firaisankina."
+    },
+    "content": {
+      "fr": [
+        "Le Fihavanana dépasse les liens du sang pour créer un pacte d'harmonie communautaire.",
+        "Proverbe : « Ny fihavanana toy ny kofehy manify, tapaka manano sarotra ».",
+        "Il constitue l'âme de la résolution pacifique des conflits à Madagascar."
+      ],
+      "mg": [
+        "Mihoatra ny fifandraisana ara-pianakaviana ny fihavanana mba hiaraha-miaina am-piadanana.",
+        "Ohabolana : « Ny fihavanana toy ny kofehy manify, tapaka manano sarotra ».",
+        "Fototry ny fampihavanana sy ny fandriampahalemana eto Madagasikara izy."
+      ]
+    },
+    "theme": ["culture", "valeurs", "fihavanana"]
+  }
+]

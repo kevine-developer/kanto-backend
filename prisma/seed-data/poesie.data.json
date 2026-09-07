@@ -1,0 +1,131 @@
+[
+  {
+    "id": "poesie-1",
+    "title": "Mba hitondray rano",
+    "titleFr": "Apporte-moi de l'eau",
+    "author": "Jean-Joseph Rabearivelo",
+    "period": "1930s",
+    "category": "tononkalo",
+    "themes": ["Fitiavana", "Fahatsiarovana", "Zavaboary"],
+    "viewsCount": 342,
+    "likesCount": 28,
+    "explanationMg": "Tononkalo maneho ny hetahetam-panahy sy ny fitiavana madio avy amin'ny poety malaza Rabearivelo.",
+    "explanationFr": "Poème lyrique illustrant la soif spirituelle et la nostalgie poétique de Rabearivelo.",
+    "stanzas": [
+      {
+        "versesMg": [
+          "Mba hitondray rano mangatsiaka aho,",
+          "Avy eny an-dohasaha mangina,",
+          "Handena ny molotro mangetaheta,",
+          "Sy hampitony ny foko misento."
+        ],
+        "versesFr": [
+          "Apporte-moi de l'eau fraîche,",
+          "De la vallée silencieuse,",
+          "Pour humecter mes lèvres assoiffées,",
+          "Et apaiser mon cœur qui soupire."
+        ]
+      },
+      {
+        "versesMg": [
+          "Tsy rano an-davaka akory,",
+          "Fa ranon'orana vao nilatsaka,",
+          "Madio mangatsakatsaka toy ny maraina,",
+          "Mamerovero voninkazo an-tsaha."
+        ],
+        "versesFr": [
+          "Non pas l'eau stagnante du fossé,",
+          "Mais la pluie printanière fraîchement tombée,",
+          "Pure et limpide comme le matin,",
+          "Embaumant les fleurs sauvages des champs."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "poesie-2",
+    "title": "Haintenin'ny Ntaolo : Ny fitiavana",
+    "titleFr": "Hainteny traditionnel : L'amour sincère",
+    "author": "Lovantsofina Ntaolo",
+    "period": "Ntaolo",
+    "category": "hainteny",
+    "themes": ["Hainteny", "Fomban-drazana", "Fahendrena"],
+    "viewsCount": 512,
+    "likesCount": 45,
+    "explanationMg": "Hainteny fanehoana fitiavana an-kolaka araka ny fomba amam-panao malagasy nentin-drazana.",
+    "explanationFr": "Poésie métaphorique traditionnelle malgache exprimant les nuances subtiles du sentiment amoureux.",
+    "stanzas": [
+      {
+        "versesMg": [
+          "Aza manao fitia kitoatoa,",
+          "Toy ny voromailala sendra andro ratsy :",
+          "Fa manaova fitia mifamaly,",
+          "Toy ny voromahery miara-manidina."
+        ],
+        "versesFr": [
+          "N'aime point d'un amour incertain,",
+          "Comme la colombe surprise par l'orage :",
+          "Mais aime d'un amour réciproque et digne,",
+          "Comme les aigles fendant ensemble les cieux."
+        ]
+      },
+      {
+        "versesMg": [
+          "Ny rano an-doharano madio,",
+          "Raha sotroina manala hetaheta ;",
+          "Ny teny marina mamin'ny fo,",
+          "Mampitony ny alahelo mikiky."
+        ],
+        "versesFr": [
+          "L'eau limpide de la source,",
+          "Désaltère quiconque s'y abreuve ;",
+          "La parole sincère qui touche le cœur,",
+          "Apaise le chagrin le plus profond."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "poesie-3",
+    "title": "Ry Tanindrazako malala",
+    "titleFr": "Ô ma terre natale bien-aimée",
+    "author": "Dox (Jean Verdi Salomon Razakandraina)",
+    "period": "1940s",
+    "category": "tononkalo",
+    "themes": ["Tanindrazana", "Fitiavan-tanindrazana", "Hatsaran-tarehy"],
+    "viewsCount": 890,
+    "likesCount": 76,
+    "explanationMg": "Fanehoana ny hatsaran'ny Nosy Madagasikara sy ny fitiavan-tanindrazana lalina nentin'i Dox.",
+    "explanationFr": "Ode magistrale de Dox dédiée aux paysages et à la patrie malgache.",
+    "stanzas": [
+      {
+        "versesMg": [
+          "Ry Tanindrazako malala,",
+          "Tsara tarehy sy milamina,",
+          "Ireo havoana sy lohasaha,",
+          "Mirakitra tantara mamy."
+        ],
+        "versesFr": [
+          "Ô ma terre ancestrale bien-aimée,",
+          "Belle, sereine et accueillante,",
+          "Tes collines et tes vallons,",
+          "Sont tissés d'histoires glorieuses."
+        ]
+      },
+      {
+        "versesMg": [
+          "Ny rivotra mitsoka maraina,",
+          "Mitondra fofon-tany lonaka,",
+          "Mampahatsiaro ireo razana,",
+          "Nanome antsika ity lova soa."
+        ],
+        "versesFr": [
+          "Le souffle matinal du vent,",
+          "Porte l'arôme de la terre fertile,",
+          "Rappelant la mémoire des ancêtres,",
+          "Qui nous ont légué ce précieux trésor."
+        ]
+      }
+    ]
+  }
+]

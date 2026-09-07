@@ -1,0 +1,48 @@
+[
+  {
+    "id": "recitation-1",
+    "title": "Tsianjery : Tanindrazana",
+    "titleFr": "Récitation : La Patrie",
+    "author": "Fampianarana Malagasy",
+    "tags": ["Fianarana", "Tanindrazana", "Sekoly"],
+    "viewsCount": 240,
+    "likesCount": 19,
+    "description": "Tsianjery fanao an-tsekoly mitaiza amin'ny fitiavan-tanindrazana sy ny fahaizana miteny.",
+    "durationMinutes": 2,
+    "content": [
+      "I Madagasikara no tanindrazako,",
+      "Tany manan-karena sy mahafinaritra,",
+      "Ny lanitra manga mangarangarana,",
+      "Ny ranomasina mamihina azy.",
+      "",
+      "Hianatra tsara aho ho reharehany,",
+      "Hiasa amim-pahamarinana sy fahaizana,",
+      "Mba ho firenena mandroso sy vanona,",
+      "Hitondra fahasambarana ho an'ny rehetra."
+    ],
+    "references": ["Fandaharam-pianarana Malagasy nentim-paharazana"]
+  },
+  {
+    "id": "recitation-2",
+    "title": "Fahaizana mandaha-teny : Ny fanajana",
+    "titleFr": "Éloquence : Le respect mutuel",
+    "author": "Lovantsofina",
+    "tags": ["Fanajana", "Fahendrena", "Fitenenana"],
+    "viewsCount": 185,
+    "likesCount": 14,
+    "description": "Fampianarana ny fomba fitenenana mirindra sy mendrika eo anivon'ny fiarahamonina.",
+    "durationMinutes": 3,
+    "content": [
+      "Ny teny malefaka manam-panahy,",
+      "Mampitony ny fo tezitra sy maratra ;",
+      "Ny fanajana ny zokiolona sy ny manodidina,",
+      "No fototry ny fiadanana sy ny fihavanana.",
+      "",
+      "Aza manao teny mandratra,",
+      "Fa ny teny toy ny atody :",
+      "Raha latsaka ka vaky,",
+      "Tsy azo tononina intsony."
+    ],
+    "references": ["Ohabolana sy soatoavina Malagasy"]
+  }
+]

@@ -11,6 +11,7 @@ import {
   formatPaginatedResponse,
 } from '../common/utils/pagination.util.js';
 import { CACHE_KEYS } from '../common/constants/cache.constant.js';
+import { ReportContentDto } from '../common/dto/report-content.dto.js';
 
 @Injectable()
 export class ContesService {
@@ -290,7 +291,11 @@ export class ContesService {
     return result;
   }
 
-  async like(idOrSlug: string) {
+  async like(idOrSlug: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
     const existing = await this.prisma.conte.findFirst({
       where: {
         OR: [{ id: idOrSlug }, { slug: idOrSlug }],
@@ -302,13 +307,34 @@ export class ContesService {
       throw new NotFoundException(`Conte "${idOrSlug}" introuvable`);
     }
 
-    const conte = await this.prisma.conte.update({
-      where: { id: existing.id },
-      data: {
-        likesCount: { increment: 1 },
+    const existingLike = await this.prisma.like.findUnique({
+      where: {
+        userId_conteId: {
+          userId,
+          conteId: existing.id,
+        },
       },
-      select: { id: true, slug: true, likesCount: true },
     });
+
+    if (existingLike) {
+      return existing;
+    }
+
+    const [, conte] = await this.prisma.$transaction([
+      this.prisma.like.create({
+        data: {
+          userId,
+          conteId: existing.id,
+        },
+      }),
+      this.prisma.conte.update({
+        where: { id: existing.id },
+        data: {
+          likesCount: { increment: 1 },
+        },
+        select: { id: true, slug: true, likesCount: true },
+      }),
+    ]);
 
     await this.redis.del([
       `${CACHE_KEYS.CONTES_DETAIL_PREFIX}${existing.id}`,
@@ -317,12 +343,16 @@ export class ContesService {
     await this.redis.delByPattern(CACHE_KEYS.CONTES_LIST_PATTERN);
 
     this.logger.log(
-      `❤️ [Contes] Like ajouté sur conte ID ${existing.id} (total: ${conte.likesCount})`,
+      `❤️ [Contes] Like ajouté sur conte ID ${existing.id} par ${userId} (total: ${conte.likesCount})`,
     );
     return conte;
   }
 
-  async unlike(idOrSlug: string) {
+  async unlike(idOrSlug: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
     const existing = await this.prisma.conte.findFirst({
       where: {
         OR: [{ id: idOrSlug }, { slug: idOrSlug }],
@@ -334,12 +364,30 @@ export class ContesService {
       throw new NotFoundException(`Conte "${idOrSlug}" introuvable`);
     }
 
-    const newCount = Math.max(0, existing.likesCount - 1);
-    const conte = await this.prisma.conte.update({
-      where: { id: existing.id },
-      data: { likesCount: newCount },
-      select: { id: true, slug: true, likesCount: true },
+    const existingLike = await this.prisma.like.findUnique({
+      where: {
+        userId_conteId: {
+          userId,
+          conteId: existing.id,
+        },
+      },
     });
+
+    if (!existingLike) {
+      return existing;
+    }
+
+    const newCount = Math.max(0, existing.likesCount - 1);
+    const [, conte] = await this.prisma.$transaction([
+      this.prisma.like.delete({
+        where: { id: existingLike.id },
+      }),
+      this.prisma.conte.update({
+        where: { id: existing.id },
+        data: { likesCount: newCount },
+        select: { id: true, slug: true, likesCount: true },
+      }),
+    ]);
 
     await this.redis.del([
       `${CACHE_KEYS.CONTES_DETAIL_PREFIX}${existing.id}`,
@@ -348,9 +396,75 @@ export class ContesService {
     await this.redis.delByPattern(CACHE_KEYS.CONTES_LIST_PATTERN);
 
     this.logger.log(
-      `💔 [Contes] Unlike sur conte ID ${existing.id} (total: ${conte.likesCount})`,
+      `💔 [Contes] Unlike sur conte ID ${existing.id} par ${userId} (total: ${conte.likesCount})`,
     );
     return conte;
+  }
+
+  async favorite(id: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
+    const existing = await this.prisma.conte.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`Conte "${id}" introuvable`);
+    }
+
+    const existingFavorite = await this.prisma.favorite.findUnique({
+      where: {
+        userId_conteId: {
+          userId,
+          conteId: id,
+        },
+      },
+    });
+
+    if (existingFavorite) {
+      return { success: true };
+    }
+
+    await this.prisma.favorite.create({
+      data: {
+        userId,
+        conteId: id,
+      },
+    });
+
+    this.logger.log(
+      `⭐ [Contes] Ajout aux favoris du conte ID ${id} par ${userId}`,
+    );
+    return { success: true };
+  }
+
+  async unfavorite(id: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
+    const existingFavorite = await this.prisma.favorite.findUnique({
+      where: {
+        userId_conteId: {
+          userId,
+          conteId: id,
+        },
+      },
+    });
+
+    if (existingFavorite) {
+      await this.prisma.favorite.delete({
+        where: { id: existingFavorite.id },
+      });
+      this.logger.log(
+        `🗑️ [Contes] Retrait des favoris du conte ID ${id} par ${userId}`,
+      );
+    }
+
+    return { success: true };
   }
 
   async incrementView(idOrSlug: string) {
@@ -374,7 +488,7 @@ export class ContesService {
       data: {
         viewCount: { increment: 1 },
       },
-      select: { id: true, slug: true, viewCount: true },
+      select: { id: true, slug: true, viewCount: true, likesCount: true },
     });
 
     await this.redis.del([
@@ -393,5 +507,33 @@ export class ContesService {
       ...conte,
       viewCount: finalViews,
     };
+  }
+
+  async report(id: string, dto: ReportContentDto, userId?: string) {
+    const existing = await this.prisma.conte.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`Conte "${id}" introuvable`);
+    }
+
+    await this.prisma.contentReport.create({
+      data: {
+        reason: dto.reason,
+        description: dto.description,
+        conteId: id,
+        userId,
+      },
+    });
+
+    await this.prisma.conte.update({
+      where: { id },
+      data: { reportCount: { increment: 1 } },
+    });
+
+    this.logger.log(`🚨 [Contes] Signalement créé pour le conte ID ${id}`);
+    return { success: true };
   }
 }

@@ -14,7 +14,8 @@ import { ContesAudioService } from './contes-audio.service.js';
 import { FindContesQueryDto } from './dto/find-contes.dto.js';
 import { CreateConteDto } from './dto/create-conte.dto.js';
 import { UpdateConteDto } from './dto/update-conte.dto.js';
-import { AuthGuard, Roles } from '../auth/index.js';
+import { AuthGuard, Roles, Session, type UserSession } from '../auth/index.js';
+import { ReportContentDto } from '../common/dto/report-content.dto.js';
 
 @Controller('contes')
 export class ContesController {
@@ -55,13 +56,27 @@ export class ContesController {
   }
 
   @Post(':id/like')
-  like(@Param('id') id: string) {
-    return this.contesService.like(id);
+  @UseGuards(AuthGuard)
+  like(@Param('id') id: string, @Session() session?: UserSession) {
+    return this.contesService.like(id, session!.user.id);
   }
 
   @Post(':id/unlike')
-  unlike(@Param('id') id: string) {
-    return this.contesService.unlike(id);
+  @UseGuards(AuthGuard)
+  unlike(@Param('id') id: string, @Session() session?: UserSession) {
+    return this.contesService.unlike(id, session!.user.id);
+  }
+
+  @Post(':id/favorite')
+  @UseGuards(AuthGuard)
+  favorite(@Param('id') id: string, @Session() session?: UserSession) {
+    return this.contesService.favorite(id, session!.user.id);
+  }
+
+  @Post(':id/unfavorite')
+  @UseGuards(AuthGuard)
+  unfavorite(@Param('id') id: string, @Session() session?: UserSession) {
+    return this.contesService.unfavorite(id, session!.user.id);
   }
 
   @Post(':id/view')
@@ -96,5 +111,15 @@ export class ContesController {
       body.voiceId,
       body.force,
     );
+  }
+
+  @Post(':id/report')
+  @UseGuards(AuthGuard)
+  report(
+    @Param('id') id: string,
+    @Body() body: ReportContentDto,
+    @Session() session?: UserSession,
+  ) {
+    return this.contesService.report(id, body, session?.user?.id);
   }
 }

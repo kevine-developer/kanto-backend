@@ -68,13 +68,27 @@ export class ItemsController {
   }
 
   @Post(':id/like')
-  like(@Param('id') id: string) {
-    return this.itemsInteractionService.like(id);
+  @UseGuards(AuthGuard)
+  like(@Param('id') id: string, @Session() session: UserSession) {
+    return this.itemsInteractionService.like(id, session.user.id);
   }
 
   @Post(':id/unlike')
-  unlike(@Param('id') id: string) {
-    return this.itemsInteractionService.unlike(id);
+  @UseGuards(AuthGuard)
+  unlike(@Param('id') id: string, @Session() session: UserSession) {
+    return this.itemsInteractionService.unlike(id, session.user.id);
+  }
+
+  @Post(':id/favorite')
+  @UseGuards(AuthGuard)
+  favorite(@Param('id') id: string, @Session() session: UserSession) {
+    return this.itemsInteractionService.favorite(id, session.user.id);
+  }
+
+  @Post(':id/unfavorite')
+  @UseGuards(AuthGuard)
+  unfavorite(@Param('id') id: string, @Session() session: UserSession) {
+    return this.itemsInteractionService.unfavorite(id, session.user.id);
   }
 
   @Post(':id/view')
