@@ -59,14 +59,6 @@ export const INITIAL_MODULES: DefaultModuleConfig[] = [
     isLocked: false,
     lockReason: null,
   },
-  {
-    key: 'game:timelineGame',
-    type: 'GAME',
-    nameFr: 'Tri Chronologique',
-    nameMg: 'Filaharana ara-potoana',
-    isLocked: false,
-    lockReason: null,
-  },
 
   // CATÉGORIES
   {

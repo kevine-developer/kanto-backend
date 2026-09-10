@@ -35,7 +35,8 @@ export class RecitationsService {
 
   private async invalidateCache(id?: string) {
     await this.redis.delByPattern(CACHE_KEYS.RECITATIONS_LIST_PATTERN);
-    if (id) await this.redis.del(`${CACHE_KEYS.RECITATIONS_DETAIL_PREFIX}${id}`);
+    if (id)
+      await this.redis.del(`${CACHE_KEYS.RECITATIONS_DETAIL_PREFIX}${id}`);
   }
 
   async create(data: CreateRecitationDto) {
@@ -69,7 +70,9 @@ export class RecitationsService {
       where: { id },
     });
     if (!existing) {
-      throw new NotFoundException(`Récitation avec l'identifiant "${id}" introuvable`);
+      throw new NotFoundException(
+        `Récitation avec l'identifiant "${id}" introuvable`,
+      );
     }
 
     const recitation = await this.prisma.recitation.update({
@@ -78,9 +81,12 @@ export class RecitationsService {
         title: data.title !== undefined ? data.title : undefined,
         titleFr: data.titleFr !== undefined ? data.titleFr : undefined,
         author: data.author !== undefined ? data.author : undefined,
-        description: data.description !== undefined ? data.description : undefined,
-        durationMinutes: data.durationMinutes !== undefined ? data.durationMinutes : undefined,
-        contentLines: data.contentLines !== undefined ? data.contentLines : undefined,
+        description:
+          data.description !== undefined ? data.description : undefined,
+        durationMinutes:
+          data.durationMinutes !== undefined ? data.durationMinutes : undefined,
+        contentLines:
+          data.contentLines !== undefined ? data.contentLines : undefined,
         references: data.references !== undefined ? data.references : undefined,
         tags: data.tags !== undefined ? data.tags : undefined,
         isFeatured: data.isFeatured !== undefined ? data.isFeatured : undefined,
@@ -90,7 +96,9 @@ export class RecitationsService {
     });
 
     await this.invalidateCache(recitation.id);
-    this.logger.log(`✏️ [Recitations] Récitation mise à jour (ID: ${recitation.id})`);
+    this.logger.log(
+      `✏️ [Recitations] Récitation mise à jour (ID: ${recitation.id})`,
+    );
     return recitation;
   }
 
@@ -99,7 +107,9 @@ export class RecitationsService {
       where: { id },
     });
     if (!existing) {
-      throw new NotFoundException(`Récitation avec l'identifiant "${id}" introuvable`);
+      throw new NotFoundException(
+        `Récitation avec l'identifiant "${id}" introuvable`,
+      );
     }
 
     await this.prisma.recitation.delete({
@@ -113,7 +123,11 @@ export class RecitationsService {
 
   async findAll(query: FindRecitationsQueryDto) {
     const { page = 1, limit = 20, search, author, tag } = query;
-    const { skip, limit: takeLimit, page: currentPage } = calculatePagination({ page, limit });
+    const {
+      skip,
+      limit: takeLimit,
+      page: currentPage,
+    } = calculatePagination({ page, limit });
 
     const cacheKey = `${CACHE_KEYS.RECITATIONS_LIST_PREFIX}${currentPage}:${takeLimit}:${search || ''}:${author || ''}:${tag || ''}`;
     const cached = await this.redis.get<any>(cacheKey);
@@ -144,7 +158,12 @@ export class RecitationsService {
       }),
     ]);
 
-    const result = formatPaginatedResponse(items, total, currentPage, takeLimit);
+    const result = formatPaginatedResponse(
+      items,
+      total,
+      currentPage,
+      takeLimit,
+    );
     await this.redis.set(cacheKey, result, 300); // 5 min TTL
     return result;
   }
@@ -161,7 +180,9 @@ export class RecitationsService {
     });
 
     if (!recitation) {
-      throw new NotFoundException(`Récitation avec l'identifiant "${id}" introuvable`);
+      throw new NotFoundException(
+        `Récitation avec l'identifiant "${id}" introuvable`,
+      );
     }
 
     await this.redis.set(cacheKey, recitation, 600); // 10 min TTL
@@ -169,8 +190,11 @@ export class RecitationsService {
   }
 
   async like(id: string, userId: string) {
-    const recitation = await this.prisma.recitation.findUnique({ where: { id } });
-    if (!recitation) throw new NotFoundException(`Récitation "${id}" introuvable`);
+    const recitation = await this.prisma.recitation.findUnique({
+      where: { id },
+    });
+    if (!recitation)
+      throw new NotFoundException(`Récitation "${id}" introuvable`);
 
     const existing = await this.prisma.like.findUnique({
       where: { userId_recitationId: { userId, recitationId: id } },
@@ -193,8 +217,11 @@ export class RecitationsService {
   }
 
   async unlike(id: string, userId: string) {
-    const recitation = await this.prisma.recitation.findUnique({ where: { id } });
-    if (!recitation) throw new NotFoundException(`Récitation "${id}" introuvable`);
+    const recitation = await this.prisma.recitation.findUnique({
+      where: { id },
+    });
+    if (!recitation)
+      throw new NotFoundException(`Récitation "${id}" introuvable`);
 
     const existing = await this.prisma.like.findUnique({
       where: { userId_recitationId: { userId, recitationId: id } },
@@ -219,8 +246,11 @@ export class RecitationsService {
   }
 
   async favorite(id: string, userId: string) {
-    const recitation = await this.prisma.recitation.findUnique({ where: { id } });
-    if (!recitation) throw new NotFoundException(`Récitation "${id}" introuvable`);
+    const recitation = await this.prisma.recitation.findUnique({
+      where: { id },
+    });
+    if (!recitation)
+      throw new NotFoundException(`Récitation "${id}" introuvable`);
 
     const existing = await this.prisma.favorite.findUnique({
       where: { userId_recitationId: { userId, recitationId: id } },
@@ -250,17 +280,22 @@ export class RecitationsService {
   }
 
   async incrementView(id: string) {
-    await this.prisma.recitation.update({
-      where: { id },
-      data: { viewCount: { increment: 1 } },
-    }).catch(() => null);
+    await this.prisma.recitation
+      .update({
+        where: { id },
+        data: { viewCount: { increment: 1 } },
+      })
+      .catch(() => null);
 
     return { success: true };
   }
 
   async report(id: string, data: ReportContentDto, userId?: string) {
-    const recitation = await this.prisma.recitation.findUnique({ where: { id } });
-    if (!recitation) throw new NotFoundException(`Récitation "${id}" introuvable`);
+    const recitation = await this.prisma.recitation.findUnique({
+      where: { id },
+    });
+    if (!recitation)
+      throw new NotFoundException(`Récitation "${id}" introuvable`);
 
     await this.prisma.$transaction([
       this.prisma.contentReport.create({
@@ -277,7 +312,9 @@ export class RecitationsService {
       }),
     ]);
 
-    this.logger.warn(`⚠️ [Recitations] Signalement pour la récitation ${id} (${data.reason})`);
+    this.logger.warn(
+      `⚠️ [Recitations] Signalement pour la récitation ${id} (${data.reason})`,
+    );
     return { success: true, message: 'Signalement enregistré avec succès' };
   }
 }

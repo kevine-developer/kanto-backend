@@ -10,7 +10,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CivicQuizService } from './civic-quiz.service.js';
-import { FindCivicQuizQueryDto, RandomQuizQueryDto } from './dto/find-civic-quiz.dto.js';
+import {
+  FindCivicQuizQueryDto,
+  RandomQuizQueryDto,
+} from './dto/find-civic-quiz.dto.js';
 import { CreateCivicQuizDto } from './dto/create-civic-quiz.dto.js';
 import { UpdateCivicQuizDto } from './dto/update-civic-quiz.dto.js';
 import { AuthGuard, Roles } from '../auth/index.js';
@@ -56,10 +59,7 @@ export class CivicQuizController {
   }
 
   @Post(':id/answer')
-  recordAnswer(
-    @Param('id') id: string,
-    @Body('isCorrect') isCorrect: boolean,
-  ) {
+  recordAnswer(@Param('id') id: string, @Body('isCorrect') isCorrect: boolean) {
     return this.civicQuizService.recordAnswer(id, isCorrect);
   }
 }

@@ -7,7 +7,10 @@ import {
   IsEnum,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { CivicSubCategory, ContentStatus } from '../../../generated/prisma/client.js';
+import {
+  CivicSubCategory,
+  ContentStatus,
+} from '../../../generated/prisma/client.js';
 import { CreateCivicStructureRoleDto } from './create-civic.dto.js';
 
 export class UpdateCivicDto {

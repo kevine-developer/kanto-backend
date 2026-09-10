@@ -84,7 +84,9 @@ export class CivicService {
       where: { id },
     });
     if (!existing) {
-      throw new NotFoundException(`Contenu civique avec l'identifiant "${id}" introuvable`);
+      throw new NotFoundException(
+        `Contenu civique avec l'identifiant "${id}" introuvable`,
+      );
     }
 
     if (data.structureRoles) {
@@ -106,7 +108,8 @@ export class CivicService {
     const civic = await this.prisma.civicContent.update({
       where: { id },
       data: {
-        subCategory: data.subCategory !== undefined ? data.subCategory : undefined,
+        subCategory:
+          data.subCategory !== undefined ? data.subCategory : undefined,
         titleFr: data.titleFr !== undefined ? data.titleFr : undefined,
         titleMg: data.titleMg !== undefined ? data.titleMg : undefined,
         summaryFr: data.summaryFr !== undefined ? data.summaryFr : undefined,
@@ -134,7 +137,9 @@ export class CivicService {
       where: { id },
     });
     if (!existing) {
-      throw new NotFoundException(`Contenu civique avec l'identifiant "${id}" introuvable`);
+      throw new NotFoundException(
+        `Contenu civique avec l'identifiant "${id}" introuvable`,
+      );
     }
 
     await this.prisma.civicContent.delete({
@@ -148,7 +153,11 @@ export class CivicService {
 
   async findAll(query: FindCivicQueryDto) {
     const { page = 1, limit = 20, subCategory, search, theme } = query;
-    const { skip, limit: takeLimit, page: currentPage } = calculatePagination({ page, limit });
+    const {
+      skip,
+      limit: takeLimit,
+      page: currentPage,
+    } = calculatePagination({ page, limit });
 
     const cacheKey = `${CACHE_KEYS.CIVIC_LIST_PREFIX}${currentPage}:${takeLimit}:${subCategory || ''}:${search || ''}:${theme || ''}`;
     const cached = await this.redis.get<any>(cacheKey);
@@ -177,15 +186,15 @@ export class CivicService {
         skip,
         take: takeLimit,
         orderBy: { createdAt: 'asc' },
-        include: {
-          structureRoles: {
-            orderBy: { orderIndex: 'asc' },
-          },
-        },
       }),
     ]);
 
-    const result = formatPaginatedResponse(items, total, currentPage, takeLimit);
+    const result = formatPaginatedResponse(
+      items,
+      total,
+      currentPage,
+      takeLimit,
+    );
     await this.redis.set(cacheKey, result, 300); // 5 min TTL
     return result;
   }
@@ -207,7 +216,9 @@ export class CivicService {
     });
 
     if (!civic) {
-      throw new NotFoundException(`Contenu civique avec l'identifiant "${id}" introuvable`);
+      throw new NotFoundException(
+        `Contenu civique avec l'identifiant "${id}" introuvable`,
+      );
     }
 
     await this.redis.set(cacheKey, civic, 600); // 10 min TTL
@@ -215,10 +226,12 @@ export class CivicService {
   }
 
   async incrementView(id: string) {
-    await this.prisma.civicContent.update({
-      where: { id },
-      data: { viewCount: { increment: 1 } },
-    }).catch(() => null);
+    await this.prisma.civicContent
+      .update({
+        where: { id },
+        data: { viewCount: { increment: 1 } },
+      })
+      .catch(() => null);
 
     return { success: true };
   }

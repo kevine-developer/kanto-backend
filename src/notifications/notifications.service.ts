@@ -1,6 +1,8 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateNotificationDto } from './dto/notifications.dto.js';
+import { RedisService } from '../redis/redis.service.js';
+import { REDIS_CHANNEL_NOTIFICATIONS } from '../realtime/realtime.gateway.js';
 
 export interface FormattedNotificationItem {
   id: string;
@@ -28,19 +30,27 @@ export interface FormattedNotificationGroup {
 export class NotificationsService {
   private readonly logger = new Logger(NotificationsService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly redisService: RedisService,
+  ) {}
 
   /**
    * Récupère les notifications pour l'application mobile, groupées par date.
    * Ne renvoie strictement que les données réelles présentes en base de données.
    */
-  async getPublicNotifications(language: 'mg' | 'fr' = 'mg'): Promise<{
+  async getPublicNotifications(
+    language: 'mg' | 'fr' = 'mg',
+    userId?: string,
+  ): Promise<{
     groups: FormattedNotificationGroup[];
     unreadCount: number;
     totalCount: number;
   }> {
     const notifs = await this.prisma.notification.findMany({
-      where: { isBroadcast: true },
+      where: {
+        OR: [{ isBroadcast: true }, ...(userId ? [{ userId }] : [])],
+      },
       orderBy: { createdAt: 'desc' },
     });
 
@@ -147,7 +157,97 @@ export class NotificationsService {
   }
 
   /**
-   * Crée une nouvelle notification (Admin).
+   * Enregistre ou met à jour le token Expo Push d'un utilisateur.
+   */
+  async registerPushToken(userId: string, pushToken: string) {
+    if (!userId || !pushToken)
+      return { success: false, message: 'Paramètres manquants' };
+
+    try {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: { pushToken: pushToken.trim() },
+      });
+      this.logger.log(
+        `📱 [Push] Token Expo enregistré pour l'utilisateur ${userId}`,
+      );
+      return { success: true, message: 'Token push enregistré avec succès' };
+    } catch (err) {
+      this.logger.warn(
+        `⚠️ [Push] Échec enregistrement token pour ${userId} :`,
+        err,
+      );
+      return { success: false, message: 'Erreur enregistrement token' };
+    }
+  }
+
+  /**
+   * Envoie des notifications push via le service officiel Expo Push.
+   * Accepte un token unique ou un tableau de tokens.
+   */
+  async sendExpoPush(
+    pushTokens: string | string[],
+    payload: {
+      title: string;
+      body: string;
+      data?: Record<string, unknown>;
+      sound?: string;
+    },
+  ) {
+    const rawTokens = Array.isArray(pushTokens) ? pushTokens : [pushTokens];
+    // Valider les tokens Expo valides (commencent par ExponentPushToken ou ExpoPushToken)
+    const validTokens = rawTokens.filter(
+      (t) =>
+        t &&
+        typeof t === 'string' &&
+        (t.startsWith('ExponentPushToken') || t.startsWith('ExpoPushToken')),
+    );
+
+    if (validTokens.length === 0) {
+      return;
+    }
+
+    const messages = validTokens.map((to) => ({
+      to,
+      sound: payload.sound || 'default',
+      title: payload.title,
+      body: payload.body,
+      data: payload.data || {},
+      priority: 'high',
+      channelId: 'default',
+    }));
+
+    try {
+      const response = await fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Accept-Encoding': 'gzip, deflate',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(messages),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        this.logger.warn(
+          `⚠️ [Expo Push] Réponse API Expo non-OK (${response.status}) : ${errorText}`,
+        );
+      } else {
+        this.logger.log(
+          `🚀 [Expo Push] ${validTokens.length} notification(s) push transmise(s) avec succès.`,
+        );
+      }
+    } catch (err) {
+      this.logger.error(
+        `❌ [Expo Push] Erreur lors de l'appel HTTP vers Expo :`,
+        err,
+      );
+    }
+  }
+
+  /**
+   * Crée une nouvelle notification (Admin ou système) et envoie la notification push associée.
    */
   async createNotification(dto: CreateNotificationDto) {
     const created = await this.prisma.notification.create({
@@ -169,18 +269,99 @@ export class NotificationsService {
     });
 
     this.logger.log(
-      `📢 [Notifications] Nouvelle notification diffusée : "${created.titleMg}" (${created.category})`,
+      `📢 [Notifications] Nouvelle notification créée : "${created.titleMg}" (${created.category})`,
     );
+
+    // Publication temps réel via Redis Pub/Sub
+    const formattedForRealtime = {
+      id: created.id,
+      category: created.category,
+      title: created.titleFr || created.titleMg,
+      titleMg: created.titleMg,
+      description: created.messageFr || created.messageMg,
+      descriptionMg: created.messageMg,
+      timeAgo: 'À l’instant',
+      timestamp: created.createdAt.getTime(),
+      iconName: created.iconName || 'notifications-outline',
+      iconColor: created.iconColor || '#C0392B',
+      badgeText: created.badgeText || undefined,
+      badgeType: created.badgeType || 'info',
+      read: false,
+      targetRoute: created.targetRoute || undefined,
+      createdAt: created.createdAt,
+    };
+
+    void this.redisService.publish(REDIS_CHANNEL_NOTIFICATIONS, {
+      notification: formattedForRealtime,
+      targetUserId: created.userId,
+      isBroadcast: created.isBroadcast,
+    });
+
+    // Déclencher l'envoi de notification push en tâche asynchrone non-bloquante
+    void (async () => {
+      try {
+        const pushTitle = created.titleFr || created.titleMg;
+        const pushBody = created.messageFr || created.messageMg;
+        const pushData: Record<string, unknown> = {
+          notificationId: created.id,
+          category: created.category,
+          targetRoute: created.targetRoute || '/(tabs)/explore',
+        };
+
+        if (created.userId) {
+          // Notification ciblée à un utilisateur précis (ex: auteur d'une contribution commentée)
+          const targetUser = await this.prisma.user.findUnique({
+            where: { id: created.userId },
+            select: { pushToken: true },
+          });
+
+          if (targetUser?.pushToken) {
+            await this.sendExpoPush(targetUser.pushToken, {
+              title: pushTitle,
+              body: pushBody,
+              data: pushData,
+            });
+          }
+        } else if (created.isBroadcast) {
+          // Notification de diffusion générale à tous les utilisateurs enregistrés avec un push token
+          const usersWithToken = await this.prisma.user.findMany({
+            where: { pushToken: { not: null } },
+            select: { pushToken: true },
+          });
+
+          const tokens = usersWithToken
+            .map((u) => u.pushToken)
+            .filter((t): t is string => Boolean(t));
+
+          if (tokens.length > 0) {
+            await this.sendExpoPush(tokens, {
+              title: pushTitle,
+              body: pushBody,
+              data: pushData,
+            });
+          }
+        }
+      } catch (pushErr) {
+        this.logger.warn(
+          '⚠️ [Expo Push] Échec envoi push automatique :',
+          pushErr,
+        );
+      }
+    })();
+
     return created;
   }
 
   /**
-   * Marque une notification comme lue.
+   * Marque une notification comme lue (idempotent, ne plante pas si inexistante).
    */
   async markAsRead(id: string) {
     const notif = await this.prisma.notification.findUnique({ where: { id } });
     if (!notif) {
-      throw new NotFoundException(`Notification ${id} introuvable`);
+      return {
+        success: true,
+        message: `Notification ${id} introuvable en base de données (locale ou déjà supprimée)`,
+      };
     }
 
     return this.prisma.notification.update({
@@ -202,12 +383,16 @@ export class NotificationsService {
   }
 
   /**
-   * Supprime une notification.
+   * Supprime une notification (idempotent, ne plante pas si inexistante).
    */
   async deleteNotification(id: string) {
     const notif = await this.prisma.notification.findUnique({ where: { id } });
     if (!notif) {
-      throw new NotFoundException(`Notification ${id} introuvable`);
+      return {
+        success: true,
+        id,
+        message: 'Notification déjà supprimée ou locale',
+      };
     }
 
     await this.prisma.notification.delete({ where: { id } });

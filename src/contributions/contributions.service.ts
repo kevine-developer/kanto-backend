@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateContributionDto } from './dto/create-contribution.dto.js';
@@ -12,6 +13,13 @@ import { CreateCitationContributionDto } from './dto/create-citation-contributio
 import { CreateConteContributionDto } from './dto/create-conte-contribution.dto.js';
 import { UpdateContributionDto } from './dto/update-contribution.dto.js';
 import { CreateContributionCommentDto } from './dto/create-contribution-comment.dto.js';
+import { NotificationsService } from '../notifications/notifications.service.js';
+import { RedisService } from '../redis/redis.service.js';
+import {
+  REALTIME_CHANNELS,
+  LeaderboardRealtimePayload,
+} from '../realtime/realtime.constants.js';
+import { REDIS_CHANNEL_COMMENTS } from '../realtime/realtime.gateway.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Sélecteurs réutilisables
@@ -46,7 +54,13 @@ function generateSlug(text: string): string {
 // ─────────────────────────────────────────────────────────────────────────────
 @Injectable()
 export class ContributionsService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(ContributionsService.name);
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notificationsService: NotificationsService,
+    private readonly redisService: RedisService,
+  ) {}
 
   // ───────────────────────────────────────────────────────────────────────────
   // Génération de slug unique pour une table donnée
@@ -177,13 +191,15 @@ export class ContributionsService {
   // ───────────────────────────────────────────────────────────────────────────
   // GET /contributions/community
   // ───────────────────────────────────────────────────────────────────────────
-  async findCommunity(category?: string, userId?: string) {
+  async findCommunity(category?: string, userId?: string, limit: number = 50) {
+    const safeLimit = Math.min(Math.max(1, Number(limit) || 50), 100);
     const items = await this.prisma.contribution.findMany({
       where: {
         status: { in: ['PUBLISHED', 'DRAFT'] },
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         ...(category && { category: category as any }),
       },
+      take: safeLimit,
       select: {
         ...CONTRIBUTION_BASE_SELECT,
         textMg: true,
@@ -240,6 +256,45 @@ export class ContributionsService {
   }
 
   // ───────────────────────────────────────────────────────────────────────────
+  // POST /contributions/:id/view
+  // ───────────────────────────────────────────────────────────────────────────
+  async incrementView(id: string) {
+    const existing = await this.prisma.contribution.findUnique({
+      where: { id },
+      select: { id: true, viewCount: true },
+    });
+
+    if (!existing) {
+      throw new NotFoundException('Contribution introuvable');
+    }
+
+    try {
+      await this.redisService.incr(`kanto:views:contribution:${id}`);
+    } catch (err) {
+      this.logger.debug(
+        `[Redis] Incr view contribution optionnel ignoré: ${err}`,
+      );
+    }
+
+    const updated = await this.prisma.contribution.update({
+      where: { id },
+      data: {
+        viewCount: { increment: 1 },
+      },
+      select: {
+        id: true,
+        viewCount: true,
+      },
+    });
+
+    return {
+      success: true,
+      id: updated.id,
+      viewCount: updated.viewCount,
+    };
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
   // GET /contributions/me
   // ───────────────────────────────────────────────────────────────────────────
   async findMyContributions(userId: string) {
@@ -265,7 +320,7 @@ export class ContributionsService {
   ) {
     if (![1, -1, 0].includes(value)) {
       throw new BadRequestException(
-        'Vote invalide : valeur doit être 1, -1 ou 0',
+        'Vote invalide : la valeur doit être 1, -1 ou 0',
       );
     }
 
@@ -273,6 +328,13 @@ export class ContributionsService {
       where: { id: contributionId },
     });
     if (!contribution) throw new NotFoundException('Contribution introuvable');
+
+    // ⛔ Vérifier que la contribution est active
+    if (contribution.status === 'ARCHIVED') {
+      throw new BadRequestException(
+        'Cette contribution est archivée et ne peut plus recevoir de votes',
+      );
+    }
 
     // ⛔ Interdire l'auto-vote
     if (contribution.userId === userId) {
@@ -311,16 +373,67 @@ export class ContributionsService {
         });
       }
 
+      let finalScore = contribution.score;
       if (scoreDelta !== 0) {
-        return prisma.contribution.update({
+        const updated = await prisma.contribution.update({
           where: { id: contributionId },
           data: { score: { increment: scoreDelta } },
           select: { id: true, score: true },
         });
+        finalScore = updated.score;
       }
 
-      return { id: contributionId, score: contribution.score };
+      return {
+        id: contributionId,
+        score: finalScore,
+        userVote: value,
+      };
     });
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // POST /contributions/:id/report
+  // ───────────────────────────────────────────────────────────────────────────
+  async reportContribution(
+    userId: string,
+    contributionId: string,
+    reason: string,
+    description?: string,
+  ) {
+    const contribution = await this.prisma.contribution.findUnique({
+      where: { id: contributionId },
+      select: { id: true, textMg: true, userId: true, status: true },
+    });
+    if (!contribution) throw new NotFoundException('Contribution introuvable');
+
+    if (contribution.userId === userId) {
+      throw new BadRequestException(
+        'Vous ne pouvez pas signaler votre propre contribution',
+      );
+    }
+
+    // Enregistrement dans content_reports avec tag de traçabilité
+    const reportDesc = description
+      ? `[CONTRIBUTION:${contributionId}] ${reason} — ${description}`
+      : `[CONTRIBUTION:${contributionId}] ${reason}`;
+
+    const report = await this.prisma.contentReport.create({
+      data: {
+        userId,
+        reason: 'OTHER',
+        description: reportDesc,
+      },
+    });
+
+    this.logger.warn(
+      `🚩 [Contributions] Signalement reçu pour contribution ${contributionId} par utilisateur ${userId} (Motif: ${reason})`,
+    );
+
+    return {
+      success: true,
+      message: 'Signalement transmis avec succès aux modérateurs',
+      reportId: report.id,
+    };
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -337,6 +450,78 @@ export class ContributionsService {
         user: { select: { id: true, name: true, email: true, image: true } },
       },
       orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // GET /contributions/admin/stats (Admin)
+  // ───────────────────────────────────────────────────────────────────────────
+  async getAdminStats() {
+    const now = new Date();
+    const startOfWeek = new Date(now);
+    const day = startOfWeek.getDay();
+    const diff = startOfWeek.getDate() - day + (day === 0 ? -6 : 1);
+    startOfWeek.setDate(diff);
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const [
+      pendingCount,
+      publishedCount,
+      archivedCount,
+      publishedThisWeek,
+      reportsCount,
+    ] = await Promise.all([
+      this.prisma.contribution.count({ where: { status: 'DRAFT' } }),
+      this.prisma.contribution.count({ where: { status: 'PUBLISHED' } }),
+      this.prisma.contribution.count({ where: { status: 'ARCHIVED' } }),
+      this.prisma.contribution.count({
+        where: {
+          status: 'PUBLISHED',
+          updatedAt: { gte: startOfWeek },
+        },
+      }),
+      this.prisma.contentReport.count({
+        where: {
+          description: { startsWith: '[CONTRIBUTION:' },
+          resolved: false,
+        },
+      }),
+    ]);
+
+    return {
+      pendingCount,
+      publishedCount,
+      archivedCount,
+      publishedThisWeek,
+      weeklyTarget: 10,
+      reportsCount,
+    };
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // GET /contributions/admin/reports (Admin)
+  // ───────────────────────────────────────────────────────────────────────────
+  async getAdminReports() {
+    return this.prisma.contentReport.findMany({
+      where: {
+        description: { startsWith: '[CONTRIBUTION:' },
+        resolved: false,
+      },
+      include: {
+        user: { select: { id: true, name: true, email: true, image: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+    });
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // PATCH /contributions/admin/reports/:id/resolve (Admin)
+  // ───────────────────────────────────────────────────────────────────────────
+  async resolveReport(reportId: string) {
+    return this.prisma.contentReport.update({
+      where: { id: reportId },
+      data: { resolved: true },
     });
   }
 
@@ -490,16 +675,45 @@ export class ContributionsService {
 
       // +50 XP au contributeur
 
-      await prisma.userProgress.upsert({
+      const updatedProgress = await prisma.userProgress.upsert({
         where: { userId: validated.userId },
         update: { totalXp: { increment: 50 } },
         create: { userId: validated.userId, totalXp: 50 },
       });
 
-      return validated;
+      return { validated, updatedProgress };
     });
 
-    return { success: true, status: 'APPROVED', contribution: updated };
+    // Notification temps réel du classement
+    try {
+      const contributorUser = await this.prisma.user.findUnique({
+        where: { id: updated.validated.userId },
+        select: { name: true, image: true },
+      });
+
+      const payload: LeaderboardRealtimePayload = {
+        userId: updated.validated.userId,
+        totalXp: Number(updated.updatedProgress.totalXp),
+        level: updated.updatedProgress.level || 1,
+        streakDays: updated.updatedProgress.streakDays || 0,
+        name: contributorUser?.name || 'Contributeur',
+        image: contributorUser?.image || null,
+        xpDelta: 50,
+        source: 'contribution_approved',
+        timestamp: Date.now(),
+      };
+      await this.redisService.publish(REALTIME_CHANNELS.LEADERBOARD, payload);
+    } catch (err) {
+      this.logger.warn(
+        `⚠️ Impossible de publier la mise à jour leaderboard pour le contributeur ${updated.validated.userId}: ${err}`,
+      );
+    }
+
+    return {
+      success: true,
+      status: 'APPROVED',
+      contribution: updated.validated,
+    };
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -652,12 +866,47 @@ export class ContributionsService {
       },
     });
 
+    // Notifier l'auteur de la contribution s'il ne s'agit pas de son propre commentaire
+    if (contribution.userId && contribution.userId !== userId) {
+      const commenterName = comment.user?.name || 'Mpikambana iray';
+      try {
+        await this.notificationsService.createNotification({
+          titleMg: 'Hevitra vaovao',
+          titleFr: 'Nouveau commentaire',
+          messageMg: `${commenterName} dia namela hevitra tamin'ny fandraisana anjaranao.`,
+          messageFr: `${commenterName} a commenté votre contribution.`,
+          category: 'community',
+          badgeText: 'Hevitra',
+          badgeType: 'info',
+          iconName: 'chatbubble-ellipses-outline',
+          iconColor: '#2563EB',
+          isBroadcast: false,
+          userId: contribution.userId,
+          targetRoute: '/(tabs)/communaute',
+        });
+      } catch (notifErr) {
+        this.logger.error(
+          'Erreur envoi notification commentaire à l’auteur :',
+          notifErr,
+        );
+      }
+    }
+
+    const formattedComment = {
+      ...comment,
+      isOwner: comment.userId === contribution.userId,
+    };
+
+    // Diffusion temps réel via Redis Pub/Sub
+    void this.redisService.publish(REDIS_CHANNEL_COMMENTS, {
+      action: 'create',
+      contributionId,
+      comment: formattedComment,
+    });
+
     return {
       success: true,
-      comment: {
-        ...comment,
-        isOwner: comment.userId === contribution.userId,
-      },
+      comment: formattedComment,
     };
   }
 
@@ -722,12 +971,21 @@ export class ContributionsService {
       },
     });
 
+    const formattedComment = {
+      ...updated,
+      isOwner: updated.userId === contribution.userId,
+    };
+
+    // Diffusion temps réel via Redis Pub/Sub
+    void this.redisService.publish(REDIS_CHANNEL_COMMENTS, {
+      action: 'update',
+      contributionId,
+      comment: formattedComment,
+    });
+
     return {
       success: true,
-      comment: {
-        ...updated,
-        isOwner: updated.userId === contribution.userId,
-      },
+      comment: formattedComment,
     };
   }
 
@@ -770,6 +1028,13 @@ export class ContributionsService {
 
     await this.prisma.contributionComment.delete({
       where: { id: commentId },
+    });
+
+    // Diffusion temps réel via Redis Pub/Sub
+    void this.redisService.publish(REDIS_CHANNEL_COMMENTS, {
+      action: 'delete',
+      contributionId,
+      commentId,
     });
 
     return { success: true, message: 'Commentaire supprimé avec succès' };

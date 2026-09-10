@@ -68,4 +68,4 @@ async function bootstrap() {
   }
 }
 
-bootstrap();
+void bootstrap();

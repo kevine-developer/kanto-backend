@@ -216,9 +216,6 @@ export class ContesService {
               theme: true,
             },
           },
-          paragraphs: {
-            orderBy: { paragraphNumber: 'asc' },
-          },
         },
       }),
       this.prisma.conte.count({ where }),

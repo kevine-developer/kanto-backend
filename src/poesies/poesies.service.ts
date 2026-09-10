@@ -80,7 +80,9 @@ export class PoesiesService {
       where: { id },
     });
     if (!existing) {
-      throw new NotFoundException(`Poésie avec l'identifiant "${id}" introuvable`);
+      throw new NotFoundException(
+        `Poésie avec l'identifiant "${id}" introuvable`,
+      );
     }
 
     // Si de nouvelles strophes sont envoyées, on remplace
@@ -106,8 +108,10 @@ export class PoesiesService {
         author: data.author !== undefined ? data.author : undefined,
         period: data.period !== undefined ? data.period : undefined,
         category: data.category !== undefined ? data.category : undefined,
-        explanationMg: data.explanationMg !== undefined ? data.explanationMg : undefined,
-        explanationFr: data.explanationFr !== undefined ? data.explanationFr : undefined,
+        explanationMg:
+          data.explanationMg !== undefined ? data.explanationMg : undefined,
+        explanationFr:
+          data.explanationFr !== undefined ? data.explanationFr : undefined,
         isFeatured: data.isFeatured !== undefined ? data.isFeatured : undefined,
         isPremium: data.isPremium !== undefined ? data.isPremium : undefined,
         status: data.status !== undefined ? data.status : undefined,
@@ -129,7 +133,9 @@ export class PoesiesService {
       where: { id },
     });
     if (!existing) {
-      throw new NotFoundException(`Poésie avec l'identifiant "${id}" introuvable`);
+      throw new NotFoundException(
+        `Poésie avec l'identifiant "${id}" introuvable`,
+      );
     }
 
     await this.prisma.poesie.delete({
@@ -143,7 +149,11 @@ export class PoesiesService {
 
   async findAll(query: FindPoesiesQueryDto) {
     const { page = 1, limit = 20, search, category, author } = query;
-    const { skip, limit: takeLimit, page: currentPage } = calculatePagination({ page, limit });
+    const {
+      skip,
+      limit: takeLimit,
+      page: currentPage,
+    } = calculatePagination({ page, limit });
 
     const cacheKey = `${CACHE_KEYS.POESIES_LIST_PREFIX}${currentPage}:${takeLimit}:${search || ''}:${category || ''}:${author || ''}`;
     const cached = await this.redis.get<any>(cacheKey);
@@ -151,7 +161,9 @@ export class PoesiesService {
 
     const where: Prisma.PoesieWhereInput = {
       status: 'PUBLISHED',
-      ...(category ? { category: { equals: category, mode: 'insensitive' } } : {}),
+      ...(category
+        ? { category: { equals: category, mode: 'insensitive' } }
+        : {}),
       ...(author ? { author: { contains: author, mode: 'insensitive' } } : {}),
       ...(search
         ? {
@@ -173,13 +185,19 @@ export class PoesiesService {
         orderBy: [{ isFeatured: 'desc' }, { createdAt: 'desc' }],
         include: {
           stanzas: {
+            take: 1,
             orderBy: { stanzaNumber: 'asc' },
           },
         },
       }),
     ]);
 
-    const result = formatPaginatedResponse(items, total, currentPage, takeLimit);
+    const result = formatPaginatedResponse(
+      items,
+      total,
+      currentPage,
+      takeLimit,
+    );
     await this.redis.set(cacheKey, result, 300); // 5 min TTL
     return result;
   }
@@ -201,7 +219,9 @@ export class PoesiesService {
     });
 
     if (!poesie) {
-      throw new NotFoundException(`Poésie avec l'identifiant "${id}" introuvable`);
+      throw new NotFoundException(
+        `Poésie avec l'identifiant "${id}" introuvable`,
+      );
     }
 
     await this.redis.set(cacheKey, poesie, 600); // 10 min TTL
@@ -290,10 +310,12 @@ export class PoesiesService {
   }
 
   async incrementView(id: string) {
-    await this.prisma.poesie.update({
-      where: { id },
-      data: { viewCount: { increment: 1 } },
-    }).catch(() => null);
+    await this.prisma.poesie
+      .update({
+        where: { id },
+        data: { viewCount: { increment: 1 } },
+      })
+      .catch(() => null);
 
     return { success: true };
   }
@@ -317,7 +339,9 @@ export class PoesiesService {
       }),
     ]);
 
-    this.logger.warn(`⚠️ [Poesies] Signalement pour la poésie ${id} (${data.reason})`);
+    this.logger.warn(
+      `⚠️ [Poesies] Signalement pour la poésie ${id} (${data.reason})`,
+    );
     return { success: true, message: 'Signalement enregistré avec succès' };
   }
 }
