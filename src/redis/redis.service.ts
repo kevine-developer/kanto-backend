@@ -5,13 +5,20 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { Redis } from 'ioredis';
+import { EventEmitter } from 'node:events';
 
 @Injectable()
 export class RedisService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(RedisService.name);
   private client: Redis | null = null;
+  private subClient: Redis | null = null;
   private isReady = false;
   private hasLoggedOfflineWarning = false;
+  private readonly localEmitter = new EventEmitter();
+  private readonly channelSubscribers = new Map<
+    string,
+    Set<(data: any) => void>
+  >();
 
   async onModuleInit() {
     const redisUrl = process.env.REDIS_URL?.trim();
@@ -19,24 +26,27 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     // Si aucune URL n'est spécifiée ou vide, on active le mode dégradé direct
     if (!redisUrl) {
       this.logger.log(
-        'ℹ️ [Redis] Aucune variable REDIS_URL définie. Mode sans cache actif (fallback direct base de données).',
+        'ℹ️ [Redis] Aucune variable REDIS_URL définie. Mode sans cache actif (fallback direct base de données & mémoire).',
       );
       return;
     }
 
     try {
-      this.client = new Redis(redisUrl, {
+      const redisOptions = {
         lazyConnect: true,
         enableOfflineQueue: false, // Ne pas empiler les commandes si déconnecté
         maxRetriesPerRequest: 1,
-        retryStrategy: (times) => {
+        retryStrategy: (times: number) => {
           if (times > 3) {
             // Arrêter d'insister pour éviter le spam de logs
             return null;
           }
           return Math.min(times * 1000, 3000);
         },
-      });
+      };
+
+      this.client = new Redis(redisUrl, redisOptions);
+      this.subClient = this.client.duplicate();
 
       this.client.on('connect', () => {
         this.isReady = true;
@@ -53,7 +63,7 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
         if (!this.hasLoggedOfflineWarning) {
           this.hasLoggedOfflineWarning = true;
           this.logger.warn(
-            `⚠️ [Redis] Serveur Redis inaccessible (${err?.message || 'ECONNREFUSED'}). Bascule transparente sur PostgreSQL.`,
+            `⚠️ [Redis] Serveur Redis inaccessible (${err?.message || 'ECONNREFUSED'}). Bascule transparente sur PostgreSQL & fallback mémoire.`,
           );
         }
       });
@@ -62,13 +72,53 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
         this.isReady = false;
       });
 
+      // Gestionnaire de messages pour le client Subscriber
+      this.subClient.on('message', (channel: string, message: string) => {
+        let parsed: any = message;
+        try {
+          parsed = JSON.parse(message);
+        } catch {
+          // Format brut si non JSON
+        }
+        const subs = this.channelSubscribers.get(channel);
+        if (subs) {
+          subs.forEach((cb) => {
+            try {
+              cb(parsed);
+            } catch (err) {
+              this.logger.error(
+                `Erreur handler pub/sub sur canal "${channel}" :`,
+                err,
+              );
+            }
+          });
+        }
+      });
+
+      this.subClient.on('ready', async () => {
+        const channels = Array.from(this.channelSubscribers.keys());
+        if (channels.length > 0 && this.subClient) {
+          try {
+            await this.subClient.subscribe(...channels);
+            this.logger.log(
+              `📡 [Redis Pub/Sub] Réabonné à ${channels.length} canal/canaux.`,
+            );
+          } catch (err) {
+            this.logger.warn(`⚠️ [Redis Pub/Sub] Échec réabonnement : ${err}`);
+          }
+        }
+      });
+
       // Tentative de connexion initiale sans bloquer le démarrage de NestJS
-      await this.client.connect().catch((err) => {
+      await Promise.allSettled([
+        this.client.connect(),
+        this.subClient.connect(),
+      ]).catch((err) => {
         this.isReady = false;
         if (!this.hasLoggedOfflineWarning) {
           this.hasLoggedOfflineWarning = true;
           this.logger.warn(
-            `⚠️ [Redis] Connexion initiale impossible (${err?.message}). Le serveur démarre en mode fallback PostgreSQL.`,
+            `⚠️ [Redis] Connexion initiale impossible (${err?.message}). Démarrage en mode fallback.`,
           );
         }
       });
@@ -81,6 +131,13 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
   }
 
   async onModuleDestroy() {
+    if (this.subClient) {
+      try {
+        await this.subClient.quit();
+      } catch {
+        this.subClient.disconnect();
+      }
+    }
     if (this.client) {
       try {
         await this.client.quit();
@@ -229,5 +286,69 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     } catch {
       return { allowed: true, remaining: maxRequests };
     }
+  }
+
+  /**
+   * Publie un événement sur un canal Redis Pub/Sub (avec fallback mémoire in-process).
+   */
+  async publish(channel: string, message: any): Promise<void> {
+    const payload =
+      typeof message === 'string' ? message : JSON.stringify(message);
+
+    if (this.isAvailable() && this.client) {
+      try {
+        await this.client.publish(channel, payload);
+        return;
+      } catch (err: any) {
+        this.logger.warn(
+          `⚠️ [Redis Pub/Sub] Erreur publication sur "${channel}" : ${err?.message}`,
+        );
+      }
+    }
+
+    // Fallback mémoire in-process immédiat
+    this.localEmitter.emit(channel, message);
+  }
+
+  /**
+   * S'abonne à un canal Redis Pub/Sub avec fallback mémoire in-process.
+   * Retourne une fonction de désabonnement pour libérer les ressources.
+   */
+  async subscribe(
+    channel: string,
+    callback: (data: any) => void,
+  ): Promise<() => void> {
+    if (!this.channelSubscribers.has(channel)) {
+      this.channelSubscribers.set(channel, new Set());
+    }
+    this.channelSubscribers.get(channel)!.add(callback);
+
+    // Écoute locale pour fallback mémoire
+    this.localEmitter.on(channel, callback);
+
+    // Écoute Redis si le client subscriber est connecté
+    if (this.subClient && this.isReady) {
+      try {
+        await this.subClient.subscribe(channel);
+      } catch (err: any) {
+        this.logger.warn(
+          `⚠️ [Redis Pub/Sub] Échec souscription sur "${channel}" : ${err?.message}`,
+        );
+      }
+    }
+
+    return () => {
+      this.localEmitter.off(channel, callback);
+      const subs = this.channelSubscribers.get(channel);
+      if (subs) {
+        subs.delete(callback);
+        if (subs.size === 0) {
+          this.channelSubscribers.delete(channel);
+          if (this.subClient && this.isReady) {
+            void this.subClient.unsubscribe(channel).catch(() => {});
+          }
+        }
+      }
+    };
   }
 }

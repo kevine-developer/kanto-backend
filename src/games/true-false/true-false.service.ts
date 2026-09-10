@@ -1,6 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import {
+  Prisma,
+  TrueFalseTheme,
+  DifficultyLevel,
+} from '../../../generated/prisma/client.js';
+import {
   CreateQuestionDto,
   FindQuestionsQueryDto,
   UpdateQuestionDto,
@@ -20,12 +25,12 @@ export class TrueFalseService {
     difficulty?: string,
     questionCount: number = 10,
   ) {
-    const where: any = { status: 'PUBLISHED' };
+    const where: Prisma.TrueFalseQuestionWhereInput = { status: 'PUBLISHED' };
     if (theme && theme !== 'ALL') {
-      where.theme = theme;
+      where.theme = theme as TrueFalseTheme;
     }
     if (difficulty && difficulty !== 'ALL') {
-      where.difficulty = difficulty;
+      where.difficulty = difficulty as DifficultyLevel;
     }
 
     // Récupération des IDs disponibles
@@ -60,8 +65,14 @@ export class TrueFalseService {
     const session = await this.prisma.trueFalseSession.create({
       data: {
         userId: userId || null,
-        theme: (theme as any) || 'GEN',
-        difficulty: (difficulty as any) || 'EASY',
+        theme:
+          theme && theme !== 'ALL'
+            ? (theme as TrueFalseTheme)
+            : TrueFalseTheme.GEN,
+        difficulty:
+          difficulty && difficulty !== 'ALL'
+            ? (difficulty as DifficultyLevel)
+            : DifficultyLevel.EASY,
         totalQuestions: questions.length,
       },
     });
@@ -180,9 +191,9 @@ export class TrueFalseService {
     const baseXP = session.score * 10;
     const bonusXP =
       successRate >= 90
-        ? Math.floor(baseXP * 0.5)
+        ? Math.ceil(baseXP * 0.5)
         : successRate >= 80
-          ? Math.floor(baseXP * 0.3)
+          ? Math.ceil(baseXP * 0.3)
           : 0;
     const totalXP = baseXP + bonusXP;
 
@@ -215,12 +226,12 @@ export class TrueFalseService {
     const limit = Math.min(100, Math.max(1, Number(query.limit) || 20));
     const skip = (page - 1) * limit;
 
-    const where: any = {};
+    const where: Prisma.TrueFalseQuestionWhereInput = {};
     if (query.theme && query.theme !== 'ALL') {
-      where.theme = query.theme;
+      where.theme = query.theme as TrueFalseTheme;
     }
     if (query.difficulty && query.difficulty !== 'ALL') {
-      where.difficulty = query.difficulty;
+      where.difficulty = query.difficulty as DifficultyLevel;
     }
     if (query.search && query.search.trim()) {
       const search = query.search.trim();

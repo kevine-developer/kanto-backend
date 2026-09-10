@@ -12,7 +12,26 @@ const DATA_URLS = [
   'https://raw.githubusercontent.com/gastsar/data-kantomg/main/data/game/trueOrFalse/General.data.json',
 ];
 
-const THEME_MAP: Record<string, any> = {
+interface RemoteQuestion {
+  themeId?: string;
+  levelId?: string;
+  questionText: string;
+  questionTextFr?: string;
+  isTrue: boolean;
+  explanation: string;
+  explanationFr?: string;
+  source?: string | null;
+  image?: string | null;
+}
+
+interface RemoteData {
+  questions?: RemoteQuestion[];
+}
+
+const THEME_MAP: Record<
+  string,
+  'CULT' | 'GEO' | 'HIST' | 'LITT' | 'PROV' | 'GEN'
+> = {
   CULT: 'CULT',
   GEO: 'GEO',
   HIST: 'HIST',
@@ -21,7 +40,7 @@ const THEME_MAP: Record<string, any> = {
   GEN: 'GEN',
 };
 
-const DIFFICULTY_MAP: Record<string, any> = {
+const DIFFICULTY_MAP: Record<string, 'EASY' | 'MEDIUM' | 'HARD' | 'EXPERT'> = {
   EASY: 'EASY',
   MEDIUM: 'MEDIUM',
   HARD: 'HARD',
@@ -49,12 +68,12 @@ async function main() {
         console.warn(`Failed to fetch ${url}: ${response.status}`);
         continue;
       }
-      const data = await response.json();
-      const questions: any[] = data.questions || [];
+      const data = (await response.json()) as RemoteData;
+      const questions: RemoteQuestion[] = data.questions || [];
 
       for (const q of questions) {
-        const theme = THEME_MAP[q.themeId] || 'GEN';
-        const difficulty = DIFFICULTY_MAP[q.levelId] || 'EASY';
+        const theme = (q.themeId && THEME_MAP[q.themeId]) || 'GEN';
+        const difficulty = (q.levelId && DIFFICULTY_MAP[q.levelId]) || 'EASY';
 
         await prisma.trueFalseQuestion.create({
           data: {
@@ -80,10 +99,11 @@ async function main() {
   console.log(
     `\nImport complete! Successfully imported ${totalImported} True/False questions.`,
   );
+  await prisma.$disconnect();
   await pool.end();
 }
 
-main().catch((err) => {
+main().catch((err: unknown) => {
   console.error('Seeding error:', err);
   process.exit(1);
 });

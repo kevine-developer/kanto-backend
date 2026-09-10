@@ -9,7 +9,10 @@ import {
   ArrayMaxSize,
   IsEnum,
 } from 'class-validator';
-import { DifficultyLevel, ContentStatus } from '../../../generated/prisma/client.js';
+import {
+  DifficultyLevel,
+  ContentStatus,
+} from '../../../generated/prisma/client.js';
 
 export class UpdateCivicQuizDto {
   @IsString()

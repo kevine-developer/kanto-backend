@@ -10,17 +10,49 @@ import {
 } from '@nestjs/common';
 import { NotificationsService } from './notifications.service.js';
 import { CreateNotificationDto } from './dto/notifications.dto.js';
+import { RegisterPushTokenDto } from './dto/push-token.dto.js';
+import { Session, type UserSession } from '../auth/index.js';
 
 @Controller()
 export class NotificationsController {
   constructor(private readonly notificationsService: NotificationsService) {}
 
   /**
+   * Enregistre le token Expo Push d'un utilisateur.
+   */
+  @Post('notifications/push-token')
+  registerPushToken(
+    @Body() body: RegisterPushTokenDto,
+    @Session() session?: UserSession,
+  ) {
+    const effectiveUserId = session?.user?.id || body.userId;
+    if (!effectiveUserId) {
+      return {
+        success: false,
+        message:
+          'Identifiant utilisateur requis pour enregistrer le token push',
+      };
+    }
+    return this.notificationsService.registerPushToken(
+      effectiveUserId,
+      body.pushToken,
+    );
+  }
+
+  /**
    * Endpoint public mobile : Récupère les notifications groupées par date.
    */
   @Get('notifications')
-  getPublicNotifications(@Query('lang') lang: 'mg' | 'fr' = 'mg') {
-    return this.notificationsService.getPublicNotifications(lang);
+  getPublicNotifications(
+    @Query('lang') lang: 'mg' | 'fr' = 'mg',
+    @Query('userId') queryUserId?: string,
+    @Session() session?: UserSession,
+  ) {
+    const effectiveUserId = session?.user?.id || queryUserId;
+    return this.notificationsService.getPublicNotifications(
+      lang,
+      effectiveUserId,
+    );
   }
 
   /**

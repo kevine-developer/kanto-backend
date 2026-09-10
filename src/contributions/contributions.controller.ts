@@ -19,9 +19,11 @@ import { CreateCitationContributionDto } from './dto/create-citation-contributio
 import { CreateConteContributionDto } from './dto/create-conte-contribution.dto.js';
 import { ValidateContributionDto } from './dto/validate-contribution.dto.js';
 import { VoteContributionDto } from './dto/vote-contribution.dto.js';
+import { ReportContributionDto } from './dto/report-contribution.dto.js';
 import { UpdateContributionDto } from './dto/update-contribution.dto.js';
 import { CreateContributionCommentDto } from './dto/create-contribution-comment.dto.js';
 import { AuthGuard, Roles, Session, type UserSession } from '../auth/index.js';
+import { Throttle } from '@nestjs/throttler';
 
 // Contributions Controller
 @Controller('contributions')
@@ -103,13 +105,18 @@ export class ContributionsController {
   // LECTURE
   // ──────────────────────────────────────────────────────────────────────────
 
-  /** GET /contributions/community?category=KABARY&page=1&limit=20 */
+  /** GET /contributions/community?category=KABARY&limit=50 */
   @Get('community')
   findCommunity(
     @Query('category') category?: string,
+    @Query('limit') limit?: number,
     @Session() session?: UserSession,
   ) {
-    return this.contributionsService.findCommunity(category, session?.user?.id);
+    return this.contributionsService.findCommunity(
+      category,
+      session?.user?.id,
+      limit,
+    );
   }
 
   /** GET /contributions/me — Mes propres contributions */
@@ -127,19 +134,51 @@ export class ContributionsController {
     return this.contributionsService.findPending();
   }
 
+  /** GET /contributions/admin/stats — Admin : statistiques globales et objectif hebdo */
+  @Get('admin/stats')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  getAdminStats() {
+    return this.contributionsService.getAdminStats();
+  }
+
+  /** GET /contributions/admin/reports — Admin : liste des signalements */
+  @Get('admin/reports')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  getAdminReports() {
+    return this.contributionsService.getAdminReports();
+  }
+
+  /** PATCH /contributions/admin/reports/:id/resolve — Admin : résoudre un signalement */
+  @Patch('admin/reports/:id/resolve')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  resolveReport(@Param('id') id: string) {
+    return this.contributionsService.resolveReport(id);
+  }
+
   /** GET /contributions/:id — Détail d'une contribution */
   @Get(':id')
   findOne(@Param('id') id: string, @Session() session?: UserSession) {
     return this.contributionsService.findOne(id, session?.user?.id);
   }
 
+  /** POST /contributions/:id/view — Incrémenter le nombre de vues d'une contribution */
+  @Post(':id/view')
+  @HttpCode(HttpStatus.OK)
+  incrementView(@Param('id') id: string) {
+    return this.contributionsService.incrementView(id);
+  }
+
   // ──────────────────────────────────────────────────────────────────────────
   // ACTIONS UTILISATEUR
   // ──────────────────────────────────────────────────────────────────────────
 
-  /** POST /contributions/:id/vote — Voter pour une contribution (interdit à l'auteur) */
+  /** POST /contributions/:id/vote — Voter pour une contribution (interdit à l'auteur, rate-limited) */
   @Post(':id/vote')
   @UseGuards(AuthGuard)
+  @Throttle({ default: { limit: 30, ttl: 60000 } })
   @HttpCode(HttpStatus.OK)
   vote(
     @Param('id') id: string,
@@ -150,6 +189,24 @@ export class ContributionsController {
       session.user.id,
       id,
       body.value,
+    );
+  }
+
+  /** POST /contributions/:id/report — Signaler une contribution abusive */
+  @Post(':id/report')
+  @UseGuards(AuthGuard)
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
+  @HttpCode(HttpStatus.CREATED)
+  report(
+    @Param('id') id: string,
+    @Body() body: ReportContributionDto,
+    @Session() session: UserSession,
+  ) {
+    return this.contributionsService.reportContribution(
+      session.user.id,
+      id,
+      body.reason,
+      body.description,
     );
   }
 

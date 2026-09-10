@@ -15,6 +15,8 @@ import { RedisModule } from './redis/redis.module.js';
 import { TrueFalseModule } from './games/true-false/true-false.module.js';
 import { WordPuzzleModule } from './games/word-puzzle/word-puzzle.module.js';
 import { MissingWordModule } from './games/missing-word/missing-word.module.js';
+import { DuelModule } from './games/duel/duel.module.js';
+import { MultiplayerModule } from './games/multiplayer/multiplayer.module.js';
 import { LocksModule } from './locks/locks.module.js';
 import { OnboardingModule } from './onboarding/onboarding.module.js';
 import { NotificationsModule } from './notifications/notifications.module.js';
@@ -25,6 +27,8 @@ import { ContributionsModule } from './contributions/contributions.module.js';
 import { PoesiesModule } from './poesies/poesies.module.js';
 import { RecitationModule } from './recitations/recitations.module.js';
 import { CivicModule } from './civic/civic.module.js';
+import { LeaderboardModule } from './leaderboard/leaderboard.module.js';
+import { RealtimeModule } from './realtime/realtime.module.js';
 
 @Module({
   imports: [
@@ -59,6 +63,8 @@ import { CivicModule } from './civic/civic.module.js';
     TrueFalseModule,
     WordPuzzleModule,
     MissingWordModule,
+    DuelModule,
+    MultiplayerModule,
     LocksModule,
     OnboardingModule,
     NotificationsModule,
@@ -68,6 +74,8 @@ import { CivicModule } from './civic/civic.module.js';
     PoesiesModule,
     RecitationModule,
     CivicModule,
+    LeaderboardModule,
+    RealtimeModule,
   ],
   controllers: [AppController],
   providers: [

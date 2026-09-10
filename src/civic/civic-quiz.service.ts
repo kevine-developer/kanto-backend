@@ -2,7 +2,10 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Prisma } from '../../generated/prisma/client.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { RedisService } from '../redis/redis.service.js';
-import { FindCivicQuizQueryDto, RandomQuizQueryDto } from './dto/find-civic-quiz.dto.js';
+import {
+  FindCivicQuizQueryDto,
+  RandomQuizQueryDto,
+} from './dto/find-civic-quiz.dto.js';
 import { CreateCivicQuizDto } from './dto/create-civic-quiz.dto.js';
 import { UpdateCivicQuizDto } from './dto/update-civic-quiz.dto.js';
 import {
@@ -40,7 +43,9 @@ export class CivicQuizService {
     });
 
     await this.invalidateCache(question.id);
-    this.logger.log(`✨ [CivicQuiz] Question de quiz créée (ID: ${question.id})`);
+    this.logger.log(
+      `✨ [CivicQuiz] Question de quiz créée (ID: ${question.id})`,
+    );
     return question;
   }
 
@@ -58,8 +63,10 @@ export class CivicQuizService {
         category: data.category !== undefined ? data.category : undefined,
         prompt: data.prompt !== undefined ? data.prompt : undefined,
         choices: data.choices !== undefined ? data.choices : undefined,
-        answerIndex: data.answerIndex !== undefined ? data.answerIndex : undefined,
-        explanation: data.explanation !== undefined ? data.explanation : undefined,
+        answerIndex:
+          data.answerIndex !== undefined ? data.answerIndex : undefined,
+        explanation:
+          data.explanation !== undefined ? data.explanation : undefined,
         difficulty: data.difficulty !== undefined ? data.difficulty : undefined,
         tags: data.tags !== undefined ? data.tags : undefined,
         status: data.status !== undefined ? data.status : undefined,
@@ -67,7 +74,9 @@ export class CivicQuizService {
     });
 
     await this.invalidateCache(question.id);
-    this.logger.log(`✏️ [CivicQuiz] Question de quiz mise à jour (ID: ${question.id})`);
+    this.logger.log(
+      `✏️ [CivicQuiz] Question de quiz mise à jour (ID: ${question.id})`,
+    );
     return question;
   }
 
@@ -90,7 +99,11 @@ export class CivicQuizService {
 
   async findAll(query: FindCivicQuizQueryDto) {
     const { page = 1, limit = 20, category, difficulty, tag } = query;
-    const { skip, limit: takeLimit, page: currentPage } = calculatePagination({ page, limit });
+    const {
+      skip,
+      limit: takeLimit,
+      page: currentPage,
+    } = calculatePagination({ page, limit });
 
     const cacheKey = `${CACHE_KEYS.CIVIC_QUIZ_LIST_PREFIX}${currentPage}:${takeLimit}:${category || ''}:${difficulty || ''}:${tag || ''}`;
     const cached = await this.redis.get<any>(cacheKey);
@@ -113,7 +126,12 @@ export class CivicQuizService {
       }),
     ]);
 
-    const result = formatPaginatedResponse(items, total, currentPage, takeLimit);
+    const result = formatPaginatedResponse(
+      items,
+      total,
+      currentPage,
+      takeLimit,
+    );
     await this.redis.set(cacheKey, result, 300); // 5 min TTL
     return result;
   }
@@ -159,13 +177,15 @@ export class CivicQuizService {
   }
 
   async recordAnswer(id: string, isCorrect: boolean) {
-    await this.prisma.civicQuizQuestion.update({
-      where: { id },
-      data: {
-        timesPlayed: { increment: 1 },
-        ...(isCorrect ? { timesCorrect: { increment: 1 } } : {}),
-      },
-    }).catch(() => null);
+    await this.prisma.civicQuizQuestion
+      .update({
+        where: { id },
+        data: {
+          timesPlayed: { increment: 1 },
+          ...(isCorrect ? { timesCorrect: { increment: 1 } } : {}),
+        },
+      })
+      .catch(() => null);
 
     return { success: true };
   }

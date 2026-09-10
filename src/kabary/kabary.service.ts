@@ -234,9 +234,6 @@ export class KabaryService {
               theme: true,
             },
           },
-          steps: {
-            orderBy: { stepNumber: 'asc' },
-          },
         },
       }),
       this.prisma.kabary.count({ where }),

@@ -37,7 +37,7 @@ export class UsersService {
       user,
       stats: {
         level: progress?.level || 1,
-        totalXp: progress?.totalXp || 0,
+        totalXp: Math.ceil(Number(progress?.totalXp || 0)),
         likesCount,
         favoritesCount,
         contributionsCount,
