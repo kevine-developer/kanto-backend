@@ -189,4 +189,129 @@ export class CivicQuizService {
 
     return { success: true };
   }
+
+  async startSession(
+    userId: string | undefined,
+    category: string | undefined,
+    difficulty: string | undefined,
+    questionCount: number = 10,
+  ) {
+    const whereClause: any = { status: 'PUBLISHED' };
+    if (category) whereClause.category = category;
+    if (difficulty) whereClause.difficulty = difficulty;
+
+    const availableQuestions = await this.prisma.civicQuizQuestion.findMany({
+      where: whereClause,
+      select: { id: true },
+    });
+
+    // Shuffle and pick
+    const shuffled = availableQuestions.sort(() => 0.5 - Math.random());
+    const selected = shuffled.slice(0, questionCount);
+
+    const session = await this.prisma.civicQuizSession.create({
+      data: {
+        userId,
+        totalQuestions: selected.length,
+      },
+    });
+
+    const fullQuestions = await this.prisma.civicQuizQuestion.findMany({
+      where: { id: { in: selected.map((q) => q.id) } },
+    });
+
+    return {
+      session,
+      questions: fullQuestions,
+    };
+  }
+
+  async answerSessionQuestion(
+    sessionId: string,
+    questionId: string,
+    userAnswerIndex: number | null,
+  ) {
+    const question = await this.prisma.civicQuizQuestion.findUnique({
+      where: { id: questionId },
+    });
+
+    if (!question) throw new NotFoundException('Question not found');
+
+    const isCorrect = userAnswerIndex === question.answerIndex;
+
+    await this.prisma.civicQuizAnswer.create({
+      data: {
+        sessionId,
+        questionId,
+        userAnswer:
+          userAnswerIndex !== null ? userAnswerIndex.toString() : null,
+        isCorrect,
+      },
+    });
+
+    // Update global stats
+    await this.prisma.civicQuizQuestion.update({
+      where: { id: questionId },
+      data: {
+        timesPlayed: { increment: 1 },
+        ...(isCorrect ? { timesCorrect: { increment: 1 } } : {}),
+      },
+    });
+
+    return {
+      isCorrect,
+      correctIndex: question.answerIndex,
+      explanation: question.explanation,
+    };
+  }
+
+  async finishSession(sessionId: string, durationSeconds: number) {
+    const answers = await this.prisma.civicQuizAnswer.findMany({
+      where: { sessionId },
+    });
+
+    const score = answers.filter((a) => a.isCorrect).length;
+    let currentStreak = 0;
+    let maxStreak = 0;
+
+    for (const a of answers) {
+      if (a.isCorrect) {
+        currentStreak++;
+        maxStreak = Math.max(maxStreak, currentStreak);
+      } else {
+        currentStreak = 0;
+      }
+    }
+
+    const xpEarned = score * 10;
+
+    const session = await this.prisma.civicQuizSession.update({
+      where: { id: sessionId },
+      data: {
+        score,
+        streakMax: maxStreak,
+        durationSeconds,
+        isCompleted: true,
+        xpEarned,
+      },
+    });
+
+    if (session.userId && xpEarned > 0) {
+      await this.prisma.userProgress.upsert({
+        where: { userId: session.userId },
+        update: { totalXp: { increment: xpEarned } },
+        create: { userId: session.userId, totalXp: xpEarned },
+      });
+      await this.prisma.xpTransaction.create({
+        data: {
+          userId: session.userId,
+          amount: xpEarned,
+          source: 'GAME_CIVIC_QUIZ',
+          description: `Gained ${xpEarned} XP from Civic Quiz session`,
+        },
+      });
+    }
+
+    return session;
+  }
 }

@@ -9,32 +9,86 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import {
+  IsBoolean,
+  IsIn,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { LocksService } from './locks.service.js';
 import { AuthGuard, Roles } from '../auth/index.js';
 
 export class CreateModuleDto {
+  @IsString()
+  @IsNotEmpty()
   key: string;
+
+  @IsIn(['GAME', 'CATEGORY', 'FEATURE'])
   type: 'GAME' | 'CATEGORY' | 'FEATURE';
+
+  @IsString()
+  @IsNotEmpty()
   nameFr: string;
+
+  @IsString()
+  @IsNotEmpty()
   nameMg: string;
+
+  @IsString()
+  @IsOptional()
   imageUrl?: string;
+
+  @IsBoolean()
+  @IsOptional()
   isLocked?: boolean;
+
+  @IsString()
+  @IsOptional()
   lockReason?: string;
+
+  @IsString()
+  @IsOptional()
   minTier?: string;
 }
 
 export class UpdateLockDto {
+  @IsString()
+  @IsOptional()
   nameFr?: string;
+
+  @IsString()
+  @IsOptional()
   nameMg?: string;
+
+  @IsIn(['GAME', 'CATEGORY', 'FEATURE'])
+  @IsOptional()
   type?: 'GAME' | 'CATEGORY' | 'FEATURE';
+
+  @IsString()
+  @IsOptional()
   imageUrl?: string;
+
+  @IsBoolean()
+  @IsOptional()
   isLocked?: boolean;
+
+  @IsString()
+  @IsOptional()
   lockReason?: string;
+
+  @IsString()
+  @IsOptional()
   minTier?: string;
 }
 
 export class UploadImageDto {
+  @IsString()
+  @IsNotEmpty()
   imageBase64: string;
+
+  @IsString()
+  @IsOptional()
   fileName?: string;
 }
 

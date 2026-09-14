@@ -4,17 +4,23 @@ on:
   push:
     branches:
       - main
-      - master
+      - dev
       - develop
+      - master
   pull_request:
     branches:
       - main
-      - master
+      - dev
       - develop
+      - master
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
+permissions:
+  contents: write
 
 jobs:
   build-and-test:
@@ -52,3 +58,27 @@ jobs:
           DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/kanto_test?schema=public'
           BETTER_AUTH_SECRET: 'ci_test_secret_32_characters_long_min_value'
           BETTER_AUTH_URL: 'http://localhost:3000'
+
+  auto-merge-to-main:
+    name: Auto-merge to main
+    needs: build-and-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository with full history
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge dev into main and push
+        run: |
+          git fetch origin main:main
+          git checkout main
+          git merge --no-ff dev -m "ci: auto-merge 'dev' into 'main' [skip ci]"
+          git push origin main

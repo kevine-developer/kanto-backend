@@ -57,7 +57,9 @@ If detection is ambiguous, set `framework` in `prisma.compute.ts` or pass a supp
 Config snippets below assume:
 
 ```typescript
+
 import { defineComputeConfig } from "@prisma/compute-sdk/config";
+
 ```
 
 ## Universal Runtime Requirements
@@ -77,7 +79,9 @@ Check host and port together. A listener on the right port but bound to loopback
 Deploy shape:
 
 ```bash
+
 bunx @prisma/cli@latest app deploy --framework nextjs --env .env
+
 ```
 
 `next.config.ts` must include standalone output:
@@ -292,8 +296,10 @@ Requirements:
 Elysia example:
 
 ```typescript
+
 const port = Number(process.env.PORT ?? "8080")
 app.listen({ port, hostname: "0.0.0.0" })
+
 ```
 
 ## Custom Build Artifacts
@@ -301,6 +307,7 @@ app.listen({ port, hostname: "0.0.0.0" })
 Use `framework: "custom"` when the app is already built, or when a custom command produces a runnable Node artifact that Compute should stage as-is:
 
 ```typescript
+
 export default defineComputeConfig({
   app: {
     framework: "custom",
@@ -313,6 +320,7 @@ export default defineComputeConfig({
     env: ".env",
   },
 });
+
 ```
 
 Requirements:

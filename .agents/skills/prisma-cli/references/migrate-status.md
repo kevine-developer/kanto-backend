@@ -35,11 +35,13 @@ prisma migrate status
 ```
 
 Output example (Up to date):
+
 ```
 Database schema is up to date!
 ```
 
 Output example (Pending):
+
 ```
 Following migration have not yet been applied:
   20240115120000_add_user

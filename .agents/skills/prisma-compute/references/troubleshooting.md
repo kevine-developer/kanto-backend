@@ -89,7 +89,9 @@ export default defineComputeConfig({
 `--yes` skips prompts and does not opt into deploy. Pass `--deploy` explicitly:
 
 ```bash
+
 bunx create-prisma@latest --name my-api --template hono --provider postgresql --deploy
+
 ```
 
 If the integrated deploy cannot complete, scaffold succeeds but deploy should be reported as failed.
@@ -99,7 +101,9 @@ If the integrated deploy cannot complete, scaffold succeeds but deploy should be
 With PostgreSQL, no `--database-url`, and no `--no-prisma-postgres`, setup can provision Prisma Postgres. For local smoke tests, pass:
 
 ```bash
+
 --no-prisma-postgres --database-url "postgresql://USER:PASSWORD@HOST:PORT/DB"
+
 ```
 
 Use a disposable real database URL if Prisma commands need to run.
@@ -118,17 +122,21 @@ Symptoms:
 Fix:
 
 ```bash
+
 bunx @prisma/cli@latest auth login
 bunx @prisma/cli@latest auth whoami
 bunx @prisma/cli@latest auth workspace list --json
+
 ```
 
 If multiple local OAuth workspaces exist, switch explicitly. Prefer ids from JSON:
 
 ```bash
+
 bunx @prisma/cli@latest auth workspace use <workspace-id>
 bunx @prisma/cli@latest auth whoami --json
 bunx @prisma/cli@latest project list --json
+
 ```
 
 For a human terminal, `auth workspace use` with no argument opens an interactive picker or selects the only local OAuth workspace without prompting. In non-interactive or `--json` mode, use `auth workspace use <id-or-name>` instead.
@@ -138,9 +146,11 @@ If the active workspace was logged out or its token refresh failed, the CLI inte
 To remove only one local OAuth workspace session:
 
 ```bash
+
 bunx @prisma/cli@latest auth workspace logout <workspace-id-or-name>
 # or:
 bunx @prisma/cli@latest auth logout --workspace <workspace-id-or-name>
+
 ```
 
 Use plain `auth logout` only when you want to clear all local OAuth workspace sessions.
@@ -148,9 +158,11 @@ Use plain `auth logout` only when you want to clear all local OAuth workspace se
 For CI, `@prisma/cli` can authenticate with `PRISMA_SERVICE_TOKEN`:
 
 ```bash
+
 test -n "${PRISMA_SERVICE_TOKEN:-}" && echo "PRISMA_SERVICE_TOKEN is set"
 bunx @prisma/cli@latest auth whoami
 bunx @prisma/cli@latest app deploy --json --no-interactive --prod --yes --env .env
+
 ```
 
 If `PRISMA_SERVICE_TOKEN` is set and non-empty, it is the active auth source and local OAuth workspace switching is unavailable for command execution. Unset `PRISMA_SERVICE_TOKEN` before using `auth workspace use` to change local OAuth workspace context.
@@ -178,8 +190,10 @@ Symptoms:
 Fix:
 
 ```bash
+
 bunx @prisma/cli@latest app deploy --project <id-or-name> --json --no-interactive
 bunx @prisma/cli@latest app deploy --create-project <name> --yes
+
 ```
 
 Do not rely on `--yes` alone to choose Project scope. `--project`, `--create-project`, and `PRISMA_PROJECT_ID` are mutually exclusive.
@@ -202,8 +216,10 @@ Fix:
 If Prisma Client generation or runtime env loading is the concrete failure, then inspect Prisma-specific config:
 
 ```bash
+
 test -f prisma.config.ts && sed -n '1,160p' prisma.config.ts
 test -f prisma/schema.prisma && sed -n '1,220p' prisma/schema.prisma
+
 ```
 
 Never deploy `postgresql://USER:PASSWORD@HOST:PORT/DATABASE` placeholder values.
@@ -220,12 +236,14 @@ Symptoms:
 Check:
 
 ```bash
+
 bunx @prisma/cli@latest project show --json
 bunx @prisma/cli@latest project env list --role production --json
 bunx @prisma/cli@latest project env list --role preview --json
 bunx @prisma/cli@latest project env list --branch feature/foo --json
 bunx @prisma/cli@latest app list-deploys --json
 bunx @prisma/cli@latest app logs --deployment <deployment-id> --json
+
 ```
 
 Fix:
@@ -263,17 +281,21 @@ For agent/CI handling, run the relevant database command with `--json` and branc
 Error shape:
 
 ```text
+
 Next.js build did not produce standalone output
+
 ```
 
 Fix `next.config.ts`:
 
 ```typescript
+
 const nextConfig = {
   output: "standalone",
 }
 
 export default nextConfig
+
 ```
 
 Then reinstall/build if needed and deploy again.
@@ -296,7 +318,9 @@ Fix:
 Nuxt or TanStack Start error shape:
 
 ```text
+
 .output/server/index.mjs
+
 ```
 
 General fix:
@@ -321,22 +345,28 @@ Compute detection selects TanStack Start when it sees `@tanstack/react-start` or
 Error shape:
 
 ```text
+
 Entrypoint is required
 Entrypoint file does not exist
+
 ```
 
 Fix either:
 
 ```json
+
 {
   "main": "src/index.ts"
 }
+
 ```
 
 or deploy with:
 
 ```bash
+
 bunx @prisma/cli@latest app deploy --framework bun --entry src/index.ts
+
 ```
 
 ## Port Mismatch
@@ -366,9 +396,11 @@ Symptoms:
 Check:
 
 ```bash
+
 curl -i https://<deployment-url>
 curl -i https://<deployment-url>/health
 bunx @prisma/cli@latest app logs --json
+
 ```
 
 Fix by following the first concrete failure:
@@ -403,10 +435,12 @@ Generated `compute:deploy` scripts redeploy using the generated flags and/or `pr
 After env changes:
 
 ```bash
+
 bunx @prisma/cli@latest project env list
 bunx @prisma/cli@latest project env list --branch feature/foo
 bunx @prisma/cli@latest app deploy --prod --yes --env .env
 bunx @prisma/cli@latest app deploy --branch feature/foo --env .env.preview
+
 ```
 
 If using branch-specific env, confirm the branch name and role.
@@ -416,27 +450,35 @@ If using branch-specific env, confirm the branch name and role.
 Runtime logs for the current app:
 
 ```bash
+
 bunx @prisma/cli@latest app logs
+
 ```
 
 Specific deployment:
 
 ```bash
+
 bunx @prisma/cli@latest app logs --deployment <deployment-id>
+
 ```
 
 Machine-readable:
 
 ```bash
+
 bunx @prisma/cli@latest app logs --json
+
 ```
 
 Build logs for GitHub/Console builds:
 
 ```bash
+
 bunx @prisma/cli@latest build logs <build-id>
 bunx @prisma/cli@latest build logs <build-id> --follow
 bunx @prisma/cli@latest build logs <build-id> --json
+
 ```
 
 Use `build logs` for build output keyed by a Build id from a GitHub check run, Console build page, or Management API build record. Use `app logs` for runtime logs keyed by the current app deployment or a deployment id.
@@ -448,7 +490,9 @@ Summarize relevant errors. Do not paste secrets.
 When a CLI failure survives the checks above, or a command crashes with `UNEXPECTED_ERROR`, report it to the Prisma team:
 
 ```bash
+
 bunx @prisma/cli@latest feedback "app deploy crashed: <first error line>"
+
 ```
 
 Prefer the pre-filled command from a `--json` crash envelope's `nextActions` verbatim. Anonymous; never put secrets, connection URLs, or tokens in the message.

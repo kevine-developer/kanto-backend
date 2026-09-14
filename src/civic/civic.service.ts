@@ -226,13 +226,137 @@ export class CivicService {
   }
 
   async incrementView(id: string) {
-    await this.prisma.civicContent
-      .update({
-        where: { id },
-        data: { viewCount: { increment: 1 } },
-      })
-      .catch(() => null);
+    const existing = await this.prisma.civicContent.findFirst({
+      where: {
+        OR: [{ id }, { slug: id }],
+      },
+      select: { id: true, viewCount: true, likesCount: true },
+    });
 
-    return { success: true };
+    if (existing) {
+      const updated = await this.prisma.civicContent
+        .update({
+          where: { id: existing.id },
+          data: { viewCount: { increment: 1 } },
+          select: { viewCount: true, likesCount: true },
+        })
+        .catch(() => existing);
+
+      return {
+        success: true,
+        viewCount: updated.viewCount,
+        likesCount: updated.likesCount,
+      };
+    }
+
+    return { success: true, viewCount: 1, likesCount: 0 };
+  }
+
+  async like(id: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
+    const existing = await this.prisma.civicContent.findFirst({
+      where: {
+        OR: [{ id }, { slug: id }],
+      },
+      select: { id: true, likesCount: true },
+    });
+
+    if (!existing) {
+      this.logger.warn(
+        `⚠️ [Civic] Impossible de liker : contenu civique "${id}" non trouvé`,
+      );
+      throw new NotFoundException(`Contenu civique "${id}" non trouvé`);
+    }
+
+    const existingLike = await this.prisma.like.findUnique({
+      where: {
+        userId_civicContentId: {
+          userId,
+          civicContentId: existing.id,
+        },
+      },
+    });
+
+    if (existingLike) {
+      return { liked: true, likesCount: existing.likesCount };
+    }
+
+    const [, updated] = await this.prisma.$transaction([
+      this.prisma.like.create({
+        data: {
+          userId,
+          civicContentId: existing.id,
+        },
+      }),
+      this.prisma.civicContent.update({
+        where: { id: existing.id },
+        data: {
+          likesCount: { increment: 1 },
+        },
+        select: { id: true, likesCount: true },
+      }),
+    ]);
+
+    await this.invalidateCache(existing.id);
+
+    this.logger.log(
+      `❤️ [Civic] Like ajouté sur ID ${existing.id} par ${userId} (total: ${updated.likesCount})`,
+    );
+    return { liked: true, likesCount: updated.likesCount };
+  }
+
+  async unlike(id: string, userId: string) {
+    if (!userId) {
+      throw new NotFoundException(`Utilisateur non authentifié`);
+    }
+
+    const existing = await this.prisma.civicContent.findFirst({
+      where: {
+        OR: [{ id }, { slug: id }],
+      },
+      select: { id: true, likesCount: true },
+    });
+
+    if (!existing) {
+      this.logger.warn(
+        `⚠️ [Civic] Impossible de retirer le like : contenu civique "${id}" non trouvé`,
+      );
+      throw new NotFoundException(`Contenu civique "${id}" non trouvé`);
+    }
+
+    const existingLike = await this.prisma.like.findUnique({
+      where: {
+        userId_civicContentId: {
+          userId,
+          civicContentId: existing.id,
+        },
+      },
+    });
+
+    if (!existingLike) {
+      return { liked: false, likesCount: existing.likesCount };
+    }
+
+    const newCount = Math.max(0, existing.likesCount - 1);
+    const [, updated] = await this.prisma.$transaction([
+      this.prisma.like.delete({
+        where: { id: existingLike.id },
+      }),
+      this.prisma.civicContent.update({
+        where: { id: existing.id },
+        data: { likesCount: newCount },
+        select: { id: true, likesCount: true },
+      }),
+    ]);
+
+    await this.invalidateCache(existing.id);
+
+    this.logger.log(
+      `💔 [Civic] Unlike sur ID ${existing.id} par ${userId} (total: ${updated.likesCount})`,
+    );
+    return { liked: false, likesCount: updated.likesCount };
   }
 }

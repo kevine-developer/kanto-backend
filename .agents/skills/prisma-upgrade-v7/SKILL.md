@@ -44,6 +44,7 @@ Reference this skill when:
 ## Using MongoDB? This guide does not apply
 
 Prisma 7 has no MongoDB connector. Do not apply any step in this guide to a project with
+
 `provider = "mongodb"` — see the `prisma-mongodb-upgrade` skill for the actual decision
 (stay on v6 deliberately vs migrate to Prisma Next).
 
@@ -70,6 +71,7 @@ Prisma 7 has no MongoDB connector. Do not apply any step in this guide to a proj
 ## Quick Upgrade Commands
 
 ```bash
+
 # Update packages
 npm install @prisma/client@7
 npm install -D prisma@7
@@ -82,6 +84,7 @@ npm install dotenv
 
 # Regenerate client
 npx prisma generate
+
 ```
 
 ## Breaking Changes Summary
@@ -104,6 +107,7 @@ npx prisma generate
 Detailed migration guides for each breaking change:
 
 ```
+
 references/esm-support.md        - ESM and CommonJS configuration
 references/schema-changes.md     - Generator, output, imports, and generated entrypoints
 references/driver-adapters.md    - Required driver adapter setup
@@ -111,6 +115,7 @@ references/prisma-config.md      - New configuration file
 references/env-variables.md      - Environment variable loading
 references/removed-features.md   - Middleware, metrics, and CLI flags
 references/accelerate-users.md   - Special handling for Accelerate
+
 ```
 
 ## Step-by-Step Migration
@@ -118,9 +123,11 @@ references/accelerate-users.md   - Special handling for Accelerate
 ### 1. Update package.json for ESM-first projects
 
 ```json
+
 {
   "type": "module"
 }
+
 ```
 
 If you need to stay on CommonJS, keep your app as CJS and set `moduleFormat = "cjs"` in the generator block instead of forcing ESM.
@@ -128,6 +135,7 @@ If you need to stay on CommonJS, keep your app as CJS and set `moduleFormat = "c
 ### 2. Update tsconfig.json
 
 ```json
+
 {
   "compilerOptions": {
     "module": "ESNext",
@@ -137,11 +145,13 @@ If you need to stay on CommonJS, keep your app as CJS and set `moduleFormat = "c
     "esModuleInterop": true
   }
 }
+
 ```
 
 ### 3. Update schema.prisma
 
 ```prisma
+
 // Before (v6)
 generator client {
   provider = "prisma-client-js"
@@ -154,11 +164,13 @@ generator client {
   // Optional if you need CommonJS:
   // moduleFormat = "cjs"
 }
+
 ```
 
 ### 4. Create prisma.config.ts
 
 ```typescript
+
 import 'dotenv/config'
 import { defineConfig, env } from 'prisma/config'
 
@@ -171,11 +183,13 @@ export default defineConfig({
     url: env('DATABASE_URL'),
   },
 })
+
 ```
 
 ### 5. Install a driver adapter (SQL providers only)
 
 ```bash
+
 # PostgreSQL
 npm install @prisma/adapter-pg pg
 
@@ -193,6 +207,7 @@ npm install @prisma/adapter-ppg @prisma/ppg
 
 # Neon
 npm install @prisma/adapter-neon
+
 ```
 
 MongoDB does not have a SQL `@prisma/adapter-*` package in the published Prisma 7.6.0 packages. If you're upgrading a MongoDB project, stop and keep that project on the latest Prisma 6.x release instead of following the standard Prisma 7 migration path.
@@ -200,6 +215,7 @@ MongoDB does not have a SQL `@prisma/adapter-*` package in the published Prisma 
 ### 6. Update client instantiation
 
 ```typescript
+
 // Before (v6)
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
@@ -213,11 +229,13 @@ const adapter = new PrismaPg({
 })
 
 const prisma = new PrismaClient({ adapter })
+
 ```
 
 ### 7. Replace Prisma.validator with satisfies
 
 ```typescript
+
 import { Prisma } from '../generated/prisma/client'
 
 const userSelect = {
@@ -225,13 +243,16 @@ const userSelect = {
   email: true,
   name: true,
 } satisfies Prisma.UserSelect
+
 ```
 
 ### 8. Run migrations and generate
 
 ```bash
+
 npx prisma generate
 npx prisma migrate dev  # if needed
+
 ```
 
 ## Troubleshooting

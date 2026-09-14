@@ -63,11 +63,13 @@ postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=SCHEMA
 Use a driver adapter for the standard SQL workflow.
 
 1. Install adapter and driver:
+
    ```bash
    npm install @prisma/adapter-pg pg
    ```
 
 2. Instantiate Prisma Client with the adapter:
+
    ```typescript
    import 'dotenv/config'
    import { PrismaClient } from '../generated/client'

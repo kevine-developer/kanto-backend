@@ -59,11 +59,13 @@ sqlserver://HOST:PORT;database=DB;user=USER;password=PASS;encrypt=true;trustServ
 Use a driver adapter for the standard SQL workflow.
 
 1. Install adapter and driver:
+
    ```bash
    npm install @prisma/adapter-mssql mssql
    ```
 
 2. Instantiate Prisma Client with the adapter:
+
    ```typescript
    import 'dotenv/config'
    import { PrismaClient } from '../generated/client'

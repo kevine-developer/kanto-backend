@@ -70,17 +70,20 @@ CMD npx prisma migrate deploy && node dist/index.js
 ## Production Workflow
 
 1. **Development**: Create migrations locally
+
    ```bash
    prisma migrate dev --name add_feature
    ```
 
 2. **Commit**: Include migration files in version control
+
    ```bash
    git add prisma/migrations
    git commit -m "Add feature migration"
    ```
 
 3. **Deploy**: Apply in production
+
    ```bash
    prisma migrate deploy
    ```

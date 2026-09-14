@@ -36,6 +36,14 @@ export const auth = betterAuth({
   ],
   emailAndPassword: {
     enabled: true,
+    resetPasswordTokenExpiresIn: 3600, // 1 heure
+    sendResetPassword: async ({ user, url, token }, request) => {
+      console.log(
+        `[Better-Auth] 🔑 Réinitialisation de mot de passe pour : ${user.email}`,
+      );
+      console.log(`[Better-Auth] 🔗 URL de réinitialisation : ${url}`);
+      console.log(`[Better-Auth] 🎟️ Code / Token : ${token}`);
+    },
   },
   plugins: [
     expo(),
@@ -53,6 +61,9 @@ export const auth = betterAuth({
         defaultValue: 'FREE',
         input: false,
       },
+    },
+    changeEmail: {
+      enabled: true,
     },
   },
   session: {

@@ -13,16 +13,20 @@ CRITICAL
 ## Commands
 
 ```bash
+
 npx create-db@latest
 npx create-db@latest create [options]
 npx create-db@latest regions
+
 ```
 
 Aliases:
 
 ```bash
+
 npx create-pg@latest
 npx create-postgres@latest
+
 ```
 
 ## Command discovery (`--help`)
@@ -30,9 +34,11 @@ npx create-postgres@latest
 Always use `--help` first when integrating CLI commands:
 
 ```bash
+
 npx create-db@latest --help
 npx create-db@latest create --help
 npx create-db@latest regions --help
+
 ```
 
 Top-level commands currently exposed:
@@ -66,14 +72,17 @@ You can also use `create-db` programmatically in Node.js/Bun instead of shelling
 Install:
 
 ```bash
+
 npm install create-db
 # or
 bun add create-db
+
 ```
 
 Create a database:
 
 ```ts
+
 import { create, isDatabaseSuccess, isDatabaseError } from "create-db";
 
 const result = await create({
@@ -90,15 +99,18 @@ if (isDatabaseSuccess(result)) {
 if (isDatabaseError(result)) {
   console.error(result.error, result.message);
 }
+
 ```
 
 List regions programmatically:
 
 ```ts
+
 import { regions } from "create-db";
 
 const available = await regions();
 console.log(available);
+
 ```
 
 Programmatic `create()` defaults to `us-east-1` if no region is passed.
@@ -106,6 +118,7 @@ Programmatic `create()` defaults to `us-east-1` if no region is passed.
 ## Common patterns
 
 ```bash
+
 # quick database
 npx create-db@latest
 
@@ -129,6 +142,7 @@ npx create-db@latest --quiet
 
 # CI-friendly output
 npx create-db@latest --json
+
 ```
 
 ## References

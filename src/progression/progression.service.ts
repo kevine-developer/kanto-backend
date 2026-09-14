@@ -6,6 +6,8 @@ import {
   LeaderboardRealtimePayload,
 } from '../realtime/realtime.constants.js';
 import { SyncProgressionDto } from './dto/sync-progression.dto.js';
+import { ReplaceProgressionDto } from './dto/replace-progression.dto.js';
+import { BadgesService } from '../badges/badges.service.js';
 
 /** Bonus XP par palier de streak (jours consécutifs), plafonné à 7 (max 35 XP/jour) */
 const STREAK_XP_BONUS = [0, 5, 10, 15, 20, 25, 30, 35];
@@ -17,6 +19,7 @@ export class ProgressionService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly redisService: RedisService,
+    private readonly badgesService: BadgesService,
   ) {}
 
   /**
@@ -196,6 +199,14 @@ export class ProgressionService {
       );
     }
 
+    // Évalue automatiquement les badges suite à l'activité de streak / XP
+    void this.badgesService.checkAndUnlockBadges(userId).catch((err) => {
+      this.logger.warn(
+        `Échec de la vérification des badges après dailyLogin pour ${userId}:`,
+        err,
+      );
+    });
+
     return result;
   }
 
@@ -305,6 +316,14 @@ export class ProgressionService {
       );
     }
 
+    // Évalue automatiquement les badges suite à la synchronisation d'XP et de progression
+    void this.badgesService.checkAndUnlockBadges(userId).catch((err) => {
+      this.logger.warn(
+        `Échec de la vérification des badges après sync pour ${userId}:`,
+        err,
+      );
+    });
+
     return { progress: result.progress, games: result.games };
   }
 
@@ -401,6 +420,90 @@ export class ProgressionService {
     );
 
     return updated;
+  }
+
+  /**
+   * Remplace intégralement la progression d'un utilisateur.
+   * Utilisé lorsque l'utilisateur choisit de garder sa progression locale
+   * (écrasant la progression serveur existante).
+   */
+  async replaceProgression(userId: string, dto: ReplaceProgressionDto) {
+    this.logger.log(
+      `Remplacement complet de la progression pour l'utilisateur ${userId}`,
+    );
+
+    const result = await this.prisma.$transaction(async (tx) => {
+      // 1. Upsert UserProgress avec les valeurs exactes du client
+      const progress = await tx.userProgress.upsert({
+        where: { userId },
+        update: {
+          totalXp: Math.ceil(Math.max(0, dto.totalXp)),
+          level: Math.max(1, dto.level),
+          coins: Math.max(0, dto.coins),
+          streakDays: Math.max(0, dto.streakDays),
+        },
+        create: {
+          userId,
+          totalXp: Math.ceil(Math.max(0, dto.totalXp)),
+          level: Math.max(1, dto.level),
+          coins: Math.max(0, dto.coins),
+          streakDays: Math.max(0, dto.streakDays),
+        },
+      });
+
+      // 2. Remplacer les GameProgression si fournies
+      if (dto.games && dto.games.length > 0) {
+        // Supprimer les anciennes progressions de jeux
+        await tx.gameProgression.deleteMany({ where: { userId } });
+
+        // Recréer avec les données locales
+        for (const game of dto.games) {
+          await tx.gameProgression.create({
+            data: {
+              userId,
+              gameType: game.gameType,
+              unlockedLevelIndex: game.unlockedLevelIndex,
+              levelStars: game.levelStars,
+            },
+          });
+        }
+      }
+
+      // 3. Enregistrer les transactions XP si fournies (historique)
+      if (dto.xpTransactions && dto.xpTransactions.length > 0) {
+        for (const xpTx of dto.xpTransactions) {
+          const safeAmount = Math.ceil(Number(xpTx.amount));
+          if (safeAmount <= 0) continue;
+
+          await tx.xpTransaction.create({
+            data: {
+              userId,
+              amount: safeAmount,
+              source: xpTx.source,
+              description: xpTx.description,
+            },
+          });
+        }
+      }
+
+      const updatedGames = await tx.gameProgression.findMany({
+        where: { userId },
+      });
+
+      return { progress, games: updatedGames };
+    });
+
+    // Publier la mise à jour du leaderboard
+    await this.publishLeaderboardUpdate(
+      userId,
+      Number(result.progress.totalXp),
+      result.progress.level,
+      0,
+      result.progress.streakDays,
+      'progression_replace',
+    );
+
+    return { progress: result.progress, games: result.games };
   }
 
   // ─────────────────────────────────────────────

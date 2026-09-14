@@ -1,10 +1,16 @@
 import 'dotenv/config';
-import { PrismaClient, DifficultyLevel, CivicSubCategory } from '../generated/prisma/client.js';
+import {
+  PrismaClient,
+  DifficultyLevel,
+  CivicSubCategory,
+} from '../generated/prisma/client.js';
 import { PrismaPg } from '@prisma/adapter-pg';
 import pg from 'pg';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { RIDDLES_DATA } from './seed-data/riddles.data.js';
+import { VINTANA_SIGNS } from './seed-data/vintana.data.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,16 +34,76 @@ function slugify(text: string): string {
 }
 
 const DEFAULT_THEMES = [
-  { nameMg: 'Fahendrena', nameFr: 'Sagesse', slug: 'sagesse', icon: 'bulb-outline', color: '#E0533C' },
-  { nameMg: 'Fihavanana', nameFr: 'Solidarité', slug: 'solidarite', icon: 'people-outline', color: '#2E7D32' },
-  { nameMg: 'Fitiavana', nameFr: 'Amour', slug: 'amour', icon: 'heart-outline', color: '#D81B60' },
-  { nameMg: 'Fianakaviana', nameFr: 'Famille', slug: 'famille', icon: 'home-outline', color: '#1565C0' },
-  { nameMg: 'Asa sy Faharisihana', nameFr: 'Travail & Effort', slug: 'travail', icon: 'hammer-outline', color: '#EF6C00' },
-  { nameMg: 'Fanabeazana', nameFr: 'Éducation', slug: 'education', icon: 'book-outline', color: '#6A1B9A' },
-  { nameMg: 'Faharetana', nameFr: 'Persévérance', slug: 'perseverance', icon: 'shield-checkmark-outline', color: '#00838F' },
-  { nameMg: 'Fitondran-tena', nameFr: 'Morale & Vertu', slug: 'morale', icon: 'leaf-outline', color: '#558B2F' },
-  { nameMg: 'Kolontsaina', nameFr: 'Culture & Tradition', slug: 'culture', icon: 'color-palette-outline', color: '#AD1457' },
-  { nameMg: 'Fahamarinana', nameFr: 'Justice & Vérité', slug: 'justice', icon: 'scale-outline', color: '#4527A0' },
+  {
+    nameMg: 'Fahendrena',
+    nameFr: 'Sagesse',
+    slug: 'sagesse',
+    icon: 'bulb-outline',
+    color: '#E0533C',
+  },
+  {
+    nameMg: 'Fihavanana',
+    nameFr: 'Solidarité',
+    slug: 'solidarite',
+    icon: 'people-outline',
+    color: '#2E7D32',
+  },
+  {
+    nameMg: 'Fitiavana',
+    nameFr: 'Amour',
+    slug: 'amour',
+    icon: 'heart-outline',
+    color: '#D81B60',
+  },
+  {
+    nameMg: 'Fianakaviana',
+    nameFr: 'Famille',
+    slug: 'famille',
+    icon: 'home-outline',
+    color: '#1565C0',
+  },
+  {
+    nameMg: 'Asa sy Faharisihana',
+    nameFr: 'Travail & Effort',
+    slug: 'travail',
+    icon: 'hammer-outline',
+    color: '#EF6C00',
+  },
+  {
+    nameMg: 'Fanabeazana',
+    nameFr: 'Éducation',
+    slug: 'education',
+    icon: 'book-outline',
+    color: '#6A1B9A',
+  },
+  {
+    nameMg: 'Faharetana',
+    nameFr: 'Persévérance',
+    slug: 'perseverance',
+    icon: 'shield-checkmark-outline',
+    color: '#00838F',
+  },
+  {
+    nameMg: 'Fitondran-tena',
+    nameFr: 'Morale & Vertu',
+    slug: 'morale',
+    icon: 'leaf-outline',
+    color: '#558B2F',
+  },
+  {
+    nameMg: 'Kolontsaina',
+    nameFr: 'Culture & Tradition',
+    slug: 'culture',
+    icon: 'color-palette-outline',
+    color: '#AD1457',
+  },
+  {
+    nameMg: 'Fahamarinana',
+    nameFr: 'Justice & Vérité',
+    slug: 'justice',
+    icon: 'scale-outline',
+    color: '#4527A0',
+  },
 ];
 
 const DEFAULT_REGIONS = [
@@ -57,6 +123,14 @@ async function main() {
   const seedDataDir = path.resolve(__dirname, 'seed-data');
 
   // 1. Nettoyage initial
+  await prisma.riddleAnswer.deleteMany();
+  await prisma.riddleSession.deleteMany();
+  await prisma.riddleQuestion.deleteMany();
+  await prisma.civicQuizAnswer.deleteMany();
+  await prisma.civicQuizSession.deleteMany();
+  await prisma.vintanaForecast.deleteMany();
+  await prisma.vintanaSign.deleteMany();
+
   await prisma.civicStructureRole.deleteMany();
   await prisma.civicContent.deleteMany();
   await prisma.civicQuizQuestion.deleteMany();
@@ -109,7 +183,9 @@ async function main() {
   const citationFilePath = path.join(seedDataDir, 'citation.data.json');
   if (fs.existsSync(citationFilePath)) {
     const rawCitations = JSON.parse(fs.readFileSync(citationFilePath, 'utf-8'));
-    console.log(`📖 Chargement de ${rawCitations.length} citations depuis ${citationFilePath}`);
+    console.log(
+      `📖 Chargement de ${rawCitations.length} citations depuis ${citationFilePath}`,
+    );
 
     for (const c of rawCitations) {
       let authorId: string | null = null;
@@ -160,11 +236,22 @@ async function main() {
   }
 
   // 5. Téléchargement et import des Proverbes / Expressions / Dictons
-  console.log('📡 Récupération des contenus culturels (proverbes, expressions, dictons)...');
+  console.log(
+    '📡 Récupération des contenus culturels (proverbes, expressions, dictons)...',
+  );
   const DATA_SOURCES = [
-    { url: 'https://raw.githubusercontent.com/gastsar/data-kantomg/main/data/category/proverbes.data.json', defaultCategory: 'PROVERBE' as const },
-    { url: 'https://raw.githubusercontent.com/gastsar/data-kantomg/main/data/category/expressions.data.json', defaultCategory: 'EXPRESSION' as const },
-    { url: 'https://raw.githubusercontent.com/gastsar/data-kantomg/main/data/category/dictons.data.json', defaultCategory: 'DICTON' as const },
+    {
+      url: 'https://raw.githubusercontent.com/gastsar/data-kantomg/main/data/category/proverbes.data.json',
+      defaultCategory: 'PROVERBE' as const,
+    },
+    {
+      url: 'https://raw.githubusercontent.com/gastsar/data-kantomg/main/data/category/expressions.data.json',
+      defaultCategory: 'EXPRESSION' as const,
+    },
+    {
+      url: 'https://raw.githubusercontent.com/gastsar/data-kantomg/main/data/category/dictons.data.json',
+      defaultCategory: 'DICTON' as const,
+    },
   ];
 
   let firstProverbId: string | null = null;
@@ -178,16 +265,21 @@ async function main() {
         continue;
       }
       const rawData = await res.json();
-      console.log(`📖 Insertion de ${rawData.length} éléments (${source.defaultCategory})...`);
+      console.log(
+        `📖 Insertion de ${rawData.length} éléments (${source.defaultCategory})...`,
+      );
 
       for (let i = 0; i < rawData.length; i++) {
         const item = rawData[i];
-        let category: 'PROVERBE' | 'EXPRESSION' | 'DICTON' = source.defaultCategory;
+        let category: 'PROVERBE' | 'EXPRESSION' | 'DICTON' =
+          source.defaultCategory;
         if (item.category === 'proverbe') category = 'PROVERBE';
         if (item.category === 'expression') category = 'EXPRESSION';
         if (item.category === 'dicton') category = 'DICTON';
 
-        const baseSlug = slugify(item.malagasy || `${category.toLowerCase()}-${i}`);
+        const baseSlug = slugify(
+          item.malagasy || `${category.toLowerCase()}-${i}`,
+        );
         const uniqueSlug = `${baseSlug}-${totalImported + i + 1}`;
 
         const createdItem = await prisma.malagasyItem.create({
@@ -269,15 +361,21 @@ async function main() {
   const conteFilePath = path.join(seedDataDir, 'conte.data.json');
   if (fs.existsSync(conteFilePath)) {
     const rawContes = JSON.parse(fs.readFileSync(conteFilePath, 'utf-8'));
-    console.log(`📖 Chargement de ${rawContes.length} contes depuis ${conteFilePath}`);
+    console.log(
+      `📖 Chargement de ${rawContes.length} contes depuis ${conteFilePath}`,
+    );
 
-    const DEFAULT_CONTE_IMAGE = "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80";
+    const DEFAULT_CONTE_IMAGE =
+      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80';
 
     for (let i = 0; i < rawContes.length; i++) {
       const c = rawContes[i];
       const baseSlug = slugify(c.title);
       const uniqueSlug = `${baseSlug}-${i + 1}`;
-      const conteIllustration = c.illustration && c.illustration.trim() !== '' ? c.illustration.trim() : DEFAULT_CONTE_IMAGE;
+      const conteIllustration =
+        c.illustration && c.illustration.trim() !== ''
+          ? c.illustration.trim()
+          : DEFAULT_CONTE_IMAGE;
 
       const createdConte = await prisma.conte.create({
         data: {
@@ -292,7 +390,9 @@ async function main() {
           illustration: conteIllustration,
           moralMg: c.moral?.textMg || null,
           moralFr: c.moral?.textFr || null,
-          variantIds: Array.isArray(c.variants || c.varient) ? (c.variants || c.varient) : [],
+          variantIds: Array.isArray(c.variants || c.varient)
+            ? c.variants || c.varient
+            : [],
           isFeatured: i < 3,
         },
       });
@@ -343,15 +443,21 @@ async function main() {
   const kabaryFilePath = path.join(seedDataDir, 'kabary.data.json');
   if (fs.existsSync(kabaryFilePath)) {
     const rawKabaries = JSON.parse(fs.readFileSync(kabaryFilePath, 'utf-8'));
-    console.log(`🗣️ Chargement de ${rawKabaries.length} discours (Kabary) depuis ${kabaryFilePath}`);
+    console.log(
+      `🗣️ Chargement de ${rawKabaries.length} discours (Kabary) depuis ${kabaryFilePath}`,
+    );
 
-    const DEFAULT_KABARY_IMAGE = "https://res.cloudinary.com/dhe585mze/image/upload/v1752952347/Photoroom-20250719_204052441_vlyahm.png";
+    const DEFAULT_KABARY_IMAGE =
+      'https://res.cloudinary.com/dhe585mze/image/upload/v1752952347/Photoroom-20250719_204052441_vlyahm.png';
 
     for (let i = 0; i < rawKabaries.length; i++) {
       const k = rawKabaries[i];
       const baseSlug = slugify(k.title);
       const uniqueSlug = `${baseSlug}-${i + 1}`;
-      const kabaryIllustration = k.illustration && k.illustration.trim() !== '' ? k.illustration.trim() : DEFAULT_KABARY_IMAGE;
+      const kabaryIllustration =
+        k.illustration && k.illustration.trim() !== ''
+          ? k.illustration.trim()
+          : DEFAULT_KABARY_IMAGE;
 
       const createdKabary = await prisma.kabary.create({
         data: {
@@ -426,7 +532,9 @@ async function main() {
   const poesieFilePath = path.join(seedDataDir, 'poesie.data.json');
   if (fs.existsSync(poesieFilePath)) {
     const rawPoesies = JSON.parse(fs.readFileSync(poesieFilePath, 'utf-8'));
-    console.log(`📜 Chargement de ${rawPoesies.length} poésies depuis ${poesieFilePath}`);
+    console.log(
+      `📜 Chargement de ${rawPoesies.length} poésies depuis ${poesieFilePath}`,
+    );
 
     for (let i = 0; i < rawPoesies.length; i++) {
       const p = rawPoesies[i];
@@ -468,8 +576,12 @@ async function main() {
   // 10. Import des Récitations (Tsianjery)
   const recitationFilePath = path.join(seedDataDir, 'recitation.data.json');
   if (fs.existsSync(recitationFilePath)) {
-    const rawRecitations = JSON.parse(fs.readFileSync(recitationFilePath, 'utf-8'));
-    console.log(`🎤 Chargement de ${rawRecitations.length} récitations depuis ${recitationFilePath}`);
+    const rawRecitations = JSON.parse(
+      fs.readFileSync(recitationFilePath, 'utf-8'),
+    );
+    console.log(
+      `🎤 Chargement de ${rawRecitations.length} récitations depuis ${recitationFilePath}`,
+    );
 
     for (let i = 0; i < rawRecitations.length; i++) {
       const r = rawRecitations[i];
@@ -497,11 +609,26 @@ async function main() {
 
   // 11. Import des Contenus Civiques
   const civicFiles: { file: string; subCategory: CivicSubCategory }[] = [
-    { file: 'civic-institution.data.json', subCategory: CivicSubCategory.INSTITUTION },
-    { file: 'droits-et-vote.data.json', subCategory: CivicSubCategory.DROITS_VOTE },
-    { file: 'ecologie-civisme.data.json', subCategory: CivicSubCategory.ECOLOGIE_CIVISME },
-    { file: 'symboles-histoire.data.json', subCategory: CivicSubCategory.SYMBOLES_HISTOIRE },
-    { file: 'vivre-ensemble.data.json', subCategory: CivicSubCategory.VIVRE_ENSEMBLE },
+    {
+      file: 'civic-institution.data.json',
+      subCategory: CivicSubCategory.INSTITUTION,
+    },
+    {
+      file: 'droits-et-vote.data.json',
+      subCategory: CivicSubCategory.DROITS_VOTE,
+    },
+    {
+      file: 'ecologie-civisme.data.json',
+      subCategory: CivicSubCategory.ECOLOGIE_CIVISME,
+    },
+    {
+      file: 'symboles-histoire.data.json',
+      subCategory: CivicSubCategory.SYMBOLES_HISTOIRE,
+    },
+    {
+      file: 'vivre-ensemble.data.json',
+      subCategory: CivicSubCategory.VIVRE_ENSEMBLE,
+    },
   ];
 
   let totalCivicImported = 0;
@@ -509,7 +636,9 @@ async function main() {
     const fullPath = path.join(seedDataDir, 'civique', file);
     if (fs.existsSync(fullPath)) {
       const items = JSON.parse(fs.readFileSync(fullPath, 'utf-8'));
-      console.log(`🏛️ Chargement de ${items.length} éléments civiques (${subCategory}) depuis ${file}`);
+      console.log(
+        `🏛️ Chargement de ${items.length} éléments civiques (${subCategory}) depuis ${file}`,
+      );
 
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
@@ -529,7 +658,11 @@ async function main() {
             summaryMg: item.summary?.mg || item.summaryMg || null,
             contentFr: Array.isArray(item.content?.fr) ? item.content.fr : [],
             contentMg: Array.isArray(item.content?.mg) ? item.content.mg : [],
-            themes: Array.isArray(item.theme) ? item.theme : Array.isArray(item.themes) ? item.themes : [],
+            themes: Array.isArray(item.theme)
+              ? item.theme
+              : Array.isArray(item.themes)
+                ? item.themes
+                : [],
             sources: Array.isArray(item.sources) ? item.sources : [],
           },
         });
@@ -559,11 +692,14 @@ async function main() {
   const quizFilePath = path.join(seedDataDir, 'civic-quiz.data.json');
   if (fs.existsSync(quizFilePath)) {
     const rawQuestions = JSON.parse(fs.readFileSync(quizFilePath, 'utf-8'));
-    console.log(`🎯 Chargement de ${rawQuestions.length} questions de quiz civique depuis ${quizFilePath}`);
+    console.log(
+      `🎯 Chargement de ${rawQuestions.length} questions de quiz civique depuis ${quizFilePath}`,
+    );
 
     for (const q of rawQuestions) {
       let diff: DifficultyLevel = DifficultyLevel.EASY;
-      if (q.difficulty?.toLowerCase() === 'medium') diff = DifficultyLevel.MEDIUM;
+      if (q.difficulty?.toLowerCase() === 'medium')
+        diff = DifficultyLevel.MEDIUM;
       if (q.difficulty?.toLowerCase() === 'hard') diff = DifficultyLevel.HARD;
 
       await prisma.civicQuizQuestion.create({
@@ -579,8 +715,47 @@ async function main() {
         },
       });
     }
-    console.log(`✅ ${rawQuestions.length} questions de quiz civique importées`);
+    console.log(
+      `✅ ${rawQuestions.length} questions de quiz civique importées`,
+    );
   }
+  // 17. Import des Devinettes (Ankamantatra)
+  console.log(
+    `📖 Importation de ${RIDDLES_DATA.length} devinettes (Ankamantatra)...`,
+  );
+  for (const r of RIDDLES_DATA) {
+    await prisma.riddleQuestion.create({
+      data: {
+        riddleMg: r.riddleMg,
+        riddleFr: r.riddleFr,
+        options: r.options,
+        correctAnswer: r.correctAnswer,
+        explanation: r.explanation,
+        clue: r.clue || null,
+        level: r.level,
+      },
+    });
+  }
+  console.log(`✅ ${RIDDLES_DATA.length} devinettes importées`);
+
+  // 18. Import des Signes du Zodiaque (Vintana)
+  console.log(
+    `📖 Importation de ${VINTANA_SIGNS.length} signes astrologiques (Vintana)...`,
+  );
+  for (const v of VINTANA_SIGNS) {
+    await prisma.vintanaSign.create({
+      data: {
+        id: v.id,
+        nameMg: v.name,
+        nameFr: v.nameFr,
+        element: v.element,
+        description: v.personalityMg + '\n\n' + v.personalityFr,
+        luckyDay: v.luckyDayMg,
+        luckyColor: null, // Si aucune couleur n'est dispo pour l'instant
+      },
+    });
+  }
+  console.log(`✅ ${VINTANA_SIGNS.length} signes Vintana importés`);
 
   console.log('🎉 Seed de la base de données Kanto terminé avec succès !');
 }

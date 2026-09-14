@@ -104,6 +104,7 @@ Use `--region` in `@prisma/cli app deploy` or `region` in SDK deploy input only 
 Tooling that already has an in-memory repository tree can detect a deployable app without checking files out:
 
 ```typescript
+
 import { detectComputeApp } from '@prisma/compute-sdk/config'
 
 const detected = detectComputeApp({
@@ -115,6 +116,7 @@ const detected = detectComputeApp({
   },
   filePaths: ['apps/api/package.json', 'apps/api/src/index.ts'],
 })
+
 ```
 
 The result contains `framework`, `frameworkName`, `buildType`, `httpPort`, `entrypoint`, and detection `evidence`, or `null` when nothing is deployable. Paths are repository-relative and unsafe absolute/parent-traversal entrypoints are rejected.
@@ -147,9 +149,11 @@ Environment variables are not embedded directly in the low-level deployment crea
 When using the CLI alongside SDK automation:
 
 ```bash
+
 bunx @prisma/cli@latest project env add --file .env.preview --branch feature/foo
 bunx @prisma/cli@latest database create preview-db --branch feature/foo --json
 bunx @prisma/cli@latest app deploy --branch feature/foo --json --no-interactive
+
 ```
 
 Production promotion is not just "the same branch with another label"; `app promote <deployment-id>` rebuilds with production env vars.

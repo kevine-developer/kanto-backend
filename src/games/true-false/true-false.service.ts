@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import {
   Prisma,
@@ -90,8 +94,14 @@ export class TrueFalseService {
   async answerQuestion(
     sessionId: string,
     questionId: string,
-    userAnswer: boolean,
+    userAnswer: boolean | null | undefined,
   ) {
+    if (!sessionId || !questionId) {
+      throw new BadRequestException(
+        'sessionId et questionId sont obligatoires.',
+      );
+    }
+
     const session = await this.prisma.trueFalseSession.findUnique({
       where: { id: sessionId },
     });
@@ -108,14 +118,17 @@ export class TrueFalseService {
       throw new NotFoundException('Question introuvable.');
     }
 
-    const isCorrect = userAnswer === question.isTrue;
+    const isCorrect =
+      userAnswer !== null &&
+      userAnswer !== undefined &&
+      userAnswer === question.isTrue;
 
     // Enregistrement de la réponse
     await this.prisma.trueFalseAnswer.create({
       data: {
         sessionId,
         questionId,
-        userAnswer,
+        userAnswer: userAnswer ?? false, // Fallback database requirement
         isCorrect,
       },
     });
@@ -174,6 +187,10 @@ export class TrueFalseService {
    * Finalise une session de jeu, valide le niveau et calcule l'XP.
    */
   async finishSession(sessionId: string, durationSeconds: number = 0) {
+    if (!sessionId) {
+      throw new BadRequestException('sessionId est obligatoire.');
+    }
+
     const session = await this.prisma.trueFalseSession.findUnique({
       where: { id: sessionId },
     });

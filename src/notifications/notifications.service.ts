@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateNotificationDto } from './dto/notifications.dto.js';
 import { RedisService } from '../redis/redis.service.js';
-import { REDIS_CHANNEL_NOTIFICATIONS } from '../realtime/realtime.gateway.js';
+import { REALTIME_CHANNELS } from '../realtime/realtime.constants.js';
 
 export interface FormattedNotificationItem {
   id: string;
@@ -291,7 +291,7 @@ export class NotificationsService {
       createdAt: created.createdAt,
     };
 
-    void this.redisService.publish(REDIS_CHANNEL_NOTIFICATIONS, {
+    void this.redisService.publish(REALTIME_CHANNELS.NOTIFICATIONS, {
       notification: formattedForRealtime,
       targetUserId: created.userId,
       isBroadcast: created.isBroadcast,

@@ -32,13 +32,17 @@ prisma db execute [options]
 ### Execute from file
 
 ```bash
+
 prisma db execute --file ./script.sql
+
 ```
 
 ### Execute from stdin
 
 ```bash
+
 echo "TRUNCATE TABLE User;" | prisma db execute --stdin
+
 ```
 
 ### Execute `migrate diff` output
@@ -46,11 +50,13 @@ echo "TRUNCATE TABLE User;" | prisma db execute --stdin
 Pipe the output of `migrate diff` directly to the database:
 
 ```bash
+
 prisma migrate diff \
   --from-empty \
   --to-schema prisma/schema.prisma \
   --script \
 | prisma db execute --stdin
+
 ```
 
 ## Configuration
@@ -58,11 +64,13 @@ prisma migrate diff \
 Uses `datasource` from `prisma.config.ts`:
 
 ```typescript
+
 export default defineConfig({
   datasource: {
     url: env('DATABASE_URL'),
   },
 })
+
 ```
 
 ## Use Cases

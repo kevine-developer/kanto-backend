@@ -37,6 +37,7 @@ When a config is discovered, its directory becomes the Compute project directory
 Import `defineComputeConfig` from `@prisma/compute-sdk/config`. The CLI aliases this helper when loading the config, so the command can evaluate the config without a local SDK install solely for runtime loading.
 
 ```typescript
+
 import { defineComputeConfig } from "@prisma/compute-sdk/config";
 
 export default defineComputeConfig({
@@ -47,6 +48,7 @@ export default defineComputeConfig({
     env: ".env",
   },
 });
+
 ```
 
 JavaScript configs can default-export a plain object, but prefer `prisma.compute.ts` for type checking.
@@ -94,6 +96,7 @@ Do not put secrets directly in committed `vars`. Keep secret values in platform 
 `build` examples:
 
 ```typescript
+
 export default defineComputeConfig({
   app: {
     framework: "nextjs",
@@ -103,6 +106,7 @@ export default defineComputeConfig({
     },
   },
 });
+
 ```
 
 Use `command: null` to skip the build step only when the app root already contains the deployable artifact.
@@ -110,6 +114,7 @@ Use `command: null` to skip the build step only when the app root already contai
 For a custom or prebuilt artifact, make the deploy target explicit:
 
 ```typescript
+
 export default defineComputeConfig({
   app: {
     framework: "custom",
@@ -120,6 +125,7 @@ export default defineComputeConfig({
     },
   },
 });
+
 ```
 
 `build.entrypoint` is relative to `build.outputDirectory` when an output directory is set. For Bun/Hono configs without an output directory, an entrypoint-backed build can supply the source entrypoint. Do not set both `entry` and `build.entrypoint` unless they describe the same file.
@@ -206,11 +212,13 @@ Explicit flags win over config values:
 `prisma.compute.ts` never selects Workspace, Project, Branch, or production intent. Keep those in CLI flags, environment variables, `.prisma/local.json`, or CI configuration:
 
 ```bash
+
 bunx @prisma/cli@latest app deploy api \
   --project proj_123 \
   --branch feature/foo \
   --prod \
   --yes
+
 ```
 
 ## Database Scope

@@ -29,6 +29,11 @@ import { RecitationModule } from './recitations/recitations.module.js';
 import { CivicModule } from './civic/civic.module.js';
 import { LeaderboardModule } from './leaderboard/leaderboard.module.js';
 import { RealtimeModule } from './realtime/realtime.module.js';
+import { BadgesModule } from './badges/badges.module.js';
+import { AstrologyModule } from './astrology/astrology.module.js';
+import { AnnouncementsModule } from './announcements/announcements.module.js';
+import { RiddleModule } from './games/riddle/riddle.module.js';
+import { VintanaModule } from './vintana/vintana.module.js';
 
 @Module({
   imports: [
@@ -76,6 +81,11 @@ import { RealtimeModule } from './realtime/realtime.module.js';
     CivicModule,
     LeaderboardModule,
     RealtimeModule,
+    BadgesModule,
+    AstrologyModule,
+    AnnouncementsModule,
+    RiddleModule,
+    VintanaModule,
   ],
   controllers: [AppController],
   providers: [

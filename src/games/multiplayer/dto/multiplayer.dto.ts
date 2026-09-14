@@ -10,6 +10,7 @@ import {
 
 export enum MultiplayerGameTypeEnum {
   TRUE_FALSE = 'TRUE_FALSE',
+  QUIZ = 'QUIZ',
   MISSING_WORD = 'MISSING_WORD',
 }
 
@@ -37,6 +38,10 @@ export class CreateMultiplayerGameDto {
   @IsOptional()
   @IsString()
   userAvatar?: string;
+
+  @IsOptional()
+  @IsString()
+  opponentId?: string;
 }
 
 export class JoinMultiplayerGameDto {

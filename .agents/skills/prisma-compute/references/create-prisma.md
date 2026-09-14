@@ -70,6 +70,7 @@ With PostgreSQL, no explicit `--database-url`, and no `--no-prisma-postgres`, th
 For unattended local tests, pass `--no-prisma-postgres` unless you intentionally want provisioning:
 
 ```bash
+
 bunx create-prisma@latest \
   --name smoke-app \
   --template hono \
@@ -77,6 +78,7 @@ bunx create-prisma@latest \
   --no-prisma-postgres \
   --database-url "postgresql://USER:PASSWORD@HOST:PORT/DB" \
   --no-deploy
+
 ```
 
 Do not deploy placeholder database URLs. If `DATABASE_URL` came from a placeholder default, omit it from deploy env and ask the user for a real production database.
@@ -86,11 +88,13 @@ Do not deploy placeholder database URLs. If `DATABASE_URL` came from a placehold
 When the deploy flow is selected, `create-prisma` can add:
 
 ```json
+
 {
   "scripts": {
     "compute:deploy": "bunx @prisma/cli@latest app deploy --prod --yes ..."
   }
 }
+
 ```
 
 Use the actual generated script from `package.json`; do not reconstruct it from memory. The script redeploys app code using generated flags and/or `prisma.compute.ts`. It does not create a new project, create a new database, run migrations, or seed data. If a scaffolded project does not have `compute:deploy`, use `@prisma/cli app deploy` directly.

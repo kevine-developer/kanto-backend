@@ -62,11 +62,13 @@ mysql://USER:PASSWORD@HOST:PORT/DATABASE
 Use a driver adapter for the standard SQL workflow.
 
 1. Install adapter and driver:
+
    ```bash
    npm install @prisma/adapter-mariadb mariadb
    ```
 
 2. Instantiate Prisma Client with the adapter:
+
    ```typescript
    import 'dotenv/config'
    import { PrismaClient } from '../generated/client'
@@ -118,6 +120,7 @@ datasource db {
 
 ### "Too many connections"
 MySQL has a connection limit. Adjust connection pool size in URL:
+
 ```env
 DATABASE_URL="mysql://...?connection_limit=5"
 ```

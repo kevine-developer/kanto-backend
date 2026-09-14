@@ -41,6 +41,7 @@ export interface DuelCreateSocketPayload {
   timePerQuestion?: number;
   userName?: string;
   userAvatar?: string;
+  opponentId?: string;
 }
 
 export interface DuelJoinSocketPayload {
@@ -62,6 +63,12 @@ export interface DuelAnswerSocketPayload {
 export interface DuelLeaveSocketPayload {
   code: string;
   userId?: string;
+}
+
+export interface DuelKickSocketPayload {
+  code: string;
+  targetUserId: string;
+  hostUserId?: string;
 }
 
 /**
@@ -327,6 +334,26 @@ export class RealtimeGateway
       const room = RealtimeRooms.duel(result.session.code);
       await client.join(room);
 
+      // Si un adversaire spécifique est défié, lui envoyer instantanément l'invitation en temps réel
+      if (data?.opponentId && data.opponentId !== userId) {
+        const opponentRoom = RealtimeRooms.user(data.opponentId);
+        this.server
+          .to(opponentRoom)
+          .emit(SOCKET_EVENTS.DUEL_CHALLENGE_RECEIVED, {
+            code: result.session.code,
+            gameType: result.session.gameType,
+            challengerId: userId,
+            challengerName: result.session.player1Name,
+            challengerAvatar: result.session.player1Avatar,
+            totalQuestions: result.session.totalQuestions,
+            timePerQuestion: result.session.timePerQuestion,
+            createdAt: Date.now(),
+          });
+        this.logger.log(
+          `⚔️ [DuelGateway] Invitation duel direct émise vers ${opponentRoom} pour le salon ${result.session.code}`,
+        );
+      }
+
       this.logger.log(
         `🎮 [DuelGateway] Salon multijoueur ${room} créé par ${userId} (Hôte)`,
       );
@@ -346,6 +373,49 @@ export class RealtimeGateway
         success: false,
         message: msg,
       };
+    }
+  }
+
+  /**
+   * Refus d'un défi direct par l'adversaire invité : informe le salon et l'hôte.
+   */
+  @SubscribeMessage(SOCKET_EVENTS.DUEL_CHALLENGE_DECLINE)
+  async handleDuelChallengeDecline(
+    @ConnectedSocket() client: Socket,
+    @MessageBody()
+    data: { code: string; opponentId?: string; opponentName?: string },
+  ) {
+    try {
+      if (!data?.code) {
+        return { success: false, message: 'Le code du salon est requis' };
+      }
+
+      const userId = this.getClientUserId(client, data?.opponentId);
+      const result = await this.duelService.declineDuelChallenge(
+        data.code,
+        userId,
+        data?.opponentName,
+      );
+
+      const room = RealtimeRooms.duel(result.code);
+      this.server.to(room).emit(SOCKET_EVENTS.DUEL_CHALLENGE_DECLINED, {
+        code: result.code,
+        opponentId: userId,
+        opponentName: result.declinerName,
+        messageMg: `Nandà ny fanamby i ${result.declinerName}.`,
+        messageFr: `${result.declinerName} a décliné le défi.`,
+      });
+
+      this.logger.log(
+        `⚔️ [DuelGateway] Défi décliné par ${result.declinerName} pour le salon ${room}`,
+      );
+
+      return { success: true };
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error ? err.message : 'Erreur lors du refus du défi';
+      this.logger.warn(`Erreur refus défi : ${msg}`);
+      return { success: false, message: msg };
     }
   }
 
@@ -713,6 +783,95 @@ export class RealtimeGateway
       return { success: true };
     } catch {
       return { success: false };
+    }
+  }
+
+  /**
+   * Expulsion d'un joueur par l'Hôte du salon.
+   */
+  @SubscribeMessage(SOCKET_EVENTS.DUEL_KICK_PLAYER)
+  async handleDuelKickPlayer(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: DuelKickSocketPayload,
+  ) {
+    try {
+      if (!data?.code || !data?.targetUserId) {
+        return {
+          success: false,
+          message: 'Code de salon et identifiant du joueur requis.',
+        };
+      }
+
+      const hostUserId = this.getClientUserId(client, data?.hostUserId);
+      if (!hostUserId || hostUserId.startsWith('guest_')) {
+        return {
+          success: false,
+          message: 'Authentification requise pour cette action.',
+        };
+      }
+
+      const result = await this.duelService.kickPlayer(
+        hostUserId,
+        data.code,
+        data.targetUserId,
+      );
+
+      const room = RealtimeRooms.duel(data.code);
+
+      // 1. Notifier la salle et le joueur exclu
+      this.server.to(room).emit(SOCKET_EVENTS.DUEL_PLAYER_KICKED, {
+        code: data.code,
+        kickedUserId: data.targetUserId,
+        kickedName: result.kickedPlayer.name,
+        messageMg: `Nesorin'ny tompon'ny lalao tao amin'ny efitrano i ${result.kickedPlayer.name}.`,
+        messageFr: `${result.kickedPlayer.name} a été expulsé(e) du salon par l'hôte.`,
+      });
+
+      // 2. Mettre à jour la liste des participants pour tout le monde
+      this.server.to(room).emit(SOCKET_EVENTS.DUEL_ROOM_UPDATE, {
+        session: result.session,
+        players: result.remainingPlayers,
+      });
+
+      // 3. Retirer les sockets du joueur exclu de la room
+      const socketsInRoom = await this.server.in(room).fetchSockets();
+      for (const s of socketsInRoom) {
+        const sUserId = (s.data as Record<string, unknown>)?.userId;
+        if (sUserId === data.targetUserId) {
+          s.leave(room);
+        }
+      }
+
+      // 4. Si la session est en cours et que tous les participants restants avaient déjà répondu
+      if (result.allRemainingAnswered) {
+        this.logger.log(
+          `⚡ [DuelGateway] Expulsion joueur -> Clôture automatique du round sur ${room}`,
+        );
+        const concludeResult = await this.duelService.concludeRound(data.code);
+        this.server.to(room).emit(SOCKET_EVENTS.DUEL_ROUND_END, {
+          correctAnswer: concludeResult.correctAnswer,
+          explanationMg: concludeResult.explanationMg,
+          explanationFr: concludeResult.explanationFr,
+          leaderboard: concludeResult.leaderboard,
+          isLastQuestion: concludeResult.isLastQuestion,
+          nextQuestionCountdown: concludeResult.nextQuestionCountdown,
+          currentQuestionIndex: concludeResult.currentQuestionIndex,
+          totalQuestions: concludeResult.totalQuestions,
+        });
+      }
+
+      this.logger.log(
+        `👢 [DuelGateway] Joueur ${data.targetUserId} (${result.kickedPlayer.name}) expulsé du salon ${room} par l'hôte ${hostUserId}`,
+      );
+
+      return { success: true, remainingPlayers: result.remainingPlayers };
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error
+          ? err.message
+          : "Erreur lors de l'expulsion du joueur";
+      this.logger.warn(`Erreur expulsion joueur : ${msg}`);
+      return { success: false, message: msg };
     }
   }
 

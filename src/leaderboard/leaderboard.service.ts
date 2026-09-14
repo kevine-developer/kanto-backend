@@ -85,10 +85,7 @@ export class LeaderboardService {
             coins: 0,
           },
         });
-      } else if (
-        currentXp &&
-        Math.ceil(currentXp) > Number(progress.totalXp)
-      ) {
+      } else if (currentXp && Math.ceil(currentXp) > Number(progress.totalXp)) {
         const roundedXp = Math.ceil(currentXp);
         await this.prisma.userProgress.update({
           where: { userId },

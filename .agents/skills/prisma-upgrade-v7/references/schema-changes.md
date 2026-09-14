@@ -110,21 +110,25 @@ export default defineConfig({
 ## After Schema Changes
 
 1. Run `prisma generate`:
+
    ```bash
    npx prisma generate
    ```
 
 2. Update imports throughout your codebase:
+
    ```typescript
    import { PrismaClient } from '../generated/prisma/client'
    ```
 
 3. Update `.gitignore` if you manage this manually:
+
    ```
    /generated/prisma
    ```
 
 4. Replace `Prisma.validator()` with TypeScript `satisfies` when using `prisma-client`:
+
    ```typescript
    import { Prisma } from '../generated/prisma/client'
 
