@@ -19,7 +19,8 @@ import {
   REALTIME_CHANNELS,
   LeaderboardRealtimePayload,
 } from '../realtime/realtime.constants.js';
-import { REDIS_CHANNEL_COMMENTS } from '../realtime/realtime.gateway.js';
+
+const REDIS_CHANNEL_COMMENTS = REALTIME_CHANNELS.COMMENTS;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Sélecteurs réutilisables
@@ -196,7 +197,7 @@ export class ContributionsService {
     const items = await this.prisma.contribution.findMany({
       where: {
         status: { in: ['PUBLISHED', 'DRAFT'] },
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
         ...(category && { category: category as any }),
       },
       take: safeLimit,

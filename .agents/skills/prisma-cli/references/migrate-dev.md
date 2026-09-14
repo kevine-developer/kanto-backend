@@ -134,12 +134,14 @@ prisma migrate dev --name remove_field
 `migrate dev` requires a shadow database for drift detection. Configure in `prisma.config.ts`:
 
 ```typescript
+
 export default defineConfig({
   datasource: {
     url: env('DATABASE_URL'),
     shadowDatabaseUrl: env('SHADOW_DATABASE_URL'),
   },
 })
+
 ```
 
 For local Prisma Postgres (`prisma dev`), shadow database is handled automatically.

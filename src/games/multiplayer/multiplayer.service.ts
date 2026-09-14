@@ -1,13 +1,16 @@
 import {
   BadRequestException,
   ForbiddenException,
+  Inject,
   Injectable,
   Logger,
   NotFoundException,
   UnauthorizedException,
+  forwardRef,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import { RedisService } from '../../redis/redis.service.js';
+import { NotificationsService } from '../../notifications/notifications.service.js';
 import {
   CreateMultiplayerGameDto,
   MultiplayerGameTypeEnum,
@@ -23,20 +26,21 @@ export interface PublicMultiplayerQuestion {
   questionText: string;
   questionTextFr?: string;
   gameType: MultiplayerGameTypeEnum;
-  choices?: string[];
-  image?: string | null;
-  hint?: string | null;
+  choices: string[];
+  imageUrl?: string | null;
+  timeLimitSec?: number;
+  points?: number;
 }
 
 export interface MultiplayerPlayerPublic {
-  id: string;
   userId: string;
   name: string;
   avatar: string | null;
-  isHost: boolean;
   score: number;
-  currentRoundScore: number;
   streak: number;
+  isHost: boolean;
+  isReady: boolean;
+  isConnected: boolean;
   answersCount: number;
   rank: number | null;
   previousRank: number | null;
@@ -51,6 +55,8 @@ export class MultiplayerService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly redisService: RedisService,
+    @Inject(forwardRef(() => NotificationsService))
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   /**
@@ -117,6 +123,15 @@ export class MultiplayerService {
         explanationMg = q.explanationMg;
         explanationFr = q.explanationFr;
       }
+    } else if (session.gameType === 'QUIZ') {
+      const q = await this.prisma.civicQuizQuestion.findUnique({
+        where: { id: qId },
+      });
+      if (q) {
+        correctAnswer = q.choices[q.answerIndex] ?? '';
+        explanationMg = q.explanation;
+        explanationFr = q.explanation;
+      }
     } else {
       const q = await this.prisma.missingWordQuestion.findUnique({
         where: { id: qId },
@@ -174,6 +189,16 @@ export class MultiplayerService {
       });
       if (available.length === 0) {
         throw new BadRequestException('Aucune question Vrai/Faux disponible.');
+      }
+      const shuffled = [...available].sort(() => Math.random() - 0.5);
+      questionIds = shuffled.slice(0, totalQuestions).map((q) => q.id);
+    } else if (gameType === MultiplayerGameTypeEnum.QUIZ) {
+      const available = await this.prisma.civicQuizQuestion.findMany({
+        where: { status: 'PUBLISHED' },
+        select: { id: true },
+      });
+      if (available.length === 0) {
+        throw new BadRequestException('Aucune question Quiz disponible.');
       }
       const shuffled = [...available].sort(() => Math.random() - 0.5);
       questionIds = shuffled.slice(0, totalQuestions).map((q) => q.id);
@@ -238,6 +263,55 @@ export class MultiplayerService {
       `🎮 [Multiplayer] Salon créé avec le code ${code} par ${userId} (Hôte)`,
     );
 
+    // Envoi asynchrone d'une notification push & in-app au joueur défié
+    if (dto.opponentId && dto.opponentId !== userId) {
+      void (async () => {
+        try {
+          const opponent = await this.prisma.user.findUnique({
+            where: { id: dto.opponentId },
+            select: { id: true, name: true },
+          });
+          if (opponent) {
+            const gameLabelFr =
+              gameType === MultiplayerGameTypeEnum.QUIZ
+                ? 'Quiz'
+                : gameType === MultiplayerGameTypeEnum.TRUE_FALSE
+                  ? 'Vrai ou Faux'
+                  : 'Mot Manquant';
+            const gameLabelMg =
+              gameType === MultiplayerGameTypeEnum.QUIZ
+                ? 'Quiz'
+                : gameType === MultiplayerGameTypeEnum.TRUE_FALSE
+                  ? 'Marina sa Diso'
+                  : 'Teny Mikorontana';
+
+            await this.notificationsService.createNotification({
+              userId: opponent.id,
+              isBroadcast: false,
+              titleMg: `⚔️ Fanamby vaovao : ${gameLabelMg} !`,
+              titleFr: `⚔️ Nouveau défi : ${gameLabelFr} !`,
+              messageMg: `${playerName} dia manasa anao hifaninana amin'ny ${gameLabelMg} ! Hanaiky sa handà ny fanamby ? (Kaody: ${code})`,
+              messageFr: `${playerName} vous défie sur un ${gameLabelFr} ! Accepter ou refuser le défi. (Code : ${code})`,
+              category: 'duel',
+              badgeText: 'Défi',
+              badgeType: 'duel',
+              iconName: 'game-controller-outline',
+              iconColor: '#E05615',
+              targetRoute: `/(screens)/gamesAllScreen/multiplayerGame?code=${code}`,
+            });
+            this.logger.log(
+              `⚔️ [Multiplayer] Notification et push envoyées à l'adversaire ${opponent.id} (${opponent.name}) pour le salon ${code}`,
+            );
+          }
+        } catch (notifErr) {
+          this.logger.warn(
+            `⚠️ [Multiplayer] Impossible d'envoyer la notification de défi à ${dto.opponentId}:`,
+            notifErr,
+          );
+        }
+      })();
+    }
+
     const questions = await this.getPublicQuestions(
       session.gameType as MultiplayerGameTypeEnum,
       questionIds,
@@ -253,6 +327,31 @@ export class MultiplayerService {
   // Alias rétrocompatibilité
   async createDuel(userId: string, dto: CreateMultiplayerGameDto) {
     return this.createGame(userId, dto);
+  }
+
+  /**
+   * Enregistre et traite le déclin d'un défi par un utilisateur invité.
+   */
+  async declineDuelChallenge(
+    code: string,
+    opponentId?: string | null,
+    opponentName?: string,
+  ) {
+    const cleanCode = code.trim().toUpperCase();
+    let declinerName = opponentName;
+
+    if (!declinerName && opponentId) {
+      const user = await this.prisma.user.findUnique({
+        where: { id: opponentId },
+        select: { name: true },
+      });
+      declinerName = user?.name;
+    }
+
+    return {
+      code: cleanCode,
+      declinerName: declinerName || "L'adversaire",
+    };
   }
 
   /**
@@ -372,9 +471,18 @@ export class MultiplayerService {
       throw new BadRequestException('La partie a déjà démarré.');
     }
 
-    // Minimum 1 joueur (pour tests/solo) ou 2 joueurs
-    if (session.players.length < 1) {
-      throw new BadRequestException('Aucun joueur présent dans le salon.');
+    // Exiger au moins 2 vrais joueurs actifs (non-spectateurs) pour démarrer la partie
+    const hostIsSpectator = await this.isHostSpectator(cleanCode);
+    const realPlayers = hostIsSpectator
+      ? session.players.filter((p) => p.userId !== session.player1Id)
+      : session.players;
+
+    if (realPlayers.length < 2) {
+      throw new BadRequestException(
+        hostIsSpectator
+          ? 'Il faut au moins 2 vrais joueurs (hors animateur spectateur) pour commencer la partie.'
+          : 'Il faut au moins 2 vrais joueurs pour commencer la partie multijoueur.',
+      );
     }
 
     // Mettre la session en statut IN_PROGRESS et initialiser le round 1
@@ -535,6 +643,20 @@ export class MultiplayerService {
           explanationFr = q.explanationFr;
           correctAnswer = q.isTrue ? 'true' : 'false';
         }
+      } else if (session.gameType === 'QUIZ') {
+        const q = await this.prisma.civicQuizQuestion.findUnique({
+          where: { id: dto.questionId },
+        });
+        if (q) {
+          const expectedChoice = q.choices[q.answerIndex] || '';
+          isCorrect =
+            dto.userAnswer.trim().toLowerCase() ===
+              expectedChoice.trim().toLowerCase() ||
+            dto.userAnswer.trim() === String(q.answerIndex);
+          explanationMg = q.explanation;
+          explanationFr = q.explanation;
+          correctAnswer = expectedChoice;
+        }
       } else {
         const q = await this.prisma.missingWordQuestion.findUnique({
           where: { id: dto.questionId },
@@ -659,6 +781,15 @@ export class MultiplayerService {
         correctAnswer = q.isTrue ? 'true' : 'false';
         explanationMg = q.explanationMg;
         explanationFr = q.explanationFr;
+      }
+    } else if (session.gameType === 'QUIZ') {
+      const q = await this.prisma.civicQuizQuestion.findUnique({
+        where: { id: currentQId },
+      });
+      if (q) {
+        correctAnswer = q.choices[q.answerIndex] ?? '';
+        explanationMg = q.explanation;
+        explanationFr = q.explanation;
       }
     } else {
       const q = await this.prisma.missingWordQuestion.findUnique({
@@ -915,6 +1046,82 @@ export class MultiplayerService {
     };
   }
 
+  /**
+   * Expulse un joueur de la session à la demande exclusive de l'Hôte.
+   */
+  async kickPlayer(hostUserId: string, code: string, targetUserId: string) {
+    const cleanCode = code.trim().toUpperCase();
+    const session = await this.prisma.duelSession.findUnique({
+      where: { code: cleanCode },
+      include: { players: true },
+    });
+
+    if (!session) {
+      throw new NotFoundException('Salon multijoueur introuvable.');
+    }
+
+    // 1. Vérification stricte des droits de l'Hôte
+    const hostPlayer = session.players.find((p) => p.userId === hostUserId);
+    const isHost = session.player1Id === hostUserId || hostPlayer?.isHost;
+    if (!isHost) {
+      throw new ForbiddenException(
+        "Seul l'hôte du salon est autorisé à expulser un joueur.",
+      );
+    }
+
+    // 2. L'Hôte ne peut pas s'auto-expulser
+    if (targetUserId === hostUserId) {
+      throw new BadRequestException(
+        "L'hôte ne peut pas s'expulser lui-même du salon.",
+      );
+    }
+
+    // 3. Vérifier la présence du joueur ciblé
+    const targetPlayer = session.players.find((p) => p.userId === targetUserId);
+    if (!targetPlayer) {
+      throw new NotFoundException(
+        'Le joueur ciblé ne fait pas partie de ce salon.',
+      );
+    }
+
+    // 4. Supprimer le joueur de la session
+    await this.prisma.duelPlayer.deleteMany({
+      where: { sessionId: session.id, userId: targetUserId },
+    });
+
+    this.logger.log(
+      `👢 [MultiplayerService] Le joueur ${targetPlayer.name} (${targetUserId}) a été expulsé du salon ${cleanCode} par l'hôte ${hostUserId}`,
+    );
+
+    // 5. Récupérer la liste actualisée des joueurs restants
+    const remainingPlayers = await this.prisma.duelPlayer.findMany({
+      where: { sessionId: session.id },
+      orderBy: { createdAt: 'asc' },
+    });
+
+    // 6. Si la session est en cours, recalculer si tous les participants restants ont déjà répondu
+    let allRemainingAnswered = false;
+    if (session.status === 'IN_PROGRESS') {
+      const hostIsSpectator = await this.isHostSpectator(cleanCode);
+      const activeContenders = hostIsSpectator
+        ? remainingPlayers.filter((p) => !p.isHost)
+        : remainingPlayers;
+
+      const answeredCount = activeContenders.filter(
+        (p) => p.hasAnsweredCurrent,
+      ).length;
+      allRemainingAnswered =
+        activeContenders.length > 0 && answeredCount >= activeContenders.length;
+    }
+
+    return {
+      session,
+      remainingPlayers,
+      kickedPlayer: targetPlayer,
+      allRemainingAnswered,
+    };
+  }
+
   private calculateLevel(xp: number): number {
     const safeXp = Math.max(0, xp || 0);
     const THRESHOLDS = [
@@ -948,7 +1155,11 @@ export class MultiplayerService {
   /**
    * Attribue de l'XP à un participant de manière sécurisée (arrondi supérieur strict).
    */
-  private async awardMultiplayerXp(userId: string, rank: number, amount: number) {
+  private async awardMultiplayerXp(
+    userId: string,
+    rank: number,
+    amount: number,
+  ) {
     if (!userId || amount <= 0) return;
 
     const user = await this.prisma.user.findUnique({
@@ -1079,6 +1290,35 @@ export class MultiplayerService {
             questionTextFr: q.questionFr || undefined,
             gameType: MultiplayerGameTypeEnum.TRUE_FALSE,
             choices: ['true', 'false'],
+          });
+        }
+      });
+
+      return result;
+    } else if (gameType === MultiplayerGameTypeEnum.QUIZ) {
+      const questions = await this.prisma.civicQuizQuestion.findMany({
+        where: { id: { in: questionIds } },
+        select: {
+          id: true,
+          prompt: true,
+          choices: true,
+          explanation: true,
+        },
+      });
+
+      const questionMap = new Map(questions.map((q) => [q.id, q]));
+      const result: PublicMultiplayerQuestion[] = [];
+
+      questionIds.forEach((id, index) => {
+        const q = questionMap.get(id);
+        if (q) {
+          result.push({
+            id: q.id,
+            orderIndex: index,
+            questionText: q.prompt,
+            questionTextFr: undefined,
+            gameType: MultiplayerGameTypeEnum.QUIZ,
+            choices: q.choices,
           });
         }
       });

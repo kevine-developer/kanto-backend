@@ -25,7 +25,9 @@ generator client {
 ## 3. Generate Prisma Client
 
 ```bash
+
 npx prisma generate
+
 ```
 
 Re-run `prisma generate` after every schema change to keep the client in sync.
@@ -33,11 +35,13 @@ Re-run `prisma generate` after every schema change to keep the client in sync.
 ## 4. Instantiate Prisma Client
 
 ```typescript
+
 import { PrismaClient } from '../generated/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
 const prisma = new PrismaClient({ adapter })
+
 ```
 
 If you change the generator `output`, update the import path to match. For the SQL provider workflow, replace `PrismaPg` with the adapter for your database.

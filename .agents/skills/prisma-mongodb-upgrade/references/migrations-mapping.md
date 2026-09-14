@@ -23,6 +23,7 @@ history on disk.
 ## Prisma Next: first-class, contract-driven migrations (Mongo included)
 
 Migration authoring in Next is first-class for Postgres **and Mongo** (prisma-next
+
 `skills/prisma-next-migrations/SKILL.md`) — MongoDB is not a push-only special case:
 
 - **Flow:** contract *emit* → diff → *plan* (writes a content-hashed migration package) →
@@ -30,13 +31,16 @@ Migration authoring in Next is first-class for Postgres **and Mongo** (prisma-ne
   *sign* (advance the marker after a verify pass).
 - **Mongo migration ops** come from dedicated factories: `createCollection`,
   `dropCollection`, `validatedCollection`, `setValidation`, `createIndex`, `dropIndex`,
+
   `collMod`, and `dataTransform` for data backfills.
 - **Marker storage:** Next records migration state in a document in the
   `_prisma_migrations` collection (per space) — the same collection name family v6 users
+
   know from SQL, repurposed for Mongo state.
 - **DDL is not transactional on Mongo:** the runner applies operations, verifies the live
   schema against the destination contract, and only advances the marker on a verify pass —
   making interrupted runs resumable rather than atomic (see Prisma Next's
+
   `prisma-next-migrations` skill).
 - **Push-style alternative still exists:** `db update` diffs the live database against the
   contract and applies directly without writing a migration directory — the closest

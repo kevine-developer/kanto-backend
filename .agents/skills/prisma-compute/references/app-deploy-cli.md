@@ -26,10 +26,12 @@ pnpm dlx @prisma/cli@latest app deploy
 `@prisma/cli` can install and refresh Prisma skills for local AI coding agents:
 
 ```bash
+
 bunx @prisma/cli@latest agent install
 bunx @prisma/cli@latest agent install --skill prisma-compute
 bunx @prisma/cli@latest agent update
 bunx @prisma/cli@latest agent status --json
+
 ```
 
 `agent install` and `agent update` shell out to `skills@latest add prisma/skills` through the detected package runner. Use them when the user wants Prisma's agent context installed or refreshed; they are not a deployment command.
@@ -43,11 +45,13 @@ bunx @prisma/cli@latest agent status --json
 Useful commands:
 
 ```bash
+
 bunx @prisma/cli@latest auth login
 bunx @prisma/cli@latest auth whoami
 bunx @prisma/cli@latest project list --json
 bunx @prisma/cli@latest project show
 bunx @prisma/cli@latest project link <project-id-or-name>
+
 ```
 
 `@prisma/cli` can keep multiple local browser-login workspace sessions. Running `auth login` again for a different workspace should add/update that workspace session and make it active; it should not delete the existing workspace session. The active workspace pointer decides which stored OAuth workspace normal commands use.
@@ -138,12 +142,15 @@ When a Compute app is connected to GitHub push-to-deploy, the default branch is 
 Create a Prisma Postgres database for the linked project:
 
 ```bash
+
 bunx @prisma/cli@latest database create main --branch main --json
+
 ```
 
 Manage project env vars:
 
 ```bash
+
 bunx @prisma/cli@latest project env list
 bunx @prisma/cli@latest project env add --file .env --role production
 bunx @prisma/cli@latest project env add --file .env.preview --role preview
@@ -152,6 +159,7 @@ bunx @prisma/cli@latest project env update --file .env --role production
 bunx @prisma/cli@latest project env update DATABASE_URL=postgresql://... --branch feature/foo
 bunx @prisma/cli@latest project env list --branch feature/foo
 bunx @prisma/cli@latest project env remove STRIPE_KEY --role preview
+
 ```
 
 `app deploy --env .env` loads environment variables from a file for the deployment. A config-backed deploy can instead load env through `prisma.compute.ts` `env`. Neither path is a migration command or seed command.
@@ -308,6 +316,7 @@ bunx @prisma/cli@latest app deploy \
 Deploy a preview branch with framework and port:
 
 ```bash
+
 bunx @prisma/cli@latest app deploy \
   --framework hono \
   --branch feature/foo \
@@ -315,11 +324,13 @@ bunx @prisma/cli@latest app deploy \
   --json \
   --no-interactive \
   --env .env.preview
+
 ```
 
 Bun-style app with explicit entrypoint:
 
 ```bash
+
 bunx @prisma/cli@latest app deploy \
   --framework bun \
   --entry src/index.ts \
@@ -327,6 +338,7 @@ bunx @prisma/cli@latest app deploy \
   --prod \
   --yes \
   --env .env
+
 ```
 
 `--entry <path>` without `--framework` is treated as a Bun app deploy.
@@ -379,11 +391,13 @@ bunx @prisma/cli@latest build logs <build-id> --json
 Domains:
 
 ```bash
+
 bunx @prisma/cli@latest app domain add shop.example.com
 bunx @prisma/cli@latest app domain show shop.example.com
 bunx @prisma/cli@latest app domain wait shop.example.com --timeout 15m
 bunx @prisma/cli@latest app domain retry shop.example.com
 bunx @prisma/cli@latest app domain remove shop.example.com
+
 ```
 
 Custom domain commands target production branch runtime. Do not use a preview branch for production domain setup.

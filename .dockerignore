@@ -1,0 +1,36 @@
+# Dépendances et builds locaux
+node_modules
+dist
+generated
+
+# Fichiers d'environnement sensibles
+.env
+.env.*
+!.env.example
+!.env.production.example
+
+# Logs et debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Git et agents
+.git
+.github
+.gitignore
+.agents
+skills-lock.json
+
+# Tests et couverture
+coverage
+test
+
+# Fichiers temporaires ou locaux
+cookies.txt
+.DS_Store
+Thumbs.db
+
+# Médias téléversés locaux (gérés par volume Docker persistant)
+uploads/*
+!uploads/.gitkeep

@@ -88,13 +88,17 @@ For automation, prefer `--json --no-interactive`, resolve ids before mutations, 
 Use `prisma postgres link` when the database already exists and you want to wire a local project to it:
 
 ```bash
+
 prisma postgres link
+
 ```
 
 For CI or other non-interactive environments:
 
 ```bash
+
 prisma postgres link --api-key "<your-api-key>" --database "db_..."
+
 ```
 
 This flow updates your local `.env` with `DATABASE_URL`, then you can run `prisma generate` and `prisma migrate dev`.
@@ -104,7 +108,9 @@ This flow updates your local `.env` with `DATABASE_URL`, then you can run `prism
 Use API endpoints on:
 
 ```text
+
 https://api.prisma.io/v1
+
 ```
 
 Explore the schema and endpoints using:
@@ -122,7 +128,9 @@ Auth options:
 Install and use:
 
 ```bash
+
 npm install @prisma/management-api-sdk
+
 ```
 
 Use `createManagementApiClient` for existing tokens, or `createManagementApiSdk` for OAuth + token refresh.
@@ -134,10 +142,12 @@ The SDK exposes typed workspace service-token list, create, and revoke routes. A
 Detailed guidance lives in:
 
 ```
+
 references/console-and-connections.md
 references/create-db-cli.md
 references/management-api.md
 references/management-api-sdk.md
+
 ```
 
 ## How to Use

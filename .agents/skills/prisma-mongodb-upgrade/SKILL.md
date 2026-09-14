@@ -78,6 +78,7 @@ façade transactions merge in Prisma Next.
 
 Behavioral claims about Prisma Next in this skill were verified against
 [prisma/prisma-next](https://github.com/prisma/prisma-next) at commit
+
 `a2791c5dd59d579b4b3052942ae7f8fe5e2ee852` (pre-1.0, ~v0.14/0.15 line). Prisma Next moves
 quickly in Early Access: **before acting on any Next-side claim, verify it against the
 version actually installed** (check the project's `@prisma-next/*` versions and the

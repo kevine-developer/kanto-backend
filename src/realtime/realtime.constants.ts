@@ -43,6 +43,11 @@ export const SOCKET_EVENTS = {
   DUEL_SESSION_CANCELLED: 'duel:session_cancelled',
   DUEL_TOGGLE_SPECTATOR: 'duel:toggle_spectator',
   DUEL_HOST_DETAILS: 'duel:host_details',
+  DUEL_KICK_PLAYER: 'duel:kick_player',
+  DUEL_PLAYER_KICKED: 'duel:player_kicked',
+  DUEL_CHALLENGE_RECEIVED: 'duel:challenge_received',
+  DUEL_CHALLENGE_DECLINE: 'duel:challenge_decline',
+  DUEL_CHALLENGE_DECLINED: 'duel:challenge_declined',
 } as const;
 
 /**

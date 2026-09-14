@@ -98,6 +98,7 @@ model User {
   progress       UserProgress?
   gameProgress   GameProgression[]
   xpTransactions XpTransaction[]
+  badges         UserBadge[]
 
   @@map("users")
 }
@@ -403,6 +404,9 @@ model Like {
   recitationId String?
   recitation   Recitation? @relation(fields: [recitationId], references: [id], onDelete: Cascade)
 
+  civicContentId String?
+  civicContent   CivicContent? @relation(fields: [civicContentId], references: [id], onDelete: Cascade)
+
   createdAt DateTime @default(now())
 
   @@unique([userId, itemId])
@@ -411,6 +415,7 @@ model Like {
   @@unique([userId, kabaryId])
   @@unique([userId, poesieId])
   @@unique([userId, recitationId])
+  @@unique([userId, civicContentId])
   @@index([userId])
   @@map("likes")
 }
@@ -992,6 +997,19 @@ model XpTransaction {
   @@map("xp_transactions")
 }
 
+model UserBadge {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badgeId    String   // Identifiant du badge dans le catalogue (ex: "streak_7", "proverbs_20", "xp_1000")
+  unlockedAt DateTime @default(now())
+  progress   Int      @default(0)
+
+  @@unique([userId, badgeId])
+  @@index([userId])
+  @@map("user_badges")
+}
+
 // ======================================================
 // 19. POÉSIE & HAINTENY (Tononkalo)
 // ======================================================
@@ -1108,12 +1126,14 @@ model CivicContent {
   status      ContentStatus    @default(PUBLISHED)
 
   // Compteurs
-  viewCount Int @default(0)
+  viewCount  Int @default(0)
+  likesCount Int @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   structureRoles CivicStructureRole[]
+  likes          Like[]
 
   @@index([subCategory])
   @@index([status])
@@ -1157,6 +1177,8 @@ model CivicQuizQuestion {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  answers CivicQuizAnswer[]
+
   @@index([category])
   @@index([difficulty])
   @@index([status])
@@ -1178,6 +1200,7 @@ enum DuelStatus {
 enum DuelGameType {
   TRUE_FALSE
   MISSING_WORD
+  QUIZ
 }
 
 model DuelSession {
@@ -1258,4 +1281,162 @@ model DuelAnswer {
   @@index([sessionId])
   @@index([userId])
   @@map("duel_answers")
+}
+
+// ======================================================
+// 24. SYSTEM ANNOUNCEMENTS
+// ======================================================
+
+enum AnnouncementType {
+  INFO
+  MAINTENANCE
+  NEW_FEATURE
+}
+
+model SystemAnnouncement {
+  id        String           @id @default(cuid())
+  titleFr   String
+  titleMg   String
+  messageFr String           @db.Text
+  messageMg String           @db.Text
+  type      AnnouncementType @default(INFO)
+  isActive  Boolean          @default(false)
+  version   Int              @default(1)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@index([isActive])
+  @@map("system_announcements")
+}
+
+// ======================================================
+// 25. DEVINETTES (Ankamantatra)
+// ======================================================
+
+model RiddleQuestion {
+  id            String          @id @default(cuid())
+  riddleMg      String          @db.Text
+  riddleFr      String          @db.Text
+  options       String[]
+  correctAnswer String
+  explanation   String          @db.Text
+  clue          String?
+  level         Int             @default(1)
+  status        ContentStatus   @default(PUBLISHED)
+  timesPlayed   Int             @default(0)
+  timesCorrect  Int             @default(0)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  answers       RiddleAnswer[]
+
+  @@index([level])
+  @@index([status])
+  @@map("riddle_questions")
+}
+
+model RiddleSession {
+  id              String          @id @default(cuid())
+  userId          String?
+  score           Int             @default(0)
+  totalQuestions  Int             @default(10)
+  streakMax       Int             @default(0)
+  durationSeconds Int             @default(0)
+  isCompleted     Boolean         @default(false)
+  xpEarned        Int             @default(0)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  answers         RiddleAnswer[]
+
+  @@index([userId])
+  @@index([createdAt])
+  @@map("riddle_sessions")
+}
+
+model RiddleAnswer {
+  id         String         @id @default(cuid())
+  sessionId  String
+  session    RiddleSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  questionId String
+  question   RiddleQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  userAnswer String?
+  isCorrect  Boolean
+  answeredAt DateTime       @default(now())
+
+  @@index([sessionId])
+  @@index([questionId])
+  @@map("riddle_answers")
+}
+
+// ======================================================
+// 26. CIVIC QUIZ SESSIONS
+// ======================================================
+
+model CivicQuizSession {
+  id              String             @id @default(cuid())
+  userId          String?
+  category        String?
+  difficulty      DifficultyLevel    @default(EASY)
+  score           Int                @default(0)
+  totalQuestions  Int                @default(10)
+  streakMax       Int                @default(0)
+  durationSeconds Int                @default(0)
+  isCompleted     Boolean            @default(false)
+  xpEarned        Int                @default(0)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  answers         CivicQuizAnswer[]
+
+  @@index([userId])
+  @@index([createdAt])
+  @@map("civic_quiz_sessions")
+}
+
+model CivicQuizAnswer {
+  id         String            @id @default(cuid())
+  sessionId  String
+  session    CivicQuizSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  questionId String
+  question   CivicQuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  userAnswer String?
+  isCorrect  Boolean
+  answeredAt DateTime          @default(now())
+
+  @@index([sessionId])
+  @@index([questionId])
+  @@map("civic_quiz_answers")
+}
+
+// ======================================================
+// 27. HOROSCOPE (Vintana)
+// ======================================================
+
+model VintanaSign {
+  id          String   @id @default(cuid())
+  nameMg      String   @unique
+  nameFr      String
+  element     String
+  description String   @db.Text
+  luckyColor  String?
+  luckyDay    String?
+  
+  forecasts   VintanaForecast[]
+
+  @@map("vintana_signs")
+}
+
+model VintanaForecast {
+  id          String       @id @default(cuid())
+  signId      String
+  sign        VintanaSign  @relation(fields: [signId], references: [id], onDelete: Cascade)
+  date        DateTime     @db.Date
+  prediction  String       @db.Text
+  mood        String?
+  createdAt   DateTime     @default(now())
+
+  @@unique([signId, date])
+  @@index([date])
+  @@map("vintana_forecasts")
 }

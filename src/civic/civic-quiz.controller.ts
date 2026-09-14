@@ -9,6 +9,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { Session, type UserSession } from '../auth/index.js';
 import { CivicQuizService } from './civic-quiz.service.js';
 import {
   FindCivicQuizQueryDto,
@@ -51,6 +52,34 @@ export class CivicQuizController {
   @Get()
   findAll(@Query() query: FindCivicQuizQueryDto) {
     return this.civicQuizService.findAll(query);
+  }
+
+  @Post('session/start')
+  startSession(@Body() dto: any, @Session() session?: UserSession) {
+    const userId = session?.user?.id;
+    return this.civicQuizService.startSession(
+      userId,
+      dto.category,
+      dto.difficulty,
+      dto.questionCount || 10,
+    );
+  }
+
+  @Post('session/answer')
+  answerSessionQuestion(@Body() dto: any) {
+    return this.civicQuizService.answerSessionQuestion(
+      dto.sessionId,
+      dto.questionId,
+      dto.userAnswerIndex,
+    );
+  }
+
+  @Post('session/finish')
+  finishSession(@Body() dto: any) {
+    return this.civicQuizService.finishSession(
+      dto.sessionId,
+      dto.durationSeconds || 0,
+    );
   }
 
   @Get(':id')

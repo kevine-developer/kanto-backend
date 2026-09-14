@@ -13,7 +13,8 @@ import { CivicService } from './civic.service.js';
 import { FindCivicQueryDto } from './dto/find-civic.dto.js';
 import { CreateCivicDto } from './dto/create-civic.dto.js';
 import { UpdateCivicDto } from './dto/update-civic.dto.js';
-import { AuthGuard, Roles } from '../auth/index.js';
+import { AuthGuard, Roles, Session } from '../auth/index.js';
+import type { UserSession } from '../auth/index.js';
 
 @Controller('civic')
 export class CivicController {
@@ -53,5 +54,17 @@ export class CivicController {
   @Post(':id/view')
   incrementView(@Param('id') id: string) {
     return this.civicService.incrementView(id);
+  }
+
+  @Post(':id/like')
+  @UseGuards(AuthGuard)
+  like(@Param('id') id: string, @Session() session?: UserSession) {
+    return this.civicService.like(id, session!.user.id);
+  }
+
+  @Post(':id/unlike')
+  @UseGuards(AuthGuard)
+  unlike(@Param('id') id: string, @Session() session?: UserSession) {
+    return this.civicService.unlike(id, session!.user.id);
   }
 }

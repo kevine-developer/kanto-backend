@@ -43,7 +43,9 @@ bunx --bun prisma init
 ### Basic initialization
 
 ```bash
+
 prisma init
+
 ```
 
 Creates a PostgreSQL project setup.
@@ -51,19 +53,25 @@ Creates a PostgreSQL project setup.
 ### SQLite project
 
 ```bash
+
 prisma init --datasource-provider sqlite
+
 ```
 
 ### MySQL with custom URL
 
 ```bash
+
 prisma init --datasource-provider mysql --url "mysql://user:password@localhost:3306/mydb"
+
 ```
 
 ### Prisma Postgres (cloud)
 
 ```bash
+
 prisma init --db
+
 ```
 
 Opens browser for authentication, creates cloud database instance.
@@ -71,7 +79,9 @@ Opens browser for authentication, creates cloud database instance.
 ### Add an example model
 
 ```bash
+
 prisma init --with-model
+
 ```
 
 Adds a starter model to the generated schema.
@@ -79,12 +89,15 @@ Adds a starter model to the generated schema.
 ### With preview features
 
 ```bash
+
 prisma init --preview-feature relationJoins --preview-feature fullTextSearch
+
 ```
 
 ## Generated Schema
 
 ```prisma
+
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -93,11 +106,13 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
 ```
 
 ## Generated Config (Node.js default)
 
 ```typescript
+
 // prisma.config.ts
 import "dotenv/config";
 import { defineConfig } from 'prisma/config'
@@ -111,11 +126,13 @@ export default defineConfig({
     url: process.env['DATABASE_URL'],
   },
 })
+
 ```
 
 ## Generated Config (Bun)
 
 ```typescript
+
 import { defineConfig, env } from 'prisma/config'
 
 export default defineConfig({
@@ -127,6 +144,7 @@ export default defineConfig({
     url: env('DATABASE_URL'),
   },
 })
+
 ```
 
 ## Next Steps After Init
