@@ -52,20 +52,18 @@ RUN apk add --no-cache libc6-compat openssl dumb-init wget
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# Copie des fichiers applicatifs compilés et dépendances de production
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/generated ./generated
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
-COPY docker-entrypoint.sh ./docker-entrypoint.sh
+# Copie des fichiers applicatifs compilés et dépendances avec assignation non-root directe
+COPY --chown=node:node --from=builder /app/package.json ./package.json
+COPY --chown=node:node --from=builder /app/node_modules ./node_modules
+COPY --chown=node:node --from=builder /app/dist ./dist
+COPY --chown=node:node --from=builder /app/generated ./generated
+COPY --chown=node:node --from=builder /app/prisma ./prisma
+COPY --chown=node:node --from=builder /app/prisma.config.ts ./prisma.config.ts
+COPY --chown=node:node docker-entrypoint.sh ./docker-entrypoint.sh
 
-# Normalisation des sauts de ligne (sécurité CRLF -> LF) et permissions
-RUN sed -i 's/\r$//' ./docker-entrypoint.sh && chmod +x ./docker-entrypoint.sh
-
-# Création du dossier uploads pour les fichiers audio/médias locaux et assignation non-root
-RUN mkdir -p /app/uploads && chown -R node:node /app
+# Normalisation des sauts de ligne (sécurité CRLF -> LF), permissions d'exécution et dossier uploads
+RUN sed -i 's/\r$//' ./docker-entrypoint.sh && chmod +x ./docker-entrypoint.sh && \
+    mkdir -p /app/uploads && chown -R node:node /app/uploads
 
 # Exécution sous l'utilisateur non-root standard de Node.js
 USER node

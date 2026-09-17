@@ -133,91 +133,38 @@ docker compose exec backend npm run seed:admin
 
 ---
 
-## 5. Configuration Nginx Inverse Proxy avec SSL & WebSockets
+## 5. Routage HTTPS & Certificats SSL Automatiques via Traefik v3
 
-Pour exposer votre API publiquement avec un nom de domaine (ex: `api.votre-domaine.com`) et un certificat SSL HTTPS gratuit Let's Encrypt :
+Sur votre VPS, Traefik v3 écoute déjà sur les ports 80 et 443 via le réseau partagé `server_app-network`.
+**Aucun Nginx n'est nécessaire**, et aucun port n'a besoin d'être exposé sur l'hôte, ce qui élimine 100% des risques de conflit avec votre projet `kadokou`.
 
-### A. Installer Nginx et Certbot
+### Fonctionnement automatique :
+1. Définissez simplement votre domaine dans votre `.env` :
+   ```bash
+   KANTO_DOMAIN="api-kanto.gastsar.fr"
+   ```
+2. Lorsque vous lancez `./deploy.sh`, Traefik détecte automatiquement le conteneur `kanto_backend` via ses labels Docker :
+   - Route HTTPS sécurisée : `https://api-kanto.gastsar.fr`
+   - Certificat SSL Let's Encrypt généré et renouvelé automatiquement
+   - Prise en charge native des WebSockets (Jeu Multijoueur / Socket.io)
+   - Headers de sécurité et limitation de débit intégrés
 
-```bash
-apt install -y nginx certbot python3-certbot-nginx
-```
-
-### B. Créer la configuration Nginx
-
-Créez le fichier `/etc/nginx/sites-available/kanto-backend` :
-
-```bash
-nano /etc/nginx/sites-available/kanto-backend
-```
-
-Collez la configuration suivante (remplacez `api.votre-domaine.com` par votre vrai domaine) :
-
-```nginx
-server {
-    server_name api.votre-domaine.com;
-
-    # Taille maximale des fichiers téléversés (audio, images)
-    client_max_body_size 50M;
-
-    location / {
-        proxy_pass http://127.0.0.1:3000;
-        proxy_http_version 1.1;
-
-        # En-têtes critiques pour WebSockets (Jeu Multijoueur / Socket.io)
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-
-        # En-têtes standards de proxy
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-
-        # Timeouts pour connexions longues WebSockets
-        proxy_read_timeout 86400s;
-        proxy_send_timeout 86400s;
-    }
-
-    # Cache pour les uploads statiques
-    location /uploads/ {
-        proxy_pass http://127.0.0.1:3000/uploads/;
-        proxy_set_header Host $host;
-        expires 30d;
-        add_header Cache-Control "public, no-transform";
-    }
-}
-```
-
-### C. Activer le site et tester
-
-```bash
-ln -s /etc/nginx/sites-available/kanto-backend /etc/nginx/sites-enabled/
-nginx -t
-systemctl reload nginx
-```
-
-### D. Obtenir le certificat SSL Let's Encrypt
-
-```bash
-certbot --nginx -d api.votre-domaine.com
-```
-
-Certbot configurera automatiquement le renouvellement SSL HTTPS.
 
 ---
 
 ## 6. Maintenance, Mises à Jour & Sauvegardes
 
-### Mettre à jour l'application lors d'une nouvelle version de code
+### Déploiement automatique en 1 commande (`deploy.sh`)
+
+Un script automatisé `deploy.sh` est fourni à la racine de `backend-kanto`. Il effectue le `git pull`, le redémarrage sécurisé des conteneurs, le build, la vérification d'état (health check) et le nettoyage automatique des images obsolètes :
 
 ```bash
 cd /opt/kanto/backend-kanto
-git pull
-docker compose up -d --build
+chmod +x deploy.sh
+./deploy.sh
 ```
 
-> Le script `docker-entrypoint.sh` appliquera automatiquement les nouvelles migrations Prisma sans interruption prolongée.
+> Le script `docker-entrypoint.sh` intégré dans le conteneur applique automatiquement les nouvelles migrations Prisma (`RUN_MIGRATIONS=true`) au démarrage sans interruption.
 
 ### Sauvegarde quotidienne de la base de données PostgreSQL
 

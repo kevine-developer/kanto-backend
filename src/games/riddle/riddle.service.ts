@@ -18,7 +18,7 @@ export class RiddleService {
 
   async startSession(
     userId: string | undefined,
-    level: number | undefined,
+    level: number | undefined = undefined,
     questionCount: number = 5,
   ) {
     const whereClause: any = { status: 'PUBLISHED' };

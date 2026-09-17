@@ -204,8 +204,8 @@ export class BadgesService {
             await this.notificationsService.createNotification({
               userId,
               isBroadcast: false,
-              titleMg: `🏅 Nahazo mari-boninahitra vaovao : ${badge.titleMg} !`,
-              titleFr: `🏅 Nouveau badge débloqué : ${badge.titleFr} !`,
+              titleMg: `Nahazo mari-boninahitra vaovao : ${badge.titleMg} !`,
+              titleFr: `Nouveau badge débloqué : ${badge.titleFr} !`,
               messageMg: `Arahabaina ! Nahazo ny mari-boninahitra "${badge.titleMg}" ianao (+${badge.xpReward} XP).`,
               messageFr: `Félicitations ! Vous avez débloqué le badge "${badge.titleFr}" (+${badge.xpReward} XP).`,
               category: 'reward',
@@ -294,8 +294,8 @@ export class BadgesService {
       await this.notificationsService.createNotification({
         userId,
         isBroadcast: false,
-        titleMg: `🏅 Nahazo mari-boninahitra : ${badgeDef.titleMg} !`,
-        titleFr: `🏅 Badge débloqué : ${badgeDef.titleFr} !`,
+        titleMg: `Nahazo mari-boninahitra : ${badgeDef.titleMg} !`,
+        titleFr: `Badge débloqué : ${badgeDef.titleFr} !`,
         messageMg: `Arahabaina ! Nahazo ny mari-boninahitra "${badgeDef.titleMg}" ianao (+${badgeDef.xpReward} XP).`,
         messageFr: `Félicitations ! Vous avez débloqué le badge "${badgeDef.titleFr}" (+${badgeDef.xpReward} XP).`,
         category: 'reward',

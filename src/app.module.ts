@@ -18,7 +18,6 @@ import { MissingWordModule } from './games/missing-word/missing-word.module.js';
 import { DuelModule } from './games/duel/duel.module.js';
 import { MultiplayerModule } from './games/multiplayer/multiplayer.module.js';
 import { LocksModule } from './locks/locks.module.js';
-import { OnboardingModule } from './onboarding/onboarding.module.js';
 import { NotificationsModule } from './notifications/notifications.module.js';
 import { IntegrationsModule } from './integrations/integrations.module.js';
 import { ProgressionModule } from './progression/progression.module.js';
@@ -34,6 +33,9 @@ import { AstrologyModule } from './astrology/astrology.module.js';
 import { AnnouncementsModule } from './announcements/announcements.module.js';
 import { RiddleModule } from './games/riddle/riddle.module.js';
 import { VintanaModule } from './vintana/vintana.module.js';
+import { FriendsModule } from './friends/friends.module.js';
+import { HistoryModule } from './history/history.module.js';
+import { WelcomeSlidesModule } from './welcome-slides/welcome-slides.module.js';
 
 @Module({
   imports: [
@@ -54,6 +56,11 @@ import { VintanaModule } from './vintana/vintana.module.js';
         ttl: 60000, // 1 minute
         limit: 20, // max 20 tentatives d'authentification par minute
       },
+      {
+        name: 'upload',
+        ttl: 60000, // 1 minute
+        limit: 15, // max 15 téléversements d'images par minute par IP (protection disque & Cloudinary)
+      },
     ]),
     PrismaModule,
     RedisModule,
@@ -71,7 +78,6 @@ import { VintanaModule } from './vintana/vintana.module.js';
     DuelModule,
     MultiplayerModule,
     LocksModule,
-    OnboardingModule,
     NotificationsModule,
     ProgressionModule,
     UsersModule,
@@ -86,6 +92,9 @@ import { VintanaModule } from './vintana/vintana.module.js';
     AnnouncementsModule,
     RiddleModule,
     VintanaModule,
+    FriendsModule,
+    HistoryModule,
+    WelcomeSlidesModule,
   ],
   controllers: [AppController],
   providers: [

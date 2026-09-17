@@ -125,8 +125,19 @@ async function bootstrap() {
   app.use(helmet());
   app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
 
-  // Servir les fichiers audio et médias téléchargeables
-  app.use('/uploads', express.static(path.resolve(process.cwd(), 'uploads')));
+  // Servir les fichiers audio et médias téléchargeables de manière sécurisée
+  app.use(
+    '/uploads',
+    express.static(path.resolve(process.cwd(), 'uploads'), {
+      dotfiles: 'ignore', // Bloque les fichiers cachés (.env, .git, etc.)
+      index: false, // Empêche le directory browsing
+      maxAge: '7d', // Mise en cache optimale
+      setHeaders: (res) => {
+        res.setHeader('X-Content-Type-Options', 'nosniff'); // Empêche le reniflage de type MIME
+        res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+      },
+    }),
+  );
 
   const desiredPort = Number(process.env.PORT) || 3000;
   const port = await getAvailablePort(desiredPort);
