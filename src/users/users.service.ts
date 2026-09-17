@@ -9,6 +9,7 @@ import path from 'node:path';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CloudinaryService } from '../integrations/cloudinary/cloudinary.service.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
+import { FriendshipStatus } from '../../generated/prisma/client.js';
 
 @Injectable()
 export class UsersService {
@@ -39,6 +40,7 @@ export class UsersService {
           name: true,
           username: true,
           email: true,
+          emailVerified: true,
           image: true,
           role: true,
           tier: true,
@@ -110,6 +112,156 @@ export class UsersService {
     };
   }
 
+  /**
+   * Récupère le profil public complet d'un utilisateur avec ses stats réelles,
+   * son rang mondial et le statut relationnel/amitié vis-à-vis de l'utilisateur connecté.
+   */
+  async getPublicProfile(targetUserId: string, currentUserId?: string) {
+    const [
+      user,
+      progress,
+      contributionsCount,
+      tfSessions,
+      riddleSessions,
+      quizSessions,
+      duelCount,
+      badgesCount,
+    ] = await Promise.all([
+      this.prisma.user.findUnique({
+        where: { id: targetUserId },
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          image: true,
+          role: true,
+          tier: true,
+          createdAt: true,
+        },
+      }),
+      this.prisma.userProgress.findUnique({
+        where: { userId: targetUserId },
+      }),
+      this.prisma.contribution.count({ where: { userId: targetUserId } }),
+      this.prisma.trueFalseSession.findMany({
+        where: { userId: targetUserId, isCompleted: true },
+        select: { score: true, totalQuestions: true },
+      }),
+      this.prisma.riddleSession.findMany({
+        where: { userId: targetUserId, isCompleted: true },
+        select: { score: true, totalQuestions: true },
+      }),
+      this.prisma.civicQuizSession.findMany({
+        where: { userId: targetUserId, isCompleted: true },
+        select: { score: true, totalQuestions: true },
+      }),
+      this.prisma.duelPlayer.count({
+        where: { userId: targetUserId },
+      }),
+      this.prisma.userBadge.count({
+        where: { userId: targetUserId },
+      }),
+    ]);
+
+    if (!user) {
+      throw new NotFoundException('Utilisateur non trouvé');
+    }
+
+    const allSessions = [...tfSessions, ...riddleSessions, ...quizSessions];
+    const gamesPlayed = allSessions.length + duelCount;
+
+    let totalScore = 0;
+    let totalQuestions = 0;
+    for (const s of allSessions) {
+      totalScore += s.score || 0;
+      totalQuestions += s.totalQuestions || 0;
+    }
+
+    const accuracy =
+      totalQuestions > 0 ? Math.round((totalScore / totalQuestions) * 100) : 0;
+
+    const totalXp = Math.ceil(Number(progress?.totalXp || 0));
+
+    // Calcul du rang mondial all-time
+    const rank =
+      (await this.prisma.userProgress.count({
+        where: { totalXp: { gt: totalXp } },
+      })) + 1;
+
+    // Statut d'amitié & encouragement si currentUserId est fourni
+    let friendshipStatus: 'NONE' | 'PENDING_SENT' | 'PENDING_RECEIVED' | 'FRIENDS' | 'BLOCKED' = 'NONE';
+    let friendshipId: string | undefined = undefined;
+    let canEncourage = false;
+    let hasEncouragedToday = false;
+
+    if (currentUserId && currentUserId !== targetUserId) {
+      const friendship = await this.prisma.friendship.findFirst({
+        where: {
+          OR: [
+            { senderId: currentUserId, receiverId: targetUserId },
+            { senderId: targetUserId, receiverId: currentUserId },
+          ],
+        },
+      });
+
+      if (friendship) {
+        friendshipId = friendship.id;
+        if (friendship.status === FriendshipStatus.ACCEPTED) {
+          friendshipStatus = 'FRIENDS';
+        } else if (friendship.status === FriendshipStatus.PENDING) {
+          friendshipStatus =
+            friendship.senderId === currentUserId ? 'PENDING_SENT' : 'PENDING_RECEIVED';
+        } else if (friendship.status === FriendshipStatus.BLOCKED) {
+          friendshipStatus = 'BLOCKED';
+        }
+      }
+
+      // Vérifier encouragement journalier
+      const today = new Date(
+        Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth(), new Date().getUTCDate()),
+      );
+      const existingEncouragement = await this.prisma.encouragement.findUnique({
+        where: {
+          senderId_receiverId_date: {
+            senderId: currentUserId,
+            receiverId: targetUserId,
+            date: today,
+          },
+        },
+      });
+
+      hasEncouragedToday = !!existingEncouragement;
+      canEncourage = !existingEncouragement;
+    }
+
+    return {
+      user: {
+        id: user.id,
+        name: user.name,
+        username: user.username || `@${user.name.toLowerCase().replace(/\s+/g, '_')}`,
+        image: user.image,
+        tier: user.tier,
+        createdAt: user.createdAt,
+      },
+      stats: {
+        level: progress?.level || 1,
+        totalXp,
+        streakDays: progress?.streakDays || 0,
+        rank,
+        contributionsCount,
+        gamesPlayed,
+        accuracy,
+        badgesCount,
+      },
+      friendship: {
+        status: friendshipStatus,
+        friendshipId,
+        canEncourage,
+        hasEncouragedToday,
+      },
+    };
+  }
+
   async updateMe(userId: string, dto: UpdateUserDto) {
     if (dto.email) {
       const normalizedEmail = dto.email.trim().toLowerCase();
@@ -143,13 +295,17 @@ export class UsersService {
           username: dto.username ? dto.username.trim().toLowerCase() : null,
         }),
         ...(dto.image !== undefined && { image: dto.image }),
-        ...(dto.email && { email: dto.email.trim().toLowerCase() }),
+        ...(dto.email && {
+          email: dto.email.trim().toLowerCase(),
+          emailVerified: false,
+        }),
       },
       select: {
         id: true,
         name: true,
         username: true,
         email: true,
+        emailVerified: true,
         image: true,
         role: true,
         tier: true,

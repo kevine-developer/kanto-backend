@@ -603,6 +603,7 @@ export class FriendsService {
       badgeType: 'reward',
       iconName: 'heart',
       iconColor: '#E05615',
+      targetRoute: `kantomg://profile/friendProfile?userId=${senderId}&name=${encodeURIComponent(sender?.name || '')}&action=encourage_back`,
       isBroadcast: false,
       userId: targetUserId,
     });

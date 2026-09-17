@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Patch,
   Post,
   Query,
@@ -63,5 +64,16 @@ export class UsersController {
   @UseGuards(AuthGuard)
   getMyFavorites(@Session() session: UserSession) {
     return this.usersService.getMyFavorites(session.user.id);
+  }
+
+  /**
+   * Profil public d'un utilisateur avec statistiques complètes, rang, et statut relationnel.
+   */
+  @Get(':userId/public-profile')
+  getPublicProfile(
+    @Param('userId') userId: string,
+    @Session() session?: UserSession,
+  ) {
+    return this.usersService.getPublicProfile(userId, session?.user?.id);
   }
 }
