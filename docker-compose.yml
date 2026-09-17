@@ -6,16 +6,20 @@ services:
       dockerfile: Dockerfile
     container_name: kanto_backend
     restart: unless-stopped
-    ports:
-      - "${PORT:-3000}:3000"
+    # Aucun port hôte exposé directement : Traefik assure le reverse-proxy HTTPS
+    # en communiquant sur le port 3000 via le réseau partagé server_app-network.
+    # Si besoin d'accès direct hors-Traefik, décommenter ci-dessous :
+    # ports:
+    #   - "127.0.0.1:${KANTO_HOST_PORT:-3001}:3000"
     env_file:
       - .env
     environment:
       - NODE_ENV=production
       - PORT=3000
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-kanto}?schema=public
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-kanto_user}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-kanto_prod}?schema=public
       - REDIS_URL=redis://redis:6379
       - RUN_MIGRATIONS=${RUN_MIGRATIONS:-true}
+      - NODE_OPTIONS=--max-old-space-size=384
     volumes:
       - kanto_uploads:/app/uploads
     depends_on:
@@ -24,32 +28,57 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - kanto_network
+      - kanto_internal
+      - traefik_network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    labels:
+      - "traefik.enable=true"
+      # Route HTTPS vers le domaine de Kanto (configurable dans .env)
+      - "traefik.http.routers.kanto-api.rule=Host(`${KANTO_DOMAIN:-api-kanto.gastsar.fr}`)"
+      - "traefik.http.routers.kanto-api.entrypoints=websecure"
+      - "traefik.http.routers.kanto-api.tls.certresolver=mytlschallenge"
+      # Port interne de l'application NestJS
+      - "traefik.http.services.kanto-api.loadbalancer.server.port=3000"
+      # Réseau Traefik dédié pour éviter toute ambiguïté multi-réseaux
+      - "traefik.docker.network=server_app-network"
+      # Middlewares spécifiques à Kanto (n'écrasent pas ceux de kadokou)
+      - "traefik.http.middlewares.kanto-rate-limit.ratelimit.average=100"
+      - "traefik.http.middlewares.kanto-rate-limit.ratelimit.burst=150"
+      - "traefik.http.middlewares.kanto-security-headers.headers.customResponseHeaders.X-Content-Type-Options=nosniff"
+      - "traefik.http.middlewares.kanto-security-headers.headers.customResponseHeaders.X-Frame-Options=DENY"
+      - "traefik.http.routers.kanto-api.middlewares=kanto-rate-limit,kanto-security-headers"
 
-  # ─── BASE DE DONNÉES POSTGRESQL ─────────────────────────────────────────────
+  # ─── BASE DE DONNÉES POSTGRESQL (KANTO) ─────────────────────────────────────
   postgres:
     image: postgres:16-alpine
     container_name: kanto_postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-kanto_user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-kanto}
+      POSTGRES_DB: ${POSTGRES_DB:-kanto_prod}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
     volumes:
       - kanto_pgdata:/var/lib/postgresql/data
-    # Port lié uniquement à l'interface locale pour éviter l'exposition publique sur VPS
-    ports:
-      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    # Pas de port exposé sur l'hôte pour éliminer tout conflit avec la DB de kadokou (port 5432)
+    # L'API Kanto y accède directement via le réseau isolé kanto_internal
+    networks:
+      - kanto_internal
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-kanto}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-kanto_user} -d ${POSTGRES_DB:-kanto_prod}"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
-    networks:
-      - kanto_network
 
-  # ─── CACHE & WEBSOCKET PUB/SUB REDIS ────────────────────────────────────────
+  # ─── CACHE & WEBSOCKET PUB/SUB REDIS (KANTO) ────────────────────────────────
   redis:
     image: redis:7-alpine
     container_name: kanto_redis
@@ -57,19 +86,22 @@ services:
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - kanto_redisdata:/data
-    # Port lié uniquement à l'interface locale pour éviter l'exposition publique sur VPS
-    ports:
-      - "127.0.0.1:${REDIS_PORT:-6379}:6379"
+    # Pas de port exposé sur l'hôte pour éliminer tout conflit avec le Redis de kadokou (port 6379)
+    # L'API Kanto y accède directement via le réseau isolé kanto_internal
+    networks:
+      - kanto_internal
+    deploy:
+      resources:
+        limits:
+          memory: 256M
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 5s
-    networks:
-      - kanto_network
 
-# ─── VOLUMES PERSISTANTS ──────────────────────────────────────────────────────
+# ─── VOLUMES PERSISTANTS KANTO ────────────────────────────────────────────────
 volumes:
   kanto_pgdata:
     name: kanto_pgdata
@@ -78,8 +110,14 @@ volumes:
   kanto_uploads:
     name: kanto_uploads
 
-# ─── RÉSEAU ISOLÉ ─────────────────────────────────────────────────────────────
+# ─── RÉSEAUX ──────────────────────────────────────────────────────────────────
 networks:
-  kanto_network:
-    name: kanto_network
+  # Réseau interne isolé propre à Kanto (Backend <-> Postgres <-> Redis)
+  kanto_internal:
+    name: kanto_internal_network
     driver: bridge
+
+  # Réseau partagé existant de Traefik (créé par le projet kadokou sur le VPS)
+  traefik_network:
+    name: server_app-network
+    external: true

@@ -288,8 +288,8 @@ export class MultiplayerService {
             await this.notificationsService.createNotification({
               userId: opponent.id,
               isBroadcast: false,
-              titleMg: `⚔️ Fanamby vaovao : ${gameLabelMg} !`,
-              titleFr: `⚔️ Nouveau défi : ${gameLabelFr} !`,
+              titleMg: `Fanamby vaovao : ${gameLabelMg} !`,
+              titleFr: `Nouveau défi : ${gameLabelFr} !`,
               messageMg: `${playerName} dia manasa anao hifaninana amin'ny ${gameLabelMg} ! Hanaiky sa handà ny fanamby ? (Kaody: ${code})`,
               messageFr: `${playerName} vous défie sur un ${gameLabelFr} ! Accepter ou refuser le défi. (Code : ${code})`,
               category: 'duel',

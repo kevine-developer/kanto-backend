@@ -76,12 +76,10 @@ export class CloudinaryService {
       mimeType = matches[1].toLowerCase();
       buffer = Buffer.from(matches[2], 'base64');
     } else {
-      // Données brutes sans data URI : on tente JPEG par défaut
-      mimeType = 'image/jpeg';
       buffer = Buffer.from(base64Data, 'base64');
     }
 
-    // Vérification taille
+    // Vérification taille maximale (5 MB)
     if (buffer.length > this.MAX_UPLOAD_SIZE_BYTES) {
       const sizeMB = (buffer.length / 1024 / 1024).toFixed(2);
       throw new BadRequestException(
@@ -89,14 +87,67 @@ export class CloudinaryService {
       );
     }
 
-    // Vérification type MIME
-    if (!this.ALLOWED_IMAGE_MIME_TYPES.has(mimeType)) {
+    // Sécurité : Validation stricte des Magic Bytes pour garantir l'authenticité de l'image
+    const detectedMime = this.detectImageMimeFromBuffer(buffer);
+    if (!detectedMime || !this.ALLOWED_IMAGE_MIME_TYPES.has(detectedMime)) {
       throw new BadRequestException(
-        `Type de fichier non autorisé : "${mimeType}". Types acceptés : JPEG, PNG, WebP, GIF.`,
+        'Contenu rejeté : le fichier ne correspond pas à une image valide (formats acceptés : JPEG, PNG, WebP, GIF).',
       );
     }
 
+    // Utilise le type MIME authentifié par les octets binaires
+    mimeType = detectedMime;
+
     return { buffer, mimeType };
+  }
+
+  /**
+   * Vérifie les Magic Numbers d'en-tête binaire pour authentifier le format réel.
+   */
+  private detectImageMimeFromBuffer(buffer: Buffer): string | null {
+    if (buffer.length < 12) return null;
+
+    // JPEG: FF D8 FF
+    if (buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) {
+      return 'image/jpeg';
+    }
+    // PNG: 89 50 4E 47 0D 0A 1A 0A
+    if (
+      buffer[0] === 0x89 &&
+      buffer[1] === 0x50 &&
+      buffer[2] === 0x4e &&
+      buffer[3] === 0x47 &&
+      buffer[4] === 0x0d &&
+      buffer[5] === 0x0a &&
+      buffer[6] === 0x1a &&
+      buffer[7] === 0x0a
+    ) {
+      return 'image/png';
+    }
+    // GIF: GIF87a ou GIF89a
+    if (
+      buffer[0] === 0x47 &&
+      buffer[1] === 0x49 &&
+      buffer[2] === 0x46 &&
+      buffer[3] === 0x38
+    ) {
+      return 'image/gif';
+    }
+    // WebP: RIFF .... WEBP
+    if (
+      buffer[0] === 0x52 &&
+      buffer[1] === 0x49 &&
+      buffer[2] === 0x46 &&
+      buffer[3] === 0x46 &&
+      buffer[8] === 0x57 &&
+      buffer[9] === 0x45 &&
+      buffer[10] === 0x42 &&
+      buffer[11] === 0x50
+    ) {
+      return 'image/webp';
+    }
+
+    return null;
   }
 
   /**

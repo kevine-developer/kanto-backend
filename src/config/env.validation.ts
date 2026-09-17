@@ -13,6 +13,7 @@ const REQUIRED_ENV_VARS: RequiredEnvConfig[] = [
   { name: 'CLOUDINARY_API_KEY', requiredInProductionOnly: true },
   { name: 'CLOUDINARY_API_SECRET', requiredInProductionOnly: true },
   { name: 'GEMINI_API_KEY', requiredInProductionOnly: true },
+  { name: 'RESEND_API_KEY', requiredInProductionOnly: true },
 ];
 
 /**

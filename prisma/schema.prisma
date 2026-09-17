@@ -69,6 +69,7 @@ model User {
   id            String           @id @default(cuid())
   email         String           @unique
   name          String
+  username      String?          @unique
   emailVerified Boolean          @default(false)
   image         String?
   role          UserRole         @default(USER)
@@ -99,6 +100,12 @@ model User {
   gameProgress   GameProgression[]
   xpTransactions XpTransaction[]
   badges         UserBadge[]
+
+  // Relations sociales & Amis
+  sentFriendships        Friendship[]    @relation("SentFriendships")
+  receivedFriendships    Friendship[]    @relation("ReceivedFriendships")
+  sentEncouragements     Encouragement[] @relation("SentEncouragements")
+  receivedEncouragements Encouragement[] @relation("ReceivedEncouragements")
 
   @@map("users")
 }
@@ -816,29 +823,6 @@ model ModuleLock {
 }
 
 // ======================================================
-// 11. SLIDES ET PHOTOS D'ONBOARDING DYNAMIQUES
-// ======================================================
-
-model OnboardingSlide {
-  id          String   @id @default(cuid())
-  order       Int      @default(0)
-  title       String // Titre en français (ex: "Angano")
-  titleMg     String // Titre en malgache (ex: "Contes Traditionnels")
-  subtitle    String? // Phrase d'accroche (ex: "Les récits ancestraux de Madagascar")
-  description String   @db.Text
-  imageUrl    String? // Photo Cloudinary CDN ou URL relative locale
-  accentColor String?  @default("#4A6741")
-  iconName    String?  @default("BookOpen") // Icône de secours
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([order])
-  @@index([isActive])
-  @@map("onboarding_slides")
-}
-
-// ======================================================
 // 15. NOTIFICATIONS & ALERTES
 // ======================================================
 
@@ -1123,6 +1107,7 @@ model CivicContent {
   contentMg   String[] // Paragraphes en malgache
   themes      String[]         @default([])
   sources     String[]         @default([])
+  imageUrl    String?
   status      ContentStatus    @default(PUBLISHED)
 
   // Compteurs
@@ -1440,3 +1425,243 @@ model VintanaForecast {
   @@index([date])
   @@map("vintana_forecasts")
 }
+
+// ======================================================
+// 28. AMIS & RELATIONS SOCIALES (Fihavanana)
+// ======================================================
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  BLOCKED
+}
+
+model Friendship {
+  id         String           @id @default(cuid())
+  senderId   String
+  sender     User             @relation("SentFriendships", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId String
+  receiver   User             @relation("ReceivedFriendships", fields: [receiverId], references: [id], onDelete: Cascade)
+  status     FriendshipStatus @default(PENDING)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  @@unique([senderId, receiverId])
+  @@index([senderId, status])
+  @@index([receiverId, status])
+  @@map("friendships")
+}
+
+// ======================================================
+// 29. ENCOURAGEMENTS QUOTIDIENS (Fankaherezana)
+// ======================================================
+
+model Encouragement {
+  id         String   @id @default(cuid())
+  senderId   String
+  sender     User     @relation("SentEncouragements", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId String
+  receiver   User     @relation("ReceivedEncouragements", fields: [receiverId], references: [id], onDelete: Cascade)
+  date       DateTime @db.Date // Date normalisée UTC pour contrainte unique journalière
+  createdAt  DateTime @default(now())
+
+  @@unique([senderId, receiverId, date])
+  @@index([senderId, date])
+  @@index([receiverId, date])
+  @@map("encouragements")
+}
+
+// ======================================================
+// 30. HISTOIRE, MÉMOIRE & EMBLÈMES DE MADAGASCAR
+// ======================================================
+
+model CivicLesson {
+  id            String        @id
+  category      String[]      @default([])
+  titleFr       String
+  titleMg       String
+  descriptionFr String        @db.Text
+  descriptionMg String        @db.Text
+  imageUrl      String?
+  status        Boolean       @default(true)
+  orderIndex    Int           @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([status])
+  @@index([orderIndex])
+  @@map("civic_lessons")
+}
+
+model President {
+  id             String        @id
+  name           String
+  titleFr        String
+  titleMg        String
+  republic       String
+  republicMg     String
+  period         String
+  quoteFr        String?       @db.Text
+  quoteMg        String?       @db.Text
+  bioFr          String        @db.Text
+  bioMg          String        @db.Text
+  achievementsFr String[]      @default([])
+  achievementsMg String[]      @default([])
+  badgeColor     String?       @default("#2A6B3D")
+  imageUrl       String?
+  orderIndex     Int           @default(0)
+  status         ContentStatus @default(PUBLISHED)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([status])
+  @@index([orderIndex])
+  @@map("presidents")
+}
+
+model Banknote {
+  id                   String        @id
+  valueAriary          Int
+  valueFmg             Int
+  titleFr              String
+  titleMg              String
+  series               String
+  seriesLabelFr        String
+  seriesLabelMg        String
+  period               String
+  colorLight           String
+  colorDark            String
+  obverseDescriptionFr String        @db.Text
+  obverseDescriptionMg String        @db.Text
+  reverseDescriptionFr String        @db.Text
+  reverseDescriptionMg String        @db.Text
+  symbolismFr          String        @db.Text
+  symbolismMg          String        @db.Text
+  securityFeaturesFr   String[]      @default([])
+  imageUrl             String?
+  orderIndex           Int           @default(0)
+  status               ContentStatus @default(PUBLISHED)
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  @@index([status])
+  @@index([series])
+  @@index([orderIndex])
+  @@map("banknotes")
+}
+
+model ProvinceBlason {
+  id            String        @id
+  province      String
+  chefLieu      String
+  titleFr       String
+  titleMg       String
+  color         String
+  bgLight       String
+  borderLight   String
+  descriptionFr String        @db.Text
+  descriptionMg String        @db.Text
+  symbols       Json?
+  keyFactsFr    String[]      @default([])
+  keyFactsMg    String[]      @default([])
+  imageUrl      String?
+  orderIndex    Int           @default(0)
+  status        ContentStatus @default(PUBLISHED)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([status])
+  @@index([orderIndex])
+  @@map("province_blasons")
+}
+
+model NatureEmblem {
+  id             String        @id
+  nameFr         String
+  nameMg         String
+  scientificName String
+  type           String
+  statusFr       String
+  statusMg       String
+  descriptionFr  String        @db.Text
+  descriptionMg  String        @db.Text
+  culturalRoleFr String        @db.Text
+  culturalRoleMg String        @db.Text
+  proverbMg      String?
+  proverbFr      String?
+  accentColor    String?       @default("#1B5E20")
+  imageUrl       String?
+  orderIndex     Int           @default(0)
+  status         ContentStatus @default(PUBLISHED)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([status])
+  @@index([type])
+  @@index([orderIndex])
+  @@map("nature_emblems")
+}
+
+model HistoryDate {
+  id          String        @id
+  year        String
+  exactDate   String
+  titleFr     String
+  titleMg     String
+  era         String
+  summaryFr   String        @db.Text
+  summaryMg   String        @db.Text
+  impactFr    String        @db.Text
+  impactMg    String        @db.Text
+  accentColor String?       @default("#B71C1C")
+  imageUrl    String?
+  orderIndex  Int           @default(0)
+  status      ContentStatus @default(PUBLISHED)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status])
+  @@index([orderIndex])
+  @@map("history_dates")
+}
+
+model NationalEmblem {
+  id            String        @id @default(cuid())
+  period        String
+  imageUrl      String?
+  government    String
+  descriptionFr String        @db.Text
+  descriptionMg String?       @db.Text
+  notesFr       String?       @db.Text
+  notesMg       String?       @db.Text
+  orderIndex    Int           @default(0)
+  status        ContentStatus @default(PUBLISHED)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([status])
+  @@index([orderIndex])
+  @@map("national_emblems")
+}
+
+model WelcomeSlide {
+  id          String   @id @default(cuid())
+  title       String
+  titleMg     String?
+  badge       String
+  badgeMg     String
+  tag         String?
+  imageUrl    String
+  accentColor String   @default("#4A6741")
+  orderIndex  Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([orderIndex])
+  @@map("welcome_slides")
+}
+
+

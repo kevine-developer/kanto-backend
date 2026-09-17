@@ -18,6 +18,7 @@ import {
 } from 'class-validator';
 import { LocksService } from './locks.service.js';
 import { AuthGuard, Roles } from '../auth/index.js';
+import { Throttle } from '@nestjs/throttler';
 
 export class CreateModuleDto {
   @IsString()
@@ -109,6 +110,7 @@ export class AdminLocksController {
   }
 
   @Post('upload-image')
+  @Throttle({ upload: { limit: 15, ttl: 60000 } })
   async uploadModuleImage(@Body() body: UploadImageDto) {
     return this.locksService.saveUploadedImage(body.imageBase64, body.fileName);
   }

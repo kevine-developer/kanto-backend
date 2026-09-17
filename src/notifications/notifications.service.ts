@@ -8,17 +8,55 @@ export interface FormattedNotificationItem {
   id: string;
   category: string;
   title: string;
+  titleMg?: string;
+  titleFr?: string;
   description: string;
+  descriptionMg?: string;
+  descriptionFr?: string;
   timeAgo: string;
   timestamp: number;
   iconName: string;
   iconColor: string;
   badgeText?: string;
+  badgeTextMg?: string;
+  badgeTextFr?: string;
   badgeType?: string;
   badgeColor?: string;
   read: boolean;
   targetRoute?: string;
   createdAt: Date;
+}
+
+function localizeNotificationBadge(rawBadge?: string | null, isMg = false) {
+  if (!rawBadge) return { activeBadge: undefined, badgeFr: undefined, badgeMg: undefined };
+  const trimmed = rawBadge.trim();
+  const lower = trimmed.toLowerCase();
+
+  let badgeFr = trimmed;
+  let badgeMg = trimmed;
+
+  if (lower === 'défi' || lower === 'defi' || lower === 'fanamby') {
+    badgeFr = 'Défi';
+    badgeMg = 'Fanamby';
+  } else if (lower === 'namana' || lower === 'ami' || lower === 'amis') {
+    badgeFr = 'Ami';
+    badgeMg = 'Namana';
+  } else if (lower === 'fangatahana' || lower === 'demande') {
+    badgeFr = 'Demande';
+    badgeMg = 'Fangatahana';
+  } else if (lower === 'badge' || lower === 'mari-boninahitra' || lower === 'medaly') {
+    badgeFr = 'Badge';
+    badgeMg = 'Mari-boninahitra';
+  } else if (lower === 'hevitra' || lower === 'commentaire') {
+    badgeFr = 'Commentaire';
+    badgeMg = 'Hevitra';
+  }
+
+  return {
+    badgeFr,
+    badgeMg,
+    activeBadge: isMg ? badgeMg : badgeFr,
+  };
 }
 
 export interface FormattedNotificationGroup {
@@ -85,18 +123,29 @@ export class NotificationsService {
         timeAgo = isMg ? `${diffDays} andro lasa` : `Il y a ${diffDays}j`;
       }
 
+      const { activeBadge, badgeFr, badgeMg } = localizeNotificationBadge(
+        notif.badgeText,
+        isMg,
+      );
+
       const formatted: FormattedNotificationItem = {
         id: notif.id,
         category: notif.category,
-        title: isMg ? notif.titleMg : notif.titleFr || notif.titleMg,
+        title: isMg ? notif.titleMg : (notif.titleFr || notif.titleMg),
+        titleMg: notif.titleMg,
+        titleFr: notif.titleFr || notif.titleMg,
         description: isMg
           ? notif.messageMg
-          : notif.messageFr || notif.messageMg,
+          : (notif.messageFr || notif.messageMg),
+        descriptionMg: notif.messageMg,
+        descriptionFr: notif.messageFr || notif.messageMg,
         timeAgo,
         timestamp: notif.createdAt.getTime(),
         iconName: notif.iconName || 'notifications-outline',
         iconColor: notif.iconColor || '#C0392B',
-        badgeText: notif.badgeText || undefined,
+        badgeText: activeBadge,
+        badgeTextMg: badgeMg,
+        badgeTextFr: badgeFr,
         badgeType: notif.badgeType || 'info',
         read: notif.isRead,
         targetRoute: notif.targetRoute || undefined,
@@ -272,19 +321,25 @@ export class NotificationsService {
       `📢 [Notifications] Nouvelle notification créée : "${created.titleMg}" (${created.category})`,
     );
 
+    const { badgeFr, badgeMg } = localizeNotificationBadge(created.badgeText);
+
     // Publication temps réel via Redis Pub/Sub
-    const formattedForRealtime = {
+    const formattedForRealtime: FormattedNotificationItem = {
       id: created.id,
       category: created.category,
       title: created.titleFr || created.titleMg,
       titleMg: created.titleMg,
+      titleFr: created.titleFr || undefined,
       description: created.messageFr || created.messageMg,
       descriptionMg: created.messageMg,
+      descriptionFr: created.messageFr || undefined,
       timeAgo: 'À l’instant',
       timestamp: created.createdAt.getTime(),
       iconName: created.iconName || 'notifications-outline',
       iconColor: created.iconColor || '#C0392B',
-      badgeText: created.badgeText || undefined,
+      badgeText: badgeFr || badgeMg || undefined,
+      badgeTextMg: badgeMg || undefined,
+      badgeTextFr: badgeFr || undefined,
       badgeType: created.badgeType || 'info',
       read: false,
       targetRoute: created.targetRoute || undefined,

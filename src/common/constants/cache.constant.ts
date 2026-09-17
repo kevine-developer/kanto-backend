@@ -32,10 +32,6 @@ export const CACHE_KEYS = {
   LOCKS_PUBLIC: 'kanto:locks:public',
   LOCKS_DETAIL_PREFIX: 'kanto:locks:detail:',
 
-  // Onboarding
-  ONBOARDING_PUBLIC: 'kanto:onboarding:public',
-  ONBOARDING_ALL: 'kanto:onboarding:all',
-
   // Notifications
   NOTIFICATIONS_PREFIX: 'kanto:notifications:',
 
@@ -58,6 +54,10 @@ export const CACHE_KEYS = {
   CIVIC_QUIZ_LIST_PATTERN: 'kanto:civic-quiz:*',
   CIVIC_QUIZ_LIST_PREFIX: 'kanto:civic-quiz:list:',
   CIVIC_QUIZ_DETAIL_PREFIX: 'kanto:civic-quiz:detail:',
+
+  // Histoire & Emblèmes
+  HISTORY_LIST_PATTERN: 'kanto:history:*',
+  HISTORY_LIST_PREFIX: 'kanto:history:list:',
 } as const;
 
 export const CACHE_TTL = {

@@ -423,6 +423,97 @@ export class ProgressionService {
   }
 
   /**
+   * Attribue des points d'XP à un utilisateur (ex: encouragements, récompenses).
+   */
+  async awardXp(
+    userId: string,
+    amount: number,
+    source: string,
+    description?: string,
+  ): Promise<{ totalXp: number; level: number; streakDays: number }> {
+    const safeAmount = Math.max(0, Math.ceil(amount));
+    if (safeAmount === 0) {
+      const p = await this.prisma.userProgress.findUnique({ where: { userId } });
+      return {
+        totalXp: p ? Number(p.totalXp) : 0,
+        level: p ? p.level : 1,
+        streakDays: p ? p.streakDays : 0,
+      };
+    }
+
+    const updated = await this.prisma.$transaction(async (tx) => {
+      let progress = await tx.userProgress.findUnique({
+        where: { userId },
+      });
+      if (!progress) {
+        const initialLevel = this.calculateLevel(safeAmount);
+        progress = await tx.userProgress.create({
+          data: {
+            userId,
+            totalXp: safeAmount,
+            level: initialLevel,
+            coins: initialLevel > 1 ? this.calculateLevelUpCoins(initialLevel) : 0,
+            streakDays: 0,
+          },
+        });
+      } else {
+        const newTotalXp = Math.ceil(Number(progress.totalXp) + safeAmount);
+        const previousLevel = progress.level || 1;
+        const newLevel = this.calculateLevel(newTotalXp);
+        let additionalCoins = 0;
+        if (newLevel > previousLevel) {
+          for (let lvl = previousLevel + 1; lvl <= newLevel; lvl++) {
+            additionalCoins += this.calculateLevelUpCoins(lvl);
+          }
+        }
+        const newCoins = (progress.coins || 0) + additionalCoins;
+
+        progress = await tx.userProgress.update({
+          where: { userId },
+          data: {
+            totalXp: newTotalXp,
+            level: newLevel,
+            coins: newCoins,
+          },
+        });
+      }
+
+      await tx.xpTransaction.create({
+        data: {
+          userId,
+          amount: safeAmount,
+          source,
+          description: description || `Gain de ${safeAmount} XP via ${source}`,
+        },
+      });
+
+      return progress;
+    });
+
+    await this.publishLeaderboardUpdate(
+      userId,
+      Number(updated.totalXp),
+      updated.level,
+      safeAmount,
+      updated.streakDays,
+      source,
+    );
+
+    void this.badgesService.checkAndUnlockBadges(userId).catch((err) => {
+      this.logger.warn(
+        `Échec de la vérification des badges après awardXp pour ${userId}:`,
+        err,
+      );
+    });
+
+    return {
+      totalXp: Number(updated.totalXp),
+      level: updated.level,
+      streakDays: updated.streakDays,
+    };
+  }
+
+  /**
    * Remplace intégralement la progression d'un utilisateur.
    * Utilisé lorsque l'utilisateur choisit de garder sa progression locale
    * (écrasant la progression serveur existante).

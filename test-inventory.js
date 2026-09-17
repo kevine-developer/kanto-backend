@@ -30,8 +30,8 @@ async function main() {
     "7. Culture Malagasy (Littérature, Contes, Kabary, etc.)": [
       'malagasyItem', 'citation', 'conte', 'conteParagraph', 'kabary', 'kabaryStep', 'poesie', 'poesieStanza', 'recitation', 'theme', 'region'
     ],
-    "8. Système, Paramètres, Verrous & Onboarding": [
-      'moduleLock', 'onboardingSlide', 'systemAnnouncement', 'notification'
+    "8. Système, Paramètres & Verrous": [
+      'moduleLock', 'systemAnnouncement', 'notification'
     ],
     "9. Communauté & Interactions": [
       'contribution', 'contributionVote', 'contributionComment', 'contentReport', 'favorite', 'like', 'viewHistory'

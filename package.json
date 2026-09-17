@@ -21,7 +21,9 @@
     "test:e2e": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --config ./test/jest-e2e.json",
     "seed": "tsx prisma/seed.ts",
     "seed:admin": "tsx src/scripts/create-admin.ts",
-    "reset:badges": "tsx src/scripts/reset-badges-and-users.ts"
+    "admin:reset": "tsx src/scripts/inspect-and-delete-admin.ts && tsx src/scripts/create-admin.ts",
+    "reset:badges": "tsx src/scripts/reset-badges-and-users.ts",
+    "test:email": "tsx src/scripts/test-email.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -50,6 +52,7 @@
     "pg": "^8.23.0",
     "prisma": "^7.9.1",
     "reflect-metadata": "^0.2.2",
+    "resend": "^6.28.1",
     "rxjs": "^7.8.1",
     "socket.io": "^4.8.3"
   },
