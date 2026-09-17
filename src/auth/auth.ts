@@ -69,9 +69,21 @@ export const auth = betterAuth({
         `[Better-Auth] ✉️ Envoi de l'email de confirmation à : ${user.email}`,
       );
       try {
+        let verifyUrl = url;
+        try {
+          const parsed = new URL(url);
+          parsed.searchParams.set(
+            'callbackURL',
+            `${parsed.origin}/email-verified`,
+          );
+          verifyUrl = parsed.toString();
+        } catch {
+          verifyUrl = url;
+        }
+
         await resendService.sendVerificationEmail({
           to: user.email,
-          verifyUrl: url,
+          verifyUrl,
           token,
           userName: user.name || undefined,
         });
@@ -149,6 +161,11 @@ export const auth = betterAuth({
   },
   account: {
     modelName: 'Account',
+  },
+  advanced: {
+    ipAddress: {
+      ipAddressHeaders: ['x-forwarded-for', 'x-real-ip', 'cf-connecting-ip'],
+    },
   },
 });
 
