@@ -91,6 +91,7 @@ describe('validateEnvironment', () => {
       process.env.CLOUDINARY_API_KEY = 'key';
       process.env.CLOUDINARY_API_SECRET = 'secret';
       process.env.GEMINI_API_KEY = 'gemini-key';
+      process.env.RESEND_API_KEY = 're_test_production_key';
 
       expect(() => validateEnvironment()).not.toThrow();
     });

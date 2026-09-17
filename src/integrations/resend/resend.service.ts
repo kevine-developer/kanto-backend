@@ -357,4 +357,124 @@ https://kanto.mg
       html,
     });
   }
+
+  /**
+   * Email de confirmation d'adresse email lors de la création de compte.
+   */
+  async sendVerificationEmail(
+    options: VerificationEmailOptions,
+  ): Promise<{ id?: string; simulated?: boolean }> {
+    const greeting = options.userName
+      ? `Bonjour ${options.userName},`
+      : 'Bonjour,';
+    const subject = '🛡️ Confirmez votre adresse email — Kanto';
+
+    const text = `
+${greeting}
+
+Merci de rejoindre Kanto, l'application dédiée au patrimoine et à la culture malagasy.
+
+Pour valider votre adresse email et sécuriser pleinement votre compte, veuillez cliquer sur le lien ci-dessous (ou le copier dans votre navigateur) :
+${options.verifyUrl}
+
+Ce lien est valable pendant 24 heures. Si vous n'êtes pas à l'origine de cette création de compte, vous pouvez ignorer cet email.
+
+L'équipe Kanto
+https://kanto.mg
+    `.trim();
+
+    const html = `
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${subject}</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #FAFAFA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; color: #1F2937;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #FAFAFA; padding: 48px 16px;">
+    <tr>
+      <td align="center">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 12px; overflow: hidden;">
+          <!-- En-tête sobre -->
+          <tr>
+            <td style="padding: 32px 36px 24px 36px; border-bottom: 1px solid #F3F4F6;">
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td>
+                    <span style="font-size: 15px; font-weight: 700; letter-spacing: 3px; color: #111827; text-transform: uppercase;">
+                      KANTO
+                    </span>
+                  </td>
+                  <td align="right">
+                    <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #15803D; background-color: #F0FDF4; padding: 4px 10px; border-radius: 9999px; border: 1px solid #DCFCE7;">
+                      Vérification
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Contenu -->
+          <tr>
+            <td style="padding: 32px 36px;">
+              <h1 style="font-size: 19px; font-weight: 600; color: #111827; margin: 0 0 16px 0; line-height: 26px; letter-spacing: -0.2px;">
+                Confirmation de votre adresse email
+              </h1>
+              <p style="font-size: 14px; line-height: 23px; color: #4B5563; margin: 0 0 16px 0;">
+                ${greeting}
+              </p>
+              <p style="font-size: 14px; line-height: 23px; color: #4B5563; margin: 0 0 28px 0;">
+                Merci d&apos;avoir rejoint l&apos;aventure Kanto ! Pour valider votre inscription, protéger votre compte et synchroniser votre progression en toute sérénité, confirmez votre adresse en cliquant ci-dessous :
+              </p>
+
+              <!-- Bouton d'action -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 28px;">
+                <tr>
+                  <td>
+                    <a href="${options.verifyUrl}" target="_blank" style="display: inline-block; background-color: #1B5E20; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 24px; border-radius: 8px;">
+                      Confirmer mon adresse email
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Notice de sécurité -->
+              <div style="background-color: #F9FAFB; border-left: 3px solid #1B5E20; padding: 12px 16px; border-radius: 6px; margin-bottom: 24px;">
+                <p style="font-size: 13px; line-height: 20px; color: #4B5563; margin: 0;">
+                  Ce lien sécurisé est valable pendant <strong>24 heures</strong>. Si vous n&apos;avez pas initié cette inscription sur Kanto, vous pouvez ignorer cet email sans crainte.
+                </p>
+              </div>
+
+              <p style="font-size: 12px; line-height: 18px; color: #9CA3AF; margin: 0; word-break: break-all;">
+                Si le bouton ne s&apos;ouvre pas, copiez directement cette URL dans votre navigateur :<br>
+                <a href="${options.verifyUrl}" style="color: #1B5E20; text-decoration: underline;">${options.verifyUrl}</a>
+              </p>
+            </td>
+          </tr>
+
+          <!-- Pied de page -->
+          <tr>
+            <td style="padding: 20px 36px; background-color: #FAFAFA; border-top: 1px solid #F3F4F6;">
+              <p style="font-size: 12px; color: #9CA3AF; margin: 0; line-height: 18px;">
+                © ${new Date().getFullYear()} Kanto • Lova, Kolontsaina &amp; Tantara Malagasy
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+    `.trim();
+
+    return this.sendEmail({
+      to: options.to,
+      subject,
+      text,
+      html,
+    });
+  }
 }

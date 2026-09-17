@@ -55,6 +55,44 @@ export const auth = betterAuth({
       ? process.env.CORS_ORIGINS.split(',').map((o) => o.trim())
       : []),
   ],
+  rateLimit: {
+    enabled: true,
+    window: 60, // Fenêtre glissante de 60s
+    max: 100, // Protection contre brute force et saturation d'emails
+  },
+  emailVerification: {
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    expiresIn: 60 * 60 * 24, // 24 heures de validité
+    sendVerificationEmail: async ({ user, url, token }) => {
+      console.log(
+        `[Better-Auth] ✉️ Envoi de l'email de confirmation à : ${user.email}`,
+      );
+      try {
+        await resendService.sendVerificationEmail({
+          to: user.email,
+          verifyUrl: url,
+          token,
+          userName: user.name || undefined,
+        });
+      } catch (err: unknown) {
+        console.error(
+          `[Better-Auth] ❌ Erreur lors de l'envoi de l'email de confirmation :`,
+          err,
+        );
+      }
+    },
+  },
+  socialProviders: {
+    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+      ? {
+          google: {
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+          },
+        }
+      : {}),
+  },
   emailAndPassword: {
     enabled: true,
     resetPasswordTokenExpiresIn: 3600, // 1 heure

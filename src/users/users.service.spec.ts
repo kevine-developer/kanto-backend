@@ -374,7 +374,7 @@ describe('UsersService', () => {
       expect(result).toEqual([]);
     });
 
-    it('should include related content (item, citation, conte, kabary)', async () => {
+    it('should include related content (item, citation, conte, kabary, poesie, recitation)', async () => {
       prismaMock.favorite.findMany.mockResolvedValue([]);
 
       await service.getMyFavorites('user-1');
@@ -386,6 +386,8 @@ describe('UsersService', () => {
             citation: true,
             conte: true,
             kabary: true,
+            poesie: true,
+            recitation: true,
           },
         }),
       );
