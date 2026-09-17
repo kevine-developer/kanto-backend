@@ -745,9 +745,12 @@ export class ContributionsService {
         (Date.now() - new Date(contribution.createdAt).getTime()) /
         (1000 * 60 * 60);
       if (diffHours > 48) {
-        throw new BadRequestException(
-          'Vous ne pouvez modifier une contribution que dans les 2 jours (48h) suivant sa création',
-        );
+        throw new BadRequestException({
+          statusCode: 400,
+          error: 'CONTRIBUTION_MODIFICATION_EXPIRED',
+          message:
+            'Vous ne pouvez modifier une contribution que dans les 48 heures (2 jours) suivant sa création.',
+        });
       }
     }
 
@@ -791,9 +794,12 @@ export class ContributionsService {
         (Date.now() - new Date(contribution.createdAt).getTime()) /
         (1000 * 60 * 60);
       if (diffHours > 24) {
-        throw new BadRequestException(
-          'Vous ne pouvez supprimer une contribution que dans les 24 heures suivant sa création',
-        );
+        throw new BadRequestException({
+          statusCode: 400,
+          error: 'CONTRIBUTION_DELETION_EXPIRED',
+          message:
+            'Vous ne pouvez supprimer une contribution que dans les 24 heures suivant sa création.',
+        });
       }
     }
 
