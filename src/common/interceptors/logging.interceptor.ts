@@ -60,44 +60,57 @@ export class LoggingInterceptor implements NestInterceptor {
   private readonly logger = new Logger('HTTP');
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
+    const isProduction = process.env.NODE_ENV === 'production';
     const ctx = context.switchToHttp();
     const req = ctx.getRequest<Request>();
     const res = ctx.getResponse<Response>();
 
     const method = req.method;
     const originalUrl = req.originalUrl || req.url;
-    const ip = req.ip || '127.0.0.1';
+    const rawIp =
+      req.headers?.['x-forwarded-for'] ||
+      req.headers?.['x-real-ip'] ||
+      req.ip ||
+      '127.0.0.1';
+    const ip = Array.isArray(rawIp) ? rawIp[0] : String(rawIp);
     const startTime = Date.now();
 
-    const query = req.query as Record<string, unknown>;
-    const body = req.body as Record<string, unknown>;
+    // En développement uniquement : loguer chaque requête entrante
+    if (!isProduction) {
+      const query = req.query as Record<string, unknown>;
+      const body = req.body as Record<string, unknown>;
 
-    const hasQuery =
-      query && typeof query === 'object' && Object.keys(query).length > 0;
-    const hasBody =
-      body && typeof body === 'object' && Object.keys(body).length > 0;
+      const hasQuery =
+        query && typeof query === 'object' && Object.keys(query).length > 0;
+      const hasBody =
+        body && typeof body === 'object' && Object.keys(body).length > 0;
 
-    const safeQuery = hasQuery ? JSON.stringify(sanitize(query)) : null;
-    const safeBody = hasBody ? JSON.stringify(sanitize(body)) : null;
+      const safeQuery = hasQuery ? JSON.stringify(sanitize(query)) : null;
+      const safeBody = hasBody ? JSON.stringify(sanitize(body)) : null;
 
-    this.logger.log(
-      `📩 [REQ] ${method} ${originalUrl} [IP: ${ip}]${safeQuery ? ` | Query: ${safeQuery}` : ''}${safeBody ? ` | Body: ${safeBody}` : ''}`,
-    );
+      this.logger.log(
+        `📩 [REQ] ${method} ${originalUrl} [IP: ${ip}]${safeQuery ? ` | Query: ${safeQuery}` : ''}${safeBody ? ` | Body: ${safeBody}` : ''}`,
+      );
+    }
 
     return next.handle().pipe(
       tap({
         next: () => {
-          const duration = Date.now() - startTime;
-          const statusCode = res.statusCode;
-          this.logger.log(
-            `📤 [RES] ${method} ${originalUrl} -> ${statusCode} OK (+${duration}ms)`,
-          );
+          // En production : on ne logue pas les 200/204 OK réguliers pour épargner le disque et garder des logs propres
+          if (!isProduction) {
+            const duration = Date.now() - startTime;
+            const statusCode = res.statusCode;
+            this.logger.log(
+              `📤 [RES] ${method} ${originalUrl} -> ${statusCode} OK (+${duration}ms)`,
+            );
+          }
         },
         error: (err: {
           status?: number;
           statusCode?: number;
           message?: string;
         }) => {
+          // Les erreurs sont TOUJOURS loguées (en production comme en développement)
           const duration = Date.now() - startTime;
           const statusCode = err.status || err.statusCode || 500;
           this.logger.error(

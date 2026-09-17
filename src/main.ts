@@ -44,8 +44,10 @@ async function getAvailablePort(
 async function bootstrap() {
   validateEnvironment();
 
+  const isProduction = process.env.NODE_ENV === 'production';
   const app = await NestFactory.create(AppModule, {
     bodyParser: false,
+    logger: isProduction ? ['error', 'warn'] : ['error', 'warn', 'log'],
   });
 
   app.useGlobalInterceptors(
@@ -150,9 +152,11 @@ async function bootstrap() {
   }
 
   await app.listen(port, '0.0.0.0');
-  Logger.log(
-    `Application is running on: http://localhost:${port} (network: http://192.168.1.100:${port})`,
-    'Bootstrap',
-  );
+  const launchMsg = `🚀 [Kanto Backend] Serveur démarré avec succès sur le port ${port} (Environnement: ${process.env.NODE_ENV || 'development'})`;
+  if (isProduction) {
+    console.log(launchMsg);
+  } else {
+    Logger.log(launchMsg, 'Bootstrap');
+  }
 }
 void bootstrap();
