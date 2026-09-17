@@ -36,6 +36,7 @@ import { VintanaModule } from './vintana/vintana.module.js';
 import { FriendsModule } from './friends/friends.module.js';
 import { HistoryModule } from './history/history.module.js';
 import { WelcomeSlidesModule } from './welcome-slides/welcome-slides.module.js';
+import { PagesModule } from './pages/pages.module.js';
 
 @Module({
   imports: [
@@ -95,6 +96,7 @@ import { WelcomeSlidesModule } from './welcome-slides/welcome-slides.module.js';
     FriendsModule,
     HistoryModule,
     WelcomeSlidesModule,
+    PagesModule,
   ],
   controllers: [AppController],
   providers: [
