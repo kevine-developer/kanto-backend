@@ -69,17 +69,20 @@ export const auth = betterAuth({
         `[Better-Auth] ✉️ Envoi de l'email de confirmation à : ${user.email}`,
       );
       try {
-        let verifyUrl = url;
+        const baseUrl =
+          process.env.BETTER_AUTH_URL || 'https://api-kanto.gastsar.fr';
+        let origin = baseUrl;
         try {
           const parsed = new URL(url);
-          parsed.searchParams.set(
-            'callbackURL',
-            `${parsed.origin}/email-verified`,
-          );
-          verifyUrl = parsed.toString();
+          origin = parsed.origin;
         } catch {
-          verifyUrl = url;
+          origin = baseUrl;
         }
+
+        // Format d'URL de confirmation : https://api-kanto.gastsar.fr/confirmation?token=...
+        const confirmationUrl = new URL('/confirmation', origin);
+        confirmationUrl.searchParams.set('token', token);
+        const verifyUrl = confirmationUrl.toString();
 
         await resendService.sendVerificationEmail({
           to: user.email,
