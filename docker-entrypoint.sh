@@ -1,21 +1,32 @@
 #!/bin/sh
 set -e
 
-echo "🚀 [Kanto Backend] Démarrage du conteneur en environnement : ${NODE_ENV:-production}"
+STARTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+echo "🚀 [Kanto Backend] Démarrage du conteneur — Environnement: ${NODE_ENV:-production} — ${STARTED_AT}"
 
-# Exécution automatique des migrations Prisma si activée (par défaut en production)
+# ─── Migrations Prisma ────────────────────────────────────────────────────────
 if [ "${RUN_MIGRATIONS:-true}" = "true" ]; then
-  echo "📦 [Prisma] Vérification et déploiement des migrations de schéma..."
-  if npx prisma migrate deploy; then
+  echo "📦 [Prisma] Vérification et déploiement des migrations..."
+
+  if npx prisma migrate deploy 2>&1; then
     echo "✅ [Prisma] Migrations appliquées avec succès."
   else
-    echo "⚠️ [Prisma] Avertissement: Impossible d'exécuter les migrations (vérifiez DATABASE_URL)."
-    if [ "${STRICT_MIGRATIONS:-false}" = "true" ]; then
-      echo "❌ [Prisma] Arrêt du conteneur car STRICT_MIGRATIONS=true."
+    MIGRATION_EXIT_CODE=$?
+    echo ""
+    echo "❌ [Prisma] Échec des migrations (exit code: ${MIGRATION_EXIT_CODE})."
+    echo "   Vérifiez : DATABASE_URL, connectivité PostgreSQL, et prisma/migrations/"
+
+    if [ "${STRICT_MIGRATIONS:-true}" = "true" ]; then
+      echo "🛑 [Prisma] STRICT_MIGRATIONS=true — Arrêt du conteneur pour éviter un état incohérent."
       exit 1
+    else
+      echo "⚠️  [Prisma] STRICT_MIGRATIONS=false — Démarrage malgré les erreurs (non recommandé en prod)."
     fi
   fi
+else
+  echo "⏭️  [Prisma] RUN_MIGRATIONS=false — Migrations ignorées."
 fi
 
-# Exécution de la commande principale du conteneur
+# ─── Démarrage de l'application ───────────────────────────────────────────────
+echo "▶️  [Kanto Backend] Lancement de l'application..."
 exec "$@"
