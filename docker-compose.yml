@@ -19,9 +19,18 @@ services:
       - DATABASE_URL=postgresql://${POSTGRES_USER:-kanto_user}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-kanto_prod}?schema=public
       - REDIS_URL=redis://redis:6379
       - RUN_MIGRATIONS=${RUN_MIGRATIONS:-true}
+      # En production, refuser le démarrage si les migrations échouent
+      - STRICT_MIGRATIONS=${STRICT_MIGRATIONS:-true}
       - NODE_OPTIONS=--max-old-space-size=384
     volumes:
       - kanto_uploads:/app/uploads
+      # Bind mount en lecture seule : nouvelles migrations disponibles sans rebuild
+      - ./prisma/migrations:/app/prisma/migrations:ro
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     depends_on:
       postgres:
         condition: service_healthy
@@ -63,6 +72,11 @@ services:
       POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
     volumes:
       - kanto_pgdata:/var/lib/postgresql/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     # Pas de port exposé sur l'hôte pour éliminer tout conflit avec la DB de kadokou (port 5432)
     # L'API Kanto y accède directement via le réseau isolé kanto_internal
     networks:
@@ -76,16 +90,21 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 10s
+      start_period: 30s
 
   # ─── CACHE & WEBSOCKET PUB/SUB REDIS (KANTO) ────────────────────────────────
   redis:
     image: redis:7-alpine
     container_name: kanto_redis
     restart: unless-stopped
-    command: ["redis-server", "--appendonly", "yes"]
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "200mb", "--maxmemory-policy", "allkeys-lru"]
     volumes:
       - kanto_redisdata:/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     # Pas de port exposé sur l'hôte pour éliminer tout conflit avec le Redis de kadokou (port 6379)
     # L'API Kanto y accède directement via le réseau isolé kanto_internal
     networks:
