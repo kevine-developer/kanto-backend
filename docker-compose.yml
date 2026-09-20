@@ -121,20 +121,26 @@ services:
       start_period: 5s
 
 # ─── VOLUMES PERSISTANTS KANTO ────────────────────────────────────────────────
+# external: true évite les warnings dus au changement de nom de projet Docker Compose
+# (le dossier s'appelle 'server' sur le VPS mais les volumes ont été créés sous 'kanto')
 volumes:
   kanto_pgdata:
     name: kanto_pgdata
+    external: true
   kanto_redisdata:
     name: kanto_redisdata
+    external: true
   kanto_uploads:
     name: kanto_uploads
+    external: true
 
 # ─── RÉSEAUX ──────────────────────────────────────────────────────────────────
 networks:
   # Réseau interne isolé propre à Kanto (Backend <-> Postgres <-> Redis)
+  # external: true car ce réseau existe déjà (créé sous le projet 'kanto')
   kanto_internal:
     name: kanto_internal_network
-    driver: bridge
+    external: true
 
   # Réseau partagé existant de Traefik (créé par le projet kadokou sur le VPS)
   traefik_network:
