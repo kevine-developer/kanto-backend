@@ -72,28 +72,40 @@ async function bootstrap() {
   // Ex: CORS_ORIGINS=https://admin.kanto.mg,https://app.kanto.mg
   // En développement, les origines locales et mobiles sont autorisées par défaut.
   const rawOrigins = process.env.CORS_ORIGINS;
+
+  const defaultDevOrigins: (string | RegExp)[] = [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:3002',
+    'http://localhost:3003',
+    'http://localhost:8081',
+    'http://192.168.1.38:8081',
+    'http://192.168.1.100:8081',
+    'http://192.168.1.100:3000',
+    'http://192.168.1.100:3001',
+    /^kanto:\/\//,
+    /^kantomg:\/\//,
+    /^exp:\/\//,
+    /^http:\/\/192\.168\.\d+\.\d+:\d+$/,
+    /^http:\/\/10\.\d+\.\d+\.\d+:\d+$/,
+    /^http:\/\/172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+:\d+$/,
+    /^http:\/\/169\.254\.\d+\.\d+:\d+$/,
+  ];
+
+  const defaultProdOrigins: (string | RegExp)[] = [
+    'https://admin.kanto.mg',
+    'https://app.kanto.mg',
+    'https://kanto.mg',
+    'https://api-kanto.gastsar.fr',
+    /^kanto:\/\//,
+    /^kantomg:\/\//,
+  ];
+
   const allowedOrigins: (string | RegExp)[] = rawOrigins
     ? rawOrigins.split(',').map((o) => o.trim())
-    : [
-        'http://localhost:3000',
-        'http://localhost:3001',
-        'http://localhost:3002',
-        'http://localhost:3003',
-        'http://localhost:8081',
-        'http://192.168.1.38:8081',
-        'http://192.168.1.100:8081',
-        'http://192.168.1.100:3000',
-        'http://192.168.1.100:3001',
-        // Schémas deep-link mobiles (Expo Go, builds standalone)
-        /^kanto:\/\//,
-        /^kantomg:\/\//,
-        /^exp:\/\//,
-        // IP locales privées et interfaces virtuelles / APIPA (192.168.x.x, 10.x.x.x, 172.16-31.x.x, 169.254.x.x)
-        /^http:\/\/192\.168\.\d+\.\d+:\d+$/,
-        /^http:\/\/10\.\d+\.\d+\.\d+:\d+$/,
-        /^http:\/\/172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+:\d+$/,
-        /^http:\/\/169\.254\.\d+\.\d+:\d+$/,
-      ];
+    : isProduction
+      ? defaultProdOrigins
+      : defaultDevOrigins;
 
   app.enableCors({
     origin: (

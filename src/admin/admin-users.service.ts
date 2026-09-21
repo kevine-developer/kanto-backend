@@ -96,7 +96,9 @@ export class AdminUsersService implements OnApplicationBootstrap {
       const adminFrontendUrl =
         process.env.ADMIN_FRONTEND_URL ||
         process.env.ADMIN_URL ||
-        'http://localhost:3001';
+        (process.env.NODE_ENV === 'production'
+          ? 'https://admin.kanto.mg'
+          : 'http://localhost:3001');
       await auth.api.requestPasswordReset({
         body: {
           email: adminEmail,
@@ -242,7 +244,9 @@ export class AdminUsersService implements OnApplicationBootstrap {
     const adminFrontendUrl =
       process.env.ADMIN_FRONTEND_URL ||
       process.env.ADMIN_URL ||
-      'http://localhost:3001';
+      (process.env.NODE_ENV === 'production'
+        ? 'https://admin.kanto.mg'
+        : 'http://localhost:3001');
 
     await auth.api.requestPasswordReset({
       body: {

@@ -135,7 +135,13 @@ async function createDefaultAdmin(): Promise<void> {
           email: adminEmail,
           // ADMIN_FRONTEND_URL doit pointer vers le frontend admin (ex: https://admin.kanto.mg)
           // et NON vers l'API. Fallback sur ADMIN_URL pour compatibilité rétrograde.
-          redirectTo: `${process.env.ADMIN_FRONTEND_URL || process.env.ADMIN_URL || 'http://localhost:3001'}/reset-password`,
+          redirectTo: `${
+            process.env.ADMIN_FRONTEND_URL ||
+            process.env.ADMIN_URL ||
+            (process.env.NODE_ENV === 'production'
+              ? 'https://admin.kanto.mg'
+              : 'http://localhost:3001')
+          }/reset-password`,
         },
       });
 

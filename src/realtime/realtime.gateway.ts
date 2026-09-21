@@ -90,18 +90,33 @@ const MAX_ROOMS_PER_SOCKET = 50;
       // Autoriser les requêtes sans origine (apps mobiles natives, curl, Expo Go)
       if (!origin) {
         callback(null, true);
-      } else {
-        const rawOrigins = process.env.CORS_ORIGINS;
-        if (!rawOrigins) {
+        return;
+      }
+
+      const isProduction = process.env.NODE_ENV === 'production';
+      const rawOrigins = process.env.CORS_ORIGINS;
+
+      if (!rawOrigins) {
+        if (!isProduction) {
           callback(null, true);
           return;
         }
-
-        const allowedList = rawOrigins.split(',').map((o) => o.trim());
-        const isAllowed =
-          allowedList.includes(origin) || origin.startsWith('http://localhost');
-        callback(null, isAllowed);
+        // En production sans variable CORS_ORIGINS explicite, autoriser les domaines de production
+        const defaultProd = [
+          'https://admin.kanto.mg',
+          'https://app.kanto.mg',
+          'https://kanto.mg',
+          'https://api-kanto.gastsar.fr',
+        ];
+        callback(null, defaultProd.includes(origin));
+        return;
       }
+
+      const allowedList = rawOrigins.split(',').map((o) => o.trim());
+      const isAllowed =
+        allowedList.includes(origin) ||
+        (!isProduction && origin.startsWith('http://localhost'));
+      callback(null, isAllowed);
     },
     credentials: true,
   },
