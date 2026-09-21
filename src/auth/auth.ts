@@ -78,6 +78,39 @@ export const auth = betterAuth({
     autoSignInAfterVerification: true,
     expiresIn: 60 * 60 * 24, // 24 heures de validité
     sendVerificationEmail: async ({ user, url, token }) => {
+      // 🛡️ SÉCURITÉ & SÉPARATION DES RÔLES :
+      // Les comptes administrateurs ne doivent JAMAIS recevoir d'email de confirmation utilisateur.
+      // Leur compte est vérifié automatiquement à l'initialisation et ils reçoivent exclusivement
+      // l'email de réinitialisation/définition de mot de passe pointant vers l'interface admin.
+      const defaultAdminEmail =
+        process.env.DEFAULT_ADMIN_EMAIL?.trim().toLowerCase();
+      const userEmailNormalized = user.email.trim().toLowerCase();
+
+      if (defaultAdminEmail && userEmailNormalized === defaultAdminEmail) {
+        console.log(
+          `[Better-Auth] 🛡️ Compte administrateur (${user.email}) : email de confirmation ignoré (l'admin reçoit uniquement le lien de réinitialisation admin).`,
+        );
+        return;
+      }
+
+      try {
+        const existingUser = await prisma.user.findUnique({
+          where: { email: userEmailNormalized },
+          select: { role: true },
+        });
+        if (existingUser?.role === 'ADMIN') {
+          console.log(
+            `[Better-Auth] 🛡️ Rôle ADMIN actif pour (${user.email}) : email de confirmation ignoré (non applicable aux administrateurs).`,
+          );
+          return;
+        }
+      } catch (checkErr: unknown) {
+        console.warn(
+          `[Better-Auth] ⚠️ Vérification du rôle ignorée pour (${user.email}) :`,
+          checkErr instanceof Error ? checkErr.message : String(checkErr),
+        );
+      }
+
       console.log(
         `[Better-Auth] ✉️ Envoi de l'email de confirmation à : ${user.email}`,
       );
