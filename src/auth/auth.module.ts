@@ -7,6 +7,7 @@ import { auth } from './auth.js';
     BetterAuthModule.forRoot({
       auth,
       disableGlobalAuthGuard: true,
+      disableTrustedOriginsCors: true,
       bodyParser: {
         json: { limit: '5mb' },
         urlencoded: { limit: '5mb', extended: true },

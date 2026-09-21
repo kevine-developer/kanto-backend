@@ -90,6 +90,8 @@ async function bootstrap() {
     /^http:\/\/10\.\d+\.\d+\.\d+:\d+$/,
     /^http:\/\/172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+:\d+$/,
     /^http:\/\/169\.254\.\d+\.\d+:\d+$/,
+    'https://kanto-admin.vercel.app',
+    /^https:\/\/.*\.vercel\.app$/,
   ];
 
   const defaultProdOrigins: (string | RegExp)[] = [
@@ -97,15 +99,21 @@ async function bootstrap() {
     'https://app.kanto.mg',
     'https://kanto.mg',
     'https://api-kanto.gastsar.fr',
+    'https://kanto-admin.vercel.app',
+    /^https:\/\/.*\.vercel\.app$/,
+    /^https:\/\/.*\.kanto\.mg$/,
     /^kanto:\/\//,
     /^kantomg:\/\//,
   ];
 
-  const allowedOrigins: (string | RegExp)[] = rawOrigins
+  const envOrigins: (string | RegExp)[] = rawOrigins
     ? rawOrigins.split(',').map((o) => o.trim())
-    : isProduction
-      ? defaultProdOrigins
-      : defaultDevOrigins;
+    : [];
+
+  const allowedOrigins: (string | RegExp)[] = [
+    ...(isProduction ? defaultProdOrigins : defaultDevOrigins),
+    ...envOrigins,
+  ];
 
   app.enableCors({
     origin: (

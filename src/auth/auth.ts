@@ -43,6 +43,8 @@ const devOrigins = [
   'http://10.*',
   'http://172.*:*',
   'http://172.*',
+  'https://kanto-admin.vercel.app',
+  'https://*.vercel.app',
 ];
 
 const prodOrigins = [
@@ -50,6 +52,9 @@ const prodOrigins = [
   'https://app.kanto.mg',
   'https://kanto.mg',
   'https://api-kanto.gastsar.fr',
+  'https://kanto-admin.vercel.app',
+  'https://*.vercel.app',
+  'https://*.kanto.mg',
 ];
 
 export const auth = betterAuth({
