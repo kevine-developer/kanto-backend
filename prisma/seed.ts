@@ -3,6 +3,7 @@ import {
   PrismaClient,
   DifficultyLevel,
   CivicSubCategory,
+  TrueFalseTheme,
 } from '../generated/prisma/client.js';
 import { PrismaPg } from '@prisma/adapter-pg';
 import pg from 'pg';
@@ -122,38 +123,7 @@ async function main() {
 
   const seedDataDir = path.resolve(__dirname, 'seed-data');
 
-  // 1. Nettoyage initial
-  await prisma.riddleAnswer.deleteMany();
-  await prisma.riddleSession.deleteMany();
-  await prisma.riddleQuestion.deleteMany();
-  await prisma.civicQuizAnswer.deleteMany();
-  await prisma.civicQuizSession.deleteMany();
-  await prisma.vintanaForecast.deleteMany();
-  await prisma.vintanaSign.deleteMany();
-
-  await prisma.civicStructureRole.deleteMany();
-  await prisma.civicContent.deleteMany();
-  await prisma.civicQuizQuestion.deleteMany();
-  await prisma.poesieStanza.deleteMany();
-  await prisma.poesie.deleteMany();
-  await prisma.recitation.deleteMany();
-  await prisma.malagasyItemTheme.deleteMany();
-  await prisma.citationTheme.deleteMany();
-  await prisma.conteTheme.deleteMany();
-  await prisma.conteParagraph.deleteMany();
-  await prisma.conte.deleteMany();
-  await prisma.kabaryTheme.deleteMany();
-  await prisma.kabaryStep.deleteMany();
-  await prisma.kabary.deleteMany();
-  await prisma.dailyProverb.deleteMany();
-  await prisma.dialectVariant.deleteMany();
-  await prisma.malagasyItem.deleteMany();
-  await prisma.citation.deleteMany();
-  await prisma.author.deleteMany();
-  await prisma.theme.deleteMany();
-  await prisma.region.deleteMany();
-
-  console.log('🧹 Données existantes purgées');
+  console.log('🔍 Exécution du seed idempotent (non destructif)...');
 
   // 2. Création des Thèmes
   const themeMap = new Map<string, string>(); // slug -> id
@@ -180,8 +150,13 @@ async function main() {
   console.log(`✅ ${DEFAULT_REGIONS.length} régions créées`);
 
   // 4. Import des Citations
+  const existingCitationsCount = await prisma.citation.count();
   const citationFilePath = path.join(seedDataDir, 'citation.data.json');
-  if (fs.existsSync(citationFilePath)) {
+  if (existingCitationsCount > 0) {
+    console.log(
+      `ℹ️ Citations déjà initialisées (${existingCitationsCount} entrées). Étape ignorée.`,
+    );
+  } else if (fs.existsSync(citationFilePath)) {
     const rawCitations = JSON.parse(fs.readFileSync(citationFilePath, 'utf-8'));
     console.log(
       `📖 Chargement de ${rawCitations.length} citations depuis ${citationFilePath}`,
@@ -235,117 +210,134 @@ async function main() {
     console.log('✅ Citations importées avec succès');
   }
 
-  // 5. Téléchargement et import des Proverbes / Expressions / Dictons
-  console.log(
-    '📡 Récupération des contenus culturels (proverbes, expressions, dictons)...',
-  );
-  const DATA_SOURCES = [
-    {
-      url: 'https://raw.githubusercontent.com/gastsar/data-kantomg/main/data/category/proverbes.data.json',
-      defaultCategory: 'PROVERBE' as const,
-    },
-    {
-      url: 'https://raw.githubusercontent.com/gastsar/data-kantomg/main/data/category/expressions.data.json',
-      defaultCategory: 'EXPRESSION' as const,
-    },
-    {
-      url: 'https://raw.githubusercontent.com/gastsar/data-kantomg/main/data/category/dictons.data.json',
-      defaultCategory: 'DICTON' as const,
-    },
-  ];
-
+  // 5. Import des Proverbes / Expressions / Dictons (depuis fichiers locaux)
   let firstProverbId: string | null = null;
-  let totalImported = 0;
+  const existingItemsCount = await prisma.malagasyItem.count();
 
-  for (const source of DATA_SOURCES) {
-    try {
-      const res = await fetch(source.url);
-      if (!res.ok) {
-        console.warn(`⚠️ Source introuvable: ${source.url} (${res.status})`);
-        continue;
-      }
-      const rawData = await res.json();
-      console.log(
-        `📖 Insertion de ${rawData.length} éléments (${source.defaultCategory})...`,
-      );
+  if (existingItemsCount > 0) {
+    console.log(
+      `ℹ️ Contenus culturels déjà initialisés (${existingItemsCount} entrées). Étape ignorée.`,
+    );
+    const firstP = await prisma.malagasyItem.findFirst({
+      where: { category: 'PROVERBE' },
+    });
+    firstProverbId = firstP?.id || null;
+  } else {
+    console.log(
+      '📖 Chargement des contenus culturels locaux (proverbes, expressions, dictons)...',
+    );
+    const DATA_SOURCES = [
+      {
+        file: 'proverbes.data.json',
+        defaultCategory: 'PROVERBE' as const,
+      },
+      {
+        file: 'expressions.data.json',
+        defaultCategory: 'EXPRESSION' as const,
+      },
+      {
+        file: 'dictons.data.json',
+        defaultCategory: 'DICTON' as const,
+      },
+    ];
 
-      for (let i = 0; i < rawData.length; i++) {
-        const item = rawData[i];
-        let category: 'PROVERBE' | 'EXPRESSION' | 'DICTON' =
-          source.defaultCategory;
-        if (item.category === 'proverbe') category = 'PROVERBE';
-        if (item.category === 'expression') category = 'EXPRESSION';
-        if (item.category === 'dicton') category = 'DICTON';
+    let totalImported = 0;
 
-        const baseSlug = slugify(
-          item.malagasy || `${category.toLowerCase()}-${i}`,
+    for (const source of DATA_SOURCES) {
+      try {
+        const filePath = path.join(seedDataDir, source.file);
+        if (!fs.existsSync(filePath)) {
+          console.warn(`⚠️ Fichier source introuvable: ${filePath}`);
+          continue;
+        }
+        const rawData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        console.log(
+          `📖 Insertion de ${rawData.length} éléments (${source.defaultCategory})...`,
         );
-        const uniqueSlug = `${baseSlug}-${totalImported + i + 1}`;
 
-        const createdItem = await prisma.malagasyItem.create({
-          data: {
-            slug: uniqueSlug,
-            malagasy: item.malagasy,
-            french: item.french,
-            meaning: item.meaning,
-            example: item.example || null,
-            category,
-            origins: Array.isArray(item.origins) ? item.origins : [],
-            isFeatured: i < 5,
-          },
-        });
+        for (let i = 0; i < rawData.length; i++) {
+          const item = rawData[i];
+          let category: 'PROVERBE' | 'EXPRESSION' | 'DICTON' =
+            source.defaultCategory;
+          if (item.category === 'proverbe') category = 'PROVERBE';
+          if (item.category === 'expression') category = 'EXPRESSION';
+          if (item.category === 'dicton') category = 'DICTON';
 
-        if (!firstProverbId && category === 'PROVERBE') {
-          firstProverbId = createdItem.id;
-        }
+          const baseSlug = slugify(
+            item.malagasy || `${category.toLowerCase()}-${i}`,
+          );
+          const uniqueSlug = `${baseSlug}-${totalImported + i + 1}`;
 
-        if (Array.isArray(item.dialectVariants)) {
-          for (const v of item.dialectVariants) {
-            if (v.dialect && v.text) {
-              await prisma.dialectVariant.create({
+          const createdItem = await prisma.malagasyItem.create({
+            data: {
+              slug: uniqueSlug,
+              malagasy: item.malagasy,
+              french: item.french,
+              meaning: item.meaning,
+              example: item.example || null,
+              category,
+              origins: Array.isArray(item.origins) ? item.origins : [],
+              isFeatured: i < 5,
+            },
+          });
+
+          if (!firstProverbId && category === 'PROVERBE') {
+            firstProverbId = createdItem.id;
+          }
+
+          if (Array.isArray(item.dialectVariants)) {
+            for (const v of item.dialectVariants) {
+              if (v.dialect && v.text) {
+                await prisma.dialectVariant.create({
+                  data: {
+                    dialectName: v.dialect,
+                    text: v.text,
+                    itemId: createdItem.id,
+                  },
+                });
+              }
+            }
+          }
+
+          if (Array.isArray(item.themes)) {
+            for (const tName of item.themes) {
+              const tSlug = slugify(tName);
+              let tId = themeMap.get(tSlug);
+              if (!tId) {
+                const newTheme = await prisma.theme.create({
+                  data: {
+                    nameFr: tName,
+                    nameMg: tName,
+                    slug: tSlug,
+                  },
+                });
+                tId = newTheme.id;
+                themeMap.set(tSlug, tId);
+              }
+              await prisma.malagasyItemTheme.create({
                 data: {
-                  dialectName: v.dialect,
-                  text: v.text,
                   itemId: createdItem.id,
+                  themeId: tId,
                 },
               });
             }
           }
         }
 
-        if (Array.isArray(item.themes)) {
-          for (const tName of item.themes) {
-            const tSlug = slugify(tName);
-            let tId = themeMap.get(tSlug);
-            if (!tId) {
-              const newTheme = await prisma.theme.create({
-                data: {
-                  nameFr: tName,
-                  nameMg: tName,
-                  slug: tSlug,
-                },
-              });
-              tId = newTheme.id;
-              themeMap.set(tSlug, tId);
-            }
-            await prisma.malagasyItemTheme.create({
-              data: {
-                itemId: createdItem.id,
-                themeId: tId,
-              },
-            });
-          }
-        }
+        totalImported += rawData.length;
+      } catch (err) {
+        console.error(`⚠️ Erreur lors de l'import de ${source.file} :`, err);
       }
-
-      totalImported += rawData.length;
-    } catch (err) {
-      console.error(`⚠️ Erreur lors de l'import de ${source.url} :`, err);
     }
   }
 
   // 6. Proverbe du jour
-  if (firstProverbId) {
+  const existingDailyProverbCount = await prisma.dailyProverb.count();
+  if (existingDailyProverbCount > 0) {
+    console.log(
+      `ℹ️ Proverbe du jour déjà initialisé (${existingDailyProverbCount} entrées). Étape ignorée.`,
+    );
+  } else if (firstProverbId) {
     const today = new Date();
     await prisma.dailyProverb.create({
       data: {
@@ -358,8 +350,13 @@ async function main() {
   }
 
   // 7. Import des Contes (Angano)
+  const existingContesCount = await prisma.conte.count();
   const conteFilePath = path.join(seedDataDir, 'conte.data.json');
-  if (fs.existsSync(conteFilePath)) {
+  if (existingContesCount > 0) {
+    console.log(
+      `ℹ️ Contes (Angano) déjà initialisés (${existingContesCount} entrées). Étape ignorée.`,
+    );
+  } else if (fs.existsSync(conteFilePath)) {
     const rawContes = JSON.parse(fs.readFileSync(conteFilePath, 'utf-8'));
     console.log(
       `📖 Chargement de ${rawContes.length} contes depuis ${conteFilePath}`,
@@ -440,8 +437,13 @@ async function main() {
   }
 
   // 8. Import des Discours (Kabary)
+  const existingKabaryCount = await prisma.kabary.count();
   const kabaryFilePath = path.join(seedDataDir, 'kabary.data.json');
-  if (fs.existsSync(kabaryFilePath)) {
+  if (existingKabaryCount > 0) {
+    console.log(
+      `ℹ️ Discours (Kabary) déjà initialisés (${existingKabaryCount} entrées). Étape ignorée.`,
+    );
+  } else if (fs.existsSync(kabaryFilePath)) {
     const rawKabaries = JSON.parse(fs.readFileSync(kabaryFilePath, 'utf-8'));
     console.log(
       `🗣️ Chargement de ${rawKabaries.length} discours (Kabary) depuis ${kabaryFilePath}`,
@@ -529,8 +531,13 @@ async function main() {
   }
 
   // 9. Import des Poésies (Tononkalo)
+  const existingPoesieCount = await prisma.poesie.count();
   const poesieFilePath = path.join(seedDataDir, 'poesie.data.json');
-  if (fs.existsSync(poesieFilePath)) {
+  if (existingPoesieCount > 0) {
+    console.log(
+      `ℹ️ Poésies déjà initialisées (${existingPoesieCount} entrées). Étape ignorée.`,
+    );
+  } else if (fs.existsSync(poesieFilePath)) {
     const rawPoesies = JSON.parse(fs.readFileSync(poesieFilePath, 'utf-8'));
     console.log(
       `📜 Chargement de ${rawPoesies.length} poésies depuis ${poesieFilePath}`,
@@ -574,8 +581,13 @@ async function main() {
   }
 
   // 10. Import des Récitations (Tsianjery)
+  const existingRecitationCount = await prisma.recitation.count();
   const recitationFilePath = path.join(seedDataDir, 'recitation.data.json');
-  if (fs.existsSync(recitationFilePath)) {
+  if (existingRecitationCount > 0) {
+    console.log(
+      `ℹ️ Récitations déjà initialisées (${existingRecitationCount} entrées). Étape ignorée.`,
+    );
+  } else if (fs.existsSync(recitationFilePath)) {
     const rawRecitations = JSON.parse(
       fs.readFileSync(recitationFilePath, 'utf-8'),
     );
@@ -608,89 +620,103 @@ async function main() {
   }
 
   // 11. Import des Contenus Civiques
-  const civicFiles: { file: string; subCategory: CivicSubCategory }[] = [
-    {
-      file: 'civic-institution.data.json',
-      subCategory: CivicSubCategory.INSTITUTION,
-    },
-    {
-      file: 'droits-et-vote.data.json',
-      subCategory: CivicSubCategory.DROITS_VOTE,
-    },
-    {
-      file: 'ecologie-civisme.data.json',
-      subCategory: CivicSubCategory.ECOLOGIE_CIVISME,
-    },
-    {
-      file: 'symboles-histoire.data.json',
-      subCategory: CivicSubCategory.SYMBOLES_HISTOIRE,
-    },
-    {
-      file: 'vivre-ensemble.data.json',
-      subCategory: CivicSubCategory.VIVRE_ENSEMBLE,
-    },
-  ];
+  const existingCivicCount = await prisma.civicContent.count();
+  if (existingCivicCount > 0) {
+    console.log(
+      `ℹ️ Contenus civiques déjà initialisés (${existingCivicCount} entrées). Étape ignorée.`,
+    );
+  } else {
+    const civicFiles: { file: string; subCategory: CivicSubCategory }[] = [
+      {
+        file: 'civic-institution.data.json',
+        subCategory: CivicSubCategory.INSTITUTION,
+      },
+      {
+        file: 'droits-et-vote.data.json',
+        subCategory: CivicSubCategory.DROITS_VOTE,
+      },
+      {
+        file: 'ecologie-civisme.data.json',
+        subCategory: CivicSubCategory.ECOLOGIE_CIVISME,
+      },
+      {
+        file: 'symboles-histoire.data.json',
+        subCategory: CivicSubCategory.SYMBOLES_HISTOIRE,
+      },
+      {
+        file: 'vivre-ensemble.data.json',
+        subCategory: CivicSubCategory.VIVRE_ENSEMBLE,
+      },
+    ];
 
-  let totalCivicImported = 0;
-  for (const { file, subCategory } of civicFiles) {
-    const fullPath = path.join(seedDataDir, 'civique', file);
-    if (fs.existsSync(fullPath)) {
-      const items = JSON.parse(fs.readFileSync(fullPath, 'utf-8'));
-      console.log(
-        `🏛️ Chargement de ${items.length} éléments civiques (${subCategory}) depuis ${file}`,
-      );
+    let totalCivicImported = 0;
+    for (const { file, subCategory } of civicFiles) {
+      const fullPath = path.join(seedDataDir, 'civique', file);
+      if (fs.existsSync(fullPath)) {
+        const items = JSON.parse(fs.readFileSync(fullPath, 'utf-8'));
+        console.log(
+          `🏛️ Chargement de ${items.length} éléments civiques (${subCategory}) depuis ${file}`,
+        );
 
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        const titleFr = item.title?.fr || item.titleFr || `Contenu ${i + 1}`;
-        const titleMg = item.title?.mg || item.titleMg || titleFr;
-        const baseSlug = slugify(titleFr || titleMg);
-        const uniqueSlug = `${subCategory.toLowerCase()}-${baseSlug}-${i + 1}`;
+        for (let i = 0; i < items.length; i++) {
+          const item = items[i];
+          const titleFr = item.title?.fr || item.titleFr || `Contenu ${i + 1}`;
+          const titleMg = item.title?.mg || item.titleMg || titleFr;
+          const baseSlug = slugify(titleFr || titleMg);
+          const uniqueSlug = `${subCategory.toLowerCase()}-${baseSlug}-${i + 1}`;
 
-        const createdCivic = await prisma.civicContent.create({
-          data: {
-            id: item.id || undefined,
-            slug: uniqueSlug,
-            subCategory,
-            titleFr,
-            titleMg,
-            summaryFr: item.summary?.fr || item.summaryFr || null,
-            summaryMg: item.summary?.mg || item.summaryMg || null,
-            contentFr: Array.isArray(item.content?.fr) ? item.content.fr : [],
-            contentMg: Array.isArray(item.content?.mg) ? item.content.mg : [],
-            themes: Array.isArray(item.theme)
-              ? item.theme
-              : Array.isArray(item.themes)
-                ? item.themes
-                : [],
-            sources: Array.isArray(item.sources) ? item.sources : [],
-          },
-        });
+          const createdCivic = await prisma.civicContent.create({
+            data: {
+              id: item.id || undefined,
+              slug: uniqueSlug,
+              subCategory,
+              titleFr,
+              titleMg,
+              summaryFr: item.summary?.fr || item.summaryFr || null,
+              summaryMg: item.summary?.mg || item.summaryMg || null,
+              contentFr: Array.isArray(item.content?.fr) ? item.content.fr : [],
+              contentMg: Array.isArray(item.content?.mg) ? item.content.mg : [],
+              themes: Array.isArray(item.theme)
+                ? item.theme
+                : Array.isArray(item.themes)
+                  ? item.themes
+                  : [],
+              sources: Array.isArray(item.sources) ? item.sources : [],
+            },
+          });
 
-        if (Array.isArray(item.structure)) {
-          for (let sIdx = 0; sIdx < item.structure.length; sIdx++) {
-            const st = item.structure[sIdx];
-            await prisma.civicStructureRole.create({
-              data: {
-                civicContentId: createdCivic.id,
-                orderIndex: sIdx + 1,
-                titleFr: st.title?.fr || '',
-                titleMg: st.title?.mg || '',
-                roleFr: st.role?.fr || '',
-                roleMg: st.role?.mg || '',
-              },
-            });
+          if (Array.isArray(item.structure)) {
+            for (let sIdx = 0; sIdx < item.structure.length; sIdx++) {
+              const st = item.structure[sIdx];
+              await prisma.civicStructureRole.create({
+                data: {
+                  civicContentId: createdCivic.id,
+                  orderIndex: sIdx + 1,
+                  titleFr: st.title?.fr || '',
+                  titleMg: st.title?.mg || '',
+                  roleFr: st.role?.fr || '',
+                  roleMg: st.role?.mg || '',
+                },
+              });
+            }
           }
+          totalCivicImported++;
         }
-        totalCivicImported++;
       }
+      console.log(
+        `✅ Total de ${totalCivicImported} contenus civiques importés`,
+      );
     }
   }
-  console.log(`✅ Total de ${totalCivicImported} contenus civiques importés`);
 
   // 12. Import du Quiz Civique
+  const existingCivicQuizCount = await prisma.civicQuizQuestion.count();
   const quizFilePath = path.join(seedDataDir, 'civic-quiz.data.json');
-  if (fs.existsSync(quizFilePath)) {
+  if (existingCivicQuizCount > 0) {
+    console.log(
+      `ℹ️ Questions de quiz civique déjà initialisées (${existingCivicQuizCount} entrées). Étape ignorée.`,
+    );
+  } else if (fs.existsSync(quizFilePath)) {
     const rawQuestions = JSON.parse(fs.readFileSync(quizFilePath, 'utf-8'));
     console.log(
       `🎯 Chargement de ${rawQuestions.length} questions de quiz civique depuis ${quizFilePath}`,
@@ -720,42 +746,131 @@ async function main() {
     );
   }
   // 17. Import des Devinettes (Ankamantatra)
-  console.log(
-    `📖 Importation de ${RIDDLES_DATA.length} devinettes (Ankamantatra)...`,
-  );
-  for (const r of RIDDLES_DATA) {
-    await prisma.riddleQuestion.create({
-      data: {
-        riddleMg: r.riddleMg,
-        riddleFr: r.riddleFr,
-        options: r.options,
-        correctAnswer: r.correctAnswer,
-        explanation: r.explanation,
-        clue: r.clue || null,
-        level: r.level,
-      },
-    });
+  const existingRiddlesCount = await prisma.riddleQuestion.count();
+  if (existingRiddlesCount > 0) {
+    console.log(
+      `ℹ️ Devinettes déjà initialisées (${existingRiddlesCount} entrées). Étape ignorée.`,
+    );
+  } else {
+    console.log(
+      `📖 Importation de ${RIDDLES_DATA.length} devinettes (Ankamantatra)...`,
+    );
+    for (const r of RIDDLES_DATA) {
+      await prisma.riddleQuestion.create({
+        data: {
+          riddleMg: r.riddleMg,
+          riddleFr: r.riddleFr,
+          options: r.options,
+          correctAnswer: r.correctAnswer,
+          explanation: r.explanation,
+          clue: r.clue || null,
+          level: r.level,
+        },
+      });
+    }
+    console.log(`✅ ${RIDDLES_DATA.length} devinettes importées`);
   }
-  console.log(`✅ ${RIDDLES_DATA.length} devinettes importées`);
 
   // 18. Import des Signes du Zodiaque (Vintana)
-  console.log(
-    `📖 Importation de ${VINTANA_SIGNS.length} signes astrologiques (Vintana)...`,
-  );
-  for (const v of VINTANA_SIGNS) {
-    await prisma.vintanaSign.create({
-      data: {
-        id: v.id,
-        nameMg: v.name,
-        nameFr: v.nameFr,
-        element: v.element,
-        description: v.personalityMg + '\n\n' + v.personalityFr,
-        luckyDay: v.luckyDayMg,
-        luckyColor: null, // Si aucune couleur n'est dispo pour l'instant
-      },
-    });
+  const existingVintanaCount = await prisma.vintanaSign.count();
+  if (existingVintanaCount > 0) {
+    console.log(
+      `ℹ️ Signes Vintana déjà initialisés (${existingVintanaCount} entrées). Étape ignorée.`,
+    );
+  } else {
+    console.log(
+      `📖 Importation de ${VINTANA_SIGNS.length} signes astrologiques (Vintana)...`,
+    );
+    for (const v of VINTANA_SIGNS) {
+      await prisma.vintanaSign.create({
+        data: {
+          id: v.id,
+          nameMg: v.name,
+          nameFr: v.nameFr,
+          element: v.element,
+          description: v.personalityMg + '\n\n' + v.personalityFr,
+          luckyDay: v.luckyDayMg,
+          luckyColor: null,
+        },
+      });
+    }
+    console.log(`✅ ${VINTANA_SIGNS.length} signes Vintana importés`);
   }
-  console.log(`✅ ${VINTANA_SIGNS.length} signes Vintana importés`);
+
+  // 19. Import des Questions Vrai ou Faux (Marina sa Diso - fichiers locaux)
+  const existingTfCount = await prisma.trueFalseQuestion.count();
+  if (existingTfCount > 0) {
+    console.log(
+      `ℹ️ Questions Vrai/Faux déjà initialisées (${existingTfCount} entrées). Étape ignorée.`,
+    );
+  } else {
+    console.log('📖 Importation des questions Vrai/Faux (fichiers locaux)...');
+    const TRUE_FALSE_FILES = [
+      'tf-culture.data.json',
+      'tf-geographie.data.json',
+      'tf-histoire.data.json',
+      'tf-litterature.data.json',
+      'tf-proverbes.data.json',
+      'tf-general.data.json',
+    ];
+
+    const TF_THEME_MAP: Record<string, TrueFalseTheme> = {
+      CULT: TrueFalseTheme.CULT,
+      GEO: TrueFalseTheme.GEO,
+      HIST: TrueFalseTheme.HIST,
+      LITT: TrueFalseTheme.LITT,
+      PROV: TrueFalseTheme.PROV,
+      GEN: TrueFalseTheme.GEN,
+    };
+
+    const TF_DIFFICULTY_MAP: Record<string, DifficultyLevel> = {
+      EASY: DifficultyLevel.EASY,
+      MEDIUM: DifficultyLevel.MEDIUM,
+      HARD: DifficultyLevel.HARD,
+      EXPERT: DifficultyLevel.EXPERT,
+    };
+
+    let tfCount = 0;
+    for (const fileName of TRUE_FALSE_FILES) {
+      try {
+        const filePath = path.join(seedDataDir, fileName);
+        if (!fs.existsSync(filePath)) {
+          console.warn(`⚠️ Fichier Vrai/Faux introuvable: ${filePath}`);
+          continue;
+        }
+        const data: any = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        const questions: any[] = data.questions || [];
+        for (const q of questions) {
+          const theme =
+            (q.themeId && TF_THEME_MAP[q.themeId]) || TrueFalseTheme.GEN;
+          const difficulty =
+            (q.levelId && TF_DIFFICULTY_MAP[q.levelId]) || DifficultyLevel.EASY;
+
+          await prisma.trueFalseQuestion.create({
+            data: {
+              questionMg: q.questionText,
+              questionFr: q.questionTextFr || q.questionText,
+              isTrue: Boolean(q.isTrue),
+              explanationMg: q.explanation,
+              explanationFr: q.explanationFr || q.explanation,
+              theme,
+              difficulty,
+              source: q.source || null,
+              image: q.image || null,
+              status: 'PUBLISHED',
+            },
+          });
+          tfCount++;
+        }
+      } catch (err) {
+        console.warn(
+          `⚠️ Échec du chargement Vrai/Faux depuis ${fileName}:`,
+          err,
+        );
+      }
+    }
+    console.log(`✅ ${tfCount} questions Vrai/Faux importées`);
+  }
 
   console.log('🎉 Seed de la base de données Kanto terminé avec succès !');
 }

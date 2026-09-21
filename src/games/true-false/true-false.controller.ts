@@ -39,6 +39,11 @@ export class TrueFalseController {
     );
   }
 
+  @Get('counts')
+  getCounts() {
+    return this.trueFalseService.getQuestionCounts();
+  }
+
   @Get('themes')
   getThemesAndLevels() {
     return {

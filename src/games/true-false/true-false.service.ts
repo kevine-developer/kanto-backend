@@ -356,4 +356,18 @@ export class TrueFalseService {
       })),
     };
   }
+
+  async getQuestionCounts(): Promise<Record<string, number>> {
+    const grouped = await this.prisma.trueFalseQuestion.groupBy({
+      by: ['theme', 'difficulty'],
+      where: { status: 'PUBLISHED' },
+      _count: { _all: true },
+    });
+
+    const counts: Record<string, number> = {};
+    for (const g of grouped) {
+      counts[`${g.theme}_${g.difficulty}`] = g._count._all;
+    }
+    return counts;
+  }
 }

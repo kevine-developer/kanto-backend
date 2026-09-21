@@ -1,0 +1,839 @@
+{
+  "gameTitle": "Madagascar: Vrai ou Faux ?",
+  "description": "Un jeu de questions-réponses Vrai/Faux sur Madagascar, explorant sa culture, géographie, histoire, littérature et ses proverbes, avec différents niveaux de difficulté et adaptés à divers âges.",
+  "themes": [
+    {
+      "themeName": "Proverbes & Expressions",
+      "themeId": "PROV",
+      "description": "Questions sur la signification et l'utilisation des proverbes malgaches (ohabolana)."
+    }
+  ],
+  "levels": [
+    {
+      "levelName": "Facile",
+      "levelId": "EASY",
+      "description": "Questions générales et accessibles, idéales pour les débutants.",
+      "minAge": 6
+    },
+    {
+      "levelName": "Moyen",
+      "levelId": "MEDIUM",
+      "description": "Questions nécessitant une connaissance un peu plus approfondie.",
+      "minAge": 10
+    },
+    {
+      "levelName": "Difficile",
+      "levelId": "HARD",
+      "description": "Questions spécifiques et détaillées, pour les experts de Madagascar.",
+      "minAge": 14
+    },
+    {
+      "levelName": "Expert",
+      "levelId": "EXPERT",
+      "description": "Questions très pointues ou nécessitant une réflexion approfondie, pour les connaisseurs et les curieux.",
+      "minAge": 16
+    }
+  ],
+  "questions": [
+    {
+      "questionId": "EASY_001",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Les 'Ohabolana' sont des chansons malgaches très populaires.",
+      "isTrue": false,
+      "explanation": "Les **Ohabolana** sont des **proverbes ou des maximes malgaches**, pas des chansons. Ils sont très importants dans la culture orale.",
+      "source": "Culture orale malgache"
+    },
+    {
+      "questionId": "EASY_002",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Le proverbe malgache 'Ny rano natsipy an-doha ihany no miverina' signifie 'L'eau versée sur la tête revient toujours'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe signifie que les actions que l'on pose ont des conséquences qui nous reviennent, une sorte de 'retour de bâton'.",
+      "source": "Recueil de Proverbes Malgaches"
+    },
+    {
+      "questionId": "EASY_003",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Le proverbe 'Aza miasa rano an-dRano' signifie 'Ne travaille pas de l'eau dans l'eau'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe signifie 'Ne fais pas un travail inutile', ou 'Ne perds pas ton temps à faire quelque chose qui n'aura pas d'effet'.",
+      "source": "Dictionnaire des proverbes malgaches"
+    },
+    {
+      "questionId": "EASY_004",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Le proverbe 'Ny fanahy no olona' signifie 'L'esprit fait l'homme'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe souligne l'importance de la personnalité, du caractère et de l'intégrité morale par rapport à l'apparence physique.",
+      "source": "Proverbes malgaches usuels"
+    },
+    {
+      "questionId": "EASY_005",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Le proverbe 'Azafady' est une salutation qui signifie 'Bonjour'.",
+      "isTrue": false,
+      "explanation": "**Azafady** signifie 'S'il vous plaît' ou 'Pardon' et est une expression de politesse, pas une salutation directe.",
+      "source": "Lexique malgache courant"
+    },
+    {
+      "questionId": "EASY_006",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Le proverbe 'Ny vato an-tanety ihany no mahay mamely' signifie 'Seule la pierre à terre sait frapper'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe met en évidence l'importance de l'action ou de l'expérience concrète : seule une personne active et impliquée peut avoir un impact.",
+      "source": "Recueil de Proverbes Malgaches"
+    },
+    {
+      "questionId": "EASY_007",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "L'expression 'Mihingo rivotra' signifie 'Courir vite'.",
+      "isTrue": false,
+      "explanation": "**Mihingo rivotra** signifie littéralement 'boire du vent' et est une expression malgache qui veut dire 'prendre l'air' ou 'se promener', non 'courir vite'.",
+      "source": "Expressions idiomatiques malgaches"
+    },
+    {
+      "questionId": "EASY_008",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Le proverbe 'Tsy misy rano mandry tsy misy foitra' signifie 'Il n'y a pas d'eau stagnante sans moustiques'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe est vrai et signifie que tout problème ou situation a sa cause ou sa conséquence, qu'il n'y a pas de fumée sans feu.",
+      "source": "Proverbes malgaches sur les causes et effets"
+    },
+    {
+      "questionId": "EASY_009",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Le proverbe 'Lavitra ny any, akaiky ny aty' signifie 'Ce qui est loin est loin, ce qui est proche est proche'.",
+      "isTrue": false,
+      "explanation": "Ce proverbe signifie plutôt que 'Ce qui est loin de toi (physiquement) n'est pas forcément loin de ton cœur, et inversement'. Il met en valeur les **liens humains par-delà les distances**.",
+      "source": "Interprétation des proverbes malgaches"
+    },
+    {
+      "questionId": "EASY_010",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Dire 'Veloma' à Madagascar signifie 'Bonjour'.",
+      "isTrue": false,
+      "explanation": "**Veloma** est une salutation qui signifie 'Au revoir' ou 'Adieu' en malgache, pas 'Bonjour'.",
+      "source": "Salutations malgaches"
+    },
+    {
+      "questionId": "MEDIUM_001",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le proverbe malgache 'Ny vary tsy an-drano, tsy ho vary' signifie 'Le riz sans eau ne sera pas du riz'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe souligne l'importance des conditions nécessaires pour qu'une chose puisse exister ou se développer. Il met en évidence la dépendance vitale de certaines choses (ici le riz à l'eau).",
+      "source": "Recueil de Proverbes Malgaches"
+    },
+    {
+      "questionId": "MEDIUM_002",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le proverbe 'Ny tany lavitra, ny olona akaiky' signifie 'La terre est lointaine, les gens sont proches'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe malgache met l'accent sur l'importance des **relations humaines et de la solidarité**, qui priment sur la distance physique.",
+      "source": "Proverbes et sagesse malgaches"
+    },
+    {
+      "questionId": "MEDIUM_003",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le proverbe 'Aleo mandeha miadana toy izay mananihana haingana' signifie 'Mieux vaut aller lentement que de courir vite et trébucher'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe encourage la prudence et la patience, soulignant qu'il est préférable de prendre son temps pour bien faire les choses plutôt que de se précipiter et de faire des erreurs.",
+      "source": "Recueil de Proverbes Malgaches"
+    },
+    {
+      "questionId": "MEDIUM_004",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le proverbe 'Ny teny dia toy ny rano, raha tsy atao an-tanana, dia tsy ho tafita' signifie 'La parole est comme l'eau, si on ne la tient pas dans la main, elle ne passera pas'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe met l'accent sur la nécessité de la **précision et de la clarté** dans la communication pour qu'un message soit compris et transmis efficacement.",
+      "source": "Proverbes malgaches sur la communication"
+    },
+    {
+      "questionId": "MEDIUM_005",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le proverbe 'Ny fitiavana tsy mifidy endrika, fa mifidy fo' signifie 'L'amour ne choisit pas le visage, mais choisit le cœur'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe souligne que la **vraie affection** et l'amour se basent sur les qualités intérieures et non sur l'apparence physique.",
+      "source": "Proverbes malgaches sur l'amour"
+    },
+    {
+      "questionId": "MEDIUM_006",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le proverbe 'Ny tena kely, mahay mananihana havoana' signifie 'Même le petit sait escalader la colline'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe encourage la **persévérance et la confiance en soi**, signifiant que même une petite personne ou une entité modeste peut accomplir de grandes choses avec détermination.",
+      "source": "Sagesse populaire malgache"
+    },
+    {
+      "questionId": "MEDIUM_007",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le proverbe 'Ny marina tsy maty foana' signifie 'La vérité ne meurt pas en vain'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe est vrai et exprime la conviction que la vérité finit toujours par triompher ou être reconnue, même si elle est temporairement cachée.",
+      "source": "Proverbes malgaches sur la justice"
+    },
+    {
+      "questionId": "MEDIUM_008",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le proverbe 'Ny fanahy iray, tanana iray' signifie 'Un seul esprit, une seule main'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe est vrai et souligne l'importance de l'**unité et de la collaboration** pour atteindre un objectif commun.",
+      "source": "Proverbes malgaches sur l'unité"
+    },
+    {
+      "questionId": "MEDIUM_009",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "L'expression 'Manao raharaha' signifie 'Faire la fête'.",
+      "isTrue": false,
+      "explanation": "**Manao raharaha** signifie 'Faire des affaires' ou 'S'occuper de ses affaires', et non 'Faire la fête'.",
+      "source": "Expressions malgaches courantes"
+    },
+    {
+      "questionId": "MEDIUM_010",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le proverbe 'Ny alahelo tsy azo amin'ny vola' signifie 'La tristesse ne s'achète pas avec de l'argent'.",
+      "isTrue": false,
+      "explanation": "Le proverbe correct est 'Ny **hafaliana** no tsy azo amin'ny vola', signifiant 'Le **bonheur** ne s'achète pas avec de l'argent'. La tristesse, elle, peut avoir des causes indépendantes de l'argent.",
+      "source": "Nuances des proverbes malgaches"
+    },
+    {
+      "questionId": "HARD_001",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le proverbe 'Ny vary an-davanila, tsy hita fa ny kisoa an-kely no hita' signifie 'On ne voit pas le riz dans le grenier, mais le cochon dans la porcherie'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe signifie que ce qui est caché ou moins évident (le riz dans le grenier, ici, la richesse ou le bien-être) est parfois négligé au profit de ce qui est visible ou problématique (le cochon, ici, les soucis ou défauts). Il incite à regarder au-delà des apparences.",
+      "source": "Proverbes malgaches profonds"
+    },
+    {
+      "questionId": "HARD_002",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le proverbe 'Ny toky tsy mihetsika, fa ny teny no mihetsika' signifie 'Le serment ne bouge pas, mais la parole bouge'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe malgache met en lumière la **différence entre un engagement ferme (serment) et la nature parfois changeante ou moins fiable des simples paroles** ou promesses.",
+      "source": "Recueil avancé de Proverbes Malgaches"
+    },
+    {
+      "questionId": "HARD_003",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le proverbe 'Ny mahay manam-bady, ka tsy mahay manana vady' signifie 'Celui qui sait épouser n'est pas celui qui sait avoir une épouse'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe complexe distingue la **capacité à se marier (l'acte) de la capacité à bien vivre en couple (la relation)**, soulignant que l'un ne garantit pas l'autre.",
+      "source": "Proverbes malgaches sur les relations"
+    },
+    {
+      "questionId": "HARD_004",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le proverbe 'Ny maty tsy miarina' signifie 'Les morts ne se relèvent pas'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe est vrai et est utilisé pour exprimer l'idée que certaines situations sont **irréversibles ou définitives**, notamment la mort elle-même.",
+      "source": "Sagesse funéraire malgache"
+    },
+    {
+      "questionId": "HARD_005",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le proverbe 'Ny ranomasina tsy foana, raha tsy misy onja' signifie 'La mer n'est pas vide sans vagues'.",
+      "isTrue": false,
+      "explanation": "Faux, la version correcte est souvent 'Ny **fiainana tsy foana, raha tsy misy olana**' (La vie n'est pas vide sans problèmes) ou une variation, soulignant que les défis sont inhérents à l'existence, pas la mer sans vagues.",
+      "source": "Analyse comparative des proverbes malgaches"
+    },
+    {
+      "questionId": "HARD_006",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "L'expression 'Manafo-tanana' (donner la main) signifie 'Aider quelqu'un'.",
+      "isTrue": true,
+      "explanation": "Vrai, **Manafo-tanana** est une expression malgache qui signifie littéralement 'tendre la main' ou 'donner un coup de main', et est utilisée pour dire 'aider' ou 'apporter son soutien'.",
+      "source": "Expressions idiomatiques malgaches"
+    },
+    {
+      "questionId": "HARD_007",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le proverbe 'Ny tsara fanahy dia an'Andriamanitra ihany' signifie 'La bonté appartient à Dieu seul'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe est vrai et met en évidence la **source divine de la vraie bonté**, suggérant que la perfection morale est une qualité divine.",
+      "source": "Proverbes malgaches et spiritualité"
+    },
+    {
+      "questionId": "HARD_008",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le proverbe 'Ny akoholahy mipetraka eo an-tampon'ny trano, dia mahay mijery ny andro ho avy' signifie 'Le coq assis sur le toit sait voir le jour à venir'.",
+      "isTrue": false,
+      "explanation": "Ce proverbe signifie plutôt que celui qui est en position dominante ou d'observation a une **meilleure vue d'ensemble** et anticipe mieux les événements, mais la traduction et le sens sont subtilement différents de la prémisse.",
+      "source": "Interprétation avancée des proverbes"
+    },
+    {
+      "questionId": "HARD_009",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "L'expression 'Manao fihavanana' signifie 'Faire la guerre'.",
+      "isTrue": false,
+      "explanation": "Faux, **Manao fihavanana** signifie 'Faire la paix', 'Établir des relations d'amitié' ou 'Nouer des liens de parenté/amitié', et est l'opposé de faire la guerre.",
+      "source": "Terminologie culturelle malgache"
+    },
+    {
+      "questionId": "HARD_010",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le proverbe 'Ny teny toy ny omby, raha tsy misy tady, dia tsy ho voafehy' signifie 'La parole est comme le zébu, sans corde, on ne peut pas la maîtriser'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe est vrai et met l'accent sur la **nécessité de contrôler ses paroles**, car une fois prononcées, elles peuvent être incontrôlables et avoir des conséquences, tout comme un zébu sans entrave.",
+      "source": "Sagesse populaire sur la parole"
+    },
+    {
+      "questionId": "EXPERT_001",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le proverbe 'Ny ala nenina, tsy mba atody tsara' signifie 'Le regret n'est pas un bon œuf'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe est vrai et signifie que le **regret n'engendre rien de bon** ; il est préférable d'agir et de ne pas laisser de place au remords stérile.",
+      "source": "Proverbes malgaches philosophiques"
+    },
+    {
+      "questionId": "EXPERT_002",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "L'expression 'Miandry faty' (attendre la mort) est utilisée pour signifier 'être en pleine forme'.",
+      "isTrue": false,
+      "explanation": "Faux, **Miandry faty** signifie littéralement 'attendre la mort' et est une expression qui décrit une situation désespérée ou de **grande attente passive et souvent négative**.",
+      "source": "Nuances des expressions malgaches"
+    },
+    {
+      "questionId": "EXPERT_003",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le proverbe 'Ny hazo tsy misy fotony, tsy misy tany' signifie 'Un arbre sans racine n'a pas de terre'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe est vrai et symbolise l'importance des **racines, de l'origine et de l'appartenance** pour l'existence et la stabilité de toute chose ou personne.",
+      "source": "Proverbes malgaches sur l'identité"
+    },
+    {
+      "questionId": "EXPERT_004",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le proverbe 'Ny fanahy no omby, ny vatana no tany' signifie 'L'esprit est le zébu, le corps est la terre'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe est vrai et établit une métaphore où l'**esprit est la force motrice et l'énergie (le zébu)**, tandis que le corps est le support ou le champ sur lequel cette énergie agit (la terre).",
+      "source": "Proverbes malgaches sur l'âme et le corps"
+    },
+    {
+      "questionId": "EXPERT_005",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "L'expression 'Manaraka masoandro' (suivre le soleil) signifie 'Travailler sans relâche'.",
+      "isTrue": false,
+      "explanation": "Faux, **Manaraka masoandro** signifie 'Suivre le soleil' ou 'Émigrer, partir vers l'ouest', souvent utilisé pour décrire un **départ ou une migration**, pas spécifiquement un travail acharné.",
+      "source": "Expressions malgaches et migrations"
+    },
+    {
+      "questionId": "EXPERT_006",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le proverbe 'Ny fihavanana no maharitra' signifie 'La parenté (ou l'amitié) est ce qui dure'.",
+      "isTrue": true,
+      "explanation": "Vrai, ce proverbe malgache est central et souligne l'importance primordiale du **Fihavanana (harmonie sociale, solidarité, parenté)** comme fondement durable de la société et des relations.",
+      "source": "Philosophie du Fihavanana"
+    },
+    {
+      "questionId": "EXPERT_007",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le proverbe 'Ny kely tsy foy, ny be tsy ho lany' signifie 'On n'ose pas abandonner le peu, le beaucoup ne sera pas épuisé'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe est vrai et exprime une sagesse sur la **gestion des ressources et la peur du manque** : on ne veut pas se séparer d'un peu, même si on a beaucoup, par précaution.",
+      "source": "Proverbes malgaches sur la richesse"
+    },
+    {
+      "questionId": "EXPERT_008",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "L'expression 'Mitsidika amin'ny masoandro' (visiter le soleil) est une métaphore pour 'Rendre visite à quelqu'un en plein jour'.",
+      "isTrue": false,
+      "explanation": "Faux, **Mitsidika amin'ny masoandro** est une expression qui signifie **'mourir'**, 'quitter ce monde', car c'est le moment où l'on 'visite' symboliquement la dernière demeure, sous le soleil.",
+      "source": "Expressions malgaches et symbolisme funéraire"
+    },
+    {
+      "questionId": "EXPERT_009",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le proverbe 'Ny omby manana tandroka, mahay mandeha miaraka' signifie 'Le zébu avec des cornes sait marcher ensemble'.",
+      "isTrue": false,
+      "explanation": "Faux, le proverbe est plutôt 'Ny **olona** manana tandroka, tsy mahay mandeha miaraka', signifiant 'Les gens (qui ont de fortes personnalités ou des défauts - 'cornes') ne savent pas toujours marcher ensemble', soulignant les difficultés de cohabitation.",
+      "source": "Variantes des proverbes malgaches"
+    },
+    {
+      "questionId": "EXPERT_010",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le proverbe 'Ny fitiavana dia toy ny voatavo, rehefa masaka, dia tapaka' signifie 'L'amour est comme la courge, quand elle est mûre, elle se fend'.",
+      "isTrue": true,
+      "explanation": "Ce proverbe est vrai et est une métaphore poignante de l'amour : il est beau et se développe, mais peut être fragile et se briser une fois 'mûr' ou mis à l'épreuve.",
+      "source": "Proverbes malgaches sur l'amour et la vie"
+    },
+    {
+      "questionId": "EASY_011",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Le proverbe 'Aza miasa rano mandra-pihavin'ny ranonorana' signifie 'Ne travaille pas l'eau avant l'arrivée de la pluie'.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe encourage la préparation et la prévoyance. Il signifie qu'il faut préparer les choses avant qu'elles ne soient nécessaires.",
+      "source": "Recueil de proverbes malgaches"
+    },
+    {
+      "questionId": "EASY_012",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "L'expression 'Manao akoho amam-borona' veut dire 'être grand et fort comme un poulet et un oiseau'.",
+      "isTrue": false,
+      "explanation": "Faux. L'expression 'Manao akoho amam-borona' (faire comme le poulet et l'oiseau) signifie 'faire semblant', 'feindre', car le poulet ne peut voler très haut et l'oiseau peut s'envoler facilement.",
+      "source": "Expressions idiomatiques malgaches"
+    },
+    {
+      "questionId": "EASY_013",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Le proverbe 'Ny rano nilatsaka, tsy misy mahalàka intsony' signifie 'L'eau tombée ne peut plus être ramassée'.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe met en garde contre les erreurs irréversibles et l'inutilité de regretter ce qui est fait.",
+      "source": "Sagesse populaire malgache"
+    },
+    {
+      "questionId": "EASY_014",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Dire 'Mitsako vary mangatsiaka' signifie 'manger du riz froid' et n'a pas de sens caché.",
+      "isTrue": false,
+      "explanation": "Faux. 'Mitsako vary mangatsiaka' (mâcher du riz froid) est une expression pour dire 'ruminer', 'ressasser de vieux problèmes' ou 's'inquiéter inutilement du passé'.",
+      "source": "Dictionnaire des expressions malgaches"
+    },
+    {
+      "questionId": "EASY_015",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Le proverbe 'Ny ala nenina no hery' signifie 'La forêt est la force'.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe souligne l'importance de la communauté, de l'unité et du nombre. La force d'un individu réside dans le groupe.",
+      "source": "Proverbes sur la solidarité"
+    },
+    {
+      "questionId": "EASY_016",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Quand on dit 'Manasa lamba amin'ny orana', cela veut dire 'laver son linge sous la pluie' et c'est un bon signe.",
+      "isTrue": false,
+      "explanation": "Faux. 'Manasa lamba amin'ny orana' (laver son linge sous la pluie) signifie 'faire un travail inutile' ou 's'efforcer sans résultat'.",
+      "source": "Métaphores et expressions malgaches"
+    },
+    {
+      "questionId": "EASY_017",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Le proverbe 'Ny tsy fahalalana no fototry ny fahantrana' veut dire 'L'ignorance est la racine de la pauvreté'.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe souligne l'importance de l'éducation et de la connaissance pour s'améliorer et éviter la misère.",
+      "source": "Proverbes éducatifs malgaches"
+    },
+    {
+      "questionId": "EASY_018",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "L'expression 'Mitsaka vato' signifie 'boire de l'eau'.",
+      "isTrue": false,
+      "explanation": "Faux. 'Mitsaka vato' (mâcher des pierres) est une expression qui signifie 'être patient' ou 'endurer des difficultés' avec résilience.",
+      "source": "Expressions de résilience malgaches"
+    },
+    {
+      "questionId": "EASY_019",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Le proverbe 'Aleo very tsikalakalam-by toy izay very fanahy' signifie 'Mieux vaut perdre un peu de fer que son âme'.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe met en avant l'importance des valeurs morales et de l'intégrité personnelle par rapport aux biens matériels.",
+      "source": "Proverbes sur la morale"
+    },
+    {
+      "questionId": "EASY_020",
+      "themeId": "PROV",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Dire à quelqu'un 'Manainga akanga' signifie 'l'inviter à danser'.",
+      "isTrue": false,
+      "explanation": "Faux. 'Manainga akanga' (faire envoler une pintade) est une expression qui signifie 'énerver quelqu'un', 'le pousser à la colère' ou 'le provoquer'.",
+      "source": "Expressions sociales malgaches"
+    },
+    {
+      "questionId": "MEDIUM_011",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le proverbe 'Ny vato misy ahitra, misy voalavo koa' signifie 'Là où il y a des pierres avec de l'herbe, il y a aussi des rats'.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe fait référence au fait que là où il y a de la richesse ou des opportunités, il y a aussi des problèmes ou des personnes malintentionnées.",
+      "source": "Proverbes sur la vigilance"
+    },
+    {
+      "questionId": "MEDIUM_012",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "L'expression 'Manao vorona tapaka elatra' signifie 'être un oiseau aux ailes coupées', et se réfère à la liberté.",
+      "isTrue": false,
+      "explanation": "Faux. 'Manao vorona tapaka elatra' (faire l'oiseau aux ailes coupées) signifie 'être impuissant', 'ne rien pouvoir faire' face à une situation.",
+      "source": "Expressions métaphoriques malgaches"
+    },
+    {
+      "questionId": "MEDIUM_013",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le proverbe 'Aza adino ny omaly fa ho avy ny rahampitso' signifie 'N'oublie pas hier car demain viendra'.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe encourage à se souvenir du passé et des leçons apprises, car cela influence le futur.",
+      "source": "Proverbes sur le temps et la mémoire"
+    },
+    {
+      "questionId": "MEDIUM_014",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "L'expression 'Manaraka ny rivotra' signifie 'suivre le vent' et indique que l'on est très déterminé.",
+      "isTrue": false,
+      "explanation": "Faux. 'Manaraka ny rivotra' (suivre le vent) signifie 'être influençable', 'n'avoir pas de direction propre', ou 'changer d'avis facilement'.",
+      "source": "Expressions sur la personnalité"
+    },
+    {
+      "questionId": "MEDIUM_015",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le proverbe 'Ny hazo no sarotra alaina, fa ny olona no sarotra fanina' signifie 'L'arbre est difficile à abattre, mais l'homme est difficile à rendre fou'.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe souligne la complexité de la nature humaine et la difficulté de comprendre ou de contrôler l'esprit d'autrui.",
+      "source": "Proverbes sur la nature humaine"
+    },
+    {
+      "questionId": "MEDIUM_016",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Quand un Malgache dit 'Manao an-jaza', il veut dire 'faire comme un enfant' et c'est un compliment pour quelqu'un de joyeux.",
+      "isTrue": false,
+      "explanation": "Faux. 'Manao an-jaza' (faire comme un enfant) signifie 'agir de manière irresponsable', 'être immature' ou 'faire une bêtise', et est plutôt une critique.",
+      "source": "Expressions sociales malgaches"
+    },
+    {
+      "questionId": "MEDIUM_017",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le proverbe 'Ny fanantenana dia toy ny masoandro, na dia misy rahona aza, dia mbola eo ihany' signifie 'L'espoir est comme le soleil, même s'il y a des nuages, il est toujours là'.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe exprime la persévérance et la capacité à garder espoir même dans les moments difficiles.",
+      "source": "Proverbes sur l'espoir"
+    },
+    {
+      "questionId": "MEDIUM_018",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "L'expression 'Manary vary' veut dire 'jeter du riz' et cela porte bonheur.",
+      "isTrue": false,
+      "explanation": "Faux. 'Manary vary' (jeter du riz) signifie 'gâcher', 'ne pas valoriser ce qu'on a' ou 'être ingrat'. C'est une action négative.",
+      "source": "Expressions sur la valeur et le gaspillage"
+    },
+    {
+      "questionId": "MEDIUM_019",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le proverbe 'Ny soa atao, levenana an-tsaha' signifie 'Le bienfait fait est enterré dans le champ'.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe encourage à faire le bien sans attendre de récompense ou de reconnaissance immédiate, car la vertu se suffit à elle-même.",
+      "source": "Proverbes sur la générosité"
+    },
+    {
+      "questionId": "MEDIUM_020",
+      "themeId": "PROV",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "L'expression 'Mandeha miady amin'ny alika' veut dire 'aller se battre avec un chien' et est utilisée pour exprimer le courage.",
+      "isTrue": false,
+      "explanation": "Faux. 'Mandeha miady amin'ny alika' (aller se battre avec un chien) signifie 'se mêler d'une affaire qui ne nous regarde pas' ou 's'attirer des ennuis inutiles'.",
+      "source": "Expressions sur l'intervention"
+    },
+    {
+      "questionId": "HARD_011",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le proverbe 'Ny olona manam-bava, manam-po' signifie 'Celui qui a une bouche, a un cœur', soulignant l'importance de la parole et de l'expression des sentiments.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe met en lumière la connexion entre la parole et l'émotion. Ce qu'une personne exprime verbalement est souvent un reflet de ce qu'elle ressent profondément.",
+      "source": "Interprétation des proverbes malgaches"
+    },
+    {
+      "questionId": "HARD_012",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "L'expression 'Manao tarehy ambony latabatra' signifie 'faire un visage sur la table' et est utilisée pour désigner quelqu'un de très beau.",
+      "isTrue": false,
+      "explanation": "Faux. 'Manao tarehy ambony latabatra' (faire un visage sur la table) signifie 'être hypocrite', 'faire semblant' ou 'avoir une double face' en société, montrant un aspect différent de sa vraie nature.",
+      "source": "Expressions complexes malgaches"
+    },
+    {
+      "questionId": "HARD_013",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le proverbe 'Ny ranomasina aza mihena, fa ny tenin'ny olona tsy ho vita' signifie 'Même la mer s'épuise, mais les paroles des gens ne finiront jamais'.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe évoque l'inépuisable capacité humaine à parler, à commenter, et la persistance des rumeurs ou des discussions, souvent plus durables que les choses matérielles.",
+      "source": "Proverbes sur la communication et la rumeur"
+    },
+    {
+      "questionId": "HARD_014",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "L'expression 'Mitondra lakana amin'ny tany maina' signifie 'porter une pirogue sur terre sèche' et indique une grande efficacité.",
+      "isTrue": false,
+      "explanation": "Faux. 'Mitondra lakana amin'ny tany maina' (porter une pirogue sur terre sèche) signifie 'faire un effort inutile', 'entreprendre une tâche absurde' ou 'se lancer dans quelque chose d'impossible'.",
+      "source": "Expressions d'inefficacité malgaches"
+    },
+    {
+      "questionId": "HARD_015",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le proverbe 'Ny vava ny akondro, tsara raha mbola kely' signifie 'La bouche de la banane est bonne quand elle est encore petite'. Il met en valeur l'importance d'agir ou de corriger les problèmes tôt.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe signifie qu'il est plus facile de corriger un problème ou de former une personne quand elle est jeune ou que le problème est à son début. Il faut intervenir tôt.",
+      "source": "Proverbes sur l'éducation et la prévention"
+    },
+    {
+      "questionId": "HARD_016",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "L'expression 'Manao raharaha am-bala' se traduit par 'faire des affaires dans la porcherie' et est un signe de prospérité.",
+      "isTrue": false,
+      "explanation": "Faux. 'Manao raharaha am-bala' (faire des affaires dans l'enclos/la porcherie) signifie 'faire les choses à la hâte', 'sans méthode', 'de manière désordonnée' ou 'malpropre', sous-entendant une mauvaise gestion.",
+      "source": "Expressions de désordre malgaches"
+    },
+    {
+      "questionId": "HARD_017",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le proverbe 'Ny marina tsy maty, fa miaina ao am-pon'ny olona' signifie 'La vérité ne meurt pas, elle vit dans le cœur des gens'.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe affirme que la vérité, même si elle est niée ou cachée, perdure et finit par être reconnue par la conscience collective.",
+      "source": "Proverbes sur la vérité et la justice"
+    },
+    {
+      "questionId": "HARD_018",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "L'expression 'Manao tongotra an-tanety' signifie 'faire un voyage en terre' et exprime le confort.",
+      "isTrue": false,
+      "explanation": "Faux. 'Manao tongotra an-tanety' (faire des pieds sur terre/sur la berge) signifie 'être indépendant', 'ne compter que sur soi-même' ou 'se débrouiller seul', souvent dans un contexte de difficulté.",
+      "source": "Expressions d'autonomie malgaches"
+    },
+    {
+      "questionId": "HARD_019",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le proverbe 'Ny hazo tsy hiaka-danitra, fa ny olona no hiady amin'ny tenany' signifie 'L'arbre ne montera pas au ciel, mais l'homme se battra avec lui-même'.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe met en contraste les limites de la nature (l'arbre ne peut défier la gravité) avec les conflits intérieurs et les luttes personnelles de l'être humain.",
+      "source": "Proverbes philosophiques malgaches"
+    },
+    {
+      "questionId": "HARD_020",
+      "themeId": "PROV",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Dire 'Mamono afo amin'ny rano' veut dire 'éteindre le feu avec de l'eau' et est un signe de bonne gestion.",
+      "isTrue": false,
+      "explanation": "Faux. 'Mamono afo amin'ny rano' (éteindre le feu avec de l'eau) signifie 'résoudre un problème par la douceur ou la conciliation', 'apaiser une situation tendue' et non 'bonne gestion' au sens large.",
+      "source": "Expressions de résolution de conflits"
+    },
+    {
+      "questionId": "EXPERT_011",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le proverbe 'Ny fihavanana dia toy ny vary sy ny anana, raha tsy mifangaro, tsy mahavita sakafo' signifie 'Le fihavanana est comme le riz et les légumes, s'ils ne sont pas mélangés, on ne peut pas faire un repas'.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe complexe illustre l'importance capitale du Fihavanana (solidarité, cohésion sociale) à Madagascar, en montrant qu'il est essentiel, comme les ingrédients pour un repas, à la vie harmonieuse en société.",
+      "source": "Proverbes sur le Fihavanana et la culture malgache"
+    },
+    {
+      "questionId": "EXPERT_012",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "L'expression 'Manarona masoandro amin'ny felatanana' signifie 'couvrir le soleil avec la paume de la main' et exprime le pouvoir de l'individu.",
+      "isTrue": false,
+      "explanation": "Faux. 'Manarona masoandro amin'ny felatanana' (couvrir le soleil avec la paume de la main) signifie 'tenter de cacher l'évidence', 'ignorer volontairement une vérité flagrante' ou 'agir de manière futile et vaine'.",
+      "source": "Expressions de futilité malgaches"
+    },
+    {
+      "questionId": "EXPERT_013",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le proverbe 'Ny ala nenina dia toy ny fitoerana ny rano amin'ny lamba' signifie 'Le regret est comme retenir de l'eau dans un pagne'.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe met en évidence l'inutilité et l'impossibilité de retenir le passé ou de changer ce qui est déjà fait, comparant le regret à une action vaine.",
+      "source": "Proverbes sur le regret et l'impermanence"
+    },
+    {
+      "questionId": "EXPERT_014",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "L'expression 'Miakatra an-kady' se traduit par 'monter sur la crête' et signifie une ascension sociale rapide et facile.",
+      "isTrue": false,
+      "explanation": "Faux. 'Miakatra an-kady' (monter dans un fossé/ravin) signifie 'empirer une situation', 'tomber dans le piège' ou 's'enfoncer davantage dans les difficultés'.",
+      "source": "Expressions de dégradation malgaches"
+    },
+    {
+      "questionId": "EXPERT_015",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le proverbe 'Ny omby mijery any an-dàlana, tsy mihinana ahitra' signifie 'Le zébu qui regarde au loin ne mange pas l'herbe'. Il exhorte à la concentration sur la tâche présente.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe conseille de se concentrer sur l'instant présent et sur ce qui est à portée de main, plutôt que de se laisser distraire par des objectifs lointains ou irréalisables, au risque de ne rien accomplir.",
+      "source": "Proverbes sur la concentration et l'efficacité"
+    },
+    {
+      "questionId": "EXPERT_016",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Quand on dit 'Mitsaka masoandro', cela signifie 'prendre un bain de soleil'.",
+      "isTrue": false,
+      "explanation": "Faux. 'Mitsaka masoandro' (mâcher le soleil) est une expression pour 'être aveuglé par le pouvoir ou l'orgueil', 'être trop ambitieux au point d'en être nuisible' ou 's'exposer à un danger par excès de confiance'.",
+      "source": "Expressions de démesure malgaches"
+    },
+    {
+      "questionId": "EXPERT_017",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le proverbe 'Ny olona tia vola, dia toy ny trondro latsaka an-tànana' signifie 'La personne qui aime l'argent est comme un poisson qui tombe dans la main'.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe, parfois utilisé dans un sens cynique, signifie que l'argent est une force irrésistible qui attire les gens, tout comme le poisson ne peut échapper à la main qui le tient.",
+      "source": "Proverbes sur l'argent et la tentation"
+    },
+    {
+      "questionId": "EXPERT_018",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "L'expression 'Manao akoho maro' signifie 'avoir beaucoup de poulets' et indique la richesse matérielle.",
+      "isTrue": false,
+      "explanation": "Faux. 'Manao akoho maro' (faire beaucoup de poulets) signifie 'parler sans cesse', 'bavarder excessivement' ou 'faire beaucoup de bruit pour rien', comme un poulailler bruyant.",
+      "source": "Expressions de bavardage malgaches"
+    },
+    {
+      "questionId": "EXPERT_019",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le proverbe 'Ny fitiavana dia toy ny rano mandeha ambony vato' signifie 'L'amour est comme l'eau qui coule sur les pierres'.",
+      "isTrue": true,
+      "explanation": "Vrai. Ce proverbe, poétique, peut signifier que l'amour, comme l'eau, est insaisissable et peut s'écouler sans laisser de trace sur une surface dure (les épreuves), ou qu'il s'adapte et trouve toujours son chemin.",
+      "source": "Proverbes sur l'amour malgaches"
+    },
+    {
+      "questionId": "EXPERT_020",
+      "themeId": "PROV",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "L'expression 'Manidy vavahady' veut dire 'fermer le portail' et est utilisée pour signifier la fin d'une négociation réussie.",
+      "isTrue": false,
+      "explanation": "Faux. 'Manidy vavahady' (fermer le portail) signifie 'refuser l'accès', 'interdire l'entrée', 'mettre fin à une relation' ou 'rompre les ponts' avec quelqu'un ou une situation.",
+      "source": "Expressions de rupture malgaches"
+    }
+  ]
+}
