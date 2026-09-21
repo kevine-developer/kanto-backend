@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { betterAuth } from 'better-auth';
 import { expo } from '@better-auth/expo';
 import { admin, bearer } from 'better-auth/plugins';
+import { adminAc, userAc } from 'better-auth/plugins/admin/access';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { PrismaClient } from '../../generated/prisma/client.js';
 import { PrismaPg } from '@prisma/adapter-pg';
@@ -190,7 +191,13 @@ export const auth = betterAuth({
     bearer(),
     admin({
       defaultRole: 'USER',
-      adminRoles: ['ADMIN'],
+      adminRoles: ['ADMIN', 'admin'],
+      roles: {
+        ADMIN: adminAc,
+        admin: adminAc,
+        USER: userAc,
+        user: userAc,
+      },
     }),
   ],
   user: {
