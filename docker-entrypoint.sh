@@ -27,6 +27,19 @@ else
   echo "⏭️  [Prisma] RUN_MIGRATIONS=false — Migrations ignorées."
 fi
 
+# ─── Initialisation du compte administrateur par défaut ────────────────────────
+if [ "${AUTO_CREATE_ADMIN:-true}" = "true" ]; then
+  echo "🔐 [Admin] Vérification et initialisation du compte administrateur..."
+  if [ -f "dist/src/scripts/create-admin.js" ]; then
+    node dist/src/scripts/create-admin.js || echo "⚠️  [Admin] Étape création admin ignorée ou non bloquante."
+  elif [ -f "src/scripts/create-admin.ts" ]; then
+    npx tsx src/scripts/create-admin.ts || echo "⚠️  [Admin] Étape création admin ignorée ou non bloquante."
+  else
+    echo "ℹ️  [Admin] Script create-admin introuvable, étape ignorée."
+  fi
+fi
+
 # ─── Démarrage de l'application ───────────────────────────────────────────────
 echo "▶️  [Kanto Backend] Lancement de l'application..."
 exec "$@"
+

@@ -32,35 +32,50 @@ const prisma = new PrismaClient({ adapter });
 // ---------------------------------------------------------------------------
 
 async function createDefaultAdmin(): Promise<void> {
-  const adminEmail = process.env.DEFAULT_ADMIN_EMAIL;
+  const adminEmail = (
+    process.env.DEFAULT_ADMIN_EMAIL || 'yvesnarsonkevine@gmail.com'
+  ).trim();
+  const adminPassword = process.env.DEFAULT_ADMIN_PASSWORD?.trim();
 
-  if (!adminEmail || adminEmail.trim() === '') {
-    console.error(
-      '❌ [Admin] DEFAULT_ADMIN_EMAIL manquant dans .env. Abandon.',
-    );
-    process.exit(1);
-  }
+  console.log(
+    `🔐 [Admin] Vérification du compte administrateur pour : ${adminEmail}...`,
+  );
 
-  console.log(`🔐 [Admin] Vérification du compte administrateur…`);
-
-  // ─── 1. Skip si un admin existe déjà ────────────────────────────────────
-  const existingAdmin = await prisma.user.findFirst({
-    where: { role: 'ADMIN' },
-    select: { id: true, email: true },
+  // ─── 1. Vérifier si l'utilisateur existe déjà ───────────────────────────
+  const existingUser = await prisma.user.findUnique({
+    where: { email: adminEmail },
+    select: { id: true, email: true, role: true },
   });
 
-  if (existingAdmin) {
+  if (existingUser) {
+    if (existingUser.role === 'ADMIN') {
+      console.log(
+        `ℹ️  [Admin] Le compte administrateur (${existingUser.email}) existe déjà et possède les droits ADMIN.`,
+      );
+      return;
+    }
+
     console.log(
-      `ℹ️  [Admin] Un compte administrateur existe déjà (${existingAdmin.email}). Aucune action.`,
+      `🆙 [Admin] L'utilisateur ${adminEmail} existe déjà mais avec le rôle ${existingUser.role}. Promotion en ADMIN...`,
     );
+    await prisma.user.update({
+      where: { id: existingUser.id },
+      data: {
+        role: 'ADMIN',
+        emailVerified: true,
+      },
+    });
+    console.log(`✅ [Admin] Rôle ADMIN attribué avec succès à ${adminEmail}.`);
     return;
   }
 
-  // ─── 2. Créer le compte avec un mot de passe temporaire (jamais partagé) ──
-  const tempPassword = generateTemporaryPassword();
-  const adminName = `Admin Kanto`;
+  // ─── 2. Création du compte administrateur ─────────────────────────────────
+  const finalPassword = adminPassword || generateTemporaryPassword();
+  const adminName = 'Admin Kanto';
 
-  console.log(`🛠️  [Admin] Création du compte pour : ${adminEmail}`);
+  console.log(
+    `🛠️  [Admin] Création du compte administrateur pour : ${adminEmail}`,
+  );
 
   let createdUserId: string;
 
@@ -68,7 +83,7 @@ async function createDefaultAdmin(): Promise<void> {
     const result = await auth.api.signUpEmail({
       body: {
         email: adminEmail,
-        password: tempPassword,
+        password: finalPassword,
         name: adminName,
       },
     });
@@ -79,65 +94,58 @@ async function createDefaultAdmin(): Promise<void> {
 
     createdUserId = result.user.id;
   } catch (err: unknown) {
-    // Si l'email existe déjà en tant que user normal, on le promeut
-    const existingUser = await prisma.user.findUnique({
+    // Vérification de secours au cas où une concurrence aurait créé le compte
+    const concurrentUser = await prisma.user.findUnique({
       where: { email: adminEmail },
     });
 
-    if (!existingUser) {
+    if (!concurrentUser) {
       throw err;
     }
 
-    console.warn(
-      `⚠️  [Admin] L'email ${adminEmail} est déjà enregistré en tant qu'utilisateur. Promotion en ADMIN.`,
-    );
-    createdUserId = existingUser.id;
+    createdUserId = concurrentUser.id;
   }
 
-  // ─── 3. Attribuer le rôle ADMIN ─────────────────────────────────────────
+  // ─── 3. Attribuer le rôle ADMIN et marquer l'email comme vérifié ─────────
   await prisma.user.update({
     where: { id: createdUserId },
     data: {
       role: 'ADMIN',
-      emailVerified: true, // L'admin n'a pas besoin de vérifier son email
+      emailVerified: true,
     },
   });
 
-  console.log(`✅ [Admin] Rôle ADMIN attribué à ${adminEmail}.`);
+  console.log(
+    `✅ [Admin] Compte administrateur créé et configuré avec succès pour ${adminEmail}.`,
+  );
 
-  // ─── 4. Générer un lien de setup via Better Auth (forgetPassword) ────────
-  //
-  //  BONNE PRATIQUE : on n'envoie JAMAIS le mot de passe par email.
-  //  On envoie un lien "Définir mon mot de passe" (token one-time, expire dans 1h).
-  //  Better Auth appelle automatiquement sendResetPassword → ResendService.
-  //
-  console.log(`📧 [Admin] Génération du lien de configuration du compte…`);
-
-  try {
-    await auth.api.requestPasswordReset({
-      body: {
-        email: adminEmail,
-        redirectTo: `${process.env.ADMIN_URL || 'http://localhost:3001'}/reset-password`,
-      },
-    });
-
+  // ─── 4. Gestion de l'accès / mot de passe ────────────────────────────────
+  if (adminPassword) {
     console.log(
-      `✅ [Admin] Email de configuration envoyé à ${adminEmail} (lien valide 1h).`,
+      `🔑 [Admin] Le compte est accessible avec le mot de passe spécifié dans DEFAULT_ADMIN_PASSWORD.`,
     );
+  } else {
+    // Si aucun mot de passe n'était fourni, envoyer un lien de réinitialisation
     console.log(
-      `   👉 L'admin doit cliquer sur le lien reçu pour définir son mot de passe.`,
+      `📧 [Admin] Aucun DEFAULT_ADMIN_PASSWORD spécifié. Envoi d'un lien de configuration...`,
     );
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error(
-      `❌ [Admin] Erreur lors de l'envoi du lien de setup : ${message}`,
-    );
-    console.warn(
-      `⚠️  Le compte ADMIN a été créé mais l'email n'a pas pu être envoyé.`,
-    );
-    console.warn(
-      `   Relancez le script ou utilisez "Mot de passe oublié" depuis l'interface admin.`,
-    );
+    try {
+      await auth.api.requestPasswordReset({
+        body: {
+          email: adminEmail,
+          redirectTo: `${process.env.ADMIN_URL || 'https://api-kanto.gastsar.fr'}/reset-password`,
+        },
+      });
+
+      console.log(
+        `✅ [Admin] Email de configuration envoyé à ${adminEmail} (lien valide 1h).`,
+      );
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.warn(
+        `⚠️  [Admin] Impossible d'envoyer l'email de setup (${message}). Vous pourrez définir le mot de passe via l'interface ou DEFAULT_ADMIN_PASSWORD.`,
+      );
+    }
   }
 }
 

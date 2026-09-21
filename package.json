@@ -22,6 +22,7 @@
     "seed": "tsx prisma/seed.ts",
     "seed:true-false": "tsx src/scripts/seed-true-false.ts",
     "seed:admin": "tsx src/scripts/create-admin.ts",
+    "seed:admin:prod": "node dist/src/scripts/create-admin.js",
     "admin:reset": "tsx src/scripts/inspect-and-delete-admin.ts && tsx src/scripts/create-admin.ts",
     "reset:badges": "tsx src/scripts/reset-badges-and-users.ts",
     "test:email": "tsx src/scripts/test-email.ts"
