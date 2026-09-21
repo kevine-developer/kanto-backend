@@ -20,24 +20,21 @@ export class AppController {
   getHello(
     @Query('error') error?: string,
     @Query('email') email?: string,
-    @Res({ passthrough: true }) res?: Response,
-  ) {
+    @Res() res?: Response,
+  ): void {
     // Si une redirection d'erreur auth arrive sur la racine (legacy), rediriger vers /confirmation
     if (error) {
-      if (res && typeof res.redirect === 'function') {
-        const baseUrl =
-          process.env.BETTER_AUTH_URL || 'https://api-kanto.gastsar.fr';
-        const target = `${baseUrl}/confirmation?error=${encodeURIComponent(error)}${email ? `&email=${encodeURIComponent(email)}` : ''}`;
-        res.redirect(302, target);
-        return '';
-      }
-      return renderEmailVerificationPage({ error, email });
+      const baseUrl =
+        process.env.BETTER_AUTH_URL || 'https://api-kanto.gastsar.fr';
+      const target = `${baseUrl}/confirmation?error=${encodeURIComponent(error)}${email ? `&email=${encodeURIComponent(email)}` : ''}`;
+      res!.redirect(302, target);
+      return;
     }
 
-    return {
+    res!.status(200).json({
       status: 'ok',
       service: 'kanto-backend',
-    };
+    });
   }
 
   /**
@@ -49,16 +46,21 @@ export class AppController {
    * - Supporte également les statuts explicites (?status=success, ?status=already_confirmed, ?status=expired)
    */
   @Get('confirmation')
-  @Header('Content-Type', 'text/html; charset=utf-8')
   async getConfirmation(
     @Query('token') token?: string,
     @Query('error') error?: string,
     @Query('email') email?: string,
     @Query('status') status?: 'success' | 'already_confirmed' | 'expired',
-    @Res({ passthrough: true }) res?: Response,
-  ): Promise<string> {
+    @Res() res?: Response,
+  ): Promise<void> {
     const baseUrl =
       process.env.BETTER_AUTH_URL || 'https://api-kanto.gastsar.fr';
+
+    // Helper : envoyer la page HTML de vérification
+    const sendHtmlPage = (html: string) => {
+      res!.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res!.status(200).send(html);
+    };
 
     // 1. Détection si la confirmation a déjà été effectuée pour cette adresse email
     if (email && this.prisma) {
@@ -67,10 +69,9 @@ export class AppController {
           where: { email },
         });
         if (user && user.emailVerified) {
-          return renderEmailVerificationPage({
-            status: 'already_confirmed',
-            email,
-          });
+          return sendHtmlPage(
+            renderEmailVerificationPage({ status: 'already_confirmed', email }),
+          );
         }
       } catch {
         // En cas d'exception Prisma, continuer le flux
@@ -103,10 +104,12 @@ export class AppController {
                 where: { email: verification.identifier },
               });
               if (user && user.emailVerified) {
-                return renderEmailVerificationPage({
-                  status: 'already_confirmed',
-                  email: verification.identifier,
-                });
+                return sendHtmlPage(
+                  renderEmailVerificationPage({
+                    status: 'already_confirmed',
+                    email: verification.identifier,
+                  }),
+                );
               }
             }
           }
@@ -117,33 +120,32 @@ export class AppController {
 
       // Si le temps limite de 24h est dépassé
       if (isExpired) {
-        return renderEmailVerificationPage({
-          status: 'expired',
-          error: 'TOKEN_EXPIRED',
-          email: associatedEmail,
-        });
+        return sendHtmlPage(
+          renderEmailVerificationPage({
+            status: 'expired',
+            error: 'TOKEN_EXPIRED',
+            email: associatedEmail,
+          }),
+        );
       }
 
       // Redirection vers Better-Auth verify-email
-      if (res && typeof res.redirect === 'function') {
-        const callbackUrl = new URL('/confirmation', baseUrl);
-        callbackUrl.searchParams.set('status', 'success');
-        if (associatedEmail) {
-          callbackUrl.searchParams.set('email', associatedEmail);
-        }
-
-        const verifyTarget = `${baseUrl}/api/auth/verify-email?token=${encodeURIComponent(token)}&callbackURL=${encodeURIComponent(callbackUrl.toString())}`;
-        res.redirect(302, verifyTarget);
-        return '';
+      // On utilise res.redirect() directement — pas de return string pour éviter ERR_HTTP_HEADERS_SENT
+      const callbackUrl = new URL('/confirmation', baseUrl);
+      callbackUrl.searchParams.set('status', 'success');
+      if (associatedEmail) {
+        callbackUrl.searchParams.set('email', associatedEmail);
       }
+
+      const verifyTarget = `${baseUrl}/api/auth/verify-email?token=${encodeURIComponent(token)}&callbackURL=${encodeURIComponent(callbackUrl.toString())}`;
+      res!.redirect(302, verifyTarget);
+      return;
     }
 
     // 3. Affichage de la vue de confirmation (succès, déjà confirmé, expiré ou erreur)
-    return renderEmailVerificationPage({
-      error,
-      email,
-      status,
-    });
+    return sendHtmlPage(
+      renderEmailVerificationPage({ error, email, status }),
+    );
   }
 
   @Get('email-verified')

@@ -133,7 +133,9 @@ async function createDefaultAdmin(): Promise<void> {
       await auth.api.requestPasswordReset({
         body: {
           email: adminEmail,
-          redirectTo: `${process.env.ADMIN_URL || 'https://api-kanto.gastsar.fr'}/reset-password`,
+          // ADMIN_FRONTEND_URL doit pointer vers le frontend admin (ex: https://admin.kanto.mg)
+          // et NON vers l'API. Fallback sur ADMIN_URL pour compatibilité rétrograde.
+          redirectTo: `${process.env.ADMIN_FRONTEND_URL || process.env.ADMIN_URL || 'http://localhost:3001'}/reset-password`,
         },
       });
 

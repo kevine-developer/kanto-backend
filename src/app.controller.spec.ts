@@ -1,7 +1,22 @@
+import { jest } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { PrismaService } from './prisma/prisma.service.js';
+
+/** Crée un mock minimal de la réponse Express. */
+function makeMockRes() {
+  const calls: { method: string; args: unknown[] }[] = [];
+  const res = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn().mockReturnThis(),
+    send: jest.fn().mockReturnThis(),
+    redirect: jest.fn().mockReturnThis(),
+    setHeader: jest.fn().mockReturnThis(),
+    _calls: calls,
+  };
+  return res;
+}
 
 describe('AppController', () => {
   let appController: AppController;
@@ -30,38 +45,26 @@ describe('AppController', () => {
 
   describe('root (GET /)', () => {
     it('should return discreet JSON status { status: "ok", service: "kanto-backend" }', () => {
-      expect(appController.getHello()).toEqual({
+      const mockRes = makeMockRes();
+      appController.getHello(undefined, undefined, mockRes as any);
+      expect(mockRes.status).toHaveBeenCalledWith(200);
+      expect(mockRes.json).toHaveBeenCalledWith({
         status: 'ok',
         service: 'kanto-backend',
       });
     });
 
-    it('should return HTML error page when error query param is present on root without res', () => {
-      const res = appController.getHello('TOKEN_EXPIRED') as string;
-      expect(res).toContain('<!DOCTYPE html>');
-      expect(res).toContain('Temps limite dépassé');
-      expect(res).toContain('Lien de confirmation expiré');
-    });
-
     it('should redirect to /confirmation when error query param is present with res', () => {
-      let redirectedCode = 0;
-      let redirectedUrl = '';
-      const mockRes = {
-        redirect: (code: number, url: string) => {
-          redirectedCode = code;
-          redirectedUrl = url;
-        },
-      } as any;
-
-      const res = appController.getHello(
-        'TOKEN_EXPIRED',
-        'test@kanto.mg',
-        mockRes,
+      const mockRes = makeMockRes();
+      appController.getHello('TOKEN_EXPIRED', 'test@kanto.mg', mockRes as any);
+      expect(mockRes.redirect).toHaveBeenCalledWith(
+        302,
+        expect.stringContaining('/confirmation?error=TOKEN_EXPIRED'),
       );
-      expect(redirectedCode).toBe(302);
-      expect(redirectedUrl).toContain('/confirmation?error=TOKEN_EXPIRED');
-      expect(redirectedUrl).toContain('email=test%40kanto.mg');
-      expect(res).toBe('');
+      expect(mockRes.redirect).toHaveBeenCalledWith(
+        302,
+        expect.stringContaining('email=test%40kanto.mg'),
+      );
     });
   });
 
@@ -96,66 +99,66 @@ describe('AppController', () => {
   });
 
   describe('/confirmation route', () => {
-    it('should return email verification page on /confirmation without token', async () => {
-      const res = await appController.getConfirmation();
-      expect(res).toContain('<!DOCTYPE html>');
-      expect(res).toContain('Kanto');
-      expect(res).toContain('Adresse email confirmée');
+    it('should send email verification page on /confirmation without token', async () => {
+      const mockRes = makeMockRes();
+      await appController.getConfirmation(
+        undefined, undefined, undefined, undefined, mockRes as any,
+      );
+      expect(mockRes.setHeader).toHaveBeenCalledWith('Content-Type', 'text/html; charset=utf-8');
+      expect(mockRes.status).toHaveBeenCalledWith(200);
+      const sentHtml = (mockRes.send.mock.calls[0]?.[0] as string) ?? '';
+      expect(sentHtml).toContain('<!DOCTYPE html>');
+      expect(sentHtml).toContain('Kanto');
+      expect(sentHtml).toContain('Adresse email confirmée');
     });
 
     it('should handle error query param on /confirmation', async () => {
-      const res = await appController.getConfirmation(
-        undefined,
-        'TOKEN_EXPIRED',
+      const mockRes = makeMockRes();
+      await appController.getConfirmation(
+        undefined, 'TOKEN_EXPIRED', undefined, undefined, mockRes as any,
       );
-      expect(res).toContain('Temps limite dépassé');
-      expect(res).toContain('Lien de confirmation expiré');
+      const sentHtml = (mockRes.send.mock.calls[0]?.[0] as string) ?? '';
+      expect(sentHtml).toContain('Temps limite dépassé');
+      expect(sentHtml).toContain('Lien de confirmation expiré');
     });
 
     it('should handle status=already_confirmed on /confirmation', async () => {
-      const res = await appController.getConfirmation(
-        undefined,
-        undefined,
-        'user@example.com',
-        'already_confirmed',
+      const mockRes = makeMockRes();
+      await appController.getConfirmation(
+        undefined, undefined, 'user@example.com', 'already_confirmed', mockRes as any,
       );
-      expect(res).toContain('Adresse email déjà confirmée');
-      expect(res).toContain('Compte déjà actif');
+      const sentHtml = (mockRes.send.mock.calls[0]?.[0] as string) ?? '';
+      expect(sentHtml).toContain('Adresse email déjà confirmée');
+      expect(sentHtml).toContain('Compte déjà actif');
     });
 
     it('should handle status=expired on /confirmation', async () => {
-      const res = await appController.getConfirmation(
-        undefined,
-        undefined,
-        'user@example.com',
-        'expired',
+      const mockRes = makeMockRes();
+      await appController.getConfirmation(
+        undefined, undefined, 'user@example.com', 'expired', mockRes as any,
       );
-      expect(res).toContain('Temps limite dépassé');
-      expect(res).toContain('Lien de confirmation expiré');
+      const sentHtml = (mockRes.send.mock.calls[0]?.[0] as string) ?? '';
+      expect(sentHtml).toContain('Temps limite dépassé');
+      expect(sentHtml).toContain('Lien de confirmation expiré');
     });
 
     it('should redirect to Better-Auth verify-email when token is present', async () => {
-      let redirectedCode = 0;
-      let redirectedUrl = '';
-      const mockRes = {
-        redirect: (code: number, url: string) => {
-          redirectedCode = code;
-          redirectedUrl = url;
-        },
-      } as any;
-      const res = await appController.getConfirmation(
+      const mockRes = makeMockRes();
+      await appController.getConfirmation(
         'sample-token-xyz',
         undefined,
         undefined,
         undefined,
-        mockRes,
+        mockRes as any,
       );
-      expect(redirectedCode).toBe(302);
-      expect(redirectedUrl).toContain(
-        '/api/auth/verify-email?token=sample-token-xyz',
+      expect(mockRes.redirect).toHaveBeenCalledWith(
+        302,
+        expect.stringContaining('/api/auth/verify-email?token=sample-token-xyz'),
       );
-      expect(redirectedUrl).toContain('callbackURL=');
-      expect(res).toBe('');
+      expect(mockRes.redirect).toHaveBeenCalledWith(
+        302,
+        expect.stringContaining('callbackURL='),
+      );
     });
   });
 });
