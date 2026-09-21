@@ -19,6 +19,38 @@ const pool = new pg.Pool({
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
+const isProduction = process.env.NODE_ENV === 'production';
+
+const devOrigins = [
+  'exp://',
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://localhost:3002',
+  'http://localhost:3003',
+  'http://localhost:8081',
+  'http://localhost:*',
+  'http://127.0.0.1:*',
+  'http://169.254.123.153:3000',
+  'http://169.254.123.153:3001',
+  'http://169.254.123.153:3002',
+  'http://169.254.123.153:8081',
+  'http://169.254.*:*',
+  'http://169.254.*',
+  'http://192.168.*:*',
+  'http://192.168.*',
+  'http://10.*:*',
+  'http://10.*',
+  'http://172.*:*',
+  'http://172.*',
+];
+
+const prodOrigins = [
+  'https://admin.kanto.mg',
+  'https://app.kanto.mg',
+  'https://kanto.mg',
+  'https://api-kanto.gastsar.fr',
+];
+
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
@@ -28,26 +60,7 @@ export const auth = betterAuth({
   trustedOrigins: [
     'kanto://',
     'kantomg://',
-    'exp://',
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'http://localhost:3002',
-    'http://localhost:3003',
-    'http://localhost:8081',
-    'http://localhost:*',
-    'http://127.0.0.1:*',
-    'http://169.254.123.153:3000',
-    'http://169.254.123.153:3001',
-    'http://169.254.123.153:3002',
-    'http://169.254.123.153:8081',
-    'http://169.254.*:*',
-    'http://169.254.*',
-    'http://192.168.*:*',
-    'http://192.168.*',
-    'http://10.*:*',
-    'http://10.*',
-    'http://172.*:*',
-    'http://172.*',
+    ...(isProduction ? prodOrigins : devOrigins),
     ...(process.env.BETTER_AUTH_TRUSTED_ORIGINS
       ? process.env.BETTER_AUTH_TRUSTED_ORIGINS.split(',').map((o) => o.trim())
       : []),
@@ -111,15 +124,16 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     resetPasswordTokenExpiresIn: 3600, // 1 heure
-    sendResetPassword: async ({ user, url, token }) => {
+    sendResetPassword: async ({ user, token }) => {
       console.log(
         `[Better-Auth] 🔑 Demande de réinitialisation de mot de passe pour : ${user.email}`,
       );
       try {
         const adminFrontendUrl =
           process.env.ADMIN_FRONTEND_URL ||
-          process.env.BETTER_AUTH_URL ||
-          'https://api-kanto.gastsar.fr';
+          (isProduction
+            ? 'https://admin.kanto.mg'
+            : process.env.BETTER_AUTH_URL || 'https://api-kanto.gastsar.fr');
         const resetPasswordUrl = new URL('/reset-password', adminFrontendUrl);
         resetPasswordUrl.searchParams.set('token', token);
         const effectiveResetUrl = resetPasswordUrl.toString();
