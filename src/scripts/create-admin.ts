@@ -80,11 +80,12 @@ async function createDefaultAdmin(): Promise<void> {
   let createdUserId: string;
 
   try {
-    const result = await auth.api.signUpEmail({
+    const result = await auth.api.createUser({
       body: {
         email: adminEmail,
         password: finalPassword,
         name: adminName,
+        role: 'ADMIN',
       },
     });
 

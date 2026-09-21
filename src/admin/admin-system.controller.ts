@@ -1,10 +1,16 @@
-import { Body, Controller, Post, BadRequestException, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  BadRequestException,
+  UseGuards,
+} from '@nestjs/common';
 import { ResendService } from '../integrations/resend/resend.service.js';
 import { AuthGuard, Roles } from '../auth/index.js';
 
 @Controller('admin/system')
 @UseGuards(AuthGuard)
-@Roles(['ADMIN'])
+@Roles(['ADMIN', 'admin'])
 export class AdminSystemController {
   constructor(private readonly resendService: ResendService) {}
 

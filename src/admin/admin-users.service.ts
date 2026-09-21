@@ -37,20 +37,34 @@ export class AdminUsersService implements OnApplicationBootstrap {
     }
 
     try {
-      const existingAdmin = await this.prisma.user.findFirst({
-        where: { role: 'ADMIN' },
-        select: { id: true, email: true },
+      // 1. Vérifier prioritairement si le compte spécifié par DEFAULT_ADMIN_EMAIL existe
+      const targetUser = await this.prisma.user.findUnique({
+        where: { email: adminEmail },
+        select: { id: true, email: true, role: true, emailVerified: true },
       });
 
-      if (existingAdmin) {
-        this.logger.log(
-          `🔐 [Admin] Compte administrateur actif détecté (${existingAdmin.email}).`,
-        );
+      if (targetUser) {
+        if (targetUser.role !== 'ADMIN' || !targetUser.emailVerified) {
+          await this.prisma.user.update({
+            where: { id: targetUser.id },
+            data: {
+              role: 'ADMIN',
+              emailVerified: true,
+            },
+          });
+          this.logger.log(
+            `✅ [Admin] Compte existant ${adminEmail} (rôle précédent: ${targetUser.role}) promu au rôle ADMIN (email vérifié).`,
+          );
+        } else {
+          this.logger.log(
+            `🔐 [Admin] Compte administrateur actif détecté (${targetUser.email}) avec le rôle ADMIN.`,
+          );
+        }
         return;
       }
 
       this.logger.log(
-        `🛠️ [Admin] Aucun compte administrateur trouvé. Création automatique de ${adminEmail}...`,
+        `🛠️ [Admin] Aucun compte administrateur trouvé pour ${adminEmail}. Création automatique...`,
       );
       const tempPassword = crypto
         .randomBytes(20)
@@ -60,11 +74,12 @@ export class AdminUsersService implements OnApplicationBootstrap {
       let userId: string;
 
       try {
-        const result = await auth.api.signUpEmail({
+        const result = await auth.api.createUser({
           body: {
             email: adminEmail,
             password: tempPassword,
             name: 'Admin Kanto',
+            role: 'ADMIN',
           },
         });
         if (!result?.user?.id) {

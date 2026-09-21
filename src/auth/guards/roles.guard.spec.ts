@@ -121,22 +121,29 @@ describe('RolesGuard', () => {
     });
   });
 
-  describe('role case sensitivity', () => {
-    it('should reject "admin" (lowercase) when "ADMIN" (uppercase) is required', () => {
-      // Le guard utilise une comparaison stricte === : la casse compte
+  describe('role case insensitivity', () => {
+    it('should accept "admin" (lowercase) when "ADMIN" (uppercase) is required', () => {
       const { guard, mockContext } = buildGuard(['ADMIN'], {
         id: 'u1',
         role: 'admin',
       });
-      expect(() => guard.canActivate(mockContext)).toThrow(ForbiddenException);
+      expect(guard.canActivate(mockContext)).toBe(true);
     });
 
-    it('should not grant ADMIN access with role "Admin" (mixed case)', () => {
+    it('should grant ADMIN access with role "Admin" (mixed case)', () => {
       const { guard, mockContext } = buildGuard(['ADMIN'], {
         id: 'u1',
         role: 'Admin',
       });
-      expect(() => guard.canActivate(mockContext)).toThrow(ForbiddenException);
+      expect(guard.canActivate(mockContext)).toBe(true);
+    });
+
+    it('should accept "ADMIN" (uppercase) when "admin" (lowercase) is required', () => {
+      const { guard, mockContext } = buildGuard(['admin'], {
+        id: 'u1',
+        role: 'ADMIN',
+      });
+      expect(guard.canActivate(mockContext)).toBe(true);
     });
   });
 

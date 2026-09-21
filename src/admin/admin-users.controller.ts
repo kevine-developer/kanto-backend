@@ -13,7 +13,7 @@ import { AuthGuard, Roles, Session, type UserSession } from '../auth/index.js';
 
 @Controller('admin/users')
 @UseGuards(AuthGuard)
-@Roles(['ADMIN'])
+@Roles(['ADMIN', 'admin'])
 export class AdminUsersController {
   constructor(private readonly adminUsersService: AdminUsersService) {}
 
