@@ -231,6 +231,11 @@ export const auth = betterAuth({
     ipAddress: {
       ipAddressHeaders: ['x-forwarded-for', 'x-real-ip', 'cf-connecting-ip'],
     },
+    defaultCookieAttributes: {
+      sameSite: isProduction ? 'none' : 'lax',
+      secure: isProduction ? true : false,
+      partitioned: isProduction ? true : false,
+    },
   },
 });
 
