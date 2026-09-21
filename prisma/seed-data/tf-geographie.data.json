@@ -1,0 +1,839 @@
+{
+  "gameTitle": "Madagascar: Vrai ou Faux ?",
+  "description": "Un jeu de questions-réponses Vrai/Faux sur Madagascar, explorant sa culture, géographie, histoire, littérature et ses proverbes, avec différents niveaux de difficulté et adaptés à divers âges.",
+  "themes": [
+    {
+      "themeName": "Géographie & Nature",
+      "themeId": "GEO",
+      "description": "Questions sur les paysages, la faune, la flore, les villes et la topographie de Madagascar."
+    }
+  ],
+  "levels": [
+    {
+      "levelName": "Facile",
+      "levelId": "EASY",
+      "description": "Questions générales et accessibles, idéales pour les débutants.",
+      "minAge": 6
+    },
+    {
+      "levelName": "Moyen",
+      "levelId": "MEDIUM",
+      "description": "Questions nécessitant une connaissance un peu plus approfondie.",
+      "minAge": 10
+    },
+    {
+      "levelName": "Difficile",
+      "levelId": "HARD",
+      "description": "Questions spécifiques et détaillées, pour les experts de Madagascar.",
+      "minAge": 14
+    },
+    {
+      "levelName": "Expert",
+      "levelId": "EXPERT",
+      "description": "Questions très pointues ou nécessitant une réflexion approfondie, pour les connaisseurs et les curieux.",
+      "minAge": 16
+    }
+  ],
+  "questions": [
+    {
+      "questionId": "EASY_001",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Madagascar est une île située dans l'océan Atlantique.",
+      "isTrue": false,
+      "explanation": "Madagascar est une île située dans l'**océan Indien**, au large des côtes de l'Afrique de l'Est.",
+      "source": "Atlas géographique mondial"
+    },
+    {
+      "questionId": "EASY_002",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Madagascar est la plus grande île d'Afrique.",
+      "isTrue": true,
+      "explanation": "Oui, Madagascar est la **plus grande île d'Afrique** et la quatrième plus grande île du monde.",
+      "source": "Géographie mondiale, Encyclopédies"
+    },
+    {
+      "questionId": "EASY_003",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Les lémuriens sont des animaux que l'on trouve uniquement à Madagascar.",
+      "isTrue": true,
+      "explanation": "Les **lémuriens** sont des primates endémiques, ce qui signifie qu'on les trouve exclusivement à Madagascar et sur les petites îles avoisinantes.",
+      "source": "WWF Madagascar, Biodiversité"
+    },
+    {
+      "questionId": "EASY_004",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Il n'y a pas de volcans à Madagascar.",
+      "isTrue": false,
+      "explanation": "Faux, Madagascar compte plusieurs **massifs volcaniques**, comme l'Ankaratra, bien que la plupart soient éteints.",
+      "source": "Géologie de Madagascar"
+    },
+    {
+      "questionId": "EASY_005",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "La forêt tropicale est présente sur toute l'île de Madagascar.",
+      "isTrue": false,
+      "explanation": "Faux, la forêt tropicale est principalement présente sur la **côte est de Madagascar**, tandis que l'ouest et le sud ont des climats plus secs avec des forêts caducifoliées ou des zones épineuses.",
+      "source": "Climats et écosystèmes de Madagascar"
+    },
+    {
+      "questionId": "EASY_006",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Madagascar a une longue côte avec de nombreuses plages.",
+      "isTrue": true,
+      "explanation": "Oui, en tant que grande île, Madagascar possède une **très longue côte** avec une grande diversité de plages.",
+      "source": "Géographie côtière de Madagascar"
+    },
+    {
+      "questionId": "EASY_007",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Les caméléons de Madagascar sont célèbres pour changer rapidement de couleur.",
+      "isTrue": true,
+      "explanation": "Oui, Madagascar est le pays des caméléons, et beaucoup sont connus pour leurs **capacités impressionnantes à changer de couleur** pour se camoufler ou communiquer.",
+      "source": "Faune de Madagascar, Reptiles"
+    },
+    {
+      "questionId": "EASY_008",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Le Canal des Pangalanes est une voie navigable naturelle à Madagascar.",
+      "isTrue": false,
+      "explanation": "Le **Canal des Pangalanes** est une voie navigable artificielle et naturelle, composée de lacs et de lagunes reliées par des canaux creusés par l'homme.",
+      "source": "Office National du Tourisme de Madagascar"
+    },
+    {
+      "questionId": "EASY_009",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "La capitale de Madagascar est Antananarivo.",
+      "isTrue": true,
+      "explanation": "**Antananarivo** est bien la capitale de Madagascar, située sur les hautes terres centrales.",
+      "source": "Géographie de Madagascar"
+    },
+    {
+      "questionId": "EASY_010",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Le baobab est un arbre que l'on trouve en grande quantité à Madagascar.",
+      "isTrue": true,
+      "explanation": "Madagascar abrite **six des huit espèces de baobabs** connues dans le monde, dont certaines sont endémiques.",
+      "source": "Parcs Nationaux de Madagascar, Flore"
+    },
+    {
+      "questionId": "MEDIUM_001",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le Parc National de l'Isalo est réputé pour ses formations rocheuses particulières et ses piscines naturelles.",
+      "isTrue": true,
+      "explanation": "Le **Parc National de l'Isalo**, situé dans le sud-ouest de Madagascar, est célèbre pour ses canyons, ses formations gréseuses érodées et ses oasis de fraîcheur.",
+      "source": "Parcs Nationaux de Madagascar"
+    },
+    {
+      "questionId": "MEDIUM_002",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Madagascar est traversé par le Tropique du Cancer.",
+      "isTrue": false,
+      "explanation": "Faux, Madagascar est traversé par le **Tropique du Capricorne** dans sa partie sud, pas le Tropique du Cancer.",
+      "source": "Géographie mondiale, Cartes du monde"
+    },
+    {
+      "questionId": "MEDIUM_003",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le fleuve le plus long de Madagascar est le Tsiribihina.",
+      "isTrue": false,
+      "explanation": "Faux, le fleuve le plus long de Madagascar est le **Mangoky**, avec environ 564 km de long. Le Tsiribihina est également un fleuve important.",
+      "source": "Hydrographie de Madagascar, Atlas nationaux"
+    },
+    {
+      "questionId": "MEDIUM_004",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "La ville de Toamasina est le principal port maritime de Madagascar.",
+      "isTrue": true,
+      "explanation": "Oui, **Toamasina (Tamatave)** est le plus grand et le **principal port maritime** de Madagascar, essentiel pour le commerce international de l'île.",
+      "source": "Géographie économique de Madagascar, Infrastructures portuaires"
+    },
+    {
+      "questionId": "MEDIUM_005",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le Mont Maromokotro est le point culminant de Madagascar.",
+      "isTrue": true,
+      "explanation": "Le **Mont Maromokotro**, situé dans le massif du Tsaratanana, est le plus haut sommet de Madagascar, culminant à 2 876 mètres.",
+      "source": "Géographie physique de Madagascar"
+    },
+    {
+      "questionId": "MEDIUM_006",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le Canal du Mozambique sépare Madagascar du continent africain.",
+      "isTrue": true,
+      "explanation": "Le **Canal du Mozambique** est bien le bras de mer qui sépare Madagascar de l'Afrique australe.",
+      "source": "Cartographie et géographie de l'océan Indien"
+    },
+    {
+      "questionId": "MEDIUM_007",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Les Tsingy de Bemaraha sont un massif calcaire classé au patrimoine mondial de l'UNESCO pour ses paysages uniques.",
+      "isTrue": true,
+      "explanation": "Les **Tsingy de Bemaraha** sont des formations rocheuses karstiques acérées, un site naturel exceptionnel et un site du patrimoine mondial de l'UNESCO.",
+      "source": "UNESCO World Heritage List"
+    },
+    {
+      "questionId": "MEDIUM_008",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le Lac Alaotra est le plus grand lac naturel de Madagascar.",
+      "isTrue": true,
+      "explanation": "Le **Lac Alaotra**, situé sur les hautes terres, est le plus grand lac naturel de Madagascar et une zone humide importante.",
+      "source": "Zones humides de Madagascar, Géographie"
+    },
+    {
+      "questionId": "MEDIUM_009",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "La région d'Antsiranana (Diego Suarez) est située à l'extrême sud de Madagascar.",
+      "isTrue": false,
+      "explanation": "Faux, **Antsiranana (Diego Suarez) est située à l'extrême nord** de Madagascar, et est connue pour sa baie et le Pain de Sucre.",
+      "source": "Géographie régionale de Madagascar"
+    },
+    {
+      "questionId": "MEDIUM_010",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "La plupart des forêts primaires de Madagascar se trouvent sur la côte ouest.",
+      "isTrue": false,
+      "explanation": "Faux, la majorité des **forêts primaires de Madagascar se situent sur la côte est** (forêt tropicale humide) et dans certaines zones montagneuses, la côte ouest étant plus sèche.",
+      "source": "Écosystèmes forestiers de Madagascar, WWF"
+    },
+    {
+      "questionId": "HARD_001",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le parc national d'Andohahela est le seul endroit au monde où cohabitent trois écosystèmes distincts sur une courte distance.",
+      "isTrue": true,
+      "explanation": "Le **Parc National d'Andohahela** est exceptionnel pour sa biodiversité et sa géographie, présentant une forêt tropicale humide, une forêt sèche et une végétation d'épineux en très proche proximité.",
+      "source": "UNESCO World Heritage - Andohahela"
+    },
+    {
+      "questionId": "HARD_002",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le Grand Sud de Madagascar est caractérisé par un climat désertique avec de très faibles précipitations.",
+      "isTrue": false,
+      "explanation": "Le Grand Sud est caractérisé par un **climat semi-aride à aride**, avec des périodes de sécheresse sévères, mais pas un désert classique. La végétation est de type bush épineux.",
+      "source": "Climatologie de Madagascar, IRD"
+    },
+    {
+      "questionId": "HARD_003",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Les Andringitra sont un massif montagneux de Madagascar célèbre pour son pic Imarivolanitra, le second plus haut de l'île.",
+      "isTrue": true,
+      "explanation": "Le **massif de l'Andringitra** est un site remarquable avec le pic Imarivolanitra (Pic Boby), qui est bien le deuxième plus haut sommet de Madagascar.",
+      "source": "Parcs Nationaux de Madagascar, Topographie"
+    },
+    {
+      "questionId": "HARD_004",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "La Grande Barrière de Corail de Madagascar est la plus longue barrière corallienne de l'océan Indien.",
+      "isTrue": false,
+      "explanation": "Bien que Madagascar possède d'importants récifs coralliens, la **plus longue barrière de corail de l'océan Indien** est le grand récif de la Nouvelle-Calédonie, tandis que la plus grande barrière au monde est en Australie.",
+      "source": "Conservation Marine Internationale, Géographie récifale"
+    },
+    {
+      "questionId": "HARD_005",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "La Plaine du Menabe, à l'ouest de Madagascar, est une zone fortement volcanique et active.",
+      "isTrue": false,
+      "explanation": "Faux, la **Plaine du Menabe** est une région principalement sédimentaire et côtière à l'ouest, connue pour ses baobabs et ses zones humides, et **non pour une activité volcanique intense**.",
+      "source": "Géologie régionale de Madagascar"
+    },
+    {
+      "questionId": "HARD_006",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "La Réserve Spéciale d'Analamazaotra est mondialement connue pour être le meilleur endroit pour observer l'Indri Indri.",
+      "isTrue": true,
+      "explanation": "Oui, la **Réserve Spéciale d'Analamazaotra (ou Parc de Périnet)** est le site le plus réputé et le plus accessible pour voir l'**Indri indri**, le plus grand des lémuriens vivants, connu pour son cri distinctif.",
+      "source": "Office National du Tourisme de Madagascar, Guides de voyage faunistiques"
+    },
+    {
+      "questionId": "HARD_007",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Les 'Pic de Boby' est le nom local du Mont Maromokotro.",
+      "isTrue": false,
+      "explanation": "Faux, le 'Pic Boby' est le nom courant du **Pic Imarivolanitra**, le deuxième plus haut sommet de Madagascar, situé dans le massif de l'Andringitra. Le Mont Maromokotro est le plus haut.",
+      "source": "Toponymie et géographie de Madagascar"
+    },
+    {
+      "questionId": "HARD_008",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le Rova d'Antananarivo est situé au sommet de la plus haute colline de la capitale.",
+      "isTrue": true,
+      "explanation": "Vrai, le **Rova d'Antananarivo** (palais royal) est stratégiquement situé sur la **plus haute colline de la capitale**, offrant une vue panoramique et une position défensive.",
+      "source": "Histoire et urbanisme d'Antananarivo"
+    },
+    {
+      "questionId": "HARD_009",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Madagascar possède de vastes glaciers permanents dans ses montagnes les plus élevées.",
+      "isTrue": false,
+      "explanation": "Faux, malgré la présence de montagnes élevées, Madagascar est une île tropicale et **ne possède pas de glaciers permanents**. Ses sommets ne sont pas suffisamment froids et élevés.",
+      "source": "Climatologie et géographie physique de Madagascar"
+    },
+    {
+      "questionId": "HARD_010",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "La Péninsule de Masoala est l'une des régions les plus humides de Madagascar, abritant une forêt tropicale dense.",
+      "isTrue": true,
+      "explanation": "Vrai, la **Péninsule de Masoala**, située au nord-est, est connue pour être l'une des **régions les plus pluvieuses et humides** de Madagascar, avec une forêt tropicale dense et une biodiversité exceptionnelle.",
+      "source": "Parc National de Masoala, Écosystèmes"
+    },
+    {
+      "questionId": "EXPERT_001",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "La déforestation à Madagascar est principalement due à l'exploitation forestière industrielle légale.",
+      "isTrue": false,
+      "explanation": "Faux, la déforestation à Madagascar est majoritairement causée par l'**agriculture sur brûlis (Tavy)**, la production de charbon de bois et l'exploitation illégale du bois de rose, plus que par l'exploitation industrielle légale.",
+      "source": "FAO, Rapports sur la déforestation à Madagascar"
+    },
+    {
+      "questionId": "EXPERT_002",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le Parc National de Ranomafana est un site du patrimoine mondial de l'UNESCO, connu pour sa forêt tropicale humide et ses lémuriens nocturnes.",
+      "isTrue": true,
+      "explanation": "Oui, le **Parc National de Ranomafana** fait partie des Forêts humides de l'Atsinanana, site classé par l'UNESCO, et est un lieu clé pour la conservation de la biodiversité, notamment des lémuriens diurnes et nocturnes.",
+      "source": "UNESCO World Heritage List, Parcs Nationaux de Madagascar"
+    },
+    {
+      "questionId": "EXPERT_003",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Les 'Tsyingy' sont des formations géologiques que l'on ne trouve qu'à Madagascar.",
+      "isTrue": true,
+      "explanation": "Vrai, les **Tsingy** (littéralement 'là où l'on ne peut marcher pieds nus') sont des **formations karstiques aiguisées et uniques au monde**, principalement présentes à Madagascar, notamment à Bemaraha et Ankarana.",
+      "source": "Géologie de Madagascar, Sites du patrimoine mondial"
+    },
+    {
+      "questionId": "EXPERT_004",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "La majorité des rivières de Madagascar s'écoulent de l'est vers l'ouest en raison du relief de l'île.",
+      "isTrue": true,
+      "explanation": "Vrai, la dorsale montagneuse principale de Madagascar est décalée vers l'est, créant un escarpement abrupt à l'est et une pente douce à l'ouest, ce qui fait que la **majorité des grands fleuves s'écoulent d'est en ouest** vers le Canal du Mozambique.",
+      "source": "Hydrographie de Madagascar, Géomorphologie"
+    },
+    {
+      "questionId": "EXPERT_005",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "La 'forêt sèche' de Madagascar est caractérisée par une forte humidité et une dense canopée toute l'année.",
+      "isTrue": false,
+      "explanation": "Faux, la **forêt sèche** de Madagascar, située principalement à l'ouest, est caractérisée par une **saison sèche prolongée** où les arbres perdent leurs feuilles, et non par une forte humidité toute l'année.",
+      "source": "Écosystèmes forestiers de Madagascar, Climatologie"
+    },
+    {
+      "questionId": "EXPERT_006",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le 'Spiny Forest' (Forêt épineuse) est un écosystème unique qui se trouve uniquement dans le sud-ouest de Madagascar.",
+      "isTrue": true,
+      "explanation": "Vrai, la **Forêt épineuse** est un biome unique et très spécifique au sud-ouest de Madagascar, caractérisé par des plantes succulentes et épineuses adaptées aux conditions arides.",
+      "source": "Biodiversité de Madagascar, Écorégions"
+    },
+    {
+      "questionId": "EXPERT_007",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "La ville de Mahajanga (Majunga) est réputée pour ses hauts plateaux et son climat frais.",
+      "isTrue": false,
+      "explanation": "Faux, **Mahajanga (Majunga)** est une ville côtière majeure de l'ouest de Madagascar, connue pour son climat **chaud et sec**, ses plages et son port, et non pour des hauts plateaux.",
+      "source": "Géographie régionale de Madagascar, Climatologie"
+    },
+    {
+      "questionId": "EXPERT_008",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le Parc National Marin de Nosy Tanikely est un site protégé pour ses récifs coralliens et sa vie marine abondante.",
+      "isTrue": true,
+      "explanation": "Oui, **Nosy Tanikely** est une petite île proche de Nosy Be, classée **Parc National Marin** et célèbre pour ses eaux claires, ses coraux magnifiques et sa faune marine idéale pour la plongée et le snorkeling.",
+      "source": "Parcs Nationaux de Madagascar, Tourisme durable"
+    },
+    {
+      "questionId": "EXPERT_009",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le 'Canal de Sainte-Marie' est un détroit qui sépare Madagascar de l'île de La Réunion.",
+      "isTrue": false,
+      "explanation": "Faux, le **Canal de Sainte-Marie** sépare la **côte est de Madagascar de l'île Sainte-Marie (Nosy Boraha)**. La Réunion est une île beaucoup plus éloignée dans l'océan Indien.",
+      "source": "Cartographie de Madagascar"
+    },
+    {
+      "questionId": "EXPERT_010",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Madagascar abrite une diversité unique de caméléons, dont la majorité des espèces connues sont endémiques à l'île.",
+      "isTrue": true,
+      "explanation": "Vrai, Madagascar est un hotspot de biodiversité pour les caméléons, avec **plus de la moitié des espèces mondiales** qui ne se trouvent nulle part ailleurs, ce qui en fait un laboratoire naturel pour l'évolution de ces reptiles.",
+      "source": "Herpétologie, Conservation International"
+    },
+    {
+      "questionId": "EASY_011",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Antananarivo est la capitale de Madagascar.",
+      "isTrue": true,
+      "explanation": "Oui, Antananarivo est la capitale et la plus grande ville de Madagascar.",
+      "source": "Géographie de Madagascar"
+    },
+    {
+      "questionId": "EASY_012",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Madagascar est située en Europe.",
+      "isTrue": false,
+      "explanation": "Faux, Madagascar est une île située dans l'océan Indien, au large de la côte sud-est de l'Afrique.",
+      "source": "Atlas géographique"
+    },
+    {
+      "questionId": "EASY_013",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Les lémuriens vivent uniquement à Madagascar.",
+      "isTrue": true,
+      "explanation": "Oui, les lémuriens sont des primates endémiques de Madagascar, ce qui signifie qu'on ne les trouve nulle part ailleurs dans le monde à l'état sauvage.",
+      "source": "Faune de Madagascar, WWF"
+    },
+    {
+      "questionId": "EASY_014",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Madagascar est entourée par une seule mer.",
+      "isTrue": false,
+      "explanation": "Faux, Madagascar est une île située dans l'océan Indien.",
+      "source": "Géographie de Madagascar"
+    },
+    {
+      "questionId": "EASY_015",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Les baobabs sont des arbres que l'on trouve à Madagascar.",
+      "isTrue": true,
+      "explanation": "Oui, Madagascar est célèbre pour ses espèces de baobabs, dont certaines sont endémiques à l'île, notamment l'allée des Baobabs.",
+      "source": "Flore de Madagascar"
+    },
+    {
+      "questionId": "EASY_016",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Il n'y a pas de montagnes à Madagascar.",
+      "isTrue": false,
+      "explanation": "Faux, Madagascar possède plusieurs chaînes de montagnes et hauts plateaux, notamment le massif de l'Ankaratra.",
+      "source": "Topographie de Madagascar"
+    },
+    {
+      "questionId": "EASY_017",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Le Canal du Mozambique sépare Madagascar du continent africain.",
+      "isTrue": true,
+      "explanation": "Oui, le Canal du Mozambique est le bras de mer qui sépare l'île de Madagascar du continent africain.",
+      "source": "Cartographie, Géographie marine"
+    },
+    {
+      "questionId": "EASY_018",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Le climat de Madagascar est le même partout sur l'île.",
+      "isTrue": false,
+      "explanation": "Faux, le climat varie considérablement entre l'est humide, le sud semi-aride et les Hautes Terres centrales tempérées.",
+      "source": "Climat de Madagascar"
+    },
+    {
+      "questionId": "EASY_019",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Les forêts de Madagascar abritent beaucoup d'animaux uniques.",
+      "isTrue": true,
+      "explanation": "Oui, les forêts malgaches sont des hotspots de biodiversité, avec un taux d'endémisme très élevé pour de nombreuses espèces animales.",
+      "source": "Biodiversité de Madagascar"
+    },
+    {
+      "questionId": "EASY_020",
+      "themeId": "GEO",
+      "levelId": "EASY",
+      "ageRange": "6-99",
+      "questionText": "Madagascar est traversée par un grand désert de sable.",
+      "isTrue": false,
+      "explanation": "Faux, Madagascar n'a pas de grand désert de sable comme le Sahara. Certaines zones du sud sont arides ou semi-arides, mais ce ne sont pas des déserts de sable typiques.",
+      "source": "Géographie physique de Madagascar"
+    },
+    {
+      "questionId": "MEDIUM_011",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le Mont Maromokotro est le point culminant de Madagascar.",
+      "isTrue": true,
+      "explanation": "Oui, le Mont Maromokotro, situé dans le massif du Tsaratanana, est le plus haut sommet de Madagascar, atteignant environ 2 876 mètres.",
+      "source": "Topographie de Madagascar"
+    },
+    {
+      "questionId": "MEDIUM_012",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le Parc National de l'Isalo est réputé pour ses récifs coralliens et sa vie marine colorée.",
+      "isTrue": false,
+      "explanation": "Faux, le Parc National de l'Isalo est célèbre pour ses paysages de grès ruiniformes, ses canyons, ses piscines naturelles et sa végétation rupicole, et non pour ses récifs coralliens (il est à l'intérieur des terres).",
+      "source": "Parcs Nationaux de Madagascar"
+    },
+    {
+      "questionId": "MEDIUM_013",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le \"Grand Sud\" de Madagascar est caractérisé par un climat sec et une végétation xérophile.",
+      "isTrue": true,
+      "explanation": "Vrai, le sud de Madagascar est une région semi-aride à aride, dominée par des forêts épineuses et des plantes adaptées à la sécheresse.",
+      "source": "Climatologie et végétation de Madagascar"
+    },
+    {
+      "questionId": "MEDIUM_014",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le lac Alaotra est le plus grand lac naturel de Madagascar.",
+      "isTrue": true,
+      "explanation": "Oui, le lac Alaotra, situé sur les Hautes Terres, est le plus grand lac de Madagascar et une zone humide importante pour l'agriculture et la biodiversité.",
+      "source": "Hydrographie de Madagascar"
+    },
+    {
+      "questionId": "MEDIUM_015",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Les tsingy sont des formations rocheuses uniquement présentes en Australie.",
+      "isTrue": false,
+      "explanation": "Faux, les Tsingy sont des formations karstiques aiguisées et spectaculaires, uniques à Madagascar, notamment dans les Parcs Nationaux de Bemaraha et d'Ankarana.",
+      "source": "Géologie de Madagascar"
+    },
+    {
+      "questionId": "MEDIUM_016",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "La ville de Toamasina est le principal port commercial de Madagascar.",
+      "isTrue": true,
+      "explanation": "Oui, Toamasina (anciennement Tamatave) est le plus grand port de Madagascar et un centre économique majeur de la côte est.",
+      "source": "Économie et géographie portuaire de Madagascar"
+    },
+    {
+      "questionId": "MEDIUM_017",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Les rivières de Madagascar s'écoulent toutes de l'est vers l'ouest.",
+      "isTrue": false,
+      "explanation": "Faux, les rivières de l'est sont courtes et se jettent dans l'océan Indien, tandis que les grandes rivières de l'ouest (comme le Tsiribihina, le Mangoky) se jettent dans le Canal du Mozambique.",
+      "source": "Hydrographie de Madagascar"
+    },
+    {
+      "questionId": "MEDIUM_018",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "La faune de Madagascar inclut une grande variété de serpents venimeux et de grands félins.",
+      "isTrue": false,
+      "explanation": "Faux, Madagascar est caractérisée par l'absence de grands prédateurs dangereux pour l'homme et une faible diversité de serpents venimeux, la plupart étant inoffensifs.",
+      "source": "Faune de Madagascar"
+    },
+    {
+      "questionId": "MEDIUM_019",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Le Parc National de Ranomafana est connu pour ses forêts pluviales et ses lémuriens diurnes.",
+      "isTrue": true,
+      "explanation": "Vrai, Ranomafana est un parc classé au patrimoine mondial, abritant des forêts humides et une grande diversité de lémuriens, dont plusieurs espèces diurnes.",
+      "source": "UNESCO, Parcs Nationaux de Madagascar"
+    },
+    {
+      "questionId": "MEDIUM_020",
+      "themeId": "GEO",
+      "levelId": "MEDIUM",
+      "ageRange": "10-99",
+      "questionText": "Les cyclones tropicaux n'affectent jamais Madagascar.",
+      "isTrue": false,
+      "explanation": "Faux, Madagascar est régulièrement touchée par des cyclones tropicaux, surtout pendant la saison des pluies (de novembre à avril), qui peuvent causer d'importants dégâts.",
+      "source": "Météorologie de Madagascar, Catastrophes naturelles"
+    },
+    {
+      "questionId": "HARD_011",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le Corridor Forestier de Fandriana-Vondrozo est un exemple de projet de reboisement à grande échelle, visant la production de bois de chauffage.",
+      "isTrue": false,
+      "explanation": "Faux, le Corridor Forestier de Fandriana-Vondrozo est un projet de conservation visant à reconnecter des fragments de forêt primaire pour la protection de la biodiversité, et non principalement pour le bois de chauffage.",
+      "source": "Conservation à Madagascar, Organisations environnementales"
+    },
+    {
+      "questionId": "HARD_012",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "La majorité des espèces de palmiers de Madagascar sont endémiques à l'île.",
+      "isTrue": true,
+      "explanation": "Vrai, Madagascar est un hotspot de biodiversité pour les palmiers, avec un très grand nombre d'espèces endémiques, souvent menacées.",
+      "source": "Flore de Madagascar, Botanique"
+    },
+    {
+      "questionId": "HARD_013",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Les Hautes Terres centrales de Madagascar sont caractérisées par des forêts denses et primaires bien conservées.",
+      "isTrue": false,
+      "explanation": "Faux, les Hautes Terres ont été largement déboisées et sont dominées par des paysages de rizières en terrasses et de savanes dégradées (tany mena), avec seulement des fragments de forêt primaire subsistants.",
+      "source": "Écologie et géographie de Madagascar"
+    },
+    {
+      "questionId": "HARD_014",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le littoral est de Madagascar est en grande partie rocheux et escarpé, avec peu de plages de sable fin.",
+      "isTrue": false,
+      "explanation": "Faux, la côte est est caractérisée par de longues plages de sable, des lagons et une végétation luxuriante, contrastant avec la côte ouest plus découpée et riche en mangroves.",
+      "source": "Géographie côtière de Madagascar"
+    },
+    {
+      "questionId": "HARD_015",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "La 'forêt sèche caducifoliée' est un type de végétation typique de la côte ouest de Madagascar.",
+      "isTrue": true,
+      "explanation": "Vrai, la côte ouest de Madagascar est dominée par la forêt sèche caducifoliée, où les arbres perdent leurs feuilles pendant la longue saison sèche pour conserver l'eau.",
+      "source": "Végétation de Madagascar, Écologie"
+    },
+    {
+      "questionId": "HARD_016",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le Mananara Nord est une réserve de biosphère de l'UNESCO connue principalement pour ses déserts de sel.",
+      "isTrue": false,
+      "explanation": "Faux, la Réserve de Biosphère de Mananara Nord, située sur la côte nord-est, est célèbre pour ses forêts humides, sa biodiversité marine (récifs coralliens) et ses lémuriens, et non pour des déserts de sel.",
+      "source": "UNESCO, Réserves de biosphère de Madagascar"
+    },
+    {
+      "questionId": "HARD_017",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Les mines de saphir à Ilakaka ont transformé cette région du sud-ouest en un centre urbain en croissance rapide.",
+      "isTrue": true,
+      "explanation": "Vrai, la découverte massive de saphirs à Ilakaka à la fin des années 1990 a entraîné une ruée vers l'or (ou plutôt vers le saphir), transformant un village en une ville minière dynamique mais aussi source de défis sociaux et environnementaux.",
+      "source": "Géologie économique de Madagascar, Études socio-économiques"
+    },
+    {
+      "questionId": "HARD_018",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "Le lac Tritriva est un lac de cratère d'origine volcanique, connu pour ses légendes et ses eaux profondes.",
+      "isTrue": true,
+      "explanation": "Vrai, le lac Tritriva, près d'Antsirabe, est un lac de cratère volcanique aux eaux sombres et à la forme évoquant une carte de Madagascar inversée, entouré de nombreuses légendes locales.",
+      "source": "Géologie et légendes malgaches"
+    },
+    {
+      "questionId": "HARD_019",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "La majorité des tortues terrestres géantes de Madagascar ont disparu en raison d'événements géologiques récents.",
+      "isTrue": false,
+      "explanation": "Faux, la disparition des tortues terrestres géantes à Madagascar est principalement due à la surchasse par l'homme et à la destruction de leur habitat, et non à des événements géologiques récents.",
+      "source": "Paléontologie et conservation de Madagascar"
+    },
+    {
+      "questionId": "HARD_020",
+      "themeId": "GEO",
+      "levelId": "HARD",
+      "ageRange": "14-99",
+      "questionText": "La plaine du Betsiboka est une région fertile, traversée par le fleuve Betsiboka, connue pour ses rizières.",
+      "isTrue": true,
+      "explanation": "Vrai, le bassin de la Betsiboka, notamment autour de Mahajanga, est une vaste plaine alluviale fertile, propice à la riziculture, bien que le fleuve soit aussi connu pour ses sédiments rouges qui colorent la mer.",
+      "source": "Géographie agricole de Madagascar"
+    },
+    {
+      "questionId": "EXPERT_011",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Les 'Pic de Boby' est le nom local du Mont Maromokotro, point culminant de Madagascar.",
+      "isTrue": false,
+      "explanation": "Faux, le Pic Boby est le point culminant du massif de l'Andringitra (2658m), tandis que le Mont Maromokotro (2876m) est le point culminant de Madagascar, situé dans le massif du Tsaratanana.",
+      "source": "Topographie de Madagascar, Géographie des massifs"
+    },
+    {
+      "questionId": "EXPERT_012",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "La latérite, souvent appelée 'terre rouge' à Madagascar, est le résultat d'une altération profonde des roches cristallines sous climat tropical humide.",
+      "isTrue": true,
+      "explanation": "Vrai, la couleur rouge caractéristique des sols malgaches est due à la présence de latérite, un sol riche en oxyde de fer et d'aluminium, formé par l'altération chimique des roches mères sous un climat chaud et humide.",
+      "source": "Géologie et pédologie de Madagascar"
+    },
+    {
+      "questionId": "EXPERT_013",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le Canal des Pangalanes est un système de canaux naturels et artificiels reliant la côte ouest et la côte est de Madagascar.",
+      "isTrue": false,
+      "explanation": "Faux, le Canal des Pangalanes est un réseau de voies navigables (naturelles et artificielles) situé le long de la côte EST de Madagascar, reliant des lacs, des lagunes et des rivières, facilitant le transport et le commerce.",
+      "source": "Géographie humaine de Madagascar"
+    },
+    {
+      "questionId": "EXPERT_014",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Les forêts de mangroves de Madagascar sont principalement situées sur la côte est, en raison des précipitations abondantes.",
+      "isTrue": false,
+      "explanation": "Faux, les mangroves se trouvent majoritairement sur la côte ouest de Madagascar, dans les estuaires et les zones de marées, où les conditions (eaux calmes, salinité, sédiments) sont plus favorables à leur développement, bien que la côte est ait quelques poches.",
+      "source": "Écologie marine de Madagascar, Biodiversité côtière"
+    },
+    {
+      "questionId": "EXPERT_015",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le massif de l'Ankaratra est un ancien volcan dont les dernières éruptions datent de plusieurs millions d'années.",
+      "isTrue": true,
+      "explanation": "Vrai, l'Ankaratra est un massif volcanique éteint, dont l'activité remonte à des millions d'années. Il est connu pour ses sommets arrondis et ses lacs de cratère.",
+      "source": "Géologie volcanique de Madagascar"
+    },
+    {
+      "questionId": "EXPERT_016",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "La formation du gypse est une caractéristique géologique majeure de la partie centrale des Hautes Terres malgaches.",
+      "isTrue": false,
+      "explanation": "Faux, le gypse (sulfate de calcium hydraté) n'est pas une formation géologique majeure des Hautes Terres centrales. Cette région est dominée par des roches cristallines et des formations volcaniques. Le gypse se trouve dans d'autres contextes géologiques.",
+      "source": "Géologie de Madagascar, Minéralogie"
+    },
+    {
+      "questionId": "EXPERT_017",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le Fosa (Cryptoprocta ferox) est le plus grand carnivore endémique de Madagascar.",
+      "isTrue": true,
+      "explanation": "Vrai, le Fosa est le plus grand prédateur de Madagascar, un mammifère carnivore ressemblant à un puma miniature, et il est endémique à l'île.",
+      "source": "Faune de Madagascar, Biologie"
+    },
+    {
+      "questionId": "EXPERT_018",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "La dégradation des sols à Madagascar est principalement causée par la pollution industrielle des grandes villes.",
+      "isTrue": false,
+      "explanation": "Faux, la dégradation des sols et l'érosion sont majoritairement dues à la déforestation, aux feux de brousse, à l'agriculture sur brûlis et à l'élevage extensif, plutôt qu'à la pollution industrielle des villes.",
+      "source": "Environnement à Madagascar, Rapports sur l'érosion"
+    },
+    {
+      "questionId": "EXPERT_019",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Le massif du Makay est une formation de grès tabulaires, fortement érodés, créant des canyons et des grottes abritant une biodiversité unique et isolée.",
+      "isTrue": true,
+      "explanation": "Vrai, le Makay est un vaste massif de grès très érodé, caractérisé par ses canyons profonds, ses labyrinthes rocheux et ses forêts galeries, qui en font un refuge pour des espèces endémiques et un site de conservation majeur.",
+      "source": "Géographie physique de Madagascar, Conservation"
+    },
+    {
+      "questionId": "EXPERT_020",
+      "themeId": "GEO",
+      "levelId": "EXPERT",
+      "ageRange": "16-99",
+      "questionText": "Les savanes de l'ouest malgache sont majoritairement des écosystèmes naturels et primaires.",
+      "isTrue": false,
+      "explanation": "Faux, une grande partie des savanes de l'ouest sont des écosystèmes secondaires, résultant de la déforestation et des feux de brousse successifs, ayant remplacé les forêts sèches originelles.",
+      "source": "Écologie et paysages de Madagascar"
+    }
+  ]
+}

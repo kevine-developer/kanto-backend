@@ -3,13 +3,21 @@ import pg from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../../generated/prisma/client.js';
 
-const DATA_URLS = [
-  'https://raw.githubusercontent.com/gastsar/data-kantomg/main/data/game/trueOrFalse/CultureTraditions.data.json',
-  'https://raw.githubusercontent.com/gastsar/data-kantomg/main/data/game/trueOrFalse/GeographieNature.data.json',
-  'https://raw.githubusercontent.com/gastsar/data-kantomg/main/data/game/trueOrFalse/HistoireSociete.data.json',
-  'https://raw.githubusercontent.com/gastsar/data-kantomg/main/data/game/trueOrFalse/LitteratureArts.data.json',
-  'https://raw.githubusercontent.com/gastsar/data-kantomg/main/data/game/trueOrFalse/ProverbesExpressions.data.json',
-  'https://raw.githubusercontent.com/gastsar/data-kantomg/main/data/game/trueOrFalse/General.data.json',
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const seedDataDir = path.resolve(__dirname, '../../prisma/seed-data');
+
+const DATA_FILES = [
+  'tf-culture.data.json',
+  'tf-geographie.data.json',
+  'tf-histoire.data.json',
+  'tf-litterature.data.json',
+  'tf-proverbes.data.json',
+  'tf-general.data.json',
 ];
 
 interface RemoteQuestion {
@@ -57,18 +65,28 @@ async function main() {
   const adapter = new PrismaPg(pool);
   const prisma = new PrismaClient({ adapter });
 
-  console.log('Fetching questions from remote datasets...');
+  const existingCount = await prisma.trueFalseQuestion.count();
+  if (existingCount > 0) {
+    console.log(
+      `ℹ️ ${existingCount} questions Vrai/Faux existent déjà en base de données. Étape ignorée.`,
+    );
+    await prisma.$disconnect();
+    await pool.end();
+    return;
+  }
+
+  console.log('Loading questions from local datasets...');
   let totalImported = 0;
 
-  for (const url of DATA_URLS) {
+  for (const fileName of DATA_FILES) {
     try {
-      console.log(`Loading: ${url.split('/').pop()}...`);
-      const response = await fetch(url);
-      if (!response.ok) {
-        console.warn(`Failed to fetch ${url}: ${response.status}`);
+      console.log(`Loading: ${fileName}...`);
+      const filePath = path.join(seedDataDir, fileName);
+      if (!fs.existsSync(filePath)) {
+        console.warn(`File not found: ${filePath}`);
         continue;
       }
-      const data = (await response.json()) as RemoteData;
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf-8')) as RemoteData;
       const questions: RemoteQuestion[] = data.questions || [];
 
       for (const q of questions) {
@@ -92,7 +110,7 @@ async function main() {
         totalImported++;
       }
     } catch (err) {
-      console.error(`Error importing from ${url}:`, err);
+      console.error(`Error importing from ${fileName}:`, err);
     }
   }
 

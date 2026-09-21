@@ -1,0 +1,3724 @@
+[
+  {
+    "id": "proverbID-1",
+    "malagasy": "Ny hazo tokana tsy mba ala",
+    "french": "Un seul arbre ne fait pas une forêt",
+    "meaning": "Ce proverbe souligne l'importance de la communauté et de la collaboration. Une personne seule ne peut pas accomplir autant qu'un groupe uni.",
+    "example": "Utilisé pour encourager le travail d'équipe ou rappeler qu'on a besoin des autres pour réussir pleinement.",
+    "themes": ["Sagesse", "Collaboration", "Communauté"],
+    "category": "proverbe",
+    "origins": ["Merina", "Betsileo"],
+    "dialectVariants": [{ "dialect": "Sud", "text": "Tsy ala ny hazo tokana" }],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-2",
+    "malagasy": "Aza manao fitia mifono avona",
+    "french": "Ne mettez pas de l'orgueil dans votre amour",
+    "meaning": "L'amour véritable doit être humble et sincère, dépourvu d'arrogance ou de vanité.",
+    "example": "Conseil donné dans les relations amoureuses ou amicales pour préserver l'authenticité des sentiments.",
+    "themes": ["Amour", "Humilité", "Sagesse"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-3",
+    "malagasy": "Ny vola toy ny vahiny : tonga anio, lasa rahampitso",
+    "french": "L'argent est comme un visiteur : il arrive aujourd'hui et demain il repart",
+    "meaning": "Ce proverbe illustre le caractère éphémère de la richesse matérielle et encourage à ne pas y accorder une importance démesurée.",
+    "example": "Utilisé pour relativiser l'importance de l'argent et pour encourager la prévoyance ou la générosité.",
+    "themes": ["Argent", "Sagesse", "Éphémère"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-4",
+    "malagasy": "Tsy misy mafy tsy laitran'ny zoto",
+    "french": "À cœur vaillant rien d'impossible (littéralement : Il n'y a rien de dur qui ne cède à l'ardeur/persévérance)",
+    "meaning": "Avec de la volonté, de la persévérance et de l'effort, on peut surmonter tous les obstacles.",
+    "example": "Expression utilisée pour motiver quelqu'un face à une tâche difficile ou pour souligner le succès obtenu grâce à la persévérance.",
+    "themes": ["Persévérance", "Volonté", "Courage"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-5",
+    "malagasy": "Manao an'Andriamanitra ho tsy misy ka mitsambiki-mikipy",
+    "french": "Nier l'existence de Dieu, c'est sauter les yeux fermés",
+    "meaning": "Ce proverbe suggère que nier l'existence d'une force supérieure ou d'une réalité au-delà de ce qui est visible est un acte imprudent et risqué.",
+    "example": "Employé dans des discussions philosophiques ou religieuses pour inciter à la prudence face à l'inconnu ou au spirituel.",
+    "themes": ["Spiritualité", "Prudence", "Sagesse"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-6",
+    "malagasy": "Fitia lamban' akoho, aina no fetra",
+    "french": "L'amitié est comme le plumage d'un poulet, elle ne s'en va qu'à la mort",
+    "meaning": "Ce proverbe souligne la force et la pérennité d'une véritable amitié, qui dure toute la vie.",
+    "example": "Utilisé pour valoriser une amitié sincère et durable.",
+    "themes": ["Amitié", "Loyauté", "Sagesse"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-7",
+    "malagasy": "Ny hazo no vanon-ko lakana, ny tany naniriany no tsara.",
+    "french": "C’est l’arbre qui devient pirogue, mais c’est la terre où il a poussé qui le rend bon.",
+    "meaning": "On réussit grâce à ses origines ou à l’environnement qui nous a nourris. L'éducation et les racines sont le fondement de la qualité d'une personne.",
+    "example": "Raha tsara fanabeazana ianao, tsarovy fa 'ny tany naniriany no tsara'. (Si tu as une bonne éducation, souviens-toi que 'c'est la terre où il a poussé qui le rend bon').",
+    "themes": ["Valeurs", "Éducation", "Origines", "Sagesse"],
+    "category": "proverbe",
+    "origins": ["Merina"],
+    "dialectVariants": [
+      {
+        "dialect": "Betsileo",
+        "text": "Ny hazo no miavaka, fa ny tany no mitomboana."
+      }
+    ],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-8",
+    "malagasy": "Aza manao fary ririnina, ka tsy hanan-kanina amin’ny lohataona.",
+    "french": "Ne sois pas comme la canne à sucre d'hiver, sinon tu n’auras rien à manger au printemps.",
+    "meaning": "Ne dilapide pas toutes tes ressources prématurément, pense à l'avenir et fais preuve de prévoyance.",
+    "example": "Mitsitsy vola isika izao, satria 'aza manao fary ririnina'. (Nous économisons de l'argent maintenant, car 'il ne faut pas être comme la canne à sucre d'hiver').",
+    "themes": ["Sagesse", "Prévoyance", "Économie"],
+    "category": "proverbe",
+    "origins": ["Betsimisaraka"],
+    "dialectVariants": [
+      { "dialect": "Sihanaka", "text": "Aza atao maniry mialoha ny orana" }
+    ],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-9",
+    "malagasy": "Ny alina mitondra fisainana",
+    "french": "La nuit apporte la réflexion",
+    "meaning": "Les moments de calme ou d'obscurité favorisent la pensée, la réflexion et la sagesse.",
+    "example": "On le cite lorsqu'on conseille de prendre le temps de méditer ou de réfléchir avant d'agir.",
+    "themes": ["Réflexion", "Sagesse", "Calme"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-10",
+    "malagasy": "Aza mitsipa-doha laka-nitana",
+    "french": "Ne rejette pas la pirogue qui t’a aidé à traverser la rivière",
+    "meaning": "Ne renie pas ceux ou ce qui t’ont aidé dans ton parcours.",
+    "example": "On l'utilise pour rappeler la reconnaissance envers les bienfaiteurs ou les soutiens passés.",
+    "themes": ["Gratitude", "Respect", "Reconnaissance"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-11",
+    "malagasy": "Aza atao tery vay manta",
+    "french": "Ne forcez pas les choses",
+    "meaning": "Il ne faut pas précipiter les événements ou pousser à agir avant qu’il soit mûr.",
+    "example": "On le cite pour rappeler qu’il vaut mieux attendre le bon moment plutôt que forcer.",
+    "themes": ["Prudence", "Temps", "Patience"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-12",
+    "malagasy": "Aza manao masaka atakalo manta",
+    "french": "N’échangez pas ce qui est mûr contre ce qui est cru",
+    "meaning": "Ne troquez pas quelque chose de sûr et bon contre quelque chose d’incertain.",
+    "example": "Dans les décisions professionnelles, mieux vaut garder ce qui fonctionne.",
+    "themes": ["Sagacité", "Stabilité", "Décision"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-13",
+    "malagasy": "Ny rano tsy mandà midina; ny setroka tsy mandà miakatra",
+    "french": "L’eau ne refuse pas de descendre, ni la fumée de monter",
+    "meaning": "Les choses suivent leur nature ou leur destin : accepter le flux naturel.",
+    "example": "On l'emploie pour rappeler qu’on ne peut lutter contre certains courants.",
+    "themes": ["Nature", "Acceptation", "Destin"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-14",
+    "malagasy": "Ny vanja tsy mandà afo ary ny afo tsy mandà kitay",
+    "french": "La poudre ne refuse pas le feu, ni le feu le combustible",
+    "meaning": "Tout élément trouve sa fonction dans un système cohérent.",
+    "example": "Illustration d’un processus où chaque rôle est complémentaire.",
+    "themes": ["Interaction", "Rôle", "Complémentarité"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-15",
+    "malagasy": "Izay mahari‑monina tonga telo mianaka",
+    "french": "Celui qui demeure longtemps s’enrichit (devenant trois puis famille)",
+    "meaning": "La persévérance et la stabilité conduisent à la force et à la croissance.",
+    "example": "On l’utilise quand on parle de projet ou entreprise qui grandit avec le temps.",
+    "themes": ["Persévérance", "Croissance", "Stabilité"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-16",
+    "malagasy": "Toy ny tandroky ny haolo: kirongo mahazo; baka mahavoa",
+    "french": "Comme les cornes du boeuf sauvage : l’une forte, l’autre bien utile",
+    "meaning": "Les différences ont chacune leur utilité ; force et orientation sont complémentaires.",
+    "example": "Souvent cité pour valoriser les talents divers d’une équipe.",
+    "themes": ["Diversité", "Force", "Utilité"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": ["Haolo dialect"],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-17",
+    "malagasy": "An‑goboka hoatry ny mivaro‑boanantsindrana",
+    "french": "Cacher son vol comme certains fruits cachent leurs graines",
+    "meaning": "Parler peu de ses fautes ou actes mauvais; ruser à cachette.",
+    "example": "Employé pour dénoncer hypocrisie ou duplicité.",
+    "themes": ["Ruse", "Hypocrisie", "Secret"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-18",
+    "malagasy": "Aza manao tovolahy mivarotra hodi‑nato",
+    "french": "Ne soyez pas comme celui qui vend l’écorce pour teindre le natte",
+    "meaning": "Ne pas mélanger des tâches incompatibles, ne pas être pressé sans secours.",
+    "example": "Peut servir de mise en garde contre le multitâche mal préparé.",
+    "themes": ["Organisation", "Attention", "Mauvaise précipitation"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-19",
+    "malagasy": "Aleo mandà tsy handeha toy izay hanaiky tsy ho lasa",
+    "french": "Il vaut mieux refuser d’aller que dire oui et ne pas agir",
+    "meaning": "Il est préférable de décliner plutôt que de promettre et ne pas tenir.",
+    "example": "Dans des situations professionnelles, mieux vaut être clair que s’engager sans ressources.",
+    "themes": ["Intégrité", "Clarté", "Engagement"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-20",
+    "malagasy": "Mandan’ny vato fefin’ny tanàna, rova mitsilotsilo fahitry ny lapa",
+    "french": "Le rempart de pierre protège la cité, la palissade les habitations royales",
+    "meaning": "La sécurité collective est construite par des barrières solides.",
+    "example": "Illustrer la valeur d’un bon cadre dans une organisation.",
+    "themes": ["Protection", "Structure", "Sécurité"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-21",
+    "malagasy": "Ny fofony ihany no anjarany",
+    "french": "N’a que la fumée pour héritage (comme vieille cuisinière)",
+    "meaning": "Ne recevoir que peu ou aucun avantage malgré un partage.",
+    "example": "Utilisé pour souligner les injustices dans une distribution.",
+    "themes": ["Injustice", "Inégalité", "Partage"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-22",
+    "malagasy": "Izaho anie nanao masaka atakalo manta",
+    "french": "J’ai changé ce qui était mûr contre du cru",
+    "meaning": "Avoir fait un échange malheureux avant de mesurer la valeur.",
+    "example": "Souvent cité comme confession d'une erreur personnelle passée.",
+    "themes": ["Erreur", "Réflexion", "Sagesse"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-23",
+    "malagasy": "Ilay nahandro vato: raha ny rony dia masaka",
+    "french": "Ce qui est cuisiné selon l’espoir finit par cuire",
+    "meaning": "Avec effort et préparation, même les projets difficiles peuvent réussir.",
+    "example": "Encourageant dans les débuts de projets ambitieux.",
+    "themes": ["Espoir", "Travail", "Résilience"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-24",
+    "malagasy": "Tsilalaon‑teny manambara fa izay no vita tamin’ny sakafo",
+    "french": "Ce que l’on a cuit est ce qu’on a pu faire",
+    "meaning": "Faire de son mieux en fonction de ses moyens.",
+    "example": "Apprécié dans des contextes modestes ou humbles.",
+    "themes": ["Effort", "Humilité", "Limite"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-25",
+    "malagasy": "Aza atao sinibe tantanin’ny kely",
+    "french": "Ne laisse pas le grand être contrôlé par le petit",
+    "meaning": "Il ne faut pas dépendre de ceux qui ont moins de compétence ou de statut.",
+    "example": "Appliqué dans le mentoring ou leadership pour conserver autonomie.",
+    "themes": ["Leadership", "Indépendance", "Respect"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-26",
+    "malagasy": "Boka nangala‑boatavo: hitondra roa tsy mahazaka, hitondra iray mimonomonona",
+    "french": "Celui qui a volé des citrouilles en veut toujours trop",
+    "meaning": "L’avidité fait perdre ce qu’on a acquis ; vouloir tout peut tout compromettre.",
+    "example": "Conseil de modération dans les ambitions ou gains rapides.",
+    "themes": ["Avidité", "Modération", "Perte"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-27",
+    "malagasy": "Aza mivarotra ombin‑drafozana: izay vidiny no entina",
+    "french": "Ne vendez pas ce que vous possédez à bas prix",
+    "meaning": "Valorisez vos biens ou qualités ; ne vous sous-estimez pas.",
+    "example": "Appliqué au personal branding ou valorisation de son travail.",
+    "themes": ["Valeur", "Respect", "Estime"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-28",
+    "malagasy": "Tanala mivaro‑tantely, ka ny tompony indray no milela‑tana",
+    "french": "L’homme qui vend son miel ne peut qu’en lécher les doigts",
+    "meaning": "Parfois, en vendant ses propres acquis, on ne garde que peu pour soi.",
+    "example": "Utilisé quand on donne trop et que l’on ne récolte pas.",
+    "themes": ["Partage", "Sacrifice", "Profit"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-29",
+    "malagasy": "Ny heloka, toy ny harona: izay tsy mitandrina no voadona",
+    "french": "La faute est comme une pierre qui heurte celui qui est inattentif",
+    "meaning": "Ce proverbe enseigne que les erreurs ou les fautes atteignent ceux qui manquent de vigilance et de prudence. Il souligne l'importance d'être attentif à ses actions pour éviter les conséquences négatives.",
+    "example": "Il faut toujours être prudent dans ses décisions, car 'ny heloka, toy ny harona: izay tsy mitandrina no voadona'.",
+    "themes": ["Prudence", "Faute", "Attention", "Conséquence"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-30",
+    "malagasy": "Mena-maso an-daoka, ka manao fatra-maina",
+    "french": "Avoir honte de son peu de viande et ne servir que du riz sec",
+    "meaning": "Critique l'attitude de celui qui, par fausse honte ou par avarice, préfère ne rien offrir plutôt que de partager le peu qu'il possède. Cela dénonce un orgueil mal placé ou un égoïsme masqué.",
+    "example": "Naleony tsy nanasa olona mihitsy toy izay hizara ny kely ananany, dia ilay 'mena-maso an-daoka'.",
+    "themes": ["Orgueil", "Avarice", "Apparence", "Partage"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-31",
+    "malagasy": "Tsy mahafoy vola hamidy takotra, ka manta vary",
+    "french": "Celui qui n'a pas voulu dépenser pour un couvercle a mangé du riz cru",
+    "meaning": "L'avarice ou le refus d'investir dans les outils nécessaires mène à un résultat médiocre. Il faut savoir dépenser à bon escient pour réussir.",
+    "example": "Tsy nividy fitaovana tsara izy dia tsy vita ny asany : 'tsy mahafoy vola hamidy takotra, ka manta vary'.",
+    "themes": ["Avarice", "Investissement", "Conséquence", "Sagesse"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-32",
+    "malagasy": "Aleo very tsikalakalam-bola toy izay very tsikalakalam-pihavanana",
+    "french": "Mieux vaut perdre un peu d'argent qu'un peu d'amitié (ou de lien social)",
+    "meaning": "Ce proverbe met en avant la primauté des relations humaines et des liens sociaux ('fihavanana') sur les biens matériels. La cohésion sociale a plus de valeur que l'argent.",
+    "example": "Naleony nanaiky fatiantoka kely mba tsy hisian'ny disadisa, satria 'aleo very tsikalakalam-bola toy izay very tsikalakalam-pihavanana'.",
+    "themes": [ "Fihavanana", "Relation humaine", "Argent", "Priorité", "Sagesse" ],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-33",
+    "malagasy": "Ny mahay tsy misaina, fa ny misaina tsy mahay",
+    "french": "Le talentueux ne réfléchit pas, mais celui qui réfléchit n'est pas talentueux",
+    "meaning": "Ce proverbe oppose l'habileté innée ou acquise par l'expérience (qui devient intuitive) à l'excès de réflexion qui peut paralyser l'action. Il valorise l'action spontanée et la maîtrise qui n'a plus besoin de penser.",
+    "example": "Mijery an'i Rivo manao sary sokitra ianao dia mahita hoe 'ny mahay tsy misaina'. (En regardant Rivo sculpter, tu vois bien que 'le talentueux n'a pas besoin de réfléchir').",
+    "themes": ["Talent", "Action", "Intuition", "Sagesse"],
+    "category": "proverbe",
+    "origins": ["Merina"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-34",
+    "malagasy": "Izay manao ny ataon'ny valala, maty an-kamehana",
+    "french": "Celui qui fait ce que font les sauterelles, meurt précipitamment",
+    "meaning": "Mise en garde contre le danger de suivre aveuglément la foule ou les effets de mode. Agir sans réflexion personnelle en imitant les autres peut mener à sa perte.",
+    "example": "Nirohotra nanao fampiasam-bola tsy mazava toa ny rehetra izy ka bankirompitra, 'izay manao ny ataon'ny valala, maty an-kamehana'.",
+    "themes": ["Imitation", "Prudence", "Foule", "Danger"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-35",
+    "malagasy": "Ny tongo-karena tsy mba votra",
+    "french": "Les pieds de la fortune ne sont pas lavés",
+    "meaning": "La chance ou l'opportunité arrive de manière inattendue et souvent sans prévenir. Il faut être prêt à la saisir à tout moment, car elle ne suit pas les rituels ou les préparations.",
+    "example": "Nahazo asa tampoka izy nefa tsy nikasa akory: 'ny tongo-karena tsy mba votra'.",
+    "themes": ["Chance", "Opportunité", "Inattendu"],
+    "category": "proverbe",
+    "origins": ["Général"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-36",
+    "malagasy": "Ny andevo mitolo-batana, fa ny zaza tsy mitolo-po",
+    "french": "L'esclave abandonne son corps, mais l'enfant (l'homme libre) n'abandonne pas son coeur/esprit",
+    "meaning": "Même dans la soumission physique ou l'oppression, l'esprit et la volonté peuvent rester libres. Ce proverbe souligne la résilience intérieure et la force du coeur face à l'adversité.",
+    "example": "Na dia teo ambany fangejana aza izy ireo, tsy nilavo lefona ny fanahiny: 'ny andevo mitolo-batana, fa ny zaza tsy mitolo-po'.",
+    "themes": ["Liberté", "Esprit", "Résilience", "Volonté"],
+    "category": "proverbe",
+    "origins": ["Merina"],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  }, {
+    "id": "proverbID-37",
+    "malagasy": "Adin’akôhovavy : mafana am-boalöhany.",
+    "french": "Combat de poules : d’une intensité seulement au début (Se dit d’une fébrilité toute éphémère).",
+    "meaning": "Ce proverbe décrit une situation qui commence avec beaucoup d'intensité ou de ferveur mais qui s'essouffle rapidement, impliquant un enthousiasme ou une excitation de courte durée.",
+    "example": "",
+    "themes": [
+      "éphémère",
+      "intensité",
+      "commencement",
+      "fin"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-38",
+    "malagasy": "Adin-kolokoloko : efa tsy hay izay manaña ny mariñy.",
+    "french": "Combat de dindons : On ne sait plus qui a raison, (ce qui signifie : qu’il s’agit d’une affaire où personne ne sait qui a raison ou qui a tort).",
+    "meaning": "Ce proverbe fait référence à une situation chaotique ou confuse, généralement une dispute ou un conflit, où il devient impossible de déterminer qui a tort ou raison en raison de la complexité ou du manque de preuves claires.",
+    "example": "",
+    "themes": [
+      "conflit",
+      "confusion",
+      "doute",
+      "incertitude"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  }, {
+    "id": "proverbID-39",
+    "malagasy": "Adin’osy : mifarana amin’ny fihogo.",
+    "french": "Combat de boucs : se termine par des coups de tête (se dit d’un affrontement qui se termine par des coups ou qui se terminent par un affrontement)",
+    "meaning": "Ce proverbe implique qu'un conflit ou un désaccord entre des individus têtus dégénère souvent en confrontation physique ou en une résolution difficile, plutôt qu'en une compréhension pacifique.",
+    "example": "",
+    "themes": [
+      "conflit",
+      "violence",
+      "obstination",
+      "escalade"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-40",
+    "malagasy": "Adin-tsaka sy voalavo : miñehaña mifamono, miñehaña mifañiö.",
+    "french": "Le chat et la souris : Ils essayent de se tuer, ils essayent de se mordre (se dit d’un affrontement entre deux individus qui se connaissent très bien).",
+    "meaning": "Ce proverbe décrit une rivalité ou un conflit persistant entre deux entités qui se connaissent intimement, suggérant que leur lutte est implacable et profondément enracinée.",
+    "example": "",
+    "themes": [
+      "rivalité",
+      "connaissance mutuelle",
+      "conflit",
+      "inévitable"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-41",
+    "malagasy": "Afa-döka : afa-törö.",
+    "french": "L'esclave est affranchi : il est libre (signifie que celui qui est libre est sans contrainte).",
+    "meaning": "Ce proverbe met en évidence l'état de libération complète une fois que les contraintes sont levées, soulignant la liberté de toute forme de fardeau ou de contrôle.",
+    "example": "",
+    "themes": [
+      "liberté",
+      "affranchissement",
+      "indépendance",
+      "sans contrainte"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-42",
+    "malagasy": "Afatra-piñiny, an-doha vao fihinina.",
+    "french": "La défense de manger est une recommandation à la tête de se taire (se dit d’une défense à ne pas faire une chose).",
+    "meaning": "Ce proverbe indique qu'une interdiction ou un avertissement fort concernant le fait de ne pas faire quelque chose est une instruction directe à l'esprit de s'abstenir, soulignant une adhésion stricte à un commandement.",
+    "example": "",
+    "themes": [
+      "interdiction",
+      "obéissance",
+      "discipline",
+      "prudence"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-43",
+    "malagasy": "Ahiahy, tsy rano.",
+    "french": "La suspicion n’est pas de l’eau (cela signifie : qu’il ne faut pas se fier à la suspicion).",
+    "meaning": "Ce proverbe stipule que la suspicion, contrairement à l'eau, ne soutient pas la vie et ne doit pas être utilisée comme base de jugement ou d'action, plaidant pour des preuves claires plutôt que pour un simple doute.",
+    "example": "",
+    "themes": [
+      "doute",
+      "méfiance",
+      "jugement",
+      "vérité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-44",
+    "malagasy": "Aina tsy voafidy.",
+    "french": "La vie ne se choisit pas (Cela signifie que l’homme n’est pas le maître de sa vie).",
+    "meaning": "Ce proverbe exprime l'idée que l'on ne choisit pas sa propre vie ou son destin, soulignant le concept de fatalité ou d'une existence prédéterminée au-delà du contrôle humain.",
+    "example": "",
+    "themes": [
+      "destin",
+      "fatalité",
+      "vie",
+      "impuissance"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-45",
+    "malagasy": "Akaiky alina : miambina lava.",
+    "french": "La nuit est proche : on veille longtemps (Se dit d’une prudence qui est toujours de mise).",
+    "meaning": "Ce proverbe conseille une vigilance et une préparation constantes, suggérant qu'à mesure que le danger ou la difficulté approche (comme la nuit), il faut rester prudent et attentif pendant une période prolongée.",
+    "example": "",
+    "themes": [
+      "prudence",
+      "vigilance",
+      "préparation",
+      "anticipation"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-46",
+    "malagasy": "Akôho mainty : mivory tsara, mainty ny vava.",
+    "french": "Poule noire : Elle se rassemble bien, mais la bouche est noire (Cela signifie que l’obscurité masque l’action).",
+    "meaning": "Ce proverbe implique que les apparences peuvent être trompeuses ; malgré un calme ou une unité apparents, il peut y avoir des intentions cachées ou de la négativité en jeu, où les mauvaises actions sont dissimulées.",
+    "example": "",
+    "themes": [
+      "apparence",
+      "tromperie",
+      "secret",
+      "dissimulation"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-47",
+    "malagasy": "Alao mainty : mainty ny ambiny.",
+    "french": "Prendre le noir : la fin est noire (Se dit d’une affaire qui débute mal, elle se termine aussi mal).",
+    "meaning": "Ce proverbe suggère qu'un mauvais début conduit souvent à un mauvais résultat, soulignant l'importance de bien commencer pour assurer une conclusion positive.",
+    "example": "",
+    "themes": [
+      "conséquence",
+      "début",
+      "fin",
+      "malchance"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-48",
+    "malagasy": "Ala-paty tsy roa.",
+    "french": "La mort n’est pas une forêt où on peut choisir les arbres (cela signifie : qu’il n’y a pas de moyen de se dérober à la mort).",
+    "meaning": "Ce proverbe exprime l'inévitabilité de la mort, affirmant qu'on ne peut ni la choisir ni y échapper, car c'est un destin inaltérable.",
+    "example": "",
+    "themes": [
+      "mort",
+      "inévitable",
+      "destin",
+      "fatalité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },{
+    "id": "proverbID-49",
+    "malagasy": "Zalimety avaízo: an-tanaña hômaña.",
+    "french": "Allumettes de nos jours: c’est dans le village qu’on pourra manger. (Car il est impossible d’allumer du feu en raison de la très mauvaise qualité des allumettes).",
+    "meaning": "Ce proverbe implique qu'en raison de la mauvaise qualité des outils ou ressources modernes, il faut s'appuyer sur des méthodes traditionnelles ou plus fiables (comme trouver du feu dans un village) pour satisfaire un besoin fondamental. Il évoque le déclin de la qualité ou de la fiabilité des choses contemporaines par rapport au passé.",
+    "example": "",
+    "themes": [
+      "dépendance",
+      "qualité",
+      "modernité",
+      "tradition"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-50",
+    "malagasy": "Zamandralava nilavoan’alo: tampoko amin’ahy.",
+    "french": "Un pilon qui tombe sur Zamandralava: c’est pour moi, imprévu, dit-il.",
+    "meaning": "Ce proverbe souligne un malheur ou un événement inattendu et soudain qui arrive à quelqu'un, en insistant sur son caractère imprévisible.",
+    "example": "",
+    "themes": [
+      "imprévu",
+      "malheur",
+      "surprise",
+      "changement"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-51",
+    "malagasy": "Zamanijao tsy teky sôtro: amaraiñy tsaha biaka.",
+    "french": "Zamanijao sans cuillère: demain peut-être (j’en aurai).",
+    "meaning": "Ce proverbe illustre une situation où l'on manque de quelque chose d'essentiel, mais on reste optimiste ou passif, reportant la solution à plus tard. Cela peut aussi impliquer la procrastination ou un manque de ressources immédiates.",
+    "example": "",
+    "themes": [
+      "espoir",
+      "attente",
+      "procrastination",
+      "manque"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-52",
+    "malagasy": "Zamanikalo very gijo: fañahy ny antony (fañahy mitöndra ôloño).",
+    "french": "Zamanikalo perd son sentier: l’esprit est en cause. (C’est l’esprit qui conduit l’homme).",
+    "meaning": "Ce proverbe suggère que lorsqu'une personne s'égare ou prend une mauvaise direction dans la vie, c'est souvent dû à son état d'esprit, à ses pensées ou à sa disposition intérieure, plutôt qu'à des facteurs externes.",
+    "example": "",
+    "themes": [
+      "esprit",
+      "direction",
+      "responsabilité",
+      "pensée"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-53",
+    "malagasy": "Zam’betsa nahita toaka: mañara-maso koa mañara-maso.",
+    "french": "Zam’betsa (l’oncle du vin de canne) qui voit de l’alcool ne le quitte plus des yeux.",
+    "meaning": "Ce proverbe décrit une concentration intense et inébranlable ou un désir pour quelque chose qui attire, soulignant une tentation irrésistible ou une envie profonde.",
+    "example": "",
+    "themes": [
+      "désir",
+      "tentation",
+      "obsession",
+      "attirance"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-54",
+    "malagasy": "Zam’Môtso nitrapaim-boay: tara anao.",
+    "french": "Zam’Môtso (l’oncle de Môtso) happé par un caïman : vous arrivez trop tard. (Se dit de celui qui, dans une entreprise ou une affaire est pris dans l’engrenage sans qu’on puisse le sauver encore).",
+    "meaning": "Ce proverbe exprime un sentiment de malheur irréversible ou le fait d'être pris dans une situation inextricable, où l'intervention arrive trop tard pour changer le résultat.",
+    "example": "",
+    "themes": [
+      "fatalité",
+      "tard",
+      "péril",
+      "irréversible"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-55",
+    "malagasy": "Zamaniteta nisôvoko: efa toetrany.",
+    "french": "Zamaniteta a trompé une femme endormie, c’est son habitude, sa manière de vivre.",
+    "meaning": "Ce proverbe décrit un comportement caractéristique profondément enraciné chez une personne, impliquant qu'une action négative particulière n'est pas un incident isolé mais une partie habituelle de sa nature.",
+    "example": "",
+    "themes": [
+      "habitude",
+      "caractère",
+      "nature",
+      "répétition"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-56",
+    "malagasy": "Zana-bazaha matim-basy: matin-draha nataon’ny babany.",
+    "french": "Fils d’un vazaha (Européen) tué par un fusil: victime de la fabrication de son père. (Se dit de celui qui se fait artisan de son malheur).",
+    "meaning": "Ce proverbe met en lumière l'ironie tragique où l'on devient victime de circonstances ou de créations issues de sa propre famille ou lignée, impliquant souvent un malheur auto-infligé ou une conséquence d'actions héritées.",
+    "example": "",
+    "themes": [
+      "conséquence",
+      "héritage",
+      "malheur",
+      "responsabilité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-57",
+    "malagasy": "Zana-bazaha misy kipiky: hafa kely, miavaka amin’ny maro.",
+    "french": "Fils d’un vazaha ayant des cheveux ébouriffés : plutôt bizarre, se distingue des autres. (Allusion à quelqu’un qui se fera remarquer au premier coup d’œil).",
+    "meaning": "Ce proverbe désigne quelqu'un qui est remarquablement différent ou inhabituel, se distinguant immédiatement de la foule par une apparence ou une caractéristique distinctive.",
+    "example": "",
+    "themes": [
+      "différence",
+      "originalité",
+      "reconnaissance",
+      "singularité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-58",
+    "malagasy": "Zana-dambo rökaña, lôlaña arahin-drano.",
+    "french": "Marcassin aux dents chevauchantes: l’eau coule en suivant les rigoles. (Allusion à l’hérédité et aux leçons des devanciers).",
+    "meaning": "Ce proverbe souligne le concept d'hérédité et l'influence durable des ancêtres ou des prédécesseurs, suggérant que les traits, les comportements ou les destins suivent souvent des chemins établis.",
+    "example": "",
+    "themes": [
+      "hérédité",
+      "influence",
+      "tradition",
+      "lignée"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-59",
+    "malagasy": "Zañahary nañano kalalao tsy halifahaña: nataony fisaka mba ho môra misisiky.",
+    "french": "Dieu n’a pas mal agi en créant le cancrelat: il l’a fait plat pour lui permettre de passer entre les échancrures.",
+    "meaning": "Ce proverbe suggère que tout, même les créations apparemment insignifiantes ou indésirables, a un but et une conception adaptée à sa fonction, impliquant une sagesse divine dans toutes les créations.",
+    "example": "",
+    "themes": [
+      "création",
+      "sagesse divine",
+      "utilité",
+      "adaptabilité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-60",
+    "malagasy": "Zañahary tsy mañebaka.",
+    "french": "Jamais Dieu n’humilie.",
+    "meaning": "Ce proverbe exprime la croyance que la puissance divine est intrinsèquement juste et bienveillante, ne causant jamais intentionnellement d'humiliation ou de dégradation aux individus.",
+    "example": "",
+    "themes": [
+      "justice divine",
+      "bienveillance",
+      "dignité",
+      "foi"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-61",
+    "malagasy": "Zanak’aköho boty: tsy niany nijaliaña.",
+    "french": "Poussin orphélin est misérable depuis longtemps. (Se dit d’une personne habituée à la misère, qui n’a pas peur des épreuves).",
+    "meaning": "Ce proverbe décrit quelqu'un qui est habitué depuis longtemps à la misère et à l'adversité, suggérant que de telles expériences l'ont rendu résilient et sans peur face aux nouveaux défis.",
+    "example": "",
+    "themes": [
+      "résilience",
+      "misère",
+      "épreuve",
+      "courage"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-62",
+    "malagasy": "Zanak’akôho maty am-bôdy leoño: raharahan-jareo mpandisa.",
+    "french": "Un poussin mort au pied du mortier à riz: c’est l’affaire de celles qui pilonnent le riz.",
+    "meaning": "Ce proverbe implique que certains problèmes ou conséquences découlent d'un contexte ou d'une activité spécifique et relèvent donc de la responsabilité de ceux qui sont impliqués dans ce contexte. Il met en évidence la responsabilité au sein d'une sphère définie.",
+    "example": "",
+    "themes": [
+      "responsabilité",
+      "conséquence",
+      "contexte",
+      "action"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-63",
+    "malagasy": "Zana-boay mitapy am-pasiñy: matoky antara tsy lavitry.",
+    "french": "Un petit caïman qui s’étend au sol sur un banc de sable a confiance en sa cachette profonde qu’il a tout près de l’endroit.",
+    "meaning": "Ce proverbe suggère que même ceux qui semblent vulnérables ou exposés ont une force cachée ou un refuge proche qui leur donne confiance et sécurité, indiquant une dépendance à des ressources dissimulées.",
+    "example": "",
+    "themes": [
+      "sécurité",
+      "cachette",
+      "confiance",
+      "vulnérabilité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-64",
+    "malagasy": "Zanak’akôho nafaham-bahiny: tsy haja fö añaran-draha.",
+    "french": "Un poussin tué pour un hôte : ce n’est pas un signe d’honneur mais un symbole. (C’est bien une simple marque et non un véritable honneur qu’un poussin offert à un hôte).",
+    "meaning": "Ce proverbe établit une distinction entre un geste symbolique et le véritable honneur ou la valeur, indiquant que certaines actions, bien qu'apparemment hospitalières, peuvent manquer de signification réelle ou de respect substantiel.",
+    "example": "",
+    "themes": [
+      "honneur",
+      "symbole",
+      "valeur",
+      "apparence"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-65",
+    "malagasy": "Zanak’amaloño an-taboa-drano: hainy ny môriky, tsy atoro azy ny mivalaña; fomban’ny mitôvo lava leha.",
+    "french": "Petite anguille dans une lagune, elle sait monter et descendre le courant ; les gens célibataires ont l’habitude de faire des sorties.",
+    "meaning": "Ce proverbe compare l'adaptabilité naturelle et la liberté d'une petite anguille dans l'eau à la nature libre et à l'indépendance des célibataires, suggérant que ceux sans attaches ont souvent plus de liberté pour explorer et se déplacer à leur guise.",
+    "example": "",
+    "themes": [
+      "liberté",
+      "indépendance",
+      "adaptabilité",
+      "autonomie"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-66",
+    "malagasy": "Zanak’ampanefy tsy nalaiñy an-dakaña: tsy raha raiky io foaña hain’ôloño.",
+    "french": "Fils de forgeron qu’on n’a pas passé en pirogue, bon, dit-il, ce n’est pas la seule chose que connaissent les gens. (Allusion aux gens qui, tablant sur leur connaissance, refusent de rendre service aux autres alors qu’ils pourraient un jour avoir recours à eux).",
+    "meaning": "Ce proverbe critique ceux qui, confiants en leurs propres connaissances ou compétences, refusent d'aider les autres, leur rappelant que le savoir est varié et qu'ils pourraient un jour avoir besoin de l'aide de quelqu'un d'autre. Il prône l'humilité et l'entraide.",
+    "example": "",
+    "themes": [
+      "humilité",
+      "entraide",
+      "connaissance",
+      "arrogance"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-67",
+    "malagasy": "Zaram-pamaky hava-mamono.",
+    "french": "Manche de hache: un parent qui tue. (Allusion à quelqu’un qui est utilisé comme instrument de sabotage).",
+    "meaning": "Ce proverbe décrit une situation où un proche ou un membre de la famille est utilisé, sciemment ou non, comme un outil pour causer du tort ou du sabotage, menant souvent à des résultats destructeurs. Il souligne la trahison ou le fait d'être un instrument involontaire de mal.",
+    "example": "",
+    "themes": [
+      "trahison",
+      "instrumentalisation",
+      "danger",
+      "proximité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-68",
+    "malagasy": "Zato taoño, arivo ririñiñy, fery añ’ôzatra koa tohiñy mañadary.",
+    "french": "Cent ans, mille hivers, quand une plaie à un point vulnérable est touchée, elle s’aggrave.",
+    "meaning": "Ce proverbe souligne que les problèmes persistants ou de longue date, surtout ceux qui touchent des points sensibles, s'aggraveront s'ils ne sont pas traités correctement, quel que soit le temps qui passe. Il met en évidence l'impact durable des problèmes non résolus.",
+    "example": "",
+    "themes": [
+      "persistance",
+      "vulnérabilité",
+      "aggravation",
+      "temps"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  }, {
+    "id": "proverbID-69",
+    "malagasy": "Zaza bi-lelo sarotro ampitafiñy.",
+    "french": "Enfant morveux, difficile à habiller. (L’apparence souvent dénote le caractère).",
+    "meaning": "Ce proverbe implique que les apparences extérieures ou les traits visibles reflètent souvent un caractère plus profond ou des difficultés inhérentes, suggérant que les signes externes peuvent révéler des qualités intérieures ou des défis.",
+    "example": "",
+    "themes": [
+      "apparence",
+      "caractère",
+      "difficulté",
+      "jugement"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-70",
+    "malagasy": "Zaza fito tsy mahafehy traño, fañahy fito aôdy traño.",
+    "french": "Sept enfants ne garantissent pas la sécurité du ménage, seuls sept esprits y assurent la paix. (La sagesse entretient la durée du ménage et non de nombreux enfants).",
+    "meaning": "Ce proverbe souligne que la véritable stabilité et la paix dans un foyer proviennent de la sagesse et du bon sens, plutôt que de la simple présence de nombreux membres (comme des enfants), suggérant que la qualité d'esprit est plus importante que la quantité de personnes pour l'harmonie.",
+    "example": "",
+    "themes": [
+      "sagesse",
+      "paix",
+      "famille",
+      "harmonie"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-71",
+    "malagasy": "Zamanibokihely naviam-bady: aroy ny menimeny.",
+    "french": "La femme de Zamanibokihely est arrivée: deux idées le préoccupent.",
+    "meaning": "Ce proverbe décrit un état d'esprit où l'on est accablé par des pensées et des soucis contradictoires ou nombreux, indiquant une agitation mentale ou une préoccupation.",
+    "example": "",
+    "themes": [
+      "préoccupation",
+      "inquiétude",
+      "pensée",
+      "dilemme"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-72",
+    "malagasy": "Zamanidera natao sefo: an-kalalahaña.",
+    "french": "Zamanidera est nommé chef de village, c’est en toute liberté.",
+    "meaning": "Ce proverbe suggère qu'un véritable leadership ou une autorité, lorsqu'elle est donnée librement et sans contrainte, implique un sentiment de pouvoir incontesté et d'autonomie dans son rôle désigné.",
+    "example": "",
+    "themes": [
+      "pouvoir",
+      "liberté",
+      "autorité",
+      "leadership"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-73",
+    "malagasy": "Zamavaliha very kaïamba: lany ôsiky.",
+    "french": "Zamavaliha a perdu son kaïamba, c’est qu’il n’a plus de morceaux à jouer.",
+    "meaning": "Ce proverbe fait référence à une situation où l'on a perdu les moyens ou les ressources pour poursuivre une activité, impliquant que sans les outils ou les composants nécessaires, on est incapable de performer.",
+    "example": "",
+    "themes": [
+      "perte",
+      "incapacité",
+      "moyens",
+      "impuissance"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-74",
+    "malagasy": "Zengy viavy amim-böla ariary: menimenim-pônao foaña.",
+    "french": "Courtiser une femme avec une piastre : cela dépend de votre intention.",
+    "meaning": "Ce proverbe souligne que le succès ou le résultat d'une action, en particulier dans les relations ou l'influence, dépend entièrement de l'intention sous-jacente ou de la sincérité de la personne qui l'entreprend, plutôt que de la simple offre matérielle.",
+    "example": "",
+    "themes": [
+      "intention",
+      "succès",
+      "relation",
+      "sincérité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-75",
+    "malagasy": "Zôkindragisy nañandram-betsabetsa: efa tsaratsara.",
+    "french": "Zôkindragisy a goûté du betsabetsa (bière de canne à sucre): c’est déjà bon, conclut-il.",
+    "meaning": "Ce proverbe implique que même un petit aperçu ou une première expérience peut suffire à confirmer la qualité ou l'attrait de quelque chose, suggérant qu'un peu de preuve peut mener à une conclusion claire.",
+    "example": "",
+    "themes": [
+      "expérience",
+      "jugement",
+      "qualité",
+      "confirmation"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },{
+    "id": "proverbID-76",
+    "malagasy": "Pake vambahy: efa lasam-balaña.",
+    "french": "Un paquet en calebasse: c’est une affaire démodée. (Se dit d’une méthode ou d’un procédé dépassé par le temps, suranné).",
+    "meaning": "Ce proverbe fait référence à quelque chose d'obsolète ou de dépassé, une méthode ou un procédé qui a été surpassé par le temps.",
+    "example": "",
+    "themes": [
+      "obsolescence",
+      "vieillissement",
+      "modernité",
+      "progrès"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-77",
+    "malagasy": "Papango miaraka amim-bôroño: ny toeraña iraisaña fö ny hevitry samy manaña ny n’azy.",
+    "french": "Un milan parmi des volailles: on est au même endroit, mais les idées sont différentes. (Se dit des gens qui vivent ensemble mais d’opinions très différentes).",
+    "meaning": "Ce proverbe décrit une situation où des personnes coexistent au même endroit mais ont des opinions ou des perspectives très différentes, soulignant une divergence intellectuelle ou idéologique malgré la proximité physique.",
+    "example": "",
+    "themes": [
+      "diversité d'opinions",
+      "coexistence",
+      "désaccord",
+      "point de vue"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-78",
+    "malagasy": "Papango nahazo sökatra: tsy hay fihinanaña, tsy hay fanaovaña.",
+    "french": "Un milan qui a capturé une tortue : ne sait comment la manger. (Allusion à une affaire qu’on a acquise mais dont on ne sait pas en profiter).",
+    "meaning": "Ce proverbe illustre une situation où l'on acquiert quelque chose de précieux ou une opportunité, mais manque des connaissances ou des compétences pour l'utiliser ou en tirer profit efficacement.",
+    "example": "",
+    "themes": [
+      "incapacité",
+      "opportunité",
+      "connaissance",
+      "savoir-faire"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-79",
+    "malagasy": "Papango vory: mandihy am-bonim-paty.",
+    "french": "Des milans réunis : ils dansent au-dessus d’une charogne.",
+    "meaning": "Ce proverbe suggère que de mauvais individus ou des opportunistes se rassemblent là où il y a de la décadence, du malheur ou une occasion d'exploitation, soulignant leur nature prédatrice.",
+    "example": "",
+    "themes": [
+      "opportunisme",
+      "malheur",
+      "exploitation",
+      "rassemblement"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-80",
+    "malagasy": "Papatôko mañeno lohataoño: tsy mahefa raha fö mpañatôro.",
+    "french": "Un coucou qui chante au printemps n’a pour mission que de signaler mais ne peut rien faire.",
+    "meaning": "Ce proverbe désigne les individus ou entités qui peuvent annoncer ou indiquer quelque chose mais sont impuissants à agir ou à influencer la situation, soulignant un manque d'autonomie malgré leur rôle d'annonciateur.",
+    "example": "",
+    "themes": [
+      "impuissance",
+      "signal",
+      "avertissement",
+      "rôle"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-81",
+    "malagasy": "Parasy nipitiky an-dela, lasan-davitry.",
+    "french": "Une chique qui pique la langue : passée trop loin. (Allusion à un incident qui va trop loin. Se dit aussi d’une chose qu’on a sous-estimée mais qui est devenue grave).",
+    "meaning": "Ce proverbe décrit un problème apparemment insignifiant qui dégénère de manière inattendue et devient beaucoup plus grave ou incontrôlable, souvent en raison d'une sous-estimation initiale.",
+    "example": "",
+    "themes": [
+      "escalade",
+      "sous-estimation",
+      "gravité",
+      "conséquence"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-82",
+    "malagasy": "Parata tsy mikiñy tsy alaiky.",
+    "french": "Une piastre qui ne tinte pas (à l’épreuve), je ne saurais la prendre (car ce n’est pas de l’argent pur).",
+    "meaning": "Ce proverbe souligne l'importance de l'authenticité et de la vraie valeur ; quelque chose qui ne fait pas ses preuves à l'examen doit être rejeté, mettant en évidence le besoin de vérification et de qualité véritable.",
+    "example": "",
+    "themes": [
+      "authenticité",
+      "valeur",
+      "vérité",
+      "preuve"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-83",
+    "malagasy": "Pera-barahiñy möra vasoko, raha tsy manjary tsy maharitry ela.",
+    "french": "Bague en cuivre s’oxyde rapidement, ce qui ne vaut rien ne dure pas longtemps.",
+    "meaning": "Ce proverbe suggère que les choses de mauvaise qualité ou dépourvues de valeur intrinsèque ne dureront pas, soulignant la nature transitoire de tout ce qui n'est pas bien fait ou véritablement bon.",
+    "example": "",
+    "themes": [
+      "durabilité",
+      "qualité",
+      "valeur",
+      "éphémère"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-84",
+    "malagasy": "Petak’ahitry völan-tsy tô, tombotendriky mosavim-bölaña, fañahy forôniñy mandra-draha, vôriky añarany fö tsy raha hafa.",
+    "french": "Mauvais alibi, fausse parole, le mensonge est un sortilège verbal, une idée forgée avilit les choses, tout cela n’a d’autre nom que poison.",
+    "meaning": "Ce proverbe condamne fermement la tromperie, les fausses déclarations et les idées fabriquées, les comparant à du poison car elles corrompent et dégradent la vérité et la confiance.",
+    "example": "",
+    "themes": [
+      "mensonge",
+      "vérité",
+      "corruption",
+      "tromperie"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-85",
+    "malagasy": "Petak’aty nafehy amin-dambo: adano möramöra.",
+    "french": "Vouloir faire bonne chère avec le foie d’un sanglier: il faut y aller doucement. Corrélatif : Avant de vendre la peau de l’ours, il faut l’avoir tué.",
+    "meaning": "Ce proverbe conseille la patience et la prudence, en particulier contre les célébrations ou planifications prématurées, soulignant qu'il faut obtenir le prix ou atteindre l'objectif avant de faire des suppositions sur ses avantages.",
+    "example": "",
+    "themes": [
+      "prudence",
+      "patience",
+      "anticipation",
+      "réalisation"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-86",
+    "malagasy": "Pitik’afo nandoro tanàña, raha bitiky iankinan-draha be.",
+    "french": "Une étincelle qui incendie un village: une petite chose source de grands événements.",
+    "meaning": "Ce proverbe souligne comment des événements ou des actions petites et apparemment insignifiantes peuvent entraîner des conséquences massives et de grande portée, soulignant l'effet domino des déclencheurs initiaux.",
+    "example": "",
+    "themes": [
+      "conséquence",
+      "impact",
+      "cause",
+      "gravité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-87",
+    "malagasy": "Poa-basy afaram-bala: mañaraka ny efan’ôloño.",
+    "french": "Coup de fusil après la balle: quelqu’un qui ne fait que suivre ce qui est arrêté par les autres. (Allusion à une position de girouette).",
+    "meaning": "Ce proverbe décrit quelqu'un qui est un simple suiveur, manquant d'initiative ou de pensée indépendante, n'agissant qu'après que les décisions ont déjà été prises par d'autres, impliquant souvent l'opportunisme ou la faiblesse de caractère.",
+    "example": "",
+    "themes": [
+      "conformisme",
+      "suivisme",
+      "manque d'initiative",
+      "passivité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-88",
+    "malagasy": "Pôk’afo ambony, jinja ambany.",
+    "french": "Un bois brûlé en haut, suppose un brûlis en bas. (Allusion à un indice de présence).",
+    "meaning": "Ce proverbe suggère que des signes ou des effets visibles (comme le bois brûlé en haut) indiquent une cause ou une activité sous-jacente plus profonde (comme un feu à la base), soulignant que les preuves observables renvoient à des réalités cachées.",
+    "example": "",
+    "themes": [
+      "preuve",
+      "indice",
+      "cause",
+      "conséquence"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-89",
+    "malagasy": "Politikin-dRagododoko: vava no betsaka.",
+    "french": "Politique de Ragododoko: rien que du verbiage.",
+    "meaning": "Ce proverbe critique la rhétorique vide et le bavardage excessif sans action substantielle ni contenu significatif, suggérant que certaines approches se caractérisent par de simples mots plutôt que des actes.",
+    "example": "",
+    "themes": [
+      "rhétorique",
+      "discours",
+      "action",
+      "superficialité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-90",
+    "malagasy": "Politiky ratsy mahavaka masoivoho, raha maimbo sarotro atao mañitry.",
+    "french": "Une mauvaise politique rend les ambassadeurs hésitants, on ne peut qualifier de parfumé ce qui sent mauvais.",
+    "meaning": "Ce proverbe affirme qu'une politique défectueuse ou corrompue entraînera inévitablement des résultats négatifs et ne peut être déguisée ou rendue acceptable, impliquant qu'une mauvaise nature inhérente ne peut être masquée.",
+    "example": "",
+    "themes": [
+      "corruption",
+      "conséquence",
+      "vérité",
+      "apparence"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-91",
+    "malagasy": "Pôropôro lavon-drivotro: aherezan-draha ny antitry.",
+    "french": "Un bois pourri abattu par le vent: quand on est vieux, tout est menace. (Quand on a de mauvais arguments, très peu de chose peut ébranler)",
+    "meaning": "Ce proverbe exprime qu'une faiblesse, qu'elle soit due à la vieillesse ou à des arguments défaillants, rend très vulnérable aux pressions extérieures ou aux petits défis, impliquant que la fragilité conduit à la chute.",
+    "example": "",
+    "themes": [
+      "vulnérabilité",
+      "faiblesse",
+      "menace",
+      "fragilité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  }, {
+    "id": "proverbID-92",
+    "malagasy": "Na amboako, na amboan’ôloño, izay vandaña kary.",
+    "french": "Qu’il s’agisse de mon chien ou de celui d’un autre individu, celui qui est zébré est dit “Kary” (félin). (C’est-à-dire mauvais. Un mauvais individu est toujours mauvais, il ne peut être qualifié autrement, quel qu’il soit).",
+    "meaning": "Ce proverbe affirme que la nature intrinsèquement mauvaise d'un individu est universellement reconnue comme telle, indépendamment de son origine ou de son affiliation. Il souligne qu'un trait de caractère négatif reste constant et identifiable, quel que soit le contexte.",
+    "example": "",
+    "themes": [
+      "nature humaine",
+      "caractère",
+      "reconnaissance",
+      "malveillance"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-93",
+    "malagasy": "Nahateraka amany ny sahoño: vokin-tsy nia.",
+    "french": "Si la grenouille a pissé involontairement, c’est à cause d’un saut forcé. (Allusion à celui qui agit sans peser le pour et le contre).",
+    "meaning": "Ce proverbe décrit quelqu'un qui agit impulsivement ou sans réflexion préalable, entraînant souvent des conséquences inattendues, impliquant un manque de considération pour les répercussions de ses actions.",
+    "example": "",
+    "themes": [
+      "impulsivité",
+      "conséquence",
+      "irréflexion",
+      "précipitation"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-94",
+    "malagasy": "Namaitry bôlon-tañaña: amin-Jañahary ny antsa.",
+    "french": "Avoir donné naissance à un manchot: le défaut vient de Dieu. (Se dit d’une personne qui, malgré ses efforts et ses précautions, n’a que des résultats médiocres. C’est l’effet de la malchance).",
+    "meaning": "Ce proverbe attribue les résultats malheureux ou médiocres, malgré des efforts diligents, au destin ou à la volonté divine, impliquant que certaines limitations échappent au contrôle humain et peuvent être le fruit de la malchance.",
+    "example": "",
+    "themes": [
+      "fatalité",
+      "malchance",
+      "effort",
+      "limitation"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-95",
+    "malagasy": "Na marangitry aza, hoy ny Ntaolo, ny volôlo-nify, tsy mihöta alohan’ny vazaña.",
+    "french": "Pointues sont les incisives, disent les anciens, mais elles ne mâchent pas avant les molaires. (Allusion au rôle des individus dans la société où les jeunes sont les incisives et les molaires les grandes personnes, chacun a son rôle).",
+    "meaning": "Ce proverbe illustre l'importance de la hiérarchie et du respect des rôles établis, en distinguant notamment les rôles primaires et visibles (incisives/jeunes) des rôles fondamentaux, souvent moins visibles mais cruciaux (molaires/aînés) dans la société. Il souligne que chacun a sa place et sa fonction.",
+    "example": "",
+    "themes": [
+      "rôle social",
+      "hiérarchie",
+      "respect",
+      "fonction"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-96",
+    "malagasy": "Namboly fatsim-boay: velon-draha namboly fö tsy nahazo raha hiankiñaña.",
+    "french": "Cultiver des ronces: la plante a poussé mais elle ne peut servir de soutien",
+    "meaning": "Ce proverbe décrit la futilité d'investir des efforts dans quelque chose qui, malgré sa croissance ou son existence, n'apporte aucun bénéfice, soutien ou utilité réel. Il souligne l'effort gaspillé dans des entreprises improductives.",
+    "example": "",
+    "themes": [
+      "futilité",
+      "effort",
+      "utilité",
+      "déception"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-97",
+    "malagasy": "Nandremby tsy nahazo; vataña enti-môdy.",
+    "french": "Rentrer bredouille de la chasse: on revient avec son corps.",
+    "meaning": "Ce proverbe implique que même si les efforts sont infructueux et ne rapportent aucun gain matériel, on conserve toujours son intégrité ou son existence fondamentale. Il s'agit de maintenir son essence ou simplement de survivre malgré l'échec.",
+    "example": "",
+    "themes": [
+      "échec",
+      "survie",
+      "persévérance",
+      "intégrité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-98",
+    "malagasy": "Na tsara na ratsy, ny asan’ôlo malaza tsy maintsy mitôndra lesoño.",
+    "french": "Dans le bien comme dans le mal, l’oeuvre d’un homme célèbre donne toujours des leçons.",
+    "meaning": "Ce proverbe suggère que les actions des figures éminentes, qu'elles soient positives ou négatives, servent inévitablement d'exemples ou de leçons pour les autres, soulignant l'influence profonde de ceux qui sont sous les feux des projecteurs.",
+    "example": "",
+    "themes": [
+      "influence",
+      "exemple",
+      "leçon",
+      "renommée"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-99",
+    "malagasy": "Ngôzin-aomby nomen-drafözaña: hoaniñy maditry, hariaña mahameñatra.",
+    "french": "Peau de boeuf offerte par une belle-mère: la manger ? C’est coriace ; la jeter c’est honteux. (Allusion à une affaire qui rend perplexe, une situation embarrassante).",
+    "meaning": "Ce proverbe illustre un dilemme délicat ou embarrassant où les deux options disponibles sont indésirables, menant à une situation difficile ou honteuse.",
+    "example": "",
+    "themes": [
+      "dilemme",
+      "embarras",
+      "choix",
+      "difficulté"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-100",
+    "malagasy": "Nitady aomby nahita anköra : nahita raha misy tandrony fö tsy mitôvy.",
+    "french": "Découvrir un escargot en cherchant un bœuf, c’est trouver un animal cornu mais tout différent.",
+    "meaning": "Ce proverbe met en évidence la déception de trouver quelque chose qui partage une caractéristique superficielle avec ce qui était recherché, mais qui est fondamentalement inférieur ou totalement inadapté, soulignant la différence entre l'apparence et la vraie nature.",
+    "example": "",
+    "themes": [
+      "déception",
+      "apparence",
+      "différence",
+      "recherche"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-101",
+    "malagasy": "Notable Andrañasaña : hömaña añ’ölaka.",
+    "french": "Notable d’Andrañasaña : mange en cachette.",
+    "meaning": "Ce proverbe fait référence à une personne en position d'autorité ou de proéminence qui s'engage dans des pratiques secrètes ou malhonnêtes, impliquant l'hypocrisie ou une corruption cachée.",
+    "example": "",
+    "themes": [
+      "hypocrisie",
+      "corruption",
+      "secret",
+      "autorité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-102",
+    "malagasy": "Ny andro ahaterahaña tsy mahaleo ny andro ahafatesaña.",
+    "french": "Le jour de la naissance n’élimine pas le jour du décès. (On naît mais on va certainement mourir aussi un jour)",
+    "meaning": "Ce proverbe souligne l'inévitabilité de la mort, affirmant que la naissance est toujours suivie par la mort, et qu'aucune durée de vie ne peut empêcher la fin ultime.",
+    "example": "",
+    "themes": [
+      "mort",
+      "vie",
+      "fatalité",
+      "cycle de vie"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-103",
+    "malagasy": "Ny ankahalaiñy tsy maty, Zañahary no antony.",
+    "french": "Celui qu’on hait ne meurt pas : Dieu en est la cause.",
+    "meaning": "Ce proverbe implique que les individus détestés ou haïs semblent souvent persister, attribuant leur existence continue à la volonté divine, peut-être comme une épreuve ou une leçon.",
+    "example": "",
+    "themes": [
+      "haine",
+      "persistance",
+      "divin",
+      "destin"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-104",
+    "malagasy": "Ny aomby karôhiñy amin’ny diany ; ny bengy tandriñesaña amin-tendany ; ölombeloño karohiñy amin’ny razany.",
+    "french": "On suit le bœuf par ses traces ; la chèvre par son cri ; l’homme par ses ancêtres.",
+    "meaning": "Ce proverbe met en évidence que la vraie nature, l'origine ou l'identité d'un individu est révélée par sa lignée et son ascendance, tout comme les animaux sont reconnus par leurs signes caractéristiques.",
+    "example": "",
+    "themes": [
+      "identité",
+      "origine",
+      "ancêtre",
+      "lignée"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-105",
+    "malagasy": "Ny eritreritry madio mahay mitsara teña.",
+    "french": "Le cœur juste sait se juger.",
+    "meaning": "Ce proverbe suggère qu'une personne ayant une conscience claire et des intentions pures est capable d'évaluer objectivement ses propres actions et son caractère, impliquant une conscience de soi et une intégrité morale.",
+    "example": "",
+    "themes": [
+      "conscience",
+      "jugement de soi",
+      "intégrité",
+      "sagesse"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-106",
+    "malagasy": "Ny fahafatesan’ny ôlo mariñy mampiely ny heviny.",
+    "french": "La mort du sage répand ses idées.",
+    "meaning": "Ce proverbe indique que la sagesse et les idées d'une personne sage acquièrent souvent une plus grande reconnaissance et se propagent plus largement après sa mort, suggérant que son héritage devient plus influent post-mortem.",
+    "example": "",
+    "themes": [
+      "héritage",
+      "sagesse",
+      "influence posthume",
+      "idées"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-107",
+    "malagasy": "Ny fahoriaña mahavery saiñy ny hendry : tsy misy fô tsy laitrin’ny kolikoly.",
+    "french": "La douleur affole le sage : Aucun cœur ne résiste à l’adulation.",
+    "meaning": "Ce proverbe révèle la vulnérabilité humaine, affirmant que même une personne sage peut être accablée par la souffrance, et que la flatterie ou la corruption peut influencer n'importe quel cœur, soulignant les limites de la sagesse face à une pression ou une tentation extrême.",
+    "example": "",
+    "themes": [
+      "vulnérabilité",
+      "sagesse",
+      "tentation",
+      "faiblesse humaine"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-108",
+    "malagasy": "Ny fanompoaña toa zavoño, halaviriñy manjary maiziñy, akaikeziñy tönga mazava.",
+    "french": "Les corvées ressemblent au brouillard, lorsqu’on s’en éloigne, ça devient obscur, quand on s’en approche, il devient clair. (Se dit d’une chose qu’il faut attaquer vite et de front).",
+    "meaning": "Ce proverbe conseille d'affronter les difficultés directement et sans délai, car la procrastination ou l'évitement ne fait que les rendre plus redoutables, tandis que les affronter de front apporte clarté et facilite la résolution.",
+    "example": "",
+    "themes": [
+      "procrastination",
+      "action",
+      "clarté",
+      "difficulté"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-109",
+    "malagasy": "Ny fôn’ny hendry mahalala fotoaña.",
+    "french": "Le cœur du sage sait mesurer le temps.",
+    "meaning": "Ce proverbe signifie qu'une personne sage a une compréhension innée des moments opportuns et du bon timing pour les actions, impliquant une prévoyance et un bon jugement dans les affaires.",
+    "example": "",
+    "themes": [
+      "sagesse",
+      "timing",
+      "discernement",
+      "opportunité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-110",
+    "malagasy": "Ny hariaña toy ny vôlon’ôroño: añalaña hely marary, añalaña be mandatsa-dranomaso.",
+    "french": "La richesse est comme les poils des narines : en déraciner peu, c’est très douloureux, en tirer beaucoup fera tomber les larmes.",
+    "meaning": "Ce proverbe illustre que la richesse, tout comme les poils du nez, est douloureuse à perdre même en petites quantités, et qu'en perdre une partie importante entraîne une profonde tristesse ou la ruine. Il souligne l'attachement et la douleur associés à la perte de possessions.",
+    "example": "",
+    "themes": [
+      "richesse",
+      "perte",
+      "douleur",
+      "attachement"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-111",
+    "malagasy": "Ny hendry no tsapaiñy, ôlo föka tsy zaham-pañahy.",
+    "french": "C’est le sage qu’on sonde, on n’éprouve pas un fou.",
+    "meaning": "Ce proverbe suggère que seules les pensées et intentions d'une personne sage méritent d'être examinées ou testées, car les actions d'un fou sont imprévisibles et manquent de profondeur significative, rendant toute tentative de les comprendre futile.",
+    "example": "",
+    "themes": [
+      "sagesse",
+      "folie",
+      "discernement",
+      "jugement"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-112",
+    "malagasy": "Ny maintiñy te-ho fôtsy, ny ngita vôlo te-halemy randraña, samy manaña izay iriny ny ôlombeloño fö sarotro ny mañöva ny raha nataon-Jañahary.",
+    "french": "Le noir veut être blanc, celui qui a des cheveux crépus désire les avoir lisses, tout le monde a son désir mais il n’est pas aisé de changer ce que Dieu a fait.",
+    "meaning": "Ce proverbe exprime le désir humain courant de modifier des traits physiques ou des circonstances inhérentes, mais souligne la difficulté, voire l'impossibilité, de changer ce qui est d'ordre divin ou naturellement donné.",
+    "example": "",
+    "themes": [
+      "acceptation",
+      "désir",
+      "nature",
+      "destin"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-113",
+    "malagasy": "Ny mañanteña ny tsy misy no sarotro, mamoy möra foaña.",
+    "french": "C’est espérer ce qui n’existe pas qui est difficile, désespérer c’est facile.",
+    "meaning": "Ce proverbe souligne la nature ardue d'espérer quelque chose d'absent ou d'inexistant, contrastant cela avec la facilité d'abandonner ou de tomber dans le désespoir. Il met en évidence la lutte pour maintenir l'espoir contre toute attente.",
+    "example": "",
+    "themes": [
+      "espoir",
+      "désespoir",
+      "difficulté",
+      "facilité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-114",
+    "malagasy": "Ny mariñy toy ny afo, raha foñosiñy mandoro.",
+    "french": "La vérité c’est comme du feu, si on l’enveloppe elle brûle.",
+    "meaning": "Ce proverbe exprime que la vérité, comme le feu, ne peut être contenue ou cachée indéfiniment ; les tentatives de la supprimer mèneront finalement à son explosion et à des conséquences potentiellement destructrices.",
+    "example": "",
+    "themes": [
+      "vérité",
+      "révélation",
+      "conséquence",
+      "occultation"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-115",
+    "malagasy": "Ny mpanjaka nisotro, doroko ny vahoaka.",
+    "french": "Le roi a bu : tout le peuple est soûl. (Les mauvais exemples des supérieurs se répandent vite dans tout le pays).",
+    "meaning": "Ce proverbe illustre l'influence puissante et souvent rapide des personnes en position d'autorité ; les actions ou comportements négatifs des dirigeants ont tendance à être imités ou à avoir un effet corruptible sur la population générale.",
+    "example": "",
+    "themes": [
+      "influence",
+      "leadership",
+      "exemple",
+      "corruption"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-116",
+    "malagasy": "Ny raha tsara vita no fandrosoaña.",
+    "french": "Le progrès est une somme de biens.",
+    "meaning": "Ce proverbe définit le progrès non pas simplement comme une avancée, mais comme l'accumulation d'actions positives ou de réalisations bien exécutées, soulignant que le véritable développement découle de contributions positives cohérentes.",
+    "example": "",
+    "themes": [
+      "progrès",
+      "action",
+      "réussite",
+      "développement"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },{
+    "id": "proverbID-117",
+    "malagasy": "Jaolahy miady, vôsitry mañantombaña: fandra-draha tsy miala amin-tany.",
+    "french": "Les taureaux se battent, les boeufs castrés s’y mêlent : les détracteurs sont partout présents.",
+    "meaning": "Ce proverbe suggère que dans tout conflit ou désaccord, il y aura toujours des détracteurs ou des opportunistes qui s'immiscent, impliquant que les éléments négatifs sont omniprésents et difficiles à éviter.",
+    "example": "",
+    "themes": [
+      "conflit",
+      "détracteurs",
+      "interférence",
+      "omniprésence"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-118",
+    "malagasy": "Jaolahy mifaoko ambohitry: samy mavon’ny nataony.",
+    "french": "Des taureaux qui déterrent le sol (sur un terrain poussiéreux); chacun se fera couvrir de poussière par ses propres actes (se fera brunir). (Se dit des gens qui se font du tort par leurs propres erreurs, se nuisant à eux-mêmes).",
+    "meaning": "Ce proverbe illustre que les gens se nuisent souvent à eux-mêmes par leurs propres erreurs ou actions, impliquant que leurs méfaits finissent par les affecter négativement.",
+    "example": "",
+    "themes": [
+      "conséquence",
+      "erreur",
+      "auto-sabotage",
+      "responsabilité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-119",
+    "malagasy": "Jao nandrasaña: ny mahia tsy maintsy milefa.",
+    "french": "Quand deux taureaux hésitent pour se combattre, le plus maigre prendra la fuite. (Allusion faite à ceux qui, dans une affaire, attendent trop de temps pour décider, finalement il y aura non lieu).",
+    "meaning": "Ce proverbe suggère qu'une hésitation prolongée dans un conflit ou un processus de prise de décision conduira finalement au retrait de la partie la plus faible (ou la moins engagée), entraînant l'absence d'action ou une opportunité manquée.",
+    "example": "",
+    "themes": [
+      "hésitation",
+      "fuite",
+      "opportunité manquée",
+      "indécision"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-120",
+    "malagasy": "Jebojebo natakalo henalahy: mizaha zanak’ôlo hankalifahiñy.",
+    "french": "Du mulet échangé contre un goujon : c’est chercher à tromper les autres.",
+    "meaning": "Ce proverbe décrit une tentative de tromper ou de profiter des autres en offrant quelque chose de peu de valeur en échange de quelque chose de beaucoup plus précieux, soulignant la malhonnêteté et l'exploitation.",
+    "example": "",
+    "themes": [
+      "tromperie",
+      "exploitation",
+      "injustice",
+      "malhonnêteté"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-121",
+    "malagasy": "Jiro ambo tongotro: maiziñy am-bôdiny.",
+    "french": "Une lampe à long pied a de l’ombre à la base. (Se dit de quelqu’un qui est haut placé mais à caractère bas, contraire à son rang).",
+    "meaning": "Ce proverbe souligne l'hypocrisie ou l'incongruité d'une personne de haut rang dont le caractère ou les actions ne correspondent pas à son statut élevé, impliquant des défauts cachés ou un manque d'intégrité malgré sa position.",
+    "example": "",
+    "themes": [
+      "hypocrisie",
+      "rang social",
+      "caractère",
+      "intégrité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-122",
+    "malagasy": "Jiro miteraka tandindoño: ny fahazavaña mampihoraka ny tsy misikiñy.",
+    "french": "La lampe allumée provoque de l’ombre, la lumière fait fuir les gens nus. (Allusion à une affaire ou un élément qui provoque des réactions, imprévues).",
+    "meaning": "Ce proverbe suggère que même quelque chose destiné à apporter de la clarté ou du bien peut avoir des conséquences négatives inattendues, ou révéler des vulnérabilités, provoquant une réaction inattendue ou la peur chez ceux qui ont quelque chose à cacher.",
+    "example": "",
+    "themes": [
+      "conséquence inattendue",
+      "révélation",
+      "vulnérabilité",
+      "peur"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-123",
+    "malagasy": "Jolahy mifampiahiahy, farany mifampitetiky.",
+    "french": "Quand les brigands se soupçonnent, finalement ils se tuent aux couteaux.",
+    "meaning": "Ce proverbe indique que lorsque des individus malhonnêtes ou malveillants (des brigands) se soupçonnent mutuellement, leur méfiance réciproque dégénère finalement en conflit ouvert et en autodestruction.",
+    "example": "",
+    "themes": [
+      "méfiance",
+      "conflit interne",
+      "autodestruction",
+      "criminalité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-124",
+    "malagasy": "Jôron-karany, mivaly tsara, tsy mivaly tsara.",
+    "french": "Prière indienne : avec réponse, c’est bien, sans réponse, c’est bien.",
+    "meaning": "Ce proverbe exprime un sentiment d'acceptation et d'équanimité face aux résultats, suggérant que, qu'une prière (ou un effort) produise le résultat souhaité ou non, il y a la paix dans le processus lui-même, ou dans l'acceptation du destin.",
+    "example": "",
+    "themes": [
+      "acceptation",
+      "fatalisme",
+      "prière",
+      "résultat"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-125",
+    "malagasy": "Kabary tsy vitan’andriaña tsy efam-bôkibôky.",
+    "french": "Discours difficile pour un prince est impossible pour un enfant. (Une affaire que n’arrivent pas à régler des grandes personnes ne peut l’être par des enfants ou des gens sans expérience).",
+    "meaning": "Ce proverbe implique que si des personnes expérimentées ou puissantes ne peuvent pas résoudre une affaire complexe, celle-ci dépasse certainement les capacités de ceux qui sont inexpérimentés ou moins capables. Il souligne l'importance d'adapter les tâches aux niveaux de compétence appropriés.",
+    "example": "",
+    "themes": [
+      "capacité",
+      "expérience",
+      "difficulté",
+      "jugement"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-126",
+    "malagasy": "Radaka am- bôdiriaña : za- draha maresaka, tsy taitai- poaña.",
+    "french": "Crapaud de chute d’eau, habitué aux bruits, devient indifférent aux bruits.",
+    "meaning": "Ce proverbe illustre le concept de désensibilisation ou d'adaptation, où une exposition prolongée à un certain environnement ou stimulus (comme un bruit constant) conduit à l'indifférence ou à un manque de réaction.",
+    "example": "",
+    "themes": [
+      "adaptation",
+      "indifférence",
+      "habituation",
+      "résilience"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-127",
+    "malagasy": "Kafé natôlo- drafy tsy mampandry eritreritry.",
+    "french": "Du café offert par un adversaire ne peut rendre tranquille (car du poison pourrait y être versé). (Allusion à un cadeau empoisonné).",
+    "meaning": "Ce proverbe met en garde contre l'acceptation de faveurs ou de cadeaux d'un adversaire, car ils sont susceptibles d'avoir des motifs cachés ou des dangers dissimulés, suggérant la méfiance envers ceux qui sont hostiles.",
+    "example": "",
+    "themes": [
+      "méfiance",
+      "cadeau empoisonné",
+      "adversaire",
+      "prudence"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  }, {
+    "id": "proverbID-128",
+    "malagasy": "Kaiki-panenditry añ’alan-tainkilotro: fahavoazaña roa dia.",
+    "french": "Piqûre de guêpe dans un champ de tainkilotro (plantes vésicantes) : un malheur double. (Allusion à un malheur venant coup après coup).",
+    "meaning": "Ce proverbe décrit une situation où un malheur est immédiatement suivi par un autre, créant un effet négatif cumulatif, soulignant une série d'événements malheureux.",
+    "example": "",
+    "themes": [
+      "malheur",
+      "accumulation",
+      "conséquence",
+      "double peine"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-129",
+    "malagasy": "Kakazo an-drano melo-tendro: fañahin-teña na ratsy mety tsy lovaña.",
+    "french": "Un bâton plongé dans l’eau a le bout courbé : c’est le raisonnement qui le redresse. (Se dit d’un bois plongé dans un milieu différent qui subit l’effet de la réfraction de la lumière, c’est à l’esprit d’en savoir la cause). (Allusion à une affaire qui présente des difficultés réelles mais qu’on arrive à résoudre moyennant de discernement).",
+    "meaning": "Ce proverbe implique que les apparences peuvent être trompeuses, et qu'une compréhension ou une résolution véritable d'une affaire complexe exige un raisonnement et un discernement attentifs pour voir au-delà des distorsions superficielles.",
+    "example": "",
+    "themes": [
+      "discernement",
+      "illusion",
+      "compréhension",
+      "résolution de problèmes"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-130",
+    "malagasy": "Kakazo hely tömbaka, tantely tsy mamy: samy afaka adidy.",
+    "french": "Le bois à un petit trou, le miel n’est pas doux : on est tous quitte. (Se dit d’une affaire où chaque partie n’a rien à se reprocher).",
+    "meaning": "Ce proverbe décrit une situation où les deux parties d'un accord ou d'un échange se trouvent dans une position où aucune ne peut être blâmée ou tenue responsable d'un résultat négatif, car des imperfections existent des deux côtés, conduisant à un acquittement mutuel.",
+    "example": "",
+    "themes": [
+      "responsabilité partagée",
+      "culpabilité",
+      "équité",
+      "acquittement"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-131",
+    "malagasy": "Kakazo iray tavy tsy miaraka lavo, tomban-tany tsy efan’ny indray midroaña, ôlo miasa manaño faria, tsihelihely tsy tapaka tsy diñin-draha lava, faharetaña aôdy traño, mahari-pô vadin’andriaña.",
+    "french": "Les arbres d’un tavy (1) ne sauraient être abattus d’un seul coup de hache. Un labourage ne peut se faire par un seul bêchage ; On exécute un travail par étapes définies ; Par tranches continues, on arrive à tout faire ; La patience est un remède pour le ménage ; Qui sait freiner ses sentiments (c’est-à-dire qui endure jusqu’au bout) deviendra femme d’un prince.",
+    "meaning": "Ce proverbe à plusieurs volets souligne l'importance de la persévérance, de la patience et de l'exécution des tâches par étapes. Il affirme que les réalisations significatives nécessitent des efforts soutenus et que l'endurance des difficultés (notamment émotionnelles) peut mener à de grandes récompenses ou à un statut élevé.",
+    "example": "",
+    "themes": [
+      "persévérance",
+      "patience",
+      "travail par étapes",
+      "récompense",
+      "endurance"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-132",
+    "malagasy": "Kakazo mahitsy natoro andriaña: izay mahita malaka.",
+    "french": "Un bois droit présenté à un prince ; quiconque le trouve le prend. (Se dit d’une chose utile présentée à beaucoup de personnes, tout le monde est tenté de s’en servir).",
+    "meaning": "Ce proverbe suggère que quelque chose d'intrinsèquement bon, utile ou précieux, lorsqu'il est mis à la disposition de nombreuses personnes, attirera naturellement un large intérêt et sera utilisé, soulignant l'attrait universel de la qualité.",
+    "example": "",
+    "themes": [
+      "valeur",
+      "utilité",
+      "attractivité",
+      "opportunité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-133",
+    "malagasy": "Kakazo mandriandry tsy latsaham-baratra.",
+    "french": "La foudre ne tombe pas sur un arbre couché. (Allusion faite à une personne pacifique qui ne veut pas la guerre avec personne pour la faire éclater).",
+    "meaning": "Ce proverbe implique qu'un comportement humble, pacifique ou non menaçant peut protéger du conflit ou du mal, car ceux qui ne cherchent pas les ennuis sont moins susceptibles de les rencontrer.",
+    "example": "",
+    "themes": [
+      "paix",
+      "humilité",
+      "protection",
+      "non-conflit"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-134",
+    "malagasy": "Kalo fohy namonjy tsaboraha: efa môdy vao hitan’ôloño.",
+    "french": "Une naine qui assiste à une fête : n’est visible que lorsqu’elle s’en va. (Se dit d’une personne qui n’a pas d’importance particulière pour qu’on lui prête peu d’attention).",
+    "meaning": "Ce proverbe décrit quelqu'un qui passe inaperçu ou est considéré comme insignifiant dans un groupe ou un événement, ne devenant apparent ou remarqué qu'en raison de son absence ou de son départ, soulignant son manque d'impact immédiat.",
+    "example": "",
+    "themes": [
+      "insignifiance",
+      "attention",
+      "présence",
+      "absence"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-135",
+    "malagasy": "Kalo misy fañantsövaña. Toto manaña añaraña: raha tsaboñy misy vavany, vôdiny, teny atao misy fehiny, kabary mila valiny.",
+    "french": "Kalo a son signe d’appel, Toto possède son nom, toute besogne doit avoir son commencement, sa fin, tout propos doit être assorti d’une conclusion, tout discours requiert une réponse.",
+    "meaning": "Ce proverbe souligne la nécessité de la structure, de l'achèvement et de la responsabilité dans toutes les entreprises et communications. Chaque tâche a un début et une fin, et chaque déclaration ou discours exige une conclusion appropriée et une réponse.",
+    "example": "",
+    "themes": [
+      "structure",
+      "achèvement",
+      "responsabilité",
+      "communication"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },{
+    "id": "proverbID-136",
+    "malagasy": "Kalo nanihitry, Tôto nañarato: hafa ny leñy, hafa ny vôky.",
+    "french": "Kalo a pêché, Toto a usé du filet, l’une est mouillée, l’autre est rassasié. (Allusion à celui qui bénéficie d’une chose pour laquelle il n’a pas peiné).",
+    "meaning": "Ce proverbe souligne l'injustice où une personne travaille dur (Kalo se mouille en pêchant) tandis qu'une autre (Toto, qui a utilisé un filet, mais ici cela sous-entend une autre personne entièrement) bénéficie de l'effort sans l'avoir fourni, illustrant un gain immérité.",
+    "example": "",
+    "themes": [
+      "injustice",
+      "effort",
+      "bénéfice",
+      "travail"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-137",
+    "malagasy": "Kamolahy mindram-pangady: anoy tsy mahita niany.",
+    "french": "Un paresseux qui va emprunter une bêche : pourvu que je n’en trouve pas aujourd’hui.",
+    "meaning": "Ce proverbe dépeint ironiquement l'état d'esprit d'une personne paresseuse qui simule la volonté de travailler mais espère secrètement trouver une excuse pour l'éviter, révélant un manque d'intention sincère de travailler.",
+    "example": "",
+    "themes": [
+      "paresse",
+      "excuse",
+      "travail",
+      "ironie"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-138",
+    "malagasy": "Kankafo-mañeno asara manta: adidiky ny mañatoro löhataoño.",
+    "french": "Un coucou qui chante au printemps : c’est mon devoir d’annoncer la première saison de l’année. (Allusion à quelqu’un qui sert d’intermédiaire dans la vie pour faire comprendre qu’il est temps d’agir, de commencer les travaux (ici des champs : le défrichement en milieu forestier).",
+    "meaning": "Ce proverbe décrit quelqu'un qui, tel le coucou annonçant le printemps, assume le rôle d'intermédiaire ou de héraut, rappelant aux autres qu'il est temps d'agir ou de commencer des tâches importantes, soulignant son devoir d'inciter à l'action.",
+    "example": "",
+    "themes": [
+      "devoir",
+      "intermédiaire",
+      "action",
+      "commencement"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-139",
+    "malagasy": "Kapila voahitsaka, vaky vao mahataitry.",
+    "french": "Une assiette brisée: n’alerte qu’après son fracas. (On se rend compte de son utilité maintenant qu’elle est brisée).",
+    "meaning": "Ce proverbe suggère que la véritable valeur ou utilité de quelque chose n'est souvent reconnue qu'après sa perte ou sa destruction, impliquant un manque d'appréciation pour ce que l'on possède jusqu'à ce que cela disparaisse.",
+    "example": "",
+    "themes": [
+      "appréciation",
+      "perte",
+      "valeur",
+      "regret"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-140",
+    "malagasy": "Kary nangoröñaña: mañiraka azy môdy",
+    "french": "Chasser avec des chats sauvages, c’est les laisser partir.",
+    "meaning": "Ce proverbe implique qu'essayer de contrôler ou de travailler avec des entités intrinsèquement sauvages ou indépendantes (comme des chats sauvages) est futile ; leur nature dicte leur départ éventuel ou leur ingérabilité. Cela suggère un effort gaspillé ou la reconnaissance d'une cause perdue.",
+    "example": "",
+    "themes": [
+      "liberté",
+      "futilité",
+      "nature",
+      "contrôle"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-141",
+    "malagasy": "Kely traño lava lañanaña: raha tsy voahevitry.",
+    "french": "Celui qui n’a qu’une petite maison mais possède de longs bambous-vases, n’a pas bien réfléchi.",
+    "meaning": "Ce proverbe critique une personne qui possède des biens disproportionnés ou peu pratiques par rapport à ses besoins réels ou à sa situation, suggérant un manque de prévoyance ou de planification sensée dans ses acquisitions.",
+    "example": "",
+    "themes": [
+      "planification",
+      "praticité",
+      "réflexion",
+      "disproportion"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-142",
+    "malagasy": "Kenky tañaña mangala-batango: maty amin-draha tsy ho azo. (Se dit de celui qui se risquait dans une affaire qui le dépasse).",
+    "french": "Un individu sans doigt qui vole des mêlons se peine pour ce qu’il ne peut avoir. (Se dit de celui qui se risque dans une affaire qui le dépasse).",
+    "meaning": "Ce proverbe décrit quelqu'un qui tente une tâche ou une entreprise pour laquelle il est intrinsèquement inadapté ou mal équipé, ce qui conduit à des efforts futiles et à un échec inévitable. Il met en garde contre la surestimation de ses propres capacités.",
+    "example": "",
+    "themes": [
+      "incompétence",
+      "effort vain",
+      "limites",
+      "prétention"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-143",
+    "malagasy": "Kibon’aomby faha-ririñiñy: tapany lava.",
+    "french": "Panse de boeuf en hiver: toujours à moitié vide. (Se dit d’une situation de pénurie continuelle).",
+    "meaning": "Ce proverbe décrit un état de rareté ou d'insuffisance chronique, impliquant que les ressources ou les provisions sont constamment maigres, entraînant des difficultés ou un manque persistants.",
+    "example": "",
+    "themes": [
+      "pénurie",
+      "difficulté",
+      "manque",
+      "insuffisance"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-144",
+    "malagasy": "Kiraro loaka mitahy mañidim-pötaka.",
+    "french": "Chaussure trouée: favorise l’entrée de boue. (Allusion à une affaire qui aggrave ou dramatise une autre).",
+    "meaning": "Ce proverbe suggère qu'un défaut ou un problème existant (le trou dans la chaussure) rend vulnérable à d'autres difficultés aggravantes (la boue qui entre), impliquant qu'un problème peut en exacerber ou en compliquer un autre.",
+    "example": "",
+    "themes": [
+      "aggravation",
+      "vulnérabilité",
+      "complication",
+      "conséquence"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-145",
+    "malagasy": "Kiridôño avaratra, Osiky avaratra, Faray avaratra Tönga amin’ny tiako ny tianao.",
+    "french": "L’accordéon est du nord. La chanson est du nord, La timbale est du nord, Ton goût coïncide avec le mien.",
+    "meaning": "Ce proverbe exprime un fort sentiment de compatibilité et de préférences partagées, où deux individus trouvent leurs goûts et leurs inclinations parfaitement alignés, suggérant une harmonie et une compréhension mutuelle.",
+    "example": "",
+    "themes": [
+      "compatibilité",
+      "harmonie",
+      "goût",
+      "compréhension mutuelle"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },{
+    "id": "proverbID-146",
+    "malagasy": "Lagrify maiñy mahiaña, antitry fö mböla misy menaka.",
+    "french": "Griffes de girofle sèches: c’est dur, c’est vieux mais elle a encore de l’huile (essence). (Allusion à celui qui, quoique vieux, possède encore une forte vitalité).",
+    "meaning": "Ce proverbe décrit un individu qui, malgré son âge ou une apparente détérioration, conserve une vitalité, une sagesse ou une force intérieure significative, suggérant que les apparences extérieures peuvent être trompeuses.",
+    "example": "",
+    "themes": [
+      "vitalité",
+      "âge",
+      "force intérieure",
+      "apparence"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-147",
+    "malagasy": "Laibongo manambady roa: mañano raha tsy ho efa.",
+    "french": "L’homme sans doigt bigame s’est créé des embêtements.",
+    "meaning": "Ce proverbe implique qu'assumer trop de responsabilités ou d'engagements, surtout ceux qui sont intrinsèquement difficiles ou conflictuels (comme être bigame pour une personne handicapée), conduit à des problèmes auto-infligés et à une incapacité à gérer la situation.",
+    "example": "",
+    "themes": [
+      "complication",
+      "responsabilité",
+      "difficulté",
+      "conséquence"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-148",
+    "malagasy": "Lailay mañatoño afo minia mamono teña.",
+    "french": "Un papillon qui fonce dans la flamme se tue volontairement. (Se dit de toute personne qui, par outrecuidance, risque sa vie).",
+    "meaning": "Ce proverbe illustre un comportement autodestructeur motivé par la témérité, l'excès de confiance ou l'insouciance face au danger, où un individu se met délibérément en péril.",
+    "example": "",
+    "themes": [
+      "danger",
+      "imprudence",
+      "autodestruction",
+      "arrogance"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-149",
+    "malagasy": "Laimarisiky Baban’i Mañiböla: Tökaña añaraña fö maro ôlo mahay.",
+    "french": "Laimarisiky père de Mañiböla: un seul nom (individu) mais connu de beaucoup de gens. (Se dit d’une chose ou d’une personne que tout le monde connaît).",
+    "meaning": "Ce proverbe fait référence à quelqu'un ou quelque chose qui est largement connu ou célèbre, indiquant une reconnaissance étendue malgré le fait d'être une entité singulière.",
+    "example": "",
+    "themes": [
+      "notoriété",
+      "célébrité",
+      "reconnaissance",
+      "popularité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-150",
+    "malagasy": "Laidrönga fôtsy, kilandy maintiñy, misy fö mahalaña amin-tany.",
+    "french": "Une veuve moqueuse blanche (Dicrurus forficatus, Lin.), un pique-bœuf noir (Bulbucus ibis, Lin.), cela peut exister mais rarement.",
+    "meaning": "Ce proverbe décrit une occurrence improbable ou rare, suggérant que si certaines combinaisons ou événements inhabituels sont théoriquement possibles, ils sont très peu probables dans la réalité.",
+    "example": "",
+    "themes": [
+      "rareté",
+      "probabilité",
+      "exception",
+      "éventualité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-151",
+    "malagasy": "Laingam-bady: an-draño mizaha azy.",
+    "french": "Mensonge d’une épouse : cela se verra dans le ménage.",
+    "meaning": "Ce proverbe suggère que les tromperies ou les faussetés conjugales, aussi cachées soient-elles, finiront par être révélées au sein du foyer, impliquant que la vérité finit par se manifester dans les relations intimes.",
+    "example": "",
+    "themes": [
+      "vérité",
+      "mensonge",
+      "mariage",
+      "relation"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-152",
+    "malagasy": "Laingan’i Debaka an-tanaña mahita azy.",
+    "french": "Mensonge de Debaka: on le verra au village.",
+    "meaning": "Ce proverbe implique que toute tromperie ou fausseté commise par un individu, en particulier au sein d'une communauté soudée, sera inévitablement découverte et connue de tous dans cette communauté.",
+    "example": "",
+    "themes": [
+      "transparence",
+      "mensonge",
+      "communauté",
+      "réputation"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-153",
+    "malagasy": "Laingan’ôlon-kendry: ela vao fantatra.",
+    "french": "Mensonge des sages: difficile à démasquer.",
+    "meaning": "Ce proverbe suggère que les tromperies des individus intelligents ou rusés sont bien plus complexes et plus difficiles à démasquer que les mensonges ordinaires, impliquant un niveau de sophistication plus élevé dans leur duperie.",
+    "example": "",
+    "themes": [
+      "tromperie",
+      "intelligence",
+      "ruse",
+      "détection"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },{
+    "id": "proverbID-154",
+    "malagasy": "Lakan-tsara fatotro : afiopioko fö tsy afaka.",
+    "french": "Pirogue bien amarrée : ne peut être arrachée malgré la force qui la balance ou tiraille. (Une entreprise solide ne se dégrade pas facilement).",
+    "meaning": "Ce proverbe implique qu'une entreprise bien établie ou solide est résiliente et peut résister à des défis ou des pressions importants sans s'effondrer, soulignant la stabilité et la durabilité.",
+    "example": "",
+    "themes": [
+      "stabilité",
+      "résilience",
+      "durabilité",
+      "force"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-155",
+    "malagasy": "Lakañ’i Dahely : tsy añava tsy añandray.",
+    "french": "Pirogue de Dahely : ni en aval ni en amont. (Allusion à une chose qui ne se trouve ni à droite ni à gauche, d’une personne qui ne veut s’engager à aucun parti).",
+    "meaning": "Ce proverbe décrit une situation ou une personne qui reste neutre ou non engagée, refusant de prendre parti ou de s'engager pleinement dans une direction particulière, indiquant une indécision ou une impartialité délibérée.",
+    "example": "",
+    "themes": [
+      "neutralité",
+      "indécision",
+      "impartialité",
+      "non-engagement"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-156",
+    "malagasy": "Lakile maro: ny tsy ilaiñy no anjôn-tañaña.",
+    "french": "Clés nombreuses: celles dont on n’a pas besoin sont à la portée de la main. (L’inutile est facile à trouver).",
+    "meaning": "Ce proverbe souligne ironiquement que ce qui est facilement accessible ou abondant est souvent ce qui n'est pas nécessaire ou utile, contrastant avec la difficulté de trouver ce qui est vraiment précieux.",
+    "example": "",
+    "themes": [
+      "utilité",
+      "accessibilité",
+      "inutilité",
+      "ironie"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-157",
+    "malagasy": "Lala-mañary alakiaña, faty möra tonga, ny ratsy tönga tsy alaiñy.",
+    "french": "Un sentier qui déroute fait marcher vite, la mort arrive facilement, le mal arrive sans qu’on le cherche.",
+    "meaning": "Ce proverbe suggère que s'éloigner du droit chemin ou agir négligemment peut entraîner des conséquences rapides et indésirables, et que le malheur s'abat souvent sur soi de manière inattendue, sans être recherché.",
+    "example": "",
+    "themes": [
+      "conséquence",
+      "malheur",
+      "destin",
+      "imprudence"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-158",
+    "malagasy": "Lalambe mahitsy : malaky fö möra tehaka no lafo vidy.",
+    "french": "La voie droite est rapide mais conduit souvent à la catastrophe et coûte cher. (Allusion à la voie de facilité qui ne conduit qu’à la fatalité et aux difficultés).",
+    "meaning": "Ce proverbe avertit que la voie de la moindre résistance ou les solutions rapides, bien que semblant efficaces, mènent souvent à de graves conséquences négatives et à des coûts considérables, soulignant que les raccourcis peuvent être préjudiciables.",
+    "example": "",
+    "themes": [
+      "prudence",
+      "conséquence",
+      "facilité",
+      "difficulté"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-159",
+    "malagasy": "Lalaña an-tsavoko: tsy hain’ny tsy za-tany.",
+    "french": "Chemin des bois jeunes: inconnu à ceux qui ne connaissent pas le pays, aux novices).",
+    "meaning": "Ce proverbe met en évidence que des connaissances ou des compétences spécifiques sont nécessaires pour naviguer dans des situations inconnues ou complexes, impliquant que l'inexpérience ou le manque de compréhension locale peut entraîner la perte ou l'inefficacité.",
+    "example": "",
+    "themes": [
+      "connaissance",
+      "expérience",
+      "novice",
+      "difficulté"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-160",
+    "malagasy": "Lalan-tsy ivirenaña ny fiainaña, ny amin-teña iafahaña isan’andro.",
+    "french": "La vie est un chemin dont on ne peut pas remonter le cours : chaque jour on perd de sa vie.",
+    "meaning": "Ce proverbe réfléchit sur la nature irréversible de la vie et du temps, soulignant que chaque jour qui passe diminue la durée de vie, incitant à une prise de conscience de la mortalité et de la nature finie de l'existence.",
+    "example": "",
+    "themes": [
+      "vie",
+      "temps",
+      "mortalité",
+      "irréversibilité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-161",
+    "malagasy": "Lalitry koa lefaka, fery taköfaña.",
+    "french": "Si les mouches sont folles, il faut couvrir la plaie. (Devant un fou, le plus averti l’évite et n’engage pas querelle).",
+    "meaning": "Ce proverbe conseille la prudence et l'évitement face aux individus irrationnels ou déraisonnables (les fous), suggérant que la ligne de conduite la plus sage est d'éviter la confrontation pour prévenir tout dommage ou escalade.",
+    "example": "",
+    "themes": [
+      "prudence",
+      "conflit",
+      "folie",
+      "évitement"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-162",
+    "malagasy": "Lambolahy faha-fihitry tsy mijanoño ela.",
+    "french": "Un sanglier à la période des taons ne reste pas longtemps (au même endroit) (Se dit de celui qui ne peut rester longtemps à un endroit).",
+    "meaning": "Ce proverbe décrit quelqu'un d'agité ou incapable de rester longtemps au même endroit, souvent en raison d'un inconfort, d'un désagrément ou de sa nature inhérente, comme un animal sauvage dérangé par des parasites.",
+    "example": "",
+    "themes": [
+      "instabilité",
+      "agitation",
+      "inconfort",
+      "nomadisme"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-163",
+    "malagasy": "Lambolahy latsaka an-davak’ôvy: saiky ho viñitry fö nalaky nahita löhan’ôvy.",
+    "french": "Un sanglier tombé dans un trou d’igname il se serait bien irrité s’il n’avait pas vite trouvé une tête d’igname. (C’est une affaire qui aurait pu être fâcheuse mais dont un petit événement a annulé l’effet).",
+    "meaning": "Ce proverbe décrit une situation qui a failli devenir problématique ou désastreuse grâce à une petite intervention opportune ou une découverte fortuite, soulignant comment des facteurs mineurs peuvent éviter des problèmes majeurs.",
+    "example": "",
+    "themes": [
+      "hasard",
+      "problème évité",
+      "solution inattendue",
+      "chance"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-164",
+    "malagasy": "Lambolahy mamira vato, raha tsy mahay föla-nify.",
+    "french": "Un sanglier qui fend une pierre: s’il manque d’adresse, il aura les dents cassées. (C’est une affaire pleine de risque dont il faut se méfier, qui appelle à la prudence).",
+    "meaning": "Ce proverbe met en garde contre l'entreprise d'efforts très risqués ou difficiles sans les compétences ou la préparation adéquates, car ne pas le faire entraînera des dommages auto-infligés ou des pertes importantes.",
+    "example": "",
+    "themes": [
+      "risque",
+      "compétence",
+      "prudence",
+      "conséquence"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-165",
+    "malagasy": "Lambolahy miady tangeñy: mifamono amin-draha tsisy antony.",
+    "french": "Des sangliers qui se battent pour du tanguin se tuent pour rien.",
+    "meaning": "Ce proverbe décrit des conflits ou des disputes qui surgissent pour des questions triviales ou sans valeur, entraînant des dommages ou des pertes importants et inutiles pour toutes les parties impliquées, soulignant la futilité de telles luttes.",
+    "example": "",
+    "themes": [
+      "conflit inutile",
+      "insignifiance",
+      "futilité",
+      "destruction"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },{
+    "id": "proverbID-166",
+    "malagasy": "Lambolahy mitamanta hôfiky: tsy izy tiaña fö ny hita haniñy.",
+    "french": "Un sanglier qui croque des dioscorées: ce n’est pas qu’il les aime mais il mange ce qu’il trouve. (Faute de grive, on mange les merles).",
+    "meaning": "Ce proverbe implique que lorsque les options idéales ne sont pas disponibles, il faut se contenter de ce qui est accessible, même si ce n'est pas ce que l'on préfère, soulignant le pragmatisme face à des choix limités.",
+    "example": "",
+    "themes": [
+      "pragmatisme",
+      "compromis",
+      "choix limités",
+      "nécessité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-167",
+    "malagasy": "Lambolahy nangady avetro: tatôfo fö tsy ovy.",
+    "french": "Un sanglier qui déterre un avetro (liane épineuse): comblez, ce n’est pas de l’igname. (Allusion à une mésaventure, à une affaire exécutée par erreur qu’il faut abandonner).",
+    "meaning": "Ce proverbe décrit un effort qui a mal tourné ou abouti à quelque chose de sans valeur, conseillant d'abandonner l'entreprise malavisée et de masquer l'erreur, plutôt que de continuer sur une voie stérile.",
+    "example": "",
+    "themes": [
+      "erreur",
+      "abandon",
+      "futilité",
+      "regret"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-168",
+    "malagasy": "Lambolahy niakatra ambôdileoño: ratsy fö nahataitry viavy.",
+    "french": "Un sanglier qui est arrivé au pied du mortier: c’est bien laid mais il a troublé les femmes. (Se dit d’un individu qui a fait sensation).",
+    "meaning": "Ce proverbe décrit un individu qui, malgré son manque d'attrait conventionnel ou de raffinement, parvient à créer un impact significatif ou à susciter une forte réaction, soulignant sa présence frappante ou sa capacité à provoquer un émoi.",
+    "example": "",
+    "themes": [
+      "impact",
+      "apparence",
+      "sensation",
+      "influence"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-169",
+    "malagasy": "Lambolahy tsy misôtro, very karazaña.",
+    "french": "Un sanglier qui ne fouille, ne remue pas la terre a perdu sa race. (Allusion à un individu qui a complètement changé).",
+    "meaning": "Ce proverbe implique que si un individu abandonne ses caractéristiques fondamentales ou ses habitudes, il perd son identité ou sa lignée, indiquant une transformation profonde et négative.",
+    "example": "",
+    "themes": [
+      "identité",
+      "changement",
+      "nature",
+      "perte"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-170",
+    "malagasy": "Lambo mikimoko, voay mitsivalaña: anao koa mafana fô mandrambesa.",
+    "french": "Le sanglier grogne, le caïman se met en travers du lit du fleuve si tu es courageux, attrape.",
+    "meaning": "Ce proverbe présente un défi, indiquant une situation dangereuse ou difficile où des adversaires redoutables (le sanglier bruyant et le caïman bloquant) sont présents, défiant un individu courageux à les affronter. C'est un test de bravoure.",
+    "example": "",
+    "themes": [
+      "courage",
+      "danger",
+      "défi",
+      "confrontation"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-171",
+    "malagasy": "Lambo nafahan-tsilamo: maty foaña.",
+    "french": "Un porc offert à un musulman est mort pour rien. (Allusion à une démarche qui sert à rien).",
+    "meaning": "Ce proverbe souligne la futilité d'une action ou d'une offrande lorsqu'elle est incompatible avec les croyances ou les coutumes du destinataire, ce qui entraîne un effort gaspillé.",
+    "example": "",
+    "themes": [
+      "futilité",
+      "incompatibilité",
+      "effort vain",
+      "don"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-172",
+    "malagasy": "Lambo niôroko: takotro efa.",
+    "french": "Baiser de sanglier : c’est un assemblage parfait de bouchons et de goulots. (C’est une opération parfaitement réussie).",
+    "meaning": "Ce proverbe décrit quelque chose de parfaitement adapté ou ajusté, menant à une opération impeccablement exécutée ou à un résultat idéal.",
+    "example": "",
+    "themes": [
+      "perfection",
+      "réussite",
+      "adaptation",
+      "harmonie"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-173",
+    "malagasy": "Lambo sôso-nify: nentim-paharazaña.",
+    "french": "Les sangliers ont les dents doubles: c’est une disposition héréditaire: (Chaque chose a ses lois).",
+    "meaning": "Ce proverbe suggère que certaines caractéristiques, comportements ou résultats sont inhérents ou prédéterminés, indiquant que tout fonctionne selon ses propres lois naturelles ou établies.",
+    "example": "",
+    "themes": [
+      "nature",
+      "déterminisme",
+      "lois naturelles",
+      "héritage"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-174",
+    "malagasy": "Lambo tafidi-dröva: mahita ny tsy fahita niany ë.",
+    "french": "Un sanglier claquemuré: y trouve ce qu’il n’a pas l’habitude de voir. (Se dit de quelqu’un qui, pris dans une embuscade, est sûr de mourir).",
+    "meaning": "Ce proverbe décrit une situation d'être piégé ou acculé, où l'on est confronté à un destin inéluctable et désastreux, impliquant que l'évasion est impossible et que la fin est certaine.",
+    "example": "",
+    "themes": [
+      "piège",
+      "destin",
+      "danger",
+      "mort inévitable"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-175",
+    "malagasy": "Lambo tsy an-tanaña tsy fofoiñy aty, fia-maso tsy laoko.",
+    "french": "Du sanglier qu’on n’a pas encore abattu. Le foie ne peut être encore disputé. Poisson vu ne fait pas la sauce.",
+    "meaning": "Ce proverbe souligne qu'il ne faut pas célébrer ou disputer prématurément des gains qui n'ont pas encore été sécurisés, soulignant l'importance d'attendre la réalisation effective avant de réclamer ou de partager les bénéfices.",
+    "example": "",
+    "themes": [
+      "précipitation",
+      "gain incertain",
+      "anticipation",
+      "réalité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-176",
+    "malagasy": "Langato vakin’aomby lahy, tsy divadiva raha mahavoa ôloño.",
+    "french": "Une huître d’eau douce crevée par un taureau : on peut être victime de façons diverses par accident.",
+    "meaning": "Ce proverbe indique que le malheur ou le tort peut survenir sous de nombreuses formes inattendues et par divers moyens accidentels, soulignant la nature imprévisible des risques et des dangers dans la vie.",
+    "example": "",
+    "themes": [
+      "accident",
+      "imprévu",
+      "danger",
+      "vulnérabilité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  }, {
+    "id": "proverbID-177",
+    "malagasy": "Drakidraky namangy farihy: tsy môdy tsy harivariva.",
+    "french": "Quand des canards visitent la mare, ils ne rentrent que le soir. (Se dit des gens qui, une fois partis, ne rentrent que tardivement).",
+    "meaning": "Ce proverbe décrit des individus qui, une fois engagés dans une activité ou partis vers une destination, ont tendance à rester longtemps, ne rentrant que tardivement.",
+    "example": "",
+    "themes": [
+      "temps",
+      "absence",
+      "retour tardif",
+      "loisir"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-178",
+    "malagasy": "Drakidraky nitorahan- kankaña: tai- dravoravo.",
+    "french": "Canetons à qui on a jeté des vers : surprise heureuse. (Les petits canards sont d’abord pris de peur, croyant qu’il s’agit de cailloux lancés sur eux puis se précipitent, heureux, sur les vers).",
+    "meaning": "Ce proverbe illustre une situation où une frayeur ou une appréhension initiale se transforme rapidement en une joyeuse surprise à la réalisation d'un avantage inattendu, soulignant un agréable renversement des attentes.",
+    "example": "",
+    "themes": [
+      "surprise",
+      "joie",
+      "erreur de jugement",
+      "bénéfice inattendu"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-179",
+    "malagasy": "Drenga simbo mañindry ôlo lefaka: efa tsy hain’ny mpandalo ny tsisy fañahy",
+    "french": "Une poursuivante de folle à robe trop courte: les passants ne sachant plus qui est la folle. (Se dit d’une affaire où il est très difficile de donner une opinion juste).",
+    "meaning": "Ce proverbe décrit une situation si confuse ou ambiguë qu'il devient impossible pour les observateurs de discerner la vérité ou d'attribuer le blâme avec précision, menant à un état d'ambiguïté morale ou factuelle.",
+    "example": "",
+    "themes": [
+      "confusion",
+      "ambiguïté",
+      "jugement",
+      "vérité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-180",
+    "malagasy": "Entam- bary fôtsy mitondra indôsiñy.",
+    "french": "Sac de riz blanc qu’on porte: c’est un fardeau qui sert de support. (Il s’agit de quelque chose qui est utile mais nécessite des obligations).",
+    "meaning": "Ce proverbe souligne que quelque chose de bénéfique ou d'utile s'accompagne souvent de son propre lot de fardeaux, de responsabilités ou d'obligations, suggérant que la commodité ou l'avantage est rarement sans coût.",
+    "example": "",
+    "themes": [
+      "utilité",
+      "obligation",
+      "fardeau",
+      "responsabilité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-181",
+    "malagasy": "Entam- pamba, lehibe fö hely lanja.",
+    "french": "Paquet de kapok : grande masse sans poids. (Allusion à une grande personne sans intelligence)",
+    "meaning": "Ce proverbe décrit quelque chose ou quelqu'un qui semble substantiel ou impressionnant par sa taille, mais qui manque de substance réelle, de poids ou d'intelligence, impliquant un vide derrière une façade grandiose.",
+    "example": "",
+    "themes": [
+      "apparence",
+      "substance",
+      "intelligence",
+      "superficialité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-182",
+    "malagasy": "Entan’andrôngo mampiridarida fö tsisy antony.",
+    "french": "Fardeau de lézard : fait beaucoup remuer mais ne vaut rien. (Se dit d’une affaire grave en apparence mais de peu d’importance)",
+    "meaning": "Ce proverbe fait référence à une affaire qui semble grave ou problématique mais qui est finalement triviale ou sans conséquence, provoquant un remue-ménage ou une inquiétude inutiles.",
+    "example": "",
+    "themes": [
+      "trivialité",
+      "apparence",
+      "inquiétude inutile",
+      "insignifiance"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-183",
+    "malagasy": "Eritreritry tsary kômbo.",
+    "french": "La pensée n’est jamais paralysée. (Allusion à un vieux ou à un impotent qui veut toujours faire quelque chose).",
+    "meaning": "Ce proverbe souligne le pouvoir durable de la pensée et de la volonté, suggérant que les facultés mentales et le désir d'agir restent actifs, quelles que soient les limitations physiques ou l'âge.",
+    "example": "",
+    "themes": [
+      "pensée",
+      "volonté",
+      "détermination",
+      "âge"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-184",
+    "malagasy": "Fahan- tangeñy: tsisy te-hañandraña ny fahafatesaña.",
+    "french": "Offre de tanguin : ce n’est pas une marque d’honneur mais une épreuve. Personne ne veut goûter la mort.",
+    "meaning": "Ce proverbe souligne que certaines propositions ou situations, bien que présentées comme bénéfiques ou honorables, sont en réalité des épreuves périlleuses, et personne n'embrasse volontairement une voie menant à une mort potentielle.",
+    "example": "",
+    "themes": [
+      "danger",
+      "épreuve",
+      "mort",
+      "prudence"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-185",
+    "malagasy": "Faharetaña vidin’ny fitiavaña, meky ti- hisaraka mamboly antsa.",
+    "french": "La patience est l’épouse de l’amitié, qui veut se séparer intente des alibis.",
+    "meaning": "Ce proverbe affirme que la patience est fondamentale pour cultiver l'amitié et l'amour, tandis que ceux qui cherchent à mettre fin à une relation inventeront facilement des excuses ou des justifications pour leur départ.",
+    "example": "",
+    "themes": [
+      "patience",
+      "amitié",
+      "séparation",
+      "excuses"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-186",
+    "malagasy": "Fahavalo tamàña: farany mangataka aty.",
+    "french": "Un ennemi apprivoisé finira par réclamer le foie.",
+    "meaning": "Ce proverbe avertit que même un ennemi apparemment maîtrisé ou réconcilié, s'il en a l'occasion, cherchera finalement à exploiter ou à causer des dommages importants, impliquant que les véritables ennemis ne changent jamais réellement leur nature prédatrice.",
+    "example": "",
+    "themes": [
+      "ennemi",
+      "trahison",
+      "danger caché",
+      "méfiance"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },{
+    "id": "proverbID-187",
+    "malagasy": "Faly mena mitôhy amin- drafia: raha miharoharo tsy maharitry ela.",
+    "french": "De la soie rouge nouée avec du rafia, c’est un mélange, qui ne va pas durer longtemps.",
+    "meaning": "Ce proverbe illustre qu'une union ou un mélange d'éléments incompatibles, surtout lorsque l'un est délicat (soie) et l'autre grossier (raphia), ne durera pas, signifiant une combinaison fragile ou non durable.",
+    "example": "",
+    "themes": [
+      "incompatibilité",
+      "fragilité",
+      "union",
+      "durabilité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-188",
+    "malagasy": "Fama- drahan’i Kalojaña; tsy meñin- tsy vava mandeha rà.",
+    "french": "Discussion de Kalojaña : ne se termine que par la bouche ensanglantée. (Se dit d’une discussion oiseuse qui ne se termine que par une rixe ou une blessure (physique ou morale).",
+    "meaning": "Ce proverbe décrit une dispute inutile ou stérile qui dégénère en violence physique ou en grave préjudice émotionnel, indiquant le résultat destructeur d'une discorde prolongée et improductive.",
+    "example": "",
+    "themes": [
+      "conflit",
+      "violence",
+      "discussion futile",
+      "escalade"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-189",
+    "malagasy": "Famaky nandôtsitry, vady nisengy : fahatokiaña efa tsisy.",
+    "french": "Une hache qui saute, une épouse adultère : c’est signe de manque de confiance (signe de trahison).",
+    "meaning": "Ce proverbe associe des outils imprévisibles ou peu fiables (une hache qui saute) à l'infidélité conjugale, les deux étant des indicateurs d'une rupture totale de confiance et de la présence de trahison.",
+    "example": "",
+    "themes": [
+      "confiance",
+      "trahison",
+      "fiabilité",
+      "adultère"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-190",
+    "malagasy": "Famintsim- bary nahavoa vôdy: tavandrain- ko havaña tönga fahavalo.",
+    "french": "Un bois pointu servant à ramener le riz, qui blesse au cul: celui qu’on prenait pour un ami s’est révélé un ennemi.",
+    "meaning": "Ce proverbe illustre la douleur de la trahison, où quelqu'un initialement perçu comme un ami ou un allié utile se révèle finalement nuisible ou un adversaire, soulignant les dangers cachés dans les relations de confiance.",
+    "example": "",
+    "themes": [
+      "trahison",
+      "amitié",
+      "ennemi",
+      "déception"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-191",
+    "malagasy": "Fañahin’ôlo tsy hita söratra, izay maro sakaiza tandindomin- doza.",
+    "french": "La pensée de l’homme n’a pas de couleur, celui qui a de nombreux amis s’expose au malheur.",
+    "meaning": "Ce proverbe contient deux idées distinctes. La première suggère que les véritables intentions d'une personne sont cachées. La seconde avertit qu'avoir trop d'amis peut entraîner une vulnérabilité ou un malheur, éventuellement en raison d'une exposition accrue au risque ou à la trahison.",
+    "example": "",
+    "themes": [
+      "intention",
+      "amitié",
+      "danger",
+      "vulnérabilité"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-192",
+    "malagasy": "Fañahy tataka tsy miriatra, halifahan- tsy hita vökaña.",
+    "french": "Le dérèglement de l’esprit ne fait entendre aucun bruit, la folie est immatérielle.",
+    "meaning": "Ce proverbe suggère que l'instabilité mentale ou la folie se manifeste souvent subtilement ou intérieurement, sans signes extérieurs évidents, impliquant que les formes les plus profondes de désordre ne sont pas toujours visibles.",
+    "example": "",
+    "themes": [
+      "folie",
+      "mental",
+      "invisible",
+      "silence"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-193",
+    "malagasy": "Fanalahidy an- tañan- jaza, raha aroy iafarany, izy koa tsy very hadiño.",
+    "french": "Une clef entre les mains d’un enfant : deux issues possibles: ou c’est perdu, ou c’est oublié.",
+    "meaning": "Ce proverbe implique que confier des objets de valeur ou importants (comme une clé) à quelqu'un de peu fiable ou irresponsable (un enfant) entraînera inévitablement leur perte par égarement ou oubli.",
+    "example": "",
+    "themes": [
+      "irresponsabilité",
+      "perte",
+      "négligence",
+      "confiance"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-194",
+    "malagasy": "Fandiferañ’i Rainidöfa: aiñy fetra.",
+    "french": "Tolérance de Rainidöfa : n’a de limite que la vie.",
+    "meaning": "Ce proverbe décrit un degré extrême de patience ou de tolérance qui ne cesse qu'avec la mort, indiquant une capacité d'endurance inébranlable et illimitée.",
+    "example": "",
+    "themes": [
+      "tolérance",
+      "patience",
+      "limite",
+      "endurance"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-195",
+    "malagasy": "Fandraka: voapepi- döha vao miasa.",
+    "french": "Biseau: ne peut travailler que frappé à la tête. (Allusion à des gens qui n’arrivent à faire quelque chose que dans la contrainte).",
+    "meaning": "Ce proverbe fait référence aux individus qui sont improductifs ou réticents à agir à moins d'être contraints par une force ou une pression externe, soulignant la nécessité d'une coercition pour les motiver.",
+    "example": "",
+    "themes": [
+      "contrainte",
+      "motivation",
+      "paresse",
+      "pression"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-196",
+    "malagasy": "Fandri- boay nahavoa aomby, raha tsy tiaña möra tönga.",
+    "french": "Un piège à caïman qui attrape un boeuf : ce que l’on ne désire pas arrive facilement.",
+    "meaning": "Ce proverbe suggère que les résultats indésirables ou malheureux ont tendance à se produire facilement, souvent lorsqu'ils sont le moins souhaités, impliquant une tournure cruelle du destin.",
+    "example": "",
+    "themes": [
+      "destin",
+      "malheur",
+      "imprévu",
+      "ironie"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-197",
+    "malagasy": "Fandri- dambo nahafaty amboa: tsy nahazo ny niriñy.",
+    "french": "Un piège à sanglier qui tue un chien, on n’a pas eu ce qui était désiré.",
+    "meaning": "Ce proverbe décrit une situation où un effort fait pour atteindre un objectif spécifique (piéger un sanglier) aboutit à un résultat différent et indésirable (tuer un chien), soulignant l'échec à atteindre l'objectif prévu.",
+    "example": "",
+    "themes": [
+      "échec",
+      "objectif manqué",
+      "conséquence inattendue",
+      "désir"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-198",
+    "malagasy": "Fandriky akanga be vöha: samy mahay ny fihinanany.",
+    "french": "Piège à pintade à grands noeuds coulants: chacun a sa tactique; mais chacun aussi, a son expérience personnelle).",
+    "meaning": "Ce proverbe implique que si diverses stratégies ou méthodes existent pour aborder un problème ou atteindre un objectif, l'expérience individuelle et les approches uniques déterminent finalement le succès, reconnaissant à la fois les tactiques courantes et les compétences personnelles.",
+    "example": "",
+    "themes": [
+      "stratégie",
+      "expérience",
+      "individualité",
+      "compétence"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-199",
+    "malagasy": "Fandrik’i Laisoketa ravon’ny vöhany.",
+    "french": "Piège de Laisoketa : on est raté. – Un piège tendu en un endroit découvert n’attrapera pas de sanglier",
+    "meaning": "Ce proverbe décrit un plan mal conçu ou mal exécuté (un piège placé en terrain découvert), indiquant son échec inévitable car il manque la ruse ou la dissimulation nécessaire pour atteindre son objectif.",
+    "example": "",
+    "themes": [
+      "planification",
+      "échec",
+      "inefficacité",
+      "stratégie"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  }
+]
