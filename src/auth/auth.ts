@@ -116,9 +116,17 @@ export const auth = betterAuth({
         `[Better-Auth] 🔑 Demande de réinitialisation de mot de passe pour : ${user.email}`,
       );
       try {
+        const adminFrontendUrl =
+          process.env.ADMIN_FRONTEND_URL ||
+          process.env.BETTER_AUTH_URL ||
+          'https://api-kanto.gastsar.fr';
+        const resetPasswordUrl = new URL('/reset-password', adminFrontendUrl);
+        resetPasswordUrl.searchParams.set('token', token);
+        const effectiveResetUrl = resetPasswordUrl.toString();
+
         await resendService.sendPasswordResetEmail({
           to: user.email,
-          resetUrl: url,
+          resetUrl: effectiveResetUrl,
           token,
           userName: user.name || undefined,
         });
@@ -135,7 +143,7 @@ export const auth = betterAuth({
     bearer(),
     admin({
       defaultRole: 'USER',
-      adminRoles: ['ADMIN', 'admin'],
+      adminRoles: ['ADMIN'],
     }),
   ],
   user: {

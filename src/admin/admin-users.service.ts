@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   Logger,
   NotFoundException,
@@ -90,11 +91,16 @@ export class AdminUsersService implements OnApplicationBootstrap {
 
       this.logger.log(`✅ [Admin] Rôle ADMIN attribué à ${adminEmail}.`);
 
-      const adminUrl = process.env.ADMIN_URL || 'http://localhost:3001';
+      // ADMIN_FRONTEND_URL doit pointer vers le frontend admin (ex: https://admin.kanto.mg)
+      // et NON vers l'API. Fallback sur ADMIN_URL pour compatibilité rétrograde.
+      const adminFrontendUrl =
+        process.env.ADMIN_FRONTEND_URL ||
+        process.env.ADMIN_URL ||
+        'http://localhost:3001';
       await auth.api.requestPasswordReset({
         body: {
           email: adminEmail,
-          redirectTo: `${adminUrl}/reset-password`,
+          redirectTo: `${adminFrontendUrl}/reset-password`,
         },
       });
 
@@ -159,8 +165,12 @@ export class AdminUsersService implements OnApplicationBootstrap {
 
   /**
    * Met à jour le rôle d'un utilisateur.
+   *
+   * Protections :
+   * - Un admin ne peut pas modifier son propre rôle (risque d'auto-lock-out)
+   * - Impossible de rétrograder le dernier administrateur (protection contre la perte d'accès)
    */
-  async updateRole(id: string, role: string) {
+  async updateRole(id: string, role: string, requestingUserId: string) {
     const normalizedRole = role?.toUpperCase();
     if (!['ADMIN', 'USER', 'CONTRIBUTOR'].includes(normalizedRole)) {
       throw new BadRequestException(
@@ -168,9 +178,31 @@ export class AdminUsersService implements OnApplicationBootstrap {
       );
     }
 
-    const user = await this.prisma.user.findUnique({ where: { id } });
+    // Protection 1 : un admin ne peut pas modifier son propre rôle
+    if (id === requestingUserId) {
+      throw new ForbiddenException(
+        'Vous ne pouvez pas modifier votre propre rôle.',
+      );
+    }
+
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      select: { id: true, name: true, email: true, role: true, tier: true },
+    });
     if (!user) {
       throw new NotFoundException('Utilisateur introuvable');
+    }
+
+    // Protection 2 : empêcher la suppression du dernier administrateur
+    if (user.role === 'ADMIN' && normalizedRole !== 'ADMIN') {
+      const adminCount = await this.prisma.user.count({
+        where: { role: 'ADMIN' },
+      });
+      if (adminCount <= 1) {
+        throw new ForbiddenException(
+          'Impossible de rétrograder le dernier administrateur. Promouvez d’abord un autre utilisateur en ADMIN.',
+        );
+      }
     }
 
     const updated = await this.prisma.user.update({
@@ -185,9 +217,47 @@ export class AdminUsersService implements OnApplicationBootstrap {
       },
     });
 
+    this.logger.log(
+      `🔑 [Admin] Rôle de ${updated.email} mis à jour : ${user.role} → ${normalizedRole} (par user ${requestingUserId})`,
+    );
+
     return {
       message: `Rôle mis à jour en ${normalizedRole} pour ${updated.email}`,
       user: updated,
+    };
+  }
+
+  /**
+   * Déclenche l'envoi d'un email de réinitialisation de mot de passe pour un utilisateur.
+   */
+  async resetUserPassword(id: string, requestingUserId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      select: { id: true, email: true, name: true, role: true },
+    });
+    if (!user) {
+      throw new NotFoundException('Utilisateur introuvable');
+    }
+
+    const adminFrontendUrl =
+      process.env.ADMIN_FRONTEND_URL ||
+      process.env.ADMIN_URL ||
+      'http://localhost:3001';
+
+    await auth.api.requestPasswordReset({
+      body: {
+        email: user.email,
+        redirectTo: `${adminFrontendUrl}/reset-password`,
+      },
+    });
+
+    this.logger.log(
+      `🔑 [Admin] Réinitialisation de mot de passe déclenchée pour ${user.email} (par admin ${requestingUserId})`,
+    );
+
+    return {
+      success: true,
+      message: `Email de réinitialisation envoyé à ${user.email}`,
     };
   }
 }
