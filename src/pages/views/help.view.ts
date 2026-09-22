@@ -2,10 +2,11 @@ import { pageShell } from '../page.helpers.js';
 
 export function renderHelpPage(options?: { hideHeader?: boolean }): string {
   return pageShell({
-    title: "Kanto — Aide et support",
-    pageTitle: "Aide",
+    title: 'Kanto — Aide et support',
+    pageTitle: 'Aide',
     hideHeader: options?.hideHeader,
-    description: "Trouvez des réponses à vos questions sur l'application Kanto.",
+    description:
+      "Trouvez des réponses à vos questions sur l'application Kanto.",
     body: `
       <h1>Aide et support</h1>
       <p class="page-meta">Centre d'aide Kanto</p>

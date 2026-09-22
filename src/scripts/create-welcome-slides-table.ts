@@ -127,7 +127,9 @@ async function main() {
     console.log('✅ Table welcome_slides et ses index vérifiés/créés');
 
     // 2. Vérification s'il y a déjà des données
-    const checkRes = await client.query('SELECT COUNT(*) FROM "welcome_slides"');
+    const checkRes = await client.query(
+      'SELECT COUNT(*) FROM "welcome_slides"',
+    );
     const count = parseInt(checkRes.rows[0].count, 10);
 
     if (count === 0) {
@@ -148,12 +150,14 @@ async function main() {
             item.imageUrl,
             item.accentColor,
             item.orderIndex,
-          ]
+          ],
         );
       }
       console.log('✅ 7 photos insérées avec succès en BDD !');
     } else {
-      console.log(`ℹ️ La table welcome_slides contient déjà ${count} entrée(s).`);
+      console.log(
+        `ℹ️ La table welcome_slides contient déjà ${count} entrée(s).`,
+      );
     }
   } catch (err) {
     console.error("❌ Erreur d'application DDL/Seed:", err);

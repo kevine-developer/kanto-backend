@@ -5,7 +5,8 @@ export function renderPrivacyPage(options?: { hideHeader?: boolean }): string {
     title: 'Kanto — Politique de confidentialité',
     pageTitle: 'Politique de confidentialité',
     hideHeader: options?.hideHeader,
-    description: 'Comment Kanto collecte, utilise et protège vos données personnelles.',
+    description:
+      'Comment Kanto collecte, utilise et protège vos données personnelles.',
     body: `
       <h1>Politique de confidentialité</h1>
       <p class="page-meta">Dernière mise à jour : septembre 2025</p>

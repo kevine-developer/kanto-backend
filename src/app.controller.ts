@@ -143,9 +143,7 @@ export class AppController {
     }
 
     // 3. Affichage de la vue de confirmation (succès, déjà confirmé, expiré ou erreur)
-    return sendHtmlPage(
-      renderEmailVerificationPage({ error, email, status }),
-    );
+    return sendHtmlPage(renderEmailVerificationPage({ error, email, status }));
   }
 
   @Get('email-verified')

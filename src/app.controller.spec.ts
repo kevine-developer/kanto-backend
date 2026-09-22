@@ -102,9 +102,16 @@ describe('AppController', () => {
     it('should send email verification page on /confirmation without token', async () => {
       const mockRes = makeMockRes();
       await appController.getConfirmation(
-        undefined, undefined, undefined, undefined, mockRes as any,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        mockRes as any,
       );
-      expect(mockRes.setHeader).toHaveBeenCalledWith('Content-Type', 'text/html; charset=utf-8');
+      expect(mockRes.setHeader).toHaveBeenCalledWith(
+        'Content-Type',
+        'text/html; charset=utf-8',
+      );
       expect(mockRes.status).toHaveBeenCalledWith(200);
       const sentHtml = (mockRes.send.mock.calls[0]?.[0] as string) ?? '';
       expect(sentHtml).toContain('<!DOCTYPE html>');
@@ -115,7 +122,11 @@ describe('AppController', () => {
     it('should handle error query param on /confirmation', async () => {
       const mockRes = makeMockRes();
       await appController.getConfirmation(
-        undefined, 'TOKEN_EXPIRED', undefined, undefined, mockRes as any,
+        undefined,
+        'TOKEN_EXPIRED',
+        undefined,
+        undefined,
+        mockRes as any,
       );
       const sentHtml = (mockRes.send.mock.calls[0]?.[0] as string) ?? '';
       expect(sentHtml).toContain('Temps limite dépassé');
@@ -125,7 +136,11 @@ describe('AppController', () => {
     it('should handle status=already_confirmed on /confirmation', async () => {
       const mockRes = makeMockRes();
       await appController.getConfirmation(
-        undefined, undefined, 'user@example.com', 'already_confirmed', mockRes as any,
+        undefined,
+        undefined,
+        'user@example.com',
+        'already_confirmed',
+        mockRes as any,
       );
       const sentHtml = (mockRes.send.mock.calls[0]?.[0] as string) ?? '';
       expect(sentHtml).toContain('Adresse email déjà confirmée');
@@ -135,7 +150,11 @@ describe('AppController', () => {
     it('should handle status=expired on /confirmation', async () => {
       const mockRes = makeMockRes();
       await appController.getConfirmation(
-        undefined, undefined, 'user@example.com', 'expired', mockRes as any,
+        undefined,
+        undefined,
+        'user@example.com',
+        'expired',
+        mockRes as any,
       );
       const sentHtml = (mockRes.send.mock.calls[0]?.[0] as string) ?? '';
       expect(sentHtml).toContain('Temps limite dépassé');
@@ -153,7 +172,9 @@ describe('AppController', () => {
       );
       expect(mockRes.redirect).toHaveBeenCalledWith(
         302,
-        expect.stringContaining('/api/auth/verify-email?token=sample-token-xyz'),
+        expect.stringContaining(
+          '/api/auth/verify-email?token=sample-token-xyz',
+        ),
       );
       expect(mockRes.redirect).toHaveBeenCalledWith(
         302,

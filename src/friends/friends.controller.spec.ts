@@ -71,7 +71,10 @@ describe('FriendsController', () => {
   });
 
   it('encourageUser appelle service.encourageUser (+1 XP)', async () => {
-    mockFriendsService.encourageUser.mockResolvedValue({ success: true, xpEarned: 1 });
+    mockFriendsService.encourageUser.mockResolvedValue({
+      success: true,
+      xpEarned: 1,
+    });
     const res = await controller.encourageUser('u2', mockSession);
     expect(service.encourageUser).toHaveBeenCalledWith('u1', 'u2');
     expect(res.xpEarned).toBe(1);

@@ -62,10 +62,7 @@ export class AdminHistoryController {
   }
 
   @Patch('lessons/:id')
-  updateLesson(
-    @Param('id') id: string,
-    @Body() body: UpdateCivicLessonDto,
-  ) {
+  updateLesson(@Param('id') id: string, @Body() body: UpdateCivicLessonDto) {
     return this.historyService.updateLesson(id, body);
   }
 
@@ -88,10 +85,7 @@ export class AdminHistoryController {
   }
 
   @Patch('presidents/:id')
-  updatePresident(
-    @Param('id') id: string,
-    @Body() body: UpdatePresidentDto,
-  ) {
+  updatePresident(@Param('id') id: string, @Body() body: UpdatePresidentDto) {
     return this.historyService.updatePresident(id, body);
   }
 
@@ -114,10 +108,7 @@ export class AdminHistoryController {
   }
 
   @Patch('banknotes/:id')
-  updateBanknote(
-    @Param('id') id: string,
-    @Body() body: UpdateBanknoteDto,
-  ) {
+  updateBanknote(@Param('id') id: string, @Body() body: UpdateBanknoteDto) {
     return this.historyService.updateBanknote(id, body);
   }
 

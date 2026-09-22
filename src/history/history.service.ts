@@ -2,6 +2,7 @@ import {
   Injectable,
   Logger,
   NotFoundException,
+  OnModuleInit,
 } from '@nestjs/common';
 import { Prisma } from '../../generated/prisma/client.js';
 import { PrismaService } from '../prisma/prisma.service.js';
@@ -10,6 +11,15 @@ import { CloudinaryService } from '../integrations/cloudinary/cloudinary.service
 import { CACHE_KEYS } from '../common/constants/cache.constant.js';
 import fs from 'node:fs';
 import path from 'node:path';
+import {
+  DEFAULT_CIVIC_LESSONS,
+  DEFAULT_PRESIDENTS,
+  DEFAULT_BANKNOTES,
+  DEFAULT_PROVINCE_BLASONS,
+  DEFAULT_NATURE_EMBLEMS,
+  DEFAULT_HISTORY_DATES,
+  DEFAULT_NATIONAL_EMBLEMS,
+} from './constants/history-defaults.constant.js';
 import {
   CreateCivicLessonDto,
   UpdateCivicLessonDto,
@@ -29,7 +39,7 @@ import {
 } from './dto/history.dto.js';
 
 @Injectable()
-export class HistoryService {
+export class HistoryService implements OnModuleInit {
   private readonly logger = new Logger(HistoryService.name);
 
   constructor(
@@ -38,11 +48,360 @@ export class HistoryService {
     private readonly cloudinaryService: CloudinaryService,
   ) {}
 
+  async onModuleInit() {
+    await this.seedDefaultsIfEmpty();
+  }
+
+  /**
+   * Initialise automatiquement les données de base d'Histoire et Patrimoine
+   * dans PostgreSQL si les tables sont vides ou partiellement peuplées.
+   */
+  async seedDefaultsIfEmpty(force = false) {
+    try {
+      this.logger.log(
+        '[History] Verification de l’integrite des donnees d’Histoire & Patrimoine...',
+      );
+
+      // 1. Leçons civiques (ExploreList)
+      const countCivic = await this.prisma.civicLesson.count();
+      if (countCivic === 0 || force) {
+        this.logger.log(
+          `[History] Synchronisation de ${DEFAULT_CIVIC_LESSONS.length} lecons civiques...`,
+        );
+        for (const item of DEFAULT_CIVIC_LESSONS) {
+          await this.prisma.civicLesson.upsert({
+            where: { id: item.id },
+            create: {
+              id: item.id,
+              category: item.category,
+              titleFr: item.titleFr,
+              titleMg: item.titleMg,
+              descriptionFr: item.descriptionFr,
+              descriptionMg: item.descriptionMg,
+              imageUrl: item.imageUrl,
+              status: item.status,
+              orderIndex: item.orderIndex,
+            },
+            update: force
+              ? {
+                  category: item.category,
+                  titleFr: item.titleFr,
+                  titleMg: item.titleMg,
+                  descriptionFr: item.descriptionFr,
+                  descriptionMg: item.descriptionMg,
+                  imageUrl: item.imageUrl,
+                }
+              : {},
+          });
+        }
+      }
+
+      // 2. Présidents de la République
+      const countPresidents = await this.prisma.president.count();
+      if (countPresidents === 0 || force) {
+        this.logger.log(
+          `[History] Synchronisation de ${DEFAULT_PRESIDENTS.length} chefs d'Etat...`,
+        );
+        for (const item of DEFAULT_PRESIDENTS) {
+          await this.prisma.president.upsert({
+            where: { id: item.id },
+            create: {
+              id: item.id,
+              name: item.name,
+              titleFr: item.titleFr,
+              titleMg: item.titleMg,
+              republic: item.republic,
+              republicMg: item.republicMg,
+              period: item.period,
+              quoteFr: item.quoteFr,
+              quoteMg: item.quoteMg,
+              bioFr: item.bioFr,
+              bioMg: item.bioMg,
+              achievementsFr: item.achievementsFr,
+              achievementsMg: item.achievementsMg,
+              badgeColor: item.badgeColor,
+              imageUrl: item.imageUrl,
+              orderIndex: item.orderIndex,
+              status: item.status,
+            },
+            update: force
+              ? {
+                  name: item.name,
+                  titleFr: item.titleFr,
+                  titleMg: item.titleMg,
+                  republic: item.republic,
+                  republicMg: item.republicMg,
+                  period: item.period,
+                  quoteFr: item.quoteFr,
+                  quoteMg: item.quoteMg,
+                  bioFr: item.bioFr,
+                  bioMg: item.bioMg,
+                  achievementsFr: item.achievementsFr,
+                  achievementsMg: item.achievementsMg,
+                  badgeColor: item.badgeColor,
+                  imageUrl: item.imageUrl,
+                }
+              : {},
+          });
+        }
+      }
+
+      // 3. Billets de banque (Ariary & FMG)
+      const countBanknotes = await this.prisma.banknote.count();
+      if (countBanknotes === 0 || force) {
+        this.logger.log(
+          `[History] Synchronisation de ${DEFAULT_BANKNOTES.length} billets de banque...`,
+        );
+        for (const item of DEFAULT_BANKNOTES) {
+          await this.prisma.banknote.upsert({
+            where: { id: item.id },
+            create: {
+              id: item.id,
+              valueAriary: item.valueAriary,
+              valueFmg: item.valueFmg,
+              titleFr: item.titleFr,
+              titleMg: item.titleMg,
+              series: item.series,
+              seriesLabelFr: item.seriesLabelFr,
+              seriesLabelMg: item.seriesLabelMg,
+              period: item.period,
+              colorLight: item.colorLight,
+              colorDark: item.colorDark,
+              obverseDescriptionFr: item.obverseDescriptionFr,
+              obverseDescriptionMg: item.obverseDescriptionMg,
+              reverseDescriptionFr: item.reverseDescriptionFr,
+              reverseDescriptionMg: item.reverseDescriptionMg,
+              symbolismFr: item.symbolismFr,
+              symbolismMg: item.symbolismMg,
+              securityFeaturesFr: item.securityFeaturesFr,
+              imageUrl: item.imageUrl,
+              orderIndex: item.orderIndex,
+              status: item.status,
+            },
+            update: force
+              ? {
+                  valueAriary: item.valueAriary,
+                  valueFmg: item.valueFmg,
+                  titleFr: item.titleFr,
+                  titleMg: item.titleMg,
+                  series: item.series,
+                  seriesLabelFr: item.seriesLabelFr,
+                  seriesLabelMg: item.seriesLabelMg,
+                  period: item.period,
+                  colorLight: item.colorLight,
+                  colorDark: item.colorDark,
+                  obverseDescriptionFr: item.obverseDescriptionFr,
+                  obverseDescriptionMg: item.obverseDescriptionMg,
+                  reverseDescriptionFr: item.reverseDescriptionFr,
+                  reverseDescriptionMg: item.reverseDescriptionMg,
+                  symbolismFr: item.symbolismFr,
+                  symbolismMg: item.symbolismMg,
+                  securityFeaturesFr: item.securityFeaturesFr,
+                  imageUrl: item.imageUrl,
+                }
+              : {},
+          });
+        }
+      }
+
+      // 4. Blasons des 6 Provinces
+      const countProvinces = await this.prisma.provinceBlason.count();
+      if (countProvinces === 0 || force) {
+        this.logger.log(
+          `[History] Synchronisation de ${DEFAULT_PROVINCE_BLASONS.length} blasons des provinces...`,
+        );
+        for (const item of DEFAULT_PROVINCE_BLASONS) {
+          await this.prisma.provinceBlason.upsert({
+            where: { id: item.id },
+            create: {
+              id: item.id,
+              province: item.province,
+              chefLieu: item.chefLieu,
+              titleFr: item.titleFr,
+              titleMg: item.titleMg,
+              color: item.color,
+              bgLight: item.bgLight,
+              borderLight: item.borderLight,
+              descriptionFr: item.descriptionFr,
+              descriptionMg: item.descriptionMg,
+              symbols: item.symbols,
+              keyFactsFr: item.keyFactsFr,
+              keyFactsMg: item.keyFactsMg,
+              imageUrl: item.imageUrl,
+              orderIndex: item.orderIndex,
+              status: item.status,
+            },
+            update: force
+              ? {
+                  province: item.province,
+                  chefLieu: item.chefLieu,
+                  titleFr: item.titleFr,
+                  titleMg: item.titleMg,
+                  color: item.color,
+                  bgLight: item.bgLight,
+                  borderLight: item.borderLight,
+                  descriptionFr: item.descriptionFr,
+                  descriptionMg: item.descriptionMg,
+                  symbols: item.symbols,
+                  keyFactsFr: item.keyFactsFr,
+                  keyFactsMg: item.keyFactsMg,
+                  imageUrl: item.imageUrl,
+                }
+              : {},
+          });
+        }
+      }
+
+      // 5. Faune & Flore emblématiques
+      const countNature = await this.prisma.natureEmblem.count();
+      if (countNature === 0 || force) {
+        this.logger.log(
+          `[History] Synchronisation de ${DEFAULT_NATURE_EMBLEMS.length} emblemes de la nature...`,
+        );
+        for (const item of DEFAULT_NATURE_EMBLEMS) {
+          await this.prisma.natureEmblem.upsert({
+            where: { id: item.id },
+            create: {
+              id: item.id,
+              nameFr: item.nameFr,
+              nameMg: item.nameMg,
+              scientificName: item.scientificName,
+              type: item.type,
+              statusFr: item.statusFr,
+              statusMg: item.statusMg,
+              descriptionFr: item.descriptionFr,
+              descriptionMg: item.descriptionMg,
+              culturalRoleFr: item.culturalRoleFr,
+              culturalRoleMg: item.culturalRoleMg,
+              proverbMg: item.proverbMg,
+              proverbFr: item.proverbFr,
+              accentColor: item.accentColor,
+              imageUrl: item.imageUrl,
+              orderIndex: item.orderIndex,
+              status: item.status,
+            },
+            update: force
+              ? {
+                  nameFr: item.nameFr,
+                  nameMg: item.nameMg,
+                  scientificName: item.scientificName,
+                  type: item.type,
+                  statusFr: item.statusFr,
+                  statusMg: item.statusMg,
+                  descriptionFr: item.descriptionFr,
+                  descriptionMg: item.descriptionMg,
+                  culturalRoleFr: item.culturalRoleFr,
+                  culturalRoleMg: item.culturalRoleMg,
+                  proverbMg: item.proverbMg,
+                  proverbFr: item.proverbFr,
+                  accentColor: item.accentColor,
+                  imageUrl: item.imageUrl,
+                }
+              : {},
+          });
+        }
+      }
+
+      // 6. Grandes dates historiques
+      const countDates = await this.prisma.historyDate.count();
+      if (countDates === 0 || force) {
+        this.logger.log(
+          `[History] Synchronisation de ${DEFAULT_HISTORY_DATES.length} dates historiques...`,
+        );
+        for (const item of DEFAULT_HISTORY_DATES) {
+          await this.prisma.historyDate.upsert({
+            where: { id: item.id },
+            create: {
+              id: item.id,
+              year: item.year,
+              exactDate: item.exactDate,
+              titleFr: item.titleFr,
+              titleMg: item.titleMg,
+              era: item.era,
+              summaryFr: item.summaryFr,
+              summaryMg: item.summaryMg,
+              impactFr: item.impactFr,
+              impactMg: item.impactMg,
+              accentColor: item.accentColor,
+              imageUrl: item.imageUrl,
+              orderIndex: item.orderIndex,
+              status: item.status,
+            },
+            update: force
+              ? {
+                  year: item.year,
+                  exactDate: item.exactDate,
+                  titleFr: item.titleFr,
+                  titleMg: item.titleMg,
+                  era: item.era,
+                  summaryFr: item.summaryFr,
+                  summaryMg: item.summaryMg,
+                  impactFr: item.impactFr,
+                  impactMg: item.impactMg,
+                  accentColor: item.accentColor,
+                  imageUrl: item.imageUrl,
+                }
+              : {},
+          });
+        }
+      }
+
+      // 7. Sceaux & Emblèmes d'État
+      const countEmblems = await this.prisma.nationalEmblem.count();
+      if (countEmblems === 0 || force) {
+        this.logger.log(
+          `[History] Synchronisation de ${DEFAULT_NATIONAL_EMBLEMS.length} sceaux republicains...`,
+        );
+        for (const item of DEFAULT_NATIONAL_EMBLEMS) {
+          await this.prisma.nationalEmblem.upsert({
+            where: { id: item.id },
+            create: {
+              id: item.id,
+              period: item.period,
+              imageUrl: item.imageUrl,
+              government: item.government,
+              descriptionFr: item.descriptionFr,
+              descriptionMg: item.descriptionMg,
+              notesFr: item.notesFr,
+              notesMg: item.notesMg,
+              orderIndex: item.orderIndex,
+              status: item.status,
+            },
+            update: force
+              ? {
+                  period: item.period,
+                  imageUrl: item.imageUrl,
+                  government: item.government,
+                  descriptionFr: item.descriptionFr,
+                  descriptionMg: item.descriptionMg,
+                  notesFr: item.notesFr,
+                  notesMg: item.notesMg,
+                }
+              : {},
+          });
+        }
+      }
+
+      await this.invalidateCache();
+      this.logger.log(
+        '[History] Donnees d’Histoire & Patrimoine synchronisees avec succes.',
+      );
+    } catch (err: unknown) {
+      this.logger.warn(
+        `[History] Initialisation differee (table non prete ou deja initialisee) : ${
+          err instanceof Error ? err.message : String(err)
+        }`,
+      );
+    }
+  }
+
   private async invalidateCache() {
     try {
       await this.redis.delByPattern(CACHE_KEYS.HISTORY_LIST_PATTERN);
     } catch (err: unknown) {
-      this.logger.warn(`Échec invalidation cache history: ${err instanceof Error ? err.message : String(err)}`);
+      this.logger.warn(
+        `Échec invalidation cache history: ${err instanceof Error ? err.message : String(err)}`,
+      );
     }
   }
 
@@ -77,11 +436,11 @@ export class HistoryService {
           originalName,
           `kanto/images/${safeSubfolder}`,
         );
-        this.logger.log(`☁️ [Cloudinary] Photo sauvegardée : ${cloudinaryUrl}`);
+        this.logger.log(`[Cloudinary] Photo sauvegardee : ${cloudinaryUrl}`);
         return { url: cloudinaryUrl, provider: 'cloudinary' };
       } catch (err: unknown) {
         this.logger.error(
-          `❌ [Cloudinary] Échec upload image, bascule sur stockage local : ${
+          `[Cloudinary] Echec upload image, bascule sur stockage local : ${
             err instanceof Error ? err.message : String(err)
           }`,
         );
@@ -95,14 +454,17 @@ export class HistoryService {
     }
 
     const safePrefix = originalName
-      ? originalName.toLowerCase().replace(/[^a-z0-9_-]/g, '-').slice(0, 30)
+      ? originalName
+          .toLowerCase()
+          .replace(/[^a-z0-9_-]/g, '-')
+          .slice(0, 30)
       : 'photo';
     const fileName = `${safePrefix}-${Date.now()}.${extension}`;
     const filePath = path.join(uploadDir, fileName);
 
     fs.writeFileSync(filePath, buffer);
     const localUrl = `/uploads/${safeSubfolder}/${fileName}`;
-    this.logger.log(`📁 [Local] Photo enregistrée en local : ${localUrl}`);
+    this.logger.log(`[Local] Photo enregistree en local : ${localUrl}`);
 
     return { url: localUrl, provider: 'local' };
   }
@@ -191,7 +553,11 @@ export class HistoryService {
   async getBanknotes(all = false) {
     return this.prisma.banknote.findMany({
       where: all ? undefined : { status: 'PUBLISHED' },
-      orderBy: [{ series: 'asc' }, { valueAriary: 'desc' }, { orderIndex: 'asc' }],
+      orderBy: [
+        { series: 'asc' },
+        { valueAriary: 'desc' },
+        { orderIndex: 'asc' },
+      ],
     });
   }
 
@@ -257,7 +623,10 @@ export class HistoryService {
       where: { id },
       data: {
         ...data,
-        symbols: data.symbols !== undefined ? ((data.symbols as Prisma.InputJsonValue) ?? Prisma.JsonNull) : undefined,
+        symbols:
+          data.symbols !== undefined
+            ? ((data.symbols as Prisma.InputJsonValue) ?? Prisma.JsonNull)
+            : undefined,
       },
     });
     await this.invalidateCache();
@@ -402,14 +771,20 @@ export class HistoryService {
     } catch {
       // Ignorer si redis indisponible
     }
-    this.logger.log(`👁️ [History] Vue incrémentée sur ${entity} ID ${id} (total: ${views})`);
+    this.logger.log(
+      `[History] Vue incrementee sur ${entity} ID ${id} (total: ${views})`,
+    );
     return { success: true, entity, id, views };
   }
 
   async reportHistory(dto: ReportHistoryDto, userId?: string) {
     const reportReasonMap: Record<
       string,
-      'TRANSLATION_ERROR' | 'TYPO' | 'INCORRECT_MEANING' | 'INAPPROPRIATE' | 'OTHER'
+      | 'TRANSLATION_ERROR'
+      | 'TYPO'
+      | 'INCORRECT_MEANING'
+      | 'INAPPROPRIATE'
+      | 'OTHER'
     > = {
       translation: 'TRANSLATION_ERROR',
       spelling: 'TYPO',
@@ -422,7 +797,8 @@ export class HistoryService {
     };
 
     const reason = (dto.reason && reportReasonMap[dto.reason]) || 'OTHER';
-    const description = `[Entité: ${dto.entity} | Réf: ${dto.contentId}] ${dto.description || ''}`.trim();
+    const description =
+      `[Entité: ${dto.entity} | Réf: ${dto.contentId}] ${dto.description || ''}`.trim();
 
     const report = await this.prisma.contentReport.create({
       data: {
@@ -433,10 +809,9 @@ export class HistoryService {
     });
 
     this.logger.log(
-      `🚩 [History] Signalement reçu pour ${dto.entity} ID ${dto.contentId} par ${userId || 'anonyme'} (Raison: ${reason})`,
+      `[History] Signalement recu pour ${dto.entity} ID ${dto.contentId} par ${userId || 'anonyme'} (Raison: ${reason})`,
     );
 
     return { success: true, reportId: report.id };
   }
 }
-

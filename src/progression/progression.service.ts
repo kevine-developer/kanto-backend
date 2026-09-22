@@ -433,7 +433,9 @@ export class ProgressionService {
   ): Promise<{ totalXp: number; level: number; streakDays: number }> {
     const safeAmount = Math.max(0, Math.ceil(amount));
     if (safeAmount === 0) {
-      const p = await this.prisma.userProgress.findUnique({ where: { userId } });
+      const p = await this.prisma.userProgress.findUnique({
+        where: { userId },
+      });
       return {
         totalXp: p ? Number(p.totalXp) : 0,
         level: p ? p.level : 1,
@@ -452,7 +454,8 @@ export class ProgressionService {
             userId,
             totalXp: safeAmount,
             level: initialLevel,
-            coins: initialLevel > 1 ? this.calculateLevelUpCoins(initialLevel) : 0,
+            coins:
+              initialLevel > 1 ? this.calculateLevelUpCoins(initialLevel) : 0,
             streakDays: 0,
           },
         });

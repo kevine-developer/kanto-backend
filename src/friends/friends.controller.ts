@@ -41,7 +41,11 @@ export class FriendsController {
     @Session() session: UserSession,
   ) {
     const parsedLimit = limit ? parseInt(limit, 10) : 20;
-    return this.friendsService.searchUsers(session.user.id, q || '', parsedLimit);
+    return this.friendsService.searchUsers(
+      session.user.id,
+      q || '',
+      parsedLimit,
+    );
   }
 
   /**
@@ -52,7 +56,10 @@ export class FriendsController {
     @Param('targetUserId') targetUserId: string,
     @Session() session: UserSession,
   ) {
-    return this.friendsService.getFriendshipStatus(session.user.id, targetUserId);
+    return this.friendsService.getFriendshipStatus(
+      session.user.id,
+      targetUserId,
+    );
   }
 
   /**
@@ -107,7 +114,10 @@ export class FriendsController {
     @Param('targetUserId') targetUserId: string,
     @Session() session: UserSession,
   ) {
-    return this.friendsService.cancelFriendRequest(session.user.id, targetUserId);
+    return this.friendsService.cancelFriendRequest(
+      session.user.id,
+      targetUserId,
+    );
   }
 
   /**

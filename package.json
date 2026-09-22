@@ -20,6 +20,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register --experimental-vm-modules node_modules/.bin/jest --runInBand",
     "test:e2e": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --config ./test/jest-e2e.json",
     "seed": "tsx prisma/seed.ts",
+    "seed:history": "tsx src/scripts/seed-history.ts",
+    "seed:history:prod": "node dist/src/scripts/seed-history.js",
     "seed:true-false": "tsx src/scripts/seed-true-false.ts",
     "seed:admin": "tsx src/scripts/create-admin.ts",
     "seed:admin:prod": "node dist/src/scripts/create-admin.js",

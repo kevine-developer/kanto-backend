@@ -17,20 +17,20 @@ async function main() {
 
   console.log(`📋 Administrateurs trouvés (${admins.length}) :`, admins);
 
-  const targetEmail = process.env.DEFAULT_ADMIN_EMAIL || 'yvesnarsonkevine@gmail.com';
+  const targetEmail =
+    process.env.DEFAULT_ADMIN_EMAIL || 'yvesnarsonkevine@gmail.com';
   console.log(`🗑️ Suppression de l'administrateur (${targetEmail})...`);
 
   // Supprimer les utilisateurs correspondants
   const deleteResult = await prisma.user.deleteMany({
     where: {
-      OR: [
-        { role: 'ADMIN' },
-        { email: targetEmail },
-      ],
+      OR: [{ role: 'ADMIN' }, { email: targetEmail }],
     },
   });
 
-  console.log(`✅ ${deleteResult.count} compte(s) administrateur supprimé(s) avec succès de la base de données.`);
+  console.log(
+    `✅ ${deleteResult.count} compte(s) administrateur supprimé(s) avec succès de la base de données.`,
+  );
 }
 
 main()

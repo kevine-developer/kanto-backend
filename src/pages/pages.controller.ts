@@ -23,7 +23,9 @@ import { renderLicensesPage } from './views/licenses.view.js';
 @Controller('pages')
 export class PagesController {
   private isEmbed(embed?: string, inApp?: string): boolean {
-    return embed === 'true' || embed === '1' || inApp === 'true' || inApp === '1';
+    return (
+      embed === 'true' || embed === '1' || inApp === 'true' || inApp === '1'
+    );
   }
 
   @Get('privacy')
