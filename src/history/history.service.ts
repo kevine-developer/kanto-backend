@@ -8,6 +8,7 @@ import { Prisma } from '../../generated/prisma/client.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { RedisService } from '../redis/redis.service.js';
 import { CloudinaryService } from '../integrations/cloudinary/cloudinary.service.js';
+import { CloudinarySyncService } from '../integrations/cloudinary/cloudinary-sync.service.js';
 import { CACHE_KEYS } from '../common/constants/cache.constant.js';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -46,6 +47,7 @@ export class HistoryService implements OnModuleInit {
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
     private readonly cloudinaryService: CloudinaryService,
+    private readonly cloudinarySyncService: CloudinarySyncService,
   ) {}
 
   async onModuleInit() {
@@ -437,6 +439,10 @@ export class HistoryService implements OnModuleInit {
           `kanto/images/${safeSubfolder}`,
         );
         this.logger.log(`[Cloudinary] Photo sauvegardee : ${cloudinaryUrl}`);
+        // Declenche en arriere-plan la migration de fichiers locaux orphelins eventuels
+        this.cloudinarySyncService
+          .syncLocalUploadsToCloudinary()
+          .catch(() => {});
         return { url: cloudinaryUrl, provider: 'cloudinary' };
       } catch (err: unknown) {
         this.logger.error(
