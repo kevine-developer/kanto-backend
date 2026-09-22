@@ -28,7 +28,8 @@ export interface FormattedNotificationItem {
 }
 
 function localizeNotificationBadge(rawBadge?: string | null, isMg = false) {
-  if (!rawBadge) return { activeBadge: undefined, badgeFr: undefined, badgeMg: undefined };
+  if (!rawBadge)
+    return { activeBadge: undefined, badgeFr: undefined, badgeMg: undefined };
   const trimmed = rawBadge.trim();
   const lower = trimmed.toLowerCase();
 
@@ -44,7 +45,11 @@ function localizeNotificationBadge(rawBadge?: string | null, isMg = false) {
   } else if (lower === 'fangatahana' || lower === 'demande') {
     badgeFr = 'Demande';
     badgeMg = 'Fangatahana';
-  } else if (lower === 'badge' || lower === 'mari-boninahitra' || lower === 'medaly') {
+  } else if (
+    lower === 'badge' ||
+    lower === 'mari-boninahitra' ||
+    lower === 'medaly'
+  ) {
     badgeFr = 'Badge';
     badgeMg = 'Mari-boninahitra';
   } else if (lower === 'hevitra' || lower === 'commentaire') {
@@ -131,12 +136,12 @@ export class NotificationsService {
       const formatted: FormattedNotificationItem = {
         id: notif.id,
         category: notif.category,
-        title: isMg ? notif.titleMg : (notif.titleFr || notif.titleMg),
+        title: isMg ? notif.titleMg : notif.titleFr || notif.titleMg,
         titleMg: notif.titleMg,
         titleFr: notif.titleFr || notif.titleMg,
         description: isMg
           ? notif.messageMg
-          : (notif.messageFr || notif.messageMg),
+          : notif.messageFr || notif.messageMg,
         descriptionMg: notif.messageMg,
         descriptionFr: notif.messageFr || notif.messageMg,
         timeAgo,

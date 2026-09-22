@@ -189,7 +189,9 @@ export class UsersService {
       })) + 1;
 
     // Statut d'amitié & encouragement si currentUserId est fourni
-    let friendshipStatus: 'NONE' | 'PENDING_SENT' | 'PENDING_RECEIVED' | 'FRIENDS' | 'BLOCKED' = 'NONE';
+    let friendshipStatus:
+      'NONE' | 'PENDING_SENT' | 'PENDING_RECEIVED' | 'FRIENDS' | 'BLOCKED' =
+      'NONE';
     let friendshipId: string | undefined = undefined;
     let canEncourage = false;
     let hasEncouragedToday = false;
@@ -210,7 +212,9 @@ export class UsersService {
           friendshipStatus = 'FRIENDS';
         } else if (friendship.status === FriendshipStatus.PENDING) {
           friendshipStatus =
-            friendship.senderId === currentUserId ? 'PENDING_SENT' : 'PENDING_RECEIVED';
+            friendship.senderId === currentUserId
+              ? 'PENDING_SENT'
+              : 'PENDING_RECEIVED';
         } else if (friendship.status === FriendshipStatus.BLOCKED) {
           friendshipStatus = 'BLOCKED';
         }
@@ -218,7 +222,11 @@ export class UsersService {
 
       // Vérifier encouragement journalier
       const today = new Date(
-        Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth(), new Date().getUTCDate()),
+        Date.UTC(
+          new Date().getUTCFullYear(),
+          new Date().getUTCMonth(),
+          new Date().getUTCDate(),
+        ),
       );
       const existingEncouragement = await this.prisma.encouragement.findUnique({
         where: {
@@ -238,7 +246,8 @@ export class UsersService {
       user: {
         id: user.id,
         name: user.name,
-        username: user.username || `@${user.name.toLowerCase().replace(/\s+/g, '_')}`,
+        username:
+          user.username || `@${user.name.toLowerCase().replace(/\s+/g, '_')}`,
         image: user.image,
         tier: user.tier,
         createdAt: user.createdAt,

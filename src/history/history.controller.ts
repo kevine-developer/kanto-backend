@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { HistoryService } from './history.service.js';
 import { ReportHistoryDto } from './dto/history.dto.js';
 import { Session, type UserSession } from '../auth/index.js';
@@ -87,10 +87,7 @@ export class HistoryController {
 
   // 8. Engagement & Vues
   @Post(':entity/:id/view')
-  recordView(
-    @Param('entity') entity: string,
-    @Param('id') id: string,
-  ) {
+  recordView(@Param('entity') entity: string, @Param('id') id: string) {
     return this.historyService.recordView(entity, id);
   }
 
@@ -104,4 +101,3 @@ export class HistoryController {
     return this.historyService.reportHistory(body, session?.user?.id);
   }
 }
-

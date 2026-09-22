@@ -5,7 +5,8 @@ export function renderAboutPage(options?: { hideHeader?: boolean }): string {
     title: 'Kanto — À propos',
     pageTitle: 'À propos de Kanto',
     hideHeader: options?.hideHeader,
-    description: "Découvrez la mission, les valeurs et l'équipe derrière l'application Kanto.",
+    description:
+      "Découvrez la mission, les valeurs et l'équipe derrière l'application Kanto.",
     body: `
       <h1>À propos de Kanto</h1>
       <p class="page-meta">Notre mission, nos valeurs</p>

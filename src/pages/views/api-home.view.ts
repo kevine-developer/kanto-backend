@@ -12,8 +12,12 @@ export interface ApiHomeViewParams {
 
 export function renderApiHomePage(params: ApiHomeViewParams): string {
   const version = params.version || '1.0.0';
-  const environment = params.environment || process.env.NODE_ENV || 'production';
-  const baseUrl = params.baseUrl || process.env.BETTER_AUTH_URL || 'https://api-kanto.gastsar.fr';
+  const environment =
+    params.environment || process.env.NODE_ENV || 'production';
+  const baseUrl =
+    params.baseUrl ||
+    process.env.BETTER_AUTH_URL ||
+    'https://api-kanto.gastsar.fr';
   const currentYear = new Date().getFullYear();
 
   return `<!DOCTYPE html>

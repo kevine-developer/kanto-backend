@@ -5,7 +5,8 @@ export function renderLicensesPage(options?: { hideHeader?: boolean }): string {
     title: 'Kanto — Licences et crédits',
     pageTitle: 'Licences et crédits',
     hideHeader: options?.hideHeader,
-    description: "Licences des bibliothèques open source utilisées par l'application Kanto.",
+    description:
+      "Licences des bibliothèques open source utilisées par l'application Kanto.",
     body: `
       <h1>Licences et crédits</h1>
       <p class="page-meta">Bibliothèques open source utilisées par Kanto</p>

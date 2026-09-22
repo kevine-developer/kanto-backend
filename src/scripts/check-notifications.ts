@@ -4,7 +4,9 @@ import pg from 'pg';
 async function main() {
   const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
   await client.connect();
-  const res = await client.query('SELECT id, category, "titleMg", "titleFr", "messageMg", "messageFr", "badgeText" FROM notifications ORDER BY "createdAt" DESC LIMIT 20');
+  const res = await client.query(
+    'SELECT id, category, "titleMg", "titleFr", "messageMg", "messageFr", "badgeText" FROM notifications ORDER BY "createdAt" DESC LIMIT 20',
+  );
   console.log('NOTIFICATIONS COUNT:', res.rows.length);
   for (const row of res.rows) {
     console.log('---');

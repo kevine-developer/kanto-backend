@@ -1,6 +1,10 @@
 import { jest } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
-import { BadRequestException, ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { FriendsService } from './friends.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { ProgressionService } from '../progression/progression.service.js';

@@ -12,6 +12,15 @@ import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { RIDDLES_DATA } from './seed-data/riddles.data.js';
 import { VINTANA_SIGNS } from './seed-data/vintana.data.js';
+import {
+  DEFAULT_CIVIC_LESSONS,
+  DEFAULT_PRESIDENTS,
+  DEFAULT_BANKNOTES,
+  DEFAULT_PROVINCE_BLASONS,
+  DEFAULT_NATURE_EMBLEMS,
+  DEFAULT_HISTORY_DATES,
+  DEFAULT_NATIONAL_EMBLEMS,
+} from '../src/history/constants/history-defaults.constant.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -871,6 +880,280 @@ async function main() {
     }
     console.log(`✅ ${tfCount} questions Vrai/Faux importées`);
   }
+
+  // ==========================================
+  // 14. HISTOIRE, MÉMOIRE & PATRIMOINE
+  // ==========================================
+  console.log(
+    '[History] Synchronisation du module Histoire, Mémoire & Patrimoine...',
+  );
+
+  // 1. Leçons civiques
+  for (const item of DEFAULT_CIVIC_LESSONS) {
+    await prisma.civicLesson.upsert({
+      where: { id: item.id },
+      create: {
+        id: item.id,
+        category: item.category,
+        titleFr: item.titleFr,
+        titleMg: item.titleMg,
+        descriptionFr: item.descriptionFr,
+        descriptionMg: item.descriptionMg,
+        imageUrl: item.imageUrl,
+        status: item.status,
+        orderIndex: item.orderIndex,
+      },
+      update: {
+        category: item.category,
+        titleFr: item.titleFr,
+        titleMg: item.titleMg,
+        descriptionFr: item.descriptionFr,
+        descriptionMg: item.descriptionMg,
+        imageUrl: item.imageUrl,
+      },
+    });
+  }
+
+  // 2. Présidents de la République
+  for (const item of DEFAULT_PRESIDENTS) {
+    await prisma.president.upsert({
+      where: { id: item.id },
+      create: {
+        id: item.id,
+        name: item.name,
+        titleFr: item.titleFr,
+        titleMg: item.titleMg,
+        republic: item.republic,
+        republicMg: item.republicMg,
+        period: item.period,
+        quoteFr: item.quoteFr,
+        quoteMg: item.quoteMg,
+        bioFr: item.bioFr,
+        bioMg: item.bioMg,
+        achievementsFr: item.achievementsFr,
+        achievementsMg: item.achievementsMg,
+        badgeColor: item.badgeColor,
+        imageUrl: item.imageUrl,
+        orderIndex: item.orderIndex,
+        status: item.status,
+      },
+      update: {
+        name: item.name,
+        titleFr: item.titleFr,
+        titleMg: item.titleMg,
+        republic: item.republic,
+        republicMg: item.republicMg,
+        period: item.period,
+        quoteFr: item.quoteFr,
+        quoteMg: item.quoteMg,
+        bioFr: item.bioFr,
+        bioMg: item.bioMg,
+        achievementsFr: item.achievementsFr,
+        achievementsMg: item.achievementsMg,
+        badgeColor: item.badgeColor,
+        imageUrl: item.imageUrl,
+      },
+    });
+  }
+
+  // 3. Billets de banque
+  for (const item of DEFAULT_BANKNOTES) {
+    await prisma.banknote.upsert({
+      where: { id: item.id },
+      create: {
+        id: item.id,
+        valueAriary: item.valueAriary,
+        valueFmg: item.valueFmg,
+        titleFr: item.titleFr,
+        titleMg: item.titleMg,
+        series: item.series,
+        seriesLabelFr: item.seriesLabelFr,
+        seriesLabelMg: item.seriesLabelMg,
+        period: item.period,
+        colorLight: item.colorLight,
+        colorDark: item.colorDark,
+        obverseDescriptionFr: item.obverseDescriptionFr,
+        obverseDescriptionMg: item.obverseDescriptionMg,
+        reverseDescriptionFr: item.reverseDescriptionFr,
+        reverseDescriptionMg: item.reverseDescriptionMg,
+        symbolismFr: item.symbolismFr,
+        symbolismMg: item.symbolismMg,
+        securityFeaturesFr: item.securityFeaturesFr,
+        imageUrl: item.imageUrl,
+        orderIndex: item.orderIndex,
+        status: item.status,
+      },
+      update: {
+        valueAriary: item.valueAriary,
+        valueFmg: item.valueFmg,
+        titleFr: item.titleFr,
+        titleMg: item.titleMg,
+        series: item.series,
+        seriesLabelFr: item.seriesLabelFr,
+        seriesLabelMg: item.seriesLabelMg,
+        period: item.period,
+        colorLight: item.colorLight,
+        colorDark: item.colorDark,
+        obverseDescriptionFr: item.obverseDescriptionFr,
+        obverseDescriptionMg: item.obverseDescriptionMg,
+        reverseDescriptionFr: item.reverseDescriptionFr,
+        reverseDescriptionMg: item.reverseDescriptionMg,
+        symbolismFr: item.symbolismFr,
+        symbolismMg: item.symbolismMg,
+        securityFeaturesFr: item.securityFeaturesFr,
+        imageUrl: item.imageUrl,
+      },
+    });
+  }
+
+  // 4. Blasons des 6 Provinces
+  for (const item of DEFAULT_PROVINCE_BLASONS) {
+    await prisma.provinceBlason.upsert({
+      where: { id: item.id },
+      create: {
+        id: item.id,
+        province: item.province,
+        chefLieu: item.chefLieu,
+        titleFr: item.titleFr,
+        titleMg: item.titleMg,
+        color: item.color,
+        bgLight: item.bgLight,
+        borderLight: item.borderLight,
+        descriptionFr: item.descriptionFr,
+        descriptionMg: item.descriptionMg,
+        symbols: item.symbols,
+        keyFactsFr: item.keyFactsFr,
+        keyFactsMg: item.keyFactsMg,
+        imageUrl: item.imageUrl,
+        orderIndex: item.orderIndex,
+        status: item.status,
+      },
+      update: {
+        province: item.province,
+        chefLieu: item.chefLieu,
+        titleFr: item.titleFr,
+        titleMg: item.titleMg,
+        color: item.color,
+        bgLight: item.bgLight,
+        borderLight: item.borderLight,
+        descriptionFr: item.descriptionFr,
+        descriptionMg: item.descriptionMg,
+        symbols: item.symbols,
+        keyFactsFr: item.keyFactsFr,
+        keyFactsMg: item.keyFactsMg,
+        imageUrl: item.imageUrl,
+      },
+    });
+  }
+
+  // 5. Emblèmes naturels
+  for (const item of DEFAULT_NATURE_EMBLEMS) {
+    await prisma.natureEmblem.upsert({
+      where: { id: item.id },
+      create: {
+        id: item.id,
+        nameFr: item.nameFr,
+        nameMg: item.nameMg,
+        scientificName: item.scientificName,
+        type: item.type,
+        statusFr: item.statusFr,
+        statusMg: item.statusMg,
+        descriptionFr: item.descriptionFr,
+        descriptionMg: item.descriptionMg,
+        culturalRoleFr: item.culturalRoleFr,
+        culturalRoleMg: item.culturalRoleMg,
+        proverbMg: item.proverbMg,
+        proverbFr: item.proverbFr,
+        accentColor: item.accentColor,
+        imageUrl: item.imageUrl,
+        orderIndex: item.orderIndex,
+        status: item.status,
+      },
+      update: {
+        nameFr: item.nameFr,
+        nameMg: item.nameMg,
+        scientificName: item.scientificName,
+        type: item.type,
+        statusFr: item.statusFr,
+        statusMg: item.statusMg,
+        descriptionFr: item.descriptionFr,
+        descriptionMg: item.descriptionMg,
+        culturalRoleFr: item.culturalRoleFr,
+        culturalRoleMg: item.culturalRoleMg,
+        proverbMg: item.proverbMg,
+        proverbFr: item.proverbFr,
+        accentColor: item.accentColor,
+        imageUrl: item.imageUrl,
+      },
+    });
+  }
+
+  // 6. Dates historiques
+  for (const item of DEFAULT_HISTORY_DATES) {
+    await prisma.historyDate.upsert({
+      where: { id: item.id },
+      create: {
+        id: item.id,
+        year: item.year,
+        exactDate: item.exactDate,
+        titleFr: item.titleFr,
+        titleMg: item.titleMg,
+        era: item.era,
+        summaryFr: item.summaryFr,
+        summaryMg: item.summaryMg,
+        impactFr: item.impactFr,
+        impactMg: item.impactMg,
+        accentColor: item.accentColor,
+        imageUrl: item.imageUrl,
+        orderIndex: item.orderIndex,
+        status: item.status,
+      },
+      update: {
+        year: item.year,
+        exactDate: item.exactDate,
+        titleFr: item.titleFr,
+        titleMg: item.titleMg,
+        era: item.era,
+        summaryFr: item.summaryFr,
+        summaryMg: item.summaryMg,
+        impactFr: item.impactFr,
+        impactMg: item.impactMg,
+        accentColor: item.accentColor,
+        imageUrl: item.imageUrl,
+      },
+    });
+  }
+
+  // 7. Sceaux nationaux
+  for (const item of DEFAULT_NATIONAL_EMBLEMS) {
+    await prisma.nationalEmblem.upsert({
+      where: { id: item.id },
+      create: {
+        id: item.id,
+        period: item.period,
+        imageUrl: item.imageUrl,
+        government: item.government,
+        descriptionFr: item.descriptionFr,
+        descriptionMg: item.descriptionMg,
+        notesFr: item.notesFr,
+        notesMg: item.notesMg,
+        orderIndex: item.orderIndex,
+        status: item.status,
+      },
+      update: {
+        period: item.period,
+        imageUrl: item.imageUrl,
+        government: item.government,
+        descriptionFr: item.descriptionFr,
+        descriptionMg: item.descriptionMg,
+        notesFr: item.notesFr,
+        notesMg: item.notesMg,
+      },
+    });
+  }
+  console.log(
+    '[History] Donnees Histoire, Memoire & Patrimoine synchronisees avec succes.',
+  );
 
   console.log('🎉 Seed de la base de données Kanto terminé avec succès !');
 }

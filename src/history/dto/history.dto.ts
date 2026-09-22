@@ -893,7 +893,14 @@ export class UpdateNationalEmblemDto {
 export class ReportHistoryDto {
   @IsString()
   @IsNotEmpty()
-  entity!: 'lesson' | 'president' | 'banknote' | 'province' | 'nature' | 'date' | 'emblem';
+  entity!:
+    | 'lesson'
+    | 'president'
+    | 'banknote'
+    | 'province'
+    | 'nature'
+    | 'date'
+    | 'emblem';
 
   @IsString()
   @IsNotEmpty()
@@ -907,4 +914,3 @@ export class ReportHistoryDto {
   @IsOptional()
   description?: string;
 }
-

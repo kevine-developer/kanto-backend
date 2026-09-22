@@ -180,7 +180,11 @@ export class FriendsService {
   async getFriendshipStatus(
     userId: string,
     targetUserId: string,
-  ): Promise<{ status: 'NONE' | 'PENDING_SENT' | 'PENDING_RECEIVED' | 'FRIENDS' | 'BLOCKED'; friendshipId?: string }> {
+  ): Promise<{
+    status:
+      'NONE' | 'PENDING_SENT' | 'PENDING_RECEIVED' | 'FRIENDS' | 'BLOCKED';
+    friendshipId?: string;
+  }> {
     if (userId === targetUserId) {
       return { status: 'NONE' };
     }
@@ -208,7 +212,8 @@ export class FriendsService {
 
     if (friendship.status === FriendshipStatus.PENDING) {
       return {
-        status: friendship.senderId === userId ? 'PENDING_SENT' : 'PENDING_RECEIVED',
+        status:
+          friendship.senderId === userId ? 'PENDING_SENT' : 'PENDING_RECEIVED',
         friendshipId: friendship.id,
       };
     }
@@ -222,12 +227,20 @@ export class FriendsService {
    */
   async sendFriendRequest(senderId: string, targetUserId: string) {
     if (senderId === targetUserId) {
-      throw new BadRequestException('Vous ne pouvez pas vous ajouter vous-même en ami.');
+      throw new BadRequestException(
+        'Vous ne pouvez pas vous ajouter vous-même en ami.',
+      );
     }
 
     const [sender, targetUser] = await Promise.all([
-      this.prisma.user.findUnique({ where: { id: senderId }, select: { name: true } }),
-      this.prisma.user.findUnique({ where: { id: targetUserId }, select: { id: true, name: true } }),
+      this.prisma.user.findUnique({
+        where: { id: senderId },
+        select: { name: true },
+      }),
+      this.prisma.user.findUnique({
+        where: { id: targetUserId },
+        select: { id: true, name: true },
+      }),
     ]);
 
     if (!targetUser) {
@@ -248,13 +261,21 @@ export class FriendsService {
         throw new ConflictException('Vous êtes déjà amis.');
       }
       if (existing.status === FriendshipStatus.BLOCKED) {
-        throw new BadRequestException('Impossible d’envoyer une demande à cet utilisateur.');
+        throw new BadRequestException(
+          'Impossible d’envoyer une demande à cet utilisateur.',
+        );
       }
-      if (existing.senderId === senderId && existing.status === FriendshipStatus.PENDING) {
+      if (
+        existing.senderId === senderId &&
+        existing.status === FriendshipStatus.PENDING
+      ) {
         throw new ConflictException('Une demande d’ami est déjà en attente.');
       }
       // L'autre utilisateur nous avait déjà envoyé une demande : on accepte automatiquement !
-      if (existing.senderId === targetUserId && existing.status === FriendshipStatus.PENDING) {
+      if (
+        existing.senderId === targetUserId &&
+        existing.status === FriendshipStatus.PENDING
+      ) {
         const updated = await this.prisma.friendship.update({
           where: { id: existing.id },
           data: { status: FriendshipStatus.ACCEPTED },
@@ -427,7 +448,9 @@ export class FriendsService {
     });
 
     if (!friendship) {
-      throw new NotFoundException('Cet utilisateur ne fait pas partie de vos amis.');
+      throw new NotFoundException(
+        'Cet utilisateur ne fait pas partie de vos amis.',
+      );
     }
 
     await this.prisma.friendship.delete({
@@ -472,7 +495,13 @@ export class FriendsService {
       },
     });
 
-    const statusMap = new Map<string, { status: 'NONE' | 'PENDING_SENT' | 'PENDING_RECEIVED' | 'FRIENDS'; friendshipId?: string }>();
+    const statusMap = new Map<
+      string,
+      {
+        status: 'NONE' | 'PENDING_SENT' | 'PENDING_RECEIVED' | 'FRIENDS';
+        friendshipId?: string;
+      }
+    >();
 
     for (const f of friendships) {
       const otherId = f.senderId === userId ? f.receiverId : f.senderId;
@@ -504,7 +533,10 @@ export class FriendsService {
   /**
    * Vérifie si l'utilisateur connecté peut encourager un utilisateur aujourd'hui.
    */
-  async canEncourage(senderId: string, targetUserId: string): Promise<{ canEncourage: boolean; lastEncouragedAt?: Date }> {
+  async canEncourage(
+    senderId: string,
+    targetUserId: string,
+  ): Promise<{ canEncourage: boolean; lastEncouragedAt?: Date }> {
     if (senderId === targetUserId) {
       return { canEncourage: false };
     }
@@ -536,12 +568,20 @@ export class FriendsService {
    */
   async encourageUser(senderId: string, targetUserId: string) {
     if (senderId === targetUserId) {
-      throw new BadRequestException('Vous ne pouvez pas vous encourager vous-même.');
+      throw new BadRequestException(
+        'Vous ne pouvez pas vous encourager vous-même.',
+      );
     }
 
     const [sender, targetUser] = await Promise.all([
-      this.prisma.user.findUnique({ where: { id: senderId }, select: { name: true } }),
-      this.prisma.user.findUnique({ where: { id: targetUserId }, select: { id: true, name: true } }),
+      this.prisma.user.findUnique({
+        where: { id: senderId },
+        select: { name: true },
+      }),
+      this.prisma.user.findUnique({
+        where: { id: targetUserId },
+        select: { id: true, name: true },
+      }),
     ]);
 
     if (!targetUser) {
@@ -617,7 +657,8 @@ export class FriendsService {
       xpEarned: 1,
       senderTotalXp: senderProg.totalXp,
       senderLevel: senderProg.level,
-      message: 'Encouragement envoyé avec succès ! Vous et votre ami avez chacun reçu +1 XP.',
+      message:
+        'Encouragement envoyé avec succès ! Vous et votre ami avez chacun reçu +1 XP.',
     };
   }
 }

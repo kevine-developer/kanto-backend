@@ -9,4 +9,3 @@ import { ResendService } from './resend/resend.service.js';
   exports: [CloudinaryService, GeminiTtsService, ResendService],
 })
 export class IntegrationsModule {}
-
