@@ -288,6 +288,17 @@ export class LocksService implements OnModuleInit {
       },
     });
 
+    // Suppression automatique de l'ancienne image si remplacée
+    if (
+      data.imageUrl !== undefined &&
+      existing.imageUrl &&
+      existing.imageUrl !== updated.imageUrl
+    ) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
+
     // Invalide le cache public Redis
     try {
       await this.redisService.del(CACHE_KEY_PUBLIC_LOCKS);
@@ -296,14 +307,14 @@ export class LocksService implements OnModuleInit {
     }
 
     this.logger.log(
-      `🔒 [ModuleLock] "${key}" mis à jour : isLocked=${updated.isLocked} (Image: ${updated.imageUrl || 'aucune'})`,
+      `[ModuleLock] "${key}" mis à jour : isLocked=${updated.isLocked} (Image: ${updated.imageUrl || 'aucune'})`,
     );
 
     return updated;
   }
 
   /**
-   * Supprime un module (jeu ou catégorie).
+   * Supprime un module (jeu ou catégorie) et son illustration Cloudinary.
    */
   async deleteModuleLock(key: string) {
     const existing = await this.prisma.moduleLock.findUnique({
@@ -317,6 +328,13 @@ export class LocksService implements OnModuleInit {
     await this.prisma.moduleLock.delete({
       where: { key },
     });
+
+    // Suppression de l'illustration associée
+    if (existing.imageUrl) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
 
     // Invalide le cache public Redis
     try {
@@ -335,6 +353,7 @@ export class LocksService implements OnModuleInit {
   async saveUploadedImage(
     base64Data: string,
     originalName?: string,
+    subfolder = 'modules',
   ): Promise<{ url: string; provider: 'cloudinary' | 'local' }> {
     const { buffer, mimeType } =
       this.cloudinaryService.validateAndDecodeBase64Image(base64Data);
@@ -347,32 +366,34 @@ export class LocksService implements OnModuleInit {
       'image/gif': 'gif',
     };
     const extension = mimeToExt[mimeType] ?? 'jpg';
+    const safeSubfolder =
+      (subfolder || 'modules').replace(/[^a-zA-Z0-9_-]/g, '') || 'modules';
 
     if (this.cloudinaryService.isConfigured()) {
       try {
         const cloudinaryUrl = await this.cloudinaryService.uploadImageBase64(
           base64Data,
           originalName,
-          'kanto/images/modules',
+          `kanto/images/${safeSubfolder}`,
         );
         this.logger.log(
-          `☁️ [Cloudinary] Image de module hébergée avec succès : ${cloudinaryUrl}`,
+          `[Cloudinary] Image hébergée avec succès : ${cloudinaryUrl}`,
         );
         return { url: cloudinaryUrl, provider: 'cloudinary' };
       } catch (err: unknown) {
         this.logger.error(
-          `❌ [Cloudinary] Erreur upload image, bascule sur stockage local : ${
+          `[Cloudinary] Erreur upload image, bascule sur stockage local : ${
             err instanceof Error ? err.message : String(err)
           }`,
         );
       }
     } else {
       this.logger.warn(
-        '⚠️ [Cloudinary] Non configuré — enregistrement local dans uploads/modules/',
+        `[Cloudinary] Non configuré — enregistrement local dans uploads/${safeSubfolder}/`,
       );
     }
 
-    const uploadDir = path.resolve(process.cwd(), 'uploads', 'modules');
+    const uploadDir = path.resolve(process.cwd(), 'uploads', safeSubfolder);
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -382,15 +403,15 @@ export class LocksService implements OnModuleInit {
           .replace(/\.[^/.]+$/, '')
           .replace(/[^a-zA-Z0-9_-]/g, '_')
           .toLowerCase()
-      : 'module';
+      : 'image';
     const fileName = `${safeName}-${Date.now()}.${extension}`;
     const filePath = path.join(uploadDir, fileName);
 
     fs.writeFileSync(filePath, buffer);
 
     this.logger.log(
-      `📷 Image de module enregistrée en local : /uploads/modules/${fileName}`,
+      `[Local] Image enregistrée en local : /uploads/${safeSubfolder}/${fileName}`,
     );
-    return { url: `/uploads/modules/${fileName}`, provider: 'local' };
+    return { url: `/uploads/${safeSubfolder}/${fileName}`, provider: 'local' };
   }
 }

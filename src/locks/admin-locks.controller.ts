@@ -91,6 +91,10 @@ export class UploadImageDto {
   @IsString()
   @IsOptional()
   fileName?: string;
+
+  @IsString()
+  @IsOptional()
+  subfolder?: string;
 }
 
 @Controller('admin/locks')
@@ -112,7 +116,11 @@ export class AdminLocksController {
   @Post('upload-image')
   @Throttle({ upload: { limit: 15, ttl: 60000 } })
   async uploadModuleImage(@Body() body: UploadImageDto) {
-    return this.locksService.saveUploadedImage(body.imageBase64, body.fileName);
+    return this.locksService.saveUploadedImage(
+      body.imageBase64,
+      body.fileName,
+      body.subfolder || 'modules',
+    );
   }
 
   @Patch(':key')

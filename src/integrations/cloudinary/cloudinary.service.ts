@@ -1,6 +1,8 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import { v2 as cloudinary, UploadApiResponse } from 'cloudinary';
 import { Readable } from 'node:stream';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 @Injectable()
 export class CloudinaryService {
@@ -122,7 +124,7 @@ export class CloudinaryService {
   /**
    * Vérifie les Magic Numbers d'en-tête binaire pour authentifier le format réel.
    */
-  private detectImageMimeFromBuffer(buffer: Buffer): string | null {
+  detectImageMimeFromBuffer(buffer: Buffer): string | null {
     if (buffer.length < 12) return null;
 
     // JPEG: FF D8 FF
@@ -184,9 +186,12 @@ export class CloudinaryService {
       );
     }
 
-    const sizeKB = (buffer.length / 1024).toFixed(1);
+    const sizeStr =
+      buffer.length < 1024
+        ? `${buffer.length} octets`
+        : `${(buffer.length / 1024).toFixed(1)} KB`;
     this.logger.log(
-      `[Cloudinary] Upload ${sizeKB} KB -> "${folder}/${publicId}"`,
+      `[Cloudinary] Upload ${sizeStr} -> "${folder}/${publicId}"`,
     );
 
     return new Promise<string>((resolve, reject) => {
@@ -218,10 +223,7 @@ export class CloudinaryService {
         },
       );
 
-      const readable = new Readable();
-      readable.push(buffer);
-      readable.push(null);
-      readable.pipe(uploadStream);
+      Readable.from(buffer).pipe(uploadStream);
     });
   }
 
@@ -243,9 +245,12 @@ export class CloudinaryService {
       );
     }
 
-    const sizeKB = (buffer.length / 1024).toFixed(1);
+    const sizeStr =
+      buffer.length < 1024
+        ? `${buffer.length} octets`
+        : `${(buffer.length / 1024).toFixed(1)} KB`;
     this.logger.log(
-      `[Cloudinary] Upload Image ${sizeKB} KB -> "${folder}/${publicId || 'auto'}"`,
+      `[Cloudinary] Upload Image ${sizeStr} -> "${folder}/${publicId || 'auto'}"`,
     );
 
     return new Promise<string>((resolve, reject) => {
@@ -274,10 +279,7 @@ export class CloudinaryService {
         },
       );
 
-      const readable = new Readable();
-      readable.push(buffer);
-      readable.push(null);
-      readable.pipe(uploadStream);
+      Readable.from(buffer).pipe(uploadStream);
     });
   }
 
@@ -313,13 +315,123 @@ export class CloudinaryService {
   }
 
   /**
+   * Extrait le public_id Cloudinary et le resource_type depuis une URL Cloudinary complète.
+   * Retourne null si l'URL n'est pas hébergée sur Cloudinary.
+   */
+  extractPublicIdFromUrl(url?: string | null): {
+    publicId: string;
+    resourceType: 'image' | 'video' | 'raw';
+  } | null {
+    if (!url || typeof url !== 'string') return null;
+    if (!url.includes('res.cloudinary.com')) return null;
+
+    try {
+      const parsedUrl = new URL(url);
+      const pathname = parsedUrl.pathname;
+      const uploadIdx = pathname.indexOf('/upload/');
+      if (uploadIdx === -1) return null;
+
+      // Déterminer le resource_type
+      const beforeUpload = pathname.substring(0, uploadIdx);
+      let resourceType: 'image' | 'video' | 'raw' = 'image';
+      if (beforeUpload.includes('/video/')) {
+        resourceType = 'video';
+      } else if (beforeUpload.includes('/raw/')) {
+        resourceType = 'raw';
+      }
+
+      const afterUpload = pathname.substring(uploadIdx + '/upload/'.length);
+
+      // Si le dossier racine kanto/ est présent dans le chemin
+      const kantoIdx = afterUpload.indexOf('kanto/');
+      let rawId: string;
+      if (kantoIdx !== -1) {
+        rawId = afterUpload.substring(kantoIdx);
+      } else {
+        // Enlève les transformations et préfixes de version éventuels v\d+/
+        rawId = afterUpload.replace(/^.*v\d+\//, '');
+      }
+
+      // Enlever l'extension (.jpg, .png, .webp, .mp3, etc.)
+      const lastDot = rawId.lastIndexOf('.');
+      const publicId = lastDot !== -1 ? rawId.substring(0, lastDot) : rawId;
+
+      if (!publicId) return null;
+
+      return { publicId, resourceType };
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Supprime un média (image ou audio) hébergé soit sur Cloudinary soit en local (/uploads/...).
+   * Ne supprime jamais les URLs externes (Unsplash, etc.) et ne supprime sur Cloudinary
+   * que les ressources identifiées sous le projet.
+   * @param url URL complète ou chemin local du média à supprimer
+   * @returns true si une suppression a été effectuée, false sinon
+   */
+  async deleteMediaFromUrl(url?: string | null): Promise<boolean> {
+    if (!url || typeof url !== 'string') return false;
+
+    // 1. Cas Cloudinary
+    const cloudinaryInfo = this.extractPublicIdFromUrl(url);
+    if (cloudinaryInfo) {
+      if (!this.isConfigured()) return false;
+      try {
+        const res = await cloudinary.uploader.destroy(cloudinaryInfo.publicId, {
+          resource_type: cloudinaryInfo.resourceType,
+          invalidate: true,
+        });
+        this.logger.log(
+          `[Cloudinary] Asset supprime : "${cloudinaryInfo.publicId}" (${cloudinaryInfo.resourceType}) -> resultat: ${res?.result || 'ok'}`,
+        );
+        return true;
+      } catch (err: unknown) {
+        this.logger.warn(
+          `[Cloudinary] Echec suppression asset "${cloudinaryInfo.publicId}" : ${
+            err instanceof Error ? err.message : String(err)
+          }`,
+        );
+        return false;
+      }
+    }
+
+    // 2. Cas Stockage Local de secours (/uploads/...)
+    if (url.startsWith('/uploads/') || url.includes('/uploads/')) {
+      try {
+        const relativePart = url.startsWith('/uploads/')
+          ? url.replace('/uploads/', '')
+          : url.split('/uploads/')[1];
+        const localPath = path.resolve(process.cwd(), 'uploads', relativePart);
+        if (fs.existsSync(localPath)) {
+          await fs.promises.unlink(localPath);
+          this.logger.log(`[Local] Fichier supprime du disque : "${localPath}"`);
+          return true;
+        }
+      } catch (err: unknown) {
+        this.logger.warn(
+          `[Local] Echec suppression fichier local "${url}" : ${
+            err instanceof Error ? err.message : String(err)
+          }`,
+        );
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * Supprime un asset audio de Cloudinary (ex : pour régénérer la voix)
    */
   async deleteAudio(publicId: string): Promise<void> {
     if (!this.isConfigured()) return;
 
     try {
-      await cloudinary.uploader.destroy(publicId, { resource_type: 'video' });
+      await cloudinary.uploader.destroy(publicId, {
+        resource_type: 'video',
+        invalidate: true,
+      });
       this.logger.log(`[Cloudinary] Asset audio supprime : ${publicId}`);
     } catch (e: unknown) {
       this.logger.warn(
@@ -337,7 +449,10 @@ export class CloudinaryService {
     if (!this.isConfigured()) return;
 
     try {
-      await cloudinary.uploader.destroy(publicId, { resource_type: 'image' });
+      await cloudinary.uploader.destroy(publicId, {
+        resource_type: 'image',
+        invalidate: true,
+      });
       this.logger.log(`[Cloudinary] Image supprimee : ${publicId}`);
     } catch (e: unknown) {
       this.logger.warn(

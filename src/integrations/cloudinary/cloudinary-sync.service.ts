@@ -183,6 +183,43 @@ export class CloudinarySyncService implements OnModuleInit, OnModuleDestroy {
       ['.mp3', '.wav', '.ogg', '.m4a', '.aac', '.flac'].includes(ext);
 
     const buffer = await fs.promises.readFile(filePath);
+
+    // Verification de l'authenticite binaire pour eviter les rejets "Invalid image file"
+    if (!isAudio) {
+      const detectedMime =
+        this.cloudinaryService.detectImageMimeFromBuffer(buffer);
+      if (!detectedMime) {
+        const isReferenced = await this.isReferencedInDatabase(
+          relPath,
+          fileName,
+        );
+        if (!isReferenced) {
+          this.logger.warn(
+            `[Sync] Fichier orphelin non-image detecte et purge du disque : "${relPath}" (${buffer.length} octets)`,
+          );
+          await fs.promises.unlink(filePath).catch(() => {});
+          return true; // Fichier orphelin non valide nettoye
+        }
+        this.logger.error(
+          `[Sync] Fichier image corrompu reference en BDD : "${relPath}" (${buffer.length} octets) - transfert ignore.`,
+        );
+        return false;
+      }
+    } else if (buffer.length < 32) {
+      const isReferenced = await this.isReferencedInDatabase(
+        relPath,
+        fileName,
+      );
+      if (!isReferenced) {
+        this.logger.warn(
+          `[Sync] Fichier audio orphelin vide purge : "${relPath}" (${buffer.length} octets)`,
+        );
+        await fs.promises.unlink(filePath).catch(() => {});
+        return true;
+      }
+      return false;
+    }
+
     let secureUrl: string;
 
     if (isAudio) {
@@ -458,5 +495,32 @@ export class CloudinarySyncService implements OnModuleInit, OnModuleDestroy {
         }
       }
     }
+  }
+
+  /**
+   * Verifie si un fichier est reference dans l'une des tables cles de la BDD.
+   */
+  private async isReferencedInDatabase(
+    relPath: string,
+    fileName: string,
+  ): Promise<boolean> {
+    const patterns = [{ contains: relPath }, { contains: fileName }];
+
+    const userCount = await this.prisma.user.count({
+      where: { OR: [{ image: patterns[0] }, { image: patterns[1] }] },
+    });
+    if (userCount > 0) return true;
+
+    const moduleCount = await this.prisma.moduleLock.count({
+      where: { OR: [{ imageUrl: patterns[0] }, { imageUrl: patterns[1] }] },
+    });
+    if (moduleCount > 0) return true;
+
+    const lessonCount = await this.prisma.civicLesson.count({
+      where: { OR: [{ imageUrl: patterns[0] }, { imageUrl: patterns[1] }] },
+    });
+    if (lessonCount > 0) return true;
+
+    return false;
   }
 }

@@ -10,10 +10,10 @@ export class AnnouncementsService {
   constructor(private prisma: PrismaService) {}
 
   async getActiveAnnouncement() {
-    // Retourner l'annonce active (la plus récente s'il y en a plusieurs)
+    // Retourner l'annonce active (la plus récemment mise à jour ou activée)
     return this.prisma.systemAnnouncement.findFirst({
       where: { isActive: true },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { updatedAt: 'desc' },
     });
   }
 
@@ -33,7 +33,7 @@ export class AnnouncementsService {
 
   async create(data: CreateAnnouncementDto) {
     if (data.isActive) {
-      // Désactiver les autres si on active celle-ci
+      // Désactiver toutes les autres annonces actives pour garantir l'unicité
       await this.prisma.systemAnnouncement.updateMany({
         where: { isActive: true },
         data: { isActive: false },
@@ -48,7 +48,7 @@ export class AnnouncementsService {
         messageMg: data.messageMg,
         type: data.type,
         isActive: data.isActive || false,
-        version: 1,
+        version: data.version && data.version > 0 ? data.version : 1,
       },
     });
   }
@@ -56,16 +56,19 @@ export class AnnouncementsService {
   async update(id: string, data: UpdateAnnouncementDto) {
     const existing = await this.findOne(id);
 
-    if (data.isActive && !existing.isActive) {
-      // Désactiver les autres si on active celle-ci
+    if (data.isActive) {
+      // Désactiver toutes les autres annonces actives pour garantir l'unicité
       await this.prisma.systemAnnouncement.updateMany({
         where: { id: { not: id }, isActive: true },
         data: { isActive: false },
       });
     }
 
-    // Incrémenter la version si le contenu ou l'état change de façon significative
-    const newVersion = existing.version + 1;
+    // Si une version explicite est transmise, l'utiliser ; sinon incrémenter
+    const newVersion =
+      data.version !== undefined && data.version > 0
+        ? data.version
+        : existing.version + 1;
 
     return this.prisma.systemAnnouncement.update({
       where: { id },
