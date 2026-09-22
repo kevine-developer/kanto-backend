@@ -24,11 +24,11 @@ export class CloudinaryService {
     const configured = !!(c.cloud_name && c.api_key && c.api_secret);
     if (configured) {
       this.logger.log(
-        `☁️ [Cloudinary] Configuré — cloud: "${c.cloud_name}", api_key: "${String(c.api_key).slice(0, 6)}..."`,
+        `[Cloudinary] Configure — cloud: "${c.cloud_name}", api_key: "${String(c.api_key).slice(0, 6)}..."`,
       );
     } else {
       this.logger.warn(
-        '⚠️ [Cloudinary] Identifiants manquants — vérifiez CLOUDINARY_CLOUD_NAME / API_KEY / API_SECRET dans .env',
+        '[Cloudinary] Identifiants manquants — verifiez CLOUDINARY_CLOUD_NAME / API_KEY / API_SECRET dans .env',
       );
     }
   }
@@ -39,6 +39,24 @@ export class CloudinaryService {
       process.env.CLOUDINARY_URL ||
       (c.cloud_name && c.api_key && c.api_secret)
     );
+  }
+
+  /**
+   * Verifie si l'API Cloudinary est reellement joignable et operationnelle (ping).
+   */
+  async isAvailable(): Promise<boolean> {
+    if (!this.isConfigured()) return false;
+    try {
+      const res = (await cloudinary.api.ping()) as { status?: string };
+      return res?.status === 'ok';
+    } catch (err: unknown) {
+      this.logger.debug?.(
+        `[Cloudinary] Indisponible au ping : ${
+          err instanceof Error ? err.message : String(err)
+        }`,
+      );
+      return false;
+    }
   }
 
   /**
@@ -168,7 +186,7 @@ export class CloudinaryService {
 
     const sizeKB = (buffer.length / 1024).toFixed(1);
     this.logger.log(
-      `☁️ [Cloudinary] Upload ${sizeKB} KB → "${folder}/${publicId}"`,
+      `[Cloudinary] Upload ${sizeKB} KB -> "${folder}/${publicId}"`,
     );
 
     return new Promise<string>((resolve, reject) => {
@@ -188,13 +206,13 @@ export class CloudinaryService {
         },
         (error, result: UploadApiResponse | undefined) => {
           if (error || !result) {
-            const msg = error?.message ?? 'Réponse vide de Cloudinary';
-            this.logger.error(`❌ [Cloudinary] Erreur upload : ${msg}`);
+            const msg = error?.message ?? 'Reponse vide de Cloudinary';
+            this.logger.error(`[Cloudinary] Erreur upload : ${msg}`);
             return reject(new BadRequestException(`Cloudinary : ${msg}`));
           }
 
           this.logger.log(
-            `✅ [Cloudinary] Hébergé (${(result.bytes / 1024).toFixed(1)} KB) : ${result.secure_url}`,
+            `[Cloudinary] Heberge (${(result.bytes / 1024).toFixed(1)} KB) : ${result.secure_url}`,
           );
           resolve(result.secure_url);
         },
@@ -221,13 +239,13 @@ export class CloudinaryService {
   ): Promise<string> {
     if (!this.isConfigured()) {
       throw new BadRequestException(
-        'Cloudinary non configuré. Vérifiez CLOUDINARY_CLOUD_NAME / API_KEY / API_SECRET dans .env',
+        'Cloudinary non configure. Verifiez CLOUDINARY_CLOUD_NAME / API_KEY / API_SECRET dans .env',
       );
     }
 
     const sizeKB = (buffer.length / 1024).toFixed(1);
     this.logger.log(
-      `☁️ [Cloudinary] Upload Image ${sizeKB} KB → "${folder}/${publicId || 'auto'}"`,
+      `[Cloudinary] Upload Image ${sizeKB} KB -> "${folder}/${publicId || 'auto'}"`,
     );
 
     return new Promise<string>((resolve, reject) => {
@@ -244,13 +262,13 @@ export class CloudinaryService {
         options,
         (error, result: UploadApiResponse | undefined) => {
           if (error || !result) {
-            const msg = error?.message ?? 'Réponse vide de Cloudinary';
-            this.logger.error(`❌ [Cloudinary] Erreur upload image : ${msg}`);
+            const msg = error?.message ?? 'Reponse vide de Cloudinary';
+            this.logger.error(`[Cloudinary] Erreur upload image : ${msg}`);
             return reject(new BadRequestException(`Cloudinary : ${msg}`));
           }
 
           this.logger.log(
-            `✅ [Cloudinary] Image hébergée (${(result.bytes / 1024).toFixed(1)} KB) : ${result.secure_url}`,
+            `[Cloudinary] Image hebergee (${(result.bytes / 1024).toFixed(1)} KB) : ${result.secure_url}`,
           );
           resolve(result.secure_url);
         },
@@ -302,10 +320,10 @@ export class CloudinaryService {
 
     try {
       await cloudinary.uploader.destroy(publicId, { resource_type: 'video' });
-      this.logger.log(`🗑️ [Cloudinary] Asset audio supprimé : ${publicId}`);
+      this.logger.log(`[Cloudinary] Asset audio supprime : ${publicId}`);
     } catch (e: unknown) {
       this.logger.warn(
-        `⚠️ [Cloudinary] Suppression audio échouée pour "${publicId}" : ${
+        `[Cloudinary] Suppression audio echouee pour "${publicId}" : ${
           e instanceof Error ? e.message : String(e)
         }`,
       );
@@ -320,10 +338,10 @@ export class CloudinaryService {
 
     try {
       await cloudinary.uploader.destroy(publicId, { resource_type: 'image' });
-      this.logger.log(`🗑️ [Cloudinary] Image supprimée : ${publicId}`);
+      this.logger.log(`[Cloudinary] Image supprimee : ${publicId}`);
     } catch (e: unknown) {
       this.logger.warn(
-        `⚠️ [Cloudinary] Suppression image échouée pour "${publicId}" : ${
+        `[Cloudinary] Suppression image echouee pour "${publicId}" : ${
           e instanceof Error ? e.message : String(e)
         }`,
       );

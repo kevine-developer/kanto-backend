@@ -1,18 +1,25 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   BadRequestException,
   UseGuards,
 } from '@nestjs/common';
 import { ResendService } from '../integrations/resend/resend.service.js';
+import { CloudinaryService } from '../integrations/cloudinary/cloudinary.service.js';
+import { CloudinarySyncService } from '../integrations/cloudinary/cloudinary-sync.service.js';
 import { AuthGuard, Roles } from '../auth/index.js';
 
 @Controller('admin/system')
 @UseGuards(AuthGuard)
 @Roles(['ADMIN', 'admin'])
 export class AdminSystemController {
-  constructor(private readonly resendService: ResendService) {}
+  constructor(
+    private readonly resendService: ResendService,
+    private readonly cloudinaryService: CloudinaryService,
+    private readonly cloudinarySyncService: CloudinarySyncService,
+  ) {}
 
   @Post('test-email')
   async sendTestEmail(@Body('to') to: string) {
@@ -148,5 +155,21 @@ Destinataire : ${to}
       }
       throw new BadRequestException(`Erreur d'envoi Resend : ${errorMsg}`);
     }
+  }
+
+  @Get('cloudinary/status')
+  async getCloudinaryStatus() {
+    const isConfigured = this.cloudinaryService.isConfigured();
+    const isAvailable = await this.cloudinaryService.isAvailable();
+    return {
+      configured: isConfigured,
+      available: isAvailable,
+      provider: isAvailable ? 'cloudinary' : 'local_fallback',
+    };
+  }
+
+  @Post('cloudinary/sync')
+  async triggerCloudinarySync() {
+    return this.cloudinarySyncService.syncLocalUploadsToCloudinary();
   }
 }
