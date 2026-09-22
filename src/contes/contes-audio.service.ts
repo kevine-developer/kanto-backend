@@ -98,11 +98,11 @@ export class ContesAudioService {
         'kanto/audio/contes',
       );
       this.logger.log(
-        `☁️ [Cloudinary] Audio (${language}) hébergé avec succès sur CDN : ${audioUrl}`,
+        `[Cloudinary] Audio (${language}) hébergé avec succès sur CDN : ${audioUrl}`,
       );
     } catch (cloudinaryError: any) {
       this.logger.error(
-        `❌ [Cloudinary] Échec de l’upload : ${cloudinaryError?.message}`,
+        `[Cloudinary] Échec de l’upload : ${cloudinaryError?.message}`,
       );
       throw new BadRequestException(
         `Échec de l'hébergement Cloudinary : ${cloudinaryError?.message || 'Erreur inconnue'}`,

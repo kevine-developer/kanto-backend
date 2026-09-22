@@ -386,6 +386,7 @@ export class UsersService {
       throw new NotFoundException('Utilisateur introuvable');
     }
 
+    const oldImageUrl = existingUser.image;
     const { buffer, mimeType } =
       this.cloudinaryService.validateAndDecodeBase64Image(base64Data);
 
@@ -408,11 +409,11 @@ export class UsersService {
           'kanto/images/avatars',
         );
         this.logger.log(
-          `☁️ [Cloudinary] Avatar utilisateur hébergé : ${imageUrl}`,
+          `[Cloudinary] Avatar utilisateur hébergé : ${imageUrl}`,
         );
       } catch (err: unknown) {
         this.logger.warn(
-          `⚠️ [Cloudinary] Échec upload avatar (${
+          `[Cloudinary] Échec upload avatar (${
             err instanceof Error ? err.message : 'erreur inconnue'
           }). Bascule vers stockage local.`,
         );
@@ -430,7 +431,7 @@ export class UsersService {
 
       await fs.promises.writeFile(filePath, buffer);
       imageUrl = `/uploads/avatars/${fileName}`;
-      this.logger.log(`📷 Avatar enregistré en local : ${imageUrl}`);
+      this.logger.log(`[Local] Avatar enregistré en local : ${imageUrl}`);
     }
 
     const updatedUser = await this.prisma.user.update({
@@ -447,11 +448,16 @@ export class UsersService {
       },
     });
 
+    // Suppression automatique de l'ancien avatar sur Cloudinary ou en local
+    if (oldImageUrl && oldImageUrl !== imageUrl) {
+      this.cloudinaryService.deleteMediaFromUrl(oldImageUrl).catch(() => {});
+    }
+
     return { success: true, url: imageUrl, user: updatedUser };
   }
 
   /**
-   * Supprime la photo de profil (remise à null).
+   * Supprime la photo de profil (remise à null) et détruit l'asset sur Cloudinary.
    */
   async deleteAvatar(userId: string) {
     const existingUser = await this.prisma.user.findUnique({
@@ -460,6 +466,8 @@ export class UsersService {
     if (!existingUser) {
       throw new NotFoundException('Utilisateur introuvable');
     }
+
+    const oldImageUrl = existingUser.image;
 
     const updatedUser = await this.prisma.user.update({
       where: { id: userId },
@@ -474,6 +482,11 @@ export class UsersService {
         updatedAt: true,
       },
     });
+
+    // Suppression de l'avatar sur Cloudinary ou en local
+    if (oldImageUrl) {
+      this.cloudinaryService.deleteMediaFromUrl(oldImageUrl).catch(() => {});
+    }
 
     return { success: true, user: updatedUser };
   }

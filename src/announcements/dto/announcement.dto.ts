@@ -1,4 +1,4 @@
-import { IsString, IsBoolean, IsEnum, IsOptional } from 'class-validator';
+import { IsString, IsBoolean, IsEnum, IsOptional, IsInt } from 'class-validator';
 import { AnnouncementType } from '../../../generated/prisma/client.js';
 
 export class CreateAnnouncementDto {
@@ -20,6 +20,10 @@ export class CreateAnnouncementDto {
   @IsBoolean()
   @IsOptional()
   isActive?: boolean;
+
+  @IsInt()
+  @IsOptional()
+  version?: number;
 }
 
 export class UpdateAnnouncementDto {
@@ -46,4 +50,8 @@ export class UpdateAnnouncementDto {
   @IsBoolean()
   @IsOptional()
   isActive?: boolean;
+
+  @IsInt()
+  @IsOptional()
+  version?: number;
 }

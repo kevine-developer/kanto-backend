@@ -86,3 +86,18 @@ export class ReorderWelcomeSlidesDto {
   @IsNotEmpty()
   slides: { id: string; orderIndex: number }[];
 }
+
+export class UploadWelcomeSlideImageDto {
+  @IsString()
+  @IsNotEmpty()
+  imageBase64: string;
+
+  @IsString()
+  @IsOptional()
+  fileName?: string;
+
+  @IsString()
+  @IsOptional()
+  subfolder?: string;
+}
+

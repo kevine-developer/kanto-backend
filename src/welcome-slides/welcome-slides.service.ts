@@ -4,7 +4,11 @@ import {
   Logger,
   OnModuleInit,
 } from '@nestjs/common';
+import fs from 'node:fs';
+import path from 'node:path';
 import { PrismaService } from '../prisma/prisma.service.js';
+import { CloudinaryService } from '../integrations/cloudinary/cloudinary.service.js';
+import { CloudinarySyncService } from '../integrations/cloudinary/cloudinary-sync.service.js';
 import {
   CreateWelcomeSlideDto,
   UpdateWelcomeSlideDto,
@@ -16,7 +20,11 @@ import { DEFAULT_WELCOME_SLIDES } from './constants/default-welcome-slides.const
 export class WelcomeSlidesService implements OnModuleInit {
   private readonly logger = new Logger(WelcomeSlidesService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly cloudinaryService: CloudinaryService,
+    private readonly cloudinarySyncService: CloudinarySyncService,
+  ) {}
 
   async onModuleInit() {
     await this.seedDefaultsIfEmpty();
@@ -118,24 +126,44 @@ export class WelcomeSlidesService implements OnModuleInit {
   }
 
   /**
-   * Met à jour une slide
+   * Met à jour une slide et supprime l'ancienne image si remplacée
    */
   async update(id: string, dto: UpdateWelcomeSlideDto) {
-    await this.findOne(id);
-    return this.prisma.welcomeSlide.update({
+    const existing = await this.findOne(id);
+    const updated = await this.prisma.welcomeSlide.update({
       where: { id },
       data: dto,
     });
+
+    if (
+      dto.imageUrl !== undefined &&
+      existing.imageUrl &&
+      existing.imageUrl !== updated.imageUrl
+    ) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
+
+    return updated;
   }
 
   /**
-   * Supprime une slide
+   * Supprime une slide et son image Cloudinary
    */
   async remove(id: string) {
-    await this.findOne(id);
-    return this.prisma.welcomeSlide.delete({
+    const existing = await this.findOne(id);
+    const deleted = await this.prisma.welcomeSlide.delete({
       where: { id },
     });
+
+    if (existing.imageUrl) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
+
+    return deleted;
   }
 
   /**
@@ -150,5 +178,76 @@ export class WelcomeSlidesService implements OnModuleInit {
     );
     await this.prisma.$transaction(updates);
     return this.findAllAdmin();
+  }
+
+  /**
+   * Sauvegarde une image uploadée en base64 vers Cloudinary CDN (avec fallback local si non configuré)
+   */
+  async saveUploadedImage(
+    base64Data: string,
+    originalName?: string,
+    subfolder = 'welcome',
+  ): Promise<{ url: string; provider: 'cloudinary' | 'local' }> {
+    const { buffer, mimeType } =
+      this.cloudinaryService.validateAndDecodeBase64Image(base64Data);
+
+    const mimeToExt: Record<string, string> = {
+      'image/jpeg': 'jpg',
+      'image/jpg': 'jpg',
+      'image/png': 'png',
+      'image/webp': 'webp',
+      'image/gif': 'gif',
+    };
+    const extension = mimeToExt[mimeType] ?? 'jpg';
+    const safeSubfolder =
+      (subfolder || 'welcome').replace(/[^a-zA-Z0-9_-]/g, '') || 'welcome';
+
+    if (this.cloudinaryService.isConfigured()) {
+      try {
+        const cloudinaryUrl = await this.cloudinaryService.uploadImageBase64(
+          base64Data,
+          originalName,
+          `kanto/images/${safeSubfolder}`,
+        );
+        this.logger.log(
+          `[Cloudinary] Photo slide hébergée avec succès : ${cloudinaryUrl}`,
+        );
+        this.cloudinarySyncService
+          .syncLocalUploadsToCloudinary()
+          .catch(() => {});
+        return { url: cloudinaryUrl, provider: 'cloudinary' };
+      } catch (err: unknown) {
+        this.logger.error(
+          `[Cloudinary] Erreur upload image, bascule sur stockage local : ${
+            err instanceof Error ? err.message : String(err)
+          }`,
+        );
+      }
+    } else {
+      this.logger.warn(
+        `[Cloudinary] Non configuré — enregistrement local dans uploads/${safeSubfolder}/`,
+      );
+    }
+
+    const uploadDir = path.resolve(process.cwd(), 'uploads', safeSubfolder);
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    const safeName = originalName
+      ? originalName
+          .replace(/\.[^/.]+$/, '')
+          .replace(/[^a-zA-Z0-9_-]/g, '_')
+          .toLowerCase()
+      : 'slide';
+    const fileName = `${safeName}-${Date.now()}.${extension}`;
+    const filePath = path.join(uploadDir, fileName);
+
+    fs.writeFileSync(filePath, buffer);
+
+    this.logger.log(
+      `[Local] Image enregistrée en local : /uploads/${safeSubfolder}/${fileName}`,
+    );
+    return { url: `/uploads/${safeSubfolder}/${fileName}`, provider: 'local' };
   }
 }

@@ -498,18 +498,32 @@ export class HistoryService implements OnModuleInit {
   }
 
   async updateLesson(id: string, data: UpdateCivicLessonDto) {
-    await this.getLessonById(id);
+    const existing = await this.getLessonById(id);
     const updated = await this.prisma.civicLesson.update({
       where: { id },
       data,
     });
+    if (
+      data.imageUrl !== undefined &&
+      existing.imageUrl &&
+      existing.imageUrl !== data.imageUrl
+    ) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
     await this.invalidateCache();
     return updated;
   }
 
   async deleteLesson(id: string) {
-    await this.getLessonById(id);
+    const existing = await this.getLessonById(id);
     const deleted = await this.prisma.civicLesson.delete({ where: { id } });
+    if (existing.imageUrl) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
     await this.invalidateCache();
     return deleted;
   }
@@ -537,18 +551,32 @@ export class HistoryService implements OnModuleInit {
   }
 
   async updatePresident(id: string, data: UpdatePresidentDto) {
-    await this.getPresidentById(id);
+    const existing = await this.getPresidentById(id);
     const updated = await this.prisma.president.update({
       where: { id },
       data,
     });
+    if (
+      data.imageUrl !== undefined &&
+      existing.imageUrl &&
+      existing.imageUrl !== data.imageUrl
+    ) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
     await this.invalidateCache();
     return updated;
   }
 
   async deletePresident(id: string) {
-    await this.getPresidentById(id);
+    const existing = await this.getPresidentById(id);
     const deleted = await this.prisma.president.delete({ where: { id } });
+    if (existing.imageUrl) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
     await this.invalidateCache();
     return deleted;
   }
@@ -580,18 +608,32 @@ export class HistoryService implements OnModuleInit {
   }
 
   async updateBanknote(id: string, data: UpdateBanknoteDto) {
-    await this.getBanknoteById(id);
+    const existing = await this.getBanknoteById(id);
     const updated = await this.prisma.banknote.update({
       where: { id },
       data,
     });
+    if (
+      data.imageUrl !== undefined &&
+      existing.imageUrl &&
+      existing.imageUrl !== data.imageUrl
+    ) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
     await this.invalidateCache();
     return updated;
   }
 
   async deleteBanknote(id: string) {
-    await this.getBanknoteById(id);
+    const existing = await this.getBanknoteById(id);
     const deleted = await this.prisma.banknote.delete({ where: { id } });
+    if (existing.imageUrl) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
     await this.invalidateCache();
     return deleted;
   }
@@ -624,7 +666,7 @@ export class HistoryService implements OnModuleInit {
   }
 
   async updateProvince(id: string, data: UpdateProvinceBlasonDto) {
-    await this.getProvinceById(id);
+    const existing = await this.getProvinceById(id);
     const updated = await this.prisma.provinceBlason.update({
       where: { id },
       data: {
@@ -635,13 +677,27 @@ export class HistoryService implements OnModuleInit {
             : undefined,
       },
     });
+    if (
+      data.imageUrl !== undefined &&
+      existing.imageUrl &&
+      existing.imageUrl !== data.imageUrl
+    ) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
     await this.invalidateCache();
     return updated;
   }
 
   async deleteProvince(id: string) {
-    await this.getProvinceById(id);
+    const existing = await this.getProvinceById(id);
     const deleted = await this.prisma.provinceBlason.delete({ where: { id } });
+    if (existing.imageUrl) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
     await this.invalidateCache();
     return deleted;
   }
@@ -669,18 +725,32 @@ export class HistoryService implements OnModuleInit {
   }
 
   async updateNatureEmblem(id: string, data: UpdateNatureEmblemDto) {
-    await this.getNatureEmblemById(id);
+    const existing = await this.getNatureEmblemById(id);
     const updated = await this.prisma.natureEmblem.update({
       where: { id },
       data,
     });
+    if (
+      data.imageUrl !== undefined &&
+      existing.imageUrl &&
+      existing.imageUrl !== data.imageUrl
+    ) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
     await this.invalidateCache();
     return updated;
   }
 
   async deleteNatureEmblem(id: string) {
-    await this.getNatureEmblemById(id);
+    const existing = await this.getNatureEmblemById(id);
     const deleted = await this.prisma.natureEmblem.delete({ where: { id } });
+    if (existing.imageUrl) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
     await this.invalidateCache();
     return deleted;
   }
@@ -708,18 +778,32 @@ export class HistoryService implements OnModuleInit {
   }
 
   async updateHistoryDate(id: string, data: UpdateHistoryDateDto) {
-    await this.getHistoryDateById(id);
+    const existing = await this.getHistoryDateById(id);
     const updated = await this.prisma.historyDate.update({
       where: { id },
       data,
     });
+    if (
+      data.imageUrl !== undefined &&
+      existing.imageUrl &&
+      existing.imageUrl !== data.imageUrl
+    ) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
     await this.invalidateCache();
     return updated;
   }
 
   async deleteHistoryDate(id: string) {
-    await this.getHistoryDateById(id);
+    const existing = await this.getHistoryDateById(id);
     const deleted = await this.prisma.historyDate.delete({ where: { id } });
+    if (existing.imageUrl) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
     await this.invalidateCache();
     return deleted;
   }
@@ -747,18 +831,32 @@ export class HistoryService implements OnModuleInit {
   }
 
   async updateNationalEmblem(id: string, data: UpdateNationalEmblemDto) {
-    await this.getNationalEmblemById(id);
+    const existing = await this.getNationalEmblemById(id);
     const updated = await this.prisma.nationalEmblem.update({
       where: { id },
       data,
     });
+    if (
+      data.imageUrl !== undefined &&
+      existing.imageUrl &&
+      existing.imageUrl !== data.imageUrl
+    ) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
     await this.invalidateCache();
     return updated;
   }
 
   async deleteNationalEmblem(id: string) {
-    await this.getNationalEmblemById(id);
+    const existing = await this.getNationalEmblemById(id);
     const deleted = await this.prisma.nationalEmblem.delete({ where: { id } });
+    if (existing.imageUrl) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
     await this.invalidateCache();
     return deleted;
   }

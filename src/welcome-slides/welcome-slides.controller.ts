@@ -7,11 +7,13 @@ import {
   Body,
   Param,
 } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { WelcomeSlidesService } from './welcome-slides.service.js';
 import {
   CreateWelcomeSlideDto,
   UpdateWelcomeSlideDto,
   ReorderWelcomeSlidesDto,
+  UploadWelcomeSlideImageDto,
 } from './dto/welcome-slide.dto.js';
 
 @Controller('welcome-slides')
@@ -32,6 +34,19 @@ export class WelcomeSlidesController {
   @Get('admin')
   findAllAdmin() {
     return this.welcomeSlidesService.findAllAdmin();
+  }
+
+  /**
+   * Téléversement d'image de slide d'accueil vers Cloudinary
+   */
+  @Post('upload-image')
+  @Throttle({ upload: { limit: 15, ttl: 60000 } })
+  uploadPhoto(@Body() body: UploadWelcomeSlideImageDto) {
+    return this.welcomeSlidesService.saveUploadedImage(
+      body.imageBase64,
+      body.fileName,
+      body.subfolder || 'welcome',
+    );
   }
 
   /**

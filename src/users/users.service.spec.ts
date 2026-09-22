@@ -1,6 +1,8 @@
 import { jest } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConflictException, NotFoundException } from '@nestjs/common';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import { UsersService } from './users.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CloudinaryService } from '../integrations/cloudinary/cloudinary.service.js';
@@ -20,6 +22,7 @@ describe('UsersService', () => {
     isConfigured: jest.Mock<any>;
     validateAndDecodeBase64Image: jest.Mock<any>;
     uploadImageBase64: jest.Mock<any>;
+    deleteMediaFromUrl: jest.Mock<any>;
   };
 
   beforeEach(async () => {
@@ -35,6 +38,7 @@ describe('UsersService', () => {
         .mockResolvedValue(
           'https://res.cloudinary.com/kanto/avatars/user-1.png',
         ),
+      deleteMediaFromUrl: jest.fn<any>().mockResolvedValue(true),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -463,6 +467,17 @@ describe('UsersService', () => {
           data: { image: expect.stringMatching(/^\/uploads\/avatars\//) },
         }),
       );
+
+      // Nettoyage immédiat du fichier créé par le test pour ne pas polluer uploads/
+      if (result.url) {
+        const filePath = path.resolve(
+          process.cwd(),
+          result.url.replace(/^\//, ''),
+        );
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      }
     });
   });
 
