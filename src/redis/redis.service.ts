@@ -19,6 +19,7 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     string,
     Set<(data: any) => void>
   >();
+  private readonly localSets = new Map<string, Set<string>>();
 
   async onModuleInit() {
     const redisUrl = process.env.REDIS_URL?.trim();
@@ -350,5 +351,79 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
         }
       }
     };
+  }
+
+  /**
+   * Ajoute un ou plusieurs membres dans un ensemble Redis (Set).
+   */
+  async sAdd(key: string, ...members: string[]): Promise<number> {
+    const validMembers = members.filter((m) => m && m.trim().length > 0);
+    if (validMembers.length === 0) return 0;
+
+    if (this.isAvailable() && this.client) {
+      try {
+        return await this.client.sadd(key, ...validMembers);
+      } catch (err: any) {
+        this.logger.debug(`[Redis] Erreur sAdd sur ${key} : ${err?.message}`);
+      }
+    }
+
+    // Fallback mémoire
+    if (!this.localSets.has(key)) {
+      this.localSets.set(key, new Set());
+    }
+    const set = this.localSets.get(key)!;
+    let added = 0;
+    for (const m of validMembers) {
+      if (!set.has(m)) {
+        set.add(m);
+        added++;
+      }
+    }
+    return added;
+  }
+
+  /**
+   * Récupère tous les membres d'un ensemble Redis (Set).
+   */
+  async sMembers(key: string): Promise<string[]> {
+    if (this.isAvailable() && this.client) {
+      try {
+        return await this.client.smembers(key);
+      } catch (err: any) {
+        this.logger.debug(`[Redis] Erreur sMembers sur ${key} : ${err?.message}`);
+      }
+    }
+
+    // Fallback mémoire
+    const set = this.localSets.get(key);
+    return set ? Array.from(set) : [];
+  }
+
+  /**
+   * Supprime un ou plusieurs membres d'un ensemble Redis (Set).
+   */
+  async sRem(key: string, ...members: string[]): Promise<number> {
+    const validMembers = members.filter((m) => m && m.trim().length > 0);
+    if (validMembers.length === 0) return 0;
+
+    if (this.isAvailable() && this.client) {
+      try {
+        return await this.client.srem(key, ...validMembers);
+      } catch (err: any) {
+        this.logger.debug(`[Redis] Erreur sRem sur ${key} : ${err?.message}`);
+      }
+    }
+
+    // Fallback mémoire
+    const set = this.localSets.get(key);
+    if (!set) return 0;
+    let removed = 0;
+    for (const m of validMembers) {
+      if (set.delete(m)) {
+        removed++;
+      }
+    }
+    return removed;
   }
 }

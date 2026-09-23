@@ -211,24 +211,44 @@ export class NotificationsService {
   }
 
   /**
-   * Enregistre ou met à jour le token Expo Push d'un utilisateur.
+   * Enregistre ou met à jour le token Expo Push d'un utilisateur ou d'un visiteur anonyme (invité).
    */
-  async registerPushToken(userId: string, pushToken: string) {
-    if (!userId || !pushToken)
-      return { success: false, message: 'Paramètres manquants' };
+  async registerPushToken(userId?: string, pushToken?: string) {
+    if (!pushToken || typeof pushToken !== 'string') {
+      return { success: false, message: 'Token push manquant ou invalide' };
+    }
+
+    const cleanToken = pushToken.trim();
+    if (
+      !cleanToken.startsWith('ExponentPushToken') &&
+      !cleanToken.startsWith('ExpoPushToken')
+    ) {
+      return { success: false, message: 'Format de token Expo invalide' };
+    }
 
     try {
-      await this.prisma.user.update({
-        where: { id: userId },
-        data: { pushToken: pushToken.trim() },
-      });
-      this.logger.log(
-        `📱 [Push] Token Expo enregistré pour l'utilisateur ${userId}`,
-      );
+      if (userId) {
+        await this.prisma.user.update({
+          where: { id: userId },
+          data: { pushToken: cleanToken },
+        });
+        // Si ce token était auparavant enregistré en tant qu'invité, le nettoyer
+        await this.redisService.sRem('expo_push_tokens:guests', cleanToken);
+        this.logger.log(
+          `📱 [Push] Token Expo enregistré pour l'utilisateur ${userId}`,
+        );
+      } else {
+        // Enregistrement anonyme (invité) dans Redis
+        await this.redisService.sAdd('expo_push_tokens:guests', cleanToken);
+        this.logger.log(
+          `📱 [Push] Token Expo enregistré pour un invité anonyme`,
+        );
+      }
+
       return { success: true, message: 'Token push enregistré avec succès' };
     } catch (err) {
       this.logger.warn(
-        `⚠️ [Push] Échec enregistrement token pour ${userId} :`,
+        `⚠️ [Push] Échec enregistrement token (userId=${userId || 'guest'}) :`,
         err,
       );
       return { success: false, message: 'Erreur enregistrement token' };
@@ -298,6 +318,57 @@ export class NotificationsService {
         err,
       );
     }
+  }
+
+  /**
+   * Envoie une notification push de test depuis l'administration.
+   */
+  async sendTestPush(targetToken?: string) {
+    let tokensToSend: string[] = [];
+
+    if (targetToken && targetToken.trim()) {
+      tokensToSend = [targetToken.trim()];
+    } else {
+      // Récupérer les tokens des utilisateurs enregistrés
+      const users = await this.prisma.user.findMany({
+        where: { pushToken: { not: null } },
+        select: { pushToken: true },
+        take: 20,
+      });
+      const userTokens = users
+        .map((u) => u.pushToken)
+        .filter((t): t is string => Boolean(t));
+
+      // Récupérer les tokens invités
+      const guestTokens = await this.redisService.sMembers(
+        'expo_push_tokens:guests',
+      );
+
+      tokensToSend = Array.from(
+        new Set([...userTokens, ...guestTokens.slice(0, 20)]),
+      );
+    }
+
+    if (tokensToSend.length === 0) {
+      return {
+        success: false,
+        sentCount: 0,
+        message:
+          'Aucun appareil enregistré trouvé (ni membre ni invité). Ouvrez l’application mobile Kanto sur un smartphone réel pour générer un token push.',
+      };
+    }
+
+    await this.sendExpoPush(tokensToSend, {
+      title: 'Test Kanto Push',
+      body: 'Le système de notifications push Expo fonctionne correctement sur votre appareil.',
+      data: { isTest: true, timestamp: Date.now() },
+    });
+
+    return {
+      success: true,
+      sentCount: tokensToSend.length,
+      message: `Notification push de test transmise à ${tokensToSend.length} appareil(s).`,
+    };
   }
 
   /**
@@ -383,18 +454,28 @@ export class NotificationsService {
             });
           }
         } else if (created.isBroadcast) {
-          // Notification de diffusion générale à tous les utilisateurs enregistrés avec un push token
+          // Notification de diffusion générale : utilisateurs enregistrés + invités dans Redis
           const usersWithToken = await this.prisma.user.findMany({
             where: { pushToken: { not: null } },
             select: { pushToken: true },
           });
 
-          const tokens = usersWithToken
+          const userTokens = usersWithToken
             .map((u) => u.pushToken)
             .filter((t): t is string => Boolean(t));
 
-          if (tokens.length > 0) {
-            await this.sendExpoPush(tokens, {
+          const guestTokens = await this.redisService.sMembers(
+            'expo_push_tokens:guests',
+          );
+
+          // Fusionner et dédupliquer
+          const allTokens = Array.from(new Set([...userTokens, ...guestTokens]));
+
+          if (allTokens.length > 0) {
+            this.logger.log(
+              `📢 [Expo Push] Diffusion broadcast vers ${allTokens.length} appareil(s) (${userTokens.length} inscrits, ${guestTokens.length} invités)`,
+            );
+            await this.sendExpoPush(allTokens, {
               title: pushTitle,
               body: pushBody,
               data: pushData,

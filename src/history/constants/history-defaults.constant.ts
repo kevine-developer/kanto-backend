@@ -55,6 +55,7 @@ export interface DefaultBanknote {
   symbolismMg: string;
   securityFeaturesFr: string[];
   imageUrl?: string | null;
+  imageUrlVerso?: string | null;
   orderIndex: number;
   status: 'PUBLISHED';
 }
@@ -547,9 +548,11 @@ export const DEFAULT_PRESIDENTS: DefaultPresident[] = [
 ];
 
 // =========================================================================
-// 3. LES BILLETS DE MADAGASCAR (6 coupures de la Série 2017)
+// 3. LES BILLETS DE MADAGASCAR — Histoire monétaire complète
+//    Ère coloniale → FMG → Ariary
 // =========================================================================
 export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
+  // ── SÉRIE ARIARY 2017 (Série actuelle) ───────────────────────────────────
   {
     id: 'billet-20000',
     valueAriary: 20000,
@@ -563,23 +566,26 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     colorLight: '#2C4075',
     colorDark: '#3E5AA1',
     obverseDescriptionFr:
-      'Usine moderne de Sherritt Ambatovy, pylônes électriques haute tension et réseau industriel.',
+      'Usine de nickel-cobalt Sherritt Ambatovy, pylônes haute tension et infrastructure industrielle moderne.',
     obverseDescriptionMg:
-      'Orinasa mamoderna Ambatovy, tsatokazo mpitondra herinaratra sy fampandrosoana indostrialy.',
+      'Orinasa Ambatovy mikarakara nikely sy kobalta, tsatokazo herinaratra ary fampandrosoana indostrialy.',
     reverseDescriptionFr:
-      'Gousses de vanille de Sava, boutons de girofle et poivre de Madagascar.',
+      "Gousses de vanille de la région Sava, boutons de girofle et poivre de Madagascar — épices d'exportation mondiale.",
     reverseDescriptionMg:
-      'Lavanila avy any Sava, jirofo ary dipoavatra malagasy.',
+      'Lavanila avy any Sava, jirofo ary dipoavatra malagasy, vokatra masaka fanondranana maneran-tany.',
     symbolismFr:
-      "Plus grosse coupure jamais émise à Madagascar. Elle symbolise la transition vers l'industrialisation tout en honorant la vanille, fleuron agricole mondial du pays.",
+      "Plus grosse coupure jamais émise à Madagascar. Elle symbolise la transition industrielle et l'excellence agricole de la vanille malgache, première au monde.",
     symbolismMg:
-      'Vola taratasy lehibe indrindra eto Madagasikara, maneho ny firoboroboan’ny orinasa sy ny harena avy amin’ny lavanila.',
+      "Vola taratasy lehibe indrindra eto Madagasikara, maneho ny firoboroboan'ny orinasa sy ny lavanila malaza eran-tany.",
     securityFeaturesFr: [
-      'Fil de sécurité à fenêtre changeant de couleur',
-      'Fleur de vanille en filigrane transparent',
+      'Fil de sécurité à fenêtre changeant de couleur (violet→vert)',
+      'Fleur de vanille en filigrane transparent visible en contre-jour',
+      'Encre à iridescence dynamique sur la valeur nominale',
     ],
     imageUrl:
-      'https://images.unsplash.com/photo-1621981386864-7221bc360f09?w=800&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1621981386864-7221bc360f09?w=900&auto=format&fit=crop&q=80',
+    imageUrlVerso:
+      'https://images.unsplash.com/photo-1509358271058-acd22cc93898?w=900&auto=format&fit=crop&q=80',
     orderIndex: 0,
     status: 'PUBLISHED',
   },
@@ -587,8 +593,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     id: 'billet-10000',
     valueAriary: 10000,
     valueFmg: 50000,
-    titleFr: 'Transports & Échanges Maritimes',
-    titleMg: 'Fitaterana sy Varotra An-dranomasina',
+    titleFr: 'Port de Toamasina & Valiha Nationale',
+    titleMg: "Seranan'i Toamasina sy Valiha Malagasy",
     series: 'SERIE_2017',
     seriesLabelFr: 'Série 2017 « Madagascar & ses Richesses »',
     seriesLabelMg: 'Andiany 2017 « Madagasikara sy ny Harenany »',
@@ -596,23 +602,26 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     colorLight: '#9B3D3D',
     colorDark: '#C25555',
     obverseDescriptionFr:
-      'Port autonome de Toamasina avec porte-conteneurs et grues de déchargement.',
+      'Port autonome de Toamasina (SPAT) avec porte-conteneurs, grues modernes et terminal pétrolier.',
     obverseDescriptionMg:
-      'Seranantsambon’i Toamasina, sambo mpitondra kaontenera sy fitaovana fampidinana entana.',
+      "Seranan'i Toamasina miaraka amin'ny sambo mpitondra kaontenera, fitaovana goavana sy seranana solika.",
     reverseDescriptionFr:
-      'Valiha traditionnelle malgache, zafimaniry sculpté et instruments de musique.',
+      'Valiha traditionnelle malgache et ensemble de sculptures Zafimaniry classées UNESCO.',
     reverseDescriptionMg:
-      'Valiha nentim-paharazana, sary sokitra zafimaniry ary zavamaneno malagasy.',
+      "Valiha nentim-paharazana sy sary sokitra Zafimaniry eken'ny UNESCO.",
     symbolismFr:
-      "Célèbre l'ouverture de l'île sur le monde à travers son grand port et la noblesse musicale de la Valiha, instrument national.",
+      "Célèbre l'ouverture maritime de l'île : 80 % du commerce international transite par Toamasina. La Valiha incarne l'âme musicale et l'identité culturelle nationale.",
     symbolismMg:
-      'Maneho ny fisokafana amin’izao tontolo izao sy ny haikanto malagasy amin’ny alalan’ny Valiha.',
+      "Maneho ny fisokafana amin'izao tontolo izao — 80% ny entana any amin'ny seranana — ary ny Valiha maneho ny haikanto sy ny toe-panahin'ny malagasy.",
     securityFeaturesFr: [
-      'Bande holographique brillante',
-      'Filigrane à tête de zébu et motif géométrique',
+      'Bande holographique brillante à effets de couleur',
+      'Filigrane tête de zébu et motif géométrique merina',
+      'Numérotation en encre magnétique invisible',
     ],
     imageUrl:
-      'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=900&auto=format&fit=crop&q=80',
+    imageUrlVerso:
+      'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=900&auto=format&fit=crop&q=80',
     orderIndex: 1,
     status: 'PUBLISHED',
   },
@@ -620,8 +629,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     id: 'billet-5000',
     valueAriary: 5000,
     valueFmg: 25000,
-    titleFr: 'Baobabs & Flore Ancestrale',
-    titleMg: 'Renala sy Zavamaniry Mampalaza',
+    titleFr: 'Allée des Baobabs & Forêt Primaire',
+    titleMg: "Lalan'ny Renala sy Ala Voajanahary",
     series: 'SERIE_2017',
     seriesLabelFr: 'Série 2017 « Madagascar & ses Richesses »',
     seriesLabelMg: 'Andiany 2017 « Madagasikara sy ny Harenany »',
@@ -629,22 +638,25 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     colorLight: '#3B6E4A',
     colorDark: '#529465',
     obverseDescriptionFr:
-      'La majestueuse Allée des Baobabs de Morondava (Adansonia grandidieri).',
+      "L'Allée des Baobabs de Morondava (Adansonia grandidieri) au coucher du soleil — site naturel iconique.",
     obverseDescriptionMg:
-      'Ny Lalan’ny Renala malaza any Morondava (Adansonia grandidieri).',
+      "Ny Lalan'ny Renala any Morondava (Adansonia grandidieri) amin'ny filentehan'ny masoandro.",
     reverseDescriptionFr:
-      'Chute d’eau de cascade préservée et forêt tropicale humide primaire.',
-    reverseDescriptionMg: 'Riandrano madio sy ala mikitroka voaaro.',
+      'Cascade naturelle préservée et forêt tropicale humide primaire de la côte Est.',
+    reverseDescriptionMg: 'Riandrano madio sy ala mikitroka voaaro atsinanana.',
     symbolismFr:
-      "Consacré au sanctuaire naturel de l'île. Le Baobab (Renala) est l'arbre-symbole par excellence de la résistance et de l'âme malgache.",
+      "Consacré au sanctuaire naturel. Madagascar abrite 6 des 8 espèces de baobabs au monde. Le Renala (mère de la forêt) est symbole de résistance et d'éternité.",
     symbolismMg:
-      'Fanomezam-boninahitra ny harena voajanahary sy ny Renala, hazo manan-tantara sy reharehan’ny Nosy.',
+      "Fanomezam-boninahitra ny harena voajanahary. Madagasikara manana 6 amin'ny karazana Renala 8 maneran-tany.",
     securityFeaturesFr: [
-      'Bande de sécurité iridescente',
-      'Filigrane Baobab visible en contre-jour',
+      "Bande de sécurité iridescente changeant d'angle",
+      'Filigrane baobab visible en contre-jour',
+      'Micro-impressions lisibles à la loupe',
     ],
     imageUrl:
-      'https://images.unsplash.com/photo-1528164344705-475426879c0d?w=800&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1528164344705-475426879c0d?w=900&auto=format&fit=crop&q=80',
+    imageUrlVerso:
+      'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=900&auto=format&fit=crop&q=80',
     orderIndex: 2,
     status: 'PUBLISHED',
   },
@@ -652,8 +664,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     id: 'billet-2000',
     valueAriary: 2000,
     valueFmg: 10000,
-    titleFr: 'Faune Endémique & Lémuriens',
-    titleMg: 'Biby Miavaka sy Gidro',
+    titleFr: 'Lémuriens & Biodiversité Endémique',
+    titleMg: 'Gidro sy Harena Biby Miavaka',
     series: 'SERIE_2017',
     seriesLabelFr: 'Série 2017 « Madagascar & ses Richesses »',
     seriesLabelMg: 'Andiany 2017 « Madagasikara sy ny Harenany »',
@@ -661,23 +673,26 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     colorLight: '#995C23',
     colorDark: '#C47C35',
     obverseDescriptionFr:
-      'Maki Catta (Lémurien à queue annelée) dans son habitat arboré.',
+      'Maki Catta (Lemur catta) dans son habitat naturel du Sud. 90 % de la faune malgache est endémique.',
     obverseDescriptionMg:
-      'Hira na Maki Catta eo ambony hazo amin’ny fonenany voajanahary.',
+      "Hira (Maki Catta) eo amin'ny fonenany any atsimo. 90% ny biby malagasy dia tsy misy afa-tsy eto.",
     reverseDescriptionFr:
-      'Tortue étoilée endémique (Astrochelys radiata) et flore du bush épineux.',
+      'Tortue étoilée endémique (Astrochelys radiata) et végétation du bush épineux du Grand Sud.',
     reverseDescriptionMg:
-      'Sokake (Sokatra) sy zavamaniry tsilo avy any Atsimo.',
+      'Sokake (Astrochelys radiata) sy zavamaniry tsilo avy any atsimo.',
     symbolismFr:
-      'Rappelle au citoyen que 90% de la faune de Madagascar est unique au monde et constitue un devoir absolu de préservation.',
+      'Rappel citoyen : Madagascar, 8e hotspot mondial de biodiversité. Chaque espèce perdue est irréversible. Ce billet est un pacte de préservation.',
     symbolismMg:
-      'Mampahatsiahy ny maha-tokana ny biby malagasy eran-tany sy ny adidy hiaro azy ireo.',
+      "Mampahatsiahy ny maha-toerana feno harena voajanahary an'i Madagasikara. Ny biby very dia very mandrakizay.",
     securityFeaturesFr: [
-      'Micro-impressions haute précision',
-      'Motif de lémurien fluorescent sous UV',
+      'Micro-impressions haute précision sur le pelage du lémurien',
+      'Motif de lémurien fluorescent sous lumière UV',
+      'Numéros en relief tactile pour les malvoyants',
     ],
     imageUrl:
-      'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?w=800&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?w=900&auto=format&fit=crop&q=80',
+    imageUrlVerso:
+      'https://images.unsplash.com/photo-1508455858334-95337ba25607?w=900&auto=format&fit=crop&q=80',
     orderIndex: 3,
     status: 'PUBLISHED',
   },
@@ -685,8 +700,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     id: 'billet-1000',
     valueAriary: 1000,
     valueFmg: 5000,
-    titleFr: 'Le Ravinala & Ponts Historiques',
-    titleMg: 'Ny Ravinala sy Tetezana Manan-tantara',
+    titleFr: 'Ravinala & Ponts de la Nation',
+    titleMg: 'Ravinala sy Tetezana Mahery',
     series: 'SERIE_2017',
     seriesLabelFr: 'Série 2017 « Madagascar & ses Richesses »',
     seriesLabelMg: 'Andiany 2017 « Madagasikara sy ny Harenany »',
@@ -694,22 +709,25 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     colorLight: '#35667A',
     colorDark: '#4B8BA6',
     obverseDescriptionFr:
-      'Pont suspendu moderne reliant les régions et l’Arbre du voyageur (Ravinala).',
-    obverseDescriptionMg: 'Tetezana mampitohy ny faritra sy ny hazo Ravinala.',
+      "Pont suspendu moderne reliant les Hautes Terres et l'Arbre du voyageur (Ravenala madagascariensis).",
+    obverseDescriptionMg:
+      'Tetezana mampitohy ny faritra ary ny hazo Ravinala (Ravenala madagascariensis).',
     reverseDescriptionFr:
-      'Oiseaux chanteurs endémiques de Madagascar et végétation riveraine.',
+      'Oiseaux chanteurs endémiques (Coua et Vanga) et végétation riveraine luxuriante.',
     reverseDescriptionMg:
-      'Vorona mpihira malagasy sy zava-maitso manamorona ny rano.',
+      'Vorona mpihira malagasy (Coua sy Vanga) sy zava-maitso manamorona ny rano.',
     symbolismFr:
-      'Le Ravinala, emblème national de la soif étanchée et de la protection des voyageurs.',
+      "Le Ravinala, emblème national qui figure sur le sceau de la République. Il incarne l'hospitalité : ses bases retiennent l'eau pour les voyageurs assoiffés.",
     symbolismMg:
-      'Ny Ravinala, mariky ny tanindrazana manome rano madio sy mialoka ny mpandeha.',
+      'Ny Ravinala, mariky ny Repoblika, maneho ny fampihavanana sy ny fanohanana ny mpandeha.',
     securityFeaturesFr: [
-      'Filigrane Ravinala',
-      'Transvision parfaite recto-verso',
+      'Filigrane Ravinala en deux niveaux de densité',
+      'Transvision recto-verso parfaitement alignée',
     ],
     imageUrl:
-      'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=800&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=900&auto=format&fit=crop&q=80',
+    imageUrlVerso:
+      'https://images.unsplash.com/photo-1444464666168-49d633b86797?w=900&auto=format&fit=crop&q=80',
     orderIndex: 4,
     status: 'PUBLISHED',
   },
@@ -717,8 +735,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     id: 'billet-500',
     valueAriary: 500,
     valueFmg: 2500,
-    titleFr: 'Artisanat & Pêche Traditionnelle',
-    titleMg: 'Asa Tanana sy Jono Nentin-drazana',
+    titleFr: 'Artisanat Vezo & Pêche Ancestrale',
+    titleMg: 'Asa Tanana Vezo sy Jono Nentin-drazana',
     series: 'SERIE_2017',
     seriesLabelFr: 'Série 2017 « Madagascar & ses Richesses »',
     seriesLabelMg: 'Andiany 2017 « Madagasikara sy ny Harenany »',
@@ -726,28 +744,352 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     colorLight: '#6B4370',
     colorDark: '#945D9A',
     obverseDescriptionFr:
-      'Pirogue traditionnelle Vezo à balancier naviguant sur le canal de Mozambique.',
+      'Pirogue Vezo à balancier naviguant sur le canal de Mozambique, maîtres de la navigation traditionnelle.',
     obverseDescriptionMg:
-      'Lakam-pihany Vezo misy vilo mandeha amin’ny ranomasina.',
+      "Lakam-pihany Vezo misy vilo amin'ny lakandranon'i Mozambika.",
     reverseDescriptionFr:
-      'Tisserande malgache confectionnant des nattes et paniers en raphia.',
+      'Tisserande malgache confectionnant des nattes et paniers en raphia — artisanat ancestral protégé.',
     reverseDescriptionMg:
-      'Mpanenona malagasy manao tsihy sy sobika amin’ny rofia.',
+      "Mpanenona malagasy manao tsihy sy sobika amin'ny rofia — asa tanana nentim-paharazana.",
     symbolismFr:
-      'Rend hommage aux pêcheurs des côtes et aux artisanes qui perpétuent les gestes ancestraux.',
+      'Hommage aux pêcheurs Vezo, nomades de la mer, et aux artisanes qui perpétuent les techniques ancestrales de tressage du raphia.',
     symbolismMg:
-      'Fisaorana ireo mpanjono sy mpanao asa tanana mitahiry ny fahaiza-manao nolovaina.',
+      'Fanomezam-boninahitra ireo Vezo mpanjono eny anaty ranomasina sy ireo mpanao asa tanana mitahiry ny fahaiza-manao nolovaina.',
     securityFeaturesFr: [
-      'Encre scintillante changeante',
-      'Fil de sécurité continu',
+      'Encre scintillante changeante (doré→vert)',
+      'Fil de sécurité continu intégré dans le papier',
     ],
     imageUrl:
-      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=900&auto=format&fit=crop&q=80',
+    imageUrlVerso:
+      'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=900&auto=format&fit=crop&q=80',
     orderIndex: 5,
     status: 'PUBLISHED',
   },
-];
+  {
+    id: 'billet-100',
+    valueAriary: 100,
+    valueFmg: 500,
+    titleFr: 'Paysages des Hautes Terres',
+    titleMg: 'Tany Avo sy Varimbazaha',
+    series: 'SERIE_2017',
+    seriesLabelFr: 'Série 2017 « Madagascar & ses Richesses »',
+    seriesLabelMg: 'Andiany 2017 « Madagasikara sy ny Harenany »',
+    period: '2017 - Présent',
+    colorLight: '#5C7A4A',
+    colorDark: '#7AA35E',
+    obverseDescriptionFr:
+      'Rizières en terrasses des Hautes Terres centrales, travaillées à la main depuis des siècles par le peuple Betsileo.',
+    obverseDescriptionMg:
+      "Tanimbary amin'ny tanety voakarakara an-tanan-tsoratra hatramin'ny ela ny Betsileo.",
+    reverseDescriptionFr:
+      'Femme portant un chapeau Kisaly et champ de riz Vary Fotsy des plateaux.',
+    reverseDescriptionMg:
+      "Vehivavy mitafy satroka Kisaly eo anilan'ny tany fambolena vary fotsy.",
+    symbolismFr:
+      "Le riz (vary) est l'âme de la civilisation malgache. « Tsy maintsy mihinam-bary ny malagasy » — manger le riz, c'est vivre en malgache.",
+    symbolismMg:
+      "« Tsy maintsy mihinam-bary ny malagasy » — ny vary no fototry ny fiainan'ny malagasy.",
+    securityFeaturesFr: [
+      'Filigrane tête de zébu simplifié',
+      'Numérotation en encre à détection UV',
+    ],
+    imageUrl:
+      'https://images.unsplash.com/photo-1533240332313-0db49b459ad6?w=900&auto=format&fit=crop&q=80',
+    imageUrlVerso:
+      'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=900&auto=format&fit=crop&q=80',
+    orderIndex: 6,
+    status: 'PUBLISHED',
+  },
 
+  // ── SÉRIE FMG — ARIARY 2003 (Transition) ────────────────────────────────
+  {
+    id: 'billet-ariary-2003-10000',
+    valueAriary: 10000,
+    valueFmg: 50000,
+    titleFr: 'Reine Ranavalona III & Palais de la Reine',
+    titleMg: "Mpanjakavavy Ranavalona III sy Rovan'i Manjakamiadana",
+    series: 'SERIE_2003',
+    seriesLabelFr: 'Série 2003 — Transition FMG vers Ariary',
+    seriesLabelMg: 'Andiany 2003 — Fiovana FMG ho Ariary',
+    period: '2003 - 2017',
+    colorLight: '#5C3D7A',
+    colorDark: '#7A5AA3',
+    obverseDescriptionFr:
+      'Portrait de la Reine Ranavalona III, dernière reine de Madagascar, aux traits nobles et à la coiffe traditionnelle royale.',
+    obverseDescriptionMg:
+      "Sarin'ny Mpanjakavavy Ranavalona III, farany tamin'ireo mpanjaka, mitafy satro-boninahitra nentim-paharazana.",
+    reverseDescriptionFr:
+      "Le Rova d'Antananarivo (Manjakamiadana) — palais royal sur les hauteurs de la capitale.",
+    reverseDescriptionMg:
+      "Ny Rovan'i Manjakamiadana tany Antananarivo — lapa nisy ny mpanjaka.",
+    symbolismFr:
+      'Billet charnière entre deux ères monétaires. Il rend hommage à la royauté merina tout en initiant la population à la nouvelle monnaie Ariary imposée par la réforme de 2003.',
+    symbolismMg:
+      "Vola taratasy mpifanakalo ny andana roa. Manolotra voninahitra ny fanjakana merina sady manomana ny vahoaka ho an'ny Ariary.",
+    securityFeaturesFr: [
+      'Bande de sécurité métallisée intégrée',
+      'Filigrane portrait Ranavalona en contre-jour',
+    ],
+    imageUrl:
+      'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=900&auto=format&fit=crop&q=80',
+    imageUrlVerso:
+      'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=900&auto=format&fit=crop&q=80',
+    orderIndex: 7,
+    status: 'PUBLISHED',
+  },
+  {
+    id: 'billet-ariary-2003-5000',
+    valueAriary: 5000,
+    valueFmg: 25000,
+    titleFr: 'Zébu Royal & Agriculture Betsileo',
+    titleMg: 'Omby Mpanjaka sy Fambolena Betsileo',
+    series: 'SERIE_2003',
+    seriesLabelFr: 'Série 2003 — Transition FMG vers Ariary',
+    seriesLabelMg: 'Andiany 2003 — Fiovana FMG ho Ariary',
+    period: '2003 - 2017',
+    colorLight: '#7A4A1E',
+    colorDark: '#A06430',
+    obverseDescriptionFr:
+      "Zébu aux longues cornes en lyre symbolisant la prospérité, flanqué d'épis de riz dorés.",
+    obverseDescriptionMg:
+      "Omby malagasy misy tandroka lava miendrika valiha, miaraka amin'ny salohim-bary volamena.",
+    reverseDescriptionFr:
+      'Paysannes Betsileo dans leurs rizières en terrasses du Vakinankaratra.',
+    reverseDescriptionMg:
+      "Vehivavy Betsileo miasa amin'ny tanimbary amin'ny tanety any Vakinankaratra.",
+    symbolismFr:
+      'Le zébu est le pilier civilisationnel malgache — présent aux mariages, circumcisions, labours et funérailles. Sa valeur dépasse toute monnaie.',
+    symbolismMg:
+      "Ny omby no fototry ny fari-piainana malagasy — eo foana amin'ny fampakaram-bady, famorana, fambolem-bary ary fandevenana.",
+    securityFeaturesFr: [
+      'Encre magnétique sur la valeur nominale',
+      'Micro-texte : « Banque Centrale de Madagascar »',
+    ],
+    imageUrl:
+      'https://images.unsplash.com/photo-1546445317-29f4545e9d53?w=900&auto=format&fit=crop&q=80',
+    imageUrlVerso:
+      'https://images.unsplash.com/photo-1589923188900-85dae523342b?w=900&auto=format&fit=crop&q=80',
+    orderIndex: 8,
+    status: 'PUBLISHED',
+  },
+
+  // ── SÉRIE FMG — Franc Malgache (1961 - 2003) ────────────────────────────
+  {
+    id: 'billet-fmg-25000',
+    valueAriary: 5000,
+    valueFmg: 25000,
+    titleFr: 'Indépendance & Fondateurs de la République',
+    titleMg: 'Fahaleovantena sy Mpanorina ny Repoblika',
+    series: 'SERIE_FMG',
+    seriesLabelFr: 'Franc Malgache — 3ème République (1992)',
+    seriesLabelMg: 'Faranka Malagasy — Repoblika Fahatelo (1992)',
+    period: '1992 - 2003',
+    colorLight: '#7A6330',
+    colorDark: '#A38B4A',
+    obverseDescriptionFr:
+      'Armoiries de la République Malgache avec le Ravinala, le zébu et la devise nationale.',
+    obverseDescriptionMg:
+      "Mari-piandrianana ny Repoblika Malagasy miaraka amin'ny Ravinala, omby ary ny teny filamatra.",
+    reverseDescriptionFr:
+      "Vue panoramique du Rova d'Antananarivo et des 12 collines sacrées de l'Imerina.",
+    reverseDescriptionMg:
+      "Fijery panoramika ny Rova sy ireo vohitra masina 12 amin'ny Imerina.",
+    symbolismFr:
+      "Dernier grand billet FMG avant la réforme monétaire de 2003. Il synthétise l'identité républicaine malgache et le symbole de la continuité nationale.",
+    symbolismMg:
+      "Vola taratasy FMG farany lehibe talohan'ny fanavaozana vola tamin'ny 2003. Maneho ny maha-repoblika sy ny fitohin'ny firenena.",
+    securityFeaturesFr: [
+      'Fil de sécurité magnétique intégré',
+      'Filigrane tête de zébu en double densité',
+      'Numérotation en encre à détection infrarouge',
+    ],
+    imageUrl:
+      'https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=900&auto=format&fit=crop&q=80',
+    imageUrlVerso:
+      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=900&auto=format&fit=crop&q=80',
+    orderIndex: 9,
+    status: 'PUBLISHED',
+  },
+  {
+    id: 'billet-fmg-10000',
+    valueAriary: 2000,
+    valueFmg: 10000,
+    titleFr: 'Zébu & Femme Malgache Merina',
+    titleMg: 'Omby sy Vehivavy Malagasy Merina',
+    series: 'SERIE_FMG',
+    seriesLabelFr: 'Franc Malgache — 2ème République (1983)',
+    seriesLabelMg: 'Faranka Malagasy — Repoblika Faharoa (1983)',
+    period: '1983 - 1994',
+    colorLight: '#8C5030',
+    colorDark: '#B87050',
+    obverseDescriptionFr:
+      'Femme merina en tenue traditionnelle (lamba mena) et coiffure à nattes, symbole de la dignité féminine.',
+    obverseDescriptionMg:
+      "Vehivavy merina mitafy lamba mena nentim-paharazana miaraka amin'ny volo voafatotra, mariky ny hasina vehivavy.",
+    reverseDescriptionFr:
+      "Troupeau de zébus dans les plaines de l'Ouest — richesse ancestrale et patrimoine vivant.",
+    reverseDescriptionMg:
+      "Omby betsaka any amin'ny tany lemaka atsinanana — harena nentim-paharazana velona.",
+    symbolismFr:
+      'Émis sous la 2ème République de Didier Ratsiraka, ce billet incarne le socialisme agraire malgache et valorise la femme rurale comme pilier de la société.',
+    symbolismMg:
+      "Navoaka tamin'ny andron'ny Repoblika Faharoa, maneho ny sosialisma sy ny maha-zava-dehibe ny vehivavy any an-tsaha.",
+    securityFeaturesFr: [
+      'Fil de sécurité métallique fin',
+      'Filigrane portrait de femme en contre-jour',
+    ],
+    imageUrl:
+      'https://images.unsplash.com/photo-1574063413132-355dbfd83e25?w=900&auto=format&fit=crop&q=80',
+    imageUrlVerso:
+      'https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=900&auto=format&fit=crop&q=80',
+    orderIndex: 10,
+    status: 'PUBLISHED',
+  },
+  {
+    id: 'billet-fmg-5000',
+    valueAriary: 1000,
+    valueFmg: 5000,
+    titleFr: 'Paysage & Agriculture Traditionnelle',
+    titleMg: 'Tany Malagasy sy Fambolena Nentim-paharazana',
+    series: 'SERIE_FMG',
+    seriesLabelFr: 'Franc Malgache — 1ère République (1966)',
+    seriesLabelMg: 'Faranka Malagasy — Repoblika Voalohany (1966)',
+    period: '1961 - 1983',
+    colorLight: '#3D6B4A',
+    colorDark: '#5A9465',
+    obverseDescriptionFr:
+      'Paysage agraire de la vallée du Mangoro avec rizières inondées et silhouette de palais colonial.',
+    obverseDescriptionMg:
+      "Nosy Mangoro miaraka amin'ny tanimbary mando sy ny faritry ny fanjakana taloha.",
+    reverseDescriptionFr:
+      "Scène de moisson collective (firaisankina) et battage du riz — pratique ancestrale de l'entraide malgache.",
+    reverseDescriptionMg:
+      "Fijinjana vary nataon'ny maro (firaisankina) — fomban-drazana ny valin-tanana sy fiaraha-miasa.",
+    symbolismFr:
+      "Premier billet FMG émis après l'Indépendance de 1960. Il affirme la souveraineté monétaire de la nouvelle République et rompt avec le Franc CFA colonial.",
+    symbolismMg:
+      "Vola taratasy FMG voalohany taorian'ny Fahaleovantena 1960. Maneho ny fiandrianam-pirenena sy ny fisaraham-bazana amin'ny Franc CFA.",
+    securityFeaturesFr: [
+      'Filigrane simplifié de la Banque Centrale',
+      'Papier sécurisé avec fibres de sécurité colorées',
+    ],
+    imageUrl:
+      'https://images.unsplash.com/photo-1533240332313-0db49b459ad6?w=900&auto=format&fit=crop&q=80',
+    imageUrlVerso:
+      'https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?w=900&auto=format&fit=crop&q=80',
+    orderIndex: 11,
+    status: 'PUBLISHED',
+  },
+  {
+    id: 'billet-fmg-1000',
+    valueAriary: 200,
+    valueFmg: 1000,
+    titleFr: 'Philibert Tsiranana & Indépendance',
+    titleMg: 'Philibert Tsiranana sy Fahaleovantena',
+    series: 'SERIE_FMG',
+    seriesLabelFr: 'Franc Malgache — Indépendance 1960',
+    seriesLabelMg: 'Faranka Malagasy — Fahaleovantena 1960',
+    period: '1961 - 1972',
+    colorLight: '#2A6B3D',
+    colorDark: '#3D9455',
+    obverseDescriptionFr:
+      "Portrait du Président Philibert Tsiranana, Père de l'Indépendance, sur fond vert de la nouvelle République.",
+    obverseDescriptionMg:
+      "Sarin'ny Filoha Philibert Tsiranana, Rain'ny Fahaleovantena, eo ambony fony maitso ny Repoblika Vaovao.",
+    reverseDescriptionFr:
+      'Scène rurale malgache avec femmes au travail dans les rizières et le Ravinala en arrière-plan.',
+    reverseDescriptionMg:
+      "Sarin'ny tany malagasy miaraka amin'ny vehivavy miasa amin'ny tanimbary sy Ravinala.",
+    symbolismFr:
+      "Billet symbole de la naissance de la nation souveraine. Tsiranana proclame l'Indépendance le 26 juin 1960. Son portrait incarne l'espoir et la fierté du peuple malgache libre.",
+    symbolismMg:
+      "Vola taratasy maneho ny fahaterahan'ny firenena. Tsiranana nanambara ny Fahaleovantena tamin'ny 26 Jona 1960.",
+    securityFeaturesFr: [
+      'Papier de sécurité à fibres aléatoires colorées',
+      'Impression taille-douce en relief tactile',
+    ],
+    imageUrl:
+      'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=900&auto=format&fit=crop&q=80',
+    imageUrlVerso:
+      'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=900&auto=format&fit=crop&q=80',
+    orderIndex: 12,
+    status: 'PUBLISHED',
+  },
+
+  // ── ÈRE COLONIALE — Institut d'Émission de Madagascar (1925-1960) ────────
+  {
+    id: 'billet-colonial-1000f',
+    valueAriary: 200,
+    valueFmg: 1000,
+    titleFr: "Billet Colonial — Institut d'Émission 1950",
+    titleMg: "Vola Taratasy Zanatany — Institut d'Émission 1950",
+    series: 'SERIE_FMG',
+    seriesLabelFr: 'Période Coloniale — Franc Malgache (1925-1960)',
+    seriesLabelMg: 'Vanim-potoana Zanatany — Faranka Malagasy (1925-1960)',
+    period: '1950 - 1960',
+    colorLight: '#6B4A1E',
+    colorDark: '#8C6330',
+    obverseDescriptionFr:
+      "Allégorie coloniale avec femme en tenue traditionnelle et symboles de l'Empire français — scène de travail agricole imposée par l'administration coloniale.",
+    obverseDescriptionMg:
+      "Sary fampisehoana ny fanjanahan-tany miaraka amin'ny vehivavy mitafy sy marika frantsay.",
+    reverseDescriptionFr:
+      'Carte de Madagascar et représentation des "richesses" coloniales : café, vanille, girofle. L\'île comme réservoir de matières premières.',
+    reverseDescriptionMg:
+      'Saritany Madagasikara sy ny harena "zanatany" : kafe, lavanila, jirofo — ny Nosy toy ny toerana fanontam-pamokaram-barotra.',
+    symbolismFr:
+      "Billet émis par l'administration coloniale française. Il symbolise l'extraction économique et l'aliénation monétaire. Sa disparition en 1960 marque la reconquête de la souveraineté.",
+    symbolismMg:
+      "Vola navoaka ny fanjakana frantsay. Maneho ny fandrobana ara-toekarena sy ny fanagejan'ny vola. Ny fialana azy tamin'ny 1960 no namaritra ny famerenana ny fiandrianana.",
+    securityFeaturesFr: [
+      'Impression typographique classique sur papier coton',
+      "Filigrane simple de l'Institut d'Émission de Madagascar (IEM)",
+    ],
+    imageUrl:
+      'https://images.unsplash.com/photo-1524654458049-e36be0721fa2?w=900&auto=format&fit=crop&q=80',
+    imageUrlVerso:
+      'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=900&auto=format&fit=crop&q=80',
+    orderIndex: 13,
+    status: 'PUBLISHED',
+  },
+  {
+    id: 'billet-colonial-500f',
+    valueAriary: 100,
+    valueFmg: 500,
+    titleFr: 'Billet Colonial — Banque de Madagascar 1925',
+    titleMg: 'Vola Taratasy Zanatany — Banky 1925',
+    series: 'SERIE_FMG',
+    seriesLabelFr: 'Période Coloniale — Banque de Madagascar (1925)',
+    seriesLabelMg: 'Vanim-potoana Zanatany — Banky (1925)',
+    period: '1925 - 1950',
+    colorLight: '#5A4A2A',
+    colorDark: '#7A6540',
+    obverseDescriptionFr:
+      'Premier billet officiel de la Banque de Madagascar. Imprimé en France, il circule uniquement dans la haute administration coloniale.',
+    obverseDescriptionMg:
+      "Vola taratasy ofisialy voalohany ny Banky Madagasikara. Natonta tany Frantsa, nampiasaina tao amin'ny fitantana zanatany ihany.",
+    reverseDescriptionFr:
+      "Représentation de la « Grande Île » vue depuis la France métropolitaine : ressources, main-d'œuvre et richesses exotiques.",
+    reverseDescriptionMg:
+      'Fanehoana ny « Nosy Lehibe » araka ny fijery frantsay : harena, asa sy vokatra hita eto.',
+    symbolismFr:
+      "Le plus ancien billet connu en circulation à Madagascar. Il témoigne du système d'extraction coloniale et de la dépendance monétaire forcée qui perdurera jusqu'en 1960.",
+    symbolismMg:
+      "Vola taratasy tranainy indrindra nalefa teto Madagasikara. Maneho ny rafi-kofaka zanatany sy ny fahateren'ny vola hatramin'ny 1960.",
+    securityFeaturesFr: [
+      'Papier coton spécial imprimerie de la Banque de France',
+      'Impression lithographique manuelle sur recto et verso',
+      "Numérotation manuelle à l'encre sépia",
+    ],
+    imageUrl:
+      'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=900&auto=format&fit=crop&q=80',
+    imageUrlVerso:
+      'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=900&auto=format&fit=crop&q=80',
+    orderIndex: 14,
+    status: 'PUBLISHED',
+  },
+];
 // =========================================================================
 // 4. BLASONS & ARMOIRIES DES 6 PROVINCES
 // =========================================================================

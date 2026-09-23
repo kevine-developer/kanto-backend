@@ -29,7 +29,7 @@ export class AdminSystemController {
       );
     }
 
-    const subject = "🇲🇬 Kanto — Test d'envoi d'email réussi !";
+    const subject = "Test de configuration de messagerie — Kanto";
     const html = `
 <!DOCTYPE html>
 <html lang="fr">
@@ -38,23 +38,23 @@ export class AdminSystemController {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${subject}</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #FAFAFA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; color: #1F2937;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #FAFAFA; padding: 48px 16px;">
+<body style="margin: 0; padding: 0; background-color: #F8F7F4; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; color: #1A1A1A;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #F8F7F4; padding: 48px 16px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 12px; overflow: hidden;">
-          <!-- En-tête sobre & noble -->
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; background-color: #FFFFFF; border: 1px solid #EAE8E3; border-radius: 8px; overflow: hidden;">
+          <!-- En-tête sobre -->
           <tr>
-            <td style="padding: 32px 36px 24px 36px; border-bottom: 1px solid #F3F4F6;">
+            <td style="padding: 28px 32px 20px 32px; border-bottom: 1px solid #F0EDE8;">
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td>
-                    <span style="font-size: 15px; font-weight: 700; letter-spacing: 3px; color: #111827; text-transform: uppercase;">
+                    <span style="font-size: 13px; font-weight: 700; letter-spacing: 4px; color: #1A1A1A; text-transform: uppercase;">
                       KANTO
                     </span>
                   </td>
                   <td align="right">
-                    <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #166534; background-color: #F0FDF4; padding: 4px 10px; border-radius: 9999px; border: 1px solid #DCFCE7;">
+                    <span style="display: inline-block; font-size: 11px; font-weight: 500; color: #5C5C5C; background-color: #F2EFE9; padding: 3px 8px; border-radius: 4px;">
                       Système
                     </span>
                   </td>
@@ -65,22 +65,22 @@ export class AdminSystemController {
 
           <!-- Contenu principal -->
           <tr>
-            <td style="padding: 32px 36px;">
-              <h1 style="font-size: 19px; font-weight: 600; color: #111827; margin: 0 0 14px 0; line-height: 26px; letter-spacing: -0.2px;">
-                Configuration email opérationnelle
+            <td style="padding: 32px;">
+              <h1 style="font-size: 18px; font-weight: 600; color: #1A1A1A; margin: 0 0 14px 0; line-height: 24px; letter-spacing: -0.2px;">
+                Configuration de messagerie opérationnelle
               </h1>
-              <p style="font-size: 14px; line-height: 23px; color: #4B5563; margin: 0 0 24px 0;">
+              <p style="font-size: 14px; line-height: 23px; color: #4A4A4A; margin: 0 0 24px 0;">
                 Votre service de messagerie transactionnelle <strong>Resend</strong> est correctement relié au backend Kanto et prêt à l'emploi.
               </p>
 
               <!-- Encadré métadonnées minimaliste -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #F9FAFB; border: 1px solid #F3F4F6; border-radius: 8px; margin-bottom: 24px;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #F8F7F4; border: 1px solid #EAE8E3; border-radius: 6px; margin-bottom: 24px;">
                 <tr>
-                  <td style="padding: 16px 20px;">
-                    <table width="100%" cellpadding="0" cellspacing="0" style="font-size: 13px; line-height: 22px; color: #374151;">
+                  <td style="padding: 16px 18px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" style="font-size: 13px; line-height: 22px; color: #3A3A3A;">
                       <tr>
                         <td style="color: #6B7280; width: 110px;">Destinataire :</td>
-                        <td style="font-weight: 500; color: #111827;">${to}</td>
+                        <td style="font-weight: 500; color: #1A1A1A;">${to}</td>
                       </tr>
                       <tr>
                         <td style="color: #6B7280;">Date d'envoi :</td>
@@ -95,20 +95,20 @@ export class AdminSystemController {
                 </tr>
               </table>
 
-              <p style="font-size: 13px; line-height: 21px; color: #6B7280; margin: 0;">
-                Ce test valide la délivrabilité de vos emails de réinitialisation de mot de passe, de bienvenue et d'alertes.
+              <p style="font-size: 13px; line-height: 21px; color: #5C5C5C; margin: 0;">
+                Ce test confirme la délivrabilité des notifications, des messages de réinitialisation de mot de passe et des emails de bienvenue.
               </p>
             </td>
           </tr>
 
           <!-- Pied de page minimaliste -->
           <tr>
-            <td style="padding: 20px 36px; background-color: #FAFAFA; border-top: 1px solid #F3F4F6;">
+            <td style="padding: 18px 32px; background-color: #F8F7F4; border-top: 1px solid #F0EDE8;">
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td>
-                    <p style="font-size: 12px; color: #9CA3AF; margin: 0; line-height: 18px;">
-                      © ${new Date().getFullYear()} Kanto • Lova, Kolontsaina &amp; Tantara Malagasy
+                    <p style="font-size: 11px; color: #8A8A8A; margin: 0; line-height: 17px; letter-spacing: 0.2px;">
+                      © ${new Date().getFullYear()} KANTO • Lova, Kolontsaina &amp; Tantara Malagasy
                     </p>
                   </td>
                 </tr>
@@ -124,10 +124,10 @@ export class AdminSystemController {
     `.trim();
 
     const text = `
-KANTO — Test d'envoi d'email réussi !
+KANTO — Test de configuration de messagerie réussi
 
-Félicitations ! Votre configuration email fonctionne parfaitement.
-Ceci est un message de test envoyé depuis le backend Kanto via Resend.
+Votre configuration de messagerie fonctionne correctement.
+Ce message de test a été transmis par le backend Kanto via l'API Resend.
 
 Date : ${new Date().toLocaleString('fr-FR')}
 Destinataire : ${to}

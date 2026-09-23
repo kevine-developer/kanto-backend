@@ -18,7 +18,7 @@ export class NotificationsController {
   constructor(private readonly notificationsService: NotificationsService) {}
 
   /**
-   * Enregistre le token Expo Push d'un utilisateur.
+   * Enregistre le token Expo Push d'un utilisateur ou d'un visiteur anonyme (invité).
    */
   @Post('notifications/push-token')
   registerPushToken(
@@ -26,13 +26,6 @@ export class NotificationsController {
     @Session() session?: UserSession,
   ) {
     const effectiveUserId = session?.user?.id || body.userId;
-    if (!effectiveUserId) {
-      return {
-        success: false,
-        message:
-          'Identifiant utilisateur requis pour enregistrer le token push',
-      };
-    }
     return this.notificationsService.registerPushToken(
       effectiveUserId,
       body.pushToken,
@@ -103,6 +96,14 @@ export class NotificationsController {
   @Post('admin/notifications')
   createNotification(@Body() body: CreateNotificationDto) {
     return this.notificationsService.createNotification(body);
+  }
+
+  /**
+   * Endpoint administration : Envoie une notification push de test.
+   */
+  @Post('admin/notifications/test-push')
+  testPushNotification(@Body() body?: { targetToken?: string }) {
+    return this.notificationsService.sendTestPush(body?.targetToken);
   }
 
   /**
