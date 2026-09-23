@@ -177,6 +177,7 @@ export class HistoryService implements OnModuleInit {
               symbolismMg: item.symbolismMg,
               securityFeaturesFr: item.securityFeaturesFr,
               imageUrl: item.imageUrl,
+              imageUrlVerso: item.imageUrlVerso,
               orderIndex: item.orderIndex,
               status: item.status,
             },
@@ -200,6 +201,7 @@ export class HistoryService implements OnModuleInit {
                   symbolismMg: item.symbolismMg,
                   securityFeaturesFr: item.securityFeaturesFr,
                   imageUrl: item.imageUrl,
+                  imageUrlVerso: item.imageUrlVerso,
                 }
               : {},
           });
@@ -622,6 +624,15 @@ export class HistoryService implements OnModuleInit {
         .deleteMediaFromUrl(existing.imageUrl)
         .catch(() => {});
     }
+    if (
+      data.imageUrlVerso !== undefined &&
+      existing.imageUrlVerso &&
+      existing.imageUrlVerso !== data.imageUrlVerso
+    ) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrlVerso)
+        .catch(() => {});
+    }
     await this.invalidateCache();
     return updated;
   }
@@ -632,6 +643,11 @@ export class HistoryService implements OnModuleInit {
     if (existing.imageUrl) {
       this.cloudinaryService
         .deleteMediaFromUrl(existing.imageUrl)
+        .catch(() => {});
+    }
+    if (existing.imageUrlVerso) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.imageUrlVerso)
         .catch(() => {});
     }
     await this.invalidateCache();

@@ -47,6 +47,7 @@ export class LocksService implements OnModuleInit {
               type: item.type,
               nameFr: item.nameFr,
               nameMg: item.nameMg,
+              imageUrl: item.imageUrl || null,
               isLocked: item.isLocked,
               lockReason: item.lockReason,
               minTier: item.minTier || 'FREE',
@@ -55,7 +56,7 @@ export class LocksService implements OnModuleInit {
         }
         this.logger.log('✅ Initialisation des modules terminée.');
       } else {
-        // Assure que toute nouvelle clé de module est ajoutée si manquante
+        // Assure que toute nouvelle clé de module est ajoutée si manquante et hydrate les images manquantes
         for (const item of INITIAL_MODULES) {
           const exists = await this.prisma.moduleLock.findUnique({
             where: { key: item.key },
@@ -67,12 +68,19 @@ export class LocksService implements OnModuleInit {
                 type: item.type,
                 nameFr: item.nameFr,
                 nameMg: item.nameMg,
+                imageUrl: item.imageUrl || null,
                 isLocked: item.isLocked,
                 lockReason: item.lockReason,
                 minTier: item.minTier || 'FREE',
               },
             });
             this.logger.log(`➕ Nouveau module ajouté : ${item.key}`);
+          } else if (!exists.imageUrl && item.imageUrl) {
+            await this.prisma.moduleLock.update({
+              where: { key: item.key },
+              data: { imageUrl: item.imageUrl },
+            });
+            this.logger.log(`🖼️ Image par défaut assignée au module : ${item.key}`);
           }
         }
       }

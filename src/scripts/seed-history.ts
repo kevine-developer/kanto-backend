@@ -129,6 +129,7 @@ async function main() {
           symbolismMg: item.symbolismMg,
           securityFeaturesFr: item.securityFeaturesFr,
           imageUrl: item.imageUrl,
+          imageUrlVerso: item.imageUrlVerso,
           orderIndex: item.orderIndex,
           status: item.status,
         },
@@ -151,6 +152,7 @@ async function main() {
           symbolismMg: item.symbolismMg,
           securityFeaturesFr: item.securityFeaturesFr,
           imageUrl: item.imageUrl,
+          imageUrlVerso: item.imageUrlVerso,
         },
       });
     }

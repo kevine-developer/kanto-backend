@@ -325,6 +325,10 @@ export class CreateBanknoteDto {
   @IsOptional()
   imageUrl?: string;
 
+  @IsString()
+  @IsOptional()
+  imageUrlVerso?: string;
+
   @IsInt()
   @IsOptional()
   orderIndex?: number;
@@ -407,6 +411,10 @@ export class UpdateBanknoteDto {
   @IsString()
   @IsOptional()
   imageUrl?: string;
+
+  @IsString()
+  @IsOptional()
+  imageUrlVerso?: string;
 
   @IsInt()
   @IsOptional()

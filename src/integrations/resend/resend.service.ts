@@ -136,19 +136,19 @@ export class ResendService {
     const greeting = options.userName
       ? `Bonjour ${options.userName},`
       : 'Bonjour,';
-    const subject = '🔑 Réinitialisation de votre mot de passe Kanto';
+    const subject = 'Réinitialisation de votre mot de passe — Kanto';
 
     const text = `
 ${greeting}
 
 Vous avez demandé la réinitialisation de votre mot de passe pour votre compte Kanto.
 
-Pour choisir un nouveau mot de passe, cliquez sur le lien suivant (ou copiez-le dans votre navigateur) :
+Pour choisir un nouveau mot de passe, ouvrez le lien suivant dans votre navigateur :
 ${options.resetUrl}
 
-Ce lien est valable pendant 1 heure. Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email en toute sécurité.
+Ce lien est valable pendant 1 heure. Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce message en toute sécurité.
 
-L'équipe Kanto
+Kanto — Lova, Kolontsaina & Tantara Malagasy
 https://kanto.mg
     `.trim();
 
@@ -160,23 +160,23 @@ https://kanto.mg
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${subject}</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #FAFAFA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; color: #1F2937;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #FAFAFA; padding: 48px 16px;">
+<body style="margin: 0; padding: 0; background-color: #F8F7F4; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; color: #1A1A1A;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #F8F7F4; padding: 48px 16px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 12px; overflow: hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; background-color: #FFFFFF; border: 1px solid #EAE8E3; border-radius: 8px; overflow: hidden;">
           <!-- En-tête sobre -->
           <tr>
-            <td style="padding: 32px 36px 24px 36px; border-bottom: 1px solid #F3F4F6;">
+            <td style="padding: 28px 32px 20px 32px; border-bottom: 1px solid #F0EDE8;">
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td>
-                    <span style="font-size: 15px; font-weight: 700; letter-spacing: 3px; color: #111827; text-transform: uppercase;">
+                    <span style="font-size: 13px; font-weight: 700; letter-spacing: 4px; color: #1A1A1A; text-transform: uppercase;">
                       KANTO
                     </span>
                   </td>
                   <td align="right">
-                    <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #374151; background-color: #F3F4F6; padding: 4px 10px; border-radius: 9999px;">
+                    <span style="display: inline-block; font-size: 11px; font-weight: 500; color: #5C5C5C; background-color: #F2EFE9; padding: 3px 8px; border-radius: 4px;">
                       Sécurité
                     </span>
                   </td>
@@ -187,47 +187,47 @@ https://kanto.mg
 
           <!-- Contenu -->
           <tr>
-            <td style="padding: 32px 36px;">
-              <h1 style="font-size: 19px; font-weight: 600; color: #111827; margin: 0 0 16px 0; line-height: 26px; letter-spacing: -0.2px;">
+            <td style="padding: 32px;">
+              <h1 style="font-size: 18px; font-weight: 600; color: #1A1A1A; margin: 0 0 16px 0; line-height: 24px; letter-spacing: -0.2px;">
                 Réinitialisation de votre mot de passe
               </h1>
-              <p style="font-size: 14px; line-height: 23px; color: #4B5563; margin: 0 0 16px 0;">
+              <p style="font-size: 14px; line-height: 23px; color: #4A4A4A; margin: 0 0 14px 0;">
                 ${greeting}
               </p>
-              <p style="font-size: 14px; line-height: 23px; color: #4B5563; margin: 0 0 28px 0;">
-                Nous avons reçu une demande pour réinitialiser le mot de passe de votre compte Kanto. Cliquez sur le bouton ci-dessous pour en choisir un nouveau :
+              <p style="font-size: 14px; line-height: 23px; color: #4A4A4A; margin: 0 0 28px 0;">
+                Nous avons reçu une demande de réinitialisation de mot de passe pour votre compte Kanto. Cliquez sur le bouton ci-dessous pour choisir votre nouveau mot de passe :
               </p>
 
-              <!-- Bouton d'action -->
+              <!-- Bouton d'action signature terracotta -->
               <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 28px;">
                 <tr>
                   <td>
-                    <a href="${options.resetUrl}" target="_blank" style="display: inline-block; background-color: #1B5E20; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 24px; border-radius: 8px;">
-                      Réinitialiser mon mot de passe
+                    <a href="${options.resetUrl}" target="_blank" style="display: inline-block; background-color: #8B2519; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 24px; border-radius: 6px; letter-spacing: 0.1px;">
+                      Choisir un nouveau mot de passe
                     </a>
                   </td>
                 </tr>
               </table>
 
-              <!-- Notice discrète -->
-              <div style="background-color: #F9FAFB; border-left: 3px solid #D1D5DB; padding: 12px 16px; border-radius: 6px; margin-bottom: 24px;">
-                <p style="font-size: 13px; line-height: 20px; color: #6B7280; margin: 0;">
-                  Ce lien reste actif pendant <strong>1 heure</strong>. Si vous n&apos;êtes pas à l&apos;origine de cette demande, vous pouvez ignorer cet email en toute sécurité.
+              <!-- Notice sobre -->
+              <div style="background-color: #F8F7F4; border-left: 2px solid #8B2519; padding: 12px 14px; border-radius: 4px; margin-bottom: 24px;">
+                <p style="font-size: 12px; line-height: 19px; color: #5C5C5C; margin: 0;">
+                  Ce lien sécurisé reste actif pendant <strong>1 heure</strong>. Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email en toute sérénité.
                 </p>
               </div>
 
-              <p style="font-size: 12px; line-height: 18px; color: #9CA3AF; margin: 0; word-break: break-all;">
-                Si le bouton ne fonctionne pas, copiez ce lien :<br>
-                <a href="${options.resetUrl}" style="color: #1B5E20; text-decoration: underline;">${options.resetUrl}</a>
+              <p style="font-size: 12px; line-height: 18px; color: #8A8A8A; margin: 0; word-break: break-all;">
+                Si le bouton ne s'affiche pas correctement, vous pouvez copier ce lien dans votre navigateur :<br>
+                <a href="${options.resetUrl}" style="color: #8B2519; text-decoration: underline;">${options.resetUrl}</a>
               </p>
             </td>
           </tr>
 
-          <!-- Pied de page -->
+          <!-- Pied de page épuré -->
           <tr>
-            <td style="padding: 20px 36px; background-color: #FAFAFA; border-top: 1px solid #F3F4F6;">
-              <p style="font-size: 12px; color: #9CA3AF; margin: 0; line-height: 18px;">
-                © ${new Date().getFullYear()} Kanto • Lova, Kolontsaina &amp; Tantara Malagasy
+            <td style="padding: 18px 32px; background-color: #F8F7F4; border-top: 1px solid #F0EDE8;">
+              <p style="font-size: 11px; color: #8A8A8A; margin: 0; line-height: 17px; letter-spacing: 0.2px;">
+                © ${new Date().getFullYear()} KANTO • Lova, Kolontsaina &amp; Tantara Malagasy
               </p>
             </td>
           </tr>
@@ -254,22 +254,24 @@ https://kanto.mg
     options: WelcomeEmailOptions,
   ): Promise<{ id?: string; simulated?: boolean }> {
     const greeting = options.userName
-      ? `Tongasoa ${options.userName} !`
-      : 'Tongasoa !';
-    const subject = '🇲🇬 Tongasoa eto amin’ny Kanto !';
+      ? `Tongasoa ${options.userName},`
+      : 'Tongasoa,';
+    const subject = "Tongasoa eto amin'ny Kanto — Bienvenue";
 
     const text = `
 ${greeting}
 
-Bienvenue dans l'univers Kanto, l'application dédiée au patrimoine, aux contes, à l'histoire et à la sagesse de Madagascar.
+Bienvenue sur Kanto, la plateforme dédiée au patrimoine, aux contes, à l'histoire et à la sagesse de Madagascar.
 
-Découvrez dès maintenant :
-- Nos contes traditionnels (Angano) narrés et immersifs
-- Les grands discours traditionnels (Kabary)
-- L'histoire, les rois et les emblèmes nationaux
-- Nos jeux éducatifs et défis quotidiens
+Votre compte vous permet d'explorer :
+- Les contes traditionnels (Angano) narrés et immersifs
+- Les discours traditionnels et rituels (Kabary)
+- L'histoire, les dynasties et les emblèmes nationaux (Tantara)
+- Les jeux de réflexion et défis culturels quotidiens (Lalao)
 
-L'équipe Kanto
+Ouvrez l'application mobile Kanto pour débuter votre parcours.
+
+Kanto — Lova, Kolontsaina & Tantara Malagasy
 https://kanto.mg
     `.trim();
 
@@ -281,23 +283,23 @@ https://kanto.mg
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${subject}</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #FAFAFA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; color: #1F2937;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #FAFAFA; padding: 48px 16px;">
+<body style="margin: 0; padding: 0; background-color: #F8F7F4; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; color: #1A1A1A;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #F8F7F4; padding: 48px 16px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 12px; overflow: hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; background-color: #FFFFFF; border: 1px solid #EAE8E3; border-radius: 8px; overflow: hidden;">
           <!-- En-tête sobre -->
           <tr>
-            <td style="padding: 32px 36px 24px 36px; border-bottom: 1px solid #F3F4F6;">
+            <td style="padding: 28px 32px 20px 32px; border-bottom: 1px solid #F0EDE8;">
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td>
-                    <span style="font-size: 15px; font-weight: 700; letter-spacing: 3px; color: #111827; text-transform: uppercase;">
+                    <span style="font-size: 13px; font-weight: 700; letter-spacing: 4px; color: #1A1A1A; text-transform: uppercase;">
                       KANTO
                     </span>
                   </td>
                   <td align="right">
-                    <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #166534; background-color: #F0FDF4; padding: 4px 10px; border-radius: 9999px; border: 1px solid #DCFCE7;">
+                    <span style="display: inline-block; font-size: 11px; font-weight: 500; color: #5C5C5C; background-color: #F2EFE9; padding: 3px 8px; border-radius: 4px;">
                       Bienvenue
                     </span>
                   </td>
@@ -308,37 +310,37 @@ https://kanto.mg
 
           <!-- Contenu -->
           <tr>
-            <td style="padding: 32px 36px;">
-              <h1 style="font-size: 19px; font-weight: 600; color: #111827; margin: 0 0 16px 0; line-height: 26px; letter-spacing: -0.2px;">
+            <td style="padding: 32px;">
+              <h1 style="font-size: 18px; font-weight: 600; color: #1A1A1A; margin: 0 0 16px 0; line-height: 24px; letter-spacing: -0.2px;">
                 ${greeting}
               </h1>
-              <p style="font-size: 14px; line-height: 23px; color: #4B5563; margin: 0 0 20px 0;">
-                Nous sommes ravis de vous compter parmi nous. Kanto vous accompagne pour explorer, écouter et redécouvrir toute la richesse culturelle, littéraire et historique de Madagascar.
+              <p style="font-size: 14px; line-height: 23px; color: #4A4A4A; margin: 0 0 20px 0;">
+                Nous sommes ravis de vous compter parmi nous. Kanto vous accompagne pour découvrir, écouter et préserver toute la richesse culturelle et historique malagasy.
               </p>
 
-              <!-- Liste des fonctionnalités -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #F9FAFB; border: 1px solid #F3F4F6; border-radius: 8px; margin-bottom: 24px;">
+              <!-- Modules disponibles -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #F8F7F4; border: 1px solid #EAE8E3; border-radius: 6px; margin-bottom: 24px;">
                 <tr>
-                  <td style="padding: 16px 20px; font-size: 13px; line-height: 22px; color: #374151;">
-                    <div style="margin-bottom: 8px;">📖 <strong>Angano :</strong> Contes traditionnels narrés avec audio immersif</div>
-                    <div style="margin-bottom: 8px;">🎙️ <strong>Kabary :</strong> Discours d&apos;art oratoire et rituels</div>
-                    <div style="margin-bottom: 8px;">🏛️ <strong>Tantara :</strong> Grandes dates et figures historiques</div>
-                    <div>🎮 <strong>Lalao :</strong> Quiz et défis pour enrichir vos connaissances</div>
+                  <td style="padding: 16px 18px; font-size: 13px; line-height: 22px; color: #3A3A3A;">
+                    <div style="margin-bottom: 8px;"><strong style="color: #1A1A1A;">Angano —</strong> Contes et récits traditionnels audio</div>
+                    <div style="margin-bottom: 8px;"><strong style="color: #1A1A1A;">Kabary —</strong> Discours d'éloquence et traditions orales</div>
+                    <div style="margin-bottom: 8px;"><strong style="color: #1A1A1A;">Tantara —</strong> Chroniques historiques et repères du patrimoine</div>
+                    <div><strong style="color: #1A1A1A;">Lalao —</strong> Défis et jeux de mémoire culturels</div>
                   </td>
                 </tr>
               </table>
 
-              <p style="font-size: 13px; line-height: 21px; color: #6B7280; margin: 0;">
-                Ouvrez votre application mobile Kanto pour débuter votre voyage au cœur de la sagesse malagasy.
+              <p style="font-size: 13px; line-height: 21px; color: #5C5C5C; margin: 0;">
+                Ouvrez votre application mobile Kanto pour débuter votre exploration dès aujourd'hui.
               </p>
             </td>
           </tr>
 
-          <!-- Pied de page -->
+          <!-- Pied de page épuré -->
           <tr>
-            <td style="padding: 20px 36px; background-color: #FAFAFA; border-top: 1px solid #F3F4F6;">
-              <p style="font-size: 12px; color: #9CA3AF; margin: 0; line-height: 18px;">
-                © ${new Date().getFullYear()} Kanto • Lova, Kolontsaina &amp; Tantara Malagasy
+            <td style="padding: 18px 32px; background-color: #F8F7F4; border-top: 1px solid #F0EDE8;">
+              <p style="font-size: 11px; color: #8A8A8A; margin: 0; line-height: 17px; letter-spacing: 0.2px;">
+                © ${new Date().getFullYear()} KANTO • Lova, Kolontsaina &amp; Tantara Malagasy
               </p>
             </td>
           </tr>
@@ -367,19 +369,19 @@ https://kanto.mg
     const greeting = options.userName
       ? `Bonjour ${options.userName},`
       : 'Bonjour,';
-    const subject = '🛡️ Confirmez votre adresse email — Kanto';
+    const subject = 'Confirmation de votre adresse email — Kanto';
 
     const text = `
 ${greeting}
 
-Merci de rejoindre Kanto, l'application dédiée au patrimoine et à la culture malagasy.
+Merci de rejoindre Kanto.
 
-Pour valider votre adresse email et sécuriser pleinement votre compte, veuillez cliquer sur le lien ci-dessous (ou le copier dans votre navigateur) :
+Pour valider votre adresse email et sécuriser l'accès à votre compte, veuillez ouvrir le lien ci-dessous :
 ${options.verifyUrl}
 
-Ce lien est valable pendant 24 heures. Si vous n'êtes pas à l'origine de cette création de compte, vous pouvez ignorer cet email.
+Ce lien reste actif pendant 24 heures. Si vous n'êtes pas à l'origine de cette inscription, vous pouvez ignorer cet email.
 
-L'équipe Kanto
+Kanto — Lova, Kolontsaina & Tantara Malagasy
 https://kanto.mg
     `.trim();
 
@@ -391,23 +393,23 @@ https://kanto.mg
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${subject}</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #FAFAFA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; color: #1F2937;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #FAFAFA; padding: 48px 16px;">
+<body style="margin: 0; padding: 0; background-color: #F8F7F4; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; color: #1A1A1A;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #F8F7F4; padding: 48px 16px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 12px; overflow: hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; background-color: #FFFFFF; border: 1px solid #EAE8E3; border-radius: 8px; overflow: hidden;">
           <!-- En-tête sobre -->
           <tr>
-            <td style="padding: 32px 36px 24px 36px; border-bottom: 1px solid #F3F4F6;">
+            <td style="padding: 28px 32px 20px 32px; border-bottom: 1px solid #F0EDE8;">
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td>
-                    <span style="font-size: 15px; font-weight: 700; letter-spacing: 3px; color: #111827; text-transform: uppercase;">
+                    <span style="font-size: 13px; font-weight: 700; letter-spacing: 4px; color: #1A1A1A; text-transform: uppercase;">
                       KANTO
                     </span>
                   </td>
                   <td align="right">
-                    <span style="display: inline-block; font-size: 11px; font-weight: 600; color: #15803D; background-color: #F0FDF4; padding: 4px 10px; border-radius: 9999px; border: 1px solid #DCFCE7;">
+                    <span style="display: inline-block; font-size: 11px; font-weight: 500; color: #5C5C5C; background-color: #F2EFE9; padding: 3px 8px; border-radius: 4px;">
                       Vérification
                     </span>
                   </td>
@@ -418,47 +420,47 @@ https://kanto.mg
 
           <!-- Contenu -->
           <tr>
-            <td style="padding: 32px 36px;">
-              <h1 style="font-size: 19px; font-weight: 600; color: #111827; margin: 0 0 16px 0; line-height: 26px; letter-spacing: -0.2px;">
+            <td style="padding: 32px;">
+              <h1 style="font-size: 18px; font-weight: 600; color: #1A1A1A; margin: 0 0 16px 0; line-height: 24px; letter-spacing: -0.2px;">
                 Confirmation de votre adresse email
               </h1>
-              <p style="font-size: 14px; line-height: 23px; color: #4B5563; margin: 0 0 16px 0;">
+              <p style="font-size: 14px; line-height: 23px; color: #4A4A4A; margin: 0 0 14px 0;">
                 ${greeting}
               </p>
-              <p style="font-size: 14px; line-height: 23px; color: #4B5563; margin: 0 0 28px 0;">
-                Merci d&apos;avoir rejoint l&apos;aventure Kanto ! Pour valider votre inscription, protéger votre compte et synchroniser votre progression en toute sérénité, confirmez votre adresse en cliquant ci-dessous :
+              <p style="font-size: 14px; line-height: 23px; color: #4A4A4A; margin: 0 0 28px 0;">
+                Merci de rejoindre Kanto. Pour activer pleinement votre compte et sécuriser vos données de progression, veuillez confirmer votre adresse email en cliquant sur le bouton ci-dessous :
               </p>
 
-              <!-- Bouton d'action -->
+              <!-- Bouton signature terracotta -->
               <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 28px;">
                 <tr>
                   <td>
-                    <a href="${options.verifyUrl}" target="_blank" style="display: inline-block; background-color: #1B5E20; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 24px; border-radius: 8px;">
+                    <a href="${options.verifyUrl}" target="_blank" style="display: inline-block; background-color: #8B2519; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 24px; border-radius: 6px; letter-spacing: 0.1px;">
                       Confirmer mon adresse email
                     </a>
                   </td>
                 </tr>
               </table>
 
-              <!-- Notice de sécurité -->
-              <div style="background-color: #F9FAFB; border-left: 3px solid #1B5E20; padding: 12px 16px; border-radius: 6px; margin-bottom: 24px;">
-                <p style="font-size: 13px; line-height: 20px; color: #4B5563; margin: 0;">
-                  Ce lien sécurisé est valable pendant <strong>24 heures</strong>. Si vous n&apos;avez pas initié cette inscription sur Kanto, vous pouvez ignorer cet email sans crainte.
+              <!-- Notice sobre -->
+              <div style="background-color: #F8F7F4; border-left: 2px solid #8B2519; padding: 12px 14px; border-radius: 4px; margin-bottom: 24px;">
+                <p style="font-size: 12px; line-height: 19px; color: #5C5C5C; margin: 0;">
+                  Ce lien sécurisé est valable pendant <strong>24 heures</strong>. Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email.
                 </p>
               </div>
 
-              <p style="font-size: 12px; line-height: 18px; color: #9CA3AF; margin: 0; word-break: break-all;">
-                Si le bouton ne s&apos;ouvre pas, copiez directement cette URL dans votre navigateur :<br>
-                <a href="${options.verifyUrl}" style="color: #1B5E20; text-decoration: underline;">${options.verifyUrl}</a>
+              <p style="font-size: 12px; line-height: 18px; color: #8A8A8A; margin: 0; word-break: break-all;">
+                Si le bouton ne fonctionne pas, copiez ce lien directement dans votre navigateur :<br>
+                <a href="${options.verifyUrl}" style="color: #8B2519; text-decoration: underline;">${options.verifyUrl}</a>
               </p>
             </td>
           </tr>
 
-          <!-- Pied de page -->
+          <!-- Pied de page épuré -->
           <tr>
-            <td style="padding: 20px 36px; background-color: #FAFAFA; border-top: 1px solid #F3F4F6;">
-              <p style="font-size: 12px; color: #9CA3AF; margin: 0; line-height: 18px;">
-                © ${new Date().getFullYear()} Kanto • Lova, Kolontsaina &amp; Tantara Malagasy
+            <td style="padding: 18px 32px; background-color: #F8F7F4; border-top: 1px solid #F0EDE8;">
+              <p style="font-size: 11px; color: #8A8A8A; margin: 0; line-height: 17px; letter-spacing: 0.2px;">
+                © ${new Date().getFullYear()} KANTO • Lova, Kolontsaina &amp; Tantara Malagasy
               </p>
             </td>
           </tr>
