@@ -636,16 +636,28 @@ export class MultiplayerService {
 
     if (!session) {
       throw new NotFoundException(
-        `Aucun salon trouvé avec le code ${cleanCode}`,
+        `Ce salon n'existe pas ou a expiré (${cleanCode}).`,
+      );
+    }
+
+    if (session.status === 'CANCELLED') {
+      throw new BadRequestException(
+        "Ce salon a été fermé par son organisateur.",
+      );
+    }
+
+    if (session.status === 'FINISHED') {
+      throw new BadRequestException(
+        "Cette partie est déjà terminée.",
       );
     }
 
     const existingPlayer = session.players.find((p) => p.userId === userId);
 
-    // Si la session est en cours ou terminée et que l'utilisateur n'en fait pas partie
+    // Si la session est en cours et que l'utilisateur n'en fait pas déjà partie
     if (session.status !== 'WAITING' && !existingPlayer) {
       throw new BadRequestException(
-        'Cette partie a déjà commencé ou est terminée.',
+        "Ce salon n'est plus accessible (la partie a déjà commencé).",
       );
     }
 
@@ -806,7 +818,15 @@ export class MultiplayerService {
     });
 
     if (!session) {
-      throw new NotFoundException(`Salon ${cleanCode} introuvable.`);
+      throw new NotFoundException(`Ce salon n'existe pas ou a expiré (${cleanCode}).`);
+    }
+
+    if (session.status === 'CANCELLED') {
+      throw new BadRequestException("Ce salon a été fermé par son organisateur.");
+    }
+
+    if (session.status === 'FINISHED') {
+      throw new BadRequestException("Cette partie est déjà terminée.");
     }
 
     const questions = await this.getPublicQuestions(
@@ -1236,7 +1256,13 @@ export class MultiplayerService {
   }
 
   /**
-   * Gestion sécurisée du départ d'un joueur ou de l'hôte.
+   * Gestion sécurisée du départ d'un joueur ou de l'hôte (Anticipation de tous les cas d'usage).
+   * - Si en salle d'attente (WAITING) et l'hôte quitte -> fermeture immédiate et irrévocable du salon.
+   * - Si en salle d'attente (WAITING) et le joueur délégué pour le thème quitte -> la main revient à l'hôte.
+   * - Si en plein jeu (IN_PROGRESS) et un joueur quitte :
+   *     - S'il ne reste qu'un seul joueur actif (duel 1v1 ou derniers survivants) -> Victoire immédiate par forfait !
+   *     - S'il reste 2+ joueurs (multijoueur) -> le jeu continue avec notification, et clôture automatique du round si tous les restants ont répondu.
+   *     - S'il reste 0 joueur -> session annulée/terminée.
    */
   async handlePlayerLeave(userId: string, code: string) {
     const cleanCode = code.trim().toUpperCase();
@@ -1248,64 +1274,215 @@ export class MultiplayerService {
     if (!session) return null;
 
     const player = session.players.find((p) => p.userId === userId);
-    const isHostLeaving = session.player1Id === userId || player?.isHost;
+    const isHost = session.player1Id === userId || player?.isHost;
 
-    if (isHostLeaving) {
-      // 1. L'Hôte quitte -> Annulation et fermeture définitive du salon
-      this.logger.log(
-        `🚪 [MultiplayerService] L'hôte ${userId} a quitté le salon ${cleanCode} -> Clôture de la session`,
-      );
-      const updatedSession = await this.prisma.duelSession.update({
-        where: { id: session.id },
-        data: { status: 'CANCELLED', finishedAt: new Date() },
+    // ──────────────────────────────────────────────────────────────────────────
+    // CAS 1 : SALLE D'ATTENTE (WAITING)
+    // ──────────────────────────────────────────────────────────────────────────
+    if (session.status === 'WAITING') {
+      if (isHost) {
+        // L'Hôte quitte la salle d'attente -> Fermeture définitive & irrévocable du salon
+        this.logger.log(
+          `🚪 [MultiplayerService] L'hôte ${userId} a quitté le salon d'attente ${cleanCode} -> Clôture définitive du salon`,
+        );
+        const updatedSession = await this.prisma.duelSession.update({
+          where: { id: session.id },
+          data: { status: 'CANCELLED', finishedAt: new Date() },
+        });
+        await this.redisService.del(`duel:spectator:${cleanCode}`);
+
+        return {
+          isHostLeaving: true,
+          sessionCancelled: true,
+          forfeitVictory: false,
+          session: updatedSession,
+          remainingPlayers: [],
+          allRemainingAnswered: false,
+        };
+      }
+
+      // Simple participant qui quitte le salon d'attente
+      if (player) {
+        await this.prisma.duelPlayer.deleteMany({
+          where: { sessionId: session.id, userId },
+        });
+        this.logger.log(
+          `🚪 [MultiplayerService] Participant ${userId} (${player.name}) a quitté le salon d'attente ${cleanCode}`,
+        );
+      }
+
+      // Si ce participant avait la main déléguée pour choisir le thème, la main revient automatiquement à l'Hôte !
+      let themeChooserChanged = false;
+      let newThemeChooserId = session.themeChooserId;
+      if (session.themeChooserId === userId) {
+        newThemeChooserId = session.player1Id;
+        await this.prisma.duelSession.update({
+          where: { id: session.id },
+          data: { themeChooserId: session.player1Id },
+        });
+        themeChooserChanged = true;
+        this.logger.log(
+          `🎯 [MultiplayerService] Le joueur délégué a quitté -> La main du thème revient à l'hôte (${session.player1Id})`,
+        );
+      }
+
+      const remainingPlayers = await this.prisma.duelPlayer.findMany({
+        where: { sessionId: session.id },
+        orderBy: { createdAt: 'asc' },
       });
-      await this.redisService.del(`duel:spectator:${cleanCode}`);
 
       return {
-        isHostLeaving: true,
-        sessionCancelled: true,
-        session: updatedSession,
-        remainingPlayers: [],
+        isHostLeaving: false,
+        sessionCancelled: false,
+        forfeitVictory: false,
+        session,
+        remainingPlayers,
+        themeChooserChanged,
+        newThemeChooserId,
         allRemainingAnswered: false,
       };
     }
 
-    // 2. Simple participant qui quitte
-    if (player) {
-      await this.prisma.duelPlayer.deleteMany({
-        where: { sessionId: session.id, userId },
-      });
-      this.logger.log(
-        `🚪 [MultiplayerService] Joueur ${userId} retiré du salon ${cleanCode}`,
-      );
-    }
-
-    const remainingPlayers = await this.prisma.duelPlayer.findMany({
-      where: { sessionId: session.id },
-      orderBy: { createdAt: 'asc' },
-    });
-
-    // Si la session est en cours, vérifier si tous les joueurs restants ont déjà répondu
-    let allRemainingAnswered = false;
+    // ──────────────────────────────────────────────────────────────────────────
+    // CAS 2 : PARTIE EN COURS (IN_PROGRESS)
+    // ──────────────────────────────────────────────────────────────────────────
     if (session.status === 'IN_PROGRESS') {
+      const playerName = player?.name || (isHost ? "L'hôte" : "L'adversaire");
+
+      // Retirer le joueur de la session
+      if (player) {
+        await this.prisma.duelPlayer.deleteMany({
+          where: { sessionId: session.id, userId },
+        });
+        this.logger.log(
+          `🚪 [MultiplayerService] Joueur ${userId} (${playerName}) a abandonné la partie en cours sur ${cleanCode}`,
+        );
+      }
+
+      const remainingPlayers = await this.prisma.duelPlayer.findMany({
+        where: { sessionId: session.id },
+        orderBy: { createdAt: 'asc' },
+      });
+
       const hostIsSpectator = await this.isHostSpectator(cleanCode);
       const activeContenders = hostIsSpectator
         ? remainingPlayers.filter((p) => !p.isHost)
         : remainingPlayers;
 
-      const answeredCount = activeContenders.filter(
-        (p) => p.hasAnsweredCurrent,
-      ).length;
-      allRemainingAnswered =
+      // 2.A : Il reste EXACTEMENT 1 joueur actif -> VICTOIRE IMMÉDIATE PAR FORFAIT !
+      if (activeContenders.length === 1) {
+        const remainingWinner = activeContenders[0];
+        this.logger.log(
+          `🏆 [MultiplayerService] Victoire par forfait sur ${cleanCode} pour ${remainingWinner.name} suite au départ de ${playerName} !`,
+        );
+
+        // Clôture immédiate de la session
+        await this.prisma.duelSession.update({
+          where: { id: session.id },
+          data: {
+            status: 'FINISHED',
+            winnerId: remainingWinner.userId,
+            finishedAt: new Date(),
+          },
+        });
+
+        // Attribution des 120 XP de victoire
+        await this.awardMultiplayerXp(remainingWinner.userId, 1, 120);
+
+        await this.prisma.duelPlayer.update({
+          where: { id: remainingWinner.id },
+          data: { rank: 1, earnedXp: 120 },
+        });
+
+        const finalLeaderboard = [
+          {
+            id: remainingWinner.id,
+            userId: remainingWinner.userId,
+            name: remainingWinner.name,
+            avatar: remainingWinner.avatar,
+            score: remainingWinner.score,
+            streak: remainingWinner.streak,
+            rank: 1,
+            earnedXp: 120,
+            isHost: remainingWinner.isHost,
+          },
+        ];
+
+        return {
+          isHostLeaving: isHost,
+          sessionCancelled: false,
+          forfeitVictory: true,
+          winnerId: remainingWinner.userId,
+          winnerName: remainingWinner.name,
+          forfeiterName: playerName,
+          finalLeaderboard,
+          session,
+          remainingPlayers: [remainingWinner],
+          allRemainingAnswered: false,
+        };
+      }
+
+      // 2.B : Il ne reste plus aucun joueur -> clôture
+      if (activeContenders.length === 0) {
+        await this.prisma.duelSession.update({
+          where: { id: session.id },
+          data: { status: 'CANCELLED', finishedAt: new Date() },
+        });
+        await this.redisService.del(`duel:spectator:${cleanCode}`);
+
+        return {
+          isHostLeaving: isHost,
+          sessionCancelled: true,
+          forfeitVictory: false,
+          session,
+          remainingPlayers: [],
+          allRemainingAnswered: false,
+        };
+      }
+
+      // 2.C : Il reste 2 joueurs ou plus (partie multijoueur continue)
+      // Si l'hôte a quitté, promouvoir le premier joueur restant comme hôte
+      if (isHost && remainingPlayers.length > 0) {
+        const newHost = remainingPlayers[0];
+        await this.prisma.duelPlayer.update({
+          where: { id: newHost.id },
+          data: { isHost: true },
+        });
+        await this.prisma.duelSession.update({
+          where: { id: session.id },
+          data: { player1Id: newHost.userId },
+        });
+        newHost.isHost = true;
+        this.logger.log(
+          `👑 [MultiplayerService] Hôte parti -> Nouveau hôte promu: ${newHost.name} (${newHost.userId})`,
+        );
+      }
+
+      // Vérifier si tous les joueurs restants avaient déjà répondu
+      const answeredCount = activeContenders.filter((p) => p.hasAnsweredCurrent).length;
+      const allRemainingAnswered =
         activeContenders.length > 0 && answeredCount >= activeContenders.length;
+
+      return {
+        isHostLeaving: isHost,
+        sessionCancelled: false,
+        forfeitVictory: false,
+        playerLeft: true,
+        leftPlayerName: playerName,
+        session,
+        remainingPlayers,
+        allRemainingAnswered,
+      };
     }
 
+    // Cas par défaut (session déjà terminée ou annulée)
     return {
-      isHostLeaving: false,
+      isHostLeaving: isHost,
       sessionCancelled: false,
+      forfeitVictory: false,
       session,
-      remainingPlayers,
-      allRemainingAnswered,
+      remainingPlayers: session.players,
+      allRemainingAnswered: false,
     };
   }
 
