@@ -45,4 +45,12 @@ export class FindItemsQueryDto {
   @Min(1)
   @Max(100)
   limit?: number = 20;
+
+  @IsOptional()
+  @IsString()
+  seed?: string;
+
+  @IsOptional()
+  @IsString()
+  excludeIds?: string;
 }

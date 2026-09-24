@@ -151,6 +151,139 @@ export class MultiplayerService {
   }
 
   /**
+   * Sélectionne des identifiants de questions pour un salon selon le mode et le thème.
+   * Si le filtre par thème renvoie moins de questions que requis, complète avec les questions publiées disponibles.
+   */
+  private async pickQuestions(
+    gameType: MultiplayerGameTypeEnum | string,
+    theme: string = 'ALL',
+    totalQuestions: number = 5,
+  ): Promise<string[]> {
+    const cleanTheme = (theme || 'ALL').toUpperCase();
+    let selectedIds: string[] = [];
+
+    if (
+      gameType === MultiplayerGameTypeEnum.TRUE_FALSE ||
+      gameType === 'TRUE_FALSE'
+    ) {
+      const validTfThemes = ['GEN', 'CULT', 'GEO', 'HIST', 'LITT', 'PROV'];
+      let available: { id: string }[] = [];
+
+      if (cleanTheme !== 'ALL' && validTfThemes.includes(cleanTheme)) {
+        available = await this.prisma.trueFalseQuestion.findMany({
+          where: { status: 'PUBLISHED', theme: cleanTheme as any },
+          select: { id: true },
+        });
+      }
+
+      // Si pas assez de questions avec le thème, ou si theme === 'ALL'
+      if (available.length < totalQuestions) {
+        const remainingNeeded = totalQuestions - available.length;
+        const existingIds = available.map((q) => q.id);
+        const additional = await this.prisma.trueFalseQuestion.findMany({
+          where: {
+            status: 'PUBLISHED',
+            id: { notIn: existingIds },
+          },
+          select: { id: true },
+        });
+        const shuffledAdditional = [...additional].sort(
+          () => Math.random() - 0.5,
+        );
+        available = [
+          ...available,
+          ...shuffledAdditional.slice(0, remainingNeeded),
+        ];
+      }
+
+      const shuffled = [...available].sort(() => Math.random() - 0.5);
+      selectedIds = shuffled.slice(0, totalQuestions).map((q) => q.id);
+    } else if (
+      gameType === MultiplayerGameTypeEnum.QUIZ ||
+      gameType === 'QUIZ'
+    ) {
+      // Mapping des clés de thèmes vers les catégories possibles en base
+      const QUIZ_THEME_CATEGORIES: Record<string, string[]> = {
+        GEO: ['geographie_regions', 'GEO'],
+        GEOGRAPHIE_REGIONS: ['geographie_regions', 'GEO'],
+        HIST: ['histoire_royaumes', 'symboles_histoire', 'HIST'],
+        HISTOIRE_ROYAUMES: ['histoire_royaumes', 'symboles_histoire', 'HIST'],
+        CULT: ['coutumes_fady', 'CULT'],
+        COUTUMES_FADY: ['coutumes_fady', 'CULT'],
+        LITT: ['arts_musique_saveurs', 'LITT'],
+        ARTS_MUSIQUE_SAVEURS: ['arts_musique_saveurs', 'LITT'],
+        PROV: ['enigmes_sagesse', 'PROV'],
+        ENIGMES_SAGESSE: ['enigmes_sagesse', 'PROV'],
+        GEN: [
+          'citoyennete_fihavanana',
+          'droits_devoirs_vote',
+          'droits-et-vote',
+          'civic-institution',
+          'GEN',
+        ],
+        CITOYENNETE_FIHAVANANA: [
+          'citoyennete_fihavanana',
+          'droits_devoirs_vote',
+          'droits-et-vote',
+          'civic-institution',
+          'GEN',
+        ],
+      };
+
+      const categories = QUIZ_THEME_CATEGORIES[cleanTheme] || null;
+      let available: { id: string }[] = [];
+
+      if (cleanTheme !== 'ALL' && categories && categories.length > 0) {
+        available = await this.prisma.civicQuizQuestion.findMany({
+          where: {
+            status: 'PUBLISHED',
+            category: { in: categories },
+          },
+          select: { id: true },
+        });
+      }
+
+      // Si pas assez de questions avec le thème, ou si theme === 'ALL'
+      if (available.length < totalQuestions) {
+        const remainingNeeded = totalQuestions - available.length;
+        const existingIds = available.map((q) => q.id);
+        const additional = await this.prisma.civicQuizQuestion.findMany({
+          where: {
+            status: 'PUBLISHED',
+            id: { notIn: existingIds },
+          },
+          select: { id: true },
+        });
+        const shuffledAdditional = [...additional].sort(
+          () => Math.random() - 0.5,
+        );
+        available = [
+          ...available,
+          ...shuffledAdditional.slice(0, remainingNeeded),
+        ];
+      }
+
+      const shuffled = [...available].sort(() => Math.random() - 0.5);
+      selectedIds = shuffled.slice(0, totalQuestions).map((q) => q.id);
+    } else {
+      const available = await this.prisma.missingWordQuestion.findMany({
+        where: { status: 'PUBLISHED' },
+        select: { id: true },
+      });
+      const shuffled = [...available].sort(() => Math.random() - 0.5);
+      selectedIds = shuffled.slice(0, totalQuestions).map((q) => q.id);
+    }
+
+    if (selectedIds.length === 0) {
+      throw new BadRequestException(
+        'Aucune question disponible pour ce mode de jeu.',
+      );
+    }
+
+    return selectedIds;
+  }
+
+  /**
    * Crée un nouveau salon multijoueur (Max 10 joueurs).
    */
   async createGame(userId: string, dto: CreateMultiplayerGameDto) {
@@ -178,43 +311,16 @@ export class MultiplayerService {
 
     const playerName = dto.userName || user.name || 'Mpilalao 1';
     const playerAvatar = dto.userAvatar || user.image || null;
+    const theme = dto.theme || 'ALL';
+    // Si l'hôte délègue le choix à l'adversaire dès la création
+    const themeChooserId =
+      dto.themeChooserId ||
+      (dto.opponentId && dto.themeChooserId === dto.opponentId
+        ? dto.opponentId
+        : userId);
 
-    // Sélectionner des questions aléatoires selon le mode de jeu
-    let questionIds: string[] = [];
-
-    if (gameType === MultiplayerGameTypeEnum.TRUE_FALSE) {
-      const available = await this.prisma.trueFalseQuestion.findMany({
-        where: { status: 'PUBLISHED' },
-        select: { id: true },
-      });
-      if (available.length === 0) {
-        throw new BadRequestException('Aucune question Vrai/Faux disponible.');
-      }
-      const shuffled = [...available].sort(() => Math.random() - 0.5);
-      questionIds = shuffled.slice(0, totalQuestions).map((q) => q.id);
-    } else if (gameType === MultiplayerGameTypeEnum.QUIZ) {
-      const available = await this.prisma.civicQuizQuestion.findMany({
-        where: { status: 'PUBLISHED' },
-        select: { id: true },
-      });
-      if (available.length === 0) {
-        throw new BadRequestException('Aucune question Quiz disponible.');
-      }
-      const shuffled = [...available].sort(() => Math.random() - 0.5);
-      questionIds = shuffled.slice(0, totalQuestions).map((q) => q.id);
-    } else {
-      const available = await this.prisma.missingWordQuestion.findMany({
-        where: { status: 'PUBLISHED' },
-        select: { id: true },
-      });
-      if (available.length === 0) {
-        throw new BadRequestException(
-          'Aucune question Mot Manquant disponible.',
-        );
-      }
-      const shuffled = [...available].sort(() => Math.random() - 0.5);
-      questionIds = shuffled.slice(0, totalQuestions).map((q) => q.id);
-    }
+    // Sélectionner des questions filtrées par thème selon le mode de jeu
+    const questionIds = await this.pickQuestions(gameType, theme, totalQuestions);
 
     // Générer un code unique
     let code = this.generateRoomCode();
@@ -241,6 +347,8 @@ export class MultiplayerService {
         timePerQuestion,
         maxPlayers: 10,
         currentQuestionIndex: 0,
+        theme,
+        themeChooserId,
         questionIds,
         players: {
           create: {
@@ -260,7 +368,7 @@ export class MultiplayerService {
     });
 
     this.logger.log(
-      `🎮 [Multiplayer] Salon créé avec le code ${code} par ${userId} (Hôte)`,
+      `🎮 [Multiplayer] Salon créé avec le code ${code} par ${userId} (Hôte, thème: ${theme}, chooser: ${themeChooserId})`,
     );
 
     // Envoi asynchrone d'une notification push & in-app au joueur défié
@@ -327,6 +435,161 @@ export class MultiplayerService {
   // Alias rétrocompatibilité
   async createDuel(userId: string, dto: CreateMultiplayerGameDto) {
     return this.createGame(userId, dto);
+  }
+
+  /**
+   * Modifie le thème d'un salon multijoueur (en phase d'attente) et regénère les questions.
+   * Seul le joueur qui a actuellement la main (themeChooserId ou hôte) peut effectuer cette action.
+   */
+  async changeTheme(code: string, userId: string, newTheme: string) {
+    const cleanCode = code.trim().toUpperCase();
+    const session = await this.prisma.duelSession.findUnique({
+      where: { code: cleanCode },
+      include: { players: true },
+    });
+
+    if (!session) {
+      throw new NotFoundException(`Salon ${cleanCode} introuvable.`);
+    }
+
+    if (session.status !== 'WAITING') {
+      throw new BadRequestException(
+        'Impossible de changer de thème après le démarrage de la partie.',
+      );
+    }
+
+    // Vérification des droits : l'utilisateur doit être le détenteur de la main
+    const currentChooserId = session.themeChooserId || session.player1Id;
+    if (currentChooserId !== userId) {
+      throw new ForbiddenException(
+        "Vous n'avez pas la main pour choisir le thème de ce salon.",
+      );
+    }
+
+    // Piocher de nouvelles questions pour ce thème
+    const questionIds = await this.pickQuestions(
+      session.gameType as MultiplayerGameTypeEnum,
+      newTheme,
+      session.totalQuestions,
+    );
+
+    const updatedSession = await this.prisma.duelSession.update({
+      where: { code: cleanCode },
+      data: {
+        theme: newTheme,
+        questionIds,
+        totalQuestions: questionIds.length,
+      },
+      include: { players: true },
+    });
+
+    const questions = await this.getPublicQuestions(
+      updatedSession.gameType as MultiplayerGameTypeEnum,
+      questionIds,
+    );
+
+    this.logger.log(
+      `🎨 [Multiplayer] Thème du salon ${cleanCode} mis à jour : ${newTheme} par ${userId}`,
+    );
+
+    return {
+      session: updatedSession,
+      questions,
+      players: updatedSession.players,
+    };
+  }
+
+  async changeDuelTheme(code: string, userId: string, newTheme: string) {
+    return this.changeTheme(code, userId, newTheme);
+  }
+
+  /**
+   * Délègue ou transfère la main du choix de thème à un autre joueur du salon.
+   */
+  async delegateThemeChoice(
+    code: string,
+    userId: string,
+    targetUserId?: string,
+  ) {
+    const cleanCode = code.trim().toUpperCase();
+    const session = await this.prisma.duelSession.findUnique({
+      where: { code: cleanCode },
+      include: { players: true },
+    });
+
+    if (!session) {
+      throw new NotFoundException(`Salon ${cleanCode} introuvable.`);
+    }
+
+    if (session.status !== 'WAITING') {
+      throw new BadRequestException(
+        'Impossible de transférer la main après le début du jeu.',
+      );
+    }
+
+    const currentChooserId = session.themeChooserId || session.player1Id;
+    // Seul l'hôte ou le détenteur actuel peut passer la main
+    if (userId !== currentChooserId && userId !== session.player1Id) {
+      throw new ForbiddenException(
+        "Vous n'avez pas les droits pour transférer le choix du thème.",
+      );
+    }
+
+    let recipientId = targetUserId;
+    if (!recipientId) {
+      // Trouver un joueur adverse connecté
+      const otherPlayer = session.players.find((p) => p.userId !== userId);
+      if (otherPlayer) {
+        recipientId = otherPlayer.userId;
+      } else if (session.player2Id && session.player2Id !== userId) {
+        recipientId = session.player2Id;
+      }
+    }
+
+    if (!recipientId) {
+      throw new BadRequestException(
+        "Aucun autre joueur n'est présent dans le salon pour recevoir la main.",
+      );
+    }
+
+    const updatedSession = await this.prisma.duelSession.update({
+      where: { code: cleanCode },
+      data: {
+        themeChooserId: recipientId,
+      },
+      include: { players: true },
+    });
+
+    const recipientPlayer = updatedSession.players.find(
+      (p) => p.userId === recipientId,
+    );
+    const recipientName =
+      recipientPlayer?.name || updatedSession.player2Name || 'Adversaire';
+
+    this.logger.log(
+      `🤝 [Multiplayer] Choix de thème délégué à ${recipientName} (${recipientId}) pour le salon ${cleanCode}`,
+    );
+
+    const questions = await this.getPublicQuestions(
+      updatedSession.gameType as MultiplayerGameTypeEnum,
+      updatedSession.questionIds,
+    );
+
+    return {
+      session: updatedSession,
+      questions,
+      players: updatedSession.players,
+      newChooserId: recipientId,
+      newChooserName: recipientName,
+    };
+  }
+
+  async delegateDuelThemeChoice(
+    code: string,
+    userId: string,
+    targetUserId?: string,
+  ) {
+    return this.delegateThemeChoice(code, userId, targetUserId);
   }
 
   /**

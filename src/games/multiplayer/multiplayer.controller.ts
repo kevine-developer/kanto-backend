@@ -42,4 +42,28 @@ export class MultiplayerController {
   ) {
     return this.multiplayerService.submitAnswer(session.user.id, dto);
   }
+
+  @Post(':code/theme')
+  @UseGuards(AuthGuard)
+  async changeTheme(
+    @Param('code') code: string,
+    @Body('theme') theme: string,
+    @Session() session: UserSession,
+  ) {
+    return this.multiplayerService.changeTheme(code, session.user.id, theme);
+  }
+
+  @Post(':code/delegate-theme')
+  @UseGuards(AuthGuard)
+  async delegateThemeChoice(
+    @Param('code') code: string,
+    @Body('targetUserId') targetUserId: string | undefined,
+    @Session() session: UserSession,
+  ) {
+    return this.multiplayerService.delegateThemeChoice(
+      code,
+      session.user.id,
+      targetUserId,
+    );
+  }
 }

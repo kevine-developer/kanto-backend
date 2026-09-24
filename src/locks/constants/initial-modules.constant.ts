@@ -4,6 +4,7 @@ export interface DefaultModuleConfig {
   nameFr: string;
   nameMg: string;
   imageUrl?: string | null;
+  bgImageUrl?: string | null;
   isLocked: boolean;
   lockReason?: string | null;
   minTier?: string;

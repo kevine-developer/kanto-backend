@@ -362,6 +362,8 @@ export class RealtimeGateway
             challengerAvatar: result.session.player1Avatar,
             totalQuestions: result.session.totalQuestions,
             timePerQuestion: result.session.timePerQuestion,
+            theme: result.session.theme,
+            themeChooserId: result.session.themeChooserId,
             createdAt: Date.now(),
           });
         this.logger.log(
@@ -484,6 +486,108 @@ export class RealtimeGateway
         success: false,
         message: msg,
       };
+    }
+  }
+
+  /**
+   * Changement de thème de jeu en direct dans le lobby / salon d'attente.
+   */
+  @SubscribeMessage(SOCKET_EVENTS.DUEL_CHANGE_THEME)
+  async handleDuelChangeTheme(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: { code: string; theme: string; userId?: string },
+  ) {
+    try {
+      if (!data?.code || !data?.theme) {
+        return { success: false, message: 'Code et thème requis' };
+      }
+      const userId = this.getClientUserId(client, data?.userId);
+      const result = await this.duelService.changeTheme(
+        data.code,
+        userId,
+        data.theme,
+      );
+
+      const room = RealtimeRooms.duel(result.session.code);
+      this.server.to(room).emit(SOCKET_EVENTS.DUEL_ROOM_UPDATE, {
+        session: result.session,
+        players: result.players,
+      });
+
+      this.server.to(room).emit(SOCKET_EVENTS.DUEL_THEME_CHANGED, {
+        code: result.session.code,
+        theme: result.session.theme,
+        themeChooserId: result.session.themeChooserId,
+        questions: result.questions,
+      });
+
+      this.logger.log(
+        `🎨 [DuelGateway] Thème mis à jour sur ${room} -> ${result.session.theme}`,
+      );
+
+      return {
+        success: true,
+        session: result.session,
+        questions: result.questions,
+        players: result.players,
+      };
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error ? err.message : 'Erreur modification thème';
+      this.logger.warn(`Erreur modification thème : ${msg}`);
+      return { success: false, message: msg };
+    }
+  }
+
+  /**
+   * Délégation du choix de thème à l'adversaire ou à un autre joueur.
+   */
+  @SubscribeMessage(SOCKET_EVENTS.DUEL_DELEGATE_THEME)
+  async handleDuelDelegateTheme(
+    @ConnectedSocket() client: Socket,
+    @MessageBody()
+    data: { code: string; targetUserId?: string; userId?: string },
+  ) {
+    try {
+      if (!data?.code) {
+        return { success: false, message: 'Code de salon requis' };
+      }
+      const userId = this.getClientUserId(client, data?.userId);
+      const result = await this.duelService.delegateThemeChoice(
+        data.code,
+        userId,
+        data.targetUserId,
+      );
+
+      const room = RealtimeRooms.duel(result.session.code);
+      this.server.to(room).emit(SOCKET_EVENTS.DUEL_ROOM_UPDATE, {
+        session: result.session,
+        players: result.players,
+      });
+
+      this.server.to(room).emit(SOCKET_EVENTS.DUEL_THEME_CHOOSER_CHANGED, {
+        code: result.session.code,
+        themeChooserId: result.newChooserId,
+        themeChooserName: result.newChooserName,
+      });
+
+      this.logger.log(
+        `🤝 [DuelGateway] Choix de thème transféré sur ${room} à ${result.newChooserName} (${result.newChooserId})`,
+      );
+
+      return {
+        success: true,
+        session: result.session,
+        questions: result.questions,
+        players: result.players,
+        newChooserId: result.newChooserId,
+        newChooserName: result.newChooserName,
+      };
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error ? err.message : 'Erreur délégation thème';
+      this.logger.warn(`Erreur délégation thème : ${msg}`);
+      return { success: false, message: msg };
     }
   }
 

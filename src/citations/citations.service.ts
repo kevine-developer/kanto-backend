@@ -167,6 +167,20 @@ export class CitationsService {
       };
     }
 
+    if (query.excludeIds) {
+      const excludedIds = Array.isArray(query.excludeIds)
+        ? query.excludeIds
+        : typeof query.excludeIds === 'string'
+        ? (query.excludeIds as string)
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean)
+        : [];
+      if (excludedIds.length > 0) {
+        where.id = { notIn: excludedIds };
+      }
+    }
+
     if (query.search && query.search.trim()) {
       const searchTerm = query.search.trim();
       where.OR = [
@@ -175,6 +189,54 @@ export class CitationsService {
         { sourceName: { contains: searchTerm, mode: 'insensitive' } },
         { contexte: { contains: searchTerm, mode: 'insensitive' } },
       ];
+    }
+
+    // Tirage aléatoire global à partir de TOUTES les citations
+    if (query.seed) {
+      const allMatching = await this.prisma.citation.findMany({
+        where,
+        select: { id: true },
+      });
+
+      let matchingIds = allMatching.map((r) => r.id);
+      // Fallback si tout a été exclu (déjà vu)
+      if (matchingIds.length === 0 && where.id) {
+        delete where.id;
+        const fallbackMatching = await this.prisma.citation.findMany({
+          where,
+          select: { id: true },
+        });
+        matchingIds = fallbackMatching.map((r) => r.id);
+      }
+
+      const total = matchingIds.length;
+      const shuffledIds = this.seededShuffle(matchingIds, query.seed);
+      const pageIds = shuffledIds.slice(skip, skip + limit);
+
+      if (pageIds.length === 0) {
+        const emptyResult = formatPaginatedResponse([], total, page, limit);
+        await this.redis.set(cacheKey, emptyResult, 300);
+        return emptyResult;
+      }
+
+      const citations = await this.prisma.citation.findMany({
+        where: { id: { in: pageIds } },
+        include: {
+          author: true,
+          themes: {
+            include: {
+              theme: true,
+            },
+          },
+        },
+      });
+
+      const itemMap = new Map(citations.map((c) => [c.id, c]));
+      const orderedCitations = pageIds.map((id) => itemMap.get(id)).filter(Boolean);
+
+      const result = formatPaginatedResponse(orderedCitations, total, page, limit);
+      await this.redis.set(cacheKey, result, 300);
+      return result;
     }
 
     const [citations, total] = await Promise.all([
@@ -198,6 +260,24 @@ export class CitationsService {
     const result = formatPaginatedResponse(citations, total, page, limit);
 
     await this.redis.set(cacheKey, result, 300); // 5 minutes
+    return result;
+  }
+
+  private seededShuffle<T>(array: T[], seedStr: string): T[] {
+    let hash = 0;
+    for (let i = 0; i < seedStr.length; i++) {
+      hash = (hash << 5) - hash + seedStr.charCodeAt(i);
+      hash |= 0;
+    }
+    const random = () => {
+      hash = (hash * 9301 + 49297) % 233280;
+      return hash / 233280;
+    };
+    const result = [...array];
+    for (let i = result.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.abs(random()) * (i + 1));
+      [result[i], result[j]] = [result[j], result[i]];
+    }
     return result;
   }
 

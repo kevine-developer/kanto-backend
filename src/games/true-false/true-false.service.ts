@@ -33,15 +33,46 @@ export class TrueFalseService {
     if (theme && theme !== 'ALL') {
       where.theme = theme as TrueFalseTheme;
     }
+    let resolvedDifficulty: DifficultyLevel = DifficultyLevel.EASY;
     if (difficulty && difficulty !== 'ALL') {
-      where.difficulty = difficulty as DifficultyLevel;
+      const difficultyMap: Record<string, DifficultyLevel> = {
+        LVL_1: DifficultyLevel.EASY,
+        LVL_2: DifficultyLevel.EASY,
+        LVL_3: DifficultyLevel.EASY,
+        LVL_4: DifficultyLevel.MEDIUM,
+        LVL_5: DifficultyLevel.MEDIUM,
+        LVL_6: DifficultyLevel.MEDIUM,
+        LVL_7: DifficultyLevel.HARD,
+        LVL_8: DifficultyLevel.HARD,
+        LVL_9: DifficultyLevel.EXPERT,
+        LVL_10: DifficultyLevel.EXPERT,
+        EASY: DifficultyLevel.EASY,
+        MEDIUM: DifficultyLevel.MEDIUM,
+        HARD: DifficultyLevel.HARD,
+        EXPERT: DifficultyLevel.EXPERT,
+      };
+      const mappedDiff = difficultyMap[difficulty];
+      if (mappedDiff) {
+        where.difficulty = mappedDiff;
+        resolvedDifficulty = mappedDiff;
+      }
     }
 
     // Récupération des IDs disponibles
-    const availableQuestions = await this.prisma.trueFalseQuestion.findMany({
+    let availableQuestions = await this.prisma.trueFalseQuestion.findMany({
       where,
       select: { id: true },
     });
+
+    // Fallback permissif : si aucune question pour cette difficulté spécifique dans ce thème, chercher dans le thème
+    if (availableQuestions.length === 0 && where.difficulty) {
+      const fallbackWhere: Prisma.TrueFalseQuestionWhereInput = { status: 'PUBLISHED' };
+      if (where.theme) fallbackWhere.theme = where.theme;
+      availableQuestions = await this.prisma.trueFalseQuestion.findMany({
+        where: fallbackWhere,
+        select: { id: true },
+      });
+    }
 
     if (availableQuestions.length === 0) {
       throw new NotFoundException(
@@ -73,10 +104,7 @@ export class TrueFalseService {
           theme && theme !== 'ALL'
             ? (theme as TrueFalseTheme)
             : TrueFalseTheme.GEN,
-        difficulty:
-          difficulty && difficulty !== 'ALL'
-            ? (difficulty as DifficultyLevel)
-            : DifficultyLevel.EASY,
+        difficulty: resolvedDifficulty,
         totalQuestions: questions.length,
       },
     });

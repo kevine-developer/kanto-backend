@@ -42,6 +42,14 @@ export class CreateMultiplayerGameDto {
   @IsOptional()
   @IsString()
   opponentId?: string;
+
+  @IsOptional()
+  @IsString()
+  theme?: string = 'ALL';
+
+  @IsOptional()
+  @IsString()
+  themeChooserId?: string;
 }
 
 export class JoinMultiplayerGameDto {
@@ -87,6 +95,34 @@ export class StartMultiplayerGameDto {
   code!: string;
 }
 
+export class ChangeMultiplayerThemeDto {
+  @IsNotEmpty()
+  @IsString()
+  code!: string;
+
+  @IsNotEmpty()
+  @IsString()
+  theme!: string;
+
+  @IsOptional()
+  @IsString()
+  userId?: string;
+}
+
+export class DelegateThemeChoiceDto {
+  @IsNotEmpty()
+  @IsString()
+  code!: string;
+
+  @IsOptional()
+  @IsString()
+  targetUserId?: string;
+
+  @IsOptional()
+  @IsString()
+  userId?: string;
+}
+
 // Alias de rétrocompatibilité
 export {
   MultiplayerGameTypeEnum as DuelGameTypeEnum,
@@ -94,4 +130,6 @@ export {
   JoinMultiplayerGameDto as JoinDuelDto,
   SubmitMultiplayerAnswerDto as SubmitDuelAnswerDto,
   StartMultiplayerGameDto as StartDuelDto,
+  ChangeMultiplayerThemeDto as ChangeDuelThemeDto,
+  DelegateThemeChoiceDto as DelegateDuelThemeDto,
 };

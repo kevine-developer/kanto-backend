@@ -193,6 +193,20 @@ export class ItemsService {
       };
     }
 
+    if (query.excludeIds) {
+      const excludedIds = Array.isArray(query.excludeIds)
+        ? query.excludeIds
+        : typeof query.excludeIds === 'string'
+        ? (query.excludeIds as string)
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean)
+        : [];
+      if (excludedIds.length > 0) {
+        where.id = { notIn: excludedIds };
+      }
+    }
+
     if (query.search && query.search.trim()) {
       const searchTerm = query.search.trim();
       where.OR = [
@@ -200,6 +214,54 @@ export class ItemsService {
         { french: { contains: searchTerm, mode: 'insensitive' } },
         { meaning: { contains: searchTerm, mode: 'insensitive' } },
       ];
+    }
+
+    // Tirage aléatoire global à partir de TOUS les contenus de la catégorie
+    if (query.seed) {
+      const allMatching = await this.prisma.malagasyItem.findMany({
+        where,
+        select: { id: true },
+      });
+
+      let matchingIds = allMatching.map((r) => r.id);
+      // Fallback si tous les éléments ont été exclus (tout est déjà vu)
+      if (matchingIds.length === 0 && where.id) {
+        delete where.id;
+        const fallbackMatching = await this.prisma.malagasyItem.findMany({
+          where,
+          select: { id: true },
+        });
+        matchingIds = fallbackMatching.map((r) => r.id);
+      }
+
+      const total = matchingIds.length;
+      const shuffledIds = this.seededShuffle(matchingIds, query.seed);
+      const pageIds = shuffledIds.slice(skip, skip + limit);
+
+      if (pageIds.length === 0) {
+        const emptyResult = formatPaginatedResponse([], total, page, limit);
+        await this.redis.set(cacheKey, emptyResult, 300);
+        return emptyResult;
+      }
+
+      const items = await this.prisma.malagasyItem.findMany({
+        where: { id: { in: pageIds } },
+        include: {
+          themes: {
+            include: {
+              theme: true,
+            },
+          },
+          dialectVariants: true,
+        },
+      });
+
+      const itemMap = new Map(items.map((i) => [i.id, i]));
+      const orderedItems = pageIds.map((id) => itemMap.get(id)).filter(Boolean);
+
+      const result = formatPaginatedResponse(orderedItems, total, page, limit);
+      await this.redis.set(cacheKey, result, 300);
+      return result;
     }
 
     const [items, total] = await Promise.all([
@@ -223,6 +285,24 @@ export class ItemsService {
     const result = formatPaginatedResponse(items, total, page, limit);
 
     await this.redis.set(cacheKey, result, 300); // Cache 5 min
+    return result;
+  }
+
+  private seededShuffle<T>(array: T[], seedStr: string): T[] {
+    let hash = 0;
+    for (let i = 0; i < seedStr.length; i++) {
+      hash = (hash << 5) - hash + seedStr.charCodeAt(i);
+      hash |= 0;
+    }
+    const random = () => {
+      hash = (hash * 9301 + 49297) % 233280;
+      return hash / 233280;
+    };
+    const result = [...array];
+    for (let i = result.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.abs(random()) * (i + 1));
+      [result[i], result[j]] = [result[j], result[i]];
+    }
     return result;
   }
 
