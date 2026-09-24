@@ -217,8 +217,65 @@ export class RealtimeGateway
     }
   }
 
-  handleDisconnect(client: Socket) {
+  async handleDisconnect(client: Socket) {
     this.logger.log(`🔌 [Realtime] Client déconnecté : ${client.id}`);
+    const duelCode = (client.data as Record<string, unknown>)?.duelCode as
+      | string
+      | undefined;
+    const userId = (client.data as Record<string, unknown>)?.userId as
+      | string
+      | undefined;
+
+    if (duelCode && userId) {
+      try {
+        const room = RealtimeRooms.duel(duelCode);
+        const result = await this.duelService.handlePlayerLeave(
+          userId,
+          duelCode,
+        );
+        if (result?.sessionCancelled) {
+          this.server.to(room).emit(SOCKET_EVENTS.DUEL_SESSION_CANCELLED, {
+            code: duelCode,
+            reason: 'HOST_DISCONNECTED',
+            messageMg:
+              "Nandao ny efitrano ny tompon'ny lalao. Natsahatra ny salon.",
+            messageFr: "L'hôte a quitté le salon. La partie a été fermée.",
+          });
+          this.logger.log(
+            `📢 [DuelGateway] Déconnexion hôte -> Clôture automatique de la session d'attente ${room}`,
+          );
+        } else if (result?.forfeitVictory) {
+          this.server.to(room).emit(SOCKET_EVENTS.DUEL_GAME_FINISH, {
+            finalLeaderboard: result.finalLeaderboard,
+            winnerId: result.winnerId,
+            forfeit: true,
+            winnerName: result.winnerName,
+            forfeiterName: result.forfeiterName,
+            messageFr: `${result.forfeiterName} a quitté la partie. Victoire par forfait !`,
+            messageMg: `Nandao ny lalao i ${result.forfeiterName}. Azonao ny fandresena !`,
+          });
+          this.logger.log(
+            `🏆 [DuelGateway] Victoire par forfait suite déconnexion diffusée sur ${room}`,
+          );
+        } else if (result?.remainingPlayers) {
+          this.server.to(room).emit(SOCKET_EVENTS.DUEL_ROOM_UPDATE, {
+            session: result.session,
+            players: result.remainingPlayers,
+          });
+          if (result.themeChooserChanged) {
+            this.server
+              .to(room)
+              .emit(SOCKET_EVENTS.DUEL_THEME_CHOOSER_CHANGED, {
+                themeChooserId: result.newThemeChooserId,
+              });
+          }
+        }
+      } catch (err: unknown) {
+        this.logger.warn(
+          `Erreur lors du nettoyage de déconnexion duel pour ${client.id} : ${err}`,
+        );
+      }
+    }
   }
 
   /**
@@ -348,6 +405,7 @@ export class RealtimeGateway
 
       const room = RealtimeRooms.duel(result.session.code);
       await client.join(room);
+      (client.data as Record<string, unknown>).duelCode = result.session.code;
 
       // Si un adversaire spécifique est défié, lui envoyer instantanément l'invitation en temps réel
       if (data?.opponentId && data.opponentId !== userId) {
@@ -461,6 +519,7 @@ export class RealtimeGateway
 
       const room = RealtimeRooms.duel(result.session.code);
       await client.join(room);
+      (client.data as Record<string, unknown>).duelCode = result.session.code;
 
       // Diffuser à tous les participants connectés la mise à jour de la liste
       this.server.to(room).emit(SOCKET_EVENTS.DUEL_ROOM_UPDATE, {
@@ -856,6 +915,7 @@ export class RealtimeGateway
           data.code,
         );
         await client.leave(room);
+        delete (client.data as Record<string, unknown>).duelCode;
 
         if (!result) return { success: true };
 
@@ -871,12 +931,33 @@ export class RealtimeGateway
           this.logger.log(
             `📢 [DuelGateway] Session ${room} fermée définitivement suite au départ de l'hôte`,
           );
+        } else if (result.forfeitVictory) {
+          // 🏆 Victoire par forfait (il ne reste qu'un seul joueur actif en plein jeu !)
+          this.server.to(room).emit(SOCKET_EVENTS.DUEL_GAME_FINISH, {
+            finalLeaderboard: result.finalLeaderboard,
+            winnerId: result.winnerId,
+            forfeit: true,
+            winnerName: result.winnerName,
+            forfeiterName: result.forfeiterName,
+            messageFr: `${result.forfeiterName} a quitté la partie. Victoire par forfait !`,
+            messageMg: `Nandao ny lalao i ${result.forfeiterName}. Azonao ny fandresena !`,
+          });
+          this.logger.log(
+            `🏆 [DuelGateway] Victoire par forfait diffusée sur ${room} pour ${result.winnerName} !`,
+          );
         } else if (result.remainingPlayers) {
           // Simple participant qui part
           this.server.to(room).emit(SOCKET_EVENTS.DUEL_ROOM_UPDATE, {
             session: result.session,
             players: result.remainingPlayers,
           });
+
+          // Si le choix du thème est revenu à l'hôte
+          if (result.themeChooserChanged) {
+            this.server.to(room).emit(SOCKET_EVENTS.DUEL_THEME_CHOOSER_CHANGED, {
+              themeChooserId: result.newThemeChooserId,
+            });
+          }
 
           // Si la partie est en cours et que tous les participants restants avaient déjà répondu
           if (result.allRemainingAnswered) {
