@@ -48,6 +48,7 @@ export class LocksService implements OnModuleInit {
               nameFr: item.nameFr,
               nameMg: item.nameMg,
               imageUrl: item.imageUrl || null,
+              bgImageUrl: item.bgImageUrl || null,
               isLocked: item.isLocked,
               lockReason: item.lockReason,
               minTier: item.minTier || 'FREE',
@@ -124,6 +125,7 @@ export class LocksService implements OnModuleInit {
         nameFr: true,
         nameMg: true,
         imageUrl: true,
+        bgImageUrl: true,
         isLocked: true,
         lockReason: true,
       },
@@ -135,6 +137,7 @@ export class LocksService implements OnModuleInit {
         isLocked: boolean;
         lockReason?: string;
         imageUrl?: string;
+        bgImageUrl?: string;
         nameFr?: string;
         nameMg?: string;
         type?: string;
@@ -146,6 +149,7 @@ export class LocksService implements OnModuleInit {
         isLocked: r.isLocked,
         lockReason: r.lockReason || undefined,
         imageUrl: r.imageUrl || undefined,
+        bgImageUrl: r.bgImageUrl || undefined,
         nameFr: r.nameFr,
         nameMg: r.nameMg,
         type: r.type,
@@ -200,6 +204,7 @@ export class LocksService implements OnModuleInit {
     nameFr: string;
     nameMg: string;
     imageUrl?: string | null;
+    bgImageUrl?: string | null;
     isLocked?: boolean;
     lockReason?: string | null;
     minTier?: string;
@@ -232,6 +237,7 @@ export class LocksService implements OnModuleInit {
         nameFr: data.nameFr.trim(),
         nameMg: data.nameMg.trim(),
         imageUrl: data.imageUrl?.trim() || null,
+        bgImageUrl: data.bgImageUrl?.trim() || null,
         isLocked: data.isLocked || false,
         lockReason: data.lockReason?.trim() || null,
         minTier: data.minTier?.trim() || 'FREE',
@@ -261,6 +267,7 @@ export class LocksService implements OnModuleInit {
       nameMg?: string;
       type?: 'GAME' | 'CATEGORY' | 'FEATURE';
       imageUrl?: string | null;
+      bgImageUrl?: string | null;
       isLocked?: boolean;
       lockReason?: string | null;
       minTier?: string;
@@ -286,6 +293,10 @@ export class LocksService implements OnModuleInit {
           data.imageUrl !== undefined
             ? data.imageUrl?.trim() || null
             : existing.imageUrl,
+        bgImageUrl:
+          data.bgImageUrl !== undefined
+            ? data.bgImageUrl?.trim() || null
+            : existing.bgImageUrl,
         isLocked:
           data.isLocked !== undefined ? data.isLocked : existing.isLocked,
         lockReason:
@@ -307,6 +318,17 @@ export class LocksService implements OnModuleInit {
         .catch(() => {});
     }
 
+    // Suppression automatique de l'ancien fond si remplacé
+    if (
+      data.bgImageUrl !== undefined &&
+      existing.bgImageUrl &&
+      existing.bgImageUrl !== updated.bgImageUrl
+    ) {
+      this.cloudinaryService
+        .deleteMediaFromUrl(existing.bgImageUrl)
+        .catch(() => {});
+    }
+
     // Invalide le cache public Redis
     try {
       await this.redisService.del(CACHE_KEY_PUBLIC_LOCKS);
@@ -315,7 +337,7 @@ export class LocksService implements OnModuleInit {
     }
 
     this.logger.log(
-      `[ModuleLock] "${key}" mis à jour : isLocked=${updated.isLocked} (Image: ${updated.imageUrl || 'aucune'})`,
+      `[ModuleLock] "${key}" mis à jour : isLocked=${updated.isLocked} (Image: ${updated.imageUrl || 'aucune'}, Fond: ${updated.bgImageUrl || 'aucun'})`,
     );
 
     return updated;

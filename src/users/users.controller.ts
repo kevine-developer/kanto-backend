@@ -12,7 +12,7 @@ import {
 import { UsersService } from './users.service.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
 import { UploadAvatarDto } from './dto/upload-avatar.dto.js';
-import { AuthGuard, Session, type UserSession } from '../auth/index.js';
+import { AuthGuard, OptionalAuth, Session, type UserSession } from '../auth/index.js';
 import { Throttle } from '@nestjs/throttler';
 
 @Controller('users')
@@ -20,6 +20,8 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('check-username')
+  @UseGuards(AuthGuard)
+  @OptionalAuth()
   @Throttle({ default: { limit: 30, ttl: 60000 } })
   checkUsername(
     @Query('username') username: string,
@@ -70,6 +72,8 @@ export class UsersController {
    * Profil public d'un utilisateur avec statistiques complètes, rang, et statut relationnel.
    */
   @Get(':userId/public-profile')
+  @UseGuards(AuthGuard)
+  @OptionalAuth()
   getPublicProfile(
     @Param('userId') userId: string,
     @Session() session?: UserSession,

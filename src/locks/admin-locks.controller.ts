@@ -40,6 +40,10 @@ export class CreateModuleDto {
   @IsOptional()
   imageUrl?: string;
 
+  @IsString()
+  @IsOptional()
+  bgImageUrl?: string;
+
   @IsBoolean()
   @IsOptional()
   isLocked?: boolean;
@@ -69,6 +73,10 @@ export class UpdateLockDto {
   @IsString()
   @IsOptional()
   imageUrl?: string;
+
+  @IsString()
+  @IsOptional()
+  bgImageUrl?: string;
 
   @IsBoolean()
   @IsOptional()

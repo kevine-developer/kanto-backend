@@ -815,6 +815,7 @@ model ModuleLock {
   isLocked   Boolean    @default(false)
   lockReason String? // Ex: "En cours de maintenance", "Bientôt disponible"
   imageUrl   String? // Image / illustration du jeu ou de la catégorie
+  bgImageUrl String? // Image d'arrière-plan immersive (Chemin de niveaux / jeu)
   minTier    String?    @default("FREE")
   updatedAt  DateTime   @updatedAt
   createdAt  DateTime   @default(now())
@@ -1209,6 +1210,8 @@ model DuelSession {
   timePerQuestion      Int          @default(15) // secondes allouées par question (compte à rebours)
   maxPlayers           Int          @default(10) // Limite max de joueurs par salon (10)
   currentQuestionIndex Int          @default(0)  // Index de la question en cours
+  theme                String?      @default("ALL") // Thème culturel ("ALL", "GEO", "HIST", "CULT", "LITT", "PROV", "GEN")
+  themeChooserId       String?                   // ID du joueur qui a actuellement la main pour choisir le thème (player1Id par défaut)
   roundStartedAt       DateTime?                 // Timestamp précis du début du round pour Server-Authoritative timing
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @updatedAt
