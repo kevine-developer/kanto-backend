@@ -81,7 +81,9 @@ export class LocksService implements OnModuleInit {
               where: { key: item.key },
               data: { imageUrl: item.imageUrl },
             });
-            this.logger.log(`🖼️ Image par défaut assignée au module : ${item.key}`);
+            this.logger.log(
+              `🖼️ Image par défaut assignée au module : ${item.key}`,
+            );
           }
         }
       }
@@ -118,57 +120,89 @@ export class LocksService implements OnModuleInit {
       this.logger.debug('Cache Redis ignoré, lecture directe base de données.');
     }
 
-    const records = await this.prisma.moduleLock.findMany({
-      select: {
-        key: true,
-        type: true,
-        nameFr: true,
-        nameMg: true,
-        imageUrl: true,
-        bgImageUrl: true,
-        isLocked: true,
-        lockReason: true,
-      },
-    });
-
-    const result: Record<
-      string,
-      {
-        isLocked: boolean;
-        lockReason?: string;
-        imageUrl?: string;
-        bgImageUrl?: string;
-        nameFr?: string;
-        nameMg?: string;
-        type?: string;
-      }
-    > = {};
-
-    for (const r of records) {
-      result[r.key] = {
-        isLocked: r.isLocked,
-        lockReason: r.lockReason || undefined,
-        imageUrl: r.imageUrl || undefined,
-        bgImageUrl: r.bgImageUrl || undefined,
-        nameFr: r.nameFr,
-        nameMg: r.nameMg,
-        type: r.type,
-      };
-    }
-
     try {
-      await this.redisService.set(
-        CACHE_KEY_PUBLIC_LOCKS,
-        result,
-        CACHE_TTL_SECONDS,
-      );
-    } catch (err: unknown) {
-      this.logger.debug(
-        `Erreur sauvegarde cache locks : ${err instanceof Error ? err.message : String(err)}`,
-      );
-    }
+      const records = await this.prisma.moduleLock.findMany({
+        select: {
+          key: true,
+          type: true,
+          nameFr: true,
+          nameMg: true,
+          imageUrl: true,
+          bgImageUrl: true,
+          isLocked: true,
+          lockReason: true,
+        },
+      });
 
-    return result;
+      const result: Record<
+        string,
+        {
+          isLocked: boolean;
+          lockReason?: string;
+          imageUrl?: string;
+          bgImageUrl?: string;
+          nameFr?: string;
+          nameMg?: string;
+          type?: string;
+        }
+      > = {};
+
+      for (const r of records) {
+        result[r.key] = {
+          isLocked: r.isLocked,
+          lockReason: r.lockReason || undefined,
+          imageUrl: r.imageUrl || undefined,
+          bgImageUrl: r.bgImageUrl || undefined,
+          nameFr: r.nameFr,
+          nameMg: r.nameMg,
+          type: r.type,
+        };
+      }
+
+      try {
+        await this.redisService.set(
+          CACHE_KEY_PUBLIC_LOCKS,
+          result,
+          CACHE_TTL_SECONDS,
+        );
+      } catch (err: unknown) {
+        this.logger.debug(
+          `Erreur sauvegarde cache locks : ${err instanceof Error ? err.message : String(err)}`,
+        );
+      }
+
+      return result;
+    } catch (dbError) {
+      this.logger.error(
+        'Erreur getPublicLocks BD, bascule sur INITIAL_MODULES :',
+        dbError,
+      );
+      const fallbackResult: Record<
+        string,
+        {
+          isLocked: boolean;
+          lockReason?: string;
+          imageUrl?: string;
+          bgImageUrl?: string;
+          nameFr?: string;
+          nameMg?: string;
+          type?: string;
+        }
+      > = {};
+
+      for (const m of INITIAL_MODULES) {
+        fallbackResult[m.key] = {
+          isLocked: m.isLocked,
+          lockReason: m.lockReason || undefined,
+          imageUrl: m.imageUrl || undefined,
+          bgImageUrl: m.bgImageUrl || undefined,
+          nameFr: m.nameFr,
+          nameMg: m.nameMg,
+          type: m.type,
+        };
+      }
+      return fallbackResult;
+    }
   }
 
   /**
@@ -191,7 +225,9 @@ export class LocksService implements OnModuleInit {
     });
 
     if (!r) {
-      throw new NotFoundException(`Module avec la clé "${decodedKey}" non trouvé.`);
+      throw new NotFoundException(
+        `Module avec la clé "${decodedKey}" non trouvé.`,
+      );
     }
 
     return {
@@ -206,27 +242,61 @@ export class LocksService implements OnModuleInit {
   }
 
   /**
-   * Retourne la liste complète pour l'administration.
+   * Retourne la liste complète pour l'administration (avec fallback résilient).
    */
   async getAdminLocks(type?: 'GAME' | 'CATEGORY' | 'FEATURE') {
-    const where = type ? { type } : {};
-    const modules = await this.prisma.moduleLock.findMany({
-      where,
-      orderBy: [{ type: 'asc' }, { nameFr: 'asc' }],
-    });
+    try {
+      const where = type ? { type } : {};
+      const modules = await this.prisma.moduleLock.findMany({
+        where,
+        orderBy: [{ type: 'asc' }, { nameFr: 'asc' }],
+      });
 
-    const total = modules.length;
-    const locked = modules.filter((m) => m.isLocked).length;
-    const active = total - locked;
+      const total = modules.length;
+      const locked = modules.filter((m) => m.isLocked).length;
+      const active = total - locked;
 
-    return {
-      stats: {
-        total,
-        locked,
-        active,
-      },
-      modules,
-    };
+      return {
+        stats: {
+          total,
+          locked,
+          active,
+        },
+        modules,
+      };
+    } catch (error) {
+      this.logger.error(
+        'Erreur getAdminLocks (bascule sur les modules par défaut) :',
+        error,
+      );
+      const fallbackModules = INITIAL_MODULES.map((item, idx) => ({
+        id: `default-${idx}`,
+        key: item.key,
+        type: item.type,
+        nameFr: item.nameFr,
+        nameMg: item.nameMg,
+        imageUrl: item.imageUrl || null,
+        bgImageUrl: item.bgImageUrl || null,
+        isLocked: item.isLocked,
+        lockReason: item.lockReason || null,
+        minTier: item.minTier || 'FREE',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }));
+
+      const filtered = type
+        ? fallbackModules.filter((m) => m.type === type)
+        : fallbackModules;
+
+      return {
+        stats: {
+          total: filtered.length,
+          locked: filtered.filter((m) => m.isLocked).length,
+          active: filtered.filter((m) => !m.isLocked).length,
+        },
+        modules: filtered,
+      };
+    }
   }
 
   /**
@@ -239,7 +309,9 @@ export class LocksService implements OnModuleInit {
     });
 
     if (!moduleLock) {
-      throw new NotFoundException(`Module avec la clé "${decodedKey}" non trouvé.`);
+      throw new NotFoundException(
+        `Module avec la clé "${decodedKey}" non trouvé.`,
+      );
     }
 
     return moduleLock;

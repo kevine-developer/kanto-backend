@@ -14,12 +14,19 @@ CREATE TABLE IF NOT EXISTS "module_locks" (
   "type" "ModuleType" NOT NULL,
   "nameFr" TEXT NOT NULL,
   "nameMg" TEXT NOT NULL,
+  "imageUrl" TEXT,
+  "bgImageUrl" TEXT,
   "isLocked" BOOLEAN NOT NULL DEFAULT false,
   "lockReason" TEXT,
   "minTier" TEXT DEFAULT 'FREE',
   "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Rétrocompatibilité : ajout des colonnes si la table existait déjà
+ALTER TABLE "module_locks" ADD COLUMN IF NOT EXISTS "imageUrl" TEXT;
+ALTER TABLE "module_locks" ADD COLUMN IF NOT EXISTS "bgImageUrl" TEXT;
+ALTER TABLE "module_locks" ADD COLUMN IF NOT EXISTS "minTier" TEXT DEFAULT 'FREE';
 
 CREATE INDEX IF NOT EXISTS "module_locks_type_idx" ON "module_locks"("type");
 CREATE INDEX IF NOT EXISTS "module_locks_isLocked_idx" ON "module_locks"("isLocked");

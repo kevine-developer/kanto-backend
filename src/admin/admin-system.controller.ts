@@ -29,7 +29,7 @@ export class AdminSystemController {
       );
     }
 
-    const subject = "Test de configuration de messagerie — Kanto";
+    const subject = 'Test de configuration de messagerie — Kanto';
     const html = `
 <!DOCTYPE html>
 <html lang="fr">

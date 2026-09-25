@@ -197,11 +197,11 @@ export class ItemsService {
       const excludedIds = Array.isArray(query.excludeIds)
         ? query.excludeIds
         : typeof query.excludeIds === 'string'
-        ? (query.excludeIds as string)
-            .split(',')
-            .map((s) => s.trim())
-            .filter(Boolean)
-        : [];
+          ? query.excludeIds
+              .split(',')
+              .map((s) => s.trim())
+              .filter(Boolean)
+          : [];
       if (excludedIds.length > 0) {
         where.id = { notIn: excludedIds };
       }

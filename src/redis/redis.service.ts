@@ -391,7 +391,9 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
       try {
         return await this.client.smembers(key);
       } catch (err: any) {
-        this.logger.debug(`[Redis] Erreur sMembers sur ${key} : ${err?.message}`);
+        this.logger.debug(
+          `[Redis] Erreur sMembers sur ${key} : ${err?.message}`,
+        );
       }
     }
 

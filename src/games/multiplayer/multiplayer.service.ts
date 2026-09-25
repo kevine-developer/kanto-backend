@@ -320,7 +320,11 @@ export class MultiplayerService {
         : userId);
 
     // Sélectionner des questions filtrées par thème selon le mode de jeu
-    const questionIds = await this.pickQuestions(gameType, theme, totalQuestions);
+    const questionIds = await this.pickQuestions(
+      gameType,
+      theme,
+      totalQuestions,
+    );
 
     // Générer un code unique
     let code = this.generateRoomCode();
@@ -468,7 +472,7 @@ export class MultiplayerService {
 
     // Piocher de nouvelles questions pour ce thème
     const questionIds = await this.pickQuestions(
-      session.gameType as MultiplayerGameTypeEnum,
+      session.gameType,
       newTheme,
       session.totalQuestions,
     );
@@ -642,14 +646,12 @@ export class MultiplayerService {
 
     if (session.status === 'CANCELLED') {
       throw new BadRequestException(
-        "Ce salon a été fermé par son organisateur.",
+        'Ce salon a été fermé par son organisateur.',
       );
     }
 
     if (session.status === 'FINISHED') {
-      throw new BadRequestException(
-        "Cette partie est déjà terminée.",
-      );
+      throw new BadRequestException('Cette partie est déjà terminée.');
     }
 
     const existingPlayer = session.players.find((p) => p.userId === userId);
@@ -818,15 +820,19 @@ export class MultiplayerService {
     });
 
     if (!session) {
-      throw new NotFoundException(`Ce salon n'existe pas ou a expiré (${cleanCode}).`);
+      throw new NotFoundException(
+        `Ce salon n'existe pas ou a expiré (${cleanCode}).`,
+      );
     }
 
     if (session.status === 'CANCELLED') {
-      throw new BadRequestException("Ce salon a été fermé par son organisateur.");
+      throw new BadRequestException(
+        'Ce salon a été fermé par son organisateur.',
+      );
     }
 
     if (session.status === 'FINISHED') {
-      throw new BadRequestException("Cette partie est déjà terminée.");
+      throw new BadRequestException('Cette partie est déjà terminée.');
     }
 
     const questions = await this.getPublicQuestions(
@@ -1459,7 +1465,9 @@ export class MultiplayerService {
       }
 
       // Vérifier si tous les joueurs restants avaient déjà répondu
-      const answeredCount = activeContenders.filter((p) => p.hasAnsweredCurrent).length;
+      const answeredCount = activeContenders.filter(
+        (p) => p.hasAnsweredCurrent,
+      ).length;
       const allRemainingAnswered =
         activeContenders.length > 0 && answeredCount >= activeContenders.length;
 
