@@ -172,6 +172,40 @@ export class LocksService implements OnModuleInit {
   }
 
   /**
+   * Retourne l'état public d'un module par sa clé (accès mobile / public).
+   */
+  async getPublicLockByKey(key: string) {
+    const decodedKey = decodeURIComponent(key).trim();
+    const r = await this.prisma.moduleLock.findUnique({
+      where: { key: decodedKey },
+      select: {
+        key: true,
+        type: true,
+        nameFr: true,
+        nameMg: true,
+        imageUrl: true,
+        bgImageUrl: true,
+        isLocked: true,
+        lockReason: true,
+      },
+    });
+
+    if (!r) {
+      throw new NotFoundException(`Module avec la clé "${decodedKey}" non trouvé.`);
+    }
+
+    return {
+      isLocked: r.isLocked,
+      lockReason: r.lockReason || undefined,
+      imageUrl: r.imageUrl || undefined,
+      bgImageUrl: r.bgImageUrl || undefined,
+      nameFr: r.nameFr,
+      nameMg: r.nameMg,
+      type: r.type,
+    };
+  }
+
+  /**
    * Retourne la liste complète pour l'administration.
    */
   async getAdminLocks(type?: 'GAME' | 'CATEGORY' | 'FEATURE') {
@@ -193,6 +227,22 @@ export class LocksService implements OnModuleInit {
       },
       modules,
     };
+  }
+
+  /**
+   * Retourne les informations complètes d'un module par sa clé (administration).
+   */
+  async getAdminLockByKey(key: string) {
+    const decodedKey = decodeURIComponent(key).trim();
+    const moduleLock = await this.prisma.moduleLock.findUnique({
+      where: { key: decodedKey },
+    });
+
+    if (!moduleLock) {
+      throw new NotFoundException(`Module avec la clé "${decodedKey}" non trouvé.`);
+    }
+
+    return moduleLock;
   }
 
   /**

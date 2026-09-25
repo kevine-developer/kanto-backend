@@ -116,6 +116,11 @@ export class AdminLocksController {
     return this.locksService.getAdminLocks(type);
   }
 
+  @Get(':key')
+  async getAdminLockByKey(@Param('key') key: string) {
+    return this.locksService.getAdminLockByKey(key);
+  }
+
   @Post()
   async createModule(@Body() body: CreateModuleDto) {
     return this.locksService.createModule(body);
