@@ -183,9 +183,10 @@ export const auth = betterAuth({
       try {
         const adminFrontendUrl =
           process.env.ADMIN_FRONTEND_URL ||
+          process.env.ADMIN_URL ||
           (isProduction
             ? 'https://admin.kanto.mg'
-            : process.env.BETTER_AUTH_URL || 'https://api-kanto.gastsar.fr');
+            : 'http://192.168.1.100:3001');
         const resetPasswordUrl = new URL('/reset-password', adminFrontendUrl);
         resetPasswordUrl.searchParams.set('token', token);
         const effectiveResetUrl = resetPasswordUrl.toString();

@@ -607,8 +607,14 @@ export class HistoryService implements OnModuleInit {
   async createBanknote(data: CreateBanknoteDto) {
     const payload = {
       ...data,
-      valueAriary: data.valueAriary !== undefined && data.valueAriary !== null ? Number(data.valueAriary) : 0,
-      valueFmg: data.valueFmg !== undefined && data.valueFmg !== null ? Number(data.valueFmg) : 0,
+      valueAriary:
+        data.valueAriary !== undefined && data.valueAriary !== null
+          ? Number(data.valueAriary)
+          : 0,
+      valueFmg:
+        data.valueFmg !== undefined && data.valueFmg !== null
+          ? Number(data.valueFmg)
+          : 0,
     };
     const created = await this.prisma.banknote.create({ data: payload });
     await this.invalidateCache();
@@ -619,8 +625,15 @@ export class HistoryService implements OnModuleInit {
     const existing = await this.getBanknoteById(id);
     const payload = {
       ...data,
-      ...(data.valueAriary !== undefined ? { valueAriary: data.valueAriary !== null ? Number(data.valueAriary) : 0 } : {}),
-      ...(data.valueFmg !== undefined ? { valueFmg: data.valueFmg !== null ? Number(data.valueFmg) : 0 } : {}),
+      ...(data.valueAriary !== undefined
+        ? {
+            valueAriary:
+              data.valueAriary !== null ? Number(data.valueAriary) : 0,
+          }
+        : {}),
+      ...(data.valueFmg !== undefined
+        ? { valueFmg: data.valueFmg !== null ? Number(data.valueFmg) : 0 }
+        : {}),
     };
     const updated = await this.prisma.banknote.update({
       where: { id },
