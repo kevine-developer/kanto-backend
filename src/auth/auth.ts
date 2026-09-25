@@ -160,6 +160,19 @@ export const auth = betterAuth({
         }
       : {}),
   },
+  account: {
+    modelName: 'Account',
+    accountLinking: {
+      // Permet la liaison automatique d'un compte Google à un compte email/mdp existant
+      // si l'email correspond — même si l'email local n'est pas encore vérifié.
+      // Google garantit lui-même que l'email est vérifié (emailVerified: true).
+      enabled: true,
+      requireLocalEmailVerified: false,
+      // Si la liaison est effectuée, on marque l'email local comme vérifié
+      // (cohérent : Google a prouvé que l'utilisateur possède cet email)
+      trustedProviders: ['google'],
+    },
+  },
   emailAndPassword: {
     enabled: true,
     resetPasswordTokenExpiresIn: 3600, // 1 heure
@@ -229,9 +242,7 @@ export const auth = betterAuth({
     // Renouvellement automatique si la session est utilisée dans les 24 dernières heures
     updateAge: 60 * 60 * 24,
   },
-  account: {
-    modelName: 'Account',
-  },
+
   advanced: {
     ipAddress: {
       ipAddressHeaders: ['x-forwarded-for', 'x-real-ip', 'cf-connecting-ip'],
