@@ -35,6 +35,15 @@ import {
 export class AdminHistoryController {
   constructor(private readonly historyService: HistoryService) {}
 
+  @Post('seed')
+  async seedDefaults(@Body() body?: { force?: boolean }) {
+    await this.historyService.seedDefaultsIfEmpty(body?.force ?? false);
+    return {
+      success: true,
+      message: 'Données Histoire & Patrimoine synchronisées avec succès.',
+    };
+  }
+
   // ==========================================
   // TÉLÉVERSEMENT DE PHOTO
   // ==========================================
