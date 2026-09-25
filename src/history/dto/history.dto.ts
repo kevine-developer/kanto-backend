@@ -255,10 +255,12 @@ export class CreateBanknoteDto {
   id!: string;
 
   @IsInt()
-  valueAriary!: number;
+  @IsOptional()
+  valueAriary?: number;
 
   @IsInt()
-  valueFmg!: number;
+  @IsOptional()
+  valueFmg?: number;
 
   @IsString()
   @IsNotEmpty()
