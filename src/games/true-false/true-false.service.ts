@@ -66,7 +66,9 @@ export class TrueFalseService {
 
     // Fallback permissif : si aucune question pour cette difficulté spécifique dans ce thème, chercher dans le thème
     if (availableQuestions.length === 0 && where.difficulty) {
-      const fallbackWhere: Prisma.TrueFalseQuestionWhereInput = { status: 'PUBLISHED' };
+      const fallbackWhere: Prisma.TrueFalseQuestionWhereInput = {
+        status: 'PUBLISHED',
+      };
       if (where.theme) fallbackWhere.theme = where.theme;
       availableQuestions = await this.prisma.trueFalseQuestion.findMany({
         where: fallbackWhere,

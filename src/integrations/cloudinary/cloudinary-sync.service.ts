@@ -45,15 +45,18 @@ export class CloudinarySyncService implements OnModuleInit, OnModuleDestroy {
     initialTimer.unref();
 
     // Verification periodique toutes les 10 minutes (600 000 ms)
-    this.syncInterval = setInterval(() => {
-      this.syncLocalUploadsToCloudinary().catch((err) => {
-        this.logger.debug?.(
-          `[Sync] Erreur verification periodique : ${
-            err instanceof Error ? err.message : String(err)
-          }`,
-        );
-      });
-    }, 10 * 60 * 1000);
+    this.syncInterval = setInterval(
+      () => {
+        this.syncLocalUploadsToCloudinary().catch((err) => {
+          this.logger.debug?.(
+            `[Sync] Erreur verification periodique : ${
+              err instanceof Error ? err.message : String(err)
+            }`,
+          );
+        });
+      },
+      10 * 60 * 1000,
+    );
     this.syncInterval.unref();
   }
 
@@ -206,10 +209,7 @@ export class CloudinarySyncService implements OnModuleInit, OnModuleDestroy {
         return false;
       }
     } else if (buffer.length < 32) {
-      const isReferenced = await this.isReferencedInDatabase(
-        relPath,
-        fileName,
-      );
+      const isReferenced = await this.isReferencedInDatabase(relPath, fileName);
       if (!isReferenced) {
         this.logger.warn(
           `[Sync] Fichier audio orphelin vide purge : "${relPath}" (${buffer.length} octets)`,

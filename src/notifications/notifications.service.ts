@@ -469,7 +469,9 @@ export class NotificationsService {
           );
 
           // Fusionner et dédupliquer
-          const allTokens = Array.from(new Set([...userTokens, ...guestTokens]));
+          const allTokens = Array.from(
+            new Set([...userTokens, ...guestTokens]),
+          );
 
           if (allTokens.length > 0) {
             this.logger.log(

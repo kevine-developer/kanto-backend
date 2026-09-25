@@ -12,7 +12,12 @@ import {
 import { UsersService } from './users.service.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
 import { UploadAvatarDto } from './dto/upload-avatar.dto.js';
-import { AuthGuard, OptionalAuth, Session, type UserSession } from '../auth/index.js';
+import {
+  AuthGuard,
+  OptionalAuth,
+  Session,
+  type UserSession,
+} from '../auth/index.js';
 import { Throttle } from '@nestjs/throttler';
 
 @Controller('users')

@@ -171,11 +171,11 @@ export class CitationsService {
       const excludedIds = Array.isArray(query.excludeIds)
         ? query.excludeIds
         : typeof query.excludeIds === 'string'
-        ? (query.excludeIds as string)
-            .split(',')
-            .map((s) => s.trim())
-            .filter(Boolean)
-        : [];
+          ? query.excludeIds
+              .split(',')
+              .map((s) => s.trim())
+              .filter(Boolean)
+          : [];
       if (excludedIds.length > 0) {
         where.id = { notIn: excludedIds };
       }
@@ -232,9 +232,16 @@ export class CitationsService {
       });
 
       const itemMap = new Map(citations.map((c) => [c.id, c]));
-      const orderedCitations = pageIds.map((id) => itemMap.get(id)).filter(Boolean);
+      const orderedCitations = pageIds
+        .map((id) => itemMap.get(id))
+        .filter(Boolean);
 
-      const result = formatPaginatedResponse(orderedCitations, total, page, limit);
+      const result = formatPaginatedResponse(
+        orderedCitations,
+        total,
+        page,
+        limit,
+      );
       await this.redis.set(cacheKey, result, 300);
       return result;
     }

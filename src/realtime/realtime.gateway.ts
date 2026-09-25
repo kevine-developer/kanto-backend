@@ -220,11 +220,9 @@ export class RealtimeGateway
   async handleDisconnect(client: Socket) {
     this.logger.log(`🔌 [Realtime] Client déconnecté : ${client.id}`);
     const duelCode = (client.data as Record<string, unknown>)?.duelCode as
-      | string
-      | undefined;
+      string | undefined;
     const userId = (client.data as Record<string, unknown>)?.userId as
-      | string
-      | undefined;
+      string | undefined;
 
     if (duelCode && userId) {
       try {
@@ -954,9 +952,11 @@ export class RealtimeGateway
 
           // Si le choix du thème est revenu à l'hôte
           if (result.themeChooserChanged) {
-            this.server.to(room).emit(SOCKET_EVENTS.DUEL_THEME_CHOOSER_CHANGED, {
-              themeChooserId: result.newThemeChooserId,
-            });
+            this.server
+              .to(room)
+              .emit(SOCKET_EVENTS.DUEL_THEME_CHOOSER_CHANGED, {
+                themeChooserId: result.newThemeChooserId,
+              });
           }
 
           // Si la partie est en cours et que tous les participants restants avaient déjà répondu

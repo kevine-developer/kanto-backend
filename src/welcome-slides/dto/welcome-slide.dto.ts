@@ -100,4 +100,3 @@ export class UploadWelcomeSlideImageDto {
   @IsOptional()
   subfolder?: string;
 }
-

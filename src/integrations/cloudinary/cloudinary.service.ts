@@ -406,7 +406,9 @@ export class CloudinaryService {
         const localPath = path.resolve(process.cwd(), 'uploads', relativePart);
         if (fs.existsSync(localPath)) {
           await fs.promises.unlink(localPath);
-          this.logger.log(`[Local] Fichier supprime du disque : "${localPath}"`);
+          this.logger.log(
+            `[Local] Fichier supprime du disque : "${localPath}"`,
+          );
           return true;
         }
       } catch (err: unknown) {
