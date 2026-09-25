@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { LocksService } from './locks.service.js';
 
 @Controller('locks')
@@ -12,5 +12,13 @@ export class LocksController {
   @Get()
   async getPublicLocks() {
     return this.locksService.getPublicLocks();
+  }
+
+  /**
+   * Endpoint public pour récupérer le statut d'un module unique par sa clé.
+   */
+  @Get(':key')
+  async getPublicLockByKey(@Param('key') key: string) {
+    return this.locksService.getPublicLockByKey(key);
   }
 }
