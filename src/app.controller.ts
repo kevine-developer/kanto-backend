@@ -55,6 +55,38 @@ export class AppController {
   }
 
   /**
+   * Redirection automatique pour les liens de réinitialisation de mot de passe (reset-password)
+   * Redirige immédiatement le navigateur vers l'interface d'administration kanto-admin.
+   */
+  @Get('reset-password')
+  handleResetPasswordRedirect(
+    @Query('token') token: string,
+    @Res() res: Response,
+  ): void {
+    const isProduction = process.env.NODE_ENV === 'production';
+    const adminFrontendUrl =
+      process.env.ADMIN_FRONTEND_URL ||
+      process.env.ADMIN_URL ||
+      (isProduction ? 'https://admin.kanto.mg' : 'http://192.168.1.100:3001');
+
+    try {
+      const targetUrl = new URL('/reset-password', adminFrontendUrl);
+      if (token) {
+        targetUrl.searchParams.set('token', token);
+      }
+      this.logger.log(
+        `🔄 Redirection de /reset-password vers l'interface admin : ${targetUrl.toString()}`,
+      );
+      res.redirect(302, targetUrl.toString());
+    } catch {
+      res.redirect(
+        302,
+        `${adminFrontendUrl}/reset-password?token=${encodeURIComponent(token || '')}`,
+      );
+    }
+  }
+
+  /**
    * Endpoint de confirmation d'email (ex: https://api-kanto.gastsar.fr/confirmation)
    * - Vérifie l'état du token en base de données :
    *   1. Temps limite dépassé (> 24h) -> affiche l'écran d'expiration
@@ -215,8 +247,7 @@ export class AppController {
       );
     }
 
-    const adminEmail =
-      process.env.ADMIN_EMAIL || 'yvesnarsonkevine@gmail.com';
+    const adminEmail = process.env.ADMIN_EMAIL || 'yvesnarsonkevine@gmail.com';
 
     const feedbackType = type || 'general';
     const typeLabel: Record<string, string> = {
@@ -288,7 +319,9 @@ export class AppController {
           replyTo: userEmail,
         });
       } else {
-        this.logger.warn('[Feedback] ResendService non disponible — feedback non envoyé par email.');
+        this.logger.warn(
+          '[Feedback] ResendService non disponible — feedback non envoyé par email.',
+        );
         this.logger.log(`[Feedback] ${text}`);
       }
     } catch (err: unknown) {
@@ -297,6 +330,9 @@ export class AppController {
       // On ne remonte pas l'erreur à l'utilisateur — le feedback est enregistré en log
     }
 
-    return { success: true, message: 'Feedback reçu. Merci pour votre retour !' };
+    return {
+      success: true,
+      message: 'Feedback reçu. Merci pour votre retour !',
+    };
   }
 }
