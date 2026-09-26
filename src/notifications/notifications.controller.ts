@@ -7,11 +7,13 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { NotificationsService } from './notifications.service.js';
 import { CreateNotificationDto } from './dto/notifications.dto.js';
 import { RegisterPushTokenDto } from './dto/push-token.dto.js';
-import { Session, type UserSession } from '../auth/index.js';
+import { AuthGuard, Roles, Session, type UserSession } from '../auth/index.js';
 
 @Controller()
 export class NotificationsController {
@@ -21,6 +23,7 @@ export class NotificationsController {
    * Enregistre le token Expo Push d'un utilisateur ou d'un visiteur anonyme (invité).
    */
   @Post('notifications/push-token')
+  @Throttle({ default: { limit: 30, ttl: 60000 } })
   registerPushToken(
     @Body() body: RegisterPushTokenDto,
     @Session() session?: UserSession,
@@ -73,9 +76,11 @@ export class NotificationsController {
   }
 
   /**
-   * Supprime toutes les notifications.
+   * Supprime toutes les notifications (Administration uniquement).
    */
   @Delete('notifications')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
   clearAllNotifications() {
     return this.notificationsService.clearAllNotifications();
   }
@@ -86,6 +91,8 @@ export class NotificationsController {
    * Endpoint administration : Récupère toutes les notifications envoyées.
    */
   @Get('admin/notifications')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
   getAllAdminNotifications() {
     return this.notificationsService.getAllAdminNotifications();
   }
@@ -94,6 +101,8 @@ export class NotificationsController {
    * Endpoint administration : Crée et diffuse une nouvelle notification.
    */
   @Post('admin/notifications')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
   createNotification(@Body() body: CreateNotificationDto) {
     return this.notificationsService.createNotification(body);
   }
@@ -102,6 +111,8 @@ export class NotificationsController {
    * Endpoint administration : Envoie une notification push de test.
    */
   @Post('admin/notifications/test-push')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
   testPushNotification(@Body() body?: { targetToken?: string }) {
     return this.notificationsService.sendTestPush(body?.targetToken);
   }
@@ -110,6 +121,8 @@ export class NotificationsController {
    * Endpoint administration : Supprime une notification.
    */
   @Delete('admin/notifications/:id')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
   deleteNotificationAdmin(@Param('id') id: string) {
     return this.notificationsService.deleteNotification(id);
   }

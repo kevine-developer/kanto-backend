@@ -6,15 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { AnnouncementsService } from './announcements.service.js';
 import {
   CreateAnnouncementDto,
   UpdateAnnouncementDto,
 } from './dto/announcement.dto.js';
-
-// Si tu utilises des guards d'authentification pour l'admin, tu peux les importer ici
-// ex: import { AdminGuard } from '../auth/guards/admin.guard';
+import { AuthGuard, Roles } from '../auth/index.js';
 
 @Controller('announcements')
 export class AnnouncementsController {
@@ -26,23 +25,31 @@ export class AnnouncementsController {
     return this.announcementsService.getActiveAnnouncement();
   }
 
-  // Routes protégées pour l'administration (ajoute @UseGuards(AdminGuard) si besoin)
+  // Routes protégées pour l'administration
   @Get()
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
   findAll() {
     return this.announcementsService.findAll();
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
   findOne(@Param('id') id: string) {
     return this.announcementsService.findOne(id);
   }
 
   @Post()
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
   create(@Body() createAnnouncementDto: CreateAnnouncementDto) {
     return this.announcementsService.create(createAnnouncementDto);
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
   update(
     @Param('id') id: string,
     @Body() updateAnnouncementDto: UpdateAnnouncementDto,
@@ -51,6 +58,8 @@ export class AnnouncementsController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
   remove(@Param('id') id: string) {
     return this.announcementsService.remove(id);
   }
