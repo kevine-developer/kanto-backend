@@ -366,7 +366,32 @@ const PRESIDENTS_SEED = [
 // ============================================================
 // 3. MUSÉE DES BILLETS MALGACHES
 // ============================================================
-const BANKNOTES_SEED = [
+interface BanknoteSeedItem {
+  id: string;
+  valueAriary: number;
+  valueFmg: number;
+  titleFr: string;
+  titleMg: string;
+  series: string;
+  seriesLabelFr: string;
+  seriesLabelMg: string;
+  period: string;
+  colorLight: string;
+  colorDark: string;
+  obverseDescriptionFr?: string | null;
+  obverseDescriptionMg?: string | null;
+  reverseDescriptionFr?: string | null;
+  reverseDescriptionMg?: string | null;
+  symbolismFr?: string | null;
+  symbolismMg?: string | null;
+  securityFeaturesFr?: string[];
+  imageUrl?: string | null;
+  imageUrlVerso?: string | null;
+  isComingSoon?: boolean;
+  orderIndex: number;
+}
+
+const BANKNOTES_SEED: BanknoteSeedItem[] = [
   {
     id: 'billet-20000',
     valueAriary: 20000,
