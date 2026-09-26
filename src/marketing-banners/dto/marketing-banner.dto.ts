@@ -58,6 +58,34 @@ export class CreateMarketingBannerDto {
   @IsBoolean()
   @IsOptional()
   isActive?: boolean;
+
+  @IsString()
+  @IsOptional()
+  actionType?: string;
+
+  @IsString()
+  @IsOptional()
+  modalBodyFr?: string;
+
+  @IsString()
+  @IsOptional()
+  modalBodyMg?: string;
+
+  @IsString()
+  @IsOptional()
+  modalImageUrl?: string;
+
+  @IsString()
+  @IsOptional()
+  modalCtaLabelFr?: string;
+
+  @IsString()
+  @IsOptional()
+  modalCtaLabelMg?: string;
+
+  @IsString()
+  @IsOptional()
+  modalCtaLink?: string;
 }
 
 export class UpdateMarketingBannerDto {
@@ -112,6 +140,34 @@ export class UpdateMarketingBannerDto {
   @IsBoolean()
   @IsOptional()
   isActive?: boolean;
+
+  @IsString()
+  @IsOptional()
+  actionType?: string;
+
+  @IsString()
+  @IsOptional()
+  modalBodyFr?: string;
+
+  @IsString()
+  @IsOptional()
+  modalBodyMg?: string;
+
+  @IsString()
+  @IsOptional()
+  modalImageUrl?: string;
+
+  @IsString()
+  @IsOptional()
+  modalCtaLabelFr?: string;
+
+  @IsString()
+  @IsOptional()
+  modalCtaLabelMg?: string;
+
+  @IsString()
+  @IsOptional()
+  modalCtaLink?: string;
 }
 
 export class ReorderMarketingBannersDto {

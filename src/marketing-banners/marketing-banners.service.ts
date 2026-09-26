@@ -123,6 +123,13 @@ export class MarketingBannersService implements OnModuleInit {
         accentColor: dto.accentColor || '#F59E0B',
         orderIndex,
         isActive: dto.isActive ?? true,
+        actionType: dto.actionType || 'DEEP_LINK',
+        modalBodyFr: dto.modalBodyFr,
+        modalBodyMg: dto.modalBodyMg,
+        modalImageUrl: dto.modalImageUrl,
+        modalCtaLabelFr: dto.modalCtaLabelFr,
+        modalCtaLabelMg: dto.modalCtaLabelMg,
+        modalCtaLink: dto.modalCtaLink,
       },
     });
   }
