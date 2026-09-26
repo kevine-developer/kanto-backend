@@ -33,6 +33,11 @@ export class RiddleController {
     );
   }
 
+  @Post('abandon')
+  abandonSession(@Body() dto: { sessionId: string }) {
+    return this.riddleService.abandonSession(dto.sessionId);
+  }
+
   @Get()
   getQuestions(@Query('level') level?: string) {
     return this.riddleService.getQuestions(

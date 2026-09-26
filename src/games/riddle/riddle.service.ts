@@ -141,4 +141,44 @@ export class RiddleService {
 
     return session;
   }
+
+  /**
+   * Abandonne et stoppe immédiatement une session de devinettes côté serveur.
+   * Supprime la session de la base si aucune réponse n'a été soumise pour libérer l'espace,
+   * ou marque la session comme terminée si elle était en cours.
+   */
+  async abandonSession(sessionId: string) {
+    if (!sessionId) {
+      return { success: true, message: 'sessionId requis' };
+    }
+
+    const session = await this.prisma.riddleSession.findUnique({
+      where: { id: sessionId },
+      include: { answers: true },
+    });
+
+    if (!session) {
+      return { success: true, message: 'Session introuvable ou déjà nettoyée' };
+    }
+
+    if (session.isCompleted) {
+      return { success: true, message: 'Session déjà clôturée' };
+    }
+
+    if (session.answers.length === 0) {
+      await this.prisma.riddleSession.delete({
+        where: { id: sessionId },
+      });
+      return { success: true, status: 'DELETED' };
+    }
+
+    await this.prisma.riddleSession.update({
+      where: { id: sessionId },
+      data: {
+        isCompleted: true,
+      },
+    });
+
+    return { success: true, status: 'ABANDONED' };
+  }
 }

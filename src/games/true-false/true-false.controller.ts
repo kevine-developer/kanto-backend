@@ -39,6 +39,11 @@ export class TrueFalseController {
     );
   }
 
+  @Post('abandon')
+  abandonSession(@Body() dto: { sessionId: string }) {
+    return this.trueFalseService.abandonSession(dto.sessionId);
+  }
+
   @Get('counts')
   getCounts() {
     return this.trueFalseService.getQuestionCounts();

@@ -239,8 +239,10 @@ export class RealtimeGateway
               "Nandao ny efitrano ny tompon'ny lalao. Natsahatra ny salon.",
             messageFr: "L'hôte a quitté le salon. La partie a été fermée.",
           });
+          // Libère immédiatement tous les sockets abonnés pour éviter les rooms orphelines et fuites mémoire
+          this.server.in(room).socketsLeave(room);
           this.logger.log(
-            `📢 [DuelGateway] Déconnexion hôte -> Clôture automatique de la session d'attente ${room}`,
+            `📢 [DuelGateway] Déconnexion hôte -> Clôture automatique et libération de la room ${room}`,
           );
         } else if (result?.forfeitVictory) {
           this.server.to(room).emit(SOCKET_EVENTS.DUEL_GAME_FINISH, {
@@ -926,6 +928,8 @@ export class RealtimeGateway
               "Nandao ny efitrano ny tompon'ny lalao. Natsahatra ny salon.",
             messageFr: "L'hôte a quitté le salon. La partie a été fermée.",
           });
+          // Libérer immédiatement la room socket.io côté serveur
+          this.server.in(room).socketsLeave(room);
           this.logger.log(
             `📢 [DuelGateway] Session ${room} fermée définitivement suite au départ de l'hôte`,
           );
