@@ -1692,90 +1692,148 @@ export const DEFAULT_HISTORY_DATES: DefaultHistoryDate[] = [
 // =========================================================================
 export const DEFAULT_NATIONAL_EMBLEMS: DefaultNationalEmblem[] = [
   {
-    id: 'embleme-royaume-merina',
-    period: '1828 - 1896',
-    government: "Royaume de Madagascar (Fanjakan'i Madagasikara)",
+    id: 'embleme-1868-ranavalona-ii',
+    period: '1868 - 1883',
+    government: "Royaume de Madagascar (sous Ranavalona II) / Fanjakan'i Madagasikara",
     descriptionFr:
-      "Armoiries royales arborant l'Aigle royal (Voromahery), surmonté de la couronne d'or de Ranavalona, flanqué des lances sacrées et du dais royal pourpre.",
+      "Écu écartelé au 1 d'argent au zébu de sable, au 2 d'argent au ravinala de sinople, au 3 d'argent au bouclier et sagaies de sable, au 4 d'argent au riz de sinople, et sur le tout de cendres en croix au centre et aux bords azur. Surmonté de la couronne de Ranavalona Ire en timbre, avec en tenants, en dextre, un marchand vêtu d'un dishdasha, et senestre, un soldat merina en tenue d'apparat.",
     descriptionMg:
-      'Mari-piandrianana mampiseho ny Voromahery, ny satro-boninahitra volamena, lefona masina ary ny lamba mena mpanjaka.',
+      "Ampinga mizara efatra : omby mainty amin'ny fotsy, ravinala maitso, ampinga sy lefona fiarovana, ary salohim-bary maitso. Eo amboniny ny satro-boninahitry Ranavalona I, tohanan'ny mpivarotra sy miaramila merina manao fanamiana manetriketrika.",
     notesFr:
-      'Utilisé sur les décrets royaux, traités diplomatiques et drapeaux jusqu’à l’annexion coloniale française de 1896.',
+      "Le tout repose sur un cylindre de sable gravé de la devise historique : « Tsy adidiko izaho irery, fa adidiko izaho sy ianao » (Ce n'est pas mon devoir à moi seul, mais notre devoir à vous et à moi).",
     notesMg:
-      'Nampiasaina tamin’ny didim-panjakana sy fifanekena iraisam-pirenena mandra-pahatongan’ny fanjanahan-tany tamin’ny 1896.',
-    imageUrl:
-      'https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=700&auto=format&fit=crop&q=80',
+      "Miorina amin'ny teny filamatra manan-tantara : « Tsy adidiko izaho irery, fa adidiko izaho sy ianao ».",
+    imageUrl: null,
     orderIndex: 1,
     status: 'PUBLISHED',
   },
   {
-    id: 'embleme-premiere-republique',
-    period: '1959 - 1972',
-    government: 'Première République Malgache (Philibert Tsiranana)',
+    id: 'embleme-1883-ranavalona-iii',
+    period: '1883 - 1897',
+    government: "Royaume de Madagascar (sous Ranavalona III) / Fanjakan'i Madagasikara",
     descriptionFr:
-      'Sceau circulaire représentant au centre une tête de zébu stylisée, encadrée de deux branches de caféier en fleur, surmontée des rayons dorés du soleil levant, avec la devise « Fahafahana, Tanindrazana, Fandrosoana » (Liberté, Patrie, Progrès).',
+      "Écu d'azur, au soleil d'or figuré, chargé d'un aigle de sable (Voromahery) couronné de gueules ; en pointe, cinq étoiles d'or ; à la couronne de laurier de sinople en orle, le point de jonction chargé d'une étoile d'argent à cinq rais, ajourée d'or.",
     descriptionMg:
-      'Tombo-kase boribory ahitana lohan’omby eo afovoany, fehezin’ny rantsana kafe roa, hazavan’ny masoandro miposaka, ary ny teny filamatra « Fahafahana, Tanindrazana, Fandrosoana ».',
+      "Ampinga manga ahitana masoandro volamena misy Voromahery misatro-boninahitra mena ; kintana volamena dimy eo ambany ; fehezam-boninkazo laorie maitso ary kintana volafotsy dimy rantsana.",
     notesFr:
-      'Adopté lors de la promulgation de la Constitution de la 1ère République en 1959.',
+      "Armoiries royales sous Ranavalona III, symbole d'autorité souveraine et de résistance nationale avant l'annexion coloniale française de 1896.",
     notesMg:
-      'Nolaniana tamin’ny fampiharana ny Lalàmpanorenan’ny Repoblika Voalohany tamin’ny 1959.',
-    imageUrl:
-      'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=700&auto=format&fit=crop&q=80',
+      "Mari-piandrianana tamin'ny andron-dRanavalona III, mariky ny fahefana mpanjaka sy ny fiarovana ny tanindrazana.",
+    imageUrl: null,
     orderIndex: 2,
     status: 'PUBLISHED',
   },
   {
-    id: 'embleme-deuxieme-republique-rdm',
-    period: '1975 - 1992',
-    government:
-      'Deuxième République / République Démocratique de Madagascar (Didier Ratsiraka)',
+    id: 'embleme-1897-colonie',
+    period: '1897 - 1959',
+    government: 'Colonie de Madagascar et dépendances (Gouvernement Général)',
     descriptionFr:
-      'Emblème socialiste intégrant une étoile rouge au sommet, une roue dentée industrielle, un livre ouvert (le Livre Rouge), un fusil et une bêche croisés, une tête de zébu, avec la devise « Tanindrazana, Tolom-piavotana, Fahafahana » (Patrie, Révolution, Liberté).',
+      "Sceau du Gouvernement Général de Madagascar et dépendances : Écu de gueules gravé des initiales officielles du gouvernement général avec les attributs administratifs de l'époque.",
     descriptionMg:
-      'Mari-piandrianana sosialista misy kintana mena, kodiarana indostrialy, boky misokatra (Boky Mena), basy sy angady mifampiditra, ary ny teny filamatra « Tanindrazana, Tolom-piavotana, Fahafahana ».',
+      "Tombo-kase sy mari-panjakana tamin'ny fanjanahan-tany : ampinga mena misy ny soratra voalohan'ny Governemanta Jeneraly sy ny mari-pamantarana frantsay.",
     notesFr:
-      'Symbole de la Charte de la Révolution Socialiste malgache et de la transition vers le socialisme scientifique.',
+      "Utilisé sur l'ensemble des actes officiels, décrets et sceaux administratifs de la colonie jusqu'à la proclamation de la République autonome en 1958.",
     notesMg:
-      'Mariky ny Satan’ny Tolom-piavotana Sosialista sy ny vanim-potoana Repoblika Faharoa.',
-    imageUrl:
-      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=700&auto=format&fit=crop&q=80',
+      "Nampiasaina tamin'ny taratasim-panjakana rehetra teto Madagasikara talohan'ny fahaleovantena.",
+    imageUrl: null,
     orderIndex: 3,
     status: 'PUBLISHED',
   },
   {
-    id: 'embleme-troisieme-republique',
-    period: '1992 - 2010',
-    government:
-      'Troisième République de Madagascar (Albert Zafy / Marc Ravalomanana)',
+    id: 'embleme-1959-premiere-republique',
+    period: '1959 - 1976',
+    government: 'Première République (Repoblika Malagasy)',
     descriptionFr:
-      "Disque d'argent arborant l'arbre du voyageur (Ravinala) stylisé en éventail, surmonté d'épis de riz et de la tête de zébu, entouré de la devise « Tanindrazana, Fahafahana, Fandrosoana » (Patrie, Liberté, Progrès).",
+      "Écu d'argent au ravinala feuillé de sinople (vert) avec pour supports des feuilles et épis de riz d'or, soutenu par une tête de zébu de sable au centre.",
     descriptionMg:
-      'Diska volafotsy ahitana ny Ravinala, salohim-bary sy lohan’omby, voahodidin’ny teny filamatra « Tanindrazana, Fahafahana, Fandrosoana ».',
+      "Ampinga volafotsy misy ravinala maitso, fehezin'ny ravina sy salohim-bary volamena, tohanan'ny lohan'omby mainty eo afovoany.",
     notesFr:
-      'Restauration des emblèmes écologiques et traditionnels après la conférence nationale de 1992.',
+      "Marqué de la devise officielle : « Fahafahana - Tanindrazana - Fandrosoana » (Liberté - Patrie - Progrès) et surmonté du cri : « Repoblika Malagasy ». Adopté sous la présidence de Philibert Tsiranana.",
     notesMg:
-      'Famerenana ny marika nentim-paharazana sy ny natiora taorian’ny fihaonambem-pirenena 1992.',
-    imageUrl:
-      'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=700&auto=format&fit=crop&q=80',
+      "Misy ny teny filamatra : « Fahafahana - Tanindrazana - Fandrosoana » ary teny fiantsoana : « Repoblika Malagasy ». Nolaniana tamin'ny fitondran'i Philibert Tsiranana.",
+    imageUrl: null,
     orderIndex: 4,
     status: 'PUBLISHED',
   },
   {
-    id: 'embleme-quatrieme-republique',
-    period: '2010 - Présent',
-    government: 'Quatrième République de Madagascar (Régime Actuel)',
+    id: 'embleme-1976-deuxieme-republique',
+    period: '1976 - 1993',
+    government:
+      'Deuxième République / République Démocratique Malgache (Repoblika Demokratika Malagasy)',
     descriptionFr:
-      'Sceau officiel de l’État : disque d’argent figurant au centre le Ravinala verdoyant évasé, surmonté de la tête de zébu rouge et des épis de riz dorés, ceinturé de la devise nationale « Fitiavana, Tanindrazana, Fandrosoana » (Amour, Patrie, Progrès) et de la mention « Repoblikan’i Madagasikara ».',
+      "Écu orangé au soleil levant de gueules, roue dentée de sable (l'industrie), bêche d'or (angady pour le paysan), fusil d'or (pour le militaire) et porte-plume de gueules (pour le travailleur intellectuel), support de feuilles de riz d'or.",
     descriptionMg:
-      'Tombo-kase ofisialin’ny Fanjakana : Ravinala maitso misokatra, lohan’omby mena sy salohim-bary volamena, miaraka amin’ny teny filamatra « Fitiavana, Tanindrazana, Fandrosoana ».',
+      "Mari-piandrianana sosialista : masoandro mena miposaka, kodiarana indostrialy, angady (ho an'ny tantsaha), basy volamena (ho an'ny miaramila) ary penina (ho an'ny mpiasa saina), voahodidina salohim-bary.",
     notesFr:
-      'Sceau officiel en vigueur aujourd’hui sur l’ensemble des actes gouvernementaux, passeports, décrets républicains et représentations diplomatiques de Madagascar.',
+      "Surmonté de l'Étoile rouge en cimier et du cri « Repoblika Demokratika Malagasy ». Devise : « Tanindrazana - Tolom-piavotana - Fahafahana » (Patrie - Révolution - Liberté). Adopté par ordonnance le 6 février 1976 sous Didier Ratsiraka.",
     notesMg:
-      'Tombo-kase manan-kery ampiasaina amin’ny antontan-taratasim-panjakana rehetra, pasipaoro sy solontena ara-diplaomatika.',
-    imageUrl:
-      'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?w=700&auto=format&fit=crop&q=80',
+      "Misy kintana mena eo ambony sy teny fiantsoana « Repoblika Demokratika Malagasy ». Teny filamatra : « Tanindrazana - Tolom-piavotana - Fahafahana ». Nampiharina ny 6 Febroary 1976.",
+    imageUrl: null,
     orderIndex: 5,
+    status: 'PUBLISHED',
+  },
+  {
+    id: 'embleme-1993-troisieme-republique',
+    period: '1993 - 1998',
+    government: 'Troisième République (Repoblikan’i Madagasikara)',
+    descriptionFr:
+      "Écu d'argent avec la topographie de l'île en gueules (rouge), surmontée d'un arbre du voyageur (ravinala) feuillé de sinople, sur un pavage de sinople en terrasse, feuilles de riz de sinople en supports et tête de zébu de gueules en soutien.",
+    descriptionMg:
+      "Ampinga volafotsy ahitana ny sarintanin'ny Nosy miloko mena, ravinala maitso misandrahaka, salohim-bary maitso ary lohan'omby mena eo ambany.",
+    notesFr:
+      "Surmonté du cri « Repoblikan'i Madagasikara ». Devise : « Tanindrazana - Fahafahana - Fahamarinana » (Patrie - Liberté - Justice). Symbole de la renaissance démocratique sous Albert Zafy.",
+    notesMg:
+      "Teny fiantsoana « Repoblikan'i Madagasikara ». Teny filamatra : « Tanindrazana - Fahafahana - Fahamarinana ». Mariky ny vanim-potoana nentin'i Albert Zafy.",
+    imageUrl: null,
+    orderIndex: 6,
+    status: 'PUBLISHED',
+  },
+  {
+    id: 'embleme-1998-troisieme-republique-revisee',
+    period: '1998 - 2011',
+    government: 'Troisième République Révisée (Repoblikan’i Madagasikara)',
+    descriptionFr:
+      "Écu d'argent avec la topographie de l'île en gueules, feuillée de sinople, le tout sur fond d'or, sur un pavage d'or en terrasse, aux supports de feuilles de riz de sinople et au zébu de gueules en soutien.",
+    descriptionMg:
+      "Diska volamena ahitana ny sarintanin'i Madagasikara mena, ravinala maitso, salohim-bary ary lohan'omby mena eo ambany.",
+    notesFr:
+      "Surmonté du cri « Repoblikan'i Madagasikara ». Devise révisée : « Tanindrazana - Fahafahana - Fandrosoana » (Patrie - Liberté - Progrès). Modification adoptée suite à la révision constitutionnelle de 1998.",
+    notesMg:
+      "Teny filamatra : « Tanindrazana - Fahafahana - Fandrosoana ». Fanovana nentin'ny fanitsiana ny Lalàmpanorenana tamin'ny 1998.",
+    imageUrl: null,
+    orderIndex: 7,
+    status: 'PUBLISHED',
+  },
+  {
+    id: 'embleme-2011-quatrieme-republique',
+    period: 'Depuis 2011',
+    government: 'Quatrième République (Repoblikan’i Madagasikara)',
+    descriptionFr:
+      "Sceau officiel de la République : Disque d'argent et d'or arborant en son centre la silhouette géographique de Madagascar en rouge, surmontée du Ravinala épanoui en éventail, avec au bas une tête de zébu rouge encadrée de gerbes et épis de riz dorés.",
+    descriptionMg:
+      "Tombo-kase ofisialin'ny Repoblika : Diska volamena misy ny sarintanin'i Madagasikara mena eo afovoany, ravinala maitso misokatra eo ambony, lohan'omby mena ary salohim-bary volamena eo ambany.",
+    notesFr:
+      "En haut la légende « Repoblikan’i Madagasikara ». En bas, la devise républicaine : « Fitiavana, Tanindrazana, Fandrosoana » (Amour, Patrie, Progrès). Gardien officiel : le Ministre de la Justice, Garde des Sceaux.",
+    notesMg:
+      "Eo ambony : « Repoblikan’i Madagasikara ». Eo ambany ny teny filamatra : « Fitiavana, Tanindrazana, Fandrosoana ». Mpitahiry ny Tombo-kase : ny Minisitry ny Fitsarana.",
+    imageUrl: null,
+    orderIndex: 8,
+    status: 'PUBLISHED',
+  },
+  {
+    id: 'embleme-2011-premier-ministre',
+    period: 'Depuis 2011',
+    government: 'Primature / Sceau du Premier Ministre (Repoblikan’i Madagasikara)',
+    descriptionFr:
+      "Sceau officiel du Premier ministre chef du gouvernement, décliné des armoiries de la IVe République avec mentions institutionnelles et attributs républicains de la Primature.",
+    descriptionMg:
+      "Tombo-kase ofisialin'ny Praiminisitra lehiben'ny governemanta, namboarina manokana avy amin'ny mari-panjakan'ny Repoblika faha-4 miaraka amin'ny soratry ny Primatiora.",
+    notesFr:
+      "Arboré depuis 2011 sur les correspondances officielles, ordonnances, décrets et arrêtés primatoriaux.",
+    notesMg:
+      "Apetaka amin'ny didim-panjakana sy taratasin'ny Praiminisitra manomboka tamin'ny 2011.",
+    imageUrl: null,
+    orderIndex: 9,
     status: 'PUBLISHED',
   },
 ];
