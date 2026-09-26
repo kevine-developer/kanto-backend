@@ -12,6 +12,7 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import type { Response } from 'express';
 import { AppService } from './app.service.js';
 import { renderEmailVerificationPage } from './auth/views/email-verification.view.js';
@@ -230,6 +231,7 @@ export class AppController {
    */
   @Post('feedback')
   @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   async submitFeedback(
     @Body()
     body: {

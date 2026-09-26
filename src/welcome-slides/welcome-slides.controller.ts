@@ -6,6 +6,7 @@ import {
   Delete,
   Body,
   Param,
+  UseGuards,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { WelcomeSlidesService } from './welcome-slides.service.js';
@@ -15,6 +16,7 @@ import {
   ReorderWelcomeSlidesDto,
   UploadWelcomeSlideImageDto,
 } from './dto/welcome-slide.dto.js';
+import { AuthGuard, Roles } from '../auth/index.js';
 
 @Controller('welcome-slides')
 export class WelcomeSlidesController {
@@ -32,6 +34,8 @@ export class WelcomeSlidesController {
    * Route complète pour l'espace d'administration
    */
   @Get('admin')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
   findAllAdmin() {
     return this.welcomeSlidesService.findAllAdmin();
   }
@@ -40,6 +44,8 @@ export class WelcomeSlidesController {
    * Téléversement d'image de slide d'accueil vers Cloudinary
    */
   @Post('upload-image')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
   @Throttle({ upload: { limit: 15, ttl: 60000 } })
   uploadPhoto(@Body() body: UploadWelcomeSlideImageDto) {
     return this.welcomeSlidesService.saveUploadedImage(
@@ -53,6 +59,8 @@ export class WelcomeSlidesController {
    * Réordonnancement des slides (doit être avant :id)
    */
   @Patch('reorder')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
   reorder(@Body() dto: ReorderWelcomeSlidesDto) {
     return this.welcomeSlidesService.reorder(dto);
   }
@@ -69,6 +77,8 @@ export class WelcomeSlidesController {
    * Créer une nouvelle slide
    */
   @Post()
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
   create(@Body() dto: CreateWelcomeSlideDto) {
     return this.welcomeSlidesService.create(dto);
   }
@@ -77,6 +87,8 @@ export class WelcomeSlidesController {
    * Mettre à jour une slide existante
    */
   @Patch(':id')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
   update(@Param('id') id: string, @Body() dto: UpdateWelcomeSlideDto) {
     return this.welcomeSlidesService.update(id, dto);
   }
@@ -85,6 +97,8 @@ export class WelcomeSlidesController {
    * Supprimer une slide
    */
   @Delete(':id')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
   remove(@Param('id') id: string) {
     return this.welcomeSlidesService.remove(id);
   }
