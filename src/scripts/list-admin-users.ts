@@ -17,6 +17,7 @@ async function main() {
       email: true,
       name: true,
       role: true,
+      pushToken: true,
       emailVerified: true,
       banned: true,
       createdAt: true,
@@ -36,7 +37,7 @@ async function main() {
     const hasPassword = u.accounts.some((a) => !!a.password);
     const providers = u.accounts.map((a) => a.providerId).join(', ') || 'aucun';
     console.log(
-      `• [${u.role}] ${u.email} | Nom: ${u.name} | Vérifié: ${u.emailVerified} | Pwd: ${hasPassword ? 'OUI' : 'NON'} | Providers: ${providers}`,
+      `• [${u.role}] ${u.email} | Nom: ${u.name} | Token: ${u.pushToken || 'AUCUN'} | Vérifié: ${u.emailVerified} | Pwd: ${hasPassword ? 'OUI' : 'NON'} | Providers: ${providers}`,
     );
   }
 

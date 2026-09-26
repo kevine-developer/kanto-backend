@@ -1689,22 +1689,32 @@ model OnboardingSlide {
 }
 
 model MarketingBanner {
-  id            String   @id @default(cuid())
-  badgeFr       String
-  badgeMg       String
-  titleFr       String
-  titleMg       String
-  descriptionFr String   @db.Text
-  descriptionMg String   @db.Text
-  ctaFr         String   @default("Découvrir")
-  ctaMg         String   @default("Hizaha")
-  imageUrl      String
-  deepLink      String   @default("/(screens)/subscription")
-  accentColor   String   @default("#F59E0B")
-  orderIndex    Int      @default(0)
-  isActive      Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id              String   @id @default(cuid())
+  badgeFr         String
+  badgeMg         String
+  titleFr         String
+  titleMg         String
+  descriptionFr   String   @db.Text
+  descriptionMg   String   @db.Text
+  ctaFr           String   @default("Découvrir")
+  ctaMg           String   @default("Hizaha")
+  imageUrl        String
+  deepLink        String   @default("/(screens)/subscription")
+  accentColor     String   @default("#F59E0B")
+  orderIndex      Int      @default(0)
+  isActive        Boolean  @default(true)
+  
+  // Actions étendues : DEEP_LINK, BOTTOM_SHEET (long), CENTER_MODAL (court)
+  actionType      String   @default("DEEP_LINK")
+  modalBodyFr     String?  @db.Text
+  modalBodyMg     String?  @db.Text
+  modalImageUrl   String?
+  modalCtaLabelFr String?
+  modalCtaLabelMg String?
+  modalCtaLink    String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   @@index([isActive])
   @@index([orderIndex])

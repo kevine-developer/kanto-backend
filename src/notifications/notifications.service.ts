@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateNotificationDto } from './dto/notifications.dto.js';
 import { RedisService } from '../redis/redis.service.js';
@@ -228,22 +228,30 @@ export class NotificationsService {
 
     try {
       if (userId) {
-        await this.prisma.user.update({
-          where: { id: userId },
-          data: { pushToken: cleanToken },
-        });
-        // Si ce token était auparavant enregistré en tant qu'invité, le nettoyer
-        await this.redisService.sRem('expo_push_tokens:guests', cleanToken);
-        this.logger.log(
-          `📱 [Push] Token Expo enregistré pour l'utilisateur ${userId}`,
-        );
-      } else {
-        // Enregistrement anonyme (invité) dans Redis
-        await this.redisService.sAdd('expo_push_tokens:guests', cleanToken);
-        this.logger.log(
-          `📱 [Push] Token Expo enregistré pour un invité anonyme`,
-        );
+        try {
+          await this.prisma.user.update({
+            where: { id: userId },
+            data: { pushToken: cleanToken },
+          });
+          // Si ce token était auparavant enregistré en tant qu'invité, le nettoyer
+          await this.redisService.sRem('expo_push_tokens:guests', cleanToken);
+          this.logger.log(
+            `📱 [Push] Token Expo enregistré pour l'utilisateur ${userId}`,
+          );
+          return { success: true, message: 'Token push enregistré avec succès' };
+        } catch (userErr) {
+          this.logger.warn(
+            `⚠️ [Push] Utilisateur ${userId} introuvable lors de l'assignation du pushToken, enregistrement en invité :`,
+            userErr,
+          );
+        }
       }
+
+      // Enregistrement anonyme (invité) dans Redis
+      await this.redisService.sAdd('expo_push_tokens:guests', cleanToken);
+      this.logger.log(
+        `📱 [Push] Token Expo enregistré pour un invité anonyme`,
+      );
 
       return { success: true, message: 'Token push enregistré avec succès' };
     } catch (err) {
@@ -375,11 +383,19 @@ export class NotificationsService {
    * Crée une nouvelle notification (Admin ou système) et envoie la notification push associée.
    */
   async createNotification(dto: CreateNotificationDto) {
+    const titleMg = dto.titleMg?.trim();
+    const messageMg = dto.messageMg?.trim();
+    if (!titleMg || !messageMg) {
+      throw new BadRequestException(
+        'Le titre et le message en malgache sont obligatoires.',
+      );
+    }
+
     const created = await this.prisma.notification.create({
       data: {
-        titleMg: dto.titleMg.trim(),
+        titleMg,
         titleFr: dto.titleFr?.trim() || null,
-        messageMg: dto.messageMg.trim(),
+        messageMg,
         messageFr: dto.messageFr?.trim() || null,
         category: dto.category || 'culture',
         badgeText: dto.badgeText?.trim() || null,
