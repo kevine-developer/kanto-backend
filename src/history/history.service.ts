@@ -605,16 +605,75 @@ export class HistoryService implements OnModuleInit {
   }
 
   async createBanknote(data: CreateBanknoteDto) {
+    const valueAriary =
+      data.valueAriary !== undefined && data.valueAriary !== null
+        ? Number(data.valueAriary)
+        : 0;
+    const valueFmg =
+      data.valueFmg !== undefined && data.valueFmg !== null
+        ? Number(data.valueFmg)
+        : 0;
+
+    const defaultTitleFr =
+      data.titleFr?.trim() ||
+      (valueAriary > 0
+        ? `Billet ${valueAriary.toLocaleString('fr-FR')} Ariary`
+        : valueFmg > 0
+          ? `Billet ${valueFmg.toLocaleString('fr-FR')} Francs`
+          : 'Billet de Madagascar');
+
+    const defaultTitleMg =
+      data.titleMg?.trim() ||
+      (valueAriary > 0
+        ? `Vola ${valueAriary.toLocaleString('fr-FR')} Ariary`
+        : valueFmg > 0
+          ? `Vola ${valueFmg.toLocaleString('fr-FR')} Faranka`
+          : 'Vola Malagasy');
+
+    const series = data.series || 'SERIE_2017';
+    const seriesLabelFr =
+      data.seriesLabelFr?.trim() ||
+      (series === 'COLONIAL'
+        ? 'Période Coloniale — Franc Malgache (1925-1960)'
+        : series === 'SERIE_FMG'
+          ? 'Franc Malgache — Républiques (1960-2003)'
+          : series === 'SERIE_2003'
+            ? 'Série 2003 — Transition FMG vers Ariary'
+            : 'Série 2017 « Madagascar & ses Richesses »');
+
+    const seriesLabelMg =
+      data.seriesLabelMg?.trim() ||
+      (series === 'COLONIAL'
+        ? 'Vanim-potoana Zanatany — Faranka Malagasy (1925-1960)'
+        : series === 'SERIE_FMG'
+          ? 'Faranka Malagasy — Repoblika (1960-2003)'
+          : series === 'SERIE_2003'
+            ? 'Andiany 2003 — Fiovana FMG ho Ariary'
+            : 'Andiany 2017 « Madagasikara sy ny Harenany »');
+
+    const period =
+      data.period?.trim() ||
+      (series === 'COLONIAL'
+        ? '1925 - 1960'
+        : series === 'SERIE_FMG'
+          ? '1960 - 2003'
+          : series === 'SERIE_2003'
+            ? '2003 - 2017'
+            : '2017 - Présent');
+
     const payload = {
       ...data,
-      valueAriary:
-        data.valueAriary !== undefined && data.valueAriary !== null
-          ? Number(data.valueAriary)
-          : 0,
-      valueFmg:
-        data.valueFmg !== undefined && data.valueFmg !== null
-          ? Number(data.valueFmg)
-          : 0,
+      valueAriary,
+      valueFmg,
+      titleFr: defaultTitleFr,
+      titleMg: defaultTitleMg,
+      series,
+      seriesLabelFr,
+      seriesLabelMg,
+      period,
+      colorLight: data.colorLight || '#2C4075',
+      colorDark: data.colorDark || '#3E5AA1',
+      isComingSoon: Boolean(data.isComingSoon),
     };
     const created = await this.prisma.banknote.create({ data: payload });
     await this.invalidateCache();
@@ -633,6 +692,9 @@ export class HistoryService implements OnModuleInit {
         : {}),
       ...(data.valueFmg !== undefined
         ? { valueFmg: data.valueFmg !== null ? Number(data.valueFmg) : 0 }
+        : {}),
+      ...(data.isComingSoon !== undefined
+        ? { isComingSoon: Boolean(data.isComingSoon) }
         : {}),
     };
     const updated = await this.prisma.banknote.update({

@@ -47,15 +47,16 @@ export interface DefaultBanknote {
   period: string;
   colorLight: string;
   colorDark: string;
-  obverseDescriptionFr: string;
-  obverseDescriptionMg: string;
-  reverseDescriptionFr: string;
-  reverseDescriptionMg: string;
-  symbolismFr: string;
-  symbolismMg: string;
-  securityFeaturesFr: string[];
+  obverseDescriptionFr?: string | null;
+  obverseDescriptionMg?: string | null;
+  reverseDescriptionFr?: string | null;
+  reverseDescriptionMg?: string | null;
+  symbolismFr?: string | null;
+  symbolismMg?: string | null;
+  securityFeaturesFr?: string[];
   imageUrl?: string | null;
   imageUrlVerso?: string | null;
+  isComingSoon?: boolean;
   orderIndex: number;
   status: 'PUBLISHED';
 }
@@ -323,8 +324,7 @@ export const DEFAULT_PRESIDENTS: DefaultPresident[] = [
       'Fandaminana ny fitantanan-draharaham-panjakana',
     ],
     badgeColor: '#2A6B3D',
-    imageUrl:
-      'https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=700&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 0,
     status: 'PUBLISHED',
   },
@@ -355,8 +355,7 @@ export const DEFAULT_PRESIDENTS: DefaultPresident[] = [
       'Fanavaozana ny fampianarana malagasy',
     ],
     badgeColor: '#4A5D6E',
-    imageUrl:
-      'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=700&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 1,
     status: 'PUBLISHED',
   },
@@ -385,8 +384,7 @@ export const DEFAULT_PRESIDENTS: DefaultPresident[] = [
       'Fakan-tahaka amin’ny fitiavan-tanindrazana sy tsy fiambohoana adidy',
     ],
     badgeColor: '#9B3D3D',
-    imageUrl:
-      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=700&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 2,
     status: 'PUBLISHED',
   },
@@ -416,8 +414,7 @@ export const DEFAULT_PRESIDENTS: DefaultPresident[] = [
       'Fananganana orinasa sy rafitra miaramila matanjaka',
     ],
     badgeColor: '#8C4820',
-    imageUrl:
-      'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=700&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 3,
     status: 'PUBLISHED',
   },
@@ -448,8 +445,7 @@ export const DEFAULT_PRESIDENTS: DefaultPresident[] = [
       'Fisokafana tanteraka amin’ny hevitra marolafy',
     ],
     badgeColor: '#B57C1E',
-    imageUrl:
-      'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=700&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 4,
     status: 'PUBLISHED',
   },
@@ -478,8 +474,7 @@ export const DEFAULT_PRESIDENTS: DefaultPresident[] = [
       'Fampiharana ny fandaharan’asa MAP sy fanampiana ny tantsaha',
     ],
     badgeColor: '#1E6B6B',
-    imageUrl:
-      'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=700&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 5,
     status: 'PUBLISHED',
   },
@@ -508,8 +503,7 @@ export const DEFAULT_PRESIDENTS: DefaultPresident[] = [
       'Fotodrafitrasa goavana sy fampitaovana ny tanora',
     ],
     badgeColor: '#E05A1B',
-    imageUrl:
-      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=700&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 6,
     status: 'PUBLISHED',
   },
@@ -540,8 +534,7 @@ export const DEFAULT_PRESIDENTS: DefaultPresident[] = [
       'Famoahana ireo vola taratasy vaovao amin’ny Ariary tamin’ny 2017',
     ],
     badgeColor: '#2F4A75',
-    imageUrl:
-      'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=700&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 7,
     status: 'PUBLISHED',
   },
@@ -582,10 +575,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
       'Fleur de vanille en filigrane transparent visible en contre-jour',
       'Encre à iridescence dynamique sur la valeur nominale',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1621981386864-7221bc360f09?w=900&auto=format&fit=crop&q=80',
-    imageUrlVerso:
-      'https://images.unsplash.com/photo-1509358271058-acd22cc93898?w=900&auto=format&fit=crop&q=80',
+    imageUrl: null,
+    imageUrlVerso: null,
     orderIndex: 0,
     status: 'PUBLISHED',
   },
@@ -618,10 +609,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
       'Filigrane tête de zébu et motif géométrique merina',
       'Numérotation en encre magnétique invisible',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=900&auto=format&fit=crop&q=80',
-    imageUrlVerso:
-      'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=900&auto=format&fit=crop&q=80',
+    imageUrl: null,
+    imageUrlVerso: null,
     orderIndex: 1,
     status: 'PUBLISHED',
   },
@@ -653,10 +642,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
       'Filigrane baobab visible en contre-jour',
       'Micro-impressions lisibles à la loupe',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1528164344705-475426879c0d?w=900&auto=format&fit=crop&q=80',
-    imageUrlVerso:
-      'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=900&auto=format&fit=crop&q=80',
+    imageUrl: null,
+    imageUrlVerso: null,
     orderIndex: 2,
     status: 'PUBLISHED',
   },
@@ -689,10 +676,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
       'Motif de lémurien fluorescent sous lumière UV',
       'Numéros en relief tactile pour les malvoyants',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?w=900&auto=format&fit=crop&q=80',
-    imageUrlVerso:
-      'https://images.unsplash.com/photo-1508455858334-95337ba25607?w=900&auto=format&fit=crop&q=80',
+    imageUrl: null,
+    imageUrlVerso: null,
     orderIndex: 3,
     status: 'PUBLISHED',
   },
@@ -724,10 +709,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
       'Filigrane Ravinala en deux niveaux de densité',
       'Transvision recto-verso parfaitement alignée',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=900&auto=format&fit=crop&q=80',
-    imageUrlVerso:
-      'https://images.unsplash.com/photo-1444464666168-49d633b86797?w=900&auto=format&fit=crop&q=80',
+    imageUrl: null,
+    imageUrlVerso: null,
     orderIndex: 4,
     status: 'PUBLISHED',
   },
@@ -759,10 +742,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
       'Encre scintillante changeante (doré→vert)',
       'Fil de sécurité continu intégré dans le papier',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=900&auto=format&fit=crop&q=80',
-    imageUrlVerso:
-      'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=900&auto=format&fit=crop&q=80',
+    imageUrl: null,
+    imageUrlVerso: null,
     orderIndex: 5,
     status: 'PUBLISHED',
   },
@@ -794,10 +775,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
       'Filigrane tête de zébu simplifié',
       'Numérotation en encre à détection UV',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1533240332313-0db49b459ad6?w=900&auto=format&fit=crop&q=80',
-    imageUrlVerso:
-      'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=900&auto=format&fit=crop&q=80',
+    imageUrl: null,
+    imageUrlVerso: null,
     orderIndex: 6,
     status: 'PUBLISHED',
   },
@@ -831,10 +810,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
       'Bande de sécurité métallisée intégrée',
       'Filigrane portrait Ranavalona en contre-jour',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=900&auto=format&fit=crop&q=80',
-    imageUrlVerso:
-      'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=900&auto=format&fit=crop&q=80',
+    imageUrl: null,
+    imageUrlVerso: null,
     orderIndex: 7,
     status: 'PUBLISHED',
   },
@@ -866,10 +843,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
       'Encre magnétique sur la valeur nominale',
       'Micro-texte : « Banque Centrale de Madagascar »',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1546445317-29f4545e9d53?w=900&auto=format&fit=crop&q=80',
-    imageUrlVerso:
-      'https://images.unsplash.com/photo-1589923188900-85dae523342b?w=900&auto=format&fit=crop&q=80',
+    imageUrl: null,
+    imageUrlVerso: null,
     orderIndex: 8,
     status: 'PUBLISHED',
   },
@@ -904,10 +879,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
       'Filigrane tête de zébu en double densité',
       'Numérotation en encre à détection infrarouge',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=900&auto=format&fit=crop&q=80',
-    imageUrlVerso:
-      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=900&auto=format&fit=crop&q=80',
+    imageUrl: null,
+    imageUrlVerso: null,
     orderIndex: 9,
     status: 'PUBLISHED',
   },
@@ -939,10 +912,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
       'Fil de sécurité métallique fin',
       'Filigrane portrait de femme en contre-jour',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1574063413132-355dbfd83e25?w=900&auto=format&fit=crop&q=80',
-    imageUrlVerso:
-      'https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=900&auto=format&fit=crop&q=80',
+    imageUrl: null,
+    imageUrlVerso: null,
     orderIndex: 10,
     status: 'PUBLISHED',
   },
@@ -974,10 +945,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
       'Filigrane simplifié de la Banque Centrale',
       'Papier sécurisé avec fibres de sécurité colorées',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1533240332313-0db49b459ad6?w=900&auto=format&fit=crop&q=80',
-    imageUrlVerso:
-      'https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?w=900&auto=format&fit=crop&q=80',
+    imageUrl: null,
+    imageUrlVerso: null,
     orderIndex: 11,
     status: 'PUBLISHED',
   },
@@ -1009,10 +978,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
       'Papier de sécurité à fibres aléatoires colorées',
       'Impression taille-douce en relief tactile',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=900&auto=format&fit=crop&q=80',
-    imageUrlVerso:
-      'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=900&auto=format&fit=crop&q=80',
+    imageUrl: null,
+    imageUrlVerso: null,
     orderIndex: 12,
     status: 'PUBLISHED',
   },
@@ -1046,10 +1013,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
       'Impression typographique classique sur papier coton',
       "Filigrane simple de l'Institut d'Émission de Madagascar (IEM)",
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1524654458049-e36be0721fa2?w=900&auto=format&fit=crop&q=80',
-    imageUrlVerso:
-      'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=900&auto=format&fit=crop&q=80',
+    imageUrl: null,
+    imageUrlVerso: null,
     orderIndex: 13,
     status: 'PUBLISHED',
   },
@@ -1082,10 +1047,8 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
       'Impression lithographique manuelle sur recto et verso',
       "Numérotation manuelle à l'encre sépia",
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=900&auto=format&fit=crop&q=80',
-    imageUrlVerso:
-      'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=900&auto=format&fit=crop&q=80',
+    imageUrl: null,
+    imageUrlVerso: null,
     orderIndex: 14,
     status: 'PUBLISHED',
   },
@@ -1143,8 +1106,7 @@ export const DEFAULT_PROVINCE_BLASONS: DefaultProvinceBlason[] = [
       'Toeran’ny Rovan’i Manjakamiadana',
       'Foiben’ny toekarena sy ny fampianarana ambony',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=800&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 0,
     status: 'PUBLISHED',
   },
@@ -1196,8 +1158,7 @@ export const DEFAULT_PROVINCE_BLASONS: DefaultProvinceBlason[] = [
       'Tanin’ny Sakalava sy Antankarana',
       'Valan-javaboary Tendrombohitra Ambre',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 1,
     status: 'PUBLISHED',
   },
@@ -1249,8 +1210,7 @@ export const DEFAULT_PROVINCE_BLASONS: DefaultProvinceBlason[] = [
       'Lalam-by manan-tantara FCE mampitohy amin’ny ranomasina',
       'Tendrombohitra Andringitra sy Isalo',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1533240332313-0db49b459ad6?w=800&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 2,
     status: 'PUBLISHED',
   },
@@ -1303,8 +1263,7 @@ export const DEFAULT_PROVINCE_BLASONS: DefaultProvinceBlason[] = [
       'Filentehan’ny masoandro malaza eny amin’ny « Bord »',
       'Zohy masin’Anjohibe',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1574063413132-355dbfd83e25?w=800&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 3,
     status: 'PUBLISHED',
   },
@@ -1357,8 +1316,7 @@ export const DEFAULT_PROVINCE_BLASONS: DefaultProvinceBlason[] = [
       'Nosy Boraha (Sainte-Marie), fandalovan’ny trozona',
       'Toetrandro mando manome zava-maniry maitso lalandava',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=800&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 4,
     status: 'PUBLISHED',
   },
@@ -1410,8 +1368,7 @@ export const DEFAULT_PROVINCE_BLASONS: DefaultProvinceBlason[] = [
       '95% amin’ny zavamaniry ao an’ala tsilo dia tsy misy afa-tsy eto',
       'Fomban-drazana masina momba ny fandevenana sy ny omby',
     ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=800&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 5,
     status: 'PUBLISHED',
   },
@@ -1442,8 +1399,7 @@ export const DEFAULT_NATURE_EMBLEMS: DefaultNatureEmblem[] = [
     proverbFr:
       '« Comme le ravinala : aux champs il donne l’ombre, au village il donne le toit. »',
     accentColor: '#2D7048',
-    imageUrl:
-      'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=800&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 0,
     status: 'PUBLISHED',
   },
@@ -1468,8 +1424,7 @@ export const DEFAULT_NATURE_EMBLEMS: DefaultNatureEmblem[] = [
     proverbFr:
       '« Le grand baobab ne pousse pas au marché, c’est dans la forêt profonde qu’on le trouve. »',
     accentColor: '#8C4F1A',
-    imageUrl:
-      'https://images.unsplash.com/photo-1528164344705-475426879c0d?w=800&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 1,
     status: 'PUBLISHED',
   },
@@ -1494,8 +1449,7 @@ export const DEFAULT_NATURE_EMBLEMS: DefaultNatureEmblem[] = [
     proverbFr:
       '« Le lémurien tranquille en forêt ne cherche querelle à personne, il préserve son domaine. »',
     accentColor: '#9C6328',
-    imageUrl:
-      'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?w=800&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 2,
     status: 'PUBLISHED',
   },
@@ -1519,8 +1473,7 @@ export const DEFAULT_NATURE_EMBLEMS: DefaultNatureEmblem[] = [
     proverbFr:
       '« Le zébu est l’expression de la gratitude, son don honore celui qui le reçoit. »',
     accentColor: '#A63838',
-    imageUrl:
-      'https://images.unsplash.com/photo-1546445317-29f4545e9d53?w=800&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 3,
     status: 'PUBLISHED',
   },
@@ -1544,8 +1497,7 @@ export const DEFAULT_NATURE_EMBLEMS: DefaultNatureEmblem[] = [
     proverbFr:
       '« Tel le caméléon : il regarde devant, il regarde derrière avant d’avancer un pas. »',
     accentColor: '#438258',
-    imageUrl:
-      'https://images.unsplash.com/photo-1563281577-a7be47e20db9?w=800&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 4,
     status: 'PUBLISHED',
   },
@@ -1570,8 +1522,7 @@ export const DEFAULT_NATURE_EMBLEMS: DefaultNatureEmblem[] = [
     proverbFr:
       '« La belle fleur ne fait point de tapage, c’est son doux parfum qui attire le regard. »',
     accentColor: '#2F6E7A',
-    imageUrl:
-      'https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?w=800&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 5,
     status: 'PUBLISHED',
   },
@@ -1597,8 +1548,7 @@ export const DEFAULT_HISTORY_DATES: DefaultHistoryDate[] = [
     impactMg:
       'Fetim-pirenena ankalazaina isan-taona manerana an’izao tontolo izao.',
     accentColor: '#2A6B3D',
-    imageUrl:
-      'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=800&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 0,
     status: 'PUBLISHED',
   },
@@ -1618,8 +1568,7 @@ export const DEFAULT_HISTORY_DATES: DefaultHistoryDate[] = [
     impactMg:
       'Fipoiran’ny fanjakana repoblikanina sy ny marika famantarana ny firenena.',
     accentColor: '#8C4F1A',
-    imageUrl:
-      'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=800&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 1,
     status: 'PUBLISHED',
   },
@@ -1639,8 +1588,7 @@ export const DEFAULT_HISTORY_DATES: DefaultHistoryDate[] = [
     impactMg:
       'Andro fahatsiarovana ireo Mahery Fon’ny firenena maty ho an’ny tanindrazana.',
     accentColor: '#9B3D3D',
-    imageUrl:
-      'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=800&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 2,
     status: 'PUBLISHED',
   },
@@ -1659,8 +1607,7 @@ export const DEFAULT_HISTORY_DATES: DefaultHistoryDate[] = [
       'Début de la résistance des Menalamba et perte temporaire de la souveraineté.',
     impactMg: 'Fiandohan’ny hetsika Menalamba sy fiarovana ny fiandrianana.',
     accentColor: '#5B4468',
-    imageUrl:
-      'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 3,
     status: 'PUBLISHED',
   },
@@ -1680,8 +1627,7 @@ export const DEFAULT_HISTORY_DATES: DefaultHistoryDate[] = [
     impactMg:
       'Fampidirana ny soratra latina ho an’ny teny malagasy, ny fanaovan-gazety sy ny sekoly.',
     accentColor: '#2F5C75',
-    imageUrl:
-      'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&auto=format&fit=crop&q=80',
+    imageUrl: null,
     orderIndex: 4,
     status: 'PUBLISHED',
   },
@@ -1694,7 +1640,8 @@ export const DEFAULT_NATIONAL_EMBLEMS: DefaultNationalEmblem[] = [
   {
     id: 'embleme-1868-ranavalona-ii',
     period: '1868 - 1883',
-    government: "Royaume de Madagascar (sous Ranavalona II) / Fanjakan'i Madagasikara",
+    government:
+      "Royaume de Madagascar (sous Ranavalona II) / Fanjakan'i Madagasikara",
     descriptionFr:
       "Écu écartelé au 1 d'argent au zébu de sable, au 2 d'argent au ravinala de sinople, au 3 d'argent au bouclier et sagaies de sable, au 4 d'argent au riz de sinople, et sur le tout de cendres en croix au centre et aux bords azur. Surmonté de la couronne de Ranavalona Ire en timbre, avec en tenants, en dextre, un marchand vêtu d'un dishdasha, et senestre, un soldat merina en tenue d'apparat.",
     descriptionMg:
@@ -1710,11 +1657,12 @@ export const DEFAULT_NATIONAL_EMBLEMS: DefaultNationalEmblem[] = [
   {
     id: 'embleme-1883-ranavalona-iii',
     period: '1883 - 1897',
-    government: "Royaume de Madagascar (sous Ranavalona III) / Fanjakan'i Madagasikara",
+    government:
+      "Royaume de Madagascar (sous Ranavalona III) / Fanjakan'i Madagasikara",
     descriptionFr:
       "Écu d'azur, au soleil d'or figuré, chargé d'un aigle de sable (Voromahery) couronné de gueules ; en pointe, cinq étoiles d'or ; à la couronne de laurier de sinople en orle, le point de jonction chargé d'une étoile d'argent à cinq rais, ajourée d'or.",
     descriptionMg:
-      "Ampinga manga ahitana masoandro volamena misy Voromahery misatro-boninahitra mena ; kintana volamena dimy eo ambany ; fehezam-boninkazo laorie maitso ary kintana volafotsy dimy rantsana.",
+      'Ampinga manga ahitana masoandro volamena misy Voromahery misatro-boninahitra mena ; kintana volamena dimy eo ambany ; fehezam-boninkazo laorie maitso ary kintana volafotsy dimy rantsana.',
     notesFr:
       "Armoiries royales sous Ranavalona III, symbole d'autorité souveraine et de résistance nationale avant l'annexion coloniale française de 1896.",
     notesMg:
@@ -1748,7 +1696,7 @@ export const DEFAULT_NATIONAL_EMBLEMS: DefaultNationalEmblem[] = [
     descriptionMg:
       "Ampinga volafotsy misy ravinala maitso, fehezin'ny ravina sy salohim-bary volamena, tohanan'ny lohan'omby mainty eo afovoany.",
     notesFr:
-      "Marqué de la devise officielle : « Fahafahana - Tanindrazana - Fandrosoana » (Liberté - Patrie - Progrès) et surmonté du cri : « Repoblika Malagasy ». Adopté sous la présidence de Philibert Tsiranana.",
+      'Marqué de la devise officielle : « Fahafahana - Tanindrazana - Fandrosoana » (Liberté - Patrie - Progrès) et surmonté du cri : « Repoblika Malagasy ». Adopté sous la présidence de Philibert Tsiranana.',
     notesMg:
       "Misy ny teny filamatra : « Fahafahana - Tanindrazana - Fandrosoana » ary teny fiantsoana : « Repoblika Malagasy ». Nolaniana tamin'ny fitondran'i Philibert Tsiranana.",
     imageUrl: null,
@@ -1767,7 +1715,7 @@ export const DEFAULT_NATIONAL_EMBLEMS: DefaultNationalEmblem[] = [
     notesFr:
       "Surmonté de l'Étoile rouge en cimier et du cri « Repoblika Demokratika Malagasy ». Devise : « Tanindrazana - Tolom-piavotana - Fahafahana » (Patrie - Révolution - Liberté). Adopté par ordonnance le 6 février 1976 sous Didier Ratsiraka.",
     notesMg:
-      "Misy kintana mena eo ambony sy teny fiantsoana « Repoblika Demokratika Malagasy ». Teny filamatra : « Tanindrazana - Tolom-piavotana - Fahafahana ». Nampiharina ny 6 Febroary 1976.",
+      'Misy kintana mena eo ambony sy teny fiantsoana « Repoblika Demokratika Malagasy ». Teny filamatra : « Tanindrazana - Tolom-piavotana - Fahafahana ». Nampiharina ny 6 Febroary 1976.',
     imageUrl: null,
     orderIndex: 5,
     status: 'PUBLISHED',
@@ -1813,9 +1761,9 @@ export const DEFAULT_NATIONAL_EMBLEMS: DefaultNationalEmblem[] = [
     descriptionMg:
       "Tombo-kase ofisialin'ny Repoblika : Diska volamena misy ny sarintanin'i Madagasikara mena eo afovoany, ravinala maitso misokatra eo ambony, lohan'omby mena ary salohim-bary volamena eo ambany.",
     notesFr:
-      "En haut la légende « Repoblikan’i Madagasikara ». En bas, la devise républicaine : « Fitiavana, Tanindrazana, Fandrosoana » (Amour, Patrie, Progrès). Gardien officiel : le Ministre de la Justice, Garde des Sceaux.",
+      'En haut la légende « Repoblikan’i Madagasikara ». En bas, la devise républicaine : « Fitiavana, Tanindrazana, Fandrosoana » (Amour, Patrie, Progrès). Gardien officiel : le Ministre de la Justice, Garde des Sceaux.',
     notesMg:
-      "Eo ambony : « Repoblikan’i Madagasikara ». Eo ambany ny teny filamatra : « Fitiavana, Tanindrazana, Fandrosoana ». Mpitahiry ny Tombo-kase : ny Minisitry ny Fitsarana.",
+      'Eo ambony : « Repoblikan’i Madagasikara ». Eo ambany ny teny filamatra : « Fitiavana, Tanindrazana, Fandrosoana ». Mpitahiry ny Tombo-kase : ny Minisitry ny Fitsarana.',
     imageUrl: null,
     orderIndex: 8,
     status: 'PUBLISHED',
@@ -1823,13 +1771,14 @@ export const DEFAULT_NATIONAL_EMBLEMS: DefaultNationalEmblem[] = [
   {
     id: 'embleme-2011-premier-ministre',
     period: 'Depuis 2011',
-    government: 'Primature / Sceau du Premier Ministre (Repoblikan’i Madagasikara)',
+    government:
+      'Primature / Sceau du Premier Ministre (Repoblikan’i Madagasikara)',
     descriptionFr:
-      "Sceau officiel du Premier ministre chef du gouvernement, décliné des armoiries de la IVe République avec mentions institutionnelles et attributs républicains de la Primature.",
+      'Sceau officiel du Premier ministre chef du gouvernement, décliné des armoiries de la IVe République avec mentions institutionnelles et attributs républicains de la Primature.',
     descriptionMg:
       "Tombo-kase ofisialin'ny Praiminisitra lehiben'ny governemanta, namboarina manokana avy amin'ny mari-panjakan'ny Repoblika faha-4 miaraka amin'ny soratry ny Primatiora.",
     notesFr:
-      "Arboré depuis 2011 sur les correspondances officielles, ordonnances, décrets et arrêtés primatoriaux.",
+      'Arboré depuis 2011 sur les correspondances officielles, ordonnances, décrets et arrêtés primatoriaux.',
     notesMg:
       "Apetaka amin'ny didim-panjakana sy taratasin'ny Praiminisitra manomboka tamin'ny 2011.",
     imageUrl: null,

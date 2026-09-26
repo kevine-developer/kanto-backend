@@ -1525,25 +1525,26 @@ model President {
 
 model Banknote {
   id                   String        @id
-  valueAriary          Int
-  valueFmg             Int
+  valueAriary          Int           @default(0)
+  valueFmg             Int           @default(0)
   titleFr              String
   titleMg              String
   series               String
   seriesLabelFr        String
   seriesLabelMg        String
   period               String
-  colorLight           String
-  colorDark            String
-  obverseDescriptionFr String        @db.Text
-  obverseDescriptionMg String        @db.Text
-  reverseDescriptionFr String        @db.Text
-  reverseDescriptionMg String        @db.Text
-  symbolismFr          String        @db.Text
-  symbolismMg          String        @db.Text
+  colorLight           String        @default("#2C4075")
+  colorDark            String        @default("#3E5AA1")
+  obverseDescriptionFr String?       @db.Text
+  obverseDescriptionMg String?       @db.Text
+  reverseDescriptionFr String?       @db.Text
+  reverseDescriptionMg String?       @db.Text
+  symbolismFr          String?       @db.Text
+  symbolismMg          String?       @db.Text
   securityFeaturesFr   String[]      @default([])
   imageUrl             String?
   imageUrlVerso        String?
+  isComingSoon         Boolean       @default(false)
   orderIndex           Int           @default(0)
   status               ContentStatus @default(PUBLISHED)
   createdAt            DateTime      @default(now())
