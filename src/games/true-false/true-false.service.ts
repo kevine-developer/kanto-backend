@@ -264,6 +264,48 @@ export class TrueFalseService {
     };
   }
 
+  /**
+   * Abandonne et stoppe immédiatement une session de jeu interrompue côté client.
+   * Supprime la session de la base si aucune réponse n'a été soumise pour éviter les sessions zombies,
+   * ou la marque comme terminée sans bonus si elle a été entamée.
+   */
+  async abandonSession(sessionId: string) {
+    if (!sessionId) {
+      throw new BadRequestException('sessionId est obligatoire.');
+    }
+
+    const session = await this.prisma.trueFalseSession.findUnique({
+      where: { id: sessionId },
+      include: { answers: true },
+    });
+
+    if (!session) {
+      return { success: true, message: 'Session introuvable ou déjà nettoyée' };
+    }
+
+    if (session.isCompleted) {
+      return { success: true, message: 'Session déjà clôturée' };
+    }
+
+    // Si aucune question n'a été répondue : suppression pure et simple pour libérer les ressources DB
+    if (session.answers.length === 0) {
+      await this.prisma.trueFalseSession.delete({
+        where: { id: sessionId },
+      });
+      return { success: true, status: 'DELETED' };
+    }
+
+    // Si la session avait des réponses partielles : clôture sans distribution de faux XP
+    await this.prisma.trueFalseSession.update({
+      where: { id: sessionId },
+      data: {
+        isCompleted: true,
+      },
+    });
+
+    return { success: true, status: 'ABANDONED' };
+  }
+
   // ==========================================
   // ADMINISTRATION & STATISTIQUES
   // ==========================================

@@ -66,4 +66,13 @@ export class MultiplayerController {
       targetUserId,
     );
   }
+
+  @Post(':code/leave')
+  @UseGuards(AuthGuard)
+  async leaveGame(
+    @Param('code') code: string,
+    @Session() session: UserSession,
+  ) {
+    return this.multiplayerService.handlePlayerLeave(session.user.id, code);
+  }
 }
