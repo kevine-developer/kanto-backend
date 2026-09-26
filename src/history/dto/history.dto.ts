@@ -263,60 +263,60 @@ export class CreateBanknoteDto {
   valueFmg?: number;
 
   @IsString()
-  @IsNotEmpty()
-  titleFr!: string;
+  @IsOptional()
+  titleFr?: string;
 
   @IsString()
-  @IsNotEmpty()
-  titleMg!: string;
+  @IsOptional()
+  titleMg?: string;
 
   @IsString()
-  @IsNotEmpty()
-  series!: string;
+  @IsOptional()
+  series?: string;
 
   @IsString()
-  @IsNotEmpty()
-  seriesLabelFr!: string;
+  @IsOptional()
+  seriesLabelFr?: string;
 
   @IsString()
-  @IsNotEmpty()
-  seriesLabelMg!: string;
+  @IsOptional()
+  seriesLabelMg?: string;
 
   @IsString()
-  @IsNotEmpty()
-  period!: string;
+  @IsOptional()
+  period?: string;
 
   @IsString()
-  @IsNotEmpty()
-  colorLight!: string;
+  @IsOptional()
+  colorLight?: string;
 
   @IsString()
-  @IsNotEmpty()
-  colorDark!: string;
+  @IsOptional()
+  colorDark?: string;
 
   @IsString()
-  @IsNotEmpty()
-  obverseDescriptionFr!: string;
+  @IsOptional()
+  obverseDescriptionFr?: string;
 
   @IsString()
-  @IsNotEmpty()
-  obverseDescriptionMg!: string;
+  @IsOptional()
+  obverseDescriptionMg?: string;
 
   @IsString()
-  @IsNotEmpty()
-  reverseDescriptionFr!: string;
+  @IsOptional()
+  reverseDescriptionFr?: string;
 
   @IsString()
-  @IsNotEmpty()
-  reverseDescriptionMg!: string;
+  @IsOptional()
+  reverseDescriptionMg?: string;
 
   @IsString()
-  @IsNotEmpty()
-  symbolismFr!: string;
+  @IsOptional()
+  symbolismFr?: string;
 
   @IsString()
-  @IsNotEmpty()
-  symbolismMg!: string;
+  @IsOptional()
+  symbolismMg?: string;
 
   @IsArray()
   @IsString({ each: true })
@@ -330,6 +330,10 @@ export class CreateBanknoteDto {
   @IsString()
   @IsOptional()
   imageUrlVerso?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  isComingSoon?: boolean;
 
   @IsInt()
   @IsOptional()
@@ -417,6 +421,10 @@ export class UpdateBanknoteDto {
   @IsString()
   @IsOptional()
   imageUrlVerso?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  isComingSoon?: boolean;
 
   @IsInt()
   @IsOptional()

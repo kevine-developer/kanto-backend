@@ -24,15 +24,20 @@ async function main() {
   const prisma = new PrismaClient({ adapter });
 
   console.log(
-    '[Seed History] Demarrage du peuplement Histoire, Memoire & Patrimoine...',
+    '[Seed History] Démarrage du peuplement Histoire, Mémoire & Patrimoine...',
   );
 
   try {
     // 1. Leçons civiques (ExploreList)
     console.log(
-      `[Seed History] Synchronisation de ${DEFAULT_CIVIC_LESSONS.length} lecons civiques...`,
+      `[Seed History] Synchronisation de ${DEFAULT_CIVIC_LESSONS.length} leçons civiques...`,
     );
     for (const item of DEFAULT_CIVIC_LESSONS) {
+      const existing = await prisma.civicLesson.findUnique({
+        where: { id: item.id },
+      });
+      const preservedImage = existing?.imageUrl || item.imageUrl || null;
+
       await prisma.civicLesson.upsert({
         where: { id: item.id },
         create: {
@@ -42,7 +47,7 @@ async function main() {
           titleMg: item.titleMg,
           descriptionFr: item.descriptionFr,
           descriptionMg: item.descriptionMg,
-          imageUrl: item.imageUrl,
+          imageUrl: preservedImage,
           status: item.status,
           orderIndex: item.orderIndex,
         },
@@ -52,16 +57,21 @@ async function main() {
           titleMg: item.titleMg,
           descriptionFr: item.descriptionFr,
           descriptionMg: item.descriptionMg,
-          imageUrl: item.imageUrl,
+          imageUrl: preservedImage,
         },
       });
     }
 
     // 2. Présidents de la République
     console.log(
-      `[Seed History] Synchronisation de ${DEFAULT_PRESIDENTS.length} chefs d'Etat...`,
+      `[Seed History] Synchronisation de ${DEFAULT_PRESIDENTS.length} chefs d'État...`,
     );
     for (const item of DEFAULT_PRESIDENTS) {
+      const existing = await prisma.president.findUnique({
+        where: { id: item.id },
+      });
+      const preservedImage = existing?.imageUrl || item.imageUrl || null;
+
       await prisma.president.upsert({
         where: { id: item.id },
         create: {
@@ -79,7 +89,7 @@ async function main() {
           achievementsFr: item.achievementsFr,
           achievementsMg: item.achievementsMg,
           badgeColor: item.badgeColor,
-          imageUrl: item.imageUrl,
+          imageUrl: preservedImage,
           orderIndex: item.orderIndex,
           status: item.status,
         },
@@ -97,7 +107,7 @@ async function main() {
           achievementsFr: item.achievementsFr,
           achievementsMg: item.achievementsMg,
           badgeColor: item.badgeColor,
-          imageUrl: item.imageUrl,
+          imageUrl: preservedImage,
         },
       });
     }
@@ -107,6 +117,17 @@ async function main() {
       `[Seed History] Synchronisation de ${DEFAULT_BANKNOTES.length} billets de banque...`,
     );
     for (const item of DEFAULT_BANKNOTES) {
+      const existing = await prisma.banknote.findUnique({
+        where: { id: item.id },
+      });
+      const preservedImage = existing?.imageUrl || item.imageUrl || null;
+      const preservedImageVerso =
+        existing?.imageUrlVerso || item.imageUrlVerso || null;
+      const preservedComingSoon =
+        existing?.isComingSoon !== undefined
+          ? existing.isComingSoon
+          : Boolean(item.isComingSoon);
+
       await prisma.banknote.upsert({
         where: { id: item.id },
         create: {
@@ -128,8 +149,9 @@ async function main() {
           symbolismFr: item.symbolismFr,
           symbolismMg: item.symbolismMg,
           securityFeaturesFr: item.securityFeaturesFr,
-          imageUrl: item.imageUrl,
-          imageUrlVerso: item.imageUrlVerso,
+          imageUrl: preservedImage,
+          imageUrlVerso: preservedImageVerso,
+          isComingSoon: preservedComingSoon,
           orderIndex: item.orderIndex,
           status: item.status,
         },
@@ -151,8 +173,9 @@ async function main() {
           symbolismFr: item.symbolismFr,
           symbolismMg: item.symbolismMg,
           securityFeaturesFr: item.securityFeaturesFr,
-          imageUrl: item.imageUrl,
-          imageUrlVerso: item.imageUrlVerso,
+          imageUrl: preservedImage,
+          imageUrlVerso: preservedImageVerso,
+          isComingSoon: preservedComingSoon,
         },
       });
     }
@@ -162,6 +185,11 @@ async function main() {
       `[Seed History] Synchronisation de ${DEFAULT_PROVINCE_BLASONS.length} blasons des provinces...`,
     );
     for (const item of DEFAULT_PROVINCE_BLASONS) {
+      const existing = await prisma.provinceBlason.findUnique({
+        where: { id: item.id },
+      });
+      const preservedImage = existing?.imageUrl || item.imageUrl || null;
+
       await prisma.provinceBlason.upsert({
         where: { id: item.id },
         create: {
@@ -178,7 +206,7 @@ async function main() {
           symbols: item.symbols,
           keyFactsFr: item.keyFactsFr,
           keyFactsMg: item.keyFactsMg,
-          imageUrl: item.imageUrl,
+          imageUrl: preservedImage,
           orderIndex: item.orderIndex,
           status: item.status,
         },
@@ -195,16 +223,21 @@ async function main() {
           symbols: item.symbols,
           keyFactsFr: item.keyFactsFr,
           keyFactsMg: item.keyFactsMg,
-          imageUrl: item.imageUrl,
+          imageUrl: preservedImage,
         },
       });
     }
 
-    // 5. Faune & Flore emblématiques
+    // 5. Nature & Emblèmes Vivants
     console.log(
-      `[Seed History] Synchronisation de ${DEFAULT_NATURE_EMBLEMS.length} emblemes naturels...`,
+      `[Seed History] Synchronisation de ${DEFAULT_NATURE_EMBLEMS.length} emblèmes naturels...`,
     );
     for (const item of DEFAULT_NATURE_EMBLEMS) {
+      const existing = await prisma.natureEmblem.findUnique({
+        where: { id: item.id },
+      });
+      const preservedImage = existing?.imageUrl || item.imageUrl || null;
+
       await prisma.natureEmblem.upsert({
         where: { id: item.id },
         create: {
@@ -222,7 +255,7 @@ async function main() {
           proverbMg: item.proverbMg,
           proverbFr: item.proverbFr,
           accentColor: item.accentColor,
-          imageUrl: item.imageUrl,
+          imageUrl: preservedImage,
           orderIndex: item.orderIndex,
           status: item.status,
         },
@@ -240,16 +273,21 @@ async function main() {
           proverbMg: item.proverbMg,
           proverbFr: item.proverbFr,
           accentColor: item.accentColor,
-          imageUrl: item.imageUrl,
+          imageUrl: preservedImage,
         },
       });
     }
 
-    // 6. Grandes dates historiques
+    // 6. Dates Historiques Clés
     console.log(
       `[Seed History] Synchronisation de ${DEFAULT_HISTORY_DATES.length} dates historiques...`,
     );
     for (const item of DEFAULT_HISTORY_DATES) {
+      const existing = await prisma.historyDate.findUnique({
+        where: { id: item.id },
+      });
+      const preservedImage = existing?.imageUrl || item.imageUrl || null;
+
       await prisma.historyDate.upsert({
         where: { id: item.id },
         create: {
@@ -264,7 +302,7 @@ async function main() {
           impactFr: item.impactFr,
           impactMg: item.impactMg,
           accentColor: item.accentColor,
-          imageUrl: item.imageUrl,
+          imageUrl: preservedImage,
           orderIndex: item.orderIndex,
           status: item.status,
         },
@@ -279,59 +317,69 @@ async function main() {
           impactFr: item.impactFr,
           impactMg: item.impactMg,
           accentColor: item.accentColor,
-          imageUrl: item.imageUrl,
+          imageUrl: preservedImage,
         },
       });
     }
 
-    // 7. Sceaux & Emblèmes d'État
+    // 7. Emblèmes & Sceaux d'État
     console.log(
-      `[Seed History] Synchronisation de ${DEFAULT_NATIONAL_EMBLEMS.length} sceaux republicains...`,
+      `[Seed History] Synchronisation de ${DEFAULT_NATIONAL_EMBLEMS.length} emblèmes nationaux...`,
     );
     for (const item of DEFAULT_NATIONAL_EMBLEMS) {
-      await prisma.nationalEmblem.upsert({
-        where: { id: item.id },
-        create: {
-          id: item.id,
-          period: item.period,
-          imageUrl: item.imageUrl,
-          government: item.government,
-          descriptionFr: item.descriptionFr,
-          descriptionMg: item.descriptionMg,
-          notesFr: item.notesFr,
-          notesMg: item.notesMg,
-          orderIndex: item.orderIndex,
-          status: item.status,
-        },
-        update: {
-          period: item.period,
-          imageUrl: item.imageUrl,
-          government: item.government,
-          descriptionFr: item.descriptionFr,
-          descriptionMg: item.descriptionMg,
-          notesFr: item.notesFr,
-          notesMg: item.notesMg,
-        },
+      const existing = await prisma.nationalEmblem.findFirst({
+        where: { period: item.period },
       });
+      const preservedImage = existing?.imageUrl || item.imageUrl || null;
+
+      if (existing) {
+        await prisma.nationalEmblem.update({
+          where: { id: existing.id },
+          data: {
+            period: item.period,
+            government: item.government,
+            descriptionFr: item.descriptionFr,
+            descriptionMg: item.descriptionMg,
+            notesFr: item.notesFr,
+            notesMg: item.notesMg,
+            imageUrl: preservedImage,
+            orderIndex: item.orderIndex,
+            status: item.status,
+          },
+        });
+      } else {
+        await prisma.nationalEmblem.create({
+          data: {
+            period: item.period,
+            government: item.government,
+            descriptionFr: item.descriptionFr,
+            descriptionMg: item.descriptionMg,
+            notesFr: item.notesFr,
+            notesMg: item.notesMg,
+            imageUrl: item.imageUrl || null,
+            orderIndex: item.orderIndex,
+            status: item.status,
+          },
+        });
+      }
     }
 
     const counts = {
-      civicLessons: await prisma.civicLesson.count(),
+      lessons: await prisma.civicLesson.count(),
       presidents: await prisma.president.count(),
       banknotes: await prisma.banknote.count(),
-      provinceBlasons: await prisma.provinceBlason.count(),
-      natureEmblems: await prisma.natureEmblem.count(),
-      historyDates: await prisma.historyDate.count(),
-      nationalEmblems: await prisma.nationalEmblem.count(),
+      provinces: await prisma.provinceBlason.count(),
+      nature: await prisma.natureEmblem.count(),
+      dates: await prisma.historyDate.count(),
+      emblems: await prisma.nationalEmblem.count(),
     };
 
-    console.log('[Seed History] Synchronisation terminee avec succes.');
-    console.table(counts);
-  } catch (err) {
-    console.error(
-      '[Seed History] Erreur lors du seed Histoire & Patrimoine :',
-      err,
+    console.log(
+      '[Seed History] Peuple avec succes ! Totaux en base de donnees :',
+      counts,
     );
+  } catch (error) {
+    console.error('[Seed History] Erreur durant la synchronisation :', error);
     process.exit(1);
   } finally {
     await prisma.$disconnect();
@@ -339,4 +387,4 @@ async function main() {
   }
 }
 
-void main();
+main();
