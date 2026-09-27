@@ -31,7 +31,9 @@ describe('ContributionsService - Deadlines & Permissions', () => {
       targetType: null,
       targetTitle: null,
     }),
-    normalizeText: (jest.fn as any)().mockImplementation((text: string) => text),
+    normalizeText: (jest.fn as any)().mockImplementation(
+      (text: string) => text,
+    ),
   };
 
   beforeEach(async () => {
