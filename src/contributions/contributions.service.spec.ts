@@ -6,6 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ContributionsService } from './contributions.service.js';
+import { DuplicateDetectionService } from './duplicate-detection.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { NotificationsService } from '../notifications/notifications.service.js';
 import { RedisService } from '../redis/redis.service.js';
@@ -22,6 +23,16 @@ describe('ContributionsService - Deadlines & Permissions', () => {
     create: (jest.fn as any)().mockResolvedValue({}),
   };
   const mockRedisService = createAvailableRedisMock();
+  const mockDuplicateDetectionService = {
+    detectDuplicate: (jest.fn as any)().mockResolvedValue({
+      isDuplicate: false,
+      score: 0,
+      targetId: null,
+      targetType: null,
+      targetTitle: null,
+    }),
+    normalizeText: (jest.fn as any)().mockImplementation((text: string) => text),
+  };
 
   beforeEach(async () => {
     prismaMock = createPrismaMock();
@@ -32,6 +43,10 @@ describe('ContributionsService - Deadlines & Permissions', () => {
         { provide: PrismaService, useValue: prismaMock },
         { provide: NotificationsService, useValue: mockNotificationsService },
         { provide: RedisService, useValue: mockRedisService },
+        {
+          provide: DuplicateDetectionService,
+          useValue: mockDuplicateDetectionService,
+        },
       ],
     }).compile();
 
