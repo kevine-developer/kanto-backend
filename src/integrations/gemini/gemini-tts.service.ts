@@ -48,6 +48,124 @@ export class GeminiTtsService {
   }
 
   /**
+   * Normalise un texte malgache pour la synthèse vocale :
+   * - Transcrit les chiffres arabes en toutes lettres malgaches pour éviter qu'ils soient lus en français/anglais.
+   * - Harmonise les apostrophes malgaches pour préserver le liant vocal des mots composés (amin'ny, sns.).
+   * - Supprime les artéfacts markdown qui perturbent la prosodie.
+   */
+  normalizeMalagasyStoryText(text: string): string {
+    const numbersMap: Record<string, string> = {
+      '0': 'aotra',
+      '1': 'iray',
+      '2': 'roa',
+      '3': 'telo',
+      '4': 'efatra',
+      '5': 'dimy',
+      '6': 'enina',
+      '7': 'fito',
+      '8': 'valo',
+      '9': 'sivy',
+      '10': 'folo',
+      '11': "iraika ambin'ny folo",
+      '12': "roa ambin'ny folo",
+      '20': 'roapolo',
+      '30': 'telopolo',
+      '40': 'efapolo',
+      '50': 'dimampolo',
+      '100': 'zato',
+      '1000': 'arivo',
+    };
+
+    return text
+      .replace(/[’‘`]/g, "'")
+      .replace(/[“”«»]/g, '"')
+      .replace(/\*\*(.*?)\*\*/g, '$1')
+      .replace(/\*(.*?)\*/g, '$1')
+      .replace(/_{1,2}(.*?)_{1,2}/g, '$1')
+      .replace(/\b(1[0-2]|[0-9]|20|30|40|50|100|1000)\b/g, (match) => {
+        return numbersMap[match] || match;
+      })
+      .replace(/\.{3,}|…/g, '... ')
+      .replace(/[ \t]+/g, ' ')
+      .trim();
+  }
+
+  /**
+   * Résout le nom de voix optimal pour Gemini TTS.
+   * - 'sage' / 'charon' -> Charon (voix masculine posée, grave, idéale pour un sage conteur malgache)
+   * - 'renibe' / 'aoede' -> Aoede (voix féminine mélodieuse, chaleureuse, grand-mère conteuse)
+   * - 'jeune' / 'puck' -> Puck (voix dynamique et vive)
+   * - 'chaleureux' / 'orus' -> Orus (voix chaleureuse)
+   * - 'douce' / 'kore' -> Kore (voix féminine posée)
+   */
+  resolveVoiceName(
+    requestedVoice?: string,
+    language: 'mg' | 'fr' = 'mg',
+  ): string {
+    const raw = (requestedVoice || process.env.GEMINI_TTS_VOICE || '')
+      .trim()
+      .toLowerCase();
+
+    if (
+      raw === 'sage' ||
+      raw === 'charon' ||
+      raw === 'zokiolona' ||
+      raw === 'homme'
+    ) {
+      return 'Charon';
+    }
+    if (
+      raw === 'renibe' ||
+      raw === 'aoede' ||
+      raw === 'conteuse' ||
+      raw === 'femme'
+    ) {
+      return 'Aoede';
+    }
+    if (raw === 'puck' || raw === 'jeune' || raw === 'dynamique') {
+      return 'Puck';
+    }
+    if (raw === 'orus') {
+      return 'Orus';
+    }
+    if (raw === 'kore') {
+      return 'Kore';
+    }
+    if (requestedVoice && requestedVoice.trim().length > 0) {
+      return requestedVoice.trim();
+    }
+
+    // Par défaut pour les angano malgaches : Charon (voix masculine de sage)
+    return language === 'mg' ? 'Charon' : 'Charon';
+  }
+
+  /**
+   * Construit la consigne système (System Instruction) avec règles phonologiques
+   * précises pour éliminer tout accent étranger sur la voix malgache.
+   */
+  private buildSystemInstruction(language: 'mg' | 'fr'): string {
+    if (language === 'mg') {
+      return `Ianao dia tena teratany mpitantara angano malagasy manana feo kanto, lalina, mafana ary feno fahendrena (« Mpitantara angano nentim-paharazana »).
+Ny andraikitrao dia ny mitantara angano amin'ny teny malagasy madio, voajanahary tanteraka, TSY MISY ACCENT VAHINY (tsy misy lantom-peo vahiny, na frantsay na anglisy).
+
+TOROLALANA AN-TSIPIRIYANY MOMBA NY FANONONANA NY TENY MALAGASY :
+1. NY LITERA « O » : Tononina « ou » [u] hatrany (ohatra : « angano » = [an-ga-nou], « olona » = [ou-lou-na], « foko » = [fou-kou], « tonga » = [tou-nga], « trano » = [tra-nou], « soa » = [sou-a]). Aza tononina « o » misokatra toy ny amin'ny teny frantsay na anglisy na oviana na oviana !
+2. NY LITERA « Y » : Amin'ny faran'ny teny dia tononina ho « i » malefaka sy fohy (ohatra : « malagasy » = [ma-la-ga-si], « vary » = [va-ri], « tany » = [ta-ni]).
+3. NY LITERA « J » : Tononina « dz » [dz] hatrany toy ny amin'ny « jereo » = [dze-re-ou], « manjary » = [man-dza-ri].
+4. NY FITAMBARAN-TSORATRA « TR » SY « DR » : Tononina amin'ny fanononana malagasy manokana mikarantsana malefaka amin'ny lanilany (retroflexes [ʈʂ] sy [ɖʐ]).
+5. NY LITERA « G » : « g » mikatona [ɡ] foana toy ny amin'ny « gare », fa tsy « j ».
+6. NY LITERA « H » : Tena malefaka na tsy re loatra, aza terena.
+7. LANJAM-PEO (ACCENT TONIQUE) : Apetraho eo amin'ny vanin-teny faharoa alohan'ny farany (pénultième) ny tsindrim-peo amin'ny ankapobeny (ohatra : « ma-LA-ga-sy », « an-GA-no », « fa-NA-hy », « ta-NTA-ra »). Raha mifarana amin'ny « -ka », « -tra », « -na » ny teny, dia latsaka eo amin'ny fahatelo alohan'ny farany ny lanjam-peo (ohatra : « SA-sa-tra »).
+8. LANTOM-PEO SY FIATOANA : Mitantara amin'ny feo milamina, velona ary miaina tsara. Manaja ny faingon-tsoratra sy ny teboka mba hisy fiatoana fohy voajanahary toy ny fitantaran'ny ntaolo teo am-patana.
+9. TOROMARIKA HENTITRA : Vakio amim-pitiavana sy amim-panajana ny angano manontolo araka ny nanoratana azy. Aza mamorona teny hafa, aza ampiana fanazavana, ary AZA VAKIANA ity toromarika ity fa ny angano ihany no tononina.`;
+    }
+
+    return `Tu es un conteur traditionnel bienveillant, captivant et chaleureux qui transmet un conte folklorique malgache en français.
+Raconte ce récit avec une diction claire, posée, immersive et vivante, en respectant le rythme calme et solennel des contes traditionnels.
+Prononce UNIQUEMENT le texte du conte, sans ajouter de commentaire et sans réciter cette consigne.`;
+  }
+
+  /**
    * Génère un buffer audio WAV via Google Gemini TTS (@google/genai).
    * Assemble les données PCM reçues en streaming et y injecte un en-tête WAV standard.
    */
@@ -58,34 +176,39 @@ export class GeminiTtsService {
       );
     }
 
-    const { text, language = 'mg', voiceName = this.defaultVoice } = options;
+    const { text, language = 'mg', voiceName } = options;
 
     if (!text?.trim()) {
       throw new BadRequestException('Le texte à convertir en audio est vide.');
     }
 
-    // Consigne de narration (Director's Note) adaptée à l'esprit des contes malgaches
-    const directorPrompt =
+    const resolvedVoice = this.resolveVoiceName(voiceName, language);
+    const preparedText =
+      language === 'mg' ? this.normalizeMalagasyStoryText(text) : text.trim();
+
+    const systemInstruction = this.buildSystemInstruction(language);
+
+    const userPrompt =
       language === 'mg'
-        ? `Ianao dia mpitantara angano malagasy manana feo mafana, kanto ary miaina. Vakio amim-panajana sy amim-pitiavana ity angano manaraka ity :
-
-${text.trim()}`
-        : `Tu es un conteur bienveillant, captivant et chaleureux qui transmet un conte traditionnel malgache en français. Raconte ce récit avec une diction naturelle, immersive et expressive :
-
-${text.trim()}`;
+        ? `Ity ny angano hovakianao amin'ny teny malagasy madio tsy misy accent vahiny :\n\n${preparedText}`
+        : `Voici le conte à raconter en français avec une voix chaleureuse et immersive :\n\n${preparedText}`;
 
     this.logger.log(
-      `🎙️ [GeminiTTS] Génération audio (${language.toUpperCase()}) — ${text.length} caractères, modèle: ${this.defaultModel}, voix: ${voiceName}`,
+      `🎙️ [GeminiTTS] Génération audio (${language.toUpperCase()}) — ${preparedText.length} caractères, modèle: ${this.defaultModel}, voix: ${resolvedVoice}, languageCode: ${language}`,
     );
 
     try {
-      const config = {
-        temperature: 1,
+      const config: any = {
+        temperature: 0.3,
         responseModalities: ['audio'],
+        systemInstruction: {
+          parts: [{ text: systemInstruction }],
+        },
         speechConfig: {
+          languageCode: language === 'mg' ? 'mg' : 'fr',
           voiceConfig: {
             prebuiltVoiceConfig: {
-              voiceName,
+              voiceName: resolvedVoice,
             },
           },
         },
@@ -97,7 +220,7 @@ ${text.trim()}`;
         contents: [
           {
             role: 'user',
-            parts: [{ text: directorPrompt }],
+            parts: [{ text: userPrompt }],
           },
         ],
       });
