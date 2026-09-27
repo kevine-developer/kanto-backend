@@ -61,6 +61,13 @@ enum CivicSubCategory {
   VIVRE_ENSEMBLE
 }
 
+enum DisputeStatus {
+  NONE
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
 // ======================================================
 // 2. UTILISATEURS & AUTHENTIFICATION (Better Auth)
 // ======================================================
@@ -504,6 +511,19 @@ model Contribution {
   score     Int           @default(0)
   viewCount Int           @default(0)
 
+  // Détection & Modération des doublons
+  duplicateScore        Float?    // Score de similarité (ex: 0.85 = 85%)
+  duplicateOfId         String?   // ID de l'item officiel ou de la contribution parente
+  duplicateTypeOf       String?   // 'MALAGASY_ITEM' | 'CONTRIBUTION'
+  duplicateTargetTitle  String?   // Titre/extrait du contenu existant
+  isDuplicateConfirmed  Boolean   @default(false)
+  markedForDeletionAt   DateTime? // Fin du compte à rebours 24h
+
+  // Réclamation et contestation du contributeur
+  disputeMessage        String?   @db.Text
+  disputeStatus         DisputeStatus @default(NONE)
+  disputedAt            DateTime?
+
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -515,6 +535,8 @@ model Contribution {
 
   @@index([userId])
   @@index([status])
+  @@index([isDuplicateConfirmed])
+  @@index([markedForDeletionAt])
   @@map("contributions")
 }
 
@@ -947,7 +969,7 @@ model UserProgress {
   userId        String    @id
   user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   totalXp       Float     @default(0)
-  level         Int       @default(1)
+  level         Int       @default(0)
   coins         Int       @default(0)
   streakDays    Int       @default(0)
   lastLoginDate DateTime?

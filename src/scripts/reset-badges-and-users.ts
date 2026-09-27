@@ -37,7 +37,7 @@ async function resetAllToZero() {
   const updatedProgress = await prisma.userProgress.updateMany({
     data: {
       totalXp: 0,
-      level: 1,
+      level: 0,
       coins: 0,
       streakDays: 0,
       lastLoginDate: null,

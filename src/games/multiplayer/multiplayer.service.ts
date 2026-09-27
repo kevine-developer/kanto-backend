@@ -160,12 +160,10 @@ export class MultiplayerService {
     totalQuestions: number = 5,
   ): Promise<string[]> {
     const cleanTheme = (theme || 'ALL').toUpperCase();
+    const normalizedGameType = String(gameType);
     let selectedIds: string[] = [];
 
-    if (
-      gameType === MultiplayerGameTypeEnum.TRUE_FALSE ||
-      gameType === 'TRUE_FALSE'
-    ) {
+    if (normalizedGameType === 'TRUE_FALSE') {
       const validTfThemes = ['GEN', 'CULT', 'GEO', 'HIST', 'LITT', 'PROV'];
       let available: { id: string }[] = [];
 
@@ -198,10 +196,7 @@ export class MultiplayerService {
 
       const shuffled = [...available].sort(() => Math.random() - 0.5);
       selectedIds = shuffled.slice(0, totalQuestions).map((q) => q.id);
-    } else if (
-      gameType === MultiplayerGameTypeEnum.QUIZ ||
-      gameType === 'QUIZ'
-    ) {
+    } else if (normalizedGameType === 'QUIZ') {
       // Mapping des clés de thèmes vers les catégories possibles en base
       const QUIZ_THEME_CATEGORIES: Record<string, string[]> = {
         GEO: ['geographie_regions', 'GEO'],
@@ -1571,21 +1566,26 @@ export class MultiplayerService {
   }
 
   private calculateLevel(xp: number): number {
-    const safeXp = Math.max(0, xp || 0);
+    const safeXp = Math.max(0, Math.ceil(xp || 0));
+    if (safeXp < 200) {
+      return 0;
+    }
+
     const THRESHOLDS = [
-      { level: 1, minXp: 0 },
-      { level: 2, minXp: 50 },
-      { level: 3, minXp: 150 },
-      { level: 4, minXp: 300 },
-      { level: 5, minXp: 500 },
-      { level: 6, minXp: 800 },
-      { level: 7, minXp: 1200 },
-      { level: 8, minXp: 1700 },
-      { level: 9, minXp: 2300 },
-      { level: 10, minXp: 3000 },
+      { level: 0, minXp: 0 },
+      { level: 1, minXp: 200 },
+      { level: 2, minXp: 500 },
+      { level: 3, minXp: 1000 },
+      { level: 4, minXp: 1800 },
+      { level: 5, minXp: 3000 },
+      { level: 6, minXp: 4800 },
+      { level: 7, minXp: 7400 },
+      { level: 8, minXp: 11000 },
+      { level: 9, minXp: 16000 },
+      { level: 10, minXp: 23000 },
     ];
 
-    let currentLevel = 1;
+    let currentLevel = 0;
     for (let i = THRESHOLDS.length - 1; i >= 0; i--) {
       if (safeXp >= THRESHOLDS[i].minXp) {
         currentLevel = THRESHOLDS[i].level;
@@ -1593,8 +1593,20 @@ export class MultiplayerService {
       }
     }
 
-    if (safeXp >= 3000) {
-      currentLevel = 10 + Math.floor((safeXp - 3000) / 1000);
+    // Progression au-delà du niveau 10 (exigence redoublée) :
+    // Niv 11 = 23000 + 9000 = 32000
+    // Niv 12 = 32000 + 11000 = 43000
+    // Niv 13 = 43000 + 13000 = 56000
+    if (safeXp >= 23000) {
+      let lvl = 10;
+      let threshold = 23000;
+      let step = 9000;
+      while (safeXp >= threshold + step) {
+        threshold += step;
+        lvl++;
+        step += 2000;
+      }
+      currentLevel = lvl;
     }
 
     return currentLevel;

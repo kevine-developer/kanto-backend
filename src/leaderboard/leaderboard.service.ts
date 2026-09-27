@@ -69,8 +69,42 @@ export class LeaderboardService {
       const user = await this.prisma.user.findUnique({ where: { id: userId } });
       if (!user) return;
 
-      const calculateLevel = (xp: number) =>
-        Math.max(1, Math.floor(Math.sqrt(xp / 25)) + 1);
+      const calculateLevel = (xp: number): number => {
+        const safeXp = Math.max(0, Math.ceil(xp || 0));
+        if (safeXp < 200) return 0;
+        const THRESHOLDS = [
+          { level: 0, minXp: 0 },
+          { level: 1, minXp: 200 },
+          { level: 2, minXp: 500 },
+          { level: 3, minXp: 1000 },
+          { level: 4, minXp: 1800 },
+          { level: 5, minXp: 3000 },
+          { level: 6, minXp: 4800 },
+          { level: 7, minXp: 7400 },
+          { level: 8, minXp: 11000 },
+          { level: 9, minXp: 16000 },
+          { level: 10, minXp: 23000 },
+        ];
+        let lvl = 0;
+        for (let i = THRESHOLDS.length - 1; i >= 0; i--) {
+          if (safeXp >= THRESHOLDS[i].minXp) {
+            lvl = THRESHOLDS[i].level;
+            break;
+          }
+        }
+        if (safeXp >= 23000) {
+          let curr = 10;
+          let threshold = 23000;
+          let step = 9000;
+          while (safeXp >= threshold + step) {
+            threshold += step;
+            curr++;
+            step += 2000;
+          }
+          lvl = curr;
+        }
+        return lvl;
+      };
       const progress = await this.prisma.userProgress.findUnique({
         where: { userId },
       });
