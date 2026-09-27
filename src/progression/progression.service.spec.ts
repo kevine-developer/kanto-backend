@@ -28,13 +28,16 @@ describe('ProgressionService', () => {
   let service: ProgressionService;
   let prismaMock: PrismaMock;
   let redisMock: ReturnType<typeof createAvailableRedisMock>;
-  let badgesServiceMock: { checkAndUnlockBadges: jest.Mock };
+  let badgesServiceMock: { checkAndUnlockBadges: jest.Mock<any, any> };
 
   beforeEach(async () => {
     prismaMock = makeTransactionalPrismaMock();
     redisMock = createAvailableRedisMock();
     badgesServiceMock = {
-      checkAndUnlockBadges: jest.fn().mockResolvedValue(undefined),
+      checkAndUnlockBadges: jest.fn<any, any>().mockResolvedValue({
+        newlyUnlockedBadges: [],
+        totalBadgesCount: 0,
+      }),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -57,39 +60,43 @@ describe('ProgressionService', () => {
     // Accès à la méthode privée via cast any pour les tests de seuils
     const getLevel = (xp: number) => (service as any).calculateLevel(xp);
 
-    it('should return level 1 for XP = 0', () => expect(getLevel(0)).toBe(1));
-    it('should return level 1 for XP = 49', () => expect(getLevel(49)).toBe(1));
-    it('should return level 2 for XP = 50', () => expect(getLevel(50)).toBe(2));
-    it('should return level 2 for XP = 149', () =>
-      expect(getLevel(149)).toBe(2));
-    it('should return level 3 for XP = 150', () =>
-      expect(getLevel(150)).toBe(3));
-    it('should return level 4 for XP = 300', () =>
-      expect(getLevel(300)).toBe(4));
-    it('should return level 5 for XP = 500', () =>
-      expect(getLevel(500)).toBe(5));
-    it('should return level 6 for XP = 800', () =>
-      expect(getLevel(800)).toBe(6));
-    it('should return level 7 for XP = 1200', () =>
-      expect(getLevel(1200)).toBe(7));
-    it('should return level 8 for XP = 1700', () =>
-      expect(getLevel(1700)).toBe(8));
-    it('should return level 9 for XP = 2300', () =>
-      expect(getLevel(2300)).toBe(9));
-    it('should return level 10 for XP = 3000', () =>
-      expect(getLevel(3000)).toBe(10));
-    it('should return level 11 for XP = 4000', () =>
-      expect(getLevel(4000)).toBe(11));
-    it('should return level 12 for XP = 5000', () =>
-      expect(getLevel(5000)).toBe(12));
+    it('should return level 0 for XP = 0', () => expect(getLevel(0)).toBe(0));
+    it('should return level 0 for XP = 199', () =>
+      expect(getLevel(199)).toBe(0));
+    it('should return level 1 for XP = 200', () =>
+      expect(getLevel(200)).toBe(1));
+    it('should return level 1 for XP = 499', () =>
+      expect(getLevel(499)).toBe(1));
+    it('should return level 2 for XP = 500', () =>
+      expect(getLevel(500)).toBe(2));
+    it('should return level 3 for XP = 1000', () =>
+      expect(getLevel(1000)).toBe(3));
+    it('should return level 4 for XP = 1800', () =>
+      expect(getLevel(1800)).toBe(4));
+    it('should return level 5 for XP = 3000', () =>
+      expect(getLevel(3000)).toBe(5));
+    it('should return level 6 for XP = 4800', () =>
+      expect(getLevel(4800)).toBe(6));
+    it('should return level 7 for XP = 7400', () =>
+      expect(getLevel(7400)).toBe(7));
+    it('should return level 8 for XP = 11000', () =>
+      expect(getLevel(11000)).toBe(8));
+    it('should return level 9 for XP = 16000', () =>
+      expect(getLevel(16000)).toBe(9));
+    it('should return level 10 for XP = 23000', () =>
+      expect(getLevel(23000)).toBe(10));
+    it('should return level 11 for XP = 32000', () =>
+      expect(getLevel(32000)).toBe(11));
+    it('should return level 12 for XP = 43000', () =>
+      expect(getLevel(43000)).toBe(12));
 
-    it('should return level 1 for negative XP (guard)', () => {
-      expect(getLevel(-100)).toBe(1);
+    it('should return level 0 for negative XP (guard)', () => {
+      expect(getLevel(-100)).toBe(0);
     });
 
-    it('should return level 1 for undefined/null XP (guard)', () => {
-      expect(getLevel(null)).toBe(1);
-      expect(getLevel(undefined)).toBe(1);
+    it('should return level 0 for undefined/null XP (guard)', () => {
+      expect(getLevel(null as any)).toBe(0);
+      expect(getLevel(undefined as any)).toBe(0);
     });
   });
 
@@ -101,16 +108,20 @@ describe('ProgressionService', () => {
     const getCoins = (level: number) =>
       (service as any).calculateLevelUpCoins(level);
 
-    it('should return 25 minimum coins for level 1', () => {
-      expect(getCoins(1)).toBe(25); // max(25, 1*25) = 25
+    it('should return 0 coins for level 0', () => {
+      expect(getCoins(0)).toBe(0);
     });
 
-    it('should return 50 coins for level 2', () => {
-      expect(getCoins(2)).toBe(50);
+    it('should return 1 coin for level 1', () => {
+      expect(getCoins(1)).toBe(1);
     });
 
-    it('should scale linearly with level', () => {
-      expect(getCoins(10)).toBe(250);
+    it('should return 2 coins for level 2', () => {
+      expect(getCoins(2)).toBe(2);
+    });
+
+    it('should return 6 coins for level 10', () => {
+      expect(getCoins(10)).toBe(6);
     });
   });
 
@@ -299,7 +310,7 @@ describe('ProgressionService', () => {
       prismaMock.userProgress.findUnique.mockResolvedValue(
         buildUserProgress(userId, {
           streakDays: 1,
-          totalXp: 45, // +5 XP → 50 → passage niveau 2
+          totalXp: 490, // +10 XP (jour 2) → 500 → passage niveau 2
           level: 1,
           coins: 0,
           lastLoginDate: yesterday,
@@ -308,9 +319,9 @@ describe('ProgressionService', () => {
       prismaMock.userProgress.update.mockResolvedValue(
         buildUserProgress(userId, {
           streakDays: 2,
-          totalXp: 55,
+          totalXp: 500,
           level: 2,
-          coins: 50, // 2 * 25 = 50 pièces pour niveau 2
+          coins: 2, // 2 pièces pour niveau 2
         }),
       );
       prismaMock.xpTransaction.create.mockResolvedValue({});
@@ -322,7 +333,7 @@ describe('ProgressionService', () => {
       const result = await service.recordDailyLogin(userId);
 
       expect(result.progress.level).toBe(2);
-      expect(result.progress.coins).toBe(50);
+      expect(result.progress.coins).toBe(2);
     });
   });
 
@@ -347,7 +358,7 @@ describe('ProgressionService', () => {
 
     it('should create userProgress if it does not exist', async () => {
       const userId = 'user-new';
-      const newProgress = buildUserProgress(userId, { totalXp: 0, level: 1 });
+      const newProgress = buildUserProgress(userId, { totalXp: 0, level: 0 });
 
       prismaMock.userProgress.findUnique.mockResolvedValue(null);
       prismaMock.userProgress.create.mockResolvedValue(newProgress);
@@ -357,7 +368,7 @@ describe('ProgressionService', () => {
 
       expect(prismaMock.userProgress.create).toHaveBeenCalledWith(
         expect.objectContaining({
-          data: expect.objectContaining({ userId, totalXp: 0, level: 1 }),
+          data: expect.objectContaining({ userId, totalXp: 0, level: 0 }),
         }),
       );
       expect(result.progress).toEqual(newProgress);
@@ -507,9 +518,9 @@ describe('ProgressionService', () => {
       );
     });
 
-    it('should clamp level to minimum 1', async () => {
+    it('should clamp level to minimum 0', async () => {
       prismaMock.userProgress.upsert.mockResolvedValue(
-        buildUserProgress(userId, { totalXp: 0, level: 1 }),
+        buildUserProgress(userId, { totalXp: 0, level: 0 }),
       );
       prismaMock.gameProgression.findMany.mockResolvedValue([]);
       prismaMock.user.findUnique.mockResolvedValue({
@@ -529,7 +540,7 @@ describe('ProgressionService', () => {
       expect(prismaMock.userProgress.upsert).toHaveBeenCalledWith(
         expect.objectContaining({
           update: expect.objectContaining({
-            level: 1, // Math.max(1, -5) = 1
+            level: 0, // Math.max(0, -5) = 0
           }),
         }),
       );
@@ -553,7 +564,11 @@ describe('ProgressionService', () => {
         coins: 75,
         streakDays: 3,
         games: [
-          { gameType: 'RIDDLE', unlockedLevelIndex: 2, levelStars: [3, 2, 1] },
+          {
+            gameType: 'RIDDLE',
+            unlockedLevelIndex: 2,
+            levelStars: { '0': 3, '1': 2, '2': 1 },
+          },
         ],
         xpTransactions: [],
       });

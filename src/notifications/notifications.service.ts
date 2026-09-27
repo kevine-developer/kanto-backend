@@ -238,7 +238,10 @@ export class NotificationsService {
           this.logger.log(
             `📱 [Push] Token Expo enregistré pour l'utilisateur ${userId}`,
           );
-          return { success: true, message: 'Token push enregistré avec succès' };
+          return {
+            success: true,
+            message: 'Token push enregistré avec succès',
+          };
         } catch (userErr) {
           this.logger.warn(
             `⚠️ [Push] Utilisateur ${userId} introuvable lors de l'assignation du pushToken, enregistrement en invité :`,
@@ -249,9 +252,7 @@ export class NotificationsService {
 
       // Enregistrement anonyme (invité) dans Redis
       await this.redisService.sAdd('expo_push_tokens:guests', cleanToken);
-      this.logger.log(
-        `📱 [Push] Token Expo enregistré pour un invité anonyme`,
-      );
+      this.logger.log(`📱 [Push] Token Expo enregistré pour un invité anonyme`);
 
       return { success: true, message: 'Token push enregistré avec succès' };
     } catch (err) {

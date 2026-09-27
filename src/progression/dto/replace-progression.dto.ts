@@ -38,7 +38,7 @@ export class ReplaceProgressionDto {
   totalXp: number;
 
   @IsInt()
-  @Min(1)
+  @Min(0)
   level: number;
 
   @IsInt()

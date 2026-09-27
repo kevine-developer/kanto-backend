@@ -8,6 +8,11 @@ import {
 import { SyncProgressionDto } from './dto/sync-progression.dto.js';
 import { ReplaceProgressionDto } from './dto/replace-progression.dto.js';
 import { BadgesService } from '../badges/badges.service.js';
+import {
+  CoinsEconomyConfig,
+  DEFAULT_COINS_ECONOMY_CONFIG,
+  REDIS_COINS_CONFIG_KEY,
+} from './progression.constants.js';
 
 /** Bonus XP par palier de streak (jours consécutifs), plafonné à 7 (max 35 XP/jour) */
 const STREAK_XP_BONUS = [0, 5, 10, 15, 20, 25, 30, 35];
@@ -32,7 +37,7 @@ export class ProgressionService {
 
     if (!progress) {
       progress = await this.prisma.userProgress.create({
-        data: { userId, totalXp: 0, level: 1, coins: 0, streakDays: 0 },
+        data: { userId, totalXp: 0, level: 0, coins: 0, streakDays: 0 },
       });
     }
 
@@ -140,12 +145,28 @@ export class ProgressionService {
       // Calcul des nouveaux XP / niveau / pièces — Toujours arrondi supérieur sans virgule
       const currentXp = Number(progress.totalXp);
       const newTotalXp = Math.ceil(currentXp + xpBonus);
-      const previousLevel = progress.level || 1;
+      const previousLevel =
+        typeof progress.level === 'number' ? progress.level : 0;
       const newLevel = this.calculateLevel(newTotalXp);
+      // Lecture de la configuration économique des pièces (contrôlable par l'administration)
+      const coinsConfig = await this.getCoinsEconomyConfig();
       let additionalCoins = 0;
-      if (newLevel > previousLevel) {
-        for (let lvl = previousLevel + 1; lvl <= newLevel; lvl++) {
-          additionalCoins += this.calculateLevelUpCoins(lvl);
+      if (coinsConfig.enabled) {
+        if (newLevel > previousLevel) {
+          for (let lvl = previousLevel + 1; lvl <= newLevel; lvl++) {
+            additionalCoins += this.calculateLevelUpCoins(
+              lvl,
+              coinsConfig.levelUpCoinsMultiplier,
+            );
+          }
+        }
+        // Paliers méritoires de fidélité pour les pièces (très rares)
+        if (newStreakDays === 7) {
+          additionalCoins += coinsConfig.streakBonus7;
+        } else if (newStreakDays === 14) {
+          additionalCoins += coinsConfig.streakBonus14;
+        } else if (newStreakDays === 30) {
+          additionalCoins += coinsConfig.streakBonus30;
         }
       }
       const newCoins = (progress.coins || 0) + additionalCoins;
@@ -257,12 +278,13 @@ export class ProgressionService {
             totalXp: totalXpToAdd,
             level: initialLevel,
             coins:
-              initialLevel > 1 ? this.calculateLevelUpCoins(initialLevel) : 0,
+              initialLevel > 0 ? this.calculateLevelUpCoins(initialLevel) : 0,
           },
         });
       } else if (totalXpToAdd > 0) {
         const newTotal = Math.ceil(Number(progress.totalXp) + totalXpToAdd);
-        const previousLevel = progress.level || 1;
+        const previousLevel =
+          typeof progress.level === 'number' ? progress.level : 0;
         const newLevel = this.calculateLevel(newTotal);
         let additionalCoins = 0;
         if (newLevel > previousLevel) {
@@ -438,7 +460,7 @@ export class ProgressionService {
       });
       return {
         totalXp: p ? Number(p.totalXp) : 0,
-        level: p ? p.level : 1,
+        level: p ? p.level : 0,
         streakDays: p ? p.streakDays : 0,
       };
     }
@@ -455,13 +477,14 @@ export class ProgressionService {
             totalXp: safeAmount,
             level: initialLevel,
             coins:
-              initialLevel > 1 ? this.calculateLevelUpCoins(initialLevel) : 0,
+              initialLevel > 0 ? this.calculateLevelUpCoins(initialLevel) : 0,
             streakDays: 0,
           },
         });
       } else {
         const newTotalXp = Math.ceil(Number(progress.totalXp) + safeAmount);
-        const previousLevel = progress.level || 1;
+        const previousLevel =
+          typeof progress.level === 'number' ? progress.level : 0;
         const newLevel = this.calculateLevel(newTotalXp);
         let additionalCoins = 0;
         if (newLevel > previousLevel) {
@@ -532,14 +555,14 @@ export class ProgressionService {
         where: { userId },
         update: {
           totalXp: Math.ceil(Math.max(0, dto.totalXp)),
-          level: Math.max(1, dto.level),
+          level: Math.max(0, dto.level),
           coins: Math.max(0, dto.coins),
           streakDays: Math.max(0, dto.streakDays),
         },
         create: {
           userId,
           totalXp: Math.ceil(Math.max(0, dto.totalXp)),
-          level: Math.max(1, dto.level),
+          level: Math.max(0, dto.level),
           coins: Math.max(0, dto.coins),
           streakDays: Math.max(0, dto.streakDays),
         },
@@ -657,28 +680,53 @@ export class ProgressionService {
     );
   }
 
-  /** Bonus de pièces lors d'une montée de niveau */
-  private calculateLevelUpCoins(level: number): number {
-    return Math.max(25, level * 25);
+  /** Récupère la configuration économique des pièces (depuis Redis ou valeurs par défaut) */
+  async getCoinsEconomyConfig(): Promise<CoinsEconomyConfig> {
+    try {
+      const cached = await this.redisService.get<CoinsEconomyConfig>(
+        REDIS_COINS_CONFIG_KEY,
+      );
+      if (cached && typeof cached === 'object') {
+        return { ...DEFAULT_COINS_ECONOMY_CONFIG, ...cached };
+      }
+    } catch {
+      // Ignorer silencieusement et utiliser le fallback
+    }
+    return DEFAULT_COINS_ECONOMY_CONFIG;
+  }
+
+  /**
+   * Bonus de pièces lors d'une montée de niveau.
+   * Rareté culturelle maximale : progression de 1 à 6 Vola par niveau (plafond 10).
+   */
+  private calculateLevelUpCoins(level: number, multiplier = 1): number {
+    if (level <= 0) return 0;
+    const base = Math.min(10, Math.max(1, Math.floor(level / 2) + 1));
+    return Math.floor(base * Math.max(0, multiplier));
   }
 
   /** Calcule le niveau à partir de l'XP total (identique au frontend) */
   private calculateLevel(xp: number): number {
-    const safeXp = Math.max(0, xp || 0);
+    const safeXp = Math.max(0, Math.ceil(xp || 0));
+    if (safeXp < 200) {
+      return 0;
+    }
+
     const THRESHOLDS = [
-      { level: 1, minXp: 0 },
-      { level: 2, minXp: 50 },
-      { level: 3, minXp: 150 },
-      { level: 4, minXp: 300 },
-      { level: 5, minXp: 500 },
-      { level: 6, minXp: 800 },
-      { level: 7, minXp: 1200 },
-      { level: 8, minXp: 1700 },
-      { level: 9, minXp: 2300 },
-      { level: 10, minXp: 3000 },
+      { level: 0, minXp: 0 },
+      { level: 1, minXp: 200 },
+      { level: 2, minXp: 500 },
+      { level: 3, minXp: 1000 },
+      { level: 4, minXp: 1800 },
+      { level: 5, minXp: 3000 },
+      { level: 6, minXp: 4800 },
+      { level: 7, minXp: 7400 },
+      { level: 8, minXp: 11000 },
+      { level: 9, minXp: 16000 },
+      { level: 10, minXp: 23000 },
     ];
 
-    let currentLevel = 1;
+    let currentLevel = 0;
     for (let i = THRESHOLDS.length - 1; i >= 0; i--) {
       if (safeXp >= THRESHOLDS[i].minXp) {
         currentLevel = THRESHOLDS[i].level;
@@ -686,8 +734,20 @@ export class ProgressionService {
       }
     }
 
-    if (safeXp >= 3000) {
-      currentLevel = 10 + Math.floor((safeXp - 3000) / 1000);
+    // Progression au-delà du niveau 10 (exigence redoublée) :
+    // Niv 11 = 23000 + 9000 = 32000
+    // Niv 12 = 32000 + 11000 = 43000
+    // Niv 13 = 43000 + 13000 = 56000
+    if (safeXp >= 23000) {
+      let lvl = 10;
+      let threshold = 23000;
+      let step = 9000;
+      while (safeXp >= threshold + step) {
+        threshold += step;
+        lvl++;
+        step += 2000;
+      }
+      currentLevel = lvl;
     }
 
     return currentLevel;

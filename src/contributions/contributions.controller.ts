@@ -22,6 +22,9 @@ import { VoteContributionDto } from './dto/vote-contribution.dto.js';
 import { ReportContributionDto } from './dto/report-contribution.dto.js';
 import { UpdateContributionDto } from './dto/update-contribution.dto.js';
 import { CreateContributionCommentDto } from './dto/create-contribution-comment.dto.js';
+import { DisputeContributionDto } from './dto/dispute-contribution.dto.js';
+import { ResolveDisputeDto } from './dto/resolve-dispute.dto.js';
+import { CheckDuplicateDto } from './dto/check-duplicate.dto.js';
 import { AuthGuard, Roles, Session, type UserSession } from '../auth/index.js';
 import { Throttle } from '@nestjs/throttler';
 
@@ -310,5 +313,61 @@ export class ContributionsController {
   @Roles(['ADMIN', 'admin'])
   validate(@Param('id') id: string, @Body() body: ValidateContributionDto) {
     return this.contributionsService.validate(id, body.approve);
+  }
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // DÉTECTION DES DOUBLONS & CONTESTATIONS
+  // ──────────────────────────────────────────────────────────────────────────
+
+  /** POST /contributions/check-duplicate — Analyse prédictive de doublon pour l'UI mobile */
+  @Post('check-duplicate')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 60, ttl: 60000 } })
+  checkDuplicate(@Body() body: CheckDuplicateDto) {
+    return this.contributionsService.previewCheckDuplicate(body);
+  }
+
+  /** PATCH /contributions/:id/confirm-duplicate — Marquer comme doublon et lancer le compte à rebours 24h (admin) */
+  @Patch(':id/confirm-duplicate')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  @HttpCode(HttpStatus.OK)
+  confirmDuplicate(@Param('id') id: string, @Session() session: UserSession) {
+    return this.contributionsService.confirmDuplicate(session.user.id, id);
+  }
+
+  /** POST /contributions/:id/dispute — Soumettre un avis / réclamation (contributeur auteur) */
+  @Post(':id/dispute')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  submitDispute(
+    @Param('id') id: string,
+    @Body() body: DisputeContributionDto,
+    @Session() session: UserSession,
+  ) {
+    return this.contributionsService.submitDispute(session.user.id, id, body);
+  }
+
+  /** PATCH /contributions/:id/resolve-dispute — Statuer sur une réclamation (admin) */
+  @Patch(':id/resolve-dispute')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  @HttpCode(HttpStatus.OK)
+  resolveDispute(
+    @Param('id') id: string,
+    @Body() body: ResolveDisputeDto,
+    @Session() session: UserSession,
+  ) {
+    return this.contributionsService.resolveDispute(session.user.id, id, body);
+  }
+
+  /** POST /contributions/admin/purge-duplicates — Nettoyer les doublons expirés (+24h) */
+  @Post('admin/purge-duplicates')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  @HttpCode(HttpStatus.OK)
+  purgeDuplicates() {
+    return this.contributionsService.purgeExpiredDuplicates();
   }
 }

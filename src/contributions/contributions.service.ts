@@ -4,6 +4,8 @@ import {
   NotFoundException,
   BadRequestException,
   Logger,
+  OnModuleInit,
+  OnModuleDestroy,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateContributionDto } from './dto/create-contribution.dto.js';
@@ -13,6 +15,10 @@ import { CreateCitationContributionDto } from './dto/create-citation-contributio
 import { CreateConteContributionDto } from './dto/create-conte-contribution.dto.js';
 import { UpdateContributionDto } from './dto/update-contribution.dto.js';
 import { CreateContributionCommentDto } from './dto/create-contribution-comment.dto.js';
+import { DisputeContributionDto } from './dto/dispute-contribution.dto.js';
+import { ResolveDisputeDto } from './dto/resolve-dispute.dto.js';
+import { CheckDuplicateDto } from './dto/check-duplicate.dto.js';
+import { DuplicateDetectionService } from './duplicate-detection.service.js';
 import { NotificationsService } from '../notifications/notifications.service.js';
 import { RedisService } from '../redis/redis.service.js';
 import {
@@ -37,6 +43,15 @@ const CONTRIBUTION_BASE_SELECT = {
   userId: true,
   user: { select: { id: true, name: true, image: true } },
   _count: { select: { comments: true } },
+  duplicateScore: true,
+  duplicateOfId: true,
+  duplicateTypeOf: true,
+  duplicateTargetTitle: true,
+  isDuplicateConfirmed: true,
+  markedForDeletionAt: true,
+  disputeMessage: true,
+  disputeStatus: true,
+  disputedAt: true,
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -54,14 +69,44 @@ function generateSlug(text: string): string {
 
 // ─────────────────────────────────────────────────────────────────────────────
 @Injectable()
-export class ContributionsService {
+export class ContributionsService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(ContributionsService.name);
+  private purgeInterval: NodeJS.Timeout | null = null;
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificationsService: NotificationsService,
     private readonly redisService: RedisService,
+    private readonly duplicateDetectionService: DuplicateDetectionService,
   ) {}
+
+  onModuleInit() {
+    // Vérification initiale après 15 secondes
+    const initialTimer = setTimeout(() => {
+      this.purgeExpiredDuplicates().catch((err) => {
+        this.logger.error('Erreur purge initiale des doublons :', err);
+      });
+    }, 15000);
+    initialTimer.unref();
+
+    // Vérification automatique toutes les 30 minutes
+    this.purgeInterval = setInterval(
+      () => {
+        this.purgeExpiredDuplicates().catch((err) => {
+          this.logger.error('Erreur purge périodique des doublons :', err);
+        });
+      },
+      30 * 60 * 1000,
+    );
+    this.purgeInterval.unref();
+  }
+
+  onModuleDestroy() {
+    if (this.purgeInterval) {
+      clearInterval(this.purgeInterval);
+      this.purgeInterval = null;
+    }
+  }
 
   // ───────────────────────────────────────────────────────────────────────────
   // Génération de slug unique pour une table donnée
@@ -82,6 +127,11 @@ export class ContributionsService {
   // CRÉATION GÉNÉRIQUE (rétro-compatibilité)
   // ───────────────────────────────────────────────────────────────────────────
   async create(userId: string, dto: CreateContributionDto) {
+    const dupCheck = await this.duplicateDetectionService.detectDuplicate(
+      dto.textMg,
+      dto.category,
+    );
+
     const contribution = await this.prisma.contribution.create({
       data: {
         userId,
@@ -91,9 +141,18 @@ export class ContributionsService {
         meaning: dto.meaning,
         region: dto.region,
         status: 'DRAFT',
+        duplicateScore: dupCheck.score,
+        duplicateOfId: dupCheck.targetId,
+        duplicateTypeOf: dupCheck.targetType,
+        duplicateTargetTitle: dupCheck.targetTitle,
       },
+      select: CONTRIBUTION_BASE_SELECT,
     });
-    return { success: true, contribution };
+    return {
+      success: true,
+      contribution,
+      duplicateWarning: dupCheck.isDuplicate ? dupCheck.explanation : undefined,
+    };
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -104,6 +163,10 @@ export class ContributionsService {
     dto: CreateKabaryContributionDto,
   ) {
     const payload = JSON.stringify(dto);
+    const dupCheck = await this.duplicateDetectionService.detectDuplicate(
+      dto.title,
+      'KABARY',
+    );
 
     const contribution = await this.prisma.contribution.create({
       data: {
@@ -114,11 +177,19 @@ export class ContributionsService {
         meaning: dto.occasion,
         region: dto.region,
         status: 'DRAFT',
+        duplicateScore: dupCheck.score,
+        duplicateOfId: dupCheck.targetId,
+        duplicateTypeOf: dupCheck.targetType,
+        duplicateTargetTitle: dupCheck.targetTitle,
       },
       select: CONTRIBUTION_BASE_SELECT,
     });
 
-    return { success: true, contribution };
+    return {
+      success: true,
+      contribution,
+      duplicateWarning: dupCheck.isDuplicate ? dupCheck.explanation : undefined,
+    };
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -128,6 +199,11 @@ export class ContributionsService {
     userId: string,
     dto: CreateProverbeContributionDto,
   ) {
+    const dupCheck = await this.duplicateDetectionService.detectDuplicate(
+      dto.textMg,
+      dto.category,
+    );
+
     const contribution = await this.prisma.contribution.create({
       data: {
         userId,
@@ -137,10 +213,19 @@ export class ContributionsService {
         meaning: dto.meaning,
         region: dto.region,
         status: 'DRAFT',
+        duplicateScore: dupCheck.score,
+        duplicateOfId: dupCheck.targetId,
+        duplicateTypeOf: dupCheck.targetType,
+        duplicateTargetTitle: dupCheck.targetTitle,
       },
       select: CONTRIBUTION_BASE_SELECT,
     });
-    return { success: true, contribution };
+
+    return {
+      success: true,
+      contribution,
+      duplicateWarning: dupCheck.isDuplicate ? dupCheck.explanation : undefined,
+    };
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -150,6 +235,11 @@ export class ContributionsService {
     userId: string,
     dto: CreateCitationContributionDto,
   ) {
+    const dupCheck = await this.duplicateDetectionService.detectDuplicate(
+      dto.citationMg,
+      'CITATION',
+    );
+
     const contribution = await this.prisma.contribution.create({
       data: {
         userId,
@@ -159,10 +249,19 @@ export class ContributionsService {
         meaning: dto.contexte ?? '',
         region: dto.sourceName,
         status: 'DRAFT',
+        duplicateScore: dupCheck.score,
+        duplicateOfId: dupCheck.targetId,
+        duplicateTypeOf: dupCheck.targetType,
+        duplicateTargetTitle: dupCheck.targetTitle,
       },
       select: CONTRIBUTION_BASE_SELECT,
     });
-    return { success: true, contribution };
+
+    return {
+      success: true,
+      contribution,
+      duplicateWarning: dupCheck.isDuplicate ? dupCheck.explanation : undefined,
+    };
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -442,7 +541,14 @@ export class ContributionsService {
   // ───────────────────────────────────────────────────────────────────────────
   async findPending() {
     return this.prisma.contribution.findMany({
-      where: { status: 'DRAFT' },
+      where: {
+        OR: [
+          { status: 'DRAFT' },
+          { isDuplicateConfirmed: true },
+          { disputeStatus: 'PENDING' },
+          { duplicateScore: { gte: 0.65 } },
+        ],
+      },
       select: {
         ...CONTRIBUTION_BASE_SELECT,
         textMg: true,
@@ -851,9 +957,25 @@ export class ContributionsService {
   ) {
     const contribution = await this.prisma.contribution.findUnique({
       where: { id: contributionId },
-      select: { id: true, userId: true },
+      select: {
+        id: true,
+        userId: true,
+        isDuplicateConfirmed: true,
+        markedForDeletionAt: true,
+      },
     });
     if (!contribution) throw new NotFoundException('Contribution introuvable');
+
+    // Règle stricte : Interdiction formelle de commenter si la contribution est marquée comme doublon
+    if (
+      contribution.isDuplicateConfirmed ||
+      (contribution.markedForDeletionAt &&
+        contribution.markedForDeletionAt > new Date())
+    ) {
+      throw new BadRequestException(
+        'Les commentaires sont désactivés pour cette contribution signalée comme doublon.',
+      );
+    }
 
     const comment = await this.prisma.contributionComment.create({
       data: {
@@ -1045,5 +1167,263 @@ export class ContributionsService {
     });
 
     return { success: true, message: 'Commentaire supprimé avec succès' };
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // GESTION DES DOUBLONS, CONTESTATIONS & SUPPRESSION AUTOMATIQUE (24H)
+  // ───────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Vérification prédictive de doublons en temps réel (pour l'UX mobile avant soumission)
+   */
+  async previewCheckDuplicate(dto: CheckDuplicateDto) {
+    const result = await this.duplicateDetectionService.detectDuplicate(
+      dto.textMg,
+      dto.category,
+      dto.excludeContributionId,
+      0.65, // Seuil de prévention UX
+    );
+
+    return {
+      hasPotentialDuplicate: result.isDuplicate,
+      similarityScore: result.score,
+      targetId: result.targetId,
+      targetType: result.targetType,
+      targetTitle: result.targetTitle,
+      explanation: result.explanation,
+    };
+  }
+
+  /**
+   * Confirmation d'un doublon par un modérateur/admin :
+   * - Enclenche le compte à rebours de 24h
+   * - Envoie une notification explicative au contributeur
+   */
+  async confirmDuplicate(adminId: string, contributionId: string) {
+    const contribution = await this.prisma.contribution.findUnique({
+      where: { id: contributionId },
+      include: { user: { select: { id: true, name: true } } },
+    });
+
+    if (!contribution) throw new NotFoundException('Contribution introuvable');
+
+    const deletionTime = new Date(Date.now() + 24 * 60 * 60 * 1000); // +24 heures
+
+    const updated = await this.prisma.contribution.update({
+      where: { id: contributionId },
+      data: {
+        isDuplicateConfirmed: true,
+        markedForDeletionAt: deletionTime,
+        status: 'DRAFT', // Retirée de la visibilité publique
+      },
+      select: CONTRIBUTION_BASE_SELECT,
+    });
+
+    // Envoi de la notification d'avertissement et droit de recours
+    const textPreview = contribution.textMg.slice(0, 45);
+    try {
+      await this.notificationsService.createNotification({
+        titleMg: 'Fandraisana anjara : Voamarika ho dika mitovy',
+        titleFr: 'Contribution : Signalée comme doublon',
+        messageMg: `Voamarika ho dika mitovy ny fandraisana anjaranao (« ${textPreview}... ») ary ho voafafa afaka 24 ora. Raha heverinao fa diso izany dia azonao atao ny manome hevitra na manao fitarainana.`,
+        messageFr: `Votre contribution (« ${textPreview}... ») a été identifiée comme doublon et sera supprimée dans 24h. Vous pouvez déposer une réclamation depuis votre profil si vous contestez cette décision.`,
+        category: 'community',
+        badgeText: 'Dika mitovy',
+        badgeType: 'reward',
+        iconName: 'warning-outline',
+        iconColor: '#EA580C',
+        isBroadcast: false,
+        userId: contribution.userId,
+        targetRoute: '/(tabs)/profil',
+      });
+    } catch (notifErr) {
+      this.logger.error(
+        'Erreur notification doublon au contributeur :',
+        notifErr,
+      );
+    }
+
+    return {
+      success: true,
+      message: 'Doublon confirmé. Suppression programmée dans 24h.',
+      contribution: updated,
+    };
+  }
+
+  /**
+   * Dépôt d'une réclamation / avis par le contributeur :
+   * - Suspend immédiatement le compte à rebours de suppression (markedForDeletionAt = null)
+   * - Passe le statut de litige à 'PENDING'
+   */
+  async submitDispute(
+    userId: string,
+    contributionId: string,
+    dto: DisputeContributionDto,
+  ) {
+    const contribution = await this.prisma.contribution.findUnique({
+      where: { id: contributionId },
+    });
+
+    if (!contribution) throw new NotFoundException('Contribution introuvable');
+
+    if (contribution.userId !== userId) {
+      throw new ForbiddenException(
+        'Seul l’auteur peut déposer une réclamation pour cette contribution',
+      );
+    }
+
+    if (!contribution.isDuplicateConfirmed) {
+      throw new BadRequestException(
+        'Cette contribution n’est pas marquée comme doublon',
+      );
+    }
+
+    // Gel du compte à rebours de 24h et enregistrement de l'avis
+    const updated = await this.prisma.contribution.update({
+      where: { id: contributionId },
+      data: {
+        disputeMessage: dto.message.trim(),
+        disputeStatus: 'PENDING',
+        disputedAt: new Date(),
+        markedForDeletionAt: null, // Compte à rebours suspendu !
+      },
+      select: CONTRIBUTION_BASE_SELECT,
+    });
+
+    return {
+      success: true,
+      message:
+        'Votre réclamation a été transmise à l’équipe de modération. La suppression automatique est suspendue.',
+      contribution: updated,
+    };
+  }
+
+  /**
+   * Arbitrage de l'administrateur sur la réclamation :
+   * - Si acceptée : la contribution est réhabilitée (isDuplicateConfirmed: false, disputeStatus: 'ACCEPTED')
+   * - Si rejetée : la réclamation est refusée et un compte à rebours final de 24h est relancé
+   */
+  async resolveDispute(
+    adminId: string,
+    contributionId: string,
+    dto: ResolveDisputeDto,
+  ) {
+    const contribution = await this.prisma.contribution.findUnique({
+      where: { id: contributionId },
+    });
+
+    if (!contribution) throw new NotFoundException('Contribution introuvable');
+
+    if (contribution.disputeStatus !== 'PENDING') {
+      throw new BadRequestException(
+        'Aucune réclamation en attente pour cette contribution',
+      );
+    }
+
+    if (dto.approve) {
+      // Réclamation acceptée : réhabilitation de la contribution
+      const updated = await this.prisma.contribution.update({
+        where: { id: contributionId },
+        data: {
+          isDuplicateConfirmed: false,
+          disputeStatus: 'ACCEPTED',
+          markedForDeletionAt: null,
+          status: 'PUBLISHED',
+        },
+        select: CONTRIBUTION_BASE_SELECT,
+      });
+
+      try {
+        await this.notificationsService.createNotification({
+          titleMg: 'Fitarainana nekena !',
+          titleFr: 'Réclamation acceptée !',
+          messageMg: `Nekena ny fanazavanao momba ny fandraisana anjara (« ${contribution.textMg.slice(0, 45)}... »). Naverina navoaka soa aman-tsara izany.`,
+          messageFr: `Votre réclamation a été acceptée pour la contribution (« ${contribution.textMg.slice(0, 45)}... »). Elle a été rétablie avec succès.`,
+          category: 'community',
+          badgeText: 'Nekena',
+          badgeType: 'new',
+          iconName: 'checkmark-circle-outline',
+          iconColor: '#10B981',
+          isBroadcast: false,
+          userId: contribution.userId,
+          targetRoute: '/(tabs)/profil',
+        });
+      } catch (e) {
+        this.logger.error('Erreur notification réclamation acceptée:', e);
+      }
+
+      return {
+        success: true,
+        message: 'Réclamation acceptée. La contribution a été rétablie.',
+        contribution: updated,
+      };
+    } else {
+      // Réclamation rejetée : relance du compte à rebours final de 24h
+      const finalDeletionTime = new Date(Date.now() + 24 * 60 * 60 * 1000);
+      const updated = await this.prisma.contribution.update({
+        where: { id: contributionId },
+        data: {
+          disputeStatus: 'REJECTED',
+          markedForDeletionAt: finalDeletionTime,
+        },
+        select: CONTRIBUTION_BASE_SELECT,
+      });
+
+      try {
+        await this.notificationsService.createNotification({
+          titleMg: 'Fitarainana nolavina',
+          titleFr: 'Réclamation refusée',
+          messageMg: `Tsy nekena ny fitarainana nataonao. Hovoafafa afaka 24 ora ny fandraisana anjaranao (« ${contribution.textMg.slice(0, 45)}... »). ${dto.note ? `Fanazavana : ${dto.note}` : ''}`,
+          messageFr: `Votre réclamation a été refusée. La contribution (« ${contribution.textMg.slice(0, 45)}... ») sera définitivement supprimée dans 24h. ${dto.note ? `Motif : ${dto.note}` : ''}`,
+          category: 'community',
+          badgeText: 'Nolavina',
+          badgeType: 'reward',
+          iconName: 'close-circle-outline',
+          iconColor: '#EF4444',
+          isBroadcast: false,
+          userId: contribution.userId,
+          targetRoute: '/(tabs)/profil',
+        });
+      } catch (e) {
+        this.logger.error('Erreur notification réclamation rejetée:', e);
+      }
+
+      return {
+        success: true,
+        message: 'Réclamation rejetée. Suppression définitive dans 24h.',
+        contribution: updated,
+      };
+    }
+  }
+
+  /**
+   * Purge automatique des contributions dont le délai de 24h est expiré
+   * et sans réclamation en attente
+   */
+  async purgeExpiredDuplicates(): Promise<{ purgedCount: number }> {
+    const now = new Date();
+
+    const expired = await this.prisma.contribution.findMany({
+      where: {
+        isDuplicateConfirmed: true,
+        markedForDeletionAt: { lte: now, not: null },
+        disputeStatus: { not: 'PENDING' }, // Ne jamais supprimer si une contestation est en cours d'examen !
+      },
+      select: { id: true },
+    });
+
+    if (expired.length === 0) {
+      return { purgedCount: 0 };
+    }
+
+    const ids = expired.map((e) => e.id);
+    await this.prisma.contribution.deleteMany({
+      where: { id: { in: ids } },
+    });
+
+    this.logger.log(
+      `🧹 ${ids.length} contribution(s) doublon(s) expirée(s) supprimée(s) automatiquement.`,
+    );
+    return { purgedCount: ids.length };
   }
 }
