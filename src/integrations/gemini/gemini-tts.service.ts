@@ -186,12 +186,10 @@ Prononce UNIQUEMENT le texte du conte, sans ajouter de commentaire et sans réci
     const preparedText =
       language === 'mg' ? this.normalizeMalagasyStoryText(text) : text.trim();
 
-    const systemInstruction = this.buildSystemInstruction(language);
-
-    const userPrompt =
-      language === 'mg'
-        ? `Ity ny angano hovakianao amin'ny teny malagasy madio tsy misy accent vahiny :\n\n${preparedText}`
-        : `Voici le conte à raconter en français avec une voix chaleureuse et immersive :\n\n${preparedText}`;
+    // La consigne phonologique est intégrée directement dans le prompt utilisateur.
+    // Les modèles TTS Gemini (gemini-*-tts-preview) ne supportent PAS systemInstruction.
+    const directorNote = this.buildSystemInstruction(language);
+    const userPrompt = `${directorNote}\n\n${preparedText}`;
 
     this.logger.log(
       `🎙️ [GeminiTTS] Génération audio (${language.toUpperCase()}) — ${preparedText.length} caractères, modèle: ${this.defaultModel}, voix: ${resolvedVoice}, languageCode: ${language}`,
@@ -201,9 +199,6 @@ Prononce UNIQUEMENT le texte du conte, sans ajouter de commentaire et sans réci
       const config: any = {
         temperature: 0.3,
         responseModalities: ['audio'],
-        systemInstruction: {
-          parts: [{ text: systemInstruction }],
-        },
         speechConfig: {
           languageCode: language === 'mg' ? 'mg' : 'fr',
           voiceConfig: {
