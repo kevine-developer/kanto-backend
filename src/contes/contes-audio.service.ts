@@ -61,17 +61,23 @@ export class ContesAudioService {
 
     const moralText =
       language === 'mg' && conte.moralMg
-        ? `Fianarana : ${conte.moralMg}`
+        ? `Fianarana tsoahina amin'ity angano ity : ${conte.moralMg}`
         : language === 'fr' && (conte.moralFr || conte.moralMg)
-          ? `Morale : ${conte.moralFr || conte.moralMg}`
+          ? `Morale du conte : ${conte.moralFr || conte.moralMg}`
           : null;
 
-    const parts = [
+    const rawParts = [
       titleText,
       ...paragraphTexts,
       ...(moralText ? [moralText] : []),
     ];
-    const fullText = parts.join('.\n\n');
+
+    // Nettoyage et ponctuation propre de chaque section (évite les doubles points '..')
+    const fullText = rawParts
+      .map((p) => p.trim())
+      .filter((p) => p.length > 0)
+      .map((p) => (/[.!?…»"]$/.test(p) ? p : `${p}.`))
+      .join('\n\n');
 
     this.logger.log(
       `🎙️ [GenerateAudio] Conte "${conte.slug}" (${language}) — ${fullText.length} caractères, ${paragraphTexts.length} paragraphes`,
@@ -79,7 +85,7 @@ export class ContesAudioService {
 
     const audioBuffer = await this.geminiTtsService.generateSpeechBuffer({
       text: fullText,
-      voiceName: voiceId ?? process.env.GEMINI_TTS_VOICE ?? 'Orus',
+      voiceName: voiceId ?? process.env.GEMINI_TTS_VOICE ?? 'Charon',
       language,
     });
 
