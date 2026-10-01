@@ -21,7 +21,7 @@ export class CreateMultiplayerGameDto {
 
   @IsOptional()
   @IsInt()
-  @Min(3)
+  @Min(5)
   @Max(15)
   totalQuestions?: number = 5;
 
@@ -50,6 +50,10 @@ export class CreateMultiplayerGameDto {
   @IsOptional()
   @IsString()
   themeChooserId?: string;
+
+  @IsOptional()
+  @IsString()
+  customQuizSetId?: string;
 }
 
 export class JoinMultiplayerGameDto {

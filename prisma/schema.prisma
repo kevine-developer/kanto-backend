@@ -50,7 +50,15 @@ enum ReportReason {
   TYPO // Faute d'orthographe
   INCORRECT_MEANING // Sens inexact
   INAPPROPRIATE // Contenu inapproprié
+  SPAM // Spam ou abus
+  MISLEADING // Contenu trompeur ou mensonger
+  ILLEGAL // Contenu illégal
   OTHER // Autre
+}
+
+enum DeckVisibility {
+  PUBLIC
+  LINK_ONLY
 }
 
 enum CivicSubCategory {
@@ -82,6 +90,8 @@ model User {
   role          UserRole         @default(USER)
   tier          SubscriptionTier @default(FREE)
   pushToken     String?          // Expo Push Notification Token (ex: ExponentPushToken[xxx])
+  termsAcceptedAt DateTime?      // Horodatage acceptation CGU & politique de confidentialité
+  termsVersion    String?        @default("1.0") // Version des CGU acceptées
   banned        Boolean?
   banReason     String?
   banExpires    DateTime?
@@ -113,6 +123,9 @@ model User {
   receivedFriendships    Friendship[]    @relation("ReceivedFriendships")
   sentEncouragements     Encouragement[] @relation("SentEncouragements")
   receivedEncouragements Encouragement[] @relation("ReceivedEncouragements")
+
+  // Relations UGC (Quiz persos)
+  quizSets               UserQuizSet[]
 
   @@map("users")
 }
@@ -494,9 +507,13 @@ model ContentReport {
   recitationId String?
   recitation   Recitation? @relation(fields: [recitationId], references: [id], onDelete: Cascade)
 
+  quizSetId String?
+  quizSet   UserQuizSet? @relation(fields: [quizSetId], references: [id], onDelete: Cascade)
+
   createdAt DateTime @default(now())
 
   @@index([resolved])
+  @@index([quizSetId])
   @@map("content_reports")
 }
 
@@ -1239,6 +1256,9 @@ model DuelSession {
   updatedAt            DateTime     @updatedAt
   finishedAt           DateTime?
 
+  customQuizSetId      String?
+  customQuizSet        UserQuizSet? @relation(fields: [customQuizSetId], references: [id])
+
   players              DuelPlayer[]
   answers              DuelAnswer[]
 
@@ -1743,4 +1763,77 @@ model MarketingBanner {
   @@map("marketing_banners")
 }
 
+// ======================================================
+// 19. DOCUMENTS LÉGAUX & CGU DYNAMIQUES
+// ======================================================
 
+model LegalDocument {
+  id              String   @id @default(cuid())
+  slug            String   @unique // "terms" | "privacy" | "help" | "licenses"
+  title           String   // Titre du document (ex: "Conditions Générales d'Utilisation")
+  version         String   @default("1.0") // Numéro de version (ex: "1.0", "1.1")
+  effectiveDate   String?  // Date d'entrée en vigueur (ex: "Septembre 2025")
+  contentHtml     String   @db.Text // Contenu HTML complet
+  summary         String?  @db.Text // Résumé des derniers changements
+  requiresConsent Boolean  @default(true) // Nécessite acceptation utilisateur
+  updatedBy       String?  // Email de l'administrateur
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([slug])
+  @@map("legal_documents")
+}// ======================================================
+// 12. MULTIJOUEUR UGC (User Generated Content)
+// ======================================================
+
+model UserQuizSet {
+  id          String         @id @default(uuid())
+  title       String         // ex: "Histoire de Madagascar - Niveau Expert"
+  description String?        @db.Text
+  imageUrl    String?        @db.Text
+  category    String?        @default("culture_generale")
+  visibility  DeckVisibility @default(PUBLIC)
+  isPublic    Boolean        @default(false)
+  verified    Boolean        @default(false)
+  verifiedAt  DateTime?
+  verifiedBy  String?
+  playsCount  Int            @default(0)
+  authorId    String
+  author      User           @relation(fields: [authorId], references: [id])
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  questions   UserQuestion[]
+  sessions    DuelSession[]
+  reports     ContentReport[]
+
+  @@index([authorId])
+  @@index([visibility])
+  @@index([verified])
+  @@index([isPublic])
+  @@index([category])
+  @@map("user_quiz_sets")
+}
+
+model UserQuestion {
+  id            String   @id @default(uuid())
+  quizSetId     String
+  quizSet       UserQuizSet @relation(fields: [quizSetId], references: [id], onDelete: Cascade)
+  
+  gameType      String   // "QUIZ" ou "TRUE_FALSE"
+  questionMg    String   @db.Text
+  questionFr    String?  @db.Text
+  
+  isTrue        Boolean? 
+  choices       String[] // Pour QUIZ (JSON array)
+  answerIndex   Int?
+  
+  explanationMg String?  @db.Text
+  explanationFr String?  @db.Text
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([quizSetId])
+  @@map("user_questions")
+}

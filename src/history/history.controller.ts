@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { HistoryService } from './history.service.js';
 import { ReportHistoryDto } from './dto/history.dto.js';
-import { Session, type UserSession } from '../auth/index.js';
+import { AuthGuard, Session, type UserSession } from '../auth/index.js';
 import { Throttle } from '@nestjs/throttler';
 
 @Controller('history')
@@ -93,11 +93,12 @@ export class HistoryController {
 
   // 9. Signalement d'une erreur ou amélioration
   @Post('report')
+  @UseGuards(AuthGuard)
   @Throttle({ default: { limit: 10, ttl: 60000 } })
   reportHistory(
     @Body() body: ReportHistoryDto,
-    @Session() session?: UserSession,
+    @Session() session: UserSession,
   ) {
-    return this.historyService.reportHistory(body, session?.user?.id);
+    return this.historyService.reportHistory(body, session.user.id);
   }
 }

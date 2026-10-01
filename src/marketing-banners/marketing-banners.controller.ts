@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { MarketingBannersService } from './marketing-banners.service.js';
+import { MarketingBannerGeneratorService } from './marketing-banner-generator.service.js';
 import {
   CreateMarketingBannerDto,
   UpdateMarketingBannerDto,
@@ -20,6 +21,7 @@ import { AuthGuard, Roles } from '../auth/index.js';
 export class MarketingBannersController {
   constructor(
     private readonly marketingBannersService: MarketingBannersService,
+    private readonly bannerGeneratorService: MarketingBannerGeneratorService,
   ) {}
 
   /**
@@ -56,6 +58,16 @@ export class MarketingBannersController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.marketingBannersService.findOne(id);
+  }
+
+  /**
+   * Déclencher manuellement la génération d'une bannière via Gemini AI
+   */
+  @Post('generate')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  generate() {
+    return this.bannerGeneratorService.generateAndSaveBanner();
   }
 
   /**

@@ -44,6 +44,8 @@ export class UsersService {
           image: true,
           role: true,
           tier: true,
+          termsAcceptedAt: true,
+          termsVersion: true,
           createdAt: true,
         },
       }),
