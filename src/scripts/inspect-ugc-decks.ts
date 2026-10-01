@@ -5,7 +5,7 @@ import pg from 'pg';
 
 const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
 const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter } as any);
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   const decks = await prisma.userQuizSet.findMany({
@@ -17,12 +17,15 @@ async function main() {
       verified: true,
       playsCount: true,
       category: true,
+      authorId: true,
       _count: { select: { questions: true } },
     },
   });
   console.log('TOTAL DECKS IN DB:', decks.length);
   for (const d of decks) {
-    console.log(`- [${d.id}] "${d.title}" | category="${d.category}" | isPublic=${d.isPublic} | visibility=${d.visibility} | verified=${d.verified} | questions=${d._count.questions} | authorId=${d.authorId}`);
+    console.log(
+      `- [${d.id}] "${d.title}" | category="${d.category}" | isPublic=${d.isPublic} | visibility=${d.visibility} | verified=${d.verified} | questions=${d._count.questions} | authorId=${d.authorId}`,
+    );
   }
 }
 
