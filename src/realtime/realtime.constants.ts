@@ -52,6 +52,12 @@ export const SOCKET_EVENTS = {
   DUEL_DELEGATE_THEME: 'duel:delegate_theme',
   DUEL_THEME_CHANGED: 'duel:theme_changed',
   DUEL_THEME_CHOOSER_CHANGED: 'duel:theme_chooser_changed',
+  DUEL_START_COUNTDOWN: 'duel:start_countdown',
+  DUEL_REACTION: 'duel:reaction',
+  DUEL_REACTION_RECEIVED: 'duel:reaction_received',
+  DUEL_PLAYER_DISCONNECTED: 'duel:player_disconnected',
+  DUEL_PLAYER_RECONNECTED: 'duel:player_reconnected',
+  DUEL_RECONNECT: 'duel:reconnect',
 } as const;
 
 /**

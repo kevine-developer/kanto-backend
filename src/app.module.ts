@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller.js';
@@ -38,6 +39,7 @@ import { HistoryModule } from './history/history.module.js';
 import { WelcomeSlidesModule } from './welcome-slides/welcome-slides.module.js';
 import { MarketingBannersModule } from './marketing-banners/marketing-banners.module.js';
 import { PagesModule } from './pages/pages.module.js';
+import { UserQuizModule } from './user-quiz/user-quiz.module.js';
 
 @Module({
   imports: [
@@ -64,6 +66,8 @@ import { PagesModule } from './pages/pages.module.js';
         limit: 15, // max 15 téléversements d'images par minute par IP (protection disque & Cloudinary)
       },
     ]),
+    // Planification des tâches récurrentes (cron jobs)
+    ScheduleModule.forRoot(),
     PrismaModule,
     RedisModule,
     IntegrationsModule,
@@ -99,6 +103,7 @@ import { PagesModule } from './pages/pages.module.js';
     WelcomeSlidesModule,
     MarketingBannersModule,
     PagesModule,
+    UserQuizModule,
   ],
   controllers: [AppController],
   providers: [

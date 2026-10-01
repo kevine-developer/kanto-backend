@@ -51,6 +51,7 @@ const prodOrigins = [
   'https://admin.kanto.mg',
   'https://app.kanto.mg',
   'https://kanto.mg',
+  'https://auth.kanto.mg',
   'https://api-kanto.gastsar.fr',
   'https://kanto-admin.vercel.app',
   'https://*.vercel.app',
@@ -122,16 +123,20 @@ export const auth = betterAuth({
       );
       try {
         const baseUrl =
-          process.env.BETTER_AUTH_URL || 'https://api-kanto.gastsar.fr';
+          process.env.PUBLIC_AUTH_URL ||
+          process.env.BETTER_AUTH_URL ||
+          'https://api-kanto.gastsar.fr';
         let origin = baseUrl;
-        try {
-          const parsed = new URL(url);
-          origin = parsed.origin;
-        } catch {
-          origin = baseUrl;
+        if (!process.env.PUBLIC_AUTH_URL) {
+          try {
+            const parsed = new URL(url);
+            origin = parsed.origin;
+          } catch {
+            origin = baseUrl;
+          }
         }
 
-        // Format d'URL de confirmation : https://api-kanto.gastsar.fr/confirmation?token=...
+        // Format d'URL de confirmation : https://auth.kanto.mg/confirmation?token=...
         const confirmationUrl = new URL('/confirmation', origin);
         confirmationUrl.searchParams.set('token', token);
         const verifyUrl = confirmationUrl.toString();
@@ -231,9 +236,36 @@ export const auth = betterAuth({
         type: 'string',
         required: false,
       },
+      termsAcceptedAt: {
+        type: 'date',
+        required: false,
+        input: true,
+      },
+      termsVersion: {
+        type: 'string',
+        required: false,
+        defaultValue: '1.0',
+        input: true,
+      },
     },
     changeEmail: {
       enabled: true,
+    },
+  },
+  databaseHooks: {
+    user: {
+      create: {
+        before: async (user) => {
+          return {
+            data: {
+              ...user,
+              // Preuve d'audit légale : horodatage systématique de l'acceptation des CGU
+              termsAcceptedAt: (user as any).termsAcceptedAt || new Date(),
+              termsVersion: (user as any).termsVersion || '1.0',
+            },
+          };
+        },
+      },
     },
   },
   session: {

@@ -25,6 +25,10 @@ class UpdateCoinsConfigDto {
   streakBonus14?: number;
   streakBonus30?: number;
   xpPerCoinRatio?: number;
+  ugcDailyCoinsCap?: number;
+  ugcPlaysPerCoin?: number;
+  ugcCooldownHours?: number;
+  ugcMaxCoinsPerDeck?: number;
 }
 
 class AdjustUserCoinsDto {
@@ -158,6 +162,22 @@ export class AdminCoinsController {
         typeof body.xpPerCoinRatio === 'number' && body.xpPerCoinRatio >= 100
           ? body.xpPerCoinRatio
           : currentConfig.xpPerCoinRatio,
+      ugcDailyCoinsCap:
+        typeof body.ugcDailyCoinsCap === 'number' && body.ugcDailyCoinsCap >= 0
+          ? body.ugcDailyCoinsCap
+          : currentConfig.ugcDailyCoinsCap,
+      ugcPlaysPerCoin:
+        typeof body.ugcPlaysPerCoin === 'number' && body.ugcPlaysPerCoin >= 1
+          ? body.ugcPlaysPerCoin
+          : currentConfig.ugcPlaysPerCoin,
+      ugcCooldownHours:
+        typeof body.ugcCooldownHours === 'number' && body.ugcCooldownHours >= 0
+          ? body.ugcCooldownHours
+          : currentConfig.ugcCooldownHours,
+      ugcMaxCoinsPerDeck:
+        typeof body.ugcMaxCoinsPerDeck === 'number' && body.ugcMaxCoinsPerDeck >= 0
+          ? body.ugcMaxCoinsPerDeck
+          : currentConfig.ugcMaxCoinsPerDeck,
     };
 
     await this.redisService.set(REDIS_COINS_CONFIG_KEY, updatedConfig);

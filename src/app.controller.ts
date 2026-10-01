@@ -43,7 +43,9 @@ export class AppController {
     // Si une redirection d'erreur auth arrive sur la racine (legacy), rediriger vers /confirmation
     if (error) {
       const baseUrl =
-        process.env.BETTER_AUTH_URL || 'https://api-kanto.gastsar.fr';
+        process.env.PUBLIC_AUTH_URL ||
+        process.env.BETTER_AUTH_URL ||
+        'https://api-kanto.gastsar.fr';
       const target = `${baseUrl}/confirmation?error=${encodeURIComponent(error)}${email ? `&email=${encodeURIComponent(email)}` : ''}`;
       res!.redirect(302, target);
       return;
@@ -104,7 +106,9 @@ export class AppController {
     @Res() res?: Response,
   ): Promise<void> {
     const baseUrl =
-      process.env.BETTER_AUTH_URL || 'https://api-kanto.gastsar.fr';
+      process.env.PUBLIC_AUTH_URL ||
+      process.env.BETTER_AUTH_URL ||
+      'https://api-kanto.gastsar.fr';
 
     // Helper : envoyer la page HTML de vérification
     const sendHtmlPage = (html: string) => {
@@ -246,6 +250,16 @@ export class AppController {
     if (!message || typeof message !== 'string' || message.trim().length < 10) {
       throw new BadRequestException(
         'Le message de feedback doit contenir au moins 10 caractères.',
+      );
+    }
+
+    if (
+      !userEmail ||
+      typeof userEmail !== 'string' ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail.trim())
+    ) {
+      throw new BadRequestException(
+        'Une adresse e-mail valide est obligatoire pour envoyer un avis.',
       );
     }
 

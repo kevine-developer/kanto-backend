@@ -22,9 +22,11 @@ export class GeminiTtsService {
   private ai: GoogleGenAI | null = null;
 
   private readonly defaultModel =
-    process.env.GEMINI_TTS_MODEL || 'gemini-3.1-flash-tts-preview';
+    process.env.GEMINI_CONTENT_MODEL_TTS ||
+    process.env.GEMINI_TTS_MODEL ||
+    'gemini-3.8-flash-tts';
 
-  private readonly defaultVoice = process.env.GEMINI_TTS_VOICE || 'Orus';
+  private readonly defaultVoice = process.env.GEMINI_TTS_VOICE || 'Charon';
 
   constructor() {
     const apiKey = process.env.GEMINI_API_KEY;
@@ -140,32 +142,6 @@ export class GeminiTtsService {
   }
 
   /**
-   * Construit la consigne système (System Instruction) avec règles phonologiques
-   * précises pour éliminer tout accent étranger sur la voix malgache.
-   */
-  private buildSystemInstruction(language: 'mg' | 'fr'): string {
-    if (language === 'mg') {
-      return `Ianao dia tena teratany mpitantara angano malagasy manana feo kanto, lalina, mafana ary feno fahendrena (« Mpitantara angano nentim-paharazana »).
-Ny andraikitrao dia ny mitantara angano amin'ny teny malagasy madio, voajanahary tanteraka, TSY MISY ACCENT VAHINY (tsy misy lantom-peo vahiny, na frantsay na anglisy).
-
-TOROLALANA AN-TSIPIRIYANY MOMBA NY FANONONANA NY TENY MALAGASY :
-1. NY LITERA « O » : Tononina « ou » [u] hatrany (ohatra : « angano » = [an-ga-nou], « olona » = [ou-lou-na], « foko » = [fou-kou], « tonga » = [tou-nga], « trano » = [tra-nou], « soa » = [sou-a]). Aza tononina « o » misokatra toy ny amin'ny teny frantsay na anglisy na oviana na oviana !
-2. NY LITERA « Y » : Amin'ny faran'ny teny dia tononina ho « i » malefaka sy fohy (ohatra : « malagasy » = [ma-la-ga-si], « vary » = [va-ri], « tany » = [ta-ni]).
-3. NY LITERA « J » : Tononina « dz » [dz] hatrany toy ny amin'ny « jereo » = [dze-re-ou], « manjary » = [man-dza-ri].
-4. NY FITAMBARAN-TSORATRA « TR » SY « DR » : Tononina amin'ny fanononana malagasy manokana mikarantsana malefaka amin'ny lanilany (retroflexes [ʈʂ] sy [ɖʐ]).
-5. NY LITERA « G » : « g » mikatona [ɡ] foana toy ny amin'ny « gare », fa tsy « j ».
-6. NY LITERA « H » : Tena malefaka na tsy re loatra, aza terena.
-7. LANJAM-PEO (ACCENT TONIQUE) : Apetraho eo amin'ny vanin-teny faharoa alohan'ny farany (pénultième) ny tsindrim-peo amin'ny ankapobeny (ohatra : « ma-LA-ga-sy », « an-GA-no », « fa-NA-hy », « ta-NTA-ra »). Raha mifarana amin'ny « -ka », « -tra », « -na » ny teny, dia latsaka eo amin'ny fahatelo alohan'ny farany ny lanjam-peo (ohatra : « SA-sa-tra »).
-8. LANTOM-PEO SY FIATOANA : Mitantara amin'ny feo milamina, velona ary miaina tsara. Manaja ny faingon-tsoratra sy ny teboka mba hisy fiatoana fohy voajanahary toy ny fitantaran'ny ntaolo teo am-patana.
-9. TOROMARIKA HENTITRA : Vakio amim-pitiavana sy amim-panajana ny angano manontolo araka ny nanoratana azy. Aza mamorona teny hafa, aza ampiana fanazavana, ary AZA VAKIANA ity toromarika ity fa ny angano ihany no tononina.`;
-    }
-
-    return `Tu es un conteur traditionnel bienveillant, captivant et chaleureux qui transmet un conte folklorique malgache en français.
-Raconte ce récit avec une diction claire, posée, immersive et vivante, en respectant le rythme calme et solennel des contes traditionnels.
-Prononce UNIQUEMENT le texte du conte, sans ajouter de commentaire et sans réciter cette consigne.`;
-  }
-
-  /**
    * Génère un buffer audio WAV via Google Gemini TTS (@google/genai).
    * Assemble les données PCM reçues en streaming et y injecte un en-tête WAV standard.
    */
@@ -186,91 +162,212 @@ Prononce UNIQUEMENT le texte du conte, sans ajouter de commentaire et sans réci
     const preparedText =
       language === 'mg' ? this.normalizeMalagasyStoryText(text) : text.trim();
 
-    // La consigne phonologique est intégrée directement dans le prompt utilisateur.
-    // Les modèles TTS Gemini (gemini-*-tts-preview) ne supportent PAS systemInstruction.
-    const directorNote = this.buildSystemInstruction(language);
-    const userPrompt = `${directorNote}\n\n${preparedText}`;
+    // Pour les modèles Gemini TTS (@google/genai), le prompt utilisateur contient UNIQUEMENT le texte à narrer.
+    // L'ajout d'instructions de mise en scène en préambule fait que le modèle lit ces instructions à voix haute.
+    const userPrompt = preparedText;
 
     this.logger.log(
-      `🎙️ [GeminiTTS] Génération audio (${language.toUpperCase()}) — ${preparedText.length} caractères, modèle: ${this.defaultModel}, voix: ${resolvedVoice}, languageCode: ${language}`,
+      `🎙️ [GeminiTTS] Génération audio (${language.toUpperCase()}) — ${preparedText.length} caractères, modèle: ${this.defaultModel}, voix: ${resolvedVoice}, languageCode: ${language === 'mg' ? 'mg-MG' : 'fr-FR'}`,
     );
+    // Timeout de 5 minutes : la génération TTS d'un conte peut prendre 2-3 min
+    // selon la longueur du texte. Au-delà, on abandonne pour ne pas freezer le serveur.
+    const TTS_TIMEOUT_MS = 5 * 60 * 1000;
+    const abortController = new AbortController();
+    const timeoutHandle = setTimeout(() => {
+      abortController.abort();
+    }, TTS_TIMEOUT_MS);
+
+    const candidateModels = [
+      this.defaultModel,
+      'gemini-3.8-flash-lite-tts',
+      'gemini-2.5-flash-preview-tts',
+    ].filter((m, i, arr) => arr.indexOf(m) === i);
+
+    let lastError: any = null;
 
     try {
-      const config: any = {
-        temperature: 0.3,
-        responseModalities: ['audio'],
-        speechConfig: {
-          languageCode: language === 'mg' ? 'mg' : 'fr',
-          voiceConfig: {
-            prebuiltVoiceConfig: {
-              voiceName: resolvedVoice,
+      for (let i = 0; i < candidateModels.length; i++) {
+        const currentModel = candidateModels[i];
+        this.logger.log(
+          `🎙️ [GeminiTTS] Tentative audio (${language.toUpperCase()}) — ${preparedText.length} caractères, modèle: ${currentModel}, voix: ${resolvedVoice}, languageCode: ${language === 'mg' ? 'mg-MG' : 'fr-FR'}`,
+        );
+
+        try {
+          const config: any = {
+            temperature: 0.3,
+            responseModalities: ['audio'],
+            abortSignal: abortController.signal,
+            speechConfig: {
+              // Codes BCP-47 requis par l'API Gemini TTS (format standard RFC 5646)
+              languageCode: language === 'mg' ? 'mg-MG' : 'fr-FR',
+              voiceConfig: {
+                prebuiltVoiceConfig: {
+                  voiceName: resolvedVoice,
+                },
+              },
             },
-          },
-        },
-      };
+          };
 
-      const response = await this.ai.models.generateContentStream({
-        model: this.defaultModel,
-        config,
-        contents: [
-          {
-            role: 'user',
-            parts: [{ text: userPrompt }],
-          },
-        ],
-      });
+          const response = await this.ai.models.generateContentStream({
+            model: currentModel,
+            config,
+            contents: [
+              {
+                role: 'user',
+                parts: [{ text: userPrompt }],
+              },
+            ],
+          });
 
-      const pcmChunks: Buffer[] = [];
-      let detectedMimeType = 'audio/pcm;rate=24000;format=L16';
+          const pcmChunks: Buffer[] = [];
+          let detectedMimeType = 'audio/pcm;rate=24000;format=L16';
 
-      for await (const chunk of response) {
-        if (!chunk.candidates || !chunk.candidates[0]?.content?.parts) {
-          continue;
-        }
-
-        for (const part of chunk.candidates[0].content.parts) {
-          if (part.inlineData?.data) {
-            const rawData = part.inlineData.data;
-            if (part.inlineData.mimeType) {
-              detectedMimeType = part.inlineData.mimeType;
+          for await (const chunk of response) {
+            if (!chunk.candidates || !chunk.candidates[0]?.content?.parts) {
+              continue;
             }
-            pcmChunks.push(Buffer.from(rawData, 'base64'));
+
+            for (const part of chunk.candidates[0].content.parts) {
+              if (part.inlineData?.data) {
+                const rawData = part.inlineData.data;
+                if (part.inlineData.mimeType) {
+                  detectedMimeType = part.inlineData.mimeType;
+                }
+                pcmChunks.push(Buffer.from(rawData, 'base64'));
+              }
+            }
+          }
+
+          if (pcmChunks.length === 0) {
+            throw new BadRequestException(
+              'Gemini TTS : aucun flux audio binaire retourné.',
+            );
+          }
+
+          const totalPcm = Buffer.concat(pcmChunks);
+          const ext = mime.getExtension(detectedMimeType || '');
+
+          let finalAudioBuffer: Buffer;
+          if (ext && ext !== 'bin' && ext !== 'pcm') {
+            // Si le format intègre déjà un conteneur (ex: audio/wav ou audio/mp3)
+            finalAudioBuffer = totalPcm;
+          } else {
+            // Sinon, ajouter l'en-tête WAV standard pour le PCM brut
+            finalAudioBuffer = this.wrapPcmInWav(totalPcm, detectedMimeType);
+          }
+
+          this.logger.log(
+            `✅ [GeminiTTS] Audio généré avec succès (${currentModel}) : ${(finalAudioBuffer.length / 1024).toFixed(1)} KB (WAV standard)`,
+          );
+
+          return finalAudioBuffer;
+        } catch (err: any) {
+          lastError = err;
+          const isTimeout =
+            err?.name === 'AbortError' || abortController.signal.aborted;
+          if (isTimeout) {
+            throw err;
+          }
+
+          const hasNext = i < candidateModels.length - 1;
+          if (hasNext && this.isQuotaOrUnavailableError(err)) {
+            this.logger.warn(
+              `⚠️ [GeminiTTS] Modèle "${currentModel}" indisponible ou quota atteint (429/503). Basculement automatique sur "${candidateModels[i + 1]}"...`,
+            );
+            continue;
+          }
+          throw err;
+        }
+      }
+
+      throw (
+        lastError ||
+        new Error('Échec de la synthèse vocale sur tous les modèles')
+      );
+    } catch (err: any) {
+      const isTimeout =
+        err?.name === 'AbortError' || abortController.signal.aborted;
+      const cleanMessage = isTimeout
+        ? `Timeout dépassé (${TTS_TIMEOUT_MS / 1000}s) — le texte est peut-être trop long pour une seule requête TTS.`
+        : this.extractErrorMessage(err);
+
+      this.logger.error(
+        `❌ [GeminiTTS] ${isTimeout ? 'Timeout' : 'Erreur'} lors de la génération audio : ${cleanMessage}`,
+        isTimeout ? undefined : err.stack,
+      );
+      throw new BadRequestException(`Gemini TTS : ${cleanMessage}`);
+    } finally {
+      clearTimeout(timeoutHandle);
+    }
+  }
+
+  /**
+   * Détecte si une erreur est due à un dépassement de quota (429) ou une indisponibilité (503).
+   */
+  private isQuotaOrUnavailableError(err: any): boolean {
+    const raw = `${err?.message || ''} ${err?.status || ''} ${err?.code || ''}`;
+    return (
+      raw.includes('429') ||
+      raw.includes('RESOURCE_EXHAUSTED') ||
+      raw.includes('Quota exceeded') ||
+      raw.includes('Too Many Requests') ||
+      raw.includes('503') ||
+      raw.includes('UNAVAILABLE')
+    );
+  }
+
+  /**
+   * Extrait un message compréhensible depuis les erreurs brutes de l'API Google GenAI.
+   */
+  private extractErrorMessage(err: any): string {
+    if (!err) return 'Erreur inconnue';
+    const raw = err.message || String(err);
+    try {
+      const parsed =
+        typeof raw === 'string' &&
+        (raw.startsWith('{') || raw.includes('"error"'))
+          ? JSON.parse(raw)
+          : null;
+      const innerMessage = parsed?.error?.message;
+      if (innerMessage) {
+        if (typeof innerMessage === 'string' && innerMessage.startsWith('{')) {
+          const innerParsed = JSON.parse(innerMessage);
+          if (innerParsed?.error?.message) {
+            return this.humanizeApiErrorMessage(
+              innerParsed.error.message,
+              innerParsed.error.code,
+            );
           }
         }
+        return this.humanizeApiErrorMessage(innerMessage, parsed?.error?.code);
       }
+    } catch {
+      // Ignorer l'erreur de parsing JSON
+    }
+    return this.humanizeApiErrorMessage(raw, err.status || err.code);
+  }
 
-      if (pcmChunks.length === 0) {
-        throw new BadRequestException(
-          'Gemini TTS n’a retourné aucun flux audio binaire.',
-        );
-      }
-
-      const totalPcm = Buffer.concat(pcmChunks);
-      const ext = mime.getExtension(detectedMimeType || '');
-
-      let finalAudioBuffer: Buffer;
-      if (ext && ext !== 'bin' && ext !== 'pcm') {
-        // Si le format intègre déjà un conteneur (ex: audio/wav ou audio/mp3)
-        finalAudioBuffer = totalPcm;
-      } else {
-        // Sinon, ajouter l'en-tête WAV standard pour le PCM brut
-        finalAudioBuffer = this.wrapPcmInWav(totalPcm, detectedMimeType);
-      }
-
-      this.logger.log(
-        `✅ [GeminiTTS] Audio généré avec succès : ${(finalAudioBuffer.length / 1024).toFixed(1)} KB (WAV standard)`,
-      );
-
-      return finalAudioBuffer;
-    } catch (err: any) {
-      this.logger.error(
-        `❌ [GeminiTTS] Erreur lors de la génération audio : ${err.message}`,
-        err.stack,
-      );
-      throw new BadRequestException(
-        `Gemini TTS : ${err.message || 'Échec de la synthèse vocale'}`,
+  private humanizeApiErrorMessage(msg: string, code?: number | string): string {
+    const codeStr = String(code || '');
+    if (
+      codeStr === '429' ||
+      msg.includes('429') ||
+      msg.includes('quota') ||
+      msg.includes('RESOURCE_EXHAUSTED')
+    ) {
+      return (
+        'Quota Google Gemini dépassé (429) : la limite quotidienne du plan gratuit (10 requêtes/jour par modèle) a été atteinte sur tous les modèles disponibles. ' +
+        'Pour continuer sans interruption, activez la facturation Pay-as-you-go sur Google AI Studio (https://aistudio.google.com/) ou réessayez demain.'
       );
     }
+    if (
+      codeStr === '503' ||
+      msg.includes('503') ||
+      msg.includes('UNAVAILABLE')
+    ) {
+      return 'Le service Google Gemini TTS est temporairement indisponible (503). Veuillez réessayer dans quelques instants.';
+    }
+    return msg;
   }
 
   /**
@@ -329,7 +426,7 @@ Prononce UNIQUEMENT le texte du conte, sans ajouter de commentaire et sans réci
       bitsPerSample: 16,
     };
 
-    if (format && format.startsWith('L')) {
+    if (format && format.toUpperCase().startsWith('L')) {
       const bits = parseInt(format.slice(1), 10);
       if (!isNaN(bits)) {
         options.bitsPerSample = bits;
