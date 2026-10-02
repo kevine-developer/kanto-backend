@@ -853,6 +853,7 @@ model ModuleLock {
   nameMg     String // Nom malgache
   isLocked   Boolean    @default(false)
   lockReason String? // Ex: "En cours de maintenance", "Bientôt disponible"
+  isVisible  Boolean    @default(true) // Visibilité dans l'application mobile (affiché ou masqué)
   imageUrl   String? // Image / illustration du jeu ou de la catégorie
   bgImageUrl String? // Image d'arrière-plan immersive (Chemin de niveaux / jeu)
   minTier    String?    @default("FREE")

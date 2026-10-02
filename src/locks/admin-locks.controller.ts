@@ -48,6 +48,10 @@ export class CreateModuleDto {
   @IsOptional()
   isLocked?: boolean;
 
+  @IsBoolean()
+  @IsOptional()
+  isVisible?: boolean;
+
   @IsString()
   @IsOptional()
   lockReason?: string;
@@ -81,6 +85,10 @@ export class UpdateLockDto {
   @IsBoolean()
   @IsOptional()
   isLocked?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  isVisible?: boolean;
 
   @IsString()
   @IsOptional()
@@ -142,6 +150,14 @@ export class AdminLocksController {
     @Body() body: UpdateLockDto,
   ) {
     return this.locksService.updateModuleLock(key, body);
+  }
+
+  @Patch(':key/toggle-visibility')
+  async toggleVisibility(
+    @Param('key') key: string,
+    @Body('isVisible') isVisible?: boolean,
+  ) {
+    return this.locksService.toggleVisibility(key, isVisible);
   }
 
   @Delete(':key')

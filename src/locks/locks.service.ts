@@ -51,6 +51,7 @@ export class LocksService implements OnModuleInit {
               bgImageUrl: item.bgImageUrl || null,
               isLocked: item.isLocked,
               lockReason: item.lockReason,
+              isVisible: item.isVisible !== undefined ? item.isVisible : true,
               minTier: item.minTier || 'FREE',
             },
           });
@@ -72,6 +73,7 @@ export class LocksService implements OnModuleInit {
                 imageUrl: item.imageUrl || null,
                 isLocked: item.isLocked,
                 lockReason: item.lockReason,
+                isVisible: item.isVisible !== undefined ? item.isVisible : true,
                 minTier: item.minTier || 'FREE',
               },
             });
@@ -93,11 +95,23 @@ export class LocksService implements OnModuleInit {
   }
 
   /**
-   * Retourne la vue publique / mobile des verrous (format clé -> booléen + message).
+   * Retourne la vue publique / mobile des verrous et de la visibilité.
    * Mis en cache dans Redis.
    */
   async getPublicLocks(): Promise<
-    Record<string, { isLocked: boolean; lockReason?: string }>
+    Record<
+      string,
+      {
+        isLocked: boolean;
+        lockReason?: string;
+        isVisible?: boolean;
+        imageUrl?: string;
+        bgImageUrl?: string;
+        nameFr?: string;
+        nameMg?: string;
+        type?: string;
+      }
+    >
   > {
     try {
       const cached = await this.redisService.get<
@@ -106,6 +120,7 @@ export class LocksService implements OnModuleInit {
           {
             isLocked: boolean;
             lockReason?: string;
+            isVisible?: boolean;
             imageUrl?: string;
             nameFr?: string;
             nameMg?: string;
@@ -131,6 +146,7 @@ export class LocksService implements OnModuleInit {
           bgImageUrl: true,
           isLocked: true,
           lockReason: true,
+          isVisible: true,
         },
       });
 
@@ -139,6 +155,7 @@ export class LocksService implements OnModuleInit {
         {
           isLocked: boolean;
           lockReason?: string;
+          isVisible: boolean;
           imageUrl?: string;
           bgImageUrl?: string;
           nameFr?: string;
@@ -151,6 +168,7 @@ export class LocksService implements OnModuleInit {
         result[r.key] = {
           isLocked: r.isLocked,
           lockReason: r.lockReason || undefined,
+          isVisible: r.isVisible,
           imageUrl: r.imageUrl || undefined,
           bgImageUrl: r.bgImageUrl || undefined,
           nameFr: r.nameFr,
@@ -182,6 +200,7 @@ export class LocksService implements OnModuleInit {
         {
           isLocked: boolean;
           lockReason?: string;
+          isVisible: boolean;
           imageUrl?: string;
           bgImageUrl?: string;
           nameFr?: string;
@@ -194,6 +213,7 @@ export class LocksService implements OnModuleInit {
         fallbackResult[m.key] = {
           isLocked: m.isLocked,
           lockReason: m.lockReason || undefined,
+          isVisible: m.isVisible !== undefined ? m.isVisible : true,
           imageUrl: m.imageUrl || undefined,
           bgImageUrl: m.bgImageUrl || undefined,
           nameFr: m.nameFr,
@@ -221,6 +241,7 @@ export class LocksService implements OnModuleInit {
         bgImageUrl: true,
         isLocked: true,
         lockReason: true,
+        isVisible: true,
       },
     });
 
@@ -233,6 +254,7 @@ export class LocksService implements OnModuleInit {
     return {
       isLocked: r.isLocked,
       lockReason: r.lockReason || undefined,
+      isVisible: r.isVisible,
       imageUrl: r.imageUrl || undefined,
       bgImageUrl: r.bgImageUrl || undefined,
       nameFr: r.nameFr,
@@ -279,6 +301,7 @@ export class LocksService implements OnModuleInit {
         bgImageUrl: item.bgImageUrl || null,
         isLocked: item.isLocked,
         lockReason: item.lockReason || null,
+        isVisible: item.isVisible !== undefined ? item.isVisible : true,
         minTier: item.minTier || 'FREE',
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -329,6 +352,7 @@ export class LocksService implements OnModuleInit {
     bgImageUrl?: string | null;
     isLocked?: boolean;
     lockReason?: string | null;
+    isVisible?: boolean;
     minTier?: string;
   }) {
     if (!data?.key || typeof data.key !== 'string' || !data.key.trim()) {
@@ -362,6 +386,7 @@ export class LocksService implements OnModuleInit {
         bgImageUrl: data.bgImageUrl?.trim() || null,
         isLocked: data.isLocked || false,
         lockReason: data.lockReason?.trim() || null,
+        isVisible: data.isVisible !== undefined ? data.isVisible : true,
         minTier: data.minTier?.trim() || 'FREE',
       },
     });
@@ -374,7 +399,7 @@ export class LocksService implements OnModuleInit {
     }
 
     this.logger.log(
-      `✨ [ModuleLock] Nouveau module créé : ${created.key} (${created.nameFr})`,
+      `✨ [ModuleLock] Nouveau module créé : ${created.key} (${created.nameFr}, isVisible: ${created.isVisible})`,
     );
     return created;
   }
@@ -392,6 +417,7 @@ export class LocksService implements OnModuleInit {
       bgImageUrl?: string | null;
       isLocked?: boolean;
       lockReason?: string | null;
+      isVisible?: boolean;
       minTier?: string;
     },
   ) {
@@ -425,6 +451,8 @@ export class LocksService implements OnModuleInit {
           data.lockReason !== undefined
             ? data.lockReason?.trim() || null
             : existing.lockReason,
+        isVisible:
+          data.isVisible !== undefined ? data.isVisible : existing.isVisible,
         minTier: data.minTier !== undefined ? data.minTier : existing.minTier,
       },
     });
@@ -459,7 +487,41 @@ export class LocksService implements OnModuleInit {
     }
 
     this.logger.log(
-      `[ModuleLock] "${key}" mis à jour : isLocked=${updated.isLocked} (Image: ${updated.imageUrl || 'aucune'}, Fond: ${updated.bgImageUrl || 'aucun'})`,
+      `[ModuleLock] "${key}" mis à jour : isLocked=${updated.isLocked}, isVisible=${updated.isVisible} (Image: ${updated.imageUrl || 'aucune'}, Fond: ${updated.bgImageUrl || 'aucun'})`,
+    );
+
+    return updated;
+  }
+
+  /**
+   * Bascule ou définit explicitement la visibilité d'un module dans l'application mobile.
+   */
+  async toggleVisibility(key: string, isVisible?: boolean) {
+    const existing = await this.prisma.moduleLock.findUnique({
+      where: { key },
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`Module avec la clé "${key}" non trouvé.`);
+    }
+
+    const nextVisibility =
+      isVisible !== undefined ? isVisible : !existing.isVisible;
+
+    const updated = await this.prisma.moduleLock.update({
+      where: { key },
+      data: { isVisible: nextVisibility },
+    });
+
+    // Invalide le cache public Redis
+    try {
+      await this.redisService.del(CACHE_KEY_PUBLIC_LOCKS);
+    } catch {
+      // Ignorer l'erreur d'invalidation Redis
+    }
+
+    this.logger.log(
+      `👁️ [ModuleLock] Visibilité de "${key}" modifiée : isVisible=${updated.isVisible}`,
     );
 
     return updated;

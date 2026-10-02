@@ -7,6 +7,7 @@ export interface DefaultModuleConfig {
   bgImageUrl?: string | null;
   isLocked: boolean;
   lockReason?: string | null;
+  isVisible?: boolean;
   minTier?: string;
 }
 
@@ -39,9 +40,8 @@ export const INITIAL_MODULES: DefaultModuleConfig[] = [
     nameMg: 'Alamino ny fehezanteny',
     imageUrl:
       'https://res.cloudinary.com/dhe585mze/image/upload/v1753433199/Photoroom-20250725_024251458_je18mm.png',
-    isLocked: true,
-    lockReason:
-      "En cours d'optimisation tactile et ergonomique pour la version 2.0.",
+    isLocked: false,
+    lockReason: null,
   },
   {
     key: 'game:missingWordGame',
@@ -50,8 +50,8 @@ export const INITIAL_MODULES: DefaultModuleConfig[] = [
     nameMg: 'Fenohy ny banga',
     imageUrl:
       'https://res.cloudinary.com/dhe585mze/image/upload/v1753433199/Photoroom-20250725_024716464_vp5ivb.png',
-    isLocked: true,
-    lockReason: 'Arrive très prochainement dans la mise à jour version 1.1 !',
+    isLocked: false,
+    lockReason: null,
   },
   {
     key: 'game:riddlesGame',
