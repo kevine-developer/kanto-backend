@@ -27,7 +27,27 @@ export class LocksService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
+    await this.ensureSchemaUpToDate();
     await this.seedInitialModulesIfEmpty();
+  }
+
+  /**
+   * Garantit de façon idempotente que la colonne isVisible existe en base de données.
+   */
+  private async ensureSchemaUpToDate() {
+    try {
+      await this.prisma.$executeRawUnsafe(`
+        ALTER TABLE "module_locks" ADD COLUMN IF NOT EXISTS "isVisible" BOOLEAN NOT NULL DEFAULT true;
+        CREATE INDEX IF NOT EXISTS "module_locks_isVisible_idx" ON "module_locks"("isVisible");
+      `);
+      this.logger.log(
+        '✅ [ModuleLock] Schéma base de données module_locks à jour.',
+      );
+    } catch (err: unknown) {
+      this.logger.debug(
+        `Vérification auto-schéma module_locks : ${err instanceof Error ? err.message : String(err)}`,
+      );
+    }
   }
 
   /**
