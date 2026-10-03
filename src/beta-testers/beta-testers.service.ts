@@ -108,6 +108,23 @@ export class BetaTestersService {
   }
 
   /**
+   * Retourne le nombre public de testeurs inscrits (non rejetés) pour l'affichage dynamique.
+   */
+  async getPublicTesterCount(): Promise<number> {
+    try {
+      return await this.prisma.betaTester.count({
+        where: {
+          status: {
+            not: TesterStatus.REJECTED,
+          },
+        },
+      });
+    } catch {
+      return 0;
+    }
+  }
+
+  /**
    * Liste les testeurs avec filtres et pagination pour le tableau de bord admin.
    */
   async findAll(query: {

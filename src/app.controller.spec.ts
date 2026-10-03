@@ -91,6 +91,18 @@ describe('AppController', () => {
         expect.stringContaining('Bêta-Testeur Kanto'),
       );
     });
+
+    it('should serve beta waitlist script on /beta-waitlist.js', () => {
+      const mockRes = makeMockRes();
+      appController.getBetaWaitlistScript(mockRes as any);
+      expect(mockRes.setHeader).toHaveBeenCalledWith(
+        'Content-Type',
+        'application/javascript; charset=utf-8',
+      );
+      expect(mockRes.send).toHaveBeenCalledWith(
+        expect.stringContaining('waitlist-form'),
+      );
+    });
   });
 
   describe('email verification routes', () => {

@@ -160,9 +160,35 @@ async function bootstrap() {
     ],
   });
 
-  // ─── Sécurité HTTP ────────────────────────────────────────────────────────
-  app.use(helmet());
-  app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
+  // ─── Sécurité HTTP & Content Security Policy (CSP) ──────────────────────────
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: ["'self'", "'unsafe-inline'"],
+          scriptSrcAttr: ["'unsafe-inline'"],
+          styleSrc: [
+            "'self'",
+            "'unsafe-inline'",
+            'https://fonts.googleapis.com',
+          ],
+          fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
+          imgSrc: ["'self'", 'data:', 'https:'],
+          connectSrc: [
+            "'self'",
+            'https://api-kanto.gastsar.fr',
+            'https://app-kanto.gastsar.fr',
+            'https://auth-kanto.gastsar.fr',
+            'https://*.gastsar.fr',
+            'https://*.kanto.mg',
+            'https://*.vercel.app',
+          ],
+        },
+      },
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
+    }),
+  );
 
   // Servir les fichiers audio et médias téléchargeables de manière sécurisée
   app.use(
