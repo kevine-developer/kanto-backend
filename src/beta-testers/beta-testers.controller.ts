@@ -22,7 +22,10 @@ import {
   BulkInviteDto,
 } from './dto/beta-tester.dto.js';
 import { AuthGuard, Roles } from '../auth/index.js';
-import { renderBetaLandingPage } from './views/beta-landing.view.js';
+import {
+  renderBetaLandingPage,
+  renderBetaWaitlistScript,
+} from './views/beta-landing.view.js';
 import { TesterStatus } from '../../generated/prisma/client.js';
 
 @Controller()
@@ -30,27 +33,65 @@ export class BetaTestersController {
   constructor(private readonly betaTestersService: BetaTestersService) {}
 
   /**
+   * Script client servi sur l'origine 'self' pour respecter la directive CSP strict.
+   */
+  @Get(['beta-waitlist.js', 'api/beta-waitlist.js'])
+  getWaitlistScript(@Res() res: Response): void {
+    res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.send(renderBetaWaitlistScript());
+  }
+
+  /**
    * Page de présentation et d'inscription accessible directement via /beta, /rejoindre-beta ou /testers.
    */
   @Get(['beta', 'rejoindre-beta', 'testers'])
-  getBetaLandingPage(@Res() res: Response): void {
+  async getBetaLandingPage(@Res() res: Response): Promise<void> {
+    const testerCount = await this.betaTestersService.getPublicTesterCount();
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.send(renderBetaLandingPage());
+    res.send(renderBetaLandingPage({ testerCount }));
   }
 
   /**
    * Endpoint public d'inscription au programme de test bêta Kanto (Google Play).
+   * Prend en charge les requêtes AJAX JSON et les soumissions natives de formulaire HTML.
    */
   @Post(['api/beta-testers/register', 'beta-testers/register'])
   @HttpCode(HttpStatus.OK)
-  register(@Body() dto: RegisterBetaTesterDto, @Req() req: Request) {
+  async register(
+    @Body() dto: RegisterBetaTesterDto,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
     const ip =
       (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ||
       req.ip ||
       req.socket.remoteAddress;
     const userAgent = req.headers['user-agent'] as string;
 
-    return this.betaTestersService.register(dto, ip, userAgent);
+    const result = await this.betaTestersService.register(dto, ip, userAgent);
+
+    // Si la requête provient d'un formulaire HTML traditionnel (fallback sans JS)
+    const acceptsHtml = req.headers['accept']?.includes('text/html');
+    const isJson =
+      req.is('json') ||
+      req.headers['content-type']?.includes('application/json');
+
+    if (acceptsHtml && !isJson) {
+      const testerCount = await this.betaTestersService.getPublicTesterCount();
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res.send(
+        renderBetaLandingPage({
+          testerCount,
+          initialRegistered: result.success,
+          registeredEmail: dto.email,
+          errorMessage: result.success ? undefined : result.message,
+        }),
+      );
+      return;
+    }
+
+    res.status(HttpStatus.OK).json(result);
   }
 
   // ─── ENDPOINTS ADMINISTRATEUR (PROTÉGÉS) ───────────────────────────────────

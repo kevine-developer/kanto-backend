@@ -17,9 +17,13 @@ import { Throttle } from '@nestjs/throttler';
 import type { Request, Response } from 'express';
 import { AppService } from './app.service.js';
 import { renderEmailVerificationPage } from './auth/views/email-verification.view.js';
-import { renderBetaLandingPage } from './beta-testers/views/beta-landing.view.js';
+import {
+  renderBetaLandingPage,
+  renderBetaWaitlistScript,
+} from './beta-testers/views/beta-landing.view.js';
 import { PrismaService } from './prisma/prisma.service.js';
 import { ResendService } from './integrations/resend/resend.service.js';
+import { BetaTestersService } from './beta-testers/beta-testers.service.js';
 
 @Controller()
 export class AppController {
@@ -29,20 +33,22 @@ export class AppController {
     private readonly appService: AppService,
     @Optional() private readonly prisma?: PrismaService,
     @Optional() private readonly resendService?: ResendService,
+    @Optional() private readonly betaTestersService?: BetaTestersService,
   ) {}
 
   /**
    * Racine de l'API Kanto (GET /)
    * - Réponse discrète JSON pour les clients API / mobiles.
    * - Si un paramètre d'erreur legacy d'auth est passé, redirige vers /confirmation.
+   * - Si l'hôte est app-kanto.gastsar.fr, sert le portail d'accès anticipé avec compteur en direct.
    */
   @Get()
-  getHello(
+  async getHello(
     @Query('error') error?: string,
     @Query('email') email?: string,
     @Res() res?: Response,
     @Req() req?: Request,
-  ): void {
+  ): Promise<void> {
     // Si une redirection d'erreur auth arrive sur la racine (legacy), rediriger vers /confirmation
     if (error) {
       const baseUrl =
@@ -67,8 +73,60 @@ export class AppController {
         host.includes('beta-kanto') ||
         host.startsWith('app.'))
     ) {
+      let testerCount = 0;
+      try {
+        if (this.betaTestersService) {
+          testerCount = await this.betaTestersService.getPublicTesterCount();
+        } else if (this.prisma) {
+          testerCount = await this.prisma.betaTester.count({
+            where: { status: { not: 'REJECTED' } },
+          });
+        }
+      } catch {
+        testerCount = 0;
+      }
+
+      // Interception sécurisée si des query params sont arrivés par GET
+      const queryEmail = (req?.query?.email as string)?.trim()?.toLowerCase();
+      const queryFullName = (req?.query?.fullName as string)?.trim();
+      const queryWebsite = (req?.query?.website as string)?.trim();
+
+      let initialRegistered = false;
+      let registeredEmail = '';
+
+      if (queryEmail && queryEmail.includes('@') && !queryWebsite) {
+        try {
+          if (this.betaTestersService) {
+            const ip =
+              (req?.headers?.['x-forwarded-for'] as string)
+                ?.split(',')[0]
+                ?.trim() ||
+              req?.ip ||
+              req?.socket?.remoteAddress;
+            const userAgent = req?.headers?.['user-agent'] as string;
+            await this.betaTestersService.register(
+              { email: queryEmail, fullName: queryFullName || undefined },
+              ip,
+              userAgent,
+            );
+          }
+          initialRegistered = true;
+          registeredEmail = queryEmail;
+        } catch (e) {
+          this.logger.warn(
+            `[AppController] Erreur auto-inscription query email: ${e}`,
+          );
+        }
+      }
+
       res!.setHeader('Content-Type', 'text/html; charset=utf-8');
-      res!.send(renderBetaLandingPage());
+      res!.send(
+        renderBetaLandingPage({
+          testerCount,
+          initialRegistered,
+          registeredEmail,
+        }),
+      );
       return;
     }
 
@@ -92,6 +150,16 @@ export class AppController {
   @Header('Content-Type', 'text/plain')
   getRobots(): string {
     return 'User-agent: *\nDisallow: /\n';
+  }
+
+  /**
+   * Script client de la waitlist bêta servi en direct
+   */
+  @Get('beta-waitlist.js')
+  getBetaWaitlistScript(@Res() res: Response): void {
+    res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.send(renderBetaWaitlistScript());
   }
 
   /**
