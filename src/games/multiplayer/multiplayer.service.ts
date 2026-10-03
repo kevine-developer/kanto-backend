@@ -1956,9 +1956,7 @@ export class MultiplayerService {
             questionTextFr: q.questionFr || undefined,
             gameType: q.gameType as MultiplayerGameTypeEnum,
             choices:
-              q.gameType === 'TRUE_FALSE'
-                ? ['true', 'false']
-                : q.choices || [],
+              q.gameType === 'TRUE_FALSE' ? ['true', 'false'] : q.choices || [],
           });
         }
       });

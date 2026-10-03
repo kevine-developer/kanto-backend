@@ -40,6 +40,7 @@ import { WelcomeSlidesModule } from './welcome-slides/welcome-slides.module.js';
 import { MarketingBannersModule } from './marketing-banners/marketing-banners.module.js';
 import { PagesModule } from './pages/pages.module.js';
 import { UserQuizModule } from './user-quiz/user-quiz.module.js';
+import { BetaTestersModule } from './beta-testers/beta-testers.module.js';
 
 @Module({
   imports: [
@@ -104,6 +105,7 @@ import { UserQuizModule } from './user-quiz/user-quiz.module.js';
     MarketingBannersModule,
     PagesModule,
     UserQuizModule,
+    BetaTestersModule,
   ],
   controllers: [AppController],
   providers: [

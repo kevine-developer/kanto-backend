@@ -132,10 +132,7 @@ export class UserQuizService {
     currentUserId?: string,
   ) {
     const where: any = {
-      OR: [
-        { visibility: DeckVisibility.PUBLIC },
-        { isPublic: true },
-      ],
+      OR: [{ visibility: DeckVisibility.PUBLIC }, { isPublic: true }],
     };
     if (category && category !== 'all') {
       where.category = category;
@@ -436,17 +433,17 @@ export class UserQuizService {
     const visibility = dto.visibility
       ? dto.visibility
       : dto.isPublic !== undefined
-      ? dto.isPublic
-        ? DeckVisibility.PUBLIC
-        : DeckVisibility.LINK_ONLY
-      : undefined;
+        ? dto.isPublic
+          ? DeckVisibility.PUBLIC
+          : DeckVisibility.LINK_ONLY
+        : undefined;
 
     const isPublic =
       visibility !== undefined
         ? visibility === DeckVisibility.PUBLIC
         : dto.isPublic !== undefined
-        ? dto.isPublic
-        : undefined;
+          ? dto.isPublic
+          : undefined;
 
     return this.prisma.userQuizSet.update({
       where: { id: setId },
