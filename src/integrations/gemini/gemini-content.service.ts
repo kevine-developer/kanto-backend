@@ -124,18 +124,47 @@ export class GeminiContentService {
       `🎨 [GeminiContent] Génération bannière marketing — thème : "${theme}"`,
     );
 
-    const response = await this.ai.models.generateContent({
-      model: this.model,
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      config: {
-        temperature: 0.85,
-        responseMimeType: 'application/json',
-      },
-    });
+    const maxRetries = 3;
+    let lastError: unknown;
 
-    const rawText = response.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const response = await this.ai.models.generateContent({
+          model: this.model,
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          config: {
+            temperature: 0.85,
+            responseMimeType: 'application/json',
+          },
+        });
 
-    return this.parseResponse(rawText, theme);
+        const rawText =
+          response.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+
+        return this.parseResponse(rawText, theme);
+      } catch (err: unknown) {
+        lastError = err;
+        const msg = err instanceof Error ? err.message : String(err);
+        const isTemporary =
+          msg.includes('503') ||
+          msg.includes('UNAVAILABLE') ||
+          msg.includes('high demand') ||
+          msg.includes('429');
+
+        if (isTemporary && attempt < maxRetries) {
+          const delayMs = attempt * 3000;
+          this.logger.warn(
+            `⚠️ [GeminiContent] Tentative ${attempt}/${maxRetries} échouée (surcharge temporaire Gemini : ${msg}). Nouvelle tentative dans ${delayMs}ms...`,
+          );
+          await new Promise((res) => setTimeout(res, delayMs));
+          continue;
+        }
+
+        throw err;
+      }
+    }
+
+    throw lastError;
   }
 
   // ─── Privé ─────────────────────────────────────────────────────────────────

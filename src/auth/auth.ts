@@ -53,6 +53,8 @@ const prodOrigins = [
   'https://kanto.mg',
   'https://auth.kanto.mg',
   'https://api-kanto.gastsar.fr',
+  'https://auth-kanto.gastsar.fr',
+  'https://*.gastsar.fr',
   'https://kanto-admin.vercel.app',
   'https://*.vercel.app',
   'https://*.kanto.mg',
@@ -255,16 +257,15 @@ export const auth = betterAuth({
   databaseHooks: {
     user: {
       create: {
-        before: async (user) => {
-          return {
+        before: (user) =>
+          Promise.resolve({
             data: {
               ...user,
               // Preuve d'audit légale : horodatage systématique de l'acceptation des CGU
               termsAcceptedAt: (user as any).termsAcceptedAt || new Date(),
               termsVersion: (user as any).termsVersion || '1.0',
             },
-          };
-        },
+          }),
       },
     },
   },
