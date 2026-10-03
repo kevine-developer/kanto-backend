@@ -107,14 +107,21 @@ const MAX_ROOMS_PER_SOCKET = 50;
           'https://app.kanto.mg',
           'https://kanto.mg',
           'https://api-kanto.gastsar.fr',
+          'https://auth-kanto.gastsar.fr',
         ];
-        callback(null, defaultProd.includes(origin));
+        const isDefaultAllowed =
+          defaultProd.includes(origin) ||
+          origin.endsWith('.gastsar.fr') ||
+          origin.endsWith('.kanto.mg') ||
+          origin.endsWith('.vercel.app');
+        callback(null, isDefaultAllowed);
         return;
       }
 
       const allowedList = rawOrigins.split(',').map((o) => o.trim());
       const isAllowed =
         allowedList.includes(origin) ||
+        origin.endsWith('.gastsar.fr') ||
         (!isProduction && origin.startsWith('http://localhost'));
       callback(null, isAllowed);
     },
@@ -222,7 +229,7 @@ export class RealtimeGateway
     }
   }
 
-  async handleDisconnect(client: Socket) {
+  handleDisconnect(client: Socket) {
     this.logger.log(`🔌 [Realtime] Client déconnecté : ${client.id}`);
     const duelCode = (client.data as Record<string, unknown>)?.duelCode as
       string | undefined;
@@ -251,57 +258,60 @@ export class RealtimeGateway
         `⏳ [Realtime] Déconnexion socket pour ${userId} sur salon ${duelCode}. Période de grâce de 8s accordée...`,
       );
 
-      const timer = setTimeout(async () => {
-        this.disconnectTimers.delete(timerKey);
-        try {
-          const result = await this.duelService.handlePlayerLeave(
-            userId,
-            duelCode,
-          );
-          if (result?.sessionCancelled) {
-            this.server.to(room).emit(SOCKET_EVENTS.DUEL_SESSION_CANCELLED, {
-              code: duelCode,
-              reason: 'HOST_DISCONNECTED',
-              messageMg:
-                "Nandao ny efitrano ny tompon'ny lalao. Natsahatra ny salon.",
-              messageFr: "L'hôte a quitté le salon. La partie a été fermée.",
-            });
-            // Libère immédiatement tous les sockets abonnés pour éviter les rooms orphelines et fuites mémoire
-            this.server.in(room).socketsLeave(room);
-            this.logger.log(
-              `📢 [DuelGateway] Déconnexion hôte confirmée après grâce -> Clôture automatique de la room ${room}`,
+      const timer = setTimeout(() => {
+        void (async () => {
+          this.disconnectTimers.delete(timerKey);
+          try {
+            const result = await this.duelService.handlePlayerLeave(
+              userId,
+              duelCode,
             );
-          } else if (result?.forfeitVictory) {
-            this.server.to(room).emit(SOCKET_EVENTS.DUEL_GAME_FINISH, {
-              finalLeaderboard: result.finalLeaderboard,
-              winnerId: result.winnerId,
-              forfeit: true,
-              winnerName: result.winnerName,
-              forfeiterName: result.forfeiterName,
-              messageFr: `${result.forfeiterName} a quitté la partie. Victoire par forfait !`,
-              messageMg: `Nandao ny lalao i ${result.forfeiterName}. Azonao ny fandresena !`,
-            });
-            this.logger.log(
-              `🏆 [DuelGateway] Victoire par forfait suite déconnexion confirmée sur ${room}`,
-            );
-          } else if (result?.remainingPlayers) {
-            this.server.to(room).emit(SOCKET_EVENTS.DUEL_ROOM_UPDATE, {
-              session: result.session,
-              players: result.remainingPlayers,
-            });
-            if (result.themeChooserChanged) {
-              this.server
-                .to(room)
-                .emit(SOCKET_EVENTS.DUEL_THEME_CHOOSER_CHANGED, {
-                  themeChooserId: result.newThemeChooserId,
-                });
+            if (result?.sessionCancelled) {
+              this.server.to(room).emit(SOCKET_EVENTS.DUEL_SESSION_CANCELLED, {
+                code: duelCode,
+                reason: 'HOST_DISCONNECTED',
+                messageMg:
+                  "Nandao ny efitrano ny tompon'ny lalao. Natsahatra ny salon.",
+                messageFr: "L'hôte a quitté le salon. La partie a été fermée.",
+              });
+              // Libère immédiatement tous les sockets abonnés pour éviter les rooms orphelines et fuites mémoire
+              this.server.in(room).socketsLeave(room);
+              this.logger.log(
+                `📢 [DuelGateway] Déconnexion hôte confirmée après grâce -> Clôture automatique de la room ${room}`,
+              );
+            } else if (result?.forfeitVictory) {
+              this.server.to(room).emit(SOCKET_EVENTS.DUEL_GAME_FINISH, {
+                finalLeaderboard: result.finalLeaderboard,
+                winnerId: result.winnerId,
+                forfeit: true,
+                winnerName: result.winnerName,
+                forfeiterName: result.forfeiterName,
+                messageFr: `${result.forfeiterName} a quitté la partie. Victoire par forfait !`,
+                messageMg: `Nandao ny lalao i ${result.forfeiterName}. Azonao ny fandresena !`,
+              });
+              this.logger.log(
+                `🏆 [DuelGateway] Victoire par forfait suite déconnexion confirmée sur ${room}`,
+              );
+            } else if (result?.remainingPlayers) {
+              this.server.to(room).emit(SOCKET_EVENTS.DUEL_ROOM_UPDATE, {
+                session: result.session,
+                players: result.remainingPlayers,
+              });
+              if (result.themeChooserChanged) {
+                this.server
+                  .to(room)
+                  .emit(SOCKET_EVENTS.DUEL_THEME_CHOOSER_CHANGED, {
+                    themeChooserId: result.newThemeChooserId,
+                  });
+              }
             }
+          } catch (err: unknown) {
+            const msg = err instanceof Error ? err.message : String(err);
+            this.logger.warn(
+              `Erreur lors du nettoyage différé de déconnexion duel pour ${client.id} : ${msg}`,
+            );
           }
-        } catch (err: unknown) {
-          this.logger.warn(
-            `Erreur lors du nettoyage différé de déconnexion duel pour ${client.id} : ${err}`,
-          );
-        }
+        })();
       }, 8000);
 
       this.disconnectTimers.set(timerKey, timer);
@@ -635,7 +645,7 @@ export class RealtimeGateway
    * Réactions en direct Fihavanana (🔥, ⚡, 🇲🇬, 👏, 🎯) avec limitation de débit (anti-flood).
    */
   @SubscribeMessage(SOCKET_EVENTS.DUEL_REACTION)
-  async handleDuelReaction(
+  handleDuelReaction(
     @ConnectedSocket() client: Socket,
     @MessageBody()
     data: {
@@ -819,37 +829,45 @@ export class RealtimeGateway
       );
 
       // Diffuser la première question synchronisée après 3 secondes
-      setTimeout(async () => {
-        try {
-          this.server.to(room).emit(SOCKET_EVENTS.DUEL_ROUND_START, {
-            session: result.session,
-            currentQuestion: result.currentQuestion,
-            currentQuestionIndex: result.currentQuestionIndex,
-            totalQuestions: result.totalQuestions,
-            roundTimeLimit: result.roundTimeLimit,
-          });
+      setTimeout(() => {
+        void (async () => {
+          try {
+            this.server.to(room).emit(SOCKET_EVENTS.DUEL_ROUND_START, {
+              session: result.session,
+              currentQuestion: result.currentQuestion,
+              currentQuestionIndex: result.currentQuestionIndex,
+              totalQuestions: result.totalQuestions,
+              roundTimeLimit: result.roundTimeLimit,
+            });
 
-          this.logger.log(
-            `🚀 [DuelGateway] Début de la question 1 sur ${room} !`,
-          );
-
-          // Si l'hôte est en mode régie animateur / spectateur, lui transmettre la réponse secrète
-          const hostIsSpectator = await this.duelService.isHostSpectator(data.code);
-          if (hostIsSpectator) {
-            const hostDetails = await this.duelService.getHostQuestionDetails(
-              data.code,
-              result.currentQuestionIndex,
+            this.logger.log(
+              `🚀 [DuelGateway] Début de la question 1 sur ${room} !`,
             );
-            if (hostDetails) {
-              client.emit(SOCKET_EVENTS.DUEL_HOST_DETAILS, {
-                questionIndex: result.currentQuestionIndex,
-                ...hostDetails,
-              });
+
+            // Si l'hôte est en mode régie animateur / spectateur, lui transmettre la réponse secrète
+            const hostIsSpectator = await this.duelService.isHostSpectator(
+              data.code,
+            );
+            if (hostIsSpectator) {
+              const hostDetails = await this.duelService.getHostQuestionDetails(
+                data.code,
+                result.currentQuestionIndex,
+              );
+              if (hostDetails) {
+                client.emit(SOCKET_EVENTS.DUEL_HOST_DETAILS, {
+                  questionIndex: result.currentQuestionIndex,
+                  ...hostDetails,
+                });
+              }
             }
+          } catch (timerErr: unknown) {
+            const timerErrMsg =
+              timerErr instanceof Error ? timerErr.message : String(timerErr);
+            this.logger.error(
+              `Erreur round start post-countdown : ${timerErrMsg}`,
+            );
           }
-        } catch (timerErr) {
-          this.logger.error(`Erreur round start post-countdown : ${timerErr}`);
-        }
+        })();
       }, 3000);
 
       return { success: true, ...result };

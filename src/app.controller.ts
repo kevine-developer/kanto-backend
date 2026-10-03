@@ -58,6 +58,22 @@ export class AppController {
   }
 
   /**
+   * Réponse 204 No Content pour /favicon.ico (évite les avertissements 404 dans les logs)
+   */
+  @Get('favicon.ico')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  getFavicon(): void {}
+
+  /**
+   * Fichier robots.txt interdisant l'indexation directe des routes API par les robots
+   */
+  @Get('robots.txt')
+  @Header('Content-Type', 'text/plain')
+  getRobots(): string {
+    return 'User-agent: *\nDisallow: /\n';
+  }
+
+  /**
    * Redirection automatique pour les liens de réinitialisation de mot de passe (reset-password)
    * Redirige immédiatement le navigateur vers l'interface d'administration kanto-admin.
    */
