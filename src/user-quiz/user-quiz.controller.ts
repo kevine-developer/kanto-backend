@@ -9,7 +9,12 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard, OptionalAuth, Session, type UserSession } from '../auth/index.js';
+import {
+  AuthGuard,
+  OptionalAuth,
+  Session,
+  type UserSession,
+} from '../auth/index.js';
 import { UserQuizService } from './user-quiz.service.js';
 import {
   CreateUserQuestionDto,

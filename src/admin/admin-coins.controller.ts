@@ -175,7 +175,8 @@ export class AdminCoinsController {
           ? body.ugcCooldownHours
           : currentConfig.ugcCooldownHours,
       ugcMaxCoinsPerDeck:
-        typeof body.ugcMaxCoinsPerDeck === 'number' && body.ugcMaxCoinsPerDeck >= 0
+        typeof body.ugcMaxCoinsPerDeck === 'number' &&
+        body.ugcMaxCoinsPerDeck >= 0
           ? body.ugcMaxCoinsPerDeck
           : currentConfig.ugcMaxCoinsPerDeck,
     };

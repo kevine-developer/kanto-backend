@@ -144,4 +144,3 @@ export class VerifyDeckDto {
   @IsBoolean()
   verified!: boolean;
 }
-

@@ -66,6 +66,31 @@ describe('AppController', () => {
         expect.stringContaining('email=test%40kanto.mg'),
       );
     });
+
+    it('should serve beta landing page when host is app-kanto.gastsar.fr', () => {
+      const mockRes = makeMockRes();
+      const mockReq = {
+        headers: {
+          host: 'app-kanto.gastsar.fr',
+        },
+      };
+      appController.getHello(
+        undefined,
+        undefined,
+        mockRes as any,
+        mockReq as any,
+      );
+      expect(mockRes.setHeader).toHaveBeenCalledWith(
+        'Content-Type',
+        'text/html; charset=utf-8',
+      );
+      expect(mockRes.send).toHaveBeenCalledWith(
+        expect.stringContaining('<!DOCTYPE html>'),
+      );
+      expect(mockRes.send).toHaveBeenCalledWith(
+        expect.stringContaining('Bêta-Testeur Kanto'),
+      );
+    });
   });
 
   describe('email verification routes', () => {

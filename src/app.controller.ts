@@ -38,10 +38,10 @@ export class AppController {
    */
   @Get()
   getHello(
-    @Req() req: Request,
     @Query('error') error?: string,
     @Query('email') email?: string,
     @Res() res?: Response,
+    @Req() req?: Request,
   ): void {
     // Si une redirection d'erreur auth arrive sur la racine (legacy), rediriger vers /confirmation
     if (error) {
@@ -56,15 +56,16 @@ export class AppController {
 
     // Si la requête provient du domaine app-kanto.gastsar.fr ou d'un hôte lié aux tests, servir la landing page
     const host = (
-      (req.headers['x-forwarded-host'] as string) ||
-      req.headers.host ||
+      (req?.headers?.['x-forwarded-host'] as string) ||
+      req?.headers?.host ||
       ''
     ).toLowerCase();
 
     if (
-      host.includes('app-kanto') ||
-      host.includes('beta-kanto') ||
-      host.startsWith('app.')
+      host &&
+      (host.includes('app-kanto') ||
+        host.includes('beta-kanto') ||
+        host.startsWith('app.'))
     ) {
       res!.setHeader('Content-Type', 'text/html; charset=utf-8');
       res!.send(renderBetaLandingPage());
