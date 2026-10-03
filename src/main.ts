@@ -50,6 +50,10 @@ async function bootstrap() {
     logger: isProduction ? ['error', 'warn'] : ['error', 'warn', 'log'],
   });
 
+  // Faire confiance au reverse proxy (Nginx, Traefik) pour les headers X-Forwarded-Proto (HTTPS) et cookies
+  const expressApp = app.getHttpAdapter().getInstance();
+  expressApp.set('trust proxy', 1);
+
   app.useGlobalInterceptors(
     new LoggingInterceptor(),
     new TrafficRegulationInterceptor(),
