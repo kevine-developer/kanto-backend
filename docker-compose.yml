@@ -45,8 +45,8 @@ services:
           memory: 512M
     labels:
       - "traefik.enable=true"
-      # Route HTTPS vers le domaine de Kanto (configurable dans .env, accepte plusieurs hôtes via TRAEFIK_ROUTER_RULE)
-      - "traefik.http.routers.kanto-api.rule=${TRAEFIK_ROUTER_RULE:-Host(`${KANTO_DOMAIN:-api-kanto.gastsar.fr}`)}"
+      # Route HTTPS vers les domaines de Kanto (API, app-kanto et rétrocompatibilité CGU auth-kanto sans rebuild mobile)
+      - "traefik.http.routers.kanto-api.rule=${TRAEFIK_ROUTER_RULE:-Host(`${KANTO_DOMAIN:-api-kanto.gastsar.fr}`) || Host(`app-kanto.gastsar.fr`) || Host(`auth-kanto.gastsar.fr`)}"
       - "traefik.http.routers.kanto-api.entrypoints=websecure"
       - "traefik.http.routers.kanto-api.tls.certresolver=mytlschallenge"
       # Port interne de l'application NestJS
