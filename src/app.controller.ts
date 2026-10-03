@@ -95,6 +95,21 @@ export class AppController {
   }
 
   /**
+   * Redirection conviviale pour les liens légaux et CGU vers /pages/terms et /pages/privacy
+   */
+  @Get('cgu')
+  @Get('terms')
+  handleTermsRedirect(@Res() res: Response): void {
+    res.redirect(301, '/pages/terms');
+  }
+
+  @Get('confidentialite')
+  @Get('privacy')
+  handlePrivacyRedirect(@Res() res: Response): void {
+    res.redirect(301, '/pages/privacy');
+  }
+
+  /**
    * Redirection automatique pour les liens de réinitialisation de mot de passe (reset-password)
    * Redirige immédiatement le navigateur vers l'interface d'administration kanto-admin.
    */

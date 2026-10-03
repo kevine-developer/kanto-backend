@@ -207,4 +207,18 @@ describe('AppController', () => {
       );
     });
   });
+
+  describe('legal routes redirects', () => {
+    it('should redirect /cgu and /terms to /pages/terms with 301', () => {
+      const mockRes = makeMockRes();
+      appController.handleTermsRedirect(mockRes as any);
+      expect(mockRes.redirect).toHaveBeenCalledWith(301, '/pages/terms');
+    });
+
+    it('should redirect /confidentialite and /privacy to /pages/privacy with 301', () => {
+      const mockRes = makeMockRes();
+      appController.handlePrivacyRedirect(mockRes as any);
+      expect(mockRes.redirect).toHaveBeenCalledWith(301, '/pages/privacy');
+    });
+  });
 });
