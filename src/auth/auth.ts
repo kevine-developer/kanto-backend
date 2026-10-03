@@ -169,6 +169,11 @@ export const auth = betterAuth({
   },
   account: {
     modelName: 'Account',
+    // Indispensable pour l'authentification mobile Expo / React Native :
+    // WebBrowser (Chrome Custom Tabs / Safari) ne partage pas les cookies de session avec le fetch natif.
+    // L'intégrité du state reste entièrement sécurisée et vérifiée via la table de verification en base de données.
+    skipStateCookieCheck: true,
+    storeStateStrategy: 'database',
     accountLinking: {
       // Permet la liaison automatique d'un compte Google à un compte email/mdp existant
       // si l'email correspond — même si l'email local n'est pas encore vérifié.
