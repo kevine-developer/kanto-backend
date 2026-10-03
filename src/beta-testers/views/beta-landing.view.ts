@@ -1,7 +1,12 @@
 /**
- * Kanto — Page web d'inscription et d'accès anticipé au test fermé Google Play.
+ * Kanto — Page web d'accès anticipé et d'inscription au test fermé Google Play.
  * Accessible sur app-kanto.gastsar.fr ou /beta.
- * Design minimaliste, épuré, ultra-rapide et responsive.
+ *
+ * Design System Kanto officiel :
+ * - Teinte Tanimbary (#6B9E61 / #4A6741) & Ocre Ambre (#E0A24A)
+ * - Fond minéral charbon chaud (#0D0D0B) & surfaces feutrées (#141412)
+ * - Bordures rigoureuses de 8px (règle RADIUS Kanto : pas d'arrondis excessifs)
+ * - Zéro emoji, esthétique sobre, typographique et artisanale
  */
 
 export function renderBetaLandingPage(): string {
@@ -12,42 +17,55 @@ export function renderBetaLandingPage(): string {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Kanto • Accès Anticipé Android | Programme Bêta Privé</title>
-  <meta name="description" content="Rejoignez le programme de test fermé Google Play de Kanto. Contes audio, ohabolana, jeux et culture malgache en avant-première sur Android.">
-  <meta name="theme-color" content="#070a12">
+  <title>Bêta-Testeur Kanto • Accès Anticipé Android</title>
+  <meta name="description" content="Programme de test fermé de l'application Kanto sur Google Play. Découvrez les contes, proverbes et le patrimoine malgache en avant-première.">
+  <meta name="theme-color" content="#0D0D0B">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Bêta-Testeur Kanto • Accès Anticipé Android">
-  <meta property="og:description" content="Rejoignez la phase de test fermée sur Google Play. Découvrez Kanto en avant-première.">
+  <meta property="og:description" content="Accès anticipé fermé sur le Google Play Store pour l'application Kanto.">
   <meta property="og:type" content="website">
 
   <!-- Favicon -->
   <link rel="icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg-dark: #070a12;
-      --bg-card: rgba(15, 22, 36, 0.72);
-      --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-focus: #10b981;
+      /* Palette officielle Kanto Tanimbary (Dark Mode) */
+      --color-bg: #0D0D0B;
+      --color-surface: #141412;
+      --color-surface-input: #1C1C1A;
+      --color-surface-hover: #1E1E1B;
       
-      --color-primary: #10b981;
-      --color-primary-hover: #059669;
-      --color-primary-glow: rgba(16, 185, 129, 0.22);
+      --color-border: #242420;
+      --color-border-subtle: #1B211B;
+      --color-divider: #282824;
       
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-subtle: #64748b;
+      --color-tanimbary: #6B9E61;
+      --color-tanimbary-dark: #4A6741;
+      --color-tanimbary-glow: rgba(107, 158, 97, 0.15);
       
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
-      --radius-full: 9999px;
+      --color-ochre: #E0A24A;
+      --color-ochre-bg: #241B10;
+      --color-ochre-border: #47341D;
       
-      --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --color-text: #F0F0EC;
+      --color-text-secondary: #9C9C98;
+      --color-text-muted: #707070;
+      
+      --color-error: #E75A4D;
+      --color-error-bg: #2C1715;
+      --color-error-border: #522522;
+      
+      /* Système de rayon Kanto strict : 8px max pour cartes et boutons */
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      
+      --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     * {
@@ -57,40 +75,37 @@ export function renderBetaLandingPage(): string {
     }
 
     body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      font-family: var(--font);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-family);
       line-height: 1.5;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      position: relative;
-      overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      position: relative;
     }
 
-    /* Halo lumineux discret et apaisant */
+    /* Grille de fond feutrée très subtile */
     body::before {
       content: "";
       position: fixed;
-      top: -160px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 720px;
-      height: 480px;
-      background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(14, 165, 233, 0.04) 40%, transparent 70%);
-      filter: blur(90px);
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 380px;
+      background: radial-gradient(ellipse 60% 180px at 50% -20px, rgba(107, 158, 97, 0.08) 0%, transparent 80%);
       pointer-events: none;
       z-index: 0;
     }
 
-    /* Barre supérieure minimaliste */
+    /* En-tête sobre et fidèle à l'application */
     header {
       width: 100%;
-      max-width: 680px;
+      max-width: 580px;
       margin: 0 auto;
-      padding: 24px 20px 0 20px;
+      padding: 32px 24px 0 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -105,62 +120,58 @@ export function renderBetaLandingPage(): string {
       text-decoration: none;
     }
 
-    .brand-logo {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, #10b981 0%, #047857 100%);
-      border-radius: var(--radius-sm);
+    /* Emblème géométrique Tanimbary carré à coins 8px (pas circulaire) */
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
-      font-weight: 800;
-      font-size: 16px;
-      box-shadow: 0 4px 12px var(--color-primary-glow);
+      color: var(--color-tanimbary);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
     }
 
-    .brand-name {
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      color: #ffffff;
+    .brand-wordmark {
+      font-size: 13px;
+      letter-spacing: 2px;
       text-transform: uppercase;
+      font-weight: 700;
+      color: var(--color-tanimbary);
     }
 
-    .beta-badge {
+    .status-pill {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 5px 12px;
-      background: rgba(16, 185, 129, 0.08);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      border-radius: var(--radius-full);
+      padding: 4px 10px;
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
       font-size: 11px;
       font-weight: 600;
-      color: #34d399;
+      color: var(--color-text-secondary);
+      letter-spacing: 0.3px;
     }
 
-    .beta-dot {
+    .status-indicator {
       width: 6px;
       height: 6px;
-      background-color: var(--color-primary);
       border-radius: 50%;
-      box-shadow: 0 0 6px var(--color-primary);
-      animation: pulse 2s infinite;
+      background-color: var(--color-tanimbary);
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
-    }
-
-    /* Conteneur principal centré */
+    /* Conteneur principal */
     main {
       flex: 1;
       width: 100%;
-      max-width: 540px;
+      max-width: 460px;
       margin: 0 auto;
-      padding: 24px 20px 40px 20px;
+      padding: 40px 24px 32px 24px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -168,419 +179,426 @@ export function renderBetaLandingPage(): string {
       z-index: 10;
     }
 
-    .hero-text {
-      text-align: center;
+    /* Typographie d'accroche */
+    .intro {
       margin-bottom: 24px;
     }
 
-    .pill-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: var(--radius-full);
-      font-size: 12px;
+    .section-eyebrow {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
       font-weight: 600;
-      color: #cbd5e1;
-      margin-bottom: 14px;
+      color: var(--color-ochre);
+      margin-bottom: 8px;
     }
 
     h1 {
-      font-size: 32px;
-      font-weight: 800;
-      line-height: 1.25;
+      font-size: 26px;
+      font-weight: 700;
       letter-spacing: -0.5px;
-      color: #ffffff;
-      margin-bottom: 10px;
+      line-height: 1.25;
+      color: var(--color-text);
+      margin-bottom: 8px;
     }
 
-    h1 span.gradient {
-      background: linear-gradient(135deg, #10b981 0%, #38bdf8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero-subtitle {
+    .intro-description {
       font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      max-width: 440px;
-      margin: 0 auto;
+      color: var(--color-text-secondary);
+      line-height: 1.55;
     }
 
-    /* Carte de formulaire épurée */
-    .form-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 28px 24px;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+    /* Carte de formulaire Kanto */
+    .card {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 24px;
       position: relative;
     }
 
-    .form-group {
+    /* Bannière d'erreur */
+    .error-banner {
+      display: none;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 10px 12px;
+      background-color: var(--color-error-bg);
+      border: 1px solid var(--color-error-border);
+      border-radius: var(--radius-md);
+      font-size: 12.5px;
+      color: var(--color-error);
+      margin-bottom: 18px;
+      line-height: 1.45;
+    }
+
+    .error-banner svg {
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .field {
       margin-bottom: 16px;
     }
 
-    .form-label {
+    .field-label {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 600;
-      color: #e2e8f0;
+      color: var(--color-text-secondary);
       margin-bottom: 6px;
     }
 
-    .form-label .badge-opt {
-      font-size: 10.5px;
-      color: var(--text-subtle);
-      font-weight: 500;
+    .field-label .hint {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--color-text-muted);
     }
 
-    .form-label .badge-req {
-      font-size: 10.5px;
-      color: #34d399;
+    .field-label .required {
+      font-size: 11px;
       font-weight: 600;
+      color: var(--color-tanimbary);
     }
 
-    .form-input {
+    .field-input {
       width: 100%;
-      background: rgba(7, 10, 18, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      height: 44px;
+      background-color: var(--color-surface-input);
+      border: 1px solid var(--color-divider);
       border-radius: var(--radius-md);
-      padding: 12px 14px;
+      padding: 0 12px;
       font-size: 14px;
-      color: #ffffff;
+      color: var(--color-text);
       font-family: inherit;
       outline: none;
-      transition: all 0.2s ease;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .form-input:focus {
-      border-color: var(--border-focus);
-      background: rgba(7, 10, 18, 0.95);
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
-    }
-
-    .form-input::placeholder {
-      color: #475569;
+    .field-input::placeholder {
+      color: var(--color-text-muted);
       font-size: 13.5px;
     }
 
-    .form-helper {
-      font-size: 11px;
-      color: #64748b;
+    .field-input:focus {
+      border-color: var(--color-tanimbary);
+      box-shadow: 0 0 0 3px var(--color-tanimbary-glow);
+    }
+
+    .field-note {
+      font-size: 11.5px;
+      color: var(--color-text-muted);
       margin-top: 5px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      line-height: 1.4;
     }
 
-    .form-helper.google {
-      color: #94a3b8;
-    }
-
-    /* Champ piège anti-spam caché */
-    .honeypot {
+    /* Champ piège honeypot invisible */
+    .hp-trap {
       display: none !important;
       position: absolute;
       left: -9999px;
     }
 
-    /* Bouton d'action */
+    /* Bouton principal Kanto */
     .btn-submit {
       width: 100%;
-      margin-top: 10px;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: #ffffff;
+      height: 46px;
+      margin-top: 8px;
+      background-color: var(--color-tanimbary);
+      color: #FFFFFF;
       border: none;
       border-radius: var(--radius-md);
-      padding: 13px 20px;
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 600;
       font-family: inherit;
+      letter-spacing: 0.1px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);
+      transition: background-color 0.15s ease, opacity 0.15s ease;
     }
 
     .btn-submit:hover:not(:disabled) {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
-      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+      background-color: #5B8852;
     }
 
     .btn-submit:active:not(:disabled) {
-      transform: translateY(0);
+      background-color: var(--color-tanimbary-dark);
     }
 
     .btn-submit:disabled {
-      opacity: 0.65;
+      opacity: 0.6;
       cursor: not-allowed;
     }
 
-    /* Messages d'alerte */
-    .alert-banner {
+    .btn-submit svg {
+      transition: transform 0.15s ease;
+    }
+
+    .btn-submit:hover:not(:disabled) svg {
+      transform: translateX(2px);
+    }
+
+    /* Écran de confirmation sobre */
+    .confirmation {
       display: none;
-      padding: 10px 14px;
+      padding: 8px 0;
+    }
+
+    .confirmation-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .confirmation-icon {
+      width: 32px;
+      height: 32px;
       border-radius: var(--radius-md);
-      font-size: 12.5px;
-      margin-bottom: 16px;
-      line-height: 1.4;
-    }
-
-    .alert-error {
-      background: rgba(239, 68, 68, 0.12);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #fca5a5;
-    }
-
-    /* État de succès */
-    .success-card {
-      display: none;
-      text-align: center;
-      padding: 16px 8px;
-    }
-
-    .success-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      color: #34d399;
+      background-color: rgba(107, 158, 97, 0.12);
+      border: 1px solid rgba(107, 158, 97, 0.28);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 16px auto;
+      color: var(--color-tanimbary);
+      flex-shrink: 0;
     }
 
-    .success-title {
-      font-size: 18px;
+    .confirmation-title {
+      font-size: 16px;
       font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 8px;
+      color: var(--color-text);
     }
 
-    .success-text {
+    .confirmation-body {
       font-size: 13.5px;
-      color: #cbd5e1;
+      color: var(--color-text-secondary);
       line-height: 1.6;
     }
 
-    /* Réassurance discrète */
-    .guarantees {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 16px;
-      margin-top: 18px;
-      font-size: 11.5px;
-      color: var(--text-subtle);
+    .confirmation-meta {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--color-border);
+      font-size: 12px;
+      color: var(--color-text-muted);
     }
 
-    .guarantee-item {
+    /* Informations de réassurance sobres */
+    .reassurance {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 4px;
+      font-size: 11.5px;
+      color: var(--color-text-muted);
+    }
+
+    .reassurance span {
       display: inline-flex;
       align-items: center;
       gap: 5px;
     }
 
-    /* Pied de page épuré */
+    /* Pied de page Kanto */
     footer {
       width: 100%;
-      max-width: 680px;
+      max-width: 580px;
       margin: 0 auto;
-      padding: 16px 20px 24px 20px;
-      text-align: center;
+      padding: 20px 24px 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
       position: relative;
       z-index: 10;
     }
 
-    .footer-links {
+    .footer-nav {
       display: flex;
-      justify-content: center;
-      align-items: center;
       gap: 16px;
-      margin-bottom: 8px;
       flex-wrap: wrap;
+      justify-content: center;
     }
 
-    .footer-links a {
-      color: #64748b;
+    .footer-nav a {
+      color: var(--color-text-muted);
       font-size: 12px;
       text-decoration: none;
       transition: color 0.15s ease;
     }
 
-    .footer-links a:hover {
-      color: #cbd5e1;
+    .footer-nav a:hover {
+      color: var(--color-text-secondary);
     }
 
     .footer-copy {
       font-size: 11px;
-      color: #475569;
+      color: #4A4A46;
     }
 
     @media (max-width: 480px) {
-      h1 { font-size: 26px; }
-      .form-card { padding: 22px 18px; }
-      .guarantees { flex-direction: column; gap: 6px; }
+      header { padding-top: 20px; }
+      main { padding: 24px 16px; }
+      .card { padding: 20px 16px; }
+      h1 { font-size: 23px; }
+      .reassurance { flex-direction: column; gap: 6px; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
 
-  <!-- En-tête sobre -->
+  <!-- En-tête fidèle au wordmark Kanto -->
   <header>
-    <a href="/" class="brand" aria-label="Accueil Kanto">
-      <div class="brand-logo">K</div>
-      <span class="brand-name">Kanto</span>
+    <a href="/" class="brand" aria-label="Kanto">
+      <div class="brand-mark">K</div>
+      <span class="brand-wordmark">Kanto</span>
     </a>
-    <div class="beta-badge">
-      <span class="beta-dot"></span>
+    <div class="status-pill">
+      <span class="status-indicator"></span>
       <span>Google Play Bêta</span>
     </div>
   </header>
 
-  <!-- Contenu centré -->
+  <!-- Conteneur centré -->
   <main>
-    <div class="hero-text">
-      <div class="pill-tag">✨ Programme de Closed Testing</div>
-      <h1>L'accès anticipé <span class="gradient">Kanto</span></h1>
-      <p class="hero-subtitle">
-        Rejoignez le cercle fermé des testeurs Android. Découvrez nos contes malgaches, duels de proverbes et sagesses en avant-première.
+    <div class="intro">
+      <span class="section-eyebrow">Accès Anticipé</span>
+      <h1>Programme de test fermé</h1>
+      <p class="intro-description">
+        Inscrivez votre compte Google Play pour recevoir votre lien d'installation et découvrir Kanto sur Android en avant-première.
       </p>
     </div>
 
-    <div class="form-card">
-      <div id="alert-box" class="alert-banner"></div>
+    <div class="card">
+      <div id="error-banner" class="error-banner">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span id="error-text"></span>
+      </div>
 
-      <!-- Formulaire minimaliste -->
-      <form id="beta-form" onsubmit="handleBetaSubmit(event)">
+      <!-- Formulaire sobre sans surcharge -->
+      <form id="waitlist-form" onsubmit="handleWaitlistSubmit(event)">
         <!-- Honeypot anti-spam -->
-        <div class="honeypot">
+        <div class="hp-trap">
           <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
         </div>
 
-        <!-- Prénom ou pseudo -->
-        <div class="form-group">
-          <label class="form-label" for="fullName">
-            <span>Votre prénom ou pseudo</span>
-            <span class="badge-opt">Facultatif</span>
+        <div class="field">
+          <label class="field-label" for="fullName">
+            <span>Prénom ou pseudo</span>
+            <span class="hint">Facultatif</span>
           </label>
           <input 
             type="text" 
             id="fullName" 
             name="fullName" 
-            class="form-input" 
+            class="field-input" 
             placeholder="ex: Rova Razafy" 
             maxlength="100"
           >
         </div>
 
-        <!-- Email Google obligatoire -->
-        <div class="form-group">
-          <label class="form-label" for="email">
-            <span>Adresse Gmail (Google Play)</span>
-            <span class="badge-req">Requis *</span>
+        <div class="field">
+          <label class="field-label" for="email">
+            <span>Adresse Gmail</span>
+            <span class="required">Requis</span>
           </label>
           <input 
             type="email" 
             id="email" 
             name="email" 
-            class="form-input" 
-            placeholder="votre.compte@gmail.com" 
+            class="field-input" 
+            placeholder="votre.adresse@gmail.com" 
             required 
             autocomplete="email"
           >
-          <div class="form-helper google">
-            <span>ℹ️ L'adresse reliée au Google Play Store de votre smartphone Android.</span>
-          </div>
+          <p class="field-note">
+            Utilisez l'adresse associée à votre profil Google Play Store sur Android.
+          </p>
         </div>
 
         <button type="submit" class="btn-submit" id="btn-submit">
-          <span>Demander mon accès</span>
-          <span>→</span>
+          <span>Demander l'accès</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
         </button>
       </form>
 
       <!-- Écran de confirmation épuré -->
-      <div class="success-card" id="success-box">
-        <div class="success-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
+      <div class="confirmation" id="confirmation-view">
+        <div class="confirmation-header">
+          <div class="confirmation-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <h2 class="confirmation-title">Candidature enregistrée</h2>
         </div>
-        <h3 class="success-title">Misaotra betsaka ! 🎉</h3>
-        <p class="success-text" id="success-message">
-          Votre candidature a été enregistrée. Surveillez votre boîte Gmail : un accusé de réception vient d'être envoyé et vous recevrez votre invitation officielle dès l'activation sur la Google Play Console.
+        <p class="confirmation-body" id="confirmation-message">
+          Votre compte a bien été inscrit sur la liste des testeurs. Vous recevrez un e-mail officiel dès l'activation de votre accès sur la Google Play Console.
+        </p>
+        <p class="confirmation-meta">
+          Vérifiez vos e-mails pour confirmer la bonne réception de l'accusé d'inscription.
         </p>
       </div>
     </div>
 
-    <!-- Éléments de réassurance -->
-    <div class="guarantees">
-      <div class="guarantee-item">
-        <span>🔒</span>
-        <span>Accès sécurisé et gratuit</span>
-      </div>
-      <div class="guarantee-item">
-        <span>⚡</span>
-        <span>Installation via Google Play</span>
-      </div>
-      <div class="guarantee-item">
-        <span>✉️</span>
-        <span>Zéro spam</span>
-      </div>
+    <!-- Réassurance discrète -->
+    <div class="reassurance">
+      <span>Closed Testing Google Play</span>
+      <span>Données strictement confidentielles</span>
     </div>
   </main>
 
   <!-- Pied de page avec liens CGU et Confidentialité -->
   <footer>
-    <div class="footer-links">
-      <a href="https://app-kanto.gastsar.fr/pages/terms">Conditions d'utilisation (CGU)</a>
-      <a href="https://app-kanto.gastsar.fr/pages/privacy">Confidentialité</a>
+    <div class="footer-nav">
+      <a href="https://auth-kanto.gastsar.fr/pages/terms">Conditions d'utilisation (CGU)</a>
+      <a href="https://auth-kanto.gastsar.fr/pages/privacy">Confidentialité</a>
       <a href="mailto:contact@kanto.mg">Contact</a>
     </div>
     <div class="footer-copy">
-      © ${currentYear} Kanto • Lova &amp; Kolontsaina Malagasy. Tous droits réservés.
+      © ${currentYear} Kanto • Lova, Kolontsaina &amp; Tantara Malagasy
     </div>
   </footer>
 
-  <!-- Script d'envoi AJAX épuré -->
   <script>
-    async function handleBetaSubmit(event) {
+    async function handleWaitlistSubmit(event) {
       event.preventDefault();
 
       const btn = document.getElementById('btn-submit');
-      const alertBox = document.getElementById('alert-box');
-      const form = document.getElementById('beta-form');
-      const successBox = document.getElementById('success-box');
-      const successMessage = document.getElementById('success-message');
+      const errorBanner = document.getElementById('error-banner');
+      const errorText = document.getElementById('error-text');
+      const form = document.getElementById('waitlist-form');
+      const confirmationView = document.getElementById('confirmation-view');
+      const confirmationMsg = document.getElementById('confirmation-message');
 
-      alertBox.style.display = 'none';
-      alertBox.className = 'alert-banner';
+      errorBanner.style.display = 'none';
 
       const email = document.getElementById('email').value.trim();
       const fullName = document.getElementById('fullName').value.trim();
       const website = document.getElementById('website').value.trim();
 
       if (!email || !email.includes('@')) {
-        showAlert('Veuillez saisir une adresse email valide.', 'alert-error');
+        showError('Veuillez renseigner une adresse email valide.');
         return;
       }
 
       btn.disabled = true;
-      btn.innerHTML = '<span>Envoi en cours...</span>';
+      btn.innerHTML = '<span>Inscription en cours...</span>';
 
       try {
         const res = await fetch('/api/beta-testers/register', {
@@ -600,28 +618,28 @@ export function renderBetaLandingPage(): string {
 
         if (res.ok && data.success) {
           form.style.display = 'none';
-          successBox.style.display = 'block';
+          confirmationView.style.display = 'block';
           if (data.message) {
-            successMessage.innerText = data.message;
+            confirmationMsg.innerText = data.message;
           }
         } else {
-          const errMsg = data.message || "Une erreur est survenue lors de l'enregistrement.";
-          showAlert(Array.isArray(errMsg) ? errMsg.join(' ; ') : errMsg, 'alert-error');
+          const msg = data.message || "Une erreur est survenue lors de l'enregistrement.";
+          showError(Array.isArray(msg) ? msg.join(' ; ') : msg);
           btn.disabled = false;
-          btn.innerHTML = '<span>Demander mon accès</span> <span>→</span>';
+          btn.innerHTML = '<span>Demander l\\'accès</span> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
         }
       } catch (err) {
-        showAlert('Impossible de contacter le serveur. Veuillez vérifier votre connexion.', 'alert-error');
+        showError('Impossible de joindre le serveur. Veuillez vérifier votre connexion.');
         btn.disabled = false;
-        btn.innerHTML = '<span>Demander mon accès</span> <span>→</span>';
+        btn.innerHTML = '<span>Demander l\\'accès</span> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
       }
     }
 
-    function showAlert(msg, className) {
-      const alertBox = document.getElementById('alert-box');
-      alertBox.innerText = msg;
-      alertBox.className = 'alert-banner ' + className;
-      alertBox.style.display = 'block';
+    function showError(msg) {
+      const errorBanner = document.getElementById('error-banner');
+      const errorText = document.getElementById('error-text');
+      errorText.innerText = msg;
+      errorBanner.style.display = 'flex';
     }
   </script>
 </body>
