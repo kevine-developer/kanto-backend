@@ -10,12 +10,14 @@ import {
   Optional,
   Post,
   Query,
+  Req,
   Res,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
-import type { Response } from 'express';
+import type { Request, Response } from 'express';
 import { AppService } from './app.service.js';
 import { renderEmailVerificationPage } from './auth/views/email-verification.view.js';
+import { renderBetaLandingPage } from './beta-testers/views/beta-landing.view.js';
 import { PrismaService } from './prisma/prisma.service.js';
 import { ResendService } from './integrations/resend/resend.service.js';
 
@@ -36,6 +38,7 @@ export class AppController {
    */
   @Get()
   getHello(
+    @Req() req: Request,
     @Query('error') error?: string,
     @Query('email') email?: string,
     @Res() res?: Response,
@@ -48,6 +51,23 @@ export class AppController {
         'https://api-kanto.gastsar.fr';
       const target = `${baseUrl}/confirmation?error=${encodeURIComponent(error)}${email ? `&email=${encodeURIComponent(email)}` : ''}`;
       res!.redirect(302, target);
+      return;
+    }
+
+    // Si la requête provient du domaine app-kanto.gastsar.fr ou d'un hôte lié aux tests, servir la landing page
+    const host = (
+      (req.headers['x-forwarded-host'] as string) ||
+      req.headers.host ||
+      ''
+    ).toLowerCase();
+
+    if (
+      host.includes('app-kanto') ||
+      host.includes('beta-kanto') ||
+      host.startsWith('app.')
+    ) {
+      res!.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res!.send(renderBetaLandingPage());
       return;
     }
 

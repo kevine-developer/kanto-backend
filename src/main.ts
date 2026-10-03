@@ -104,6 +104,7 @@ async function bootstrap() {
     'https://kanto.mg',
     'https://api-kanto.gastsar.fr',
     'https://auth-kanto.gastsar.fr',
+    'https://app-kanto.gastsar.fr',
     /^https:\/\/.*\.gastsar\.fr$/,
     'https://kanto-admin.vercel.app',
     /^https:\/\/.*\.vercel\.app$/,
