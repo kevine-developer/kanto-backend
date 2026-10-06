@@ -73,6 +73,16 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
         this.isReady = false;
       });
 
+      this.subClient.on('error', () => {
+        this.isReady = false;
+        // Erreur interceptée sur le client répliqué pour éviter les "Unhandled error event" de ioredis.
+        // L'avertissement de passage en mode dégradé est déjà centralisé sur this.client.
+      });
+
+      this.subClient.on('close', () => {
+        // Déconnexion subClient
+      });
+
       // Gestionnaire de messages pour le client Subscriber
       this.subClient.on('message', (channel: string, message: string) => {
         let parsed: any = message;
@@ -96,18 +106,22 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
         }
       });
 
-      this.subClient.on('ready', async () => {
-        const channels = Array.from(this.channelSubscribers.keys());
-        if (channels.length > 0 && this.subClient) {
-          try {
-            await this.subClient.subscribe(...channels);
-            this.logger.log(
-              `📡 [Redis Pub/Sub] Réabonné à ${channels.length} canal/canaux.`,
-            );
-          } catch (err) {
-            this.logger.warn(`⚠️ [Redis Pub/Sub] Échec réabonnement : ${err}`);
+      this.subClient.on('ready', () => {
+        void (async () => {
+          const channels = Array.from(this.channelSubscribers.keys());
+          if (channels.length > 0 && this.subClient) {
+            try {
+              await this.subClient.subscribe(...channels);
+              this.logger.log(
+                `📡 [Redis Pub/Sub] Réabonné à ${channels.length} canal/canaux.`,
+              );
+            } catch (err) {
+              this.logger.warn(
+                `⚠️ [Redis Pub/Sub] Échec réabonnement : ${err}`,
+              );
+            }
           }
-        }
+        })();
       });
 
       // Tentative de connexion initiale sans bloquer le démarrage de NestJS

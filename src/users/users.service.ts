@@ -473,7 +473,7 @@ export class UsersService {
 
     const updatedUser = await this.prisma.user.update({
       where: { id: userId },
-      data: { image: null },
+      data: { image: '/uploads/avatars/default-avatar.png' },
       select: {
         id: true,
         name: true,
@@ -485,8 +485,12 @@ export class UsersService {
       },
     });
 
-    // Suppression de l'avatar sur Cloudinary ou en local
-    if (oldImageUrl) {
+    // Suppression de l'avatar personnalisé sur Cloudinary ou en local (ne pas supprimer l'avatar par défaut)
+    if (
+      oldImageUrl &&
+      oldImageUrl !== '/uploads/avatars/default-avatar.png' &&
+      !oldImageUrl.includes('default-avatar.png')
+    ) {
       this.cloudinaryService.deleteMediaFromUrl(oldImageUrl).catch(() => {});
     }
 
