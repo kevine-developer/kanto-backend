@@ -267,6 +267,9 @@ export const auth = betterAuth({
           Promise.resolve({
             data: {
               ...user,
+              // Photo de profil par défaut : icône officielle de l'application Kanto
+              image:
+                (user as any).image || '/uploads/avatars/default-avatar.png',
               // Preuve d'audit légale : horodatage systématique de l'acceptation des CGU
               termsAcceptedAt: (user as any).termsAcceptedAt || new Date(),
               termsVersion: (user as any).termsVersion || '1.0',

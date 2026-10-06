@@ -63,6 +63,8 @@ export function renderEmailLayout(options: EmailLayoutOptions): string {
               <span style="color: ${KANTO_COLORS.cardBorder}; margin: 0 6px;">•</span>
               <a href="https://kanto.mg/pages/help" target="_blank" style="color: ${KANTO_COLORS.textMuted}; text-decoration: none;">Aide &amp; Support</a>
               <span style="color: ${KANTO_COLORS.cardBorder}; margin: 0 6px;">•</span>
+              <a href="mailto:contact@gastsar.fr" style="color: ${KANTO_COLORS.textMuted}; text-decoration: none;">contact@gastsar.fr</a>
+              <span style="color: ${KANTO_COLORS.cardBorder}; margin: 0 6px;">•</span>
               <a href="https://kanto.mg/pages/privacy" target="_blank" style="color: ${KANTO_COLORS.textMuted}; text-decoration: none;">Confidentialité</a>
             </td>
           </tr>
