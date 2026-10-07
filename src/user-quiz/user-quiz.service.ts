@@ -2,7 +2,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {
   BadRequestException,
-  ForbiddenException,
   Injectable,
   Logger,
   NotFoundException,
@@ -129,8 +128,9 @@ export class UserQuizService {
     search?: string,
     sort: 'recent' | 'popular' = 'recent',
     category?: string,
-    currentUserId?: string,
+    _currentUserId?: string,
   ) {
+    void _currentUserId;
     const where: any = {
       OR: [{ visibility: DeckVisibility.PUBLIC }, { isPublic: true }],
     };
@@ -330,13 +330,13 @@ export class UserQuizService {
         void this.notificationsService
           .createNotification({
             userId: set.authorId,
-            titleMg: 'Valisoa mpamorona : Vola voaray !',
-            titleFr: 'Récompense de créateur : Vola débloqué !',
-            messageMg: `Nahazo +${coinsReward} Vola sy +${xpReward} XP ianao satria nahatratra mpilalao 5 vaovao ny deck-nao « ${set.title} » !`,
-            messageFr: `Vous avez reçu +${coinsReward} Vola et +${xpReward} XP car votre deck « ${set.title} » a franchi 5 nouveaux joueurs !`,
+            titleMg: 'Valisoa mpamorona : Vola voaray ! 🪙',
+            titleFr: 'Récompense de créateur : Vola débloqué ! 🪙',
+            messageMg: `Nahazo +${coinsReward} Vola sy +${xpReward} XP ianao satria maro ireo mpilalao nandalina ny lalao noforoninao « ${set.title} » !`,
+            messageFr: `Félicitations ! Votre jeu personnalisé « ${set.title} » a franchi un palier de joueurs. Vous recevez +${coinsReward} Vola et +${xpReward} XP !`,
             category: 'game',
             badgeText: 'Royalty',
-            badgeType: 'new',
+            badgeType: 'reward',
             iconName: 'gift-outline',
             targetRoute: '/(screens)/ugc',
             isBroadcast: false,

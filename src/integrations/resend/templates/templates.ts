@@ -626,3 +626,98 @@ https://kanto.mg`.trim();
 
   return { subject, html, text };
 }
+
+/**
+ * 8. Email d'approbation et publication d'une contribution culturelle.
+ */
+export interface ContributionApprovedEmailData {
+  to: string;
+  userName?: string;
+  contributionTitle: string;
+  category: string;
+  xpReward?: number;
+}
+
+export function buildContributionApprovedEmail(
+  data: ContributionApprovedEmailData,
+): EmailRenderOutput {
+  const greeting = data.userName?.trim()
+    ? `Manao ahoana ${data.userName.trim()},`
+    : 'Manao ahoana,';
+  const subject =
+    'Félicitations ! Votre contribution a été publiée sur Kanto 🎉';
+  const xpReward = data.xpReward ?? 50;
+
+  const categoryLabels: Record<string, string> = {
+    PROVERBE: 'Ohabolana (Proverbe)',
+    EXPRESSION: 'Oha-pitenenana (Expression)',
+    DICTON: 'Fomba fiteny (Dicton)',
+    CITATION: 'Fitenenana malaza (Citation)',
+    CONTE: 'Angano (Conte traditionnel)',
+    KABARY: 'Kabary (Art oratoire)',
+  };
+  const categoryLabel = categoryLabels[data.category] || data.category;
+
+  const text = `${greeting}
+
+Misaotra betsaka ! Votre contribution (« ${data.contributionTitle} ») dans la catégorie ${categoryLabel} a été examinée et approuvée avec succès par l'équipe Kanto.
+
+Elle est désormais consultable par toute la communauté sur l'application Kanto.
+
+Pour saluer votre précieux engagement envers la transmission et la préservation de la culture et de la langue malgache, vous recevez une récompense de +${xpReward} XP !
+
+Retrouvez votre contribution et suivez vos interactions au sein de la communauté directement dans l'application :
+https://kanto.mg
+
+Kanto — Lova, Kolontsaina & Tantara Malagasy`.trim();
+
+  const metadataItems = [
+    { label: 'Titre / Extrait', value: data.contributionTitle },
+    { label: 'Catégorie', value: categoryLabel },
+    { label: 'Statut', value: 'Publié & Validé' },
+    { label: 'Récompense attribuée', value: `+${xpReward} XP` },
+  ];
+
+  const contentHtml = `
+    <h1 style="font-size: 19px; font-weight: 700; color: ${KANTO_COLORS.textPrimary}; margin: 0 0 16px 0; line-height: 26px;">
+      Votre contribution est en ligne !
+    </h1>
+
+    <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 16px 0;">
+      ${greeting}
+    </p>
+
+    <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 20px 0;">
+      Nous avons le plaisir de vous annoncer que votre contribution a été validée par nos modérateurs. Elle enrichit désormais le patrimoine partagé au sein de l'application Kanto.
+    </p>
+
+    ${renderMetadataTable(metadataItems)}
+
+    ${renderNotice({
+      title: 'Misaotra betsaka ho an’ny kolontsaina !',
+      content: `Grâce à votre initiative, vous participez activement à la valorisation de la mémoire et des traditions orales malgaches. Un bonus de <strong>+${xpReward} XP</strong> a été crédité sur votre compte Kanto.`,
+      variant: 'success',
+    })}
+
+    <div style="margin-top: 26px;">
+      ${renderButton({
+        text: "Découvrir dans l'application",
+        url: 'https://kanto.mg',
+        variant: 'terracotta',
+      })}
+    </div>
+
+    <p style="font-size: 12.5px; line-height: 19px; color: ${KANTO_COLORS.textFootnote}; margin: 24px 0 0 0;">
+      Vous pouvez suivre les likes, favoris et commentaires de la communauté depuis l'onglet Communauté de votre profil.
+    </p>
+  `;
+
+  const html = renderEmailLayout({
+    title: subject,
+    preheader: 'Votre contribution culturelle a été approuvée sur Kanto',
+    headerBadge: { label: 'Communauté & Patrimoine', variant: 'tanimbary' },
+    contentHtml,
+  });
+
+  return { subject, html, text };
+}

@@ -22,6 +22,7 @@ import {
   BulkInviteDto,
 } from './dto/beta-tester.dto.js';
 import { AuthGuard, Roles } from '../auth/index.js';
+import { Throttle } from '@nestjs/throttler';
 import {
   renderBetaLandingPage,
   renderBetaWaitlistScript,
@@ -58,6 +59,7 @@ export class BetaTestersController {
    */
   @Post(['api/beta-testers/register', 'beta-testers/register'])
   @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   async register(
     @Body() dto: RegisterBetaTesterDto,
     @Req() req: Request,

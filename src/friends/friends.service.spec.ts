@@ -13,9 +13,6 @@ import { FriendshipStatus } from '../../generated/prisma/client.js';
 
 describe('FriendsService', () => {
   let service: FriendsService;
-  let prisma: jest.Mocked<any>;
-  let progressionService: jest.Mocked<any>;
-  let notificationsService: jest.Mocked<any>;
 
   const mockPrisma = {
     user: {
@@ -57,9 +54,6 @@ describe('FriendsService', () => {
     }).compile();
 
     service = module.get<FriendsService>(FriendsService);
-    prisma = module.get(PrismaService);
-    progressionService = module.get(ProgressionService);
-    notificationsService = module.get(NotificationsService);
   });
 
   describe('getFriends', () => {

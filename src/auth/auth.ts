@@ -44,7 +44,6 @@ const devOrigins = [
   'http://172.*:*',
   'http://172.*',
   'https://kanto-admin.vercel.app',
-  'https://*.vercel.app',
 ];
 
 const prodOrigins = [
@@ -57,7 +56,6 @@ const prodOrigins = [
   'https://app-kanto.gastsar.fr',
   'https://*.gastsar.fr',
   'https://kanto-admin.vercel.app',
-  'https://*.vercel.app',
   'https://*.kanto.mg',
 ];
 
@@ -275,6 +273,23 @@ export const auth = betterAuth({
               termsVersion: (user as any).termsVersion || '1.0',
             },
           }),
+        after: async (user) => {
+          // Si l'utilisateur est déjà vérifié lors de sa création (ex: inscription via Google OAuth),
+          // lui faire parvenir l'email de bienvenue de la plateforme
+          if ((user as any).emailVerified && (user as any).email) {
+            try {
+              await resendService.sendWelcomeEmail({
+                to: (user as any).email,
+                userName: (user as any).name || undefined,
+              });
+            } catch (err) {
+              console.warn(
+                `[Better-Auth] ⚠️ Échec envoi email de bienvenue pour ${(user as any).email} :`,
+                err,
+              );
+            }
+          }
+        },
       },
     },
   },

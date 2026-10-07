@@ -55,24 +55,36 @@ export class NotificationsController {
    * Marque une notification comme lue.
    */
   @Patch('notifications/:id/read')
-  markAsRead(@Param('id') id: string) {
-    return this.notificationsService.markAsRead(id);
+  @UseGuards(AuthGuard)
+  markAsRead(@Param('id') id: string, @Session() session: UserSession) {
+    return this.notificationsService.markAsRead(id, session.user.id);
   }
 
   /**
-   * Marque toutes les notifications comme lues.
+   * Marque toutes les notifications comme lues pour l'utilisateur connecté.
    */
   @Post('notifications/read-all')
-  markAllAsRead() {
-    return this.notificationsService.markAllAsRead();
+  @UseGuards(AuthGuard)
+  markAllAsRead(@Session() session: UserSession) {
+    return this.notificationsService.markAllAsRead(session.user.id);
   }
 
   /**
    * Supprime une notification pour l'utilisateur.
    */
   @Delete('notifications/:id')
-  deleteNotificationUser(@Param('id') id: string) {
-    return this.notificationsService.deleteNotification(id);
+  @UseGuards(AuthGuard)
+  deleteNotificationUser(
+    @Param('id') id: string,
+    @Session() session: UserSession,
+  ) {
+    return this.notificationsService.deleteNotification(
+      id,
+      session.user.id,
+      Array.isArray(session.user.role)
+        ? session.user.role[0]
+        : session.user.role,
+    );
   }
 
   /**

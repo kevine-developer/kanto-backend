@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Optional } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { RedisService } from '../redis/redis.service.js';
 import {
@@ -8,6 +8,7 @@ import {
 import { SyncProgressionDto } from './dto/sync-progression.dto.js';
 import { ReplaceProgressionDto } from './dto/replace-progression.dto.js';
 import { BadgesService } from '../badges/badges.service.js';
+import { NotificationsService } from '../notifications/notifications.service.js';
 import {
   CoinsEconomyConfig,
   DEFAULT_COINS_ECONOMY_CONFIG,
@@ -25,6 +26,7 @@ export class ProgressionService {
     private readonly prisma: PrismaService,
     private readonly redisService: RedisService,
     private readonly badgesService: BadgesService,
+    @Optional() private readonly notificationsService?: NotificationsService,
   ) {}
 
   /**
@@ -67,6 +69,10 @@ export class ProgressionService {
   }> {
     const today = this.getDateOnly(new Date());
 
+    let previousLevel = 0;
+    let additionalCoins = 0;
+    let isInitialUserProgress = false;
+
     const result: {
       progress: {
         streakDays: number;
@@ -81,6 +87,7 @@ export class ProgressionService {
 
       // Premier enregistrement
       if (!progress) {
+        isInitialUserProgress = true;
         const xpBonus = STREAK_XP_BONUS[1];
         const newLevel = this.calculateLevel(xpBonus);
         progress = await tx.userProgress.create({
@@ -145,12 +152,11 @@ export class ProgressionService {
       // Calcul des nouveaux XP / niveau / pièces — Toujours arrondi supérieur sans virgule
       const currentXp = Number(progress.totalXp);
       const newTotalXp = Math.ceil(currentXp + xpBonus);
-      const previousLevel =
-        typeof progress.level === 'number' ? progress.level : 0;
+      previousLevel = typeof progress.level === 'number' ? progress.level : 0;
       const newLevel = this.calculateLevel(newTotalXp);
       // Lecture de la configuration économique des pièces (contrôlable par l'administration)
       const coinsConfig = await this.getCoinsEconomyConfig();
-      let additionalCoins = 0;
+      additionalCoins = 0;
       if (coinsConfig.enabled) {
         if (newLevel > previousLevel) {
           for (let lvl = previousLevel + 1; lvl <= newLevel; lvl++) {
@@ -228,6 +234,31 @@ export class ProgressionService {
       );
     });
 
+    // 1. Notification in-app de bienvenue lors de la première connexion
+    if (isInitialUserProgress) {
+      void this.sendWelcomeNotification(userId);
+    }
+
+    // 2. Notification de palier de série de connexion (3, 7, 14, 30, 60, 90, 180, 365 jours)
+    if (
+      result.streakStatus === 'continued' &&
+      [3, 7, 14, 30, 60, 90, 180, 365].includes(result.progress.streakDays)
+    ) {
+      void this.sendStreakMilestoneNotification(
+        userId,
+        result.progress.streakDays,
+      );
+    }
+
+    // 3. Notification de montée de niveau
+    if (result.progress.level > previousLevel && result.progress.level >= 1) {
+      void this.sendLevelUpNotification(
+        userId,
+        result.progress.level,
+        additionalCoins,
+      );
+    }
+
     return result;
   }
 
@@ -238,6 +269,9 @@ export class ProgressionService {
     this.logger.log(
       `Synchronisation de la progression pour l'utilisateur ${userId}`,
     );
+
+    let previousLevel = 0;
+    let additionalCoins = 0;
 
     const result = await this.prisma.$transaction(async (tx) => {
       let totalXpToAdd = 0;
@@ -283,10 +317,9 @@ export class ProgressionService {
         });
       } else if (totalXpToAdd > 0) {
         const newTotal = Math.ceil(Number(progress.totalXp) + totalXpToAdd);
-        const previousLevel =
-          typeof progress.level === 'number' ? progress.level : 0;
+        previousLevel = typeof progress.level === 'number' ? progress.level : 0;
         const newLevel = this.calculateLevel(newTotal);
-        let additionalCoins = 0;
+        additionalCoins = 0;
         if (newLevel > previousLevel) {
           for (let lvl = previousLevel + 1; lvl <= newLevel; lvl++) {
             additionalCoins += this.calculateLevelUpCoins(lvl);
@@ -345,6 +378,19 @@ export class ProgressionService {
         err,
       );
     });
+
+    // Notification de montée de niveau
+    if (
+      result.progress &&
+      result.progress.level > previousLevel &&
+      result.progress.level >= 1
+    ) {
+      void this.sendLevelUpNotification(
+        userId,
+        result.progress.level,
+        additionalCoins,
+      );
+    }
 
     return { progress: result.progress, games: result.games };
   }
@@ -465,6 +511,9 @@ export class ProgressionService {
       };
     }
 
+    let previousLevel = 0;
+    let additionalCoins = 0;
+
     const updated = await this.prisma.$transaction(async (tx) => {
       let progress = await tx.userProgress.findUnique({
         where: { userId },
@@ -483,10 +532,9 @@ export class ProgressionService {
         });
       } else {
         const newTotalXp = Math.ceil(Number(progress.totalXp) + safeAmount);
-        const previousLevel =
-          typeof progress.level === 'number' ? progress.level : 0;
+        previousLevel = typeof progress.level === 'number' ? progress.level : 0;
         const newLevel = this.calculateLevel(newTotalXp);
-        let additionalCoins = 0;
+        additionalCoins = 0;
         if (newLevel > previousLevel) {
           for (let lvl = previousLevel + 1; lvl <= newLevel; lvl++) {
             additionalCoins += this.calculateLevelUpCoins(lvl);
@@ -532,6 +580,11 @@ export class ProgressionService {
       );
     });
 
+    // Notification de montée de niveau
+    if (updated.level > previousLevel && updated.level >= 1) {
+      void this.sendLevelUpNotification(userId, updated.level, additionalCoins);
+    }
+
     return {
       totalXp: Number(updated.totalXp),
       level: updated.level,
@@ -549,22 +602,37 @@ export class ProgressionService {
       `Remplacement complet de la progression pour l'utilisateur ${userId}`,
     );
 
+    // Garde-fous d'intégrité : plafonnement des valeurs synchronisées et calcul serveur du niveau
+    const safeTotalXp = Math.min(
+      100000,
+      Math.ceil(Math.max(0, dto.totalXp || 0)),
+    );
+    const safeLevel = Math.min(
+      10,
+      Math.max(0, this.calculateLevel(safeTotalXp)),
+    );
+    const safeCoins = Math.min(5000, Math.max(0, Math.floor(dto.coins || 0)));
+    const safeStreakDays = Math.min(
+      365,
+      Math.max(0, Math.floor(dto.streakDays || 0)),
+    );
+
     const result = await this.prisma.$transaction(async (tx) => {
-      // 1. Upsert UserProgress avec les valeurs exactes du client
+      // 1. Upsert UserProgress avec les valeurs assainies et vérifiées
       const progress = await tx.userProgress.upsert({
         where: { userId },
         update: {
-          totalXp: Math.ceil(Math.max(0, dto.totalXp)),
-          level: Math.max(0, dto.level),
-          coins: Math.max(0, dto.coins),
-          streakDays: Math.max(0, dto.streakDays),
+          totalXp: safeTotalXp,
+          level: safeLevel,
+          coins: safeCoins,
+          streakDays: safeStreakDays,
         },
         create: {
           userId,
-          totalXp: Math.ceil(Math.max(0, dto.totalXp)),
-          level: Math.max(0, dto.level),
-          coins: Math.max(0, dto.coins),
-          streakDays: Math.max(0, dto.streakDays),
+          totalXp: safeTotalXp,
+          level: safeLevel,
+          coins: safeCoins,
+          streakDays: safeStreakDays,
         },
       });
 
@@ -751,5 +819,100 @@ export class ProgressionService {
     }
 
     return currentLevel;
+  }
+
+  /**
+   * Envoie une notification in-app & push de bienvenue lors du premier accès.
+   */
+  private async sendWelcomeNotification(userId: string): Promise<void> {
+    if (!this.notificationsService) return;
+    try {
+      await this.notificationsService.createNotification({
+        userId,
+        isBroadcast: false,
+        titleMg: "Tongasoa eto amin'ny Kanto ! 🇲🇬",
+        titleFr: 'Bienvenue sur Kanto ! 🇲🇬',
+        messageMg:
+          'Faly miarahaba anao izahay. Diniho ireo Ohabolana, Angano, Kabary ary Lalao nentim-paharazana Malagasy !',
+        messageFr:
+          'Nous sommes ravis de vous compter parmi nous. Explorez les proverbes, contes, récits historiques et jeux traditionnels malgaches !',
+        category: 'culture',
+        badgeText: 'Tongasoa',
+        badgeType: 'new',
+        iconName: 'sparkles-outline',
+        iconColor: '#C0392B',
+        targetRoute: '/(tabs)',
+      });
+    } catch (err) {
+      this.logger.warn(
+        `Échec envoi notification bienvenue pour ${userId}: ${err}`,
+      );
+    }
+  }
+
+  /**
+   * Envoie une notification in-app & push lors d'une montée de niveau.
+   */
+  private async sendLevelUpNotification(
+    userId: string,
+    newLevel: number,
+    coinsReward = 0,
+  ): Promise<void> {
+    if (!this.notificationsService || newLevel <= 0) return;
+    try {
+      const coinsTextMg =
+        coinsReward > 0 ? ` sady nahazo valisoa +${coinsReward} Vola` : '';
+      const coinsTextFr =
+        coinsReward > 0 ? ` et remporté un bonus de +${coinsReward} Vola` : '';
+
+      await this.notificationsService.createNotification({
+        userId,
+        isBroadcast: false,
+        titleMg: `Arahabaina ! Ambaratonga ${newLevel} 🌟`,
+        titleFr: `Félicitations ! Niveau ${newLevel} atteint 🌟`,
+        messageMg: `Taratry ny fandalinana ny kolontsaina izany ! Niakatra ambaratonga faha-${newLevel} ianao${coinsTextMg}. Tohizo hatrany ny fikarohana !`,
+        messageFr: `Vos connaissances s'enrichissent ! Vous venez d'atteindre le Niveau ${newLevel}${coinsTextFr}. Continuez votre parcours !`,
+        category: 'reward',
+        badgeText: 'Level Up',
+        badgeType: 'reward',
+        iconName: 'trophy-outline',
+        iconColor: '#F59E0B',
+        targetRoute: '/(tabs)/profil',
+      });
+    } catch (err) {
+      this.logger.warn(
+        `Échec envoi notification level up pour ${userId}: ${err}`,
+      );
+    }
+  }
+
+  /**
+   * Envoie une notification in-app & push pour célébrer un palier de série de connexions consécutives.
+   */
+  private async sendStreakMilestoneNotification(
+    userId: string,
+    streakDays: number,
+  ): Promise<void> {
+    if (!this.notificationsService) return;
+    try {
+      await this.notificationsService.createNotification({
+        userId,
+        isBroadcast: false,
+        titleMg: `Fahavitrihana : Andro faha-${streakDays} misesy ! 🔥`,
+        titleFr: `Série active : ${streakDays} jours consécutifs ! 🔥`,
+        messageMg: `Ny fikirizana no mitondra mankany amin'ny fahalalana. Efa ${streakDays} andro misesy ianao no nandalina ny kolontsaina Malagasy !`,
+        messageFr: `Remarquable assiduité ! Vous explorez le patrimoine et la sagesse malgache depuis ${streakDays} jours consécutifs sans interruption.`,
+        category: 'culture',
+        badgeText: 'Fahavitrihana',
+        badgeType: 'streak',
+        iconName: 'flame-outline',
+        iconColor: '#E05615',
+        targetRoute: '/(tabs)/profil',
+      });
+    } catch (err) {
+      this.logger.warn(
+        `Échec envoi notification streak milestone pour ${userId}: ${err}`,
+      );
+    }
   }
 }

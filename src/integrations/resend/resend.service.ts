@@ -6,6 +6,7 @@ import {
   buildVerificationEmail,
   buildBetaTesterRegistrationEmail,
   buildBetaTesterInvitationEmail,
+  buildContributionApprovedEmail,
 } from './templates/index.js';
 
 export interface SendEmailOptions {
@@ -47,6 +48,14 @@ export interface BetaTesterInvitationEmailOptions {
   fullName?: string;
   playStoreWebLink?: string;
   playStoreAppLink?: string;
+}
+
+export interface ContributionApprovedEmailOptions {
+  to: string;
+  userName?: string;
+  contributionTitle: string;
+  category: string;
+  xpReward?: number;
 }
 
 @Injectable()
@@ -240,6 +249,28 @@ export class ResendService {
       fullName: options.fullName,
       playStoreWebLink: options.playStoreWebLink,
       playStoreAppLink: options.playStoreAppLink,
+    });
+
+    return this.sendEmail({
+      to: options.to,
+      subject,
+      text,
+      html,
+    });
+  }
+
+  /**
+   * Envoi d'un email de félicitations lors de l'approbation d'une contribution culturelle.
+   */
+  async sendContributionApprovedEmail(
+    options: ContributionApprovedEmailOptions,
+  ): Promise<{ id?: string; simulated?: boolean }> {
+    const { subject, html, text } = buildContributionApprovedEmail({
+      to: options.to,
+      userName: options.userName,
+      contributionTitle: options.contributionTitle,
+      category: options.category,
+      xpReward: options.xpReward,
     });
 
     return this.sendEmail({

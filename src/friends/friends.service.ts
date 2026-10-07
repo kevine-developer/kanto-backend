@@ -282,10 +282,10 @@ export class FriendsService {
         });
 
         void this.notificationsService.createNotification({
-          titleMg: 'Namana vaovao !',
-          titleFr: 'Demande d’ami acceptée !',
-          messageMg: `Namana ao amin'ny Kanto ianao sy i ${sender?.name || 'Mpikambana'}.`,
-          messageFr: `${sender?.name || 'Un membre'} a accepté votre demande d'ami.`,
+          titleMg: 'Namana vaovao nankatoavina ! 🤝',
+          titleFr: 'Demande d’ami acceptée ! 🤝',
+          messageMg: `Tafara-dia amin'ny fandalinana kolontsaina ao amin'ny Kanto ianao sy i ${sender?.name || 'Mpikambana'}. Faly miara-dalana !`,
+          messageFr: `Vous êtes désormais connectés avec ${sender?.name || 'un membre'} sur Kanto. Partagez votre passion pour la culture malgache !`,
           category: 'community',
           badgeText: 'Namana',
           badgeType: 'info',
@@ -314,10 +314,10 @@ export class FriendsService {
 
     // Envoi d'une notification in-app au destinataire
     void this.notificationsService.createNotification({
-      titleMg: 'Fangatahana ho namana',
-      titleFr: 'Nouvelle demande d’ami',
-      messageMg: `Nandefa fangatahana ho namana ho anao i ${sender?.name || 'Mpikambana'}.`,
-      messageFr: `${sender?.name || 'Un membre'} souhaite devenir votre ami sur Kanto.`,
+      titleMg: 'Fangatahana ho namana vaovao 🤝',
+      titleFr: 'Nouvelle demande d’ami 🤝',
+      messageMg: `Maniry ny ho naman'ny fandalinana kolontsaina miaraka aminao i ${sender?.name || 'Mpikambana'}.`,
+      messageFr: `${sender?.name || 'Un membre'} souhaite devenir votre ami sur Kanto et partager cette aventure culturelle.`,
       category: 'community',
       badgeText: 'Fangatahana',
       badgeType: 'info',
@@ -366,10 +366,10 @@ export class FriendsService {
 
     // Notification à l'expéditeur de la demande
     void this.notificationsService.createNotification({
-      titleMg: 'Namana vaovao !',
-      titleFr: 'Demande d’ami acceptée',
-      messageMg: `Nanaiky ny fangatahanao i ${friendship.receiver.name}.`,
-      messageFr: `${friendship.receiver.name} a accepté votre demande d'ami sur Kanto !`,
+      titleMg: 'Namana vaovao nankatoavina ! 🤝',
+      titleFr: 'Demande d’ami acceptée ! 🤝',
+      messageMg: `Nanaiky ny fangatahanao i ${friendship.receiver.name}. Tafara-dia amin'ny fandalinana kolontsaina ao amin'ny Kanto ianareo roa tonta !`,
+      messageFr: `${friendship.receiver.name} a accepté votre demande d'ami sur Kanto ! Relevez des défis et progressez ensemble.`,
       category: 'community',
       badgeText: 'Namana',
       badgeType: 'info',
@@ -472,7 +472,8 @@ export class FriendsService {
         id: { not: userId },
         OR: [
           { name: { contains: cleanQuery, mode: 'insensitive' } },
-          { email: { contains: cleanQuery, mode: 'insensitive' } },
+          { username: { contains: cleanQuery, mode: 'insensitive' } },
+          { email: { equals: cleanQuery, mode: 'insensitive' } },
         ],
       },
       select: {
@@ -634,10 +635,10 @@ export class FriendsService {
 
     // Notification in-app pour l'encouragé
     void this.notificationsService.createNotification({
-      titleMg: 'Fankaherezana voaray !',
-      titleFr: 'Encouragement reçu !',
-      messageMg: `Nankahery anao i ${sender?.name || 'Namana'} ! Nahazo +1 XP ianao roa tonta.`,
-      messageFr: `${sender?.name || 'Un ami'} vous a envoyé des encouragements ! Vous recevez chacun +1 XP.`,
+      titleMg: 'Fankaherezana mafana voaray ! 💖',
+      titleFr: 'Encouragement reçu ! 💖',
+      messageMg: `Nandefa fankaherezana ho anao i ${sender?.name || 'Namana'} ! Nahazo +1 XP avy ianareo roa tonta ho mariky ny fihavanana.`,
+      messageFr: `${sender?.name || 'Un ami'} vous encourage dans votre parcours ! Vous gagnez chacun +1 XP sous le signe du fihavanana.`,
       category: 'community',
       badgeText: '+1 XP',
       badgeType: 'reward',
