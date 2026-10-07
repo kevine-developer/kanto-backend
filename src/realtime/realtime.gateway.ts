@@ -113,7 +113,7 @@ const MAX_ROOMS_PER_SOCKET = 50;
           defaultProd.includes(origin) ||
           origin.endsWith('.gastsar.fr') ||
           origin.endsWith('.kanto.mg') ||
-          origin.endsWith('.vercel.app');
+          origin === 'https://kanto-admin.vercel.app';
         callback(null, isDefaultAllowed);
         return;
       }
@@ -324,21 +324,41 @@ export class RealtimeGateway
   @SubscribeMessage(SOCKET_EVENTS.AUTHENTICATE)
   async handleAuthenticate(
     @ConnectedSocket() client: Socket,
-    @MessageBody() data: { userId?: string },
+    @MessageBody() data: { token?: string; userId?: string },
   ) {
-    // 1. Tenter d'abord la validation par session Better Auth si disponible
-    const sessionUserId = await this.extractAuthenticatedUserId(client);
-    const targetUserId = sessionUserId || this.sanitizeId(data?.userId);
+    let sessionUserId = await this.extractAuthenticatedUserId(client);
 
-    if (!targetUserId) {
-      return { success: false, message: 'Identifiant utilisateur invalide' };
+    // Si un jeton bearer d'authentification a été passé dans le payload du message
+    if (!sessionUserId && data?.token && typeof data.token === 'string') {
+      try {
+        const headers = new Headers();
+        headers.set('authorization', `Bearer ${data.token.trim()}`);
+        const session = await auth.api.getSession({ headers });
+        if (session?.user?.id) {
+          sessionUserId = session.user.id;
+        }
+      } catch {
+        // Session invalide
+      }
     }
 
-    const room = RealtimeRooms.user(targetUserId);
+    if (!sessionUserId) {
+      this.logger.warn(
+        `🔒 [Realtime] Authentification refusée pour le socket ${client.id} : session manquante ou non valide.`,
+      );
+      return {
+        success: false,
+        message: 'Authentification requise : session manquante ou invalide',
+      };
+    }
+
+    const room = RealtimeRooms.user(sessionUserId);
     await client.join(room);
-    (client.data as Record<string, unknown>).userId = targetUserId;
-    this.logger.log(`🔑 [Realtime] Socket ${client.id} rattaché à ${room}`);
-    return { success: true, room };
+    (client.data as Record<string, unknown>).userId = sessionUserId;
+    this.logger.log(
+      `🔑 [Realtime] Socket ${client.id} authentifié et rattaché à ${room}`,
+    );
+    return { success: true, room, userId: sessionUserId };
   }
 
   /**
@@ -410,13 +430,15 @@ export class RealtimeGateway
   /**
    * Helper pour extraire de manière sécurisée l'identifiant utilisateur attaché au socket.
    */
-  private getClientUserId(client: Socket, fallback?: string): string {
+  private getClientUserId(client: Socket, _legacyFallback?: string): string {
+    void _legacyFallback;
     const clientData = client.data as Record<string, unknown>;
-    if (typeof clientData?.userId === 'string' && clientData.userId) {
+    if (
+      typeof clientData?.userId === 'string' &&
+      clientData.userId &&
+      !clientData.userId.startsWith('guest_')
+    ) {
       return clientData.userId;
-    }
-    if (fallback && typeof fallback === 'string') {
-      return fallback;
     }
     return `guest_${client.id.slice(0, 6)}`;
   }
@@ -1387,15 +1409,6 @@ export class RealtimeGateway
       // Fallback silencieux si la validation de session échoue
     }
 
-    // 2. Fallback sur userId assaini transmis lors du handshake
-    const fallbackId =
-      (typeof handshakeQuery?.userId === 'string'
-        ? handshakeQuery.userId
-        : undefined) ||
-      (typeof handshakeAuth?.userId === 'string'
-        ? handshakeAuth.userId
-        : undefined);
-
-    return this.sanitizeId(fallbackId);
+    return null;
   }
 }

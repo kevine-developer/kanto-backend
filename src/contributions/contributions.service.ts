@@ -6,6 +6,7 @@ import {
   Logger,
   OnModuleInit,
   OnModuleDestroy,
+  Optional,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateContributionDto } from './dto/create-contribution.dto.js';
@@ -21,6 +22,7 @@ import { CheckDuplicateDto } from './dto/check-duplicate.dto.js';
 import { DuplicateDetectionService } from './duplicate-detection.service.js';
 import { NotificationsService } from '../notifications/notifications.service.js';
 import { RedisService } from '../redis/redis.service.js';
+import { ResendService } from '../integrations/resend/resend.service.js';
 import {
   REALTIME_CHANNELS,
   LeaderboardRealtimePayload,
@@ -78,6 +80,7 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
     private readonly notificationsService: NotificationsService,
     private readonly redisService: RedisService,
     private readonly duplicateDetectionService: DuplicateDetectionService,
+    @Optional() private readonly resendService?: ResendService,
   ) {}
 
   onModuleInit() {
@@ -646,6 +649,30 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
         where: { id },
         data: { status: 'ARCHIVED' },
       });
+
+      // Notification bienveillante au contributeur
+      if (contribution.userId) {
+        const preview = contribution.textMg.slice(0, 45);
+        void this.notificationsService
+          .createNotification({
+            userId: contribution.userId,
+            titleMg: 'Fandraisana anjara : Tsy voatazona',
+            titleFr: 'Contribution : Non retenue',
+            messageMg: `Tsy voatazona tamin'ity indray mitoraka ity ny fandraisana anjaranao (« ${preview}... »). Misaotra anao nandray anjara ary aza misalasala manolotra hafa !`,
+            messageFr: `Votre contribution (« ${preview}... ») n'a pas pu être retenue pour le moment. Merci pour votre implication culturelle, n'hésitez pas à proposer d'autres partages !`,
+            category: 'community',
+            badgeText: 'Fandraisana anjara',
+            badgeType: 'info',
+            iconName: 'document-text-outline',
+            iconColor: '#64748B',
+            isBroadcast: false,
+            targetRoute: '/(tabs)/profil',
+          })
+          .catch((err) => {
+            this.logger.warn(`Échec notification rejet contribution : ${err}`);
+          });
+      }
+
       return { success: true, status: 'REJECTED', contribution: updated };
     }
 
@@ -791,13 +818,25 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       return { validated, updatedProgress };
     });
 
-    // Notification temps réel du classement
+    // Récupération du profil contributeur pour classement, notification et email
+    let contributorUser: {
+      name: string;
+      image: string | null;
+      email: string | null;
+    } | null = null;
     try {
-      const contributorUser = await this.prisma.user.findUnique({
+      contributorUser = await this.prisma.user.findUnique({
         where: { id: updated.validated.userId },
-        select: { name: true, image: true },
+        select: { name: true, image: true, email: true },
       });
+    } catch (userErr) {
+      this.logger.warn(
+        `Impossible de récupérer les infos de l'utilisateur ${updated.validated.userId}: ${userErr}`,
+      );
+    }
 
+    // 1. Notification temps réel du classement
+    try {
       const payload: LeaderboardRealtimePayload = {
         userId: updated.validated.userId,
         totalXp: Number(updated.updatedProgress.totalXp),
@@ -814,6 +853,46 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       this.logger.warn(
         `⚠️ Impossible de publier la mise à jour leaderboard pour le contributeur ${updated.validated.userId}: ${err}`,
       );
+    }
+
+    // 2. Notification in-app et push à l'auteur de la contribution
+    const textPreview = updated.validated.textMg.slice(0, 45);
+    try {
+      await this.notificationsService.createNotification({
+        userId: updated.validated.userId,
+        titleMg: 'Arahabaina ! Nankatoavina ny fandraisana anjaranao 🎉',
+        titleFr: 'Félicitations ! Votre contribution a été approuvée 🎉',
+        messageMg: `Navoaka soa aman-tsara ny fandraisana anjaranao (« ${textPreview}... »). Nahazo +50 XP ianao ho fankasitrahana ny fanitarana ny kolontsaina !`,
+        messageFr: `Votre contribution (« ${textPreview}... ») est désormais publiée dans Kanto. Vous avez remporté +50 XP pour votre soutien au patrimoine malgache !`,
+        category: 'community',
+        badgeText: 'Nekena',
+        badgeType: 'new',
+        iconName: 'ribbon-outline',
+        iconColor: '#10B981',
+        isBroadcast: false,
+        targetRoute: '/(tabs)/communaute',
+      });
+    } catch (notifErr) {
+      this.logger.warn(
+        `Échec notification approbation contribution à ${updated.validated.userId}: ${notifErr}`,
+      );
+    }
+
+    // 3. Email de confirmation et félicitations à l'auteur
+    if (this.resendService && contributorUser?.email) {
+      void this.resendService
+        .sendContributionApprovedEmail({
+          to: contributorUser.email,
+          userName: contributorUser.name || undefined,
+          contributionTitle: textPreview,
+          category: updated.validated.category,
+          xpReward: 50,
+        })
+        .catch((emailErr) => {
+          this.logger.warn(
+            `Échec envoi email approbation contribution à ${contributorUser?.email}: ${emailErr}`,
+          );
+        });
     }
 
     return {
@@ -1000,10 +1079,10 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       const commenterName = comment.user?.name || 'Mpikambana iray';
       try {
         await this.notificationsService.createNotification({
-          titleMg: 'Hevitra vaovao',
-          titleFr: 'Nouveau commentaire',
-          messageMg: `${commenterName} dia namela hevitra tamin'ny fandraisana anjaranao.`,
-          messageFr: `${commenterName} a commenté votre contribution.`,
+          titleMg: "Hevitra vaovao tamin'ny fandraisana anjara 💬",
+          titleFr: 'Nouveau commentaire sur votre contribution 💬',
+          messageMg: `Nandray anjara tamin'ny dinika i ${commenterName} ary namela hevitra tamin'ny fandraisana anjaranao.`,
+          messageFr: `${commenterName} a partagé un commentaire et enrichi l'échange autour de votre contribution.`,
           category: 'community',
           badgeText: 'Hevitra',
           badgeType: 'info',
@@ -1229,7 +1308,7 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
         messageFr: `Votre contribution (« ${textPreview}... ») a été identifiée comme doublon et sera supprimée dans 24h. Vous pouvez déposer une réclamation depuis votre profil si vous contestez cette décision.`,
         category: 'community',
         badgeText: 'Dika mitovy',
-        badgeType: 'reward',
+        badgeType: 'info',
         iconName: 'warning-outline',
         iconColor: '#EA580C',
         isBroadcast: false,
@@ -1335,13 +1414,13 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
 
       try {
         await this.notificationsService.createNotification({
-          titleMg: 'Fitarainana nekena !',
-          titleFr: 'Réclamation acceptée !',
-          messageMg: `Nekena ny fanazavanao momba ny fandraisana anjara (« ${contribution.textMg.slice(0, 45)}... »). Naverina navoaka soa aman-tsara izany.`,
-          messageFr: `Votre réclamation a été acceptée pour la contribution (« ${contribution.textMg.slice(0, 45)}... »). Elle a été rétablie avec succès.`,
+          titleMg: 'Fitarainana nekena : Naverina navoaka ! ✅',
+          titleFr: 'Réclamation acceptée : Contribution rétablie ! ✅',
+          messageMg: `Nekena ny fanazavanao momba ny fandraisana anjara (« ${contribution.textMg.slice(0, 45)}... »). Naverina navoaka ho hitan'ny rehetra izany. Misaotra anao !`,
+          messageFr: `Votre réclamation a été validée avec succès pour (« ${contribution.textMg.slice(0, 45)}... »). Votre contribution est de nouveau visible par la communauté !`,
           category: 'community',
           badgeText: 'Nekena',
-          badgeType: 'new',
+          badgeType: 'reward',
           iconName: 'checkmark-circle-outline',
           iconColor: '#10B981',
           isBroadcast: false,
@@ -1377,7 +1456,7 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
           messageFr: `Votre réclamation a été refusée. La contribution (« ${contribution.textMg.slice(0, 45)}... ») sera définitivement supprimée dans 24h. ${dto.note ? `Motif : ${dto.note}` : ''}`,
           category: 'community',
           badgeText: 'Nolavina',
-          badgeType: 'reward',
+          badgeType: 'info',
           iconName: 'close-circle-outline',
           iconColor: '#EF4444',
           isBroadcast: false,

@@ -3,9 +3,10 @@ import { ProgressionService } from './progression.service.js';
 import { ProgressionController } from './progression.controller.js';
 import { PrismaModule } from '../prisma/prisma.module.js';
 import { BadgesModule } from '../badges/badges.module.js';
+import { NotificationsModule } from '../notifications/notifications.module.js';
 
 @Module({
-  imports: [PrismaModule, BadgesModule],
+  imports: [PrismaModule, BadgesModule, NotificationsModule],
   controllers: [ProgressionController],
   providers: [ProgressionService],
   exports: [ProgressionService],

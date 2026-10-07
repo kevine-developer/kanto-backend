@@ -317,7 +317,37 @@ export class AppController {
       return;
     }
 
-    // 3. Affichage de la vue de confirmation (succès, déjà confirmé, expiré ou erreur)
+    // 3. Déclenchement de l'email de bienvenue transactionnel après confirmation d'adresse email
+    if (status === 'success' && email && this.prisma && this.resendService) {
+      void this.prisma.user
+        .findUnique({
+          where: { email },
+          select: { email: true, name: true },
+        })
+        .then((verifiedUser) => {
+          if (verifiedUser && this.resendService) {
+            void this.resendService
+              .sendWelcomeEmail({
+                to: verifiedUser.email,
+                userName: verifiedUser.name || undefined,
+              })
+              .catch((err) => {
+                this.logger.warn(
+                  `[AppController] Échec envoi email de bienvenue à ${verifiedUser.email}:`,
+                  err,
+                );
+              });
+          }
+        })
+        .catch((err) => {
+          this.logger.warn(
+            `[AppController] Erreur récupération utilisateur pour email de bienvenue :`,
+            err,
+          );
+        });
+    }
+
+    // 4. Affichage de la vue de confirmation (succès, déjà confirmé, expiré ou erreur)
     return sendHtmlPage(renderEmailVerificationPage({ error, email, status }));
   }
 

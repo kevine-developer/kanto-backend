@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateNotificationDto } from './dto/notifications.dto.js';
 import { RedisService } from '../redis/redis.service.js';
@@ -55,6 +60,56 @@ function localizeNotificationBadge(rawBadge?: string | null, isMg = false) {
   } else if (lower === 'hevitra' || lower === 'commentaire') {
     badgeFr = 'Commentaire';
     badgeMg = 'Hevitra';
+  } else if (
+    lower === 'level up' ||
+    lower === 'ambaratonga' ||
+    lower === 'niveau'
+  ) {
+    badgeFr = 'Niveau';
+    badgeMg = 'Ambaratonga';
+  } else if (
+    lower === 'streak' ||
+    lower === 'fahavitrihana' ||
+    lower === 'série' ||
+    lower === 'serie'
+  ) {
+    badgeFr = 'Série';
+    badgeMg = 'Fahavitrihana';
+  } else if (
+    lower === 'nekena' ||
+    lower === 'approuvé' ||
+    lower === 'approuve' ||
+    lower === 'approuvée'
+  ) {
+    badgeFr = 'Approuvée';
+    badgeMg = 'Nekena';
+  } else if (
+    lower === 'tsy voatazona' ||
+    lower === 'nolavina' ||
+    lower === 'refusé' ||
+    lower === 'refuse' ||
+    lower === 'non retenue'
+  ) {
+    badgeFr = 'Non retenue';
+    badgeMg = 'Tsy voatazona';
+  } else if (
+    lower === 'valisoa' ||
+    lower === 'récompense' ||
+    lower === 'recompense' ||
+    lower === 'reward' ||
+    lower === 'royalty'
+  ) {
+    badgeFr = 'Récompense';
+    badgeMg = 'Valisoa';
+  } else if (lower === 'fandraisana anjara' || lower === 'contribution') {
+    badgeFr = 'Contribution';
+    badgeMg = 'Fandraisana anjara';
+  } else if (lower === 'tongasoa' || lower === 'bienvenue') {
+    badgeFr = 'Bienvenue';
+    badgeMg = 'Tongasoa';
+  } else if (lower === 'fankaherezana' || lower === 'encouragement') {
+    badgeFr = 'Encouragement';
+    badgeMg = 'Fankaherezana';
   }
 
   return {
@@ -513,15 +568,19 @@ export class NotificationsService {
   }
 
   /**
-   * Marque une notification comme lue (idempotent, ne plante pas si inexistante).
+   * Marque une notification comme lue (sécurisé, ne modifie pas les notifications privées d'autres utilisateurs).
    */
-  async markAsRead(id: string) {
+  async markAsRead(id: string, userId?: string) {
     const notif = await this.prisma.notification.findUnique({ where: { id } });
     if (!notif) {
       return {
         success: true,
         message: `Notification ${id} introuvable en base de données (locale ou déjà supprimée)`,
       };
+    }
+
+    if (notif.userId && userId && notif.userId !== userId) {
+      throw new ForbiddenException('Accès refusé à cette notification');
     }
 
     return this.prisma.notification.update({
@@ -531,11 +590,18 @@ export class NotificationsService {
   }
 
   /**
-   * Marque toutes les notifications comme lues.
+   * Marque toutes les notifications comme lues pour l'utilisateur connecté.
    */
-  async markAllAsRead() {
+  async markAllAsRead(userId: string) {
+    if (!userId) {
+      return { count: 0, success: true };
+    }
+
     const result = await this.prisma.notification.updateMany({
-      where: { isRead: false },
+      where: {
+        userId,
+        isRead: false,
+      },
       data: { isRead: true },
     });
 
@@ -543,9 +609,9 @@ export class NotificationsService {
   }
 
   /**
-   * Supprime une notification (idempotent, ne plante pas si inexistante).
+   * Supprime une notification de l'utilisateur (ou n'importe laquelle si rôle ADMIN).
    */
-  async deleteNotification(id: string) {
+  async deleteNotification(id: string, userId?: string, role?: string) {
     const notif = await this.prisma.notification.findUnique({ where: { id } });
     if (!notif) {
       return {
@@ -553,6 +619,13 @@ export class NotificationsService {
         id,
         message: 'Notification déjà supprimée ou locale',
       };
+    }
+
+    const isAdmin = role?.toUpperCase() === 'ADMIN';
+    if (!isAdmin && notif.userId !== userId) {
+      throw new ForbiddenException(
+        'Vous ne pouvez supprimer que vos propres notifications',
+      );
     }
 
     await this.prisma.notification.delete({ where: { id } });

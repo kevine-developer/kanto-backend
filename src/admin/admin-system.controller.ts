@@ -118,10 +118,7 @@ export class AdminSystemController {
   }
 
   @Post('preview-email')
-  async previewEmail(
-    @Body('to') to?: string,
-    @Body('template') template?: string,
-  ) {
+  previewEmail(@Body('to') to?: string, @Body('template') template?: string) {
     const targetEmail = to && to.includes('@') ? to : 'utilisateur@kanto.mg';
     const emailTemplate = template || 'system';
     const rendered = getEmailPreview(emailTemplate, targetEmail);

@@ -95,7 +95,6 @@ async function bootstrap() {
     /^http:\/\/172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+:\d+$/,
     /^http:\/\/169\.254\.\d+\.\d+:\d+$/,
     'https://kanto-admin.vercel.app',
-    /^https:\/\/.*\.vercel\.app$/,
   ];
 
   const defaultProdOrigins: (string | RegExp)[] = [
@@ -107,7 +106,6 @@ async function bootstrap() {
     'https://app-kanto.gastsar.fr',
     /^https:\/\/.*\.gastsar\.fr$/,
     'https://kanto-admin.vercel.app',
-    /^https:\/\/.*\.vercel\.app$/,
     /^https:\/\/.*\.kanto\.mg$/,
     /^kanto:\/\//,
     /^kantomg:\/\//,
@@ -182,7 +180,7 @@ async function bootstrap() {
             'https://auth-kanto.gastsar.fr',
             'https://*.gastsar.fr',
             'https://*.kanto.mg',
-            'https://*.vercel.app',
+            'https://kanto-admin.vercel.app',
           ],
         },
       },
