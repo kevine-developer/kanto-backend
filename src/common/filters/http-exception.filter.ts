@@ -8,6 +8,46 @@ import {
 } from '@nestjs/common';
 import type { Request, Response } from 'express';
 
+/**
+ * Patterns de paths associés aux scanners de sécurité automatisés (bots).
+ * Ces requêtes sont ignorées dans les logs pour réduire le bruit.
+ * Le serveur répond toujours 404 — seul le log est supprimé.
+ */
+const SCANNER_BOT_PATTERNS = [
+  /^\/\.env/,
+  /^\/\.aws\//,
+  /^\/\.git\//,
+  /^\/\.github\//,
+  /^\/\.gitlab/,
+  /^\/\.gitmodules/,
+  /^\/\.git-credentials/,
+  /^\/\.docker\//,
+  /^\/\.npmrc/,
+  /^\/\.s3cfg/,
+  /^\/\.boto/,
+  /^\/\.amplifyrc/,
+  /^\/\.claude\//,
+  /^\/\.ssh\//,
+  /^\/_profiler\//,
+  /^\/phpinfo/,
+  /^\/info\.php/,
+  /^\/wp-config/,
+  /^\/wp-content\//,
+  /^\/composer\.json/,
+  /^\/vendor\//,
+  /^\/Dockerfile/,
+  /^\/docker-compose/,
+  /^\/config\.php/,
+  /^\/credentials/,
+  /^\/auth\.json/,
+  /^\/secrets\.json/,
+  /^\/appsettings/,
+  /^\/aws-exports/,
+  /^\/sendgrid\.env/,
+  /^\/(env|env\.js|env\.txt|env-config\.js|runtime-config\.js)/,
+  /^\/(config|settings|database|index|app|back|api|public|src|server|admin|frontend|backend|laravel|nuxt|next|astro|remix|svelte|vue-app|angular-app|express-app|cordova|ionic|electron|capacitor|flutter|demo|dev|staging|production|backup|old|new|media|cms|core|v[0-9]+)\/(\.env|env)/,
+];
+
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(HttpExceptionFilter.name);
@@ -54,15 +94,23 @@ export class HttpExceptionFilter implements ExceptionFilter {
       );
     }
 
-    // Logger au niveau adapté
-    if (status >= 500) {
-      this.logger.error(
-        `❌ [HTTP ${status}] ${request.method} ${request.originalUrl} - ${message}`,
-      );
-    } else if (status >= 400) {
-      this.logger.warn(
-        `⚠️ [HTTP ${status}] ${request.method} ${request.originalUrl} - ${message}`,
-      );
+    // Ignorer silencieusement les 404 provenant de scanners de sécurité automatisés
+    const requestPath = request.originalUrl || request.url;
+    const isScannerBot =
+      status === HttpStatus.NOT_FOUND &&
+      SCANNER_BOT_PATTERNS.some((pattern) => pattern.test(requestPath));
+
+    // Logger au niveau adapté (sauf pour les bots scanners)
+    if (!isScannerBot) {
+      if (status >= 500) {
+        this.logger.error(
+          `❌ [HTTP ${status}] ${request.method} ${requestPath} - ${message}`,
+        );
+      } else if (status >= 400) {
+        this.logger.warn(
+          `⚠️ [HTTP ${status}] ${request.method} ${requestPath} - ${message}`,
+        );
+      }
     }
 
     const errorResponse = {

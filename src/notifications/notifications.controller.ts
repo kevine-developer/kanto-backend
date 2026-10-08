@@ -88,13 +88,12 @@ export class NotificationsController {
   }
 
   /**
-   * Supprime toutes les notifications (Administration uniquement).
+   * Supprime toutes les notifications pour l'utilisateur connecté.
    */
   @Delete('notifications')
   @UseGuards(AuthGuard)
-  @Roles(['ADMIN', 'admin'])
-  clearAllNotifications() {
-    return this.notificationsService.clearAllNotifications();
+  clearAllNotifications(@Session() session: UserSession) {
+    return this.notificationsService.clearAllNotifications(session.user.id);
   }
 
   // ─── ENDPOINTS ADMINISTRATION ─────────────────────────────────────────────
@@ -137,5 +136,15 @@ export class NotificationsController {
   @Roles(['ADMIN', 'admin'])
   deleteNotificationAdmin(@Param('id') id: string) {
     return this.notificationsService.deleteNotification(id);
+  }
+
+  /**
+   * Endpoint administration : Supprime toutes les notifications en base de données.
+   */
+  @Delete('admin/notifications')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  clearAllAdminNotifications() {
+    return this.notificationsService.clearAllAdminNotifications();
   }
 }
