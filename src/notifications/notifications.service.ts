@@ -622,10 +622,22 @@ export class NotificationsService {
     }
 
     const isAdmin = role?.toUpperCase() === 'ADMIN';
-    if (!isAdmin && notif.userId !== userId) {
-      throw new ForbiddenException(
-        'Vous ne pouvez supprimer que vos propres notifications',
-      );
+    if (!isAdmin) {
+      if (notif.isBroadcast && !notif.userId) {
+        // Notification de diffusion globale : ne pas supprimer pour tous en base,
+        // mais renvoyer un succès pour que le client la masque localement sans lever d'erreur.
+        return {
+          success: true,
+          id,
+          message: 'Notification de diffusion masquée pour cet utilisateur',
+        };
+      }
+
+      if (notif.userId !== userId) {
+        throw new ForbiddenException(
+          'Vous ne pouvez supprimer que vos propres notifications',
+        );
+      }
     }
 
     await this.prisma.notification.delete({ where: { id } });
@@ -633,9 +645,26 @@ export class NotificationsService {
   }
 
   /**
-   * Supprime toutes les notifications en base de données.
+   * Supprime toutes les notifications de l'utilisateur connecté en base de données.
    */
-  async clearAllNotifications() {
+  async clearAllNotifications(userId: string) {
+    if (!userId) {
+      return { count: 0, success: true };
+    }
+
+    const result = await this.prisma.notification.deleteMany({
+      where: { userId },
+    });
+    this.logger.log(
+      `🧹 [Notifications] ${result.count} notification(s) supprimée(s) pour l'utilisateur ${userId}.`,
+    );
+    return { count: result.count, success: true };
+  }
+
+  /**
+   * Supprime toutes les notifications en base de données (Administration uniquement).
+   */
+  async clearAllAdminNotifications() {
     const result = await this.prisma.notification.deleteMany();
     this.logger.log(
       `🧹 [Notifications] Suppression complète : ${result.count} notification(s) supprimée(s).`,

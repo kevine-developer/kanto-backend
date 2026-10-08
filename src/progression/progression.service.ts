@@ -270,9 +270,6 @@ export class ProgressionService {
       `Synchronisation de la progression pour l'utilisateur ${userId}`,
     );
 
-    let previousLevel = 0;
-    let additionalCoins = 0;
-
     const result = await this.prisma.$transaction(async (tx) => {
       let totalXpToAdd = 0;
 
@@ -304,8 +301,13 @@ export class ProgressionService {
 
       // 2. Mettre à jour UserProgress
       let progress = await tx.userProgress.findUnique({ where: { userId } });
+      // Niveau avant cette sync — capturé depuis la DB pour être fiable
+      let previousLevel = progress?.level ?? 0;
+      let additionalCoins = 0;
+
       if (!progress) {
         const initialLevel = this.calculateLevel(totalXpToAdd);
+        previousLevel = 0;
         progress = await tx.userProgress.create({
           data: {
             userId,
@@ -317,9 +319,7 @@ export class ProgressionService {
         });
       } else if (totalXpToAdd > 0) {
         const newTotal = Math.ceil(Number(progress.totalXp) + totalXpToAdd);
-        previousLevel = typeof progress.level === 'number' ? progress.level : 0;
         const newLevel = this.calculateLevel(newTotal);
-        additionalCoins = 0;
         if (newLevel > previousLevel) {
           for (let lvl = previousLevel + 1; lvl <= newLevel; lvl++) {
             additionalCoins += this.calculateLevelUpCoins(lvl);
@@ -357,7 +357,13 @@ export class ProgressionService {
       const updatedGames = await tx.gameProgression.findMany({
         where: { userId },
       });
-      return { progress, games: updatedGames, totalXpAdded: totalXpToAdd };
+      return {
+        progress,
+        games: updatedGames,
+        totalXpAdded: totalXpToAdd,
+        previousLevel,
+        additionalCoins,
+      };
     });
 
     if (result.totalXpAdded > 0 && result.progress) {
@@ -379,21 +385,23 @@ export class ProgressionService {
       );
     });
 
-    // Notification de montée de niveau
+    // Notification de montée de niveau — uniquement si une vraie progression a eu lieu dans cette sync
     if (
       result.progress &&
-      result.progress.level > previousLevel &&
+      result.totalXpAdded > 0 &&
+      result.progress.level > result.previousLevel &&
       result.progress.level >= 1
     ) {
       void this.sendLevelUpNotification(
         userId,
         result.progress.level,
-        additionalCoins,
+        result.additionalCoins,
       );
     }
 
     return { progress: result.progress, games: result.games };
   }
+
 
   /**
    * Statistiques globales de progression pour l'administration.
