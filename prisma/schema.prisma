@@ -26,6 +26,15 @@ enum ContentStatus {
   ARCHIVED // Archivé
 }
 
+enum ContributionStatus {
+  DRAFT // Brouillon privé modifiable par son auteur
+  PENDING_REVIEW // Soumis et en attente de validation par l'équipe
+  CHANGES_REQUESTED // Modifications demandées au contributeur
+  APPROVED // Approuvé et intégré au catalogue officiel
+  REJECTED // Refusé par l'équipe avec motif
+  ARCHIVED // Archivé
+}
+
 enum DifficultyLevel {
   EASY // Courant / Débutant
   MEDIUM // Intermédiaire
@@ -531,9 +540,20 @@ model Contribution {
   textFr   String        @db.Text
   meaning  String        @db.Text
   region   String?
-  status    ContentStatus @default(DRAFT)
+  status   ContributionStatus @default(DRAFT)
   score     Int           @default(0)
   viewCount Int           @default(0)
+
+  // Détection & Modération automatique des contenus
+  moderationFlagged      Boolean   @default(false)
+  moderationCategories   String[]  @default([])
+  moderationReason       String?   @db.Text
+  moderationDetails      Json?     // Stocke les occurrences et détails pour la modération admin
+  moderatedAt            DateTime?
+  adminFeedback          String?   @db.Text // Motif ou consignes lors d'un rejet ou demande de modifications
+  adminReviewedBy        String?   // Identifiant de l'administrateur
+  adminReviewedAt        DateTime?
+  lastNotificationSentAt DateTime? // Anti-spam / anti-doublon d'envoi d'e-mail d'alerte
 
   // Détection & Modération des doublons
   duplicateScore        Float?    // Score de similarité (ex: 0.85 = 85%)
@@ -554,11 +574,13 @@ model Contribution {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  votes    ContributionVote[]
-  comments ContributionComment[]
+  votes     ContributionVote[]
+  comments  ContributionComment[]
+  auditLogs ContributionAuditLog[]
 
   @@index([userId])
   @@index([status])
+  @@index([moderationFlagged])
   @@index([isDuplicateConfirmed])
   @@index([markedForDeletionAt])
   @@map("contributions")
@@ -599,6 +621,25 @@ model ContributionComment {
   @@index([userId])
   @@index([createdAt])
   @@map("contribution_comments")
+}
+
+model ContributionAuditLog {
+  id             String              @id @default(cuid())
+  contributionId String
+  contribution   Contribution        @relation(fields: [contributionId], references: [id], onDelete: Cascade)
+  userId         String?             // ID utilisateur ou modérateur ayant agi
+  userRole       String?             // 'ADMIN' | 'USER' | 'SYSTEM'
+  action         String              // 'CREATED_DRAFT', 'SUBMITTED', 'MODERATION_FLAGGED', 'APPROVED', 'REJECTED', 'CHANGES_REQUESTED', 'UPDATED'
+  fromStatus     ContributionStatus?
+  toStatus       ContributionStatus?
+  reason         String?             @db.Text
+  metadata       Json?
+  createdAt      DateTime            @default(now())
+
+  @@index([contributionId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("contribution_audit_logs")
 }
 
 // ======================================================

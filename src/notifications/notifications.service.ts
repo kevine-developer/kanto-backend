@@ -513,6 +513,14 @@ export class NotificationsService {
 
         if (created.userId) {
           // Notification ciblée à un utilisateur précis (ex: auteur d'une contribution commentée)
+          const prefs = await this.getUserPreferences(created.userId);
+          if (!prefs.enabled) {
+            this.logger.log(
+              `ℹ️ [Push] Notifications désactivées pour ${created.userId}, push ignoré.`,
+            );
+            return;
+          }
+
           const targetUser = await this.prisma.user.findUnique({
             where: { id: created.userId },
             select: { pushToken: true },
@@ -592,16 +600,16 @@ export class NotificationsService {
   /**
    * Marque toutes les notifications comme lues pour l'utilisateur connecté.
    */
-  async markAllAsRead(userId: string) {
-    if (!userId) {
-      return { count: 0, success: true };
+  async markAllAsRead(userId?: string) {
+    const whereClause: { isRead: boolean; OR?: Array<{ userId?: string; isBroadcast?: boolean }> } = {
+      isRead: false,
+    };
+    if (userId) {
+      whereClause.OR = [{ userId }, { isBroadcast: true }];
     }
 
     const result = await this.prisma.notification.updateMany({
-      where: {
-        userId,
-        isRead: false,
-      },
+      where: whereClause,
       data: { isRead: true },
     });
 
@@ -622,22 +630,10 @@ export class NotificationsService {
     }
 
     const isAdmin = role?.toUpperCase() === 'ADMIN';
-    if (!isAdmin) {
-      if (notif.isBroadcast && !notif.userId) {
-        // Notification de diffusion globale : ne pas supprimer pour tous en base,
-        // mais renvoyer un succès pour que le client la masque localement sans lever d'erreur.
-        return {
-          success: true,
-          id,
-          message: 'Notification de diffusion masquée pour cet utilisateur',
-        };
-      }
-
-      if (notif.userId !== userId) {
-        throw new ForbiddenException(
-          'Vous ne pouvez supprimer que vos propres notifications',
-        );
-      }
+    if (!isAdmin && userId && notif.userId && notif.userId !== userId) {
+      throw new ForbiddenException(
+        'Vous ne pouvez supprimer que vos propres notifications',
+      );
     }
 
     await this.prisma.notification.delete({ where: { id } });
@@ -647,13 +643,22 @@ export class NotificationsService {
   /**
    * Supprime toutes les notifications de l'utilisateur connecté en base de données.
    */
-  async clearAllNotifications(userId: string) {
-    if (!userId) {
-      return { count: 0, success: true };
+  async clearAllNotifications(userId?: string, role?: string) {
+    const isAdmin = role?.toUpperCase() === 'ADMIN';
+
+    // Si admin ou aucun userId spécifié (ex: purge globale de test/dev), tout supprimer
+    if (isAdmin || !userId) {
+      const result = await this.prisma.notification.deleteMany();
+      this.logger.log(
+        `🧹 [Notifications] Suppression complète : ${result.count} notification(s) supprimée(s).`,
+      );
+      return { count: result.count, success: true };
     }
 
     const result = await this.prisma.notification.deleteMany({
-      where: { userId },
+      where: {
+        OR: [{ userId }, { isBroadcast: true }],
+      },
     });
     this.logger.log(
       `🧹 [Notifications] ${result.count} notification(s) supprimée(s) pour l'utilisateur ${userId}.`,
@@ -670,5 +675,60 @@ export class NotificationsService {
       `🧹 [Notifications] Suppression complète : ${result.count} notification(s) supprimée(s).`,
     );
     return { count: result.count, success: true };
+  }
+
+  /**
+   * Récupère les préférences de notifications d'un utilisateur (avec fallback par défaut).
+   */
+  async getUserPreferences(userId: string) {
+    const defaultPrefs = {
+      enabled: true,
+      dailyContent: true,
+      dailyQuiz: true,
+      revision: true,
+      newStory: true,
+      weeklyChallenge: true,
+      customHours: {
+        dailyContent: { hour: 8, minute: 30 },
+        dailyQuiz: { hour: 12, minute: 30 },
+        revision: { hour: 17, minute: 30 },
+        newStory: { hour: 20, minute: 45 },
+        weeklyChallenge: { hour: 9, minute: 30, weekday: 2 },
+      },
+      timeZone: 'Indian/Antananarivo',
+    };
+    if (!userId) return defaultPrefs;
+    try {
+      const cached = await this.redisService.get<Record<string, unknown>>(
+        `user_notif_prefs:${userId}`,
+      );
+      if (!cached) return defaultPrefs;
+      return { ...defaultPrefs, ...cached };
+    } catch {
+      return defaultPrefs;
+    }
+  }
+
+  /**
+   * Enregistre les préférences de notifications d'un utilisateur dans Redis.
+   */
+  async updateUserPreferences(userId: string, prefs: Record<string, unknown>) {
+    if (!userId)
+      return { success: false, message: 'Utilisateur non identifié' };
+    try {
+      const current = await this.getUserPreferences(userId);
+      const updated = { ...current, ...prefs };
+      await this.redisService.set(`user_notif_prefs:${userId}`, updated);
+      this.logger.log(
+        `⚙️ [Notifications] Préférences mises à jour pour ${userId}`,
+      );
+      return { success: true, preferences: updated };
+    } catch (err) {
+      this.logger.warn(
+        `⚠️ [Notifications] Erreur mise à jour préférences pour ${userId} :`,
+        err,
+      );
+      return { success: false };
+    }
   }
 }

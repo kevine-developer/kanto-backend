@@ -52,38 +52,73 @@ export class NotificationsController {
   }
 
   /**
+   * Récupère les préférences de notifications intelligentes de l'utilisateur connecté.
+   */
+  @Get('notifications/preferences')
+  @UseGuards(AuthGuard)
+  getUserPreferences(@Session() session: UserSession) {
+    return this.notificationsService.getUserPreferences(session.user.id);
+  }
+
+  /**
+   * Met à jour les préférences de notifications de l'utilisateur connecté.
+   */
+  @Patch('notifications/preferences')
+  @UseGuards(AuthGuard)
+  updateUserPreferences(
+    @Session() session: UserSession,
+    @Body() body: Record<string, unknown>,
+  ) {
+    return this.notificationsService.updateUserPreferences(
+      session.user.id,
+      body,
+    );
+  }
+
+  /**
    * Marque une notification comme lue.
    */
   @Patch('notifications/:id/read')
-  @UseGuards(AuthGuard)
-  markAsRead(@Param('id') id: string, @Session() session: UserSession) {
-    return this.notificationsService.markAsRead(id, session.user.id);
+  markAsRead(
+    @Param('id') id: string,
+    @Query('userId') queryUserId?: string,
+    @Session() session?: UserSession,
+  ) {
+    const effectiveUserId = session?.user?.id || queryUserId;
+    return this.notificationsService.markAsRead(id, effectiveUserId);
   }
 
   /**
    * Marque toutes les notifications comme lues pour l'utilisateur connecté.
    */
   @Post('notifications/read-all')
-  @UseGuards(AuthGuard)
-  markAllAsRead(@Session() session: UserSession) {
-    return this.notificationsService.markAllAsRead(session.user.id);
+  markAllAsRead(
+    @Query('userId') queryUserId?: string,
+    @Session() session?: UserSession,
+  ) {
+    const effectiveUserId = session?.user?.id || queryUserId;
+    return this.notificationsService.markAllAsRead(effectiveUserId);
   }
 
   /**
    * Supprime une notification pour l'utilisateur.
    */
   @Delete('notifications/:id')
-  @UseGuards(AuthGuard)
   deleteNotificationUser(
     @Param('id') id: string,
-    @Session() session: UserSession,
+    @Query('userId') queryUserId?: string,
+    @Session() session?: UserSession,
   ) {
+    const effectiveUserId = session?.user?.id || queryUserId;
+    const role = session?.user?.role
+      ? (Array.isArray(session.user.role)
+          ? session.user.role[0]
+          : session.user.role)
+      : undefined;
     return this.notificationsService.deleteNotification(
       id,
-      session.user.id,
-      Array.isArray(session.user.role)
-        ? session.user.role[0]
-        : session.user.role,
+      effectiveUserId,
+      role,
     );
   }
 
@@ -91,9 +126,20 @@ export class NotificationsController {
    * Supprime toutes les notifications pour l'utilisateur connecté.
    */
   @Delete('notifications')
-  @UseGuards(AuthGuard)
-  clearAllNotifications(@Session() session: UserSession) {
-    return this.notificationsService.clearAllNotifications(session.user.id);
+  clearAllNotifications(
+    @Query('userId') queryUserId?: string,
+    @Session() session?: UserSession,
+  ) {
+    const effectiveUserId = session?.user?.id || queryUserId;
+    const role = session?.user?.role
+      ? (Array.isArray(session.user.role)
+          ? session.user.role[0]
+          : session.user.role)
+      : undefined;
+    return this.notificationsService.clearAllNotifications(
+      effectiveUserId,
+      role,
+    );
   }
 
   // ─── ENDPOINTS ADMINISTRATION ─────────────────────────────────────────────

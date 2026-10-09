@@ -7,6 +7,8 @@ import {
   buildBetaTesterRegistrationEmail,
   buildBetaTesterInvitationEmail,
   buildContributionApprovedEmail,
+  buildModerationAlertAdminEmail,
+  buildContributionStatusUpdateEmail,
 } from './templates/index.js';
 
 export interface SendEmailOptions {
@@ -56,6 +58,25 @@ export interface ContributionApprovedEmailOptions {
   contributionTitle: string;
   category: string;
   xpReward?: number;
+}
+
+export interface ModerationAlertAdminEmailOptions {
+  to: string | string[];
+  contributionId: string;
+  contributionTitle: string;
+  contributorName: string;
+  contributorId: string;
+  riskCategories: string[];
+  submissionDate: string;
+  adminReviewUrl: string;
+}
+
+export interface ContributionStatusUpdateEmailOptions {
+  to: string;
+  userName?: string;
+  contributionTitle: string;
+  status: 'REJECTED' | 'CHANGES_REQUESTED';
+  feedbackReason?: string;
 }
 
 @Injectable()
@@ -271,6 +292,53 @@ export class ResendService {
       contributionTitle: options.contributionTitle,
       category: options.category,
       xpReward: options.xpReward,
+    });
+
+    return this.sendEmail({
+      to: options.to,
+      subject,
+      text,
+      html,
+    });
+  }
+
+  /**
+   * Envoi d'une alerte email à l'équipe de modération/administration pour une contribution signalée.
+   */
+  async sendModerationAlertAdminEmail(
+    options: ModerationAlertAdminEmailOptions,
+  ): Promise<{ id?: string; simulated?: boolean }> {
+    const { subject, html, text } = buildModerationAlertAdminEmail({
+      to: Array.isArray(options.to) ? options.to[0] : options.to,
+      contributionId: options.contributionId,
+      contributionTitle: options.contributionTitle,
+      contributorName: options.contributorName,
+      contributorId: options.contributorId,
+      riskCategories: options.riskCategories,
+      submissionDate: options.submissionDate,
+      adminReviewUrl: options.adminReviewUrl,
+    });
+
+    return this.sendEmail({
+      to: options.to,
+      subject,
+      text,
+      html,
+    });
+  }
+
+  /**
+   * Envoi d'une notification email à l'auteur lors d'un rejet ou d'une demande d'ajustements.
+   */
+  async sendContributionStatusUpdateEmail(
+    options: ContributionStatusUpdateEmailOptions,
+  ): Promise<{ id?: string; simulated?: boolean }> {
+    const { subject, html, text } = buildContributionStatusUpdateEmail({
+      to: options.to,
+      userName: options.userName,
+      contributionTitle: options.contributionTitle,
+      status: options.status,
+      feedbackReason: options.feedbackReason,
     });
 
     return this.sendEmail({

@@ -20,6 +20,7 @@ import {
   UpdateTesterStatusDto,
   SendPlayInviteDto,
   BulkInviteDto,
+  VerifyBetaTesterDto,
 } from './dto/beta-tester.dto.js';
 import { AuthGuard, Roles } from '../auth/index.js';
 import { Throttle } from '@nestjs/throttler';
@@ -44,13 +45,25 @@ export class BetaTestersController {
   }
 
   /**
-   * Page de présentation et d'inscription accessible directement via /beta, /rejoindre-beta ou /testers.
+   * Page de présentation et d'inscription accessible directement via /beta, /rejoindre-beta, /testers ou /download.
    */
-  @Get(['beta', 'rejoindre-beta', 'testers'])
-  async getBetaLandingPage(@Res() res: Response): Promise<void> {
+  @Get(['beta', 'rejoindre-beta', 'testers', 'download'])
+  async getBetaLandingPage(
+    @Query('from') from: string | undefined,
+    @Query('target') target: string | undefined,
+    @Query('tab') tab: string | undefined,
+    @Res() res: Response,
+  ): Promise<void> {
     const testerCount = await this.betaTestersService.getPublicTesterCount();
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.send(renderBetaLandingPage({ testerCount }));
+    res.send(
+      renderBetaLandingPage({
+        testerCount,
+        fromDeeplink: from === 'deeplink' || Boolean(target),
+        targetPath: target,
+        initialTab: tab === 'already_registered' || tab === 'download' ? tab : 'register',
+      }),
+    );
   }
 
   /**
@@ -94,6 +107,26 @@ export class BetaTestersController {
     }
 
     res.status(HttpStatus.OK).json(result);
+  }
+
+  /**
+   * Endpoint public de vérification et confirmation de participation pour un testeur déjà inscrit.
+   */
+  @Post(['api/beta-testers/verify-participation', 'beta-testers/verify-participation'])
+  @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
+  async verifyParticipation(@Body() dto: VerifyBetaTesterDto) {
+    return this.betaTestersService.verifyParticipation(dto.email);
+  }
+
+  /**
+   * Endpoint public pour renvoyer le lien d'accès Play Store à un testeur confirmé.
+   */
+  @Post(['api/beta-testers/resend-invite-public', 'beta-testers/resend-invite-public'])
+  @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
+  async resendInvitePublic(@Body() dto: VerifyBetaTesterDto) {
+    return this.betaTestersService.resendInvitePublic(dto.email);
   }
 
   // ─── ENDPOINTS ADMINISTRATEUR (PROTÉGÉS) ───────────────────────────────────

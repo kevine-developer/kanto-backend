@@ -721,3 +721,187 @@ Kanto — Lova, Kolontsaina & Tantara Malagasy`.trim();
 
   return { subject, html, text };
 }
+
+/**
+ * 9. Email d'alerte pour les administrateurs lorsqu'une contribution nécessite une vérification renforcée.
+ */
+export interface ModerationAlertAdminEmailData {
+  to: string;
+  contributionId: string;
+  contributionTitle: string;
+  contributorName: string;
+  contributorId: string;
+  riskCategories: string[];
+  submissionDate: string;
+  adminReviewUrl: string;
+}
+
+export function buildModerationAlertAdminEmail(
+  data: ModerationAlertAdminEmailData,
+): EmailRenderOutput {
+  const subject = `⚠️ [Modération requise] Contribution signalée — ${data.contributionTitle}`;
+
+  const text = `Alerte de modération — Kanto MG
+
+Une contribution soumise nécessite une vérification renforcée avant toute publication :
+
+- Titre / Extrait : ${data.contributionTitle}
+- Identifiant : ${data.contributionId}
+- Contributeur : ${data.contributorName} (${data.contributorId})
+- Date de soumission : ${data.submissionDate}
+- Catégories de risque détectées : ${data.riskCategories.join(', ')}
+
+Pour des raisons de sécurité et de confidentialité, le contenu sensible brut n'est pas transmis par e-mail.
+Veuillez vous connecter à l'interface d'administration sécurisée pour examiner la contribution et statuer :
+${data.adminReviewUrl}
+
+Équipe de Modération Kanto MG`.trim();
+
+  const metadataItems = [
+    { label: 'Titre / Intitulé', value: data.contributionTitle },
+    { label: 'Identifiant', value: data.contributionId },
+    {
+      label: 'Contributeur',
+      value: `${data.contributorName} (${data.contributorId})`,
+    },
+    { label: 'Date de soumission', value: data.submissionDate },
+    {
+      label: 'Risques détectés',
+      value:
+        data.riskCategories.length > 0
+          ? data.riskCategories.join(', ')
+          : 'Examen manuel requis',
+    },
+  ];
+
+  const contentHtml = `
+    <h1 style="font-size: 19px; font-weight: 700; color: ${KANTO_COLORS.textPrimary}; margin: 0 0 16px 0; line-height: 26px;">
+      Vérification renforcée de modération requise
+    </h1>
+
+    <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 16px 0;">
+      Le système de modération automatique a placé une nouvelle contribution en attente d'examen humain suite à la détection d'éléments sensibles ou potentiellement non conformes aux CGU.
+    </p>
+
+    ${renderMetadataTable(metadataItems)}
+
+    ${renderNotice({
+      title: 'Contenu non publié',
+      content:
+        "Cette contribution est actuellement bloquée au statut <strong>PENDING_REVIEW</strong>. Elle n'apparaît dans aucun flux public et ne sera diffusée qu'après validation explicite par un administrateur.",
+      variant: 'security',
+    })}
+
+    <div style="margin-top: 26px;">
+      ${renderButton({
+        text: "Examiner la contribution dans l'administration",
+        url: data.adminReviewUrl,
+        variant: 'terracotta',
+      })}
+    </div>
+
+    <p style="font-size: 12px; line-height: 18px; color: ${KANTO_COLORS.textFootnote}; margin: 24px 0 0 0; word-break: break-all;">
+      Lien direct : <a href="${data.adminReviewUrl}" style="color: ${KANTO_COLORS.terracotta}; text-decoration: underline;">${data.adminReviewUrl}</a>
+    </p>
+  `;
+
+  const html = renderEmailLayout({
+    title: subject,
+    preheader: `Vérification renforcée pour la contribution "${data.contributionTitle}"`,
+    headerBadge: { label: 'Alerte Modération', variant: 'terracotta' },
+    contentHtml,
+  });
+
+  return { subject, html, text };
+}
+
+/**
+ * 10. Email envoyé à l'utilisateur lors d'un refus ou d'une demande de modifications.
+ */
+export interface ContributionStatusUpdateEmailData {
+  to: string;
+  userName?: string;
+  contributionTitle: string;
+  status: 'REJECTED' | 'CHANGES_REQUESTED';
+  feedbackReason?: string;
+}
+
+export function buildContributionStatusUpdateEmail(
+  data: ContributionStatusUpdateEmailData,
+): EmailRenderOutput {
+  const greeting = data.userName?.trim()
+    ? `Manao ahoana ${data.userName.trim()},`
+    : 'Manao ahoana,';
+
+  const isChangesRequested = data.status === 'CHANGES_REQUESTED';
+  const subject = isChangesRequested
+    ? `Ajustements demandés pour votre contribution — Kanto`
+    : `Mise à jour concernant votre contribution — Kanto`;
+
+  const actionText = isChangesRequested
+    ? `notre équipe de modération a examiné votre proposition (« ${data.contributionTitle} ») et vous invite à apporter quelques ajustements pour qu'elle puisse être publiée.`
+    : `votre proposition (« ${data.contributionTitle} ») n'a malheureusement pas pu être retenue pour intégrer le catalogue officiel Kanto.`;
+
+  const reasonBlock = data.feedbackReason
+    ? `\n\nMotif / Remarques de l'équipe :\n« ${data.feedbackReason} »`
+    : '';
+
+  const text = `${greeting}
+
+Nous vous remercions pour votre intérêt pour la culture malgache. Suite à l'examen de votre contribution : ${actionText}${reasonBlock}
+
+Retrouvez les détails et gérez vos contributions directement dans l'application Kanto.
+
+Kanto — Lova, Kolontsaina & Tantara Malagasy
+https://kanto.mg`.trim();
+
+  const contentHtml = `
+    <h1 style="font-size: 19px; font-weight: 700; color: ${KANTO_COLORS.textPrimary}; margin: 0 0 16px 0; line-height: 26px;">
+      ${isChangesRequested ? 'Modifications demandées sur votre contribution' : 'Votre contribution n’a pas été retenue'}
+    </h1>
+
+    <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 16px 0;">
+      ${greeting}
+    </p>
+
+    <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 18px 0;">
+      ${actionText}
+    </p>
+
+    ${
+      data.feedbackReason
+        ? renderNotice({
+            title: isChangesRequested
+              ? 'Consignes de l’équipe'
+              : 'Motif de la décision',
+            content: data.feedbackReason,
+            variant: isChangesRequested ? 'info' : 'warning',
+          })
+        : ''
+    }
+
+    <div style="margin-top: 26px;">
+      ${renderButton({
+        text: 'Consulter mes contributions',
+        url: 'https://kanto.mg',
+        variant: 'primary',
+      })}
+    </div>
+
+    <p style="font-size: 12.5px; line-height: 19px; color: ${KANTO_COLORS.textFootnote}; margin: 24px 0 0 0;">
+      Merci pour votre engagement auprès de la communauté Kanto !
+    </p>
+  `;
+
+  const html = renderEmailLayout({
+    title: subject,
+    preheader: `Statut de votre contribution "${data.contributionTitle}"`,
+    headerBadge: {
+      label: isChangesRequested ? 'Ajustements requis' : 'Retour modération',
+      variant: isChangesRequested ? 'ambre' : 'tanimbary',
+    },
+    contentHtml,
+  });
+
+  return { subject, html, text };
+}

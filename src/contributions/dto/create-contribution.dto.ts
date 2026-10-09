@@ -17,4 +17,7 @@ export class CreateContributionDto {
   @IsString()
   @IsOptional()
   region?: string;
+
+  @IsOptional()
+  isDraft?: boolean;
 }

@@ -49,7 +49,7 @@ export class BadgesService {
     ] = await Promise.all([
       this.prisma.userProgress.findUnique({ where: { userId } }),
       this.prisma.contribution.count({
-        where: { userId, status: 'PUBLISHED' },
+        where: { userId, status: 'APPROVED' },
       }),
       this.prisma.duelSession.count({
         where: { winnerId: userId, status: 'FINISHED' },

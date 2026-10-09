@@ -1,4 +1,4 @@
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
 import { CategoryType } from '../../../generated/prisma/client.js';
 
 export class UpdateContributionDto {
@@ -21,4 +21,8 @@ export class UpdateContributionDto {
   @IsString()
   @IsOptional()
   region?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  submit?: boolean;
 }

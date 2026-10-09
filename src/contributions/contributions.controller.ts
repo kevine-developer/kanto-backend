@@ -129,12 +129,30 @@ export class ContributionsController {
     return this.contributionsService.findMyContributions(session.user.id);
   }
 
-  /** GET /contributions/pending — Admin : contributions en attente */
+  /** POST /contributions/:id/submit — Soumettre un brouillon pour validation */
+  @Post(':id/submit')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  submitForReview(@Param('id') id: string, @Session() session: UserSession) {
+    return this.contributionsService.submitForReview(id, session.user.id);
+  }
+
+  /** GET /contributions/pending — Admin : contributions en attente et à modérer */
   @Get('pending')
   @UseGuards(AuthGuard)
   @Roles(['ADMIN', 'admin'])
-  findPending() {
-    return this.contributionsService.findPending();
+  findPending(
+    @Query('status') status?: string,
+    @Query('category') category?: string,
+    @Query('flagged') flagged?: string,
+    @Query('search') search?: string,
+  ) {
+    return this.contributionsService.findPending({
+      status,
+      category,
+      flagged: flagged !== undefined ? flagged === 'true' : undefined,
+      search,
+    });
   }
 
   /** GET /contributions/admin/stats — Admin : statistiques globales et objectif hebdo */
@@ -307,12 +325,30 @@ export class ContributionsController {
   // ADMINISTRATION
   // ──────────────────────────────────────────────────────────────────────────
 
-  /** PATCH /contributions/:id/validate — Approuver ou rejeter (admin) */
+  /** PATCH /contributions/:id/validate — Approuver, rejeter ou demander des modifications (admin) */
   @Patch(':id/validate')
   @UseGuards(AuthGuard)
   @Roles(['ADMIN', 'admin'])
-  validate(@Param('id') id: string, @Body() body: ValidateContributionDto) {
-    return this.contributionsService.validate(id, body.approve);
+  validate(
+    @Param('id') id: string,
+    @Body() body: ValidateContributionDto,
+    @Session() session: UserSession,
+  ) {
+    return this.contributionsService.validate(
+      id,
+      body.approve,
+      session.user.id,
+      body.reason ?? body.feedback,
+      body.requestChanges,
+    );
+  }
+
+  /** GET /contributions/:id/audit-logs — Historique des décisions de modération (admin) */
+  @Get(':id/audit-logs')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  getAuditLogs(@Param('id') id: string) {
+    return this.contributionsService.getAuditLogs(id);
   }
 
   // ──────────────────────────────────────────────────────────────────────────

@@ -21,6 +21,7 @@ const STREAK_XP_BONUS = [0, 5, 10, 15, 20, 25, 30, 35];
 @Injectable()
 export class ProgressionService {
   private readonly logger = new Logger(ProgressionService.name);
+  private readonly activeLevelUpNotifications = new Set<string>();
 
   constructor(
     private readonly prisma: PrismaService,
@@ -69,27 +70,16 @@ export class ProgressionService {
   }> {
     const today = this.getDateOnly(new Date());
 
-    let previousLevel = 0;
-    let additionalCoins = 0;
-    let isInitialUserProgress = false;
-
-    const result: {
-      progress: {
-        streakDays: number;
-        totalXp: number;
-        level: number;
-        coins: number;
-      };
-      xpBonus: number;
-      streakStatus: 'continued' | 'started' | 'already_recorded';
-    } = await this.prisma.$transaction(async (tx) => {
+    const result = await this.prisma.$transaction(async (tx) => {
       let progress = await tx.userProgress.findUnique({ where: { userId } });
+      let previousLevel = progress?.level ?? 0;
+      let additionalCoins = 0;
 
       // Premier enregistrement
       if (!progress) {
-        isInitialUserProgress = true;
         const xpBonus = STREAK_XP_BONUS[1];
         const newLevel = this.calculateLevel(xpBonus);
+        previousLevel = 0;
         progress = await tx.userProgress.create({
           data: {
             userId,
@@ -118,6 +108,9 @@ export class ProgressionService {
             coins: 0,
           },
           xpBonus,
+          previousLevel,
+          additionalCoins: 0,
+          isInitialUserProgress: true,
           streakStatus: 'started' as const,
         };
       }
@@ -126,7 +119,7 @@ export class ProgressionService {
         ? this.getDateOnly(new Date(progress.lastLoginDate))
         : null;
 
-      // Même jour → idempotent
+      // Même jour → idempotent : aucun XP ajouté, aucun changement de niveau possible
       if (lastLogin && this.isSameDay(lastLogin, today)) {
         return {
           progress: {
@@ -136,6 +129,9 @@ export class ProgressionService {
             coins: progress.coins,
           },
           xpBonus: 0,
+          previousLevel: progress.level,
+          additionalCoins: 0,
+          isInitialUserProgress: false,
           streakStatus: 'already_recorded' as const,
         };
       }
@@ -209,6 +205,9 @@ export class ProgressionService {
           coins: newCoins,
         },
         xpBonus,
+        previousLevel,
+        additionalCoins,
+        isInitialUserProgress: false,
         streakStatus: streakContinued
           ? ('continued' as const)
           : ('started' as const),
@@ -235,7 +234,7 @@ export class ProgressionService {
     });
 
     // 1. Notification in-app de bienvenue lors de la première connexion
-    if (isInitialUserProgress) {
+    if (result.isInitialUserProgress) {
       void this.sendWelcomeNotification(userId);
     }
 
@@ -250,12 +249,16 @@ export class ProgressionService {
       );
     }
 
-    // 3. Notification de montée de niveau
-    if (result.progress.level > previousLevel && result.progress.level >= 1) {
+    // 3. Notification de montée de niveau — uniquement si du XP a réellement été octroyé dans cet appel
+    if (
+      result.xpBonus > 0 &&
+      result.progress.level > result.previousLevel &&
+      result.progress.level >= 1
+    ) {
       void this.sendLevelUpNotification(
         userId,
         result.progress.level,
-        additionalCoins,
+        result.additionalCoins,
       );
     }
 
@@ -402,7 +405,6 @@ export class ProgressionService {
     return { progress: result.progress, games: result.games };
   }
 
-
   /**
    * Statistiques globales de progression pour l'administration.
    */
@@ -519,15 +521,16 @@ export class ProgressionService {
       };
     }
 
-    let previousLevel = 0;
-    let additionalCoins = 0;
-
     const updated = await this.prisma.$transaction(async (tx) => {
       let progress = await tx.userProgress.findUnique({
         where: { userId },
       });
+      let previousLevel = progress?.level ?? 0;
+      let additionalCoins = 0;
+
       if (!progress) {
         const initialLevel = this.calculateLevel(safeAmount);
+        previousLevel = 0;
         progress = await tx.userProgress.create({
           data: {
             userId,
@@ -538,6 +541,9 @@ export class ProgressionService {
             streakDays: 0,
           },
         });
+        if (initialLevel > 0) {
+          additionalCoins = this.calculateLevelUpCoins(initialLevel);
+        }
       } else {
         const newTotalXp = Math.ceil(Number(progress.totalXp) + safeAmount);
         previousLevel = typeof progress.level === 'number' ? progress.level : 0;
@@ -569,15 +575,19 @@ export class ProgressionService {
         },
       });
 
-      return progress;
+      return {
+        progress,
+        previousLevel,
+        additionalCoins,
+      };
     });
 
     await this.publishLeaderboardUpdate(
       userId,
-      Number(updated.totalXp),
-      updated.level,
+      Number(updated.progress.totalXp),
+      updated.progress.level,
       safeAmount,
-      updated.streakDays,
+      updated.progress.streakDays,
       source,
     );
 
@@ -589,14 +599,21 @@ export class ProgressionService {
     });
 
     // Notification de montée de niveau
-    if (updated.level > previousLevel && updated.level >= 1) {
-      void this.sendLevelUpNotification(userId, updated.level, additionalCoins);
+    if (
+      updated.progress.level > updated.previousLevel &&
+      updated.progress.level >= 1
+    ) {
+      void this.sendLevelUpNotification(
+        userId,
+        updated.progress.level,
+        updated.additionalCoins,
+      );
     }
 
     return {
-      totalXp: Number(updated.totalXp),
-      level: updated.level,
-      streakDays: updated.streakDays,
+      totalXp: Number(updated.progress.totalXp),
+      level: updated.progress.level,
+      streakDays: updated.progress.streakDays,
     };
   }
 
@@ -835,6 +852,16 @@ export class ProgressionService {
   private async sendWelcomeNotification(userId: string): Promise<void> {
     if (!this.notificationsService) return;
     try {
+      const existing = await this.prisma.notification.findFirst({
+        where: {
+          userId,
+          titleFr: { contains: 'Bienvenue sur Kanto' },
+        },
+      });
+      if (existing) {
+        return;
+      }
+
       await this.notificationsService.createNotification({
         userId,
         isBroadcast: false,
@@ -867,7 +894,38 @@ export class ProgressionService {
     coinsReward = 0,
   ): Promise<void> {
     if (!this.notificationsService || newLevel <= 0) return;
+
+    const lockKey = `${userId}:${newLevel}`;
+    if (this.activeLevelUpNotifications.has(lockKey)) {
+      this.logger.log(
+        `ℹ️ [LevelUp] Notification pour le niveau ${newLevel} déjà en cours de traitement pour ${userId}, émission ignorée.`,
+      );
+      return;
+    }
+    this.activeLevelUpNotifications.add(lockKey);
+    // Libération de précaution du verrou mémoire après 30s
+    setTimeout(() => {
+      this.activeLevelUpNotifications.delete(lockKey);
+    }, 30_000);
+
     try {
+      // Déduplication stricte : ne jamais envoyer plus d'une fois la notification pour le même niveau
+      const existing = await this.prisma.notification.findFirst({
+        where: {
+          userId,
+          category: 'reward',
+          badgeText: 'Level Up',
+          titleFr: { contains: `Niveau ${newLevel}` },
+        },
+      });
+
+      if (existing) {
+        this.logger.log(
+          `ℹ️ [LevelUp] Notification pour le niveau ${newLevel} déjà transmise à l'utilisateur ${userId}, émission ignorée.`,
+        );
+        return;
+      }
+
       const coinsTextMg =
         coinsReward > 0 ? ` sady nahazo valisoa +${coinsReward} Vola` : '';
       const coinsTextFr =
