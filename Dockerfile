@@ -1,9 +1,11 @@
 # syntax=docker/dockerfile:1.7
 
+ARG NODE_IMAGE=node:24-alpine
+
 # -----------------------------------------------------------------------------
 # Stage 1: Base - Configuration de l'environnement Node.js 24 Alpine
 # -----------------------------------------------------------------------------
-FROM node:24-alpine AS base
+FROM ${NODE_IMAGE} AS base
 
 WORKDIR /app
 
@@ -42,7 +44,7 @@ RUN npm prune --omit=dev
 # -----------------------------------------------------------------------------
 # Stage 4: Runner - Image de Production Légère et Sécurisée
 # -----------------------------------------------------------------------------
-FROM node:24-alpine AS runner
+FROM ${NODE_IMAGE} AS runner
 
 WORKDIR /app
 
