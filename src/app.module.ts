@@ -41,6 +41,7 @@ import { MarketingBannersModule } from './marketing-banners/marketing-banners.mo
 import { PagesModule } from './pages/pages.module.js';
 import { UserQuizModule } from './user-quiz/user-quiz.module.js';
 import { BetaTestersModule } from './beta-testers/beta-testers.module.js';
+import { DeeplinkModule } from './deeplink/deeplink.module.js';
 
 @Module({
   imports: [
@@ -106,6 +107,7 @@ import { BetaTestersModule } from './beta-testers/beta-testers.module.js';
     PagesModule,
     UserQuizModule,
     BetaTestersModule,
+    DeeplinkModule,
   ],
   controllers: [AppController],
   providers: [

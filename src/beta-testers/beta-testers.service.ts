@@ -381,4 +381,142 @@ export class BetaTestersService {
     await this.prisma.betaTester.delete({ where: { id } });
     return { success: true, message: 'Testeur supprimé avec succès.' };
   }
+
+  /**
+   * Vérifie et confirme la participation d'un testeur déjà inscrit.
+   * Permet au candidat de consulter son statut et d'accéder directement au téléchargement.
+   */
+  async verifyParticipation(emailInput: string) {
+    const email = emailInput.trim().toLowerCase();
+
+    const tester = await this.prisma.betaTester.findUnique({
+      where: { email },
+    });
+
+    if (!tester) {
+      return {
+        success: false,
+        exists: false,
+        message:
+          "Aucune candidature trouvée avec cette adresse e-mail. Vous pouvez vous inscrire ci-dessus pour rejoindre le programme de test !",
+      };
+    }
+
+    // Mise à jour de l'horodatage pour confirmer l'activité
+    await this.prisma.betaTester.update({
+      where: { id: tester.id },
+      data: { updatedAt: new Date() },
+    });
+
+    const statusLabels: Record<TesterStatus, { label: string; badge: string; description: string }> = {
+      PENDING: {
+        label: 'Candidature enregistrée',
+        badge: 'En attente',
+        description:
+          "Votre participation est confirmée ! Votre compte est actuellement en cours d'approbation pour la prochaine vague de testeurs fermés Google Play.",
+      },
+      APPROVED: {
+        label: 'Candidature approuvée',
+        badge: 'Accès autorisé',
+        description:
+          "Votre compte est approuvé pour le test fermé ! Vous pouvez dès à présent valider votre accès Google Play et télécharger l'application.",
+      },
+      INVITED: {
+        label: 'Invitation envoyée',
+        badge: 'Testeur actif',
+        description:
+          "Votre invitation Google Play a déjà été émise ! Si vous n'avez pas encore installé l'application, suivez les liens ci-dessous pour y accéder immédiatement.",
+      },
+      REJECTED: {
+        label: 'Non retenu',
+        badge: 'Vague complète',
+        description:
+          'Les places pour cette session de test sont actuellement complètes. Votre candidature reste enregistrée pour les prochains cycles.',
+      },
+    };
+
+    const statusInfo = statusLabels[tester.status] || {
+      label: 'Statut inconnu',
+      badge: 'Inconnu',
+      description: 'Participation enregistrée.',
+    };
+
+    return {
+      success: true,
+      exists: true,
+      status: tester.status,
+      statusLabel: statusInfo.label,
+      badge: statusInfo.badge,
+      description: statusInfo.description,
+      fullName: tester.fullName,
+      email: tester.email,
+      invitedAt: tester.invitedAt,
+      playStoreWebLink: DEFAULT_PLAY_WEB_LINK,
+      playStoreAppLink: DEFAULT_PLAY_APP_LINK,
+      canDownload: tester.status === TesterStatus.APPROVED || tester.status === TesterStatus.INVITED,
+      message: `Votre participation avec l'adresse ${tester.email} est confirmée. Statut : ${statusInfo.badge}.`,
+    };
+  }
+
+  /**
+   * Renvoyer l'email d'accès / invitation à un testeur confirmé (public, avec rate-limiting).
+   */
+  async resendInvitePublic(emailInput: string) {
+    const email = emailInput.trim().toLowerCase();
+
+    const tester = await this.prisma.betaTester.findUnique({
+      where: { email },
+    });
+
+    if (!tester) {
+      return {
+        success: false,
+        message: 'Adresse email non reconnue parmi les testeurs enregistrés.',
+      };
+    }
+
+    try {
+      if (tester.status === TesterStatus.APPROVED || tester.status === TesterStatus.INVITED) {
+        await this.resendService.sendBetaTesterInvitationEmail({
+          to: tester.email,
+          fullName: tester.fullName || undefined,
+          playStoreWebLink: DEFAULT_PLAY_WEB_LINK,
+          playStoreAppLink: DEFAULT_PLAY_APP_LINK,
+        });
+
+        await this.prisma.betaTester.update({
+          where: { id: tester.id },
+          data: {
+            inviteCount: { increment: 1 },
+            invitedAt: new Date(),
+          },
+        });
+
+        return {
+          success: true,
+          message: `L'email contenant vos liens d'accès Google Play a été renvoyé à ${tester.email}. Pensez à vérifier vos spams !`,
+        };
+      } else {
+        // Envoi du mail de confirmation d'inscription
+        await this.resendService.sendBetaTesterRegistrationEmail({
+          to: tester.email,
+          fullName: tester.fullName || undefined,
+          deviceModel: tester.deviceModel || undefined,
+        });
+
+        return {
+          success: true,
+          message: `Un e-mail récapitulatif de votre candidature a été renvoyé à ${tester.email}.`,
+        };
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      this.logger.error(`❌ [BetaTesters] Échec renvoi public email à ${email} : ${msg}`);
+      return {
+        success: false,
+        message: "Impossible d'expédier l'e-mail pour le moment. Veuillez réessayer dans quelques minutes.",
+      };
+    }
+  }
 }
+

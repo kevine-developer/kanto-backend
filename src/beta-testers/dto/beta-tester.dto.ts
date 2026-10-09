@@ -82,3 +82,13 @@ export class BulkInviteDto {
   @IsString()
   playStoreAppLink?: string;
 }
+
+export class VerifyBetaTesterDto {
+  @IsEmail({}, { message: 'Adresse email invalide' })
+  @IsNotEmpty({ message: "L'adresse email est requise" })
+  @Transform(({ value }) =>
+    typeof value === 'string' ? value.trim().toLowerCase() : value,
+  )
+  email: string;
+}
+

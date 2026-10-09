@@ -16,6 +16,7 @@ import {
 } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { RedisService } from '../redis/redis.service.js';
+import { PrismaService } from '../prisma/prisma.service.js';
 import { auth } from '../auth/auth.js';
 import { DuelService } from '../games/duel/duel.service.js';
 import { DuelGameTypeEnum } from '../games/duel/dto/duel.dto.js';
@@ -151,6 +152,7 @@ export class RealtimeGateway
   constructor(
     private readonly redisService: RedisService,
     private readonly duelService: DuelService,
+    private readonly prisma: PrismaService,
   ) {}
 
   afterInit() {
@@ -324,28 +326,59 @@ export class RealtimeGateway
   @SubscribeMessage(SOCKET_EVENTS.AUTHENTICATE)
   async handleAuthenticate(
     @ConnectedSocket() client: Socket,
-    @MessageBody() data: { token?: string; userId?: string },
+    @MessageBody() data: { token?: string; cookie?: string; userId?: string },
   ) {
     let sessionUserId = await this.extractAuthenticatedUserId(client);
 
-    // Si un jeton bearer d'authentification a été passé dans le payload du message
-    if (!sessionUserId && data?.token && typeof data.token === 'string') {
+    // 1. Tenter la validation de session Better-Auth si un token ou cookie est fourni
+    if (!sessionUserId && (data?.token || data?.cookie)) {
       try {
         const headers = new Headers();
-        headers.set('authorization', `Bearer ${data.token.trim()}`);
+        if (data.token && typeof data.token === 'string' && data.token.trim()) {
+          headers.set('authorization', `Bearer ${data.token.trim()}`);
+        }
+        if (
+          data.cookie &&
+          typeof data.cookie === 'string' &&
+          data.cookie.trim()
+        ) {
+          headers.set('cookie', data.cookie.trim());
+        }
         const session = await auth.api.getSession({ headers });
         if (session?.user?.id) {
           sessionUserId = session.user.id;
         }
       } catch {
-        // Session invalide
+        // Session non résolue via Better-Auth getSession
+      }
+    }
+
+    // 2. Fallback direct en base de données sur la table Session
+    if (
+      !sessionUserId &&
+      data?.token &&
+      typeof data.token === 'string' &&
+      data.token.trim()
+    ) {
+      try {
+        const dbSession = await this.prisma.session.findUnique({
+          where: { token: data.token.trim() },
+          select: { userId: true, expiresAt: true },
+        });
+        if (dbSession && dbSession.expiresAt > new Date()) {
+          sessionUserId = dbSession.userId;
+        }
+      } catch {
+        // Erreur de recherche en base ignorée
       }
     }
 
     if (!sessionUserId) {
-      this.logger.warn(
-        `🔒 [Realtime] Authentification refusée pour le socket ${client.id} : session manquante ou non valide.`,
-      );
+      if (data?.token || data?.cookie) {
+        this.logger.log(
+          `ℹ️ [Realtime] Session non reconnue ou expirée pour le socket ${client.id}.`,
+        );
+      }
       return {
         success: false,
         message: 'Authentification requise : session manquante ou invalide',
@@ -1401,9 +1434,32 @@ export class RealtimeGateway
         headers.set('authorization', `Bearer ${authToken}`);
       }
 
+      // Si un cookie Better-Auth est passé dans handshake auth
+      const authCookie =
+        (typeof handshakeAuth?.cookie === 'string'
+          ? handshakeAuth.cookie
+          : undefined) ||
+        (typeof handshakeAuth?.Cookie === 'string'
+          ? handshakeAuth.Cookie
+          : undefined);
+      if (authCookie && !headers.has('cookie')) {
+        headers.set('cookie', authCookie);
+      }
+
       const session = await auth.api.getSession({ headers });
       if (session?.user?.id) {
         return session.user.id;
+      }
+
+      // 2. Fallback direct en base de données sur la table Session
+      if (authToken && typeof authToken === 'string' && authToken.trim()) {
+        const dbSession = await this.prisma.session.findUnique({
+          where: { token: authToken.trim() },
+          select: { userId: true, expiresAt: true },
+        });
+        if (dbSession && dbSession.expiresAt > new Date()) {
+          return dbSession.userId;
+        }
       }
     } catch {
       // Fallback silencieux si la validation de session échoue
