@@ -7,7 +7,7 @@
  * - Fond minéral charbon chaud (#0D0D0B) & surfaces feutrées (#141412)
  * - Bordures soignées de 10-14px (Design moderne courbé mais maîtrisé)
  * - Zéro référence ou icône d'IA.
- * - Espace testeurs existants : confirmation de participation et téléchargement direct.
+ * - Espace téléchargement : accès direct au test fermé officiel Google Play.
  */
 
 export interface BetaLandingPageOptions {
@@ -1162,12 +1162,25 @@ export function renderBetaLandingPage(
       <!-- Sélecteur d'onglets (Nouveau candidat vs Déjà inscrit) -->
       <div class="tabs-nav">
         <button type="button" class="tab-btn ${initialTab === 'register' ? 'active' : ''}" id="tab-btn-register">
-          <span class="tab-icon">✨</span>
-          <span>Nouveau testeur</span>
+          <span class="tab-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <line x1="19" y1="8" x2="19" y2="14"></line>
+              <line x1="22" y1="11" x2="16" y2="11"></line>
+            </svg>
+          </span>
+          <span>Inscription testeur</span>
         </button>
         <button type="button" class="tab-btn ${initialTab === 'already_registered' || initialTab === 'download' ? 'active' : ''}" id="tab-btn-already">
-          <span class="tab-icon">👤</span>
-          <span>Vous êtes déjà inscrit ?</span>
+          <span class="tab-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+          </span>
+          <span>Télécharger l'application</span>
         </button>
       </div>
 
@@ -1188,7 +1201,7 @@ export function renderBetaLandingPage(
         <span id="success-text"></span>
       </div>
 
-      <!-- ─── ONGLET 1 : FORMULAIRE D'INSCRIPTION ─── -->
+      <!-- ─── ONGLET 1 : FORMULAIRE D'INSCRIPTION (E-MAIL UNIQUEMENT) ─── -->
       <div id="panel-register" style="display: ${initialTab === 'register' && !isRegistered ? 'block' : 'none'};">
         <form id="waitlist-form" method="POST" action="/api/beta-testers/register">
           <!-- Honeypot anti-bot -->
@@ -1197,23 +1210,8 @@ export function renderBetaLandingPage(
           </div>
 
           <div class="field">
-            <label class="field-label" for="fullName">
-              <span>Prénom ou pseudo</span>
-              <span class="hint">Facultatif</span>
-            </label>
-            <input 
-              type="text" 
-              id="fullName" 
-              name="fullName" 
-              class="field-input" 
-              placeholder="ex: Rova Razafy" 
-              maxlength="100"
-            >
-          </div>
-
-          <div class="field">
             <label class="field-label" for="email">
-              <span>Adresse Gmail</span>
+              <span>Votre adresse Gmail</span>
               <span class="required">Requis pour Google Play</span>
             </label>
             <input 
@@ -1226,23 +1224,8 @@ export function renderBetaLandingPage(
               autocomplete="email"
             >
             <p class="field-note">
-              Renseignez impérativement l'adresse Gmail connectée au Play Store de votre smartphone Android.
+              Renseignez l'adresse Gmail connectée au Play Store de votre smartphone Android.
             </p>
-          </div>
-
-          <div class="field">
-            <label class="field-label" for="deviceModel">
-              <span>Modèle de téléphone</span>
-              <span class="hint">Facultatif</span>
-            </label>
-            <input 
-              type="text" 
-              id="deviceModel" 
-              name="deviceModel" 
-              class="field-input" 
-              placeholder="ex: Samsung S23, Xiaomi Redmi..." 
-              maxlength="100"
-            >
           </div>
 
           <button type="submit" class="btn-submit" id="btn-submit">
@@ -1255,63 +1238,10 @@ export function renderBetaLandingPage(
         </form>
       </div>
 
-      <!-- ─── ONGLET 2 : DÉJÀ INSCRIT (CONFIRMATION & TÉLÉCHARGEMENT) ─── -->
+      <!-- ─── ONGLET 2 : TÉLÉCHARGEMENT OFFICIEL GOOGLE PLAY ─── -->
       <div id="panel-already" style="display: ${initialTab === 'already_registered' || initialTab === 'download' || isRegistered ? 'block' : 'none'};">
         <div class="already-box">
           
-          <!-- Bloc A : Confirmer mon compte / participation -->
-          <div class="action-panel">
-            <div class="action-panel-header">
-              <div class="action-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                </svg>
-              </div>
-              <div class="action-panel-titles">
-                <h3>Confirmer votre participation</h3>
-                <p>Vérifiez l'état de votre compte testeur et recevez vos liens</p>
-              </div>
-            </div>
-
-            <form id="verify-form" class="field" style="margin-bottom: 0;">
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                <input 
-                  type="email" 
-                  id="verify-email" 
-                  class="field-input" 
-                  placeholder="votre.adresse@gmail.com" 
-                  required 
-                  style="flex: 1; min-width: 200px;"
-                  value="${emailVal}"
-                >
-                <button type="submit" class="btn-submit" id="btn-verify" style="width: auto; padding: 11px 16px; margin-top: 0;">
-                  <span>Vérifier</span>
-                </button>
-              </div>
-            </form>
-
-            <!-- Résultat dynamique de vérification de statut -->
-            <div id="verify-result-box" class="status-result-box">
-              <div class="status-header-row">
-                <span style="font-size: 12px; font-weight: 600; color: #FFFFFF;" id="verify-account-name">Statut testeur</span>
-                <span id="verify-chip" class="status-badge-chip pending">En attente</span>
-              </div>
-              <p id="verify-desc" class="status-result-msg"></p>
-              
-              <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px;">
-                <button type="button" id="btn-resend-invite" class="btn-resend">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="22" y1="2" x2="11" y2="13"></line>
-                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                  </svg>
-                  <span>Renvoyer mes liens par email</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Bloc B : Télécharger l'application Google Play -->
           <div class="action-panel">
             <div class="action-panel-header">
               <div class="action-icon ochre">
@@ -1406,7 +1336,9 @@ export function renderBetaLandingPage(
     <div class="cookie-banner-container">
       <div class="cookie-banner-header">
         <div class="cookie-banner-title-row">
-          <span style="font-size: 16px;">🛡️</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-tanimbary); flex-shrink: 0;">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
           <h2 class="cookie-banner-title">Respect de votre vie privée &amp; Confidentialité</h2>
         </div>
         <p class="cookie-banner-text">
@@ -1429,7 +1361,12 @@ export function renderBetaLandingPage(
           <span class="section-eyebrow">Confidentialité &amp; Traçage</span>
           <h2 id="cookie-modal-title" class="cookie-modal-title">Préférences de confidentialité</h2>
         </div>
-        <button type="button" id="cookie-modal-close" class="cookie-modal-close-btn" aria-label="Fermer la fenêtre">✕</button>
+        <button type="button" id="cookie-modal-close" class="cookie-modal-close-btn" aria-label="Fermer la fenêtre">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
 
       <div class="cookie-modal-body">
@@ -1545,19 +1482,7 @@ export function renderBetaWaitlistScript(): string {
 
   var waitlistForm = document.getElementById('waitlist-form');
   var btnSubmit = document.getElementById('btn-submit');
-
-  var verifyForm = document.getElementById('verify-form');
-  var verifyEmailInput = document.getElementById('verify-email');
-  var btnVerify = document.getElementById('btn-verify');
-  var verifyResultBox = document.getElementById('verify-result-box');
-  var verifyChip = document.getElementById('verify-chip');
-  var verifyDesc = document.getElementById('verify-desc');
-  var verifyAccountName = document.getElementById('verify-account-name');
-  var btnResendInvite = document.getElementById('btn-resend-invite');
-
   var confirmedEmailDisplay = document.getElementById('confirmed-email-display');
-
-  var lastVerifiedEmail = '';
 
   // 2. Fonctions de bascule d'onglets
   function switchTab(tab) {
@@ -1599,7 +1524,6 @@ export function renderBetaWaitlistScript(): string {
       if (emailParam) {
         var emailInput = document.getElementById('email');
         if (emailInput) emailInput.value = emailParam;
-        if (verifyEmailInput) verifyEmailInput.value = emailParam;
       }
     } catch (e) {}
   }
@@ -1611,13 +1535,9 @@ export function renderBetaWaitlistScript(): string {
       hideBanners();
 
       var emailEl = document.getElementById('email');
-      var fullNameEl = document.getElementById('fullName');
-      var deviceModelEl = document.getElementById('deviceModel');
       var websiteEl = document.getElementById('website');
 
       var email = emailEl ? emailEl.value.trim() : '';
-      var fullName = fullNameEl ? fullNameEl.value.trim() : '';
-      var deviceModel = deviceModelEl ? deviceModelEl.value.trim() : '';
       var website = websiteEl ? websiteEl.value.trim() : '';
 
       if (!email || email.indexOf('@') === -1) {
@@ -1639,8 +1559,6 @@ export function renderBetaWaitlistScript(): string {
           },
           body: JSON.stringify({
             email: email,
-            fullName: fullName,
-            deviceModel: deviceModel,
             website: website
           })
         });
@@ -1651,7 +1569,6 @@ export function renderBetaWaitlistScript(): string {
           if (panelRegister) panelRegister.style.display = 'none';
           if (confirmationView) confirmationView.style.display = 'flex';
           if (confirmedEmailDisplay) confirmedEmailDisplay.innerText = email;
-          if (verifyEmailInput) verifyEmailInput.value = email;
 
           // Mise à jour discrète du badge si nouveau testeur
           var badgeEl = document.getElementById('header-tester-count');
@@ -1664,9 +1581,8 @@ export function renderBetaWaitlistScript(): string {
           }
         } else if (data.alreadyRegistered) {
           // Si l'adresse existe déjà : pas de doublon, pas de seconde confirmation, affichage d'un message adapté
-          if (verifyEmailInput) verifyEmailInput.value = email;
           var dupMsg = data.message || 'Cette adresse e-mail est déjà inscrite au programme bêta.';
-          showDuplicateNotice(dupMsg, email);
+          showDuplicateNotice(dupMsg);
         } else {
           var msg = data.message || "Une erreur est survenue lors de l'enregistrement.";
           showError(Array.isArray(msg) ? msg.join(' ; ') : msg);
@@ -1683,102 +1599,6 @@ export function renderBetaWaitlistScript(): string {
     });
   }
 
-  // 5. Vérification & confirmation de participation
-  if (verifyForm) {
-    verifyForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      hideBanners();
-
-      var email = verifyEmailInput ? verifyEmailInput.value.trim() : '';
-      if (!email || email.indexOf('@') === -1) {
-        showError('Veuillez renseigner votre adresse email.');
-        return;
-      }
-
-      lastVerifiedEmail = email;
-
-      if (btnVerify) {
-        btnVerify.disabled = true;
-        btnVerify.innerHTML = '<span>Vérification...</span>';
-      }
-
-      try {
-        var res = await fetch('/api/beta-testers/verify-participation', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify({ email: email })
-        });
-
-        var data = await res.json();
-
-        if (res.ok && data.success && data.exists) {
-          if (verifyResultBox) verifyResultBox.style.display = 'flex';
-          if (verifyAccountName) {
-            verifyAccountName.innerText = data.fullName ? data.fullName + ' (' + data.email + ')' : data.email;
-          }
-          if (verifyChip) {
-            verifyChip.innerText = data.badge || data.status;
-            verifyChip.className = 'status-badge-chip ' + (data.status ? data.status.toLowerCase() : 'pending');
-          }
-          if (verifyDesc) {
-            verifyDesc.innerText = data.description || data.message;
-          }
-          showSuccess(data.message || 'Votre participation est confirmée !');
-        } else {
-          if (verifyResultBox) verifyResultBox.style.display = 'none';
-          showError(data.message || 'Aucune candidature trouvée avec cette adresse.');
-        }
-      } catch (err) {
-        showError('Erreur de communication avec le serveur.');
-      } finally {
-        if (btnVerify) {
-          btnVerify.disabled = false;
-          btnVerify.innerHTML = '<span>Vérifier</span>';
-        }
-      }
-    });
-  }
-
-  // 6. Renvoi de lien d'accès par email
-  if (btnResendInvite) {
-    btnResendInvite.addEventListener('click', async function() {
-      var email = lastVerifiedEmail || (verifyEmailInput ? verifyEmailInput.value.trim() : '');
-      if (!email) {
-        showError("Veuillez d'abord renseigner votre adresse e-mail.");
-        return;
-      }
-
-      btnResendInvite.disabled = true;
-      btnResendInvite.innerHTML = '<span>Envoi en cours...</span>';
-
-      try {
-        var res = await fetch('/api/beta-testers/resend-invite-public', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify({ email: email })
-        });
-
-        var data = await res.json();
-        if (res.ok && data.success) {
-          showSuccess(data.message);
-        } else {
-          showError(data.message || "Impossible d'envoyer l'e-mail.");
-        }
-      } catch (err) {
-        showError("Erreur lors du renvoi de l'e-mail.");
-      } finally {
-        btnResendInvite.disabled = false;
-        btnResendInvite.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg> <span>Renvoyer mes liens par email</span>';
-      }
-    });
-  }
-
   function showError(msg) {
     if (errorBanner && errorText) {
       errorText.innerText = msg;
@@ -1786,22 +1606,20 @@ export function renderBetaWaitlistScript(): string {
     }
   }
 
-  function showDuplicateNotice(msg, email) {
+  function showDuplicateNotice(msg) {
     if (errorBanner && errorText) {
       errorText.innerHTML = '<span>' + escapeHtmlJs(msg) + '</span>' +
         '<div style="margin-top: 6px;">' +
-        '<button type="button" class="btn-switch-tab-link" id="btn-quick-check-status">' +
-        "Consulter votre compte testeur et vos liens d'accès →" +
+        '<button type="button" class="btn-switch-tab-link" id="btn-quick-download">' +
+        "Accéder directement aux liens de téléchargement Google Play →" +
         '</button>' +
         '</div>';
       errorBanner.style.display = 'flex';
 
-      var quickCheckBtn = document.getElementById('btn-quick-check-status');
-      if (quickCheckBtn) {
-        quickCheckBtn.addEventListener('click', function() {
+      var quickBtn = document.getElementById('btn-quick-download');
+      if (quickBtn) {
+        quickBtn.addEventListener('click', function() {
           switchTab('already');
-          if (verifyEmailInput) verifyEmailInput.value = email;
-          if (btnVerify) btnVerify.click();
         });
       }
     }
