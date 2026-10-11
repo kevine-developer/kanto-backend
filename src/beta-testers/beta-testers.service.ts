@@ -44,67 +44,84 @@ export class BetaTestersService {
 
     const email = dto.email.trim().toLowerCase();
 
-    // Vérifier si l'utilisateur est déjà inscrit
+    // Vérifier si l'utilisateur est déjà inscrit (comparaison normalisée)
     const existing = await this.prisma.betaTester.findUnique({
       where: { email },
     });
 
     if (existing) {
-      // Déjà inscrit : message informatif rassurant
-      const statusLabels: Record<TesterStatus, string> = {
-        PENDING: 'en attente de validation',
-        APPROVED: 'approuvé (invitation en cours de préparation)',
-        INVITED: 'invité (lien Play Store déjà expédié par email)',
-        REJECTED: 'non retenu pour cette vague',
+      this.logger.log(
+        `ℹ️ [BetaTesters] Tentative d'inscription pour adresse déjà enregistrée : ${email}`,
+      );
+      return {
+        success: false,
+        alreadyRegistered: true,
+        code: 'EMAIL_ALREADY_REGISTERED',
+        message: 'Cette adresse e-mail est déjà inscrite au programme bêta.',
+        status: existing.status,
       };
+    }
+
+    // Création en base de données avec gestion des soumissions simultanées (P2002)
+    try {
+      const tester = await this.prisma.betaTester.create({
+        data: {
+          email,
+          fullName: dto.fullName?.trim() || null,
+          deviceModel: dto.deviceModel?.trim() || null,
+          androidVersion: dto.androidVersion?.trim() || null,
+          notes: dto.notes?.trim() || null,
+          status: TesterStatus.PENDING,
+          ipAddress: clientIp || null,
+          userAgent: userAgent || null,
+        },
+      });
+
+      this.logger.log(
+        `🎉 [BetaTesters] Nouveau candidat inscrit : ${email} (${tester.fullName || 'Anonyme'}) - Appareil: ${tester.deviceModel || 'Non spécifié'}`,
+      );
+
+      // Envoi de l'e-mail informant le candidat de son inscription
+      try {
+        await this.resendService.sendBetaTesterRegistrationEmail({
+          to: email,
+          fullName: tester.fullName || undefined,
+          deviceModel: tester.deviceModel || undefined,
+        });
+        this.logger.log(
+          `✉️ [BetaTesters] Email de confirmation de candidature envoyé à ${email}`,
+        );
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err);
+        this.logger.error(
+          `❌ [BetaTesters] Erreur envoi email de confirmation à ${email} : ${msg}`,
+        );
+      }
+
       return {
         success: true,
-        alreadyRegistered: true,
-        message: `Vous êtes déjà inscrit avec cette adresse (${email}). Votre statut actuel est : ${statusLabels[existing.status]}.`,
+        alreadyRegistered: false,
+        testerId: tester.id,
+        message:
+          'Votre candidature a été enregistrée avec succès ! Un e-mail de confirmation vous a été envoyé.',
       };
+    } catch (error: unknown) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
+      ) {
+        this.logger.warn(
+          `⚠️ [BetaTesters] Conflit d'unicité concurrent (P2002) pour ${email}`,
+        );
+        return {
+          success: false,
+          alreadyRegistered: true,
+          code: 'EMAIL_ALREADY_REGISTERED',
+          message: 'Cette adresse e-mail est déjà inscrite au programme bêta.',
+        };
+      }
+      throw error;
     }
-
-    // Création en base de données
-    const tester = await this.prisma.betaTester.create({
-      data: {
-        email,
-        fullName: dto.fullName?.trim() || null,
-        deviceModel: dto.deviceModel?.trim() || null,
-        androidVersion: dto.androidVersion?.trim() || null,
-        notes: dto.notes?.trim() || null,
-        status: TesterStatus.PENDING,
-        ipAddress: clientIp || null,
-        userAgent: userAgent || null,
-      },
-    });
-
-    this.logger.log(
-      `🎉 [BetaTesters] Nouveau candidat inscrit : ${email} (${tester.fullName || 'Anonyme'}) - Appareil: ${tester.deviceModel || 'Non spécifié'}`,
-    );
-
-    // Envoi de l'email de confirmation de candidature
-    try {
-      await this.resendService.sendBetaTesterRegistrationEmail({
-        to: email,
-        fullName: tester.fullName || undefined,
-        deviceModel: tester.deviceModel || undefined,
-      });
-      this.logger.log(
-        `✉️ [BetaTesters] Email de confirmation de candidature envoyé à ${email}`,
-      );
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err);
-      this.logger.error(
-        `❌ [BetaTesters] Erreur envoi email de confirmation à ${email} : ${msg}`,
-      );
-    }
-
-    return {
-      success: true,
-      testerId: tester.id,
-      message:
-        'Votre candidature a été enregistrée avec succès ! Un e-mail de confirmation vous a été envoyé.',
-    };
   }
 
   /**
@@ -398,7 +415,7 @@ export class BetaTestersService {
         success: false,
         exists: false,
         message:
-          "Aucune candidature trouvée avec cette adresse e-mail. Vous pouvez vous inscrire ci-dessus pour rejoindre le programme de test !",
+          'Aucune candidature trouvée avec cette adresse e-mail. Vous pouvez vous inscrire ci-dessus pour rejoindre le programme de test !',
       };
     }
 
@@ -408,7 +425,10 @@ export class BetaTestersService {
       data: { updatedAt: new Date() },
     });
 
-    const statusLabels: Record<TesterStatus, { label: string; badge: string; description: string }> = {
+    const statusLabels: Record<
+      TesterStatus,
+      { label: string; badge: string; description: string }
+    > = {
       PENDING: {
         label: 'Candidature enregistrée',
         badge: 'En attente',
@@ -453,7 +473,9 @@ export class BetaTestersService {
       invitedAt: tester.invitedAt,
       playStoreWebLink: DEFAULT_PLAY_WEB_LINK,
       playStoreAppLink: DEFAULT_PLAY_APP_LINK,
-      canDownload: tester.status === TesterStatus.APPROVED || tester.status === TesterStatus.INVITED,
+      canDownload:
+        tester.status === TesterStatus.APPROVED ||
+        tester.status === TesterStatus.INVITED,
       message: `Votre participation avec l'adresse ${tester.email} est confirmée. Statut : ${statusInfo.badge}.`,
     };
   }
@@ -476,7 +498,10 @@ export class BetaTestersService {
     }
 
     try {
-      if (tester.status === TesterStatus.APPROVED || tester.status === TesterStatus.INVITED) {
+      if (
+        tester.status === TesterStatus.APPROVED ||
+        tester.status === TesterStatus.INVITED
+      ) {
         await this.resendService.sendBetaTesterInvitationEmail({
           to: tester.email,
           fullName: tester.fullName || undefined,
@@ -511,12 +536,14 @@ export class BetaTestersService {
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
-      this.logger.error(`❌ [BetaTesters] Échec renvoi public email à ${email} : ${msg}`);
+      this.logger.error(
+        `❌ [BetaTesters] Échec renvoi public email à ${email} : ${msg}`,
+      );
       return {
         success: false,
-        message: "Impossible d'expédier l'e-mail pour le moment. Veuillez réessayer dans quelques minutes.",
+        message:
+          "Impossible d'expédier l'e-mail pour le moment. Veuillez réessayer dans quelques minutes.",
       };
     }
   }
 }
-

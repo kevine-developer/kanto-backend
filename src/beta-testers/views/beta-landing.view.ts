@@ -28,7 +28,8 @@ export function renderBetaLandingPage(
     typeof options?.testerCount === 'number' ? options.testerCount : 0;
   const isRegistered = Boolean(options?.initialRegistered);
   const fromDeeplink = Boolean(options?.fromDeeplink);
-  const initialTab = options?.initialTab || (isRegistered ? 'already_registered' : 'register');
+  const initialTab =
+    options?.initialTab || (isRegistered ? 'already_registered' : 'register');
   const emailVal = options?.registeredEmail
     ? escapeHtml(options.registeredEmail)
     : '';
@@ -767,6 +768,350 @@ export function renderBetaLandingPage(
       h1 { font-size: 22px; }
       .reassurance { flex-direction: column; gap: 4px; }
     }
+
+    /* ─── GESTION DU CONSENTEMENT DES COOKIES & CONFIDENTIALITÉ ─── */
+    .footer-cookie-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--color-text-muted);
+      font-family: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-color: rgba(112, 112, 112, 0.4);
+      transition: color 0.15s ease;
+    }
+
+    .footer-cookie-btn:hover {
+      color: var(--color-text);
+      text-decoration-color: var(--color-text);
+    }
+
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.55);
+      padding: 16px 20px;
+      z-index: 9999;
+      animation: cookieSlideUp 0.25s ease-out;
+    }
+
+    @keyframes cookieSlideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .cookie-banner-container {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .cookie-banner-header {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .cookie-banner-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cookie-banner-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: -0.2px;
+    }
+
+    .cookie-banner-text {
+      font-size: 12.5px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+
+    .cookie-banner-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .cookie-btn {
+      padding: 9px 16px;
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border: 1px solid transparent;
+    }
+
+    .cookie-btn-primary {
+      background-color: var(--color-tanimbary-dark);
+      border-color: rgba(107, 158, 97, 0.5);
+      color: #FFFFFF;
+    }
+
+    .cookie-btn-primary:hover {
+      background-color: #1f5c39;
+      border-color: var(--color-tanimbary);
+    }
+
+    .cookie-btn-secondary {
+      background-color: var(--color-surface-input);
+      border-color: var(--color-border);
+      color: var(--color-text);
+    }
+
+    .cookie-btn-secondary:hover {
+      background-color: var(--color-surface-hover);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .cookie-btn-outline {
+      background: none;
+      border-color: var(--color-ochre);
+      color: var(--color-ochre);
+    }
+
+    .cookie-btn-outline:hover {
+      background-color: var(--color-ochre-bg);
+    }
+
+    /* Modal de personnalisation détaillée */
+    .cookie-modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      animation: cookieFadeIn 0.2s ease-out;
+    }
+
+    @keyframes cookieFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .cookie-modal-box {
+      width: 100%;
+      max-width: 540px;
+      max-height: 90vh;
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .cookie-modal-header {
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .cookie-modal-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: -0.3px;
+    }
+
+    .cookie-modal-close-btn {
+      background: none;
+      border: none;
+      color: var(--color-text-secondary);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 4px 8px;
+      line-height: 1;
+      border-radius: var(--radius-sm);
+    }
+
+    .cookie-modal-close-btn:hover {
+      color: #FFFFFF;
+    }
+
+    .cookie-modal-body {
+      padding: 18px 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .cookie-modal-intro {
+      font-size: 12.5px;
+      color: var(--color-text-secondary);
+      line-height: 1.45;
+    }
+
+    .cookie-category-item {
+      background-color: var(--color-surface-input);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .cookie-category-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .cookie-category-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cookie-category-title-row h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .cookie-status-badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cookie-status-badge.required {
+      background-color: rgba(107, 158, 97, 0.15);
+      color: var(--color-tanimbary);
+      border: 1px solid rgba(107, 158, 97, 0.3);
+    }
+
+    .cookie-status-badge.optional {
+      background-color: rgba(197, 139, 56, 0.15);
+      color: var(--color-ochre);
+      border: 1px solid rgba(197, 139, 56, 0.3);
+    }
+
+    .cookie-category-info p {
+      font-size: 11.5px;
+      color: var(--color-text-muted);
+      line-height: 1.4;
+    }
+
+    /* Toggle switches */
+    .cookie-toggle-wrapper {
+      position: relative;
+      width: 40px;
+      height: 22px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .cookie-toggle-wrapper input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .cookie-toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #2D2D2A;
+      border: 1px solid var(--color-border);
+      border-radius: 22px;
+      transition: all 0.2s ease;
+    }
+
+    .cookie-toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+      background-color: #8C8C88;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .cookie-toggle-wrapper input:checked + .cookie-toggle-slider {
+      background-color: var(--color-tanimbary-dark);
+      border-color: var(--color-tanimbary);
+    }
+
+    .cookie-toggle-wrapper input:checked + .cookie-toggle-slider:before {
+      transform: translateX(18px);
+      background-color: #FFFFFF;
+    }
+
+    .cookie-toggle-slider.disabled {
+      cursor: not-allowed;
+      opacity: 0.8;
+    }
+
+    .cookie-modal-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+      background-color: var(--color-surface-input);
+    }
+
+    .btn-switch-tab-link {
+      background: none;
+      border: none;
+      color: var(--color-ochre);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 4px 0;
+      text-decoration: underline;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-switch-tab-link:hover {
+      color: #E0A24A;
+    }
   </style>
 </head>
 <body>
@@ -1056,11 +1401,117 @@ export function renderBetaLandingPage(
     </div>
   </main>
 
+  <!-- Bannière de consentement aux cookies Kanto -->
+  <aside id="kanto-cookie-banner" class="cookie-banner" role="region" aria-label="Gestion des cookies et de la confidentialité" style="display: none;">
+    <div class="cookie-banner-container">
+      <div class="cookie-banner-header">
+        <div class="cookie-banner-title-row">
+          <span style="font-size: 16px;">🛡️</span>
+          <h2 class="cookie-banner-title">Respect de votre vie privée &amp; Confidentialité</h2>
+        </div>
+        <p class="cookie-banner-text">
+          Nous utilisons des cookies strictement nécessaires au fonctionnement de la plateforme. Avec votre accord, nous pouvons également activer des cookies pour mémoriser vos préférences, mesurer anonymement l'audience et évaluer nos campagnes d'invitation. Vos choix sont conservés pendant 6 mois et restent modifiables à tout moment.
+        </p>
+      </div>
+      <div class="cookie-banner-actions">
+        <button type="button" id="cookie-btn-accept-all" class="cookie-btn cookie-btn-primary">Tout accepter</button>
+        <button type="button" id="cookie-btn-reject-all" class="cookie-btn cookie-btn-secondary">Tout refuser</button>
+        <button type="button" id="cookie-btn-customize" class="cookie-btn cookie-btn-outline">Personnaliser mes choix</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Modal de personnalisation détaillée des préférences cookies -->
+  <div id="kanto-cookie-modal" class="cookie-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title" style="display: none;">
+    <div class="cookie-modal-box">
+      <div class="cookie-modal-header">
+        <div>
+          <span class="section-eyebrow">Confidentialité &amp; Traçage</span>
+          <h2 id="cookie-modal-title" class="cookie-modal-title">Préférences de confidentialité</h2>
+        </div>
+        <button type="button" id="cookie-modal-close" class="cookie-modal-close-btn" aria-label="Fermer la fenêtre">✕</button>
+      </div>
+
+      <div class="cookie-modal-body">
+        <p class="cookie-modal-intro">
+          Sélectionnez les catégories de cookies et traceurs que vous acceptez d'activer sur votre appareil. Vous pouvez modifier ou retirer votre consentement à tout instant via le lien « Gestion des cookies » présent dans le pied de page.
+        </p>
+
+        <!-- Catégorie 1 : Nécessaires -->
+        <div class="cookie-category-item">
+          <div class="cookie-category-info">
+            <div class="cookie-category-title-row">
+              <h3>Cookies nécessaires</h3>
+              <span class="cookie-status-badge required">Toujours actif</span>
+            </div>
+            <p>Indispensables au fonctionnement technique, à la sécurité des sessions et à la mémorisation de vos choix. Ils ne peuvent pas être désactivés (exemption légale Art. 82 ePrivacy / RGPD).</p>
+          </div>
+          <div class="cookie-toggle-wrapper">
+            <input type="checkbox" id="cookie-cat-necessary" checked disabled aria-label="Cookies nécessaires (toujours actifs)">
+            <label for="cookie-cat-necessary" class="cookie-toggle-slider disabled"></label>
+          </div>
+        </div>
+
+        <!-- Catégorie 2 : Préférences -->
+        <div class="cookie-category-item">
+          <div class="cookie-category-info">
+            <div class="cookie-category-title-row">
+              <h3>Préférences &amp; Fonctionnalités</h3>
+              <span class="cookie-status-badge optional">Optionnel</span>
+            </div>
+            <p>Permettent de mémoriser vos paramètres de confort tels que la langue d'affichage ou le dernier onglet consulté.</p>
+          </div>
+          <div class="cookie-toggle-wrapper">
+            <input type="checkbox" id="cookie-cat-preferences">
+            <label for="cookie-cat-preferences" class="cookie-toggle-slider"></label>
+          </div>
+        </div>
+
+        <!-- Catégorie 3 : Mesure d'audience -->
+        <div class="cookie-category-item">
+          <div class="cookie-category-info">
+            <div class="cookie-category-title-row">
+              <h3>Mesure d'audience (Statistiques)</h3>
+              <span class="cookie-status-badge optional">Optionnel</span>
+            </div>
+            <p>Collectent des données statistiques anonymisées sur la fréquentation et la navigation afin d'améliorer la fluidité de nos services.</p>
+          </div>
+          <div class="cookie-toggle-wrapper">
+            <input type="checkbox" id="cookie-cat-analytics">
+            <label for="cookie-cat-analytics" class="cookie-toggle-slider"></label>
+          </div>
+        </div>
+
+        <!-- Catégorie 4 : Marketing et communication -->
+        <div class="cookie-category-item">
+          <div class="cookie-category-info">
+            <div class="cookie-category-title-row">
+              <h3>Marketing &amp; Campagnes</h3>
+              <span class="cookie-status-badge optional">Optionnel</span>
+            </div>
+            <p>Utilisés pour évaluer l'impact des campagnes d'invitation des testeurs sur Google Play et orienter nos communications culturelles.</p>
+          </div>
+          <div class="cookie-toggle-wrapper">
+            <input type="checkbox" id="cookie-cat-marketing">
+            <label for="cookie-cat-marketing" class="cookie-toggle-slider"></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="cookie-modal-footer">
+        <button type="button" id="cookie-modal-btn-reject" class="cookie-btn cookie-btn-secondary">Tout refuser</button>
+        <button type="button" id="cookie-modal-btn-save" class="cookie-btn cookie-btn-primary">Enregistrer mes préférences</button>
+        <button type="button" id="cookie-modal-btn-accept" class="cookie-btn cookie-btn-outline">Tout accepter</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Pied de page officiel -->
   <footer>
     <div class="footer-nav">
       <a href="https://auth-kanto.gastsar.fr/pages/terms">Conditions d'utilisation (CGU)</a>
       <a href="https://auth-kanto.gastsar.fr/pages/privacy">Confidentialité</a>
+      <button type="button" class="footer-cookie-btn" id="btn-cookie-settings">Gestion des cookies</button>
       <a href="mailto:contact@kanto.mg">Contact</a>
     </div>
     <div class="footer-copy">
@@ -1196,23 +1647,26 @@ export function renderBetaWaitlistScript(): string {
 
         var data = await res.json();
 
-        if (res.ok && data.success) {
+        if (res.ok && data.success && !data.alreadyRegistered) {
           if (panelRegister) panelRegister.style.display = 'none';
           if (confirmationView) confirmationView.style.display = 'flex';
           if (confirmedEmailDisplay) confirmedEmailDisplay.innerText = email;
           if (verifyEmailInput) verifyEmailInput.value = email;
 
           // Mise à jour discrète du badge si nouveau testeur
-          if (!data.alreadyRegistered) {
-            var badgeEl = document.getElementById('header-tester-count');
-            if (badgeEl) {
-              var match = badgeEl.innerText.match(/\\d+/);
-              if (match) {
-                var newCount = parseInt(match[0], 10) + 1;
-                badgeEl.innerText = newCount + ' testeurs inscrits';
-              }
+          var badgeEl = document.getElementById('header-tester-count');
+          if (badgeEl) {
+            var match = badgeEl.innerText.match(/[0-9]+/);
+            if (match) {
+              var newCount = parseInt(match[0], 10) + 1;
+              badgeEl.innerText = newCount + ' testeurs inscrits';
             }
           }
+        } else if (data.alreadyRegistered) {
+          // Si l'adresse existe déjà : pas de doublon, pas de seconde confirmation, affichage d'un message adapté
+          if (verifyEmailInput) verifyEmailInput.value = email;
+          var dupMsg = data.message || 'Cette adresse e-mail est déjà inscrite au programme bêta.';
+          showDuplicateNotice(dupMsg, email);
         } else {
           var msg = data.message || "Une erreur est survenue lors de l'enregistrement.";
           showError(Array.isArray(msg) ? msg.join(' ; ') : msg);
@@ -1222,7 +1676,8 @@ export function renderBetaWaitlistScript(): string {
       } finally {
         if (btnSubmit) {
           btnSubmit.disabled = false;
-          btnSubmit.innerHTML = '<span>Demander l\\'accès testeur</span> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+          btnSubmit.innerHTML =
+            "<span>Demander l'accès testeur</span> <svg width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='5' y1='12' x2='19' y2='12'></line><polyline points='12 5 19 12 12 19'></polyline></svg>";
         }
       }
     });
@@ -1292,7 +1747,7 @@ export function renderBetaWaitlistScript(): string {
     btnResendInvite.addEventListener('click', async function() {
       var email = lastVerifiedEmail || (verifyEmailInput ? verifyEmailInput.value.trim() : '');
       if (!email) {
-        showError('Veuillez d\\'abord renseigner votre adresse e-mail.');
+        showError("Veuillez d'abord renseigner votre adresse e-mail.");
         return;
       }
 
@@ -1316,7 +1771,7 @@ export function renderBetaWaitlistScript(): string {
           showError(data.message || "Impossible d'envoyer l'e-mail.");
         }
       } catch (err) {
-        showError('Erreur lors du renvoi de l\\'e-mail.');
+        showError("Erreur lors du renvoi de l'e-mail.");
       } finally {
         btnResendInvite.disabled = false;
         btnResendInvite.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg> <span>Renvoyer mes liens par email</span>';
@@ -1331,6 +1786,36 @@ export function renderBetaWaitlistScript(): string {
     }
   }
 
+  function showDuplicateNotice(msg, email) {
+    if (errorBanner && errorText) {
+      errorText.innerHTML = '<span>' + escapeHtmlJs(msg) + '</span>' +
+        '<div style="margin-top: 6px;">' +
+        '<button type="button" class="btn-switch-tab-link" id="btn-quick-check-status">' +
+        "Consulter votre compte testeur et vos liens d'accès →" +
+        '</button>' +
+        '</div>';
+      errorBanner.style.display = 'flex';
+
+      var quickCheckBtn = document.getElementById('btn-quick-check-status');
+      if (quickCheckBtn) {
+        quickCheckBtn.addEventListener('click', function() {
+          switchTab('already');
+          if (verifyEmailInput) verifyEmailInput.value = email;
+          if (btnVerify) btnVerify.click();
+        });
+      }
+    }
+  }
+
+  function escapeHtmlJs(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
   function showSuccess(msg) {
     if (successBanner && successText) {
       successText.innerText = msg;
@@ -1342,6 +1827,203 @@ export function renderBetaWaitlistScript(): string {
     if (errorBanner) errorBanner.style.display = 'none';
     if (successBanner) successBanner.style.display = 'none';
   }
+
+  // ─── GESTION DU CONSENTEMENT DES COOKIES (CONFORMITÉ RGPD & ePrivacy) ───
+  var COOKIE_CONSENT_KEY = 'kanto_cookie_consent';
+  var CONSENT_MAX_AGE_DAYS = 180; // 6 mois (durée maximale de validité recommandée CNIL)
+
+  var cookieBanner = document.getElementById('kanto-cookie-banner');
+  var cookieModal = document.getElementById('kanto-cookie-modal');
+  var btnAcceptAll = document.getElementById('cookie-btn-accept-all');
+  var btnRejectAll = document.getElementById('cookie-btn-reject-all');
+  var btnCustomize = document.getElementById('cookie-btn-customize');
+  var btnModalClose = document.getElementById('cookie-modal-close');
+  var btnModalSave = document.getElementById('cookie-modal-btn-save');
+  var btnModalAccept = document.getElementById('cookie-modal-btn-accept');
+  var btnModalReject = document.getElementById('cookie-modal-btn-reject');
+  var btnFooterCookie = document.getElementById('btn-cookie-settings');
+
+  var togglePreferences = document.getElementById('cookie-cat-preferences');
+  var toggleAnalytics = document.getElementById('cookie-cat-analytics');
+  var toggleMarketing = document.getElementById('cookie-cat-marketing');
+
+  function getStoredConsent() {
+    var raw = null;
+    var cookieMatch = document.cookie.match(new RegExp('(?:^|; )' + COOKIE_CONSENT_KEY + '=([^;]*)'));
+    if (cookieMatch) {
+      raw = decodeURIComponent(cookieMatch[1]);
+    }
+    if (!raw) {
+      try {
+        raw = localStorage.getItem(COOKIE_CONSENT_KEY);
+      } catch (e) {}
+    }
+    if (!raw) return null;
+
+    try {
+      var parsed = JSON.parse(raw);
+      // Expiration au bout de 180 jours
+      if (parsed.timestamp && (Date.now() - parsed.timestamp) > (CONSENT_MAX_AGE_DAYS * 86400 * 1000)) {
+        return null;
+      }
+      return parsed;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function saveConsent(categories, actionType) {
+    var consentData = {
+      version: 1,
+      timestamp: Date.now(),
+      action: actionType || 'custom',
+      categories: {
+        necessary: true,
+        preferences: Boolean(categories.preferences),
+        analytics: Boolean(categories.analytics),
+        marketing: Boolean(categories.marketing)
+      }
+    };
+
+    var serialized = JSON.stringify(consentData);
+    var maxAgeSeconds = CONSENT_MAX_AGE_DAYS * 86400;
+
+    // Définition du cookie HTTP avec durée de conservation conforme (180j)
+    document.cookie = COOKIE_CONSENT_KEY + '=' + encodeURIComponent(serialized) +
+      '; Path=/; Max-Age=' + maxAgeSeconds + '; SameSite=Lax';
+
+    try {
+      localStorage.setItem(COOKIE_CONSENT_KEY, serialized);
+    } catch (e) {}
+
+    applyConsent(consentData.categories);
+
+    try {
+      window.dispatchEvent(new CustomEvent('kanto:consent-updated', { detail: consentData }));
+    } catch (e) {}
+
+    if (cookieBanner) cookieBanner.style.display = 'none';
+    closeModal();
+  }
+
+  function applyConsent(categories) {
+    // Débloque et exécute dynamiquement les balises scripts conditionnelles
+    var blockedScripts = document.querySelectorAll('script[type="text/plain"][data-consent-category]');
+    for (var i = 0; i < blockedScripts.length; i++) {
+      var scriptEl = blockedScripts[i];
+      var cat = scriptEl.getAttribute('data-consent-category');
+      if (categories && categories[cat]) {
+        var unblocked = document.createElement('script');
+        unblocked.type = 'text/javascript';
+        if (scriptEl.src) {
+          unblocked.src = scriptEl.src;
+        } else {
+          unblocked.text = scriptEl.text;
+        }
+        scriptEl.parentNode.replaceChild(unblocked, scriptEl);
+      }
+    }
+  }
+
+  function openModal() {
+    var current = getStoredConsent();
+    if (togglePreferences) {
+      togglePreferences.checked = current ? Boolean(current.categories.preferences) : false;
+    }
+    if (toggleAnalytics) {
+      toggleAnalytics.checked = current ? Boolean(current.categories.analytics) : false;
+    }
+    if (toggleMarketing) {
+      toggleMarketing.checked = current ? Boolean(current.categories.marketing) : false;
+    }
+    if (cookieModal) {
+      cookieModal.style.display = 'flex';
+      if (btnModalClose) btnModalClose.focus();
+    }
+  }
+
+  function closeModal() {
+    if (cookieModal) cookieModal.style.display = 'none';
+  }
+
+  // Vérification de la présence d'un choix préalable valide
+  var activeConsent = getStoredConsent();
+  if (!activeConsent) {
+    if (cookieBanner) cookieBanner.style.display = 'block';
+  } else {
+    applyConsent(activeConsent.categories);
+  }
+
+  // Écouteurs de la bannière
+  if (btnAcceptAll) {
+    btnAcceptAll.addEventListener('click', function() {
+      saveConsent({ preferences: true, analytics: true, marketing: true }, 'accept_all');
+    });
+  }
+  if (btnRejectAll) {
+    btnRejectAll.addEventListener('click', function() {
+      saveConsent({ preferences: false, analytics: false, marketing: false }, 'reject_all');
+    });
+  }
+  if (btnCustomize) {
+    btnCustomize.addEventListener('click', function() {
+      if (cookieBanner) cookieBanner.style.display = 'none';
+      openModal();
+    });
+  }
+
+  // Écouteurs de la modale de préférences
+  if (btnModalClose) {
+    btnModalClose.addEventListener('click', closeModal);
+  }
+  if (btnModalSave) {
+    btnModalSave.addEventListener('click', function() {
+      saveConsent({
+        preferences: togglePreferences ? togglePreferences.checked : false,
+        analytics: toggleAnalytics ? toggleAnalytics.checked : false,
+        marketing: toggleMarketing ? toggleMarketing.checked : false
+      }, 'custom');
+    });
+  }
+  if (btnModalAccept) {
+    btnModalAccept.addEventListener('click', function() {
+      saveConsent({ preferences: true, analytics: true, marketing: true }, 'accept_all');
+    });
+  }
+  if (btnModalReject) {
+    btnModalReject.addEventListener('click', function() {
+      saveConsent({ preferences: false, analytics: false, marketing: false }, 'reject_all');
+    });
+  }
+
+  // Accès permanent depuis le pied de page
+  if (btnFooterCookie) {
+    btnFooterCookie.addEventListener('click', openModal);
+  }
+
+  // Accessibilité : Fermeture au clavier via Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && cookieModal && cookieModal.style.display !== 'none') {
+      closeModal();
+    }
+  });
+
+  // API globale KantoConsent
+  window.KantoConsent = {
+    getConsent: getStoredConsent,
+    hasConsent: function(category) {
+      if (category === 'necessary') return true;
+      var c = getStoredConsent();
+      return Boolean(c && c.categories && c.categories[category]);
+    },
+    openSettings: openModal,
+    acceptAll: function() { saveConsent({ preferences: true, analytics: true, marketing: true }, 'accept_all'); },
+    rejectAll: function() { saveConsent({ preferences: false, analytics: false, marketing: false }, 'reject_all'); },
+    applyConsent: function() {
+      var c = getStoredConsent();
+      if (c) applyConsent(c.categories);
+    }
+  };
 })();
   `.trim();
 }
