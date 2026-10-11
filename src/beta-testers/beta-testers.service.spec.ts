@@ -110,6 +110,41 @@ describe('BetaTestersService', () => {
       });
     });
 
+    it('doit inscrire un testeur avec uniquement son email (sans pseudo ni modèle de téléphone)', async () => {
+      prisma.betaTester.findUnique.mockResolvedValue(null);
+      prisma.betaTester.create.mockResolvedValue({
+        id: 'tester_email_only',
+        email: 'simple@example.com',
+        fullName: null,
+        deviceModel: null,
+        status: TesterStatus.PENDING,
+      });
+
+      const result = await service.register({
+        email: 'simple@example.com',
+      });
+
+      expect(prisma.betaTester.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({
+          email: 'simple@example.com',
+          fullName: null,
+          deviceModel: null,
+          status: TesterStatus.PENDING,
+        }),
+      });
+
+      expect(
+        resendService.sendBetaTesterRegistrationEmail,
+      ).toHaveBeenCalledWith({
+        to: 'simple@example.com',
+        fullName: undefined,
+        deviceModel: undefined,
+      });
+
+      expect(result.success).toBe(true);
+      expect(result.alreadyRegistered).toBe(false);
+    });
+
     it('ne doit pas créer de doublon ni renvoyer d’email si l’adresse est déjà enregistrée', async () => {
       prisma.betaTester.findUnique.mockResolvedValue({
         id: 'existing_tester_1',
