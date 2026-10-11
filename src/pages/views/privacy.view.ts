@@ -84,8 +84,16 @@ export function renderPrivacyPage(options?: { hideHeader?: boolean }): string {
       <h2>7. Sécurité</h2>
       <p>Vos données sont stockées sur des serveurs sécurisés. Les mots de passe ne sont jamais stockés en clair. Les connexions sont protégées par HTTPS/TLS.</p>
 
-      <h2>8. Cookies</h2>
-      <p>L'application mobile Kanto n'utilise pas de cookies. Les sessions sont gérées via des tokens sécurisés stockés localement sur votre appareil.</p>
+      <h2>8. Cookies et traceurs</h2>
+      <p><strong>Application mobile :</strong> L'application mobile Kanto n'utilise aucun traceur publicitaire. Les sessions sont gérées via des tokens d'authentification sécurisés stockés localement sur votre appareil.</p>
+      <p><strong>Site web et pages d'inscription :</strong> Sur nos pages web (dont la plateforme bêta-testeurs), nous appliquons une gestion rigoureuse des traceurs conforme au RGPD et à la directive ePrivacy :</p>
+      <ul>
+        <li><strong>Nécessaires (exemptés de consentement) :</strong> indispensables au bon fonctionnement technique et à la sécurité (ex. mémorisation sécurisée de vos choix de confidentialité via le cookie <code>kanto_cookie_consent</code>, protection contre les abus).</li>
+        <li><strong>Préférences (optionnels) :</strong> mémorisation de vos choix d'interface (langue, affichage).</li>
+        <li><strong>Mesure d'audience (optionnels) :</strong> statistiques agrégées et anonymisées destinées à l'amélioration continue de l'expérience utilisateur, soumises à votre accord.</li>
+        <li><strong>Marketing (optionnels) :</strong> traceurs promotionnels ou tiers, strictement désactivés avant tout consentement explicite.</li>
+      </ul>
+      <p>Vos préférences de consentement sont conservées pendant une durée de <strong>180 jours (6 mois)</strong>. Vous pouvez à tout moment modifier ou retirer vos choix en cliquant sur le lien <strong>« Gestion des cookies »</strong> situé dans le pied de page.</p>
 
       <h2>9. Contact</h2>
       <div class="contact-card">

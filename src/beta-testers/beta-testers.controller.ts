@@ -61,7 +61,8 @@ export class BetaTestersController {
         testerCount,
         fromDeeplink: from === 'deeplink' || Boolean(target),
         targetPath: target,
-        initialTab: tab === 'already_registered' || tab === 'download' ? tab : 'register',
+        initialTab:
+          tab === 'already_registered' || tab === 'download' ? tab : 'register',
       }),
     );
   }
@@ -98,9 +99,12 @@ export class BetaTestersController {
       res.send(
         renderBetaLandingPage({
           testerCount,
-          initialRegistered: result.success,
+          initialRegistered: result.success && !result.alreadyRegistered,
           registeredEmail: dto.email,
           errorMessage: result.success ? undefined : result.message,
+          initialTab: result.alreadyRegistered
+            ? 'already_registered'
+            : 'register',
         }),
       );
       return;
@@ -112,7 +116,10 @@ export class BetaTestersController {
   /**
    * Endpoint public de vérification et confirmation de participation pour un testeur déjà inscrit.
    */
-  @Post(['api/beta-testers/verify-participation', 'beta-testers/verify-participation'])
+  @Post([
+    'api/beta-testers/verify-participation',
+    'beta-testers/verify-participation',
+  ])
   @HttpCode(HttpStatus.OK)
   @Throttle({ default: { limit: 10, ttl: 60000 } })
   async verifyParticipation(@Body() dto: VerifyBetaTesterDto) {
@@ -122,7 +129,10 @@ export class BetaTestersController {
   /**
    * Endpoint public pour renvoyer le lien d'accès Play Store à un testeur confirmé.
    */
-  @Post(['api/beta-testers/resend-invite-public', 'beta-testers/resend-invite-public'])
+  @Post([
+    'api/beta-testers/resend-invite-public',
+    'beta-testers/resend-invite-public',
+  ])
   @HttpCode(HttpStatus.OK)
   @Throttle({ default: { limit: 3, ttl: 60000 } })
   async resendInvitePublic(@Body() dto: VerifyBetaTesterDto) {

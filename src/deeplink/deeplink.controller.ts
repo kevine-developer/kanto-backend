@@ -111,6 +111,113 @@ export class DeeplinkController {
     );
   }
 
+  @Get(['u/:id', 'user/:id'])
+  handleUserProfile(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): void {
+    const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderDeeplinkGatewayPage({
+        path: `user/${id}`,
+        fullQueryString: qs,
+        title: 'Kanto • Profil membre',
+        description: 'Découvrez les contributions et le rang culturel de ce membre sur Kanto.',
+      }),
+    );
+  }
+
+  @Get(['c/:id', 'contribution/:id'])
+  handleContribution(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): void {
+    const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderDeeplinkGatewayPage({
+        path: `contribution/${id}`,
+        fullQueryString: qs,
+        title: 'Kanto • Fandraisana anjara (Contribution)',
+        description: 'Découvrez cette contribution partagée au sein de la communauté Kanto.',
+      }),
+    );
+  }
+
+  @Get(['p/:id', 'proverbe/:id', 'ohabolana/:id'])
+  handleProverb(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): void {
+    const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderDeeplinkGatewayPage({
+        path: `p/${id}`,
+        fullQueryString: qs,
+        title: 'Kanto • Ohabolana Malagasy (Proverbe)',
+        description: 'Découvrez ce trésor de la sagesse malgache sur Kanto.',
+      }),
+    );
+  }
+
+  @Get(['citation/:id', 'olon-kendry/:id'])
+  handleCitation(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): void {
+    const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderDeeplinkGatewayPage({
+        path: `citation/${id}`,
+        fullQueryString: qs,
+        title: "Kanto • Tenin'olon-kendry (Citation)",
+        description: 'Découvrez cette pensée inspirante sur Kanto Malagasy.',
+      }),
+    );
+  }
+
+  @Get('ugc/:id')
+  handleUgc(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): void {
+    const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderDeeplinkGatewayPage({
+        path: `ugc/${id}`,
+        fullQueryString: qs,
+        title: 'Kanto • Paquet de Quiz Communautaire',
+        description: 'Relevez le défi de ce quiz créé par la communauté Kanto.',
+      }),
+    );
+  }
+
+  @Get('download')
+  handleDownload(
+    @Req() req: Request,
+    @Res() res: Response,
+  ): void {
+    const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderDeeplinkGatewayPage({
+        path: '',
+        fullQueryString: qs,
+        title: "Kanto Malagasy • Télécharger l'application",
+        description: 'Installez Kanto sur votre smartphone pour explorer la culture et la sagesse malgache.',
+      }),
+    );
+  }
+
   @Get('join')
   handleJoin(
     @Query('code') code: string | undefined,
