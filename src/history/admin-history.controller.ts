@@ -106,6 +106,11 @@ export class AdminHistoryController {
   // ==========================================
   // 3. BILLETS
   // ==========================================
+  @Get('banknote-series')
+  getBanknoteSeries() {
+    return this.historyService.getBanknoteSeries();
+  }
+
   @Get('banknotes')
   getBanknotes() {
     return this.historyService.getBanknotes(true);

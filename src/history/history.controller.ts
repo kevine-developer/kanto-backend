@@ -31,6 +31,11 @@ export class HistoryController {
   }
 
   // 3. Billets
+  @Get('banknote-series')
+  getBanknoteSeries() {
+    return this.historyService.getBanknoteSeries();
+  }
+
   @Get('banknotes')
   getBanknotes() {
     return this.historyService.getBanknotes(false);
