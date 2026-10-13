@@ -20,6 +20,7 @@ import {
   DEFAULT_NATURE_EMBLEMS,
   DEFAULT_HISTORY_DATES,
   DEFAULT_NATIONAL_EMBLEMS,
+  HISTORICAL_BANKNOTE_SERIES,
 } from './constants/history-defaults.constant.js';
 import {
   CreateCivicLessonDto,
@@ -598,6 +599,10 @@ export class HistoryService implements OnModuleInit {
     });
   }
 
+  getBanknoteSeries() {
+    return Object.values(HISTORICAL_BANKNOTE_SERIES);
+  }
+
   async getBanknoteById(id: string) {
     const item = await this.prisma.banknote.findUnique({ where: { id } });
     if (!item) throw new NotFoundException(`Billet ${id} introuvable`);
@@ -605,6 +610,11 @@ export class HistoryService implements OnModuleInit {
   }
 
   async createBanknote(data: CreateBanknoteDto) {
+    const series = data.series || 'SERIE_2017';
+    const seriesMeta =
+      HISTORICAL_BANKNOTE_SERIES[series] ||
+      HISTORICAL_BANKNOTE_SERIES.SERIE_2017;
+
     const valueAriary =
       data.valueAriary !== undefined && data.valueAriary !== null
         ? Number(data.valueAriary)
@@ -630,36 +640,9 @@ export class HistoryService implements OnModuleInit {
           ? `Vola ${valueFmg.toLocaleString('fr-FR')} Faranka`
           : 'Vola Malagasy');
 
-    const series = data.series || 'SERIE_2017';
-    const seriesLabelFr =
-      data.seriesLabelFr?.trim() ||
-      (series === 'COLONIAL'
-        ? 'Période Coloniale — Franc Malgache (1925-1960)'
-        : series === 'SERIE_FMG'
-          ? 'Franc Malgache — Républiques (1960-2003)'
-          : series === 'SERIE_2003'
-            ? 'Série 2003 — Transition FMG vers Ariary'
-            : 'Série 2017 « Madagascar & ses Richesses »');
-
-    const seriesLabelMg =
-      data.seriesLabelMg?.trim() ||
-      (series === 'COLONIAL'
-        ? 'Vanim-potoana Zanatany — Faranka Malagasy (1925-1960)'
-        : series === 'SERIE_FMG'
-          ? 'Faranka Malagasy — Repoblika (1960-2003)'
-          : series === 'SERIE_2003'
-            ? 'Andiany 2003 — Fiovana FMG ho Ariary'
-            : 'Andiany 2017 « Madagasikara sy ny Harenany »');
-
-    const period =
-      data.period?.trim() ||
-      (series === 'COLONIAL'
-        ? '1925 - 1960'
-        : series === 'SERIE_FMG'
-          ? '1960 - 2003'
-          : series === 'SERIE_2003'
-            ? '2003 - 2017'
-            : '2017 - Présent');
+    const seriesLabelFr = data.seriesLabelFr?.trim() || seriesMeta.labelFr;
+    const seriesLabelMg = data.seriesLabelMg?.trim() || seriesMeta.labelMg;
+    const period = data.period?.trim() || seriesMeta.period;
 
     const payload = {
       ...data,
@@ -671,8 +654,8 @@ export class HistoryService implements OnModuleInit {
       seriesLabelFr,
       seriesLabelMg,
       period,
-      colorLight: data.colorLight || '#2C4075',
-      colorDark: data.colorDark || '#3E5AA1',
+      colorLight: data.colorLight || seriesMeta.colorLight,
+      colorDark: data.colorDark || seriesMeta.colorDark,
       isComingSoon: Boolean(data.isComingSoon),
     };
     const created = await this.prisma.banknote.create({ data: payload });
