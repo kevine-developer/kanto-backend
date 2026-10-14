@@ -905,3 +905,78 @@ https://kanto.mg`.trim();
 
   return { subject, html, text };
 }
+
+/**
+ * 9. Email de notification de sécurité lors d'un changement ou d'un ajout de mot de passe.
+ *    Envoyé systématiquement pour alerter l'utilisateur d'une modification sensible.
+ */
+export interface SecurityChangeEmailData {
+  to: string;
+  userName?: string;
+  action: 'changed' | 'added';
+}
+
+export function buildSecurityChangeEmail(
+  data: SecurityChangeEmailData,
+): EmailRenderOutput {
+  const greeting = data.userName?.trim()
+    ? `Bonjour ${data.userName.trim()},`
+    : 'Bonjour,';
+
+  const isAdded = data.action === 'added';
+
+  const subject = isAdded
+    ? 'Un mot de passe a été ajouté à votre compte Kanto'
+    : 'Votre mot de passe Kanto a été modifié';
+
+  const actionDescription = isAdded
+    ? 'Un mot de passe de connexion a été ajouté à votre compte Kanto. Vous pouvez désormais vous connecter avec votre adresse email et ce mot de passe, en plus de votre méthode de connexion habituelle.'
+    : "Le mot de passe de votre compte Kanto vient d'être modifié avec succès.";
+
+  const text = `${greeting}
+
+${actionDescription}
+
+Si vous n'êtes pas à l'origine de cette action, sécurisez immédiatement votre compte en réinitialisant votre mot de passe via l'application Kanto.
+
+Cette notification a été envoyée automatiquement pour votre sécurité.
+
+Kanto — Lova, Kolontsaina & Tantara Malagasy
+https://kanto.mg`.trim();
+
+  const contentHtml = `
+    <h1 style="font-size: 18px; font-weight: 700; color: ${KANTO_COLORS.textPrimary}; margin: 0 0 16px 0; line-height: 24px; letter-spacing: -0.2px;">
+      ${isAdded ? 'Mot de passe ajouté à votre compte' : 'Mot de passe modifié'}
+    </h1>
+
+    <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 14px 0;">
+      ${greeting}
+    </p>
+
+    <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 20px 0;">
+      ${actionDescription}
+    </p>
+
+    ${renderNotice({
+      title: "Ce n'était pas vous ?",
+      content:
+        "Si vous n'êtes pas à l'origine de cette action, sécurisez immédiatement votre compte en réinitialisant votre mot de passe depuis l'application Kanto ou en contactant notre équipe.",
+      variant: 'security',
+    })}
+
+    <p style="font-size: 12px; line-height: 18px; color: ${KANTO_COLORS.textFootnote}; margin: 24px 0 0 0;">
+      Cette notification de sécurité a été envoyée automatiquement. Vous n'avez aucune action à effectuer si vous êtes bien à l'origine de cette modification.
+    </p>
+  `;
+
+  const html = renderEmailLayout({
+    title: subject,
+    preheader: isAdded
+      ? 'Un mot de passe a été ajouté à votre compte Kanto'
+      : "Votre mot de passe Kanto vient d'être modifié",
+    headerBadge: { label: 'Sécurité du compte', variant: 'terracotta' },
+    contentHtml,
+  });
+
+  return { subject, html, text };
+}

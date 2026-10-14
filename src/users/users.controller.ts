@@ -12,6 +12,7 @@ import {
 import { UsersService } from './users.service.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
 import { UploadAvatarDto } from './dto/upload-avatar.dto.js';
+import { AddPasswordDto } from './dto/add-password.dto.js';
 import {
   AuthGuard,
   OptionalAuth,
@@ -84,5 +85,28 @@ export class UsersController {
     @Session() session?: UserSession,
   ) {
     return this.usersService.getPublicProfile(userId, session?.user?.id);
+  }
+
+  /**
+   * Récupère les méthodes d'authentification actives du compte courant.
+   * Permet à l'interface mobile d'adapter dynamiquement les options de sécurité.
+   * Ne retourne jamais les mots de passe ou tokens.
+   */
+  @Get('me/auth-methods')
+  @UseGuards(AuthGuard)
+  getAuthMethods(@Session() session: UserSession) {
+    return this.usersService.getAuthMethods(session.user.id);
+  }
+
+  /**
+   * Ajoute un mot de passe Kanto à un compte OAuth sans mot de passe local.
+   * Interdit si le compte possède déjà un mot de passe (réponse 409 Conflict).
+   * Throttling strict : 5 tentatives par minute.
+   */
+  @Post('me/add-password')
+  @UseGuards(AuthGuard)
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
+  addPassword(@Body() body: AddPasswordDto, @Session() session: UserSession) {
+    return this.usersService.addPassword(session.user.id, body.newPassword);
   }
 }

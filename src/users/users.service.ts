@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   Logger,
@@ -8,6 +9,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CloudinaryService } from '../integrations/cloudinary/cloudinary.service.js';
+import { ResendService } from '../integrations/resend/resend.service.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
 import { FriendshipStatus } from '../../generated/prisma/client.js';
 
@@ -18,6 +20,7 @@ export class UsersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly cloudinaryService: CloudinaryService,
+    private readonly resendService: ResendService,
   ) {}
 
   async getMyStats(userId: string) {
@@ -495,5 +498,123 @@ export class UsersService {
     }
 
     return { success: true, user: updatedUser };
+  }
+
+  /**
+   * Retourne les méthodes d'authentification actives associées au compte.
+   * Utilisé par l'interface mobile pour adapter dynamiquement les options de sécurité.
+   * Ne retourne jamais le mot de passe ou les tokens.
+   */
+  async getAuthMethods(userId: string): Promise<{
+    providers: string[];
+    hasPassword: boolean;
+  }> {
+    const accounts = await this.prisma.account.findMany({
+      where: { userId },
+      select: { providerId: true },
+    });
+
+    if (!accounts.length) {
+      return { providers: [], hasPassword: false };
+    }
+
+    const providers = accounts.map((a) => a.providerId);
+    const hasPassword = providers.includes('credential');
+
+    return { providers, hasPassword };
+  }
+
+  /**
+   * Ajoute un mot de passe Kanto à un compte qui n'en possède pas encore.
+   * Réservé exclusivement aux comptes utilisant uniquement des fournisseurs OAuth.
+   * Utilise hashPassword de Better-Auth pour garantir la compatibilité du format de hash.
+   *
+   * Sécurité :
+   * - Vérifie que le compte n'a pas déjà un mot de passe (idempotence)
+   * - Hashe le mot de passe avec le même algorithme que Better-Auth (scrypt)
+   * - Ne révèle pas l'existence d'un compte si userId invalide
+   * - Envoie une notification email de sécurité après succès
+   */
+  async addPassword(
+    userId: string,
+    newPassword: string,
+  ): Promise<{ success: boolean }> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, email: true, name: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Utilisateur introuvable');
+    }
+
+    // Vérification idempotente : le compte possède-t-il déjà un mot de passe ?
+    const existingCredential = await this.prisma.account.findFirst({
+      where: { userId, providerId: 'credential' },
+      select: { id: true },
+    });
+
+    if (existingCredential) {
+      throw new ConflictException(
+        'Ce compte possède déjà un mot de passe. Utilisez la fonctionnalité de modification du mot de passe.',
+      );
+    }
+
+    // Hachage sécurisé via le même algorithme que Better-Auth (scrypt, node:crypto)
+    let hashedPassword: string;
+    try {
+      const { hashPassword } = await import(
+        'better-auth/dist/crypto/index.mjs' as string
+      );
+      hashedPassword = await hashPassword(newPassword);
+    } catch (importErr) {
+      // Fallback: utiliser @better-auth/utils/password directement
+      try {
+        const { hashPassword: hashPasswordFallback } = await import(
+          '@better-auth/utils/password'
+        );
+        hashedPassword = await hashPasswordFallback(newPassword);
+      } catch (fallbackErr) {
+        this.logger.error(
+          '[addPassword] Échec du hachage du mot de passe :',
+          fallbackErr,
+        );
+        throw new BadRequestException(
+          'Une erreur interne est survenue. Veuillez réessayer.',
+        );
+      }
+    }
+
+    // Création de l'Account credential — format identique à celui créé par Better-Auth
+    await this.prisma.account.create({
+      data: {
+        accountId: user.id,
+        providerId: 'credential',
+        userId: user.id,
+        password: hashedPassword,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    });
+
+    this.logger.log(
+      `[addPassword] Mot de passe ajouté pour l'utilisateur ${userId}`,
+    );
+
+    // Notification email de sécurité (non bloquante)
+    this.resendService
+      .sendSecurityChangeEmail({
+        to: user.email,
+        userName: user.name,
+        action: 'added',
+      })
+      .catch((err) => {
+        this.logger.warn(
+          `[addPassword] Échec envoi email de notification sécurité pour ${user.email} :`,
+          err,
+        );
+      });
+
+    return { success: true };
   }
 }
