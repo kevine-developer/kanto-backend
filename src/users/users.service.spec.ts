@@ -6,6 +6,7 @@ import * as path from 'node:path';
 import { UsersService } from './users.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CloudinaryService } from '../integrations/cloudinary/cloudinary.service.js';
+import { ResendService } from '../integrations/resend/resend.service.js';
 import {
   createPrismaMock,
   type PrismaMock,
@@ -24,6 +25,11 @@ describe('UsersService', () => {
     uploadImageBase64: jest.Mock<any>;
     deleteMediaFromUrl: jest.Mock<any>;
   };
+  let resendMock: {
+    sendSecurityChangeEmail: jest.Mock<any>;
+    sendPasswordResetEmail: jest.Mock<any>;
+    isConfigured: jest.Mock<any>;
+  };
 
   beforeEach(async () => {
     prismaMock = createPrismaMock();
@@ -40,12 +46,18 @@ describe('UsersService', () => {
         ),
       deleteMediaFromUrl: jest.fn<any>().mockResolvedValue(true),
     };
+    resendMock = {
+      sendSecurityChangeEmail: jest.fn<any>().mockResolvedValue({ simulated: true }),
+      sendPasswordResetEmail: jest.fn<any>().mockResolvedValue({ simulated: true }),
+      isConfigured: jest.fn<any>().mockReturnValue(false),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UsersService,
         { provide: PrismaService, useValue: prismaMock },
         { provide: CloudinaryService, useValue: cloudinaryMock },
+        { provide: ResendService, useValue: resendMock },
       ],
     }).compile();
 

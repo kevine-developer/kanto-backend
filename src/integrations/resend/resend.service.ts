@@ -9,6 +9,7 @@ import {
   buildContributionApprovedEmail,
   buildModerationAlertAdminEmail,
   buildContributionStatusUpdateEmail,
+  buildSecurityChangeEmail,
 } from './templates/index.js';
 
 export interface SendEmailOptions {
@@ -77,6 +78,12 @@ export interface ContributionStatusUpdateEmailOptions {
   contributionTitle: string;
   status: 'REJECTED' | 'CHANGES_REQUESTED';
   feedbackReason?: string;
+}
+
+export interface SecurityChangeEmailOptions {
+  to: string;
+  userName?: string;
+  action: 'changed' | 'added';
 }
 
 @Injectable()
@@ -339,6 +346,27 @@ export class ResendService {
       contributionTitle: options.contributionTitle,
       status: options.status,
       feedbackReason: options.feedbackReason,
+    });
+
+    return this.sendEmail({
+      to: options.to,
+      subject,
+      text,
+      html,
+    });
+  }
+
+  /**
+   * Notification de sécurité lors d'un changement ou d'un ajout de mot de passe.
+   * Toujours envoyée, quelle que soit l'origine de l'opération.
+   */
+  async sendSecurityChangeEmail(
+    options: SecurityChangeEmailOptions,
+  ): Promise<{ id?: string; simulated?: boolean }> {
+    const { subject, html, text } = buildSecurityChangeEmail({
+      to: options.to,
+      userName: options.userName,
+      action: options.action,
     });
 
     return this.sendEmail({
