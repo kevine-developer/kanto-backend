@@ -62,6 +62,9 @@ describe('BetaTestersController', () => {
       expect(res.send).toHaveBeenCalledWith(
         expect.stringContaining('alreadyRegistered'),
       );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('theme-toggle'),
+      );
     });
   });
 
@@ -87,6 +90,12 @@ describe('BetaTestersController', () => {
       );
       expect(res.send).toHaveBeenCalledWith(
         expect.stringContaining('btn-cookie-settings'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('theme-toggle'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('[data-theme="light"]'),
       );
     });
   });

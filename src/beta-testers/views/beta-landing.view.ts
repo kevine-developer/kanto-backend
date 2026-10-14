@@ -62,9 +62,25 @@ export function renderBetaLandingPage(
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+  <!-- Détection immédiate du thème pour éviter le flash blanc/noir (FOUC) -->
+  <script>
+    (function() {
+      try {
+        var savedTheme = localStorage.getItem('kanto_theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = savedTheme ? savedTheme : (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+        var metaTheme = document.querySelector('meta[name="theme-color"]');
+        if (metaTheme) {
+          metaTheme.setAttribute('content', theme === 'light' ? '#F5F4F0' : '#0D0D0B');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <style>
-    :root {
-      /* Palette officielle Kanto Terre & Encre */
+    :root, [data-theme="dark"] {
+      /* Palette officielle Kanto Terre & Encre — Mode Sombre (Dark) */
       --color-bg: #0D0D0B;
       --color-surface: #141412;
       --color-surface-input: #1C1C1A;
@@ -76,6 +92,8 @@ export function renderBetaLandingPage(
       
       --color-tanimbary: #6B9E61;
       --color-tanimbary-dark: #16442A;
+      --color-tanimbary-btn: #16442A;
+      --color-tanimbary-btn-hover: #1f5c39;
       --color-tanimbary-glow: rgba(107, 158, 97, 0.15);
       
       --color-ochre: #C58B38;
@@ -86,13 +104,39 @@ export function renderBetaLandingPage(
       --color-text-secondary: #9C9C98;
       --color-text-muted: #707070;
       
+      --color-heading: #FFFFFF;
+      --color-brand-title: #FFFFFF;
+      
+      --color-card-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+      --color-modal-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      --color-cookie-shadow: 0 -8px 24px rgba(0, 0, 0, 0.55);
+      
+      --color-tab-active-bg: #141412;
+      --color-tab-active-text: #FFFFFF;
+      --color-tab-active-border: rgba(255, 255, 255, 0.08);
+      --color-tab-active-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      
+      --color-dot-pattern-1: rgba(107, 158, 97, 0.04);
+      --color-dot-pattern-2: rgba(197, 139, 56, 0.03);
+      
+      --color-deeplink-bg: linear-gradient(135deg, rgba(22, 68, 42, 0.35), rgba(197, 139, 56, 0.15));
+      --color-deeplink-border: rgba(107, 158, 97, 0.35);
+      
       --color-error: #E75A4D;
       --color-error-bg: #2C1715;
       --color-error-border: #522522;
+      --color-error-text: #FFAAA0;
 
       --color-success: #6B9E61;
       --color-success-bg: #132213;
       --color-success-border: #234323;
+      --color-success-text: #B5E8AC;
+      
+      --color-footer-copy: #4A4A46;
+      --color-cookie-track: #2D2D2A;
+      --color-cookie-thumb: #8C8C88;
+      
+      --color-scheme-btn-bg: rgba(255, 255, 255, 0.02);
       
       /* Rayons modernes et raffinés */
       --radius-sm: 6px;
@@ -101,6 +145,115 @@ export function renderBetaLandingPage(
       --radius-full: 9999px;
       
       --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    [data-theme="light"] {
+      /* Palette officielle Kanto Terre & Encre — Mode Clair (Light) */
+      /* Conforme à DESIGN.md et Colors.ts */
+      --color-bg: #F5F4F0;              /* Fond de page — parchemin chaud */
+      --color-surface: #FEFEFC;         /* Surface des cartes — crème organique */
+      --color-surface-input: #FFFFFF;    /* Fond des champs de saisie */
+      --color-surface-hover: #F0EDE8;   /* État survol / pressé */
+      
+      --color-border: #E5E2DB;          /* Bordure standard */
+      --color-border-subtle: #E4E8DF;   /* Séparateurs légers */
+      --color-divider: #DCE1D7;
+      
+      --color-tanimbary: #4A6741;       /* Vert Tanimbary officiel */
+      --color-tanimbary-dark: #375030;  /* Vert Tanimbary profond */
+      --color-tanimbary-btn: #4A6741;   /* Vert Tanimbary pour boutons d'action */
+      --color-tanimbary-btn-hover: #3b5334;
+      --color-tanimbary-glow: rgba(74, 103, 65, 0.18);
+      
+      --color-ochre: #8C5B17;           /* Ocre profond lisible sur fond clair */
+      --color-ochre-bg: #FDF6EB;        /* Fond ocre doux parchemin */
+      --color-ochre-border: #F3DEC0;    /* Bordure ocre subtile */
+      
+      --color-text: #1A1A1A;            /* Texte principal */
+      --color-text-secondary: #5C5C5C;  /* Texte secondaire */
+      --color-text-muted: #8A8A8A;      /* Texte atténué */
+      
+      --color-heading: #1A1A1A;
+      --color-brand-title: #1A1A1A;
+      
+      --color-card-shadow: 0 10px 30px rgba(60, 50, 40, 0.06);
+      --color-modal-shadow: 0 20px 40px rgba(60, 50, 40, 0.16);
+      --color-cookie-shadow: 0 -6px 20px rgba(60, 50, 40, 0.08);
+      
+      --color-tab-active-bg: #FFFFFF;
+      --color-tab-active-text: #1A1A1A;
+      --color-tab-active-border: #DCE1D7;
+      --color-tab-active-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      
+      --color-dot-pattern-1: rgba(74, 103, 65, 0.06);
+      --color-dot-pattern-2: rgba(197, 139, 56, 0.05);
+      
+      --color-deeplink-bg: linear-gradient(135deg, rgba(74, 103, 65, 0.10), rgba(197, 139, 56, 0.12));
+      --color-deeplink-border: #CBD8C6;
+      
+      --color-error: #C0392B;           /* Terracotta / Tany Mena */
+      --color-error-bg: #FDF2F0;
+      --color-error-border: #F0CECA;
+      --color-error-text: #9E2A28;
+
+      --color-success: #4A6741;
+      --color-success-bg: #EFF7ED;
+      --color-success-border: #CBD8C6;
+      --color-success-text: #2A5C22;
+      
+      --color-footer-copy: #8A8A8A;
+      --color-cookie-track: #E0DDD6;
+      --color-cookie-thumb: #9C9A94;
+      
+      --color-scheme-btn-bg: rgba(74, 103, 65, 0.04);
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --color-bg: #F5F4F0;
+        --color-surface: #FEFEFC;
+        --color-surface-input: #FFFFFF;
+        --color-surface-hover: #F0EDE8;
+        --color-border: #E5E2DB;
+        --color-border-subtle: #E4E8DF;
+        --color-divider: #DCE1D7;
+        --color-tanimbary: #4A6741;
+        --color-tanimbary-dark: #375030;
+        --color-tanimbary-btn: #4A6741;
+        --color-tanimbary-btn-hover: #3b5334;
+        --color-tanimbary-glow: rgba(74, 103, 65, 0.18);
+        --color-ochre: #8C5B17;
+        --color-ochre-bg: #FDF6EB;
+        --color-ochre-border: #F3DEC0;
+        --color-text: #1A1A1A;
+        --color-text-secondary: #5C5C5C;
+        --color-text-muted: #8A8A8A;
+        --color-heading: #1A1A1A;
+        --color-brand-title: #1A1A1A;
+        --color-card-shadow: 0 10px 30px rgba(60, 50, 40, 0.06);
+        --color-modal-shadow: 0 20px 40px rgba(60, 50, 40, 0.16);
+        --color-cookie-shadow: 0 -6px 20px rgba(60, 50, 40, 0.08);
+        --color-tab-active-bg: #FFFFFF;
+        --color-tab-active-text: #1A1A1A;
+        --color-tab-active-border: #DCE1D7;
+        --color-tab-active-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        --color-dot-pattern-1: rgba(74, 103, 65, 0.06);
+        --color-dot-pattern-2: rgba(197, 139, 56, 0.05);
+        --color-deeplink-bg: linear-gradient(135deg, rgba(74, 103, 65, 0.10), rgba(197, 139, 56, 0.12));
+        --color-deeplink-border: #CBD8C6;
+        --color-error: #C0392B;
+        --color-error-bg: #FDF2F0;
+        --color-error-border: #F0CECA;
+        --color-error-text: #9E2A28;
+        --color-success: #4A6741;
+        --color-success-bg: #EFF7ED;
+        --color-success-border: #CBD8C6;
+        --color-success-text: #2A5C22;
+        --color-footer-copy: #8A8A8A;
+        --color-cookie-track: #E0DDD6;
+        --color-cookie-thumb: #9C9A94;
+        --color-scheme-btn-bg: rgba(74, 103, 65, 0.04);
+      }
     }
 
     * {
@@ -120,6 +273,7 @@ export function renderBetaLandingPage(
       justify-content: space-between;
       -webkit-font-smoothing: antialiased;
       position: relative;
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
 
     body::before {
@@ -130,8 +284,8 @@ export function renderBetaLandingPage(
       right: 0;
       bottom: 0;
       background-image: 
-        radial-gradient(rgba(107, 158, 97, 0.04) 1px, transparent 1px),
-        radial-gradient(rgba(197, 139, 56, 0.03) 1px, transparent 1px);
+        radial-gradient(var(--color-dot-pattern-1) 1px, transparent 1px),
+        radial-gradient(var(--color-dot-pattern-2) 1px, transparent 1px);
       background-size: 32px 32px, 48px 48px;
       background-position: 0 0, 16px 16px;
       pointer-events: none;
@@ -171,17 +325,52 @@ export function renderBetaLandingPage(
       font-size: 17px;
       color: #FFFFFF;
       letter-spacing: -0.5px;
+      flex-shrink: 0;
     }
 
     .brand-wordmark {
       font-size: 19px;
       font-weight: 700;
       letter-spacing: -0.3px;
-      color: #FFFFFF;
+      color: var(--color-brand-title);
     }
 
     .brand-domain {
       color: var(--color-ochre);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .theme-toggle-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-full);
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-secondary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+      padding: 0;
+    }
+
+    .theme-toggle-btn:hover {
+      color: var(--color-text);
+      border-color: var(--color-tanimbary);
+      background-color: var(--color-surface-hover);
+      transform: translateY(-1px);
+    }
+
+    .theme-toggle-btn:focus-visible {
+      outline: 2px solid var(--color-tanimbary);
+      outline-offset: 2px;
     }
 
     .status-pill {
@@ -195,6 +384,7 @@ export function renderBetaLandingPage(
       font-size: 12px;
       color: var(--color-text-secondary);
       font-weight: 500;
+      white-space: nowrap;
     }
 
     .status-indicator {
@@ -219,8 +409,8 @@ export function renderBetaLandingPage(
 
     /* Bandeau d'information si redirection depuis un Deeplink ou Scan QR */
     .deeplink-banner {
-      background: linear-gradient(135deg, rgba(22, 68, 42, 0.35), rgba(197, 139, 56, 0.15));
-      border: 1px solid rgba(107, 158, 97, 0.35);
+      background: var(--color-deeplink-bg);
+      border: 1px solid var(--color-deeplink-border);
       border-radius: var(--radius-md);
       padding: 14px 16px;
       display: flex;
@@ -247,7 +437,7 @@ export function renderBetaLandingPage(
     }
 
     .deeplink-content strong {
-      color: #FFFFFF;
+      color: var(--color-heading);
       font-weight: 600;
       display: block;
       margin-bottom: 2px;
@@ -271,7 +461,7 @@ export function renderBetaLandingPage(
       font-size: 26px;
       font-weight: 700;
       letter-spacing: -0.5px;
-      color: #FFFFFF;
+      color: var(--color-heading);
       line-height: 1.25;
       margin-bottom: 8px;
     }
@@ -288,10 +478,11 @@ export function renderBetaLandingPage(
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
       padding: 24px;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+      box-shadow: var(--color-card-shadow);
       display: flex;
       flex-direction: column;
       gap: 20px;
+      transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     /* Bascule d'onglets au sommet de la carte */
@@ -323,14 +514,14 @@ export function renderBetaLandingPage(
     }
 
     .tab-btn:hover {
-      color: #FFFFFF;
+      color: var(--color-text);
     }
 
     .tab-btn.active {
-      background-color: var(--color-surface);
-      color: #FFFFFF;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      background-color: var(--color-tab-active-bg);
+      color: var(--color-tab-active-text);
+      border: 1px solid var(--color-tab-active-border);
+      box-shadow: var(--color-tab-active-shadow);
     }
 
     .tab-btn.active .tab-icon {
@@ -351,13 +542,13 @@ export function renderBetaLandingPage(
     .banner.error {
       background-color: var(--color-error-bg);
       border: 1px solid var(--color-error-border);
-      color: #FFAAA0;
+      color: var(--color-error-text);
     }
 
     .banner.success {
       background-color: var(--color-success-bg);
       border: 1px solid var(--color-success-border);
-      color: #B5E8AC;
+      color: var(--color-success-text);
     }
 
     /* Formulaires */
@@ -401,6 +592,11 @@ export function renderBetaLandingPage(
       transition: all 0.15s ease;
     }
 
+    .field-input::placeholder {
+      color: var(--color-text-muted);
+      opacity: 0.75;
+    }
+
     .field-input:focus {
       border-color: var(--color-tanimbary);
       box-shadow: 0 0 0 3px var(--color-tanimbary-glow);
@@ -425,7 +621,7 @@ export function renderBetaLandingPage(
     /* Boutons principaux */
     .btn-submit {
       width: 100%;
-      background-color: var(--color-tanimbary-dark);
+      background-color: var(--color-tanimbary-btn);
       border: 1px solid rgba(107, 158, 97, 0.4);
       color: #FFFFFF;
       font-family: inherit;
@@ -443,7 +639,7 @@ export function renderBetaLandingPage(
     }
 
     .btn-submit:hover:not(:disabled) {
-      background-color: #1a5233;
+      background-color: var(--color-tanimbary-btn-hover);
       border-color: var(--color-tanimbary);
       transform: translateY(-1px);
     }
@@ -498,7 +694,7 @@ export function renderBetaLandingPage(
     .action-panel-titles h3 {
       font-size: 13.5px;
       font-weight: 700;
-      color: #FFFFFF;
+      color: var(--color-heading);
       letter-spacing: -0.2px;
     }
 
@@ -531,7 +727,7 @@ export function renderBetaLandingPage(
 
     .btn-play:hover {
       background-color: var(--color-surface-hover);
-      border-color: rgba(107, 158, 97, 0.5);
+      border-color: var(--color-tanimbary);
     }
 
     .play-step {
@@ -562,7 +758,7 @@ export function renderBetaLandingPage(
     .step-title {
       font-size: 12.5px;
       font-weight: 600;
-      color: #FFFFFF;
+      color: var(--color-heading);
     }
 
     .step-desc {
@@ -577,7 +773,7 @@ export function renderBetaLandingPage(
       gap: 6px;
       padding: 9px;
       border-radius: var(--radius-sm);
-      background-color: rgba(255, 255, 255, 0.02);
+      background-color: var(--color-scheme-btn-bg);
       border: 1px dashed var(--color-border);
       color: var(--color-text-secondary);
       font-size: 12px;
@@ -586,7 +782,7 @@ export function renderBetaLandingPage(
     }
 
     .btn-open-scheme:hover {
-      color: #FFFFFF;
+      color: var(--color-text);
       border-color: var(--color-tanimbary);
     }
 
@@ -656,7 +852,7 @@ export function renderBetaLandingPage(
 
     .btn-resend:hover {
       border-color: var(--color-tanimbary);
-      color: #FFFFFF;
+      color: var(--color-text);
     }
 
     /* Écran de confirmation après nouvelle inscription */
@@ -684,7 +880,7 @@ export function renderBetaLandingPage(
     .confirmation-title {
       font-size: 18px;
       font-weight: 700;
-      color: #FFFFFF;
+      color: var(--color-heading);
     }
 
     .email-highlight {
@@ -712,8 +908,8 @@ export function renderBetaLandingPage(
     }
 
     .btn-secondary:hover {
-      color: #FFFFFF;
-      border-color: rgba(255, 255, 255, 0.2);
+      color: var(--color-text);
+      border-color: var(--color-border);
     }
 
     /* Bas de page et réassurance */
@@ -758,7 +954,7 @@ export function renderBetaLandingPage(
 
     .footer-copy {
       font-size: 11px;
-      color: #4A4A46;
+      color: var(--color-footer-copy);
     }
 
     @media (max-width: 480px) {
@@ -795,7 +991,7 @@ export function renderBetaLandingPage(
       right: 0;
       background-color: var(--color-surface);
       border-top: 1px solid var(--color-border);
-      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.55);
+      box-shadow: var(--color-cookie-shadow);
       padding: 16px 20px;
       z-index: 9999;
       animation: cookieSlideUp 0.25s ease-out;
@@ -829,7 +1025,7 @@ export function renderBetaLandingPage(
     .cookie-banner-title {
       font-size: 14.5px;
       font-weight: 700;
-      color: #FFFFFF;
+      color: var(--color-heading);
       letter-spacing: -0.2px;
     }
 
@@ -862,13 +1058,13 @@ export function renderBetaLandingPage(
     }
 
     .cookie-btn-primary {
-      background-color: var(--color-tanimbary-dark);
-      border-color: rgba(107, 158, 97, 0.5);
+      background-color: var(--color-tanimbary-btn);
+      border-color: var(--color-tanimbary);
       color: #FFFFFF;
     }
 
     .cookie-btn-primary:hover {
-      background-color: #1f5c39;
+      background-color: var(--color-tanimbary-btn-hover);
       border-color: var(--color-tanimbary);
     }
 
@@ -880,7 +1076,7 @@ export function renderBetaLandingPage(
 
     .cookie-btn-secondary:hover {
       background-color: var(--color-surface-hover);
-      border-color: rgba(255, 255, 255, 0.2);
+      border-color: var(--color-border);
     }
 
     .cookie-btn-outline {
@@ -900,7 +1096,7 @@ export function renderBetaLandingPage(
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: rgba(0, 0, 0, 0.75);
+      background-color: rgba(0, 0, 0, 0.65);
       backdrop-filter: blur(4px);
       z-index: 10000;
       display: flex;
@@ -922,7 +1118,7 @@ export function renderBetaLandingPage(
       background-color: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      box-shadow: var(--color-modal-shadow);
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -940,7 +1136,7 @@ export function renderBetaLandingPage(
     .cookie-modal-title {
       font-size: 17px;
       font-weight: 700;
-      color: #FFFFFF;
+      color: var(--color-heading);
       letter-spacing: -0.3px;
     }
 
@@ -956,7 +1152,7 @@ export function renderBetaLandingPage(
     }
 
     .cookie-modal-close-btn:hover {
-      color: #FFFFFF;
+      color: var(--color-text);
     }
 
     .cookie-modal-body {
@@ -1000,7 +1196,7 @@ export function renderBetaLandingPage(
     .cookie-category-title-row h3 {
       font-size: 13px;
       font-weight: 700;
-      color: #FFFFFF;
+      color: var(--color-heading);
     }
 
     .cookie-status-badge {
@@ -1050,7 +1246,7 @@ export function renderBetaLandingPage(
       position: absolute;
       cursor: pointer;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #2D2D2A;
+      background-color: var(--color-cookie-track);
       border: 1px solid var(--color-border);
       border-radius: 22px;
       transition: all 0.2s ease;
@@ -1063,13 +1259,13 @@ export function renderBetaLandingPage(
       width: 16px;
       left: 2px;
       bottom: 2px;
-      background-color: #8C8C88;
+      background-color: var(--color-cookie-thumb);
       border-radius: 50%;
       transition: all 0.2s ease;
     }
 
     .cookie-toggle-wrapper input:checked + .cookie-toggle-slider {
-      background-color: var(--color-tanimbary-dark);
+      background-color: var(--color-tanimbary-btn);
       border-color: var(--color-tanimbary);
     }
 
@@ -1122,9 +1318,26 @@ export function renderBetaLandingPage(
       <div class="brand-mark">K</div>
       <span class="brand-wordmark">kanto<span class="brand-domain">.mg</span></span>
     </a>
-    <div class="status-pill">
-      <span class="status-indicator"></span>
-      <span id="header-tester-count">${countBadgeText}</span>
+    <div class="header-actions">
+      <button type="button" class="theme-toggle-btn" id="theme-toggle" aria-label="Basculer le mode clair ou sombre" title="Basculer le mode clair ou sombre">
+        <span id="theme-toggle-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </span>
+      </button>
+      <div class="status-pill">
+        <span class="status-indicator"></span>
+        <span id="header-tester-count">${countBadgeText}</span>
+      </div>
     </div>
   </header>
 
@@ -1825,6 +2038,77 @@ export function renderBetaWaitlistScript(): string {
       closeModal();
     }
   });
+
+  // ─── GESTION DU THÈME CLAIR / SOMBRE (LIGHT / DARK) ───
+  var themeToggleBtn = document.getElementById('theme-toggle');
+  var themeToggleIcon = document.getElementById('theme-toggle-icon');
+
+  function renderThemeIcon(theme) {
+    if (!themeToggleIcon) return;
+    if (theme === 'light') {
+      themeToggleIcon.innerHTML =
+        '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>' +
+        '</svg>';
+    } else {
+      themeToggleIcon.innerHTML =
+        '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<circle cx="12" cy="12" r="5"></circle>' +
+        '<line x1="12" y1="1" x2="12" y2="3"></line>' +
+        '<line x1="12" y1="21" x2="12" y2="23"></line>' +
+        '<line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>' +
+        '<line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>' +
+        '<line x1="1" y1="12" x2="3" y2="12"></line>' +
+        '<line x1="21" y1="12" x2="23" y2="12"></line>' +
+        '<line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>' +
+        '<line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>' +
+        '</svg>';
+    }
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    var metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (metaTheme) {
+      metaTheme.setAttribute('content', theme === 'light' ? '#F5F4F0' : '#0D0D0B');
+    }
+    if (themeToggleBtn) {
+      var label = theme === 'light' ? 'Passer en mode sombre' : 'Passer en mode clair';
+      themeToggleBtn.setAttribute('title', label);
+      themeToggleBtn.setAttribute('aria-label', label);
+    }
+    renderThemeIcon(theme);
+  }
+
+  var activeTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  applyTheme(activeTheme);
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', function() {
+      var current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      var nextTheme = current === 'light' ? 'dark' : 'light';
+      try {
+        localStorage.setItem('kanto_theme', nextTheme);
+      } catch (e) {}
+      applyTheme(nextTheme);
+    });
+  }
+
+  if (window.matchMedia) {
+    var themeMq = window.matchMedia('(prefers-color-scheme: dark)');
+    var onSystemThemeChange = function(e) {
+      try {
+        if (!localStorage.getItem('kanto_theme')) {
+          applyTheme(e.matches ? 'dark' : 'light');
+        }
+      } catch (err) {}
+    };
+    if (themeMq.addEventListener) {
+      themeMq.addEventListener('change', onSystemThemeChange);
+    } else if (themeMq.addListener) {
+      themeMq.addListener(onSystemThemeChange);
+    }
+  }
 
   // API globale KantoConsent
   window.KantoConsent = {
