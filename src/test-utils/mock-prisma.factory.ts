@@ -97,6 +97,7 @@ export function createPrismaMock() {
     lock: createModelMock(),
     notification: createModelMock(),
     contributionAuditLog: createModelMock(),
+    contentReport: createModelMock(),
 
     // Transactions Prisma
     $transaction: jest.fn<(...args: any[]) => Promise<any>>(),
@@ -115,4 +116,3 @@ export function createPrismaMock() {
 }
 
 export type PrismaMock = ReturnType<typeof createPrismaMock>;
-

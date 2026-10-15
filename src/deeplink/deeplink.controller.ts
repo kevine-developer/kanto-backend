@@ -4,7 +4,7 @@ import { renderDeeplinkGatewayPage } from './views/deeplink-gateway.view.js';
 
 /**
  * DeeplinkController — Gestion des passerelles universelles pour les partages Kanto.
- * 
+ *
  * Intercepte les accès aux routes web des partages (QR code ou liens externes) :
  * - /rank
  * - /classement
@@ -12,7 +12,7 @@ import { renderDeeplinkGatewayPage } from './views/deeplink-gateway.view.js';
  * - /profile/:username
  * - /deck/:id & /deck
  * - /join
- * 
+ *
  * Si l'utilisateur possède l'application, tente de l'ouvrir directement.
  * Si l'application n'est pas installée, redirige vers l'interface de testeur bêta.
  */
@@ -50,7 +50,8 @@ export class DeeplinkController {
         path: 'classement',
         fullQueryString: qs,
         title: "Kanto • Classement d'honneur",
-        description: 'Consultez les meilleurs explorateurs de la culture malgache sur Kanto.',
+        description:
+          'Consultez les meilleurs explorateurs de la culture malgache sur Kanto.',
       }),
     );
   }
@@ -68,7 +69,8 @@ export class DeeplinkController {
         path: 'multiplayer',
         fullQueryString: qs,
         title: `Kanto • Défi Quiz Multijoueur ${code ? `(${code})` : ''}`,
-        description: 'Rejoignez la partie en direct et testez vos connaissances sur Madagascar.',
+        description:
+          'Rejoignez la partie en direct et testez vos connaissances sur Madagascar.',
       }),
     );
   }
@@ -106,7 +108,8 @@ export class DeeplinkController {
         path: deckId ? `deck/${deckId}` : 'deck',
         fullQueryString: qs,
         title: 'Kanto • Paquet de Quiz Culturel',
-        description: 'Découvrez et jouez à ce deck de questions communautaires sur Kanto.',
+        description:
+          'Découvrez et jouez à ce deck de questions communautaires sur Kanto.',
       }),
     );
   }
@@ -124,7 +127,8 @@ export class DeeplinkController {
         path: `user/${id}`,
         fullQueryString: qs,
         title: 'Kanto • Profil membre',
-        description: 'Découvrez les contributions et le rang culturel de ce membre sur Kanto.',
+        description:
+          'Découvrez les contributions et le rang culturel de ce membre sur Kanto.',
       }),
     );
   }
@@ -142,7 +146,8 @@ export class DeeplinkController {
         path: `contribution/${id}`,
         fullQueryString: qs,
         title: 'Kanto • Fandraisana anjara (Contribution)',
-        description: 'Découvrez cette contribution partagée au sein de la communauté Kanto.',
+        description:
+          'Découvrez cette contribution partagée au sein de la communauté Kanto.',
       }),
     );
   }
@@ -202,10 +207,7 @@ export class DeeplinkController {
   }
 
   @Get('download')
-  handleDownload(
-    @Req() req: Request,
-    @Res() res: Response,
-  ): void {
+  handleDownload(@Req() req: Request, @Res() res: Response): void {
     const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.send(
@@ -213,7 +215,8 @@ export class DeeplinkController {
         path: '',
         fullQueryString: qs,
         title: "Kanto Malagasy • Télécharger l'application",
-        description: 'Installez Kanto sur votre smartphone pour explorer la culture et la sagesse malgache.',
+        description:
+          'Installez Kanto sur votre smartphone pour explorer la culture et la sagesse malgache.',
       }),
     );
   }
@@ -228,7 +231,9 @@ export class DeeplinkController {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.send(
       renderDeeplinkGatewayPage({
-        path: code ? `multiplayer?code=${encodeURIComponent(code)}` : 'multiplayer',
+        path: code
+          ? `multiplayer?code=${encodeURIComponent(code)}`
+          : 'multiplayer',
         fullQueryString: qs,
         title: `Kanto • Rejoindre la partie ${code || ''}`,
         description: 'Entrez dans le salon de jeu multijoueur Kanto.',

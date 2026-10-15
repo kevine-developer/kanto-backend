@@ -1,11 +1,11 @@
 /**
  * Kanto — Passerelle intelligente de redirection Deeplink & Universal Link
- * 
+ *
  * Intercepte les accès web aux partages (QR code, liens sociaux) :
  * 1. Tente d'ouvrir l'application native installée (schéma kantomg://).
  * 2. Si l'application n'est pas installée, redirige vers l'inscription testeur bêta.
  * 3. Propose une interface de repli soignée conforme au Design System Kanto (Terre & Encre).
- * 
+ *
  * Zéro référence à l'IA.
  */
 
@@ -16,13 +16,21 @@ export interface DeeplinkGatewayOptions {
   description?: string;
 }
 
-export function renderDeeplinkGatewayPage(options: DeeplinkGatewayOptions): string {
+export function renderDeeplinkGatewayPage(
+  options: DeeplinkGatewayOptions,
+): string {
   const cleanPath = options.path.replace(/^\/+/, '');
-  const qs = options.fullQueryString ? (options.fullQueryString.startsWith('?') ? options.fullQueryString : `?${options.fullQueryString}`) : '';
+  const qs = options.fullQueryString
+    ? options.fullQueryString.startsWith('?')
+      ? options.fullQueryString
+      : `?${options.fullQueryString}`
+    : '';
   const nativeSchemeUrl = `kantomg://${cleanPath}${qs}`;
   const betaRedirectUrl = `/beta?from=deeplink&target=${encodeURIComponent(cleanPath)}${options.fullQueryString ? `&${options.fullQueryString.replace(/^\?/, '')}` : ''}`;
   const pageTitle = options.title || 'Kanto • Redirection en cours';
-  const pageDescription = options.description || "Ouverture dans l'application Kanto ou accès au programme de test.";
+  const pageDescription =
+    options.description ||
+    "Ouverture dans l'application Kanto ou accès au programme de test.";
 
   return `<!DOCTYPE html>
 <html lang="fr">

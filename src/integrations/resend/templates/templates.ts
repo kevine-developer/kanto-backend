@@ -1056,11 +1056,11 @@ https://kanto.mg`.trim();
 
   const html = renderEmailLayout({
     title: subject,
-    preheader: 'Confirmation de la suppression définitive de votre compte Kanto',
+    preheader:
+      'Confirmation de la suppression définitive de votre compte Kanto',
     headerBadge: { label: 'Compte supprimé', variant: 'terracotta' },
     contentHtml,
   });
 
   return { subject, html, text };
 }
-

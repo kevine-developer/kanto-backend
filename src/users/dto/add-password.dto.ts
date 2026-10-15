@@ -8,12 +8,10 @@ import { IsString, MinLength, Matches } from 'class-validator';
 export class AddPasswordDto {
   @IsString()
   @MinLength(8, {
-    message:
-      'Le nouveau mot de passe doit contenir au moins 8 caractères.',
+    message: 'Le nouveau mot de passe doit contenir au moins 8 caractères.',
   })
   @Matches(/[A-Z]/, {
-    message:
-      'Le mot de passe doit contenir au moins une lettre majuscule.',
+    message: 'Le mot de passe doit contenir au moins une lettre majuscule.',
   })
   @Matches(/[0-9]/, {
     message: 'Le mot de passe doit contenir au moins un chiffre.',

@@ -126,4 +126,3 @@ export class UsersController {
     return this.usersService.deleteAccount(session.user.id, body);
   }
 }
-

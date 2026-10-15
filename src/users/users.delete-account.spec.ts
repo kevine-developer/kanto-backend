@@ -53,7 +53,9 @@ describe('UsersService — suppression de compte (RGPD & Sécurité)', () => {
       sendAccountDeletionEmail: jest
         .fn<any>()
         .mockResolvedValue({ id: 'resend-123' }),
-      sendSecurityChangeEmail: jest.fn<any>().mockResolvedValue({ id: 'sec-1' }),
+      sendSecurityChangeEmail: jest
+        .fn<any>()
+        .mockResolvedValue({ id: 'sec-1' }),
       isConfigured: jest.fn<any>().mockReturnValue(true),
     };
 
@@ -174,7 +176,9 @@ describe('UsersService — suppression de compte (RGPD & Sécurité)', () => {
       expect(prismaMock.user.delete).toHaveBeenCalledWith({
         where: { id: 'user-1' },
       });
-      expect(cloudinaryMock.deleteMediaFromUrl).toHaveBeenCalledWith(user.image);
+      expect(cloudinaryMock.deleteMediaFromUrl).toHaveBeenCalledWith(
+        user.image,
+      );
       expect(resendMock.sendAccountDeletionEmail).toHaveBeenCalledWith({
         to: 'user1@example.com',
         userName: 'Soa Malagasy',
