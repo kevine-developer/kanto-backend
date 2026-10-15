@@ -74,7 +74,10 @@ export interface BanknoteHistoricalSeriesMeta {
   colorDark: string;
 }
 
-export const HISTORICAL_BANKNOTE_SERIES: Record<string, BanknoteHistoricalSeriesMeta> = {
+export const HISTORICAL_BANKNOTE_SERIES: Record<
+  string,
+  BanknoteHistoricalSeriesMeta
+> = {
   MDG105: {
     code: 'MDG105',
     numizonId: 'MDG105',
@@ -139,10 +142,10 @@ export const HISTORICAL_BANKNOTE_SERIES: Record<string, BanknoteHistoricalSeries
     code: 'MDG300',
     numizonId: 'MDG300',
     labelFr: 'Banque Centrale de la République Malgache (1974-1975)',
-    labelMg: 'Banky Foiben\'ny Repoblika Malagasy (1974-1975)',
+    labelMg: "Banky Foiben'ny Repoblika Malagasy (1974-1975)",
     period: '1974 - 1975',
     institutionFr: 'Banque Centrale de la République Malgache',
-    institutionMg: 'Banky Foiben\'ny Repoblika Malagasy',
+    institutionMg: "Banky Foiben'ny Repoblika Malagasy",
     currencyType: 'FMG',
     colorLight: '#4A5D6E',
     colorDark: '#677E94',
@@ -151,10 +154,10 @@ export const HISTORICAL_BANKNOTE_SERIES: Record<string, BanknoteHistoricalSeries
     code: 'MDG400',
     numizonId: 'MDG400',
     labelFr: 'Banque Centrale de Madagascar (1983-1993)',
-    labelMg: 'Banky Foiben\'i Madagasikara (1983-1993)',
+    labelMg: "Banky Foiben'i Madagasikara (1983-1993)",
     period: '1983 - 1993',
     institutionFr: 'Banque Centrale de Madagascar (2ème République)',
-    institutionMg: 'Banky Foiben\'i Madagasikara (Repoblika Faharoa)',
+    institutionMg: "Banky Foiben'i Madagasikara (Repoblika Faharoa)",
     currencyType: 'FMG',
     colorLight: '#8C5030',
     colorDark: '#B87050',
@@ -163,10 +166,10 @@ export const HISTORICAL_BANKNOTE_SERIES: Record<string, BanknoteHistoricalSeries
     code: 'MDG450',
     numizonId: 'MDG450',
     labelFr: 'Banque Centrale de Madagascar (1994-1998)',
-    labelMg: 'Banky Foiben\'i Madagasikara (1994-1998)',
+    labelMg: "Banky Foiben'i Madagasikara (1994-1998)",
     period: '1994 - 1998',
     institutionFr: 'Banque Centrale de Madagascar (3ème République)',
-    institutionMg: 'Banky Foiben\'i Madagasikara (Repoblika Fahatelo)',
+    institutionMg: "Banky Foiben'i Madagasikara (Repoblika Fahatelo)",
     currencyType: 'FMG',
     colorLight: '#7A6330',
     colorDark: '#A38B4A',
@@ -175,10 +178,10 @@ export const HISTORICAL_BANKNOTE_SERIES: Record<string, BanknoteHistoricalSeries
     code: 'MDG460',
     numizonId: 'MDG460',
     labelFr: 'Banque Centrale de Madagascar (2003)',
-    labelMg: 'Banky Foiben\'i Madagasikara (2003)',
+    labelMg: "Banky Foiben'i Madagasikara (2003)",
     period: '2003',
     institutionFr: 'Banque Centrale de Madagascar (Réforme Ariary 2003)',
-    institutionMg: 'Banky Foiben\'i Madagasikara (Fiovana Ariary 2003)',
+    institutionMg: "Banky Foiben'i Madagasikara (Fiovana Ariary 2003)",
     currencyType: 'ARIARY',
     colorLight: '#5C3D7A',
     colorDark: '#7A5AA3',
@@ -187,10 +190,10 @@ export const HISTORICAL_BANKNOTE_SERIES: Record<string, BanknoteHistoricalSeries
     code: 'MDG465',
     numizonId: 'MDG465',
     labelFr: 'Banque Centrale de Madagascar (2004-2006)',
-    labelMg: 'Banky Foiben\'i Madagasikara (2004-2006)',
+    labelMg: "Banky Foiben'i Madagasikara (2004-2006)",
     period: '2004 - 2006',
     institutionFr: 'Banque Centrale de Madagascar',
-    institutionMg: 'Banky Foiben\'i Madagasikara',
+    institutionMg: "Banky Foiben'i Madagasikara",
     currencyType: 'ARIARY',
     colorLight: '#6B4370',
     colorDark: '#945D9A',
@@ -199,10 +202,10 @@ export const HISTORICAL_BANKNOTE_SERIES: Record<string, BanknoteHistoricalSeries
     code: 'MDG470',
     numizonId: 'MDG470',
     labelFr: 'Banque Centrale de Madagascar (2007)',
-    labelMg: 'Banky Foiben\'i Madagasikara (2007)',
+    labelMg: "Banky Foiben'i Madagasikara (2007)",
     period: '2007',
     institutionFr: 'Banque Centrale de Madagascar',
-    institutionMg: 'Banky Foiben\'i Madagasikara',
+    institutionMg: "Banky Foiben'i Madagasikara",
     currencyType: 'ARIARY',
     colorLight: '#35667A',
     colorDark: '#4B8BA6',
@@ -211,10 +214,10 @@ export const HISTORICAL_BANKNOTE_SERIES: Record<string, BanknoteHistoricalSeries
     code: 'MDG475',
     numizonId: 'MDG475',
     labelFr: 'Banque Centrale de Madagascar (2007-2015)',
-    labelMg: 'Banky Foiben\'i Madagasikara (2007-2015)',
+    labelMg: "Banky Foiben'i Madagasikara (2007-2015)",
     period: '2007 - 2015',
     institutionFr: 'Banque Centrale de Madagascar',
-    institutionMg: 'Banky Foiben\'i Madagasikara',
+    institutionMg: "Banky Foiben'i Madagasikara",
     currencyType: 'ARIARY',
     colorLight: '#70539B',
     colorDark: '#513C70',
@@ -223,10 +226,10 @@ export const HISTORICAL_BANKNOTE_SERIES: Record<string, BanknoteHistoricalSeries
     code: 'SERIE_2017',
     numizonId: 'MDG500',
     labelFr: 'Banque Centrale de Madagascar (2017 - Présent)',
-    labelMg: 'Banky Foiben\'i Madagasikara (2017 - Ankehitriny)',
+    labelMg: "Banky Foiben'i Madagasikara (2017 - Ankehitriny)",
     period: '2017 - Présent',
     institutionFr: 'Banque Centrale de Madagascar (Série 2017)',
-    institutionMg: 'Banky Foiben\'i Madagasikara (Andiany 2017)',
+    institutionMg: "Banky Foiben'i Madagasikara (Andiany 2017)",
     currencyType: 'ARIARY',
     colorLight: '#2C4075',
     colorDark: '#3E5AA1',
@@ -237,8 +240,8 @@ export const HISTORICAL_BANKNOTE_SERIES: Record<string, BanknoteHistoricalSeries
     labelFr: 'Période Coloniale — Franc Malgache (1925-1960)',
     labelMg: 'Vanim-potoana Zanatany — Faranka Malagasy (1925-1960)',
     period: '1925 - 1960',
-    institutionFr: 'Banque de Madagascar / Institut d\'Émission',
-    institutionMg: 'Banky Madagasikara / Institut d\'Émission',
+    institutionFr: "Banque de Madagascar / Institut d'Émission",
+    institutionMg: "Banky Madagasikara / Institut d'Émission",
     currencyType: 'FRANC_COLONIAL',
     colorLight: '#6B4A1E',
     colorDark: '#8C6330',
@@ -249,8 +252,8 @@ export const HISTORICAL_BANKNOTE_SERIES: Record<string, BanknoteHistoricalSeries
     labelFr: 'Franc Malgache — Républiques (1960-2003)',
     labelMg: 'Faranka Malagasy — Repoblika (1960-2003)',
     period: '1960 - 2003',
-    institutionFr: 'Institut d\'Émission / Banque Centrale',
-    institutionMg: 'Institut d\'Émission / Banky Foibe',
+    institutionFr: "Institut d'Émission / Banque Centrale",
+    institutionMg: "Institut d'Émission / Banky Foibe",
     currencyType: 'FMG',
     colorLight: '#78350F',
     colorDark: '#A16207',
@@ -262,7 +265,7 @@ export const HISTORICAL_BANKNOTE_SERIES: Record<string, BanknoteHistoricalSeries
     labelMg: 'Andiany 2003 — Fiovana FMG ho Ariary',
     period: '2003 - 2017',
     institutionFr: 'Banque Centrale de Madagascar',
-    institutionMg: 'Banky Foiben\'i Madagasikara',
+    institutionMg: "Banky Foiben'i Madagasikara",
     currencyType: 'ARIARY',
     colorLight: '#5C3D7A',
     colorDark: '#7A5AA3',
@@ -1274,20 +1277,20 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     colorLight: '#5A4A2A',
     colorDark: '#7A6540',
     obverseDescriptionFr:
-      'Bon de caisse d\'urgence émis par le Gouvernement Général de Madagascar pendant la Première Guerre mondiale suite à la pénurie de monnaie métallique.',
+      "Bon de caisse d'urgence émis par le Gouvernement Général de Madagascar pendant la Première Guerre mondiale suite à la pénurie de monnaie métallique.",
     obverseDescriptionMg:
-      'Taratasy fampiasa vonjimaika navoakan\'ny Fitondrana Frantsay tamin\'ny Ady Lehibe Voalohany noho ny fahalanian\'ny vola vy.',
+      "Taratasy fampiasa vonjimaika navoakan'ny Fitondrana Frantsay tamin'ny Ady Lehibe Voalohany noho ny fahalanian'ny vola vy.",
     reverseDescriptionFr:
       'Mentions légales coloniales et valeur faciale en gros caractères typographiques.',
     reverseDescriptionMg:
       'Soratra ara-dalàna zanatany sy sanda ara-bola voasokitra mazava.',
     symbolismFr:
-      'Monnaie de nécessité d\'une époque de crise mondiale, premier témoignage d\'émission fiduciaire locale à Madagascar.',
+      "Monnaie de nécessité d'une époque de crise mondiale, premier témoignage d'émission fiduciaire locale à Madagascar.",
     symbolismMg:
-      'Vola nampiasaina tamin\'ny fotoan-tsarotra, porofo voalohany ny fampiasana vola taratasy teo an-toerana.',
+      "Vola nampiasaina tamin'ny fotoan-tsarotra, porofo voalohany ny fampiasana vola taratasy teo an-toerana.",
     securityFeaturesFr: [
       'Cachet officiel du Gouvernement Général de Madagascar',
-      'Numérotation typographique à l\'encre noire',
+      "Numérotation typographique à l'encre noire",
     ],
     imageUrl: null,
     imageUrlVerso: null,
@@ -1309,15 +1312,15 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     obverseDescriptionFr:
       'Figures allégoriques féminines, végétation tropicale et mention conjointe des Comores.',
     obverseDescriptionMg:
-      'Sarin\'ny vehivavy maneho ny harena voajanahary sy ny Nosy Kaomaoro.',
+      "Sarin'ny vehivavy maneho ny harena voajanahary sy ny Nosy Kaomaoro.",
     reverseDescriptionFr:
-      'Paysages côtiers de l\'océan Indien et navires marchands.',
+      "Paysages côtiers de l'océan Indien et navires marchands.",
     reverseDescriptionMg:
-      'Morontsiraka amin\'ny ranomasimbe Indiana sy sambo mpitatitra entana.',
+      "Morontsiraka amin'ny ranomasimbe Indiana sy sambo mpitatitra entana.",
     symbolismFr:
-      'Témoigne de l\'intégration de Madagascar et des Comores dans une même zone monétaire d\'après-guerre.',
+      "Témoigne de l'intégration de Madagascar et des Comores dans une même zone monétaire d'après-guerre.",
     symbolismMg:
-      'Mampiseho ny fampiraisana an\'i Madagasikara sy Kaomaoro tao anatin\'ny faritra ara-bola iray.',
+      "Mampiseho ny fampiraisana an'i Madagasikara sy Kaomaoro tao anatin'ny faritra ara-bola iray.",
     securityFeaturesFr: [
       'Filigrane tête de femme malgache en contre-jour',
       'Impression taille-douce de la Banque de France',
@@ -1331,28 +1334,28 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     id: 'billet-iem-1961-100f',
     valueAriary: 20,
     valueFmg: 100,
-    titleFr: 'Institut d\'Émission Malgache — 100 Francs (1961)',
-    titleMg: 'Institut d\'Émission Malgache — 100 Faranka (1961)',
+    titleFr: "Institut d'Émission Malgache — 100 Francs (1961)",
+    titleMg: "Institut d'Émission Malgache — 100 Faranka (1961)",
     series: 'MDG200',
-    seriesLabelFr: 'Institut d\'Émission Malgache (1961)',
-    seriesLabelMg: 'Institut d\'Émission Malgache (1961)',
+    seriesLabelFr: "Institut d'Émission Malgache (1961)",
+    seriesLabelMg: "Institut d'Émission Malgache (1961)",
     period: '1961',
     colorLight: '#2A6B3D',
     colorDark: '#3D9455',
     obverseDescriptionFr:
-      'Billet de transition émis immédiatement après l\'Indépendance nationale du 26 juin 1960 par le nouvel Institut d\'Émission Malgache.',
+      "Billet de transition émis immédiatement après l'Indépendance nationale du 26 juin 1960 par le nouvel Institut d'Émission Malgache.",
     obverseDescriptionMg:
-      'Vola taratasy tetezamita navoaka taorian\'ny Fahaleovantena 26 jona 1960 tamin\'ny alalan\'ny Institut d\'Émission Malgache.',
+      "Vola taratasy tetezamita navoaka taorian'ny Fahaleovantena 26 jona 1960 tamin'ny alalan'ny Institut d'Émission Malgache.",
     reverseDescriptionFr:
-      'Faune et flore de l\'île rouge avec début des mentions bilingues.',
+      "Faune et flore de l'île rouge avec début des mentions bilingues.",
     reverseDescriptionMg:
-      'Biby sy zavamaniry malagasy miaraka amin\'ny soratra amin\'ny teny roa.',
+      "Biby sy zavamaniry malagasy miaraka amin'ny soratra amin'ny teny roa.",
     symbolismFr:
       'Premier pas de la souveraineté monétaire de la toute jeune République Malgache.',
     symbolismMg:
-      'Dingana voalohany teo amin\'ny fiandrianam-pirenena ara-bola an\'ny Repoblika Malagasy.',
+      "Dingana voalohany teo amin'ny fiandrianam-pirenena ara-bola an'ny Repoblika Malagasy.",
     securityFeaturesFr: [
-      'Filigrane officiel de l\'Institut d\'Émission',
+      "Filigrane officiel de l'Institut d'Émission",
       'Papier sécurisé à fibres colorées',
     ],
     imageUrl: null,
@@ -1365,25 +1368,25 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     valueAriary: 1000,
     valueFmg: 5000,
     titleFr: 'Banque Centrale de la République Malgache — 5 000 FMG (1974)',
-    titleMg: 'Banky Foiben\'ny Repoblika Malagasy — 5 000 Faranka (1974)',
+    titleMg: "Banky Foiben'ny Repoblika Malagasy — 5 000 Faranka (1974)",
     series: 'MDG300',
     seriesLabelFr: 'Banque Centrale de la République Malgache (1974-1975)',
-    seriesLabelMg: 'Banky Foiben\'ny Repoblika Malagasy (1974-1975)',
+    seriesLabelMg: "Banky Foiben'ny Repoblika Malagasy (1974-1975)",
     period: '1974 - 1975',
     colorLight: '#4A5D6E',
     colorDark: '#677E94',
     obverseDescriptionFr:
       'Émission historique consécutive à la création de la Banque Centrale en 1973 et à la rupture avec la zone Franc CFA.',
     obverseDescriptionMg:
-      'Vola manan-tantara taorian\'ny nananganana ny Banky Foibe tamin\'ny 1973 sy ny fialana tamin\'ny Franc CFA.',
+      "Vola manan-tantara taorian'ny nananganana ny Banky Foibe tamin'ny 1973 sy ny fialana tamin'ny Franc CFA.",
     reverseDescriptionFr:
       'Scène de développement agricole et paysans malgaches au travail.',
     reverseDescriptionMg:
       'Fampandrosoana ny fambolena sy tantsaha malagasy miasa an-tsaha.',
     symbolismFr:
-      'Affirmation solennelle de l\'indépendance monétaire intégrale voulue par le Général Ramanantsoa et le Colonel Ratsimandrava.',
+      "Affirmation solennelle de l'indépendance monétaire intégrale voulue par le Général Ramanantsoa et le Colonel Ratsimandrava.",
     symbolismMg:
-      'Fanehoana ny fahaleovantena ara-bola feno notarihin\'ny Jeneraly Ramanantsoa sy Kolonely Ratsimandrava.',
+      "Fanehoana ny fahaleovantena ara-bola feno notarihin'ny Jeneraly Ramanantsoa sy Kolonely Ratsimandrava.",
     securityFeaturesFr: [
       'Fil de sécurité magnétique intégré',
       'Filigrane tête de zébu haute densité',
@@ -1398,25 +1401,24 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     valueAriary: 200,
     valueFmg: 1000,
     titleFr: 'Banque Centrale de Madagascar — 200 Ariary (2004)',
-    titleMg: 'Banky Foiben\'i Madagasikara — 200 Ariary (2004)',
+    titleMg: "Banky Foiben'i Madagasikara — 200 Ariary (2004)",
     series: 'MDG465',
     seriesLabelFr: 'Banque Centrale de Madagascar (2004-2006)',
-    seriesLabelMg: 'Banky Foiben\'i Madagasikara (2004-2006)',
+    seriesLabelMg: "Banky Foiben'i Madagasikara (2004-2006)",
     period: '2004 - 2006',
     colorLight: '#6B4370',
     colorDark: '#945D9A',
     obverseDescriptionFr:
-      'Petite coupure introduite pour faciliter la vie quotidienne et le rendu de monnaie lors du passage définitif à l\'Ariary.',
+      "Petite coupure introduite pour faciliter la vie quotidienne et le rendu de monnaie lors du passage définitif à l'Ariary.",
     obverseDescriptionMg:
-      'Vola madinika nampidirina hanamorana ny fiainana andavanandro amin\'ny fampiasana ny Ariary.',
+      "Vola madinika nampidirina hanamorana ny fiainana andavanandro amin'ny fampiasana ny Ariary.",
     reverseDescriptionFr:
       'Artisanat malgache et scènes de village des plateaux.',
-    reverseDescriptionMg:
-      'Asa tanana sy fiainan\'ny mponina eny ambanivohitra.',
+    reverseDescriptionMg: "Asa tanana sy fiainan'ny mponina eny ambanivohitra.",
     symbolismFr:
       'Appropriation populaire de la nouvelle monnaie nationale par toutes les couches sociales.',
     symbolismMg:
-      'Fandraisan\'ny vahoaka rehetra an-tanana ny vola vaovao Ariary.',
+      "Fandraisan'ny vahoaka rehetra an-tanana ny vola vaovao Ariary.",
     securityFeaturesFr: [
       'Filigrane tête de zébu simplifié',
       'Encre réagissant sous rayonnement UV',
@@ -1431,28 +1433,24 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     valueAriary: 5000,
     valueFmg: 25000,
     titleFr: 'Banque Centrale de Madagascar — 5 000 Ariary (2007)',
-    titleMg: 'Banky Foiben\'i Madagasikara — 5 000 Ariary (2007)',
+    titleMg: "Banky Foiben'i Madagasikara — 5 000 Ariary (2007)",
     series: 'MDG470',
     seriesLabelFr: 'Banque Centrale de Madagascar (2007)',
-    seriesLabelMg: 'Banky Foiben\'i Madagasikara (2007)',
+    seriesLabelMg: "Banky Foiben'i Madagasikara (2007)",
     period: '2007',
     colorLight: '#35667A',
     colorDark: '#4B8BA6',
     obverseDescriptionFr:
       'Émission de 2007 avec renforcement des dispositifs anti-contrefaçon et impression modernisée.',
     obverseDescriptionMg:
-      'Andiany 2007 misy fanamafisana ny fiarovana amin\'ny hosoka sy fanatsarana ny fanontana.',
-    reverseDescriptionFr:
-      'Forêt de baobabs et flore des régions semi-arides.',
-    reverseDescriptionMg:
-      'Ala Renala sy zavamaniry any amin\'ny faritra maina.',
-    symbolismFr:
-      'Consolidation de la stabilité fiduciaire nationale.',
-    symbolismMg:
-      'Fanamafisana ny fitokisana amin\'ny volam-pirenena.',
+      "Andiany 2007 misy fanamafisana ny fiarovana amin'ny hosoka sy fanatsarana ny fanontana.",
+    reverseDescriptionFr: 'Forêt de baobabs et flore des régions semi-arides.',
+    reverseDescriptionMg: "Ala Renala sy zavamaniry any amin'ny faritra maina.",
+    symbolismFr: 'Consolidation de la stabilité fiduciaire nationale.',
+    symbolismMg: "Fanamafisana ny fitokisana amin'ny volam-pirenena.",
     securityFeaturesFr: [
       'Bande de sécurité scintillante bicolore',
-      'Filigrane portrait d\'enfant malgache et zébu',
+      "Filigrane portrait d'enfant malgache et zébu",
     ],
     imageUrl: null,
     imageUrlVerso: null,
@@ -1464,25 +1462,23 @@ export const DEFAULT_BANKNOTES: DefaultBanknote[] = [
     valueAriary: 10000,
     valueFmg: 50000,
     titleFr: 'Banque Centrale de Madagascar — 10 000 Ariary (2007-2015)',
-    titleMg: 'Banky Foiben\'i Madagasikara — 10 000 Ariary (2007-2015)',
+    titleMg: "Banky Foiben'i Madagasikara — 10 000 Ariary (2007-2015)",
     series: 'MDG475',
     seriesLabelFr: 'Banque Centrale de Madagascar (2007-2015)',
-    seriesLabelMg: 'Banky Foiben\'i Madagasikara (2007-2015)',
+    seriesLabelMg: "Banky Foiben'i Madagasikara (2007-2015)",
     period: '2007 - 2015',
     colorLight: '#70539B',
     colorDark: '#513C70',
     obverseDescriptionFr:
       'Série stabilisée de grande valeur ayant circulé pendant toute la période précédant la refonte de 2017.',
     obverseDescriptionMg:
-      'Vola lehibe nampiasaina nandritra ny fotoana naharitra talohan\'ny andiany 2017.',
+      "Vola lehibe nampiasaina nandritra ny fotoana naharitra talohan'ny andiany 2017.",
     reverseDescriptionFr:
-      'Palais royal du Rova d\'Antananarivo rénové et patrimoine historique.',
+      "Palais royal du Rova d'Antananarivo rénové et patrimoine historique.",
     reverseDescriptionMg:
-      'Lapan\'ny Rovan\'i Manjakamiadana narenina sy lova manan-tantara.',
-    symbolismFr:
-      'Continuité de l\'État et fierté de l\'histoire malgache.',
-    symbolismMg:
-      'Fitohizan\'ny Fanjakana sy reharehan\'ny tantara malagasy.',
+      "Lapan'ny Rovan'i Manjakamiadana narenina sy lova manan-tantara.",
+    symbolismFr: "Continuité de l'État et fierté de l'histoire malgache.",
+    symbolismMg: "Fitohizan'ny Fanjakana sy reharehan'ny tantara malagasy.",
     securityFeaturesFr: [
       'Filigrane Ranavalona haute précision',
       'Fil de sécurité fenêtré argenté',

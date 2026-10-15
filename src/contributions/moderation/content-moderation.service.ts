@@ -3,13 +3,11 @@ import {
   ModerationAnalysisResult,
   ModerationCategory,
   ModerationMatch,
-  ModerationSeverity,
 } from './moderation.types.js';
 import {
   LEETSPEAK_MAP,
   MODERATION_WHITELIST,
   SENSITIVE_TERMS,
-  TermDefinition,
 } from './moderation.constants.js';
 
 @Injectable()
@@ -50,7 +48,7 @@ export class ContentModerationService {
    * Version alternative sans séparateurs (détecte les contournements de type "m.e.r.d.e" ou "c-o-n-n-a-r-d")
    */
   public stripPunctuationSpacers(text: string): string {
-    return text.replace(/[\.\-_\*\s]+/g, '');
+    return text.replace(/[.\-_*\s]+/g, '');
   }
 
   /**

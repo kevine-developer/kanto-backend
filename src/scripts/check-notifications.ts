@@ -10,7 +10,18 @@ async function main() {
     'SELECT id, "userId", "isBroadcast", category, "titleMg", "titleFr", "createdAt" FROM notifications ORDER BY "createdAt" DESC',
   );
   for (const row of res.rows) {
-    console.log('ID:', row.id, '| UserId:', row.userId, '| isBroadcast:', row.isBroadcast, '| Title:', row.titleFr || row.titleMg, '| Date:', row.createdAt);
+    console.log(
+      'ID:',
+      row.id,
+      '| UserId:',
+      row.userId,
+      '| isBroadcast:',
+      row.isBroadcast,
+      '| Title:',
+      row.titleFr || row.titleMg,
+      '| Date:',
+      row.createdAt,
+    );
   }
   await client.end();
 }

@@ -12,7 +12,8 @@ export class DeleteAccountDto {
     message: 'La phrase de confirmation est requise.',
   })
   @Equals('SUPPRIMER MON COMPTE', {
-    message: 'Veuillez saisir exactement « SUPPRIMER MON COMPTE » pour confirmer.',
+    message:
+      'Veuillez saisir exactement « SUPPRIMER MON COMPTE » pour confirmer.',
   })
   confirmationPhrase: string;
 

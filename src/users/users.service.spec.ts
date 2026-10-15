@@ -47,8 +47,12 @@ describe('UsersService', () => {
       deleteMediaFromUrl: jest.fn<any>().mockResolvedValue(true),
     };
     resendMock = {
-      sendSecurityChangeEmail: jest.fn<any>().mockResolvedValue({ simulated: true }),
-      sendPasswordResetEmail: jest.fn<any>().mockResolvedValue({ simulated: true }),
+      sendSecurityChangeEmail: jest
+        .fn<any>()
+        .mockResolvedValue({ simulated: true }),
+      sendPasswordResetEmail: jest
+        .fn<any>()
+        .mockResolvedValue({ simulated: true }),
       isConfigured: jest.fn<any>().mockReturnValue(false),
     };
 

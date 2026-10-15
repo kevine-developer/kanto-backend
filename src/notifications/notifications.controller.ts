@@ -111,9 +111,9 @@ export class NotificationsController {
   ) {
     const effectiveUserId = session?.user?.id || queryUserId;
     const role = session?.user?.role
-      ? (Array.isArray(session.user.role)
-          ? session.user.role[0]
-          : session.user.role)
+      ? Array.isArray(session.user.role)
+        ? session.user.role[0]
+        : session.user.role
       : undefined;
     return this.notificationsService.deleteNotification(
       id,
@@ -132,9 +132,9 @@ export class NotificationsController {
   ) {
     const effectiveUserId = session?.user?.id || queryUserId;
     const role = session?.user?.role
-      ? (Array.isArray(session.user.role)
-          ? session.user.role[0]
-          : session.user.role)
+      ? Array.isArray(session.user.role)
+        ? session.user.role[0]
+        : session.user.role
       : undefined;
     return this.notificationsService.clearAllNotifications(
       effectiveUserId,

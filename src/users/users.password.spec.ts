@@ -1,7 +1,6 @@
 import { jest } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import {
-  BadRequestException,
   ConflictException,
   NotFoundException,
 } from '@nestjs/common';
@@ -18,13 +17,15 @@ import { buildUser } from '../test-utils/builders/user.builder.js';
 /**
  * Builder minimal pour un Account Better-Auth.
  */
-function buildAccount(overrides: Partial<{
-  id: string;
-  providerId: string;
-  accountId: string;
-  userId: string;
-  password: string | null;
-}> = {}) {
+function buildAccount(
+  overrides: Partial<{
+    id: string;
+    providerId: string;
+    accountId: string;
+    userId: string;
+    password: string | null;
+  }> = {},
+) {
   return {
     id: 'account-1',
     providerId: 'credential',
@@ -61,8 +62,12 @@ describe('UsersService — gestion du mot de passe', () => {
       deleteMediaFromUrl: jest.fn<any>().mockResolvedValue(true),
     };
     resendMock = {
-      sendSecurityChangeEmail: jest.fn<any>().mockResolvedValue({ simulated: true }),
-      sendPasswordResetEmail: jest.fn<any>().mockResolvedValue({ simulated: true }),
+      sendSecurityChangeEmail: jest
+        .fn<any>()
+        .mockResolvedValue({ simulated: true }),
+      sendPasswordResetEmail: jest
+        .fn<any>()
+        .mockResolvedValue({ simulated: true }),
       isConfigured: jest.fn<any>().mockReturnValue(false),
     };
 
@@ -112,7 +117,11 @@ describe('UsersService — gestion du mot de passe', () => {
       const user = buildUser({ id: 'user-both' });
       prismaMock.account.findMany.mockResolvedValue([
         buildAccount({ providerId: 'google', userId: user.id }),
-        buildAccount({ id: 'account-2', providerId: 'credential', userId: user.id }),
+        buildAccount({
+          id: 'account-2',
+          providerId: 'credential',
+          userId: user.id,
+        }),
       ]);
 
       const result = await service.getAuthMethods(user.id);
@@ -201,12 +210,12 @@ describe('UsersService — gestion du mot de passe', () => {
       expect(prismaMock.account.create).not.toHaveBeenCalled();
     });
 
-    it('lance NotFoundException si l\'utilisateur n\'existe pas', async () => {
+    it("lance NotFoundException si l'utilisateur n'existe pas", async () => {
       prismaMock.user.findUnique.mockResolvedValue(null);
 
-      await expect(service.addPassword('unknown-user', 'ValidPass1!')).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(
+        service.addPassword('unknown-user', 'ValidPass1!'),
+      ).rejects.toThrow(NotFoundException);
     });
 
     it('une double soumission ne crée pas de données incohérentes (idempotence)', async () => {
@@ -215,7 +224,9 @@ describe('UsersService — gestion du mot de passe', () => {
 
       // Première tentative : aucun credential
       prismaMock.account.findFirst.mockResolvedValueOnce(null);
-      prismaMock.account.create.mockResolvedValueOnce({ id: 'account-created' });
+      prismaMock.account.create.mockResolvedValueOnce({
+        id: 'account-created',
+      });
       await service.addPassword(user.id, 'ValidPass1!');
 
       // Deuxième tentative : credential existe désormais
@@ -244,7 +255,7 @@ describe('UsersService — gestion du mot de passe', () => {
       expect(prismaMock.account.delete).not.toHaveBeenCalled();
     });
 
-    it('les comptes utilisant d\'autres providers OAuth restent fonctionnels', async () => {
+    it("les comptes utilisant d'autres providers OAuth restent fonctionnels", async () => {
       const user = buildUser({ id: 'user-apple' });
       prismaMock.user.findUnique.mockResolvedValue(user);
       prismaMock.account.findFirst.mockResolvedValue(null);

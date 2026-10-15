@@ -42,6 +42,7 @@ import { PagesModule } from './pages/pages.module.js';
 import { UserQuizModule } from './user-quiz/user-quiz.module.js';
 import { BetaTestersModule } from './beta-testers/beta-testers.module.js';
 import { DeeplinkModule } from './deeplink/deeplink.module.js';
+import { ModerationModule } from './modules/moderation/index.js';
 
 @Module({
   imports: [
@@ -108,6 +109,7 @@ import { DeeplinkModule } from './deeplink/deeplink.module.js';
     UserQuizModule,
     BetaTestersModule,
     DeeplinkModule,
+    ModerationModule,
   ],
   controllers: [AppController],
   providers: [

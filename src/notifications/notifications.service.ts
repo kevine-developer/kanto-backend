@@ -601,7 +601,10 @@ export class NotificationsService {
    * Marque toutes les notifications comme lues pour l'utilisateur connecté.
    */
   async markAllAsRead(userId?: string) {
-    const whereClause: { isRead: boolean; OR?: Array<{ userId?: string; isBroadcast?: boolean }> } = {
+    const whereClause: {
+      isRead: boolean;
+      OR?: Array<{ userId?: string; isBroadcast?: boolean }>;
+    } = {
       isRead: false,
     };
     if (userId) {

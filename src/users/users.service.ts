@@ -565,16 +565,13 @@ export class UsersService {
     // Hachage sécurisé via le même algorithme que Better-Auth (scrypt, node:crypto)
     let hashedPassword: string;
     try {
-      const { hashPassword } = await import(
-        'better-auth/dist/crypto/index.mjs' as string
-      );
+      const { hashPassword } = await import('@better-auth/utils/password');
       hashedPassword = await hashPassword(newPassword);
-    } catch (importErr) {
-      // Fallback: utiliser @better-auth/utils/password directement
+    } catch {
+      // Fallback: utiliser better-auth/crypto
       try {
-        const { hashPassword: hashPasswordFallback } = await import(
-          '@better-auth/utils/password'
-        );
+        const { hashPassword: hashPasswordFallback } =
+          await import('better-auth/crypto');
         hashedPassword = await hashPasswordFallback(newPassword);
       } catch (fallbackErr) {
         this.logger.error(
@@ -689,15 +686,14 @@ export class UsersService {
           credentialAccount.password,
           dto.password,
         );
-      } catch (importErr) {
+      } catch {
         try {
-          const { verifyPassword } = await import(
-            'better-auth/dist/crypto/index.mjs' as string
-          );
-          isValidPassword = await verifyPassword(
-            credentialAccount.password,
-            dto.password,
-          );
+          const { verifyPassword: verifyPasswordFallback } =
+            await import('better-auth/crypto');
+          isValidPassword = await verifyPasswordFallback({
+            hash: credentialAccount.password,
+            password: dto.password,
+          });
         } catch (fallbackErr) {
           this.logger.error(
             '[deleteAccount] Échec de la vérification du mot de passe :',

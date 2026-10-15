@@ -9,7 +9,9 @@ async function main() {
   console.log('Notifications avant purge :', countBefore.rows[0].count);
 
   const res = await client.query('DELETE FROM notifications');
-  console.log(`✅ ${res.rowCount} notification(s) de test/mock supprimée(s) avec succès de la base de données.`);
+  console.log(
+    `✅ ${res.rowCount} notification(s) de test/mock supprimée(s) avec succès de la base de données.`,
+  );
 
   const countAfter = await client.query('SELECT count(*) FROM notifications');
   console.log('Notifications après purge :', countAfter.rows[0].count);
