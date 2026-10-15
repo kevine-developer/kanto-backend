@@ -24,6 +24,7 @@ describe('UsersController', () => {
     getMyFavorites: jest.Mock<(...args: any[]) => Promise<any>>;
     uploadAvatar: jest.Mock<(...args: any[]) => Promise<any>>;
     deleteAvatar: jest.Mock<(...args: any[]) => Promise<any>>;
+    deleteAccount: jest.Mock<(...args: any[]) => Promise<any>>;
   };
 
   beforeEach(async () => {
@@ -33,6 +34,7 @@ describe('UsersController', () => {
       getMyFavorites: jest.fn<(...args: any[]) => Promise<any>>(),
       uploadAvatar: jest.fn<(...args: any[]) => Promise<any>>(),
       deleteAvatar: jest.fn<(...args: any[]) => Promise<any>>(),
+      deleteAccount: jest.fn<(...args: any[]) => Promise<any>>(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -203,4 +205,37 @@ describe('UsersController', () => {
       expect(result).toBe(expectedResponse);
     });
   });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // deleteAccount
+  // ─────────────────────────────────────────────────────────────────────────
+
+  describe('deleteAccount', () => {
+    it('transmet les paramètres au service pour supprimer le compte', async () => {
+      const user = buildUser({ id: 'user-to-delete' });
+      const { session } = buildUserSession(user);
+      const dto = {
+        confirmationPhrase: 'SUPPRIMER MON COMPTE',
+        password: 'Password123!',
+      };
+      const expectedResponse = {
+        success: true,
+        message: 'Votre compte a été supprimé.',
+      };
+
+      usersServiceMock.deleteAccount.mockResolvedValue(expectedResponse);
+
+      const result = await controller.deleteAccount(dto, {
+        user,
+        session,
+      } as any);
+
+      expect(usersServiceMock.deleteAccount).toHaveBeenCalledWith(
+        'user-to-delete',
+        dto,
+      );
+      expect(result).toBe(expectedResponse);
+    });
+  });
 });
+

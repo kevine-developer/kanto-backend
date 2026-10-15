@@ -1,0 +1,11 @@
+// ============================================================
+// ENUMS — CIVIQUE
+// ============================================================
+
+enum CivicSubCategory {
+  INSTITUTION
+  DROITS_VOTE
+  ECOLOGIE_CIVISME
+  SYMBOLES_HISTOIRE
+  VIVRE_ENSEMBLE
+}

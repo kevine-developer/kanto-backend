@@ -1,0 +1,20 @@
+// ============================================================
+// MODÈLES — DOCUMENTS LÉGAUX & CGU DYNAMIQUES
+// ============================================================
+
+model LegalDocument {
+  id              String   @id @default(cuid())
+  slug            String   @unique // "terms" | "privacy" | "help" | "licenses"
+  title           String   // Titre du document (ex: "Conditions Générales d'Utilisation")
+  version         String   @default("1.0") // Numéro de version (ex: "1.0", "1.1")
+  effectiveDate   String?  // Date d'entrée en vigueur (ex: "Septembre 2025")
+  contentHtml     String   @db.Text // Contenu HTML complet
+  summary         String?  @db.Text // Résumé des derniers changements
+  requiresConsent Boolean  @default(true) // Nécessite acceptation utilisateur
+  updatedBy       String?  // Email de l'administrateur
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([slug])
+  @@map("legal_documents")
+}

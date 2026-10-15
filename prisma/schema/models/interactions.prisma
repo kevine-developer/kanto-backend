@@ -1,0 +1,107 @@
+// ============================================================
+// MODÈLES — INTERACTIONS UTILISATEURS
+// Favoris, Likes, Historique de consultation
+// ============================================================
+
+model Favorite {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  itemId String?
+  item   MalagasyItem? @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  citationId String?
+  citation   Citation? @relation(fields: [citationId], references: [id], onDelete: Cascade)
+
+  conteId String?
+  conte   Conte?  @relation(fields: [conteId], references: [id], onDelete: Cascade)
+
+  kabaryId String?
+  kabary   Kabary? @relation(fields: [kabaryId], references: [id], onDelete: Cascade)
+
+  poesieId String?
+  poesie   Poesie? @relation(fields: [poesieId], references: [id], onDelete: Cascade)
+
+  recitationId String?
+  recitation   Recitation? @relation(fields: [recitationId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, itemId])
+  @@unique([userId, citationId])
+  @@unique([userId, conteId])
+  @@unique([userId, kabaryId])
+  @@unique([userId, poesieId])
+  @@unique([userId, recitationId])
+  @@index([userId])
+  @@map("favorites")
+}
+
+model Like {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  itemId String?
+  item   MalagasyItem? @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  citationId String?
+  citation   Citation? @relation(fields: [citationId], references: [id], onDelete: Cascade)
+
+  conteId String?
+  conte   Conte?  @relation(fields: [conteId], references: [id], onDelete: Cascade)
+
+  kabaryId String?
+  kabary   Kabary? @relation(fields: [kabaryId], references: [id], onDelete: Cascade)
+
+  poesieId String?
+  poesie   Poesie? @relation(fields: [poesieId], references: [id], onDelete: Cascade)
+
+  recitationId String?
+  recitation   Recitation? @relation(fields: [recitationId], references: [id], onDelete: Cascade)
+
+  civicContentId String?
+  civicContent   CivicContent? @relation(fields: [civicContentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, itemId])
+  @@unique([userId, citationId])
+  @@unique([userId, conteId])
+  @@unique([userId, kabaryId])
+  @@unique([userId, poesieId])
+  @@unique([userId, recitationId])
+  @@unique([userId, civicContentId])
+  @@index([userId])
+  @@map("likes")
+}
+
+model ViewHistory {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  itemId String?
+  item   MalagasyItem? @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  citationId String?
+  citation   Citation? @relation(fields: [citationId], references: [id], onDelete: Cascade)
+
+  conteId String?
+  conte   Conte?  @relation(fields: [conteId], references: [id], onDelete: Cascade)
+
+  kabaryId String?
+  kabary   Kabary? @relation(fields: [kabaryId], references: [id], onDelete: Cascade)
+
+  poesieId String?
+  poesie   Poesie? @relation(fields: [poesieId], references: [id], onDelete: Cascade)
+
+  recitationId String?
+  recitation   Recitation? @relation(fields: [recitationId], references: [id], onDelete: Cascade)
+
+  viewedAt DateTime @default(now())
+
+  @@index([userId, viewedAt])
+  @@map("view_histories")
+}

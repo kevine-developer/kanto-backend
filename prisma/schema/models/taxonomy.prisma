@@ -1,0 +1,34 @@
+// ============================================================
+// MODÈLES — TAXONOMIE (Thèmes & Régions de Madagascar)
+// ============================================================
+
+model Theme {
+  id          String   @id @default(cuid())
+  nameMg      String // Ex: "Fihavanana", "Fahendrena", "Fianakaviana"
+  nameFr      String // Ex: "Solidarité", "Sagesse", "Famille"
+  slug        String   @unique
+  description String?  @db.Text
+  icon        String? // Nom de l'icône (Ionicons)
+  color       String? // Code couleur hexa (ex: "#E0533C")
+  createdAt   DateTime @default(now())
+
+  // Relations Many-to-Many
+  items     MalagasyItemTheme[]
+  citations CitationTheme[]
+  contes    ConteTheme[]
+  kabaries  KabaryTheme[]
+
+  @@map("themes")
+}
+
+model Region {
+  id          String   @id @default(cuid())
+  name        String   @unique // Ex: "Merina", "Betsimisaraka", "Sakalava", "Antandroy"
+  capital     String? // Ex: "Toamasina", "Toliara"
+  description String?  @db.Text
+  createdAt   DateTime @default(now())
+
+  variants DialectVariant[]
+
+  @@map("regions")
+}

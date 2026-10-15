@@ -1,0 +1,30 @@
+// ============================================================
+// ENUMS — CONTRIBUTIONS COMMUNAUTAIRES
+// ============================================================
+
+enum ContributionStatus {
+  DRAFT             // Brouillon privé modifiable par son auteur
+  PENDING_REVIEW    // Soumis et en attente de validation par l'équipe
+  CHANGES_REQUESTED // Modifications demandées au contributeur
+  APPROVED          // Approuvé et intégré au catalogue officiel
+  REJECTED          // Refusé par l'équipe avec motif
+  ARCHIVED          // Archivé
+}
+
+enum DisputeStatus {
+  NONE
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum ReportReason {
+  TRANSLATION_ERROR  // Erreur de traduction
+  TYPO               // Faute d'orthographe
+  INCORRECT_MEANING  // Sens inexact
+  INAPPROPRIATE      // Contenu inapproprié
+  SPAM               // Spam ou abus
+  MISLEADING         // Contenu trompeur ou mensonger
+  ILLEGAL            // Contenu illégal
+  OTHER              // Autre
+}

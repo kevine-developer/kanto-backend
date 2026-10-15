@@ -1,0 +1,213 @@
+// ============================================================
+// MODÈLES — JEUX
+// Vrai ou Faux (Marina sa Diso)
+// Remets dans l'ordre (Puzzle Word)
+// Mot manquant (Fenoy ny banga)
+// Devinettes (Ankamantatra)
+// ============================================================
+
+// ---------- Vrai ou Faux ----------
+
+model TrueFalseQuestion {
+  id            String          @id @default(cuid())
+  questionMg    String          @db.Text
+  questionFr    String?         @db.Text
+  isTrue        Boolean
+  explanationMg String          @db.Text
+  explanationFr String?         @db.Text
+  theme         TrueFalseTheme  @default(GEN)
+  difficulty    DifficultyLevel @default(EASY)
+  source        String?
+  image         String?
+  status        ContentStatus   @default(PUBLISHED)
+  timesPlayed   Int             @default(0)
+  timesCorrect  Int             @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  answers TrueFalseAnswer[]
+
+  @@index([theme])
+  @@index([difficulty])
+  @@index([status])
+  @@map("true_false_questions")
+}
+
+model TrueFalseSession {
+  id              String          @id @default(cuid())
+  userId          String?
+  theme           TrueFalseTheme  @default(GEN)
+  difficulty      DifficultyLevel @default(EASY)
+  score           Int             @default(0)
+  totalQuestions  Int             @default(10)
+  streakMax       Int             @default(0)
+  durationSeconds Int             @default(0)
+  isCompleted     Boolean         @default(false)
+  xpEarned        Int             @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  answers TrueFalseAnswer[]
+
+  @@index([userId])
+  @@index([createdAt])
+  @@map("true_false_sessions")
+}
+
+model TrueFalseAnswer {
+  id         String            @id @default(cuid())
+  sessionId  String
+  session    TrueFalseSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  questionId String
+  question   TrueFalseQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  userAnswer Boolean
+  isCorrect  Boolean
+  answeredAt DateTime          @default(now())
+
+  @@index([sessionId])
+  @@index([questionId])
+  @@map("true_false_answers")
+}
+
+// ---------- Remets dans l'ordre (Puzzle Word) ----------
+
+model WordPuzzleLevel {
+  id             String          @id @default(cuid())
+  levelNumber    Int             @unique // 1, 2, 3, 4... (affiché en Romain I, II, III...)
+  titleMg        String // Ex: "Firaisankina sy Fihavanana"
+  titleFr        String? // Ex: "Solidarité et Harmonie"
+  description    String?         @db.Text
+  difficulty     DifficultyLevel @default(EASY)
+  passThreshold  Int             @default(5) // Au moins 5 phrases réussies sur 10 (50%)
+  totalSentences Int             @default(10) // Standard : 10 phrases par niveau
+  status         ContentStatus   @default(PUBLISHED)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  sentences WordPuzzleSentence[]
+
+  @@index([levelNumber])
+  @@index([status])
+  @@map("word_puzzle_levels")
+}
+
+model WordPuzzleSentence {
+  id            String          @id @default(cuid())
+  levelId       String
+  level         WordPuzzleLevel @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  orderIndex    Int             @default(1) // 1 à 10
+  malagasy      String          @db.Text // Phrase malgache à remettre dans l'ordre
+  french        String          @db.Text // Traduction française
+  hint          String? // Indice optionnel
+  explanationMg String?         @db.Text // Explication culturelle malgache
+  explanationFr String?         @db.Text // Explication culturelle française
+  status        ContentStatus   @default(PUBLISHED)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([levelId])
+  @@index([orderIndex])
+  @@map("word_puzzle_sentences")
+}
+
+// ---------- Mot manquant (Fenoy ny banga) ----------
+
+model MissingWordLevel {
+  id             String          @id @default(cuid())
+  levelNumber    Int             @unique // 1, 2, 3, 4, 5... (I, II, III, IV, V)
+  titleMg        String // Ex: "Mora", "Antonony", "Sarotra"
+  titleFr        String? // Ex: "Débutant", "Intermédiaire"
+  description    String?         @db.Text
+  difficulty     DifficultyLevel @default(EASY)
+  passThreshold  Int             @default(5) // Au moins 50% de réussite
+  totalQuestions Int             @default(10) // 10 questions tirées au sort par session
+  status         ContentStatus   @default(PUBLISHED)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  questions MissingWordQuestion[]
+
+  @@index([levelNumber])
+  @@index([status])
+  @@map("missing_word_levels")
+}
+
+model MissingWordQuestion {
+  id          String           @id @default(cuid())
+  levelId     String
+  level       MissingWordLevel @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  orderIndex  Int              @default(1)
+  template    String[] // Tableau des mots de la phrase avec "" pour le mot manquant
+  correctWord String // Mot manquant (au moins 3 caractères)
+  choices     String[] // 4 choix de mots (au moins 3 caractères chacun)
+  french      String           @db.Text // Traduction française
+  explanation String?          @db.Text // Explication culturelle
+  hint        String? // Indice optionnel
+  status      ContentStatus    @default(PUBLISHED)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([levelId])
+  @@index([orderIndex])
+  @@map("missing_word_questions")
+}
+
+// ---------- Devinettes (Ankamantatra) ----------
+
+model RiddleQuestion {
+  id            String          @id @default(cuid())
+  riddleMg      String          @db.Text
+  riddleFr      String          @db.Text
+  options       String[]
+  correctAnswer String
+  explanation   String          @db.Text
+  clue          String?
+  level         Int             @default(1)
+  status        ContentStatus   @default(PUBLISHED)
+  timesPlayed   Int             @default(0)
+  timesCorrect  Int             @default(0)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  answers       RiddleAnswer[]
+
+  @@index([level])
+  @@index([status])
+  @@map("riddle_questions")
+}
+
+model RiddleSession {
+  id              String          @id @default(cuid())
+  userId          String?
+  score           Int             @default(0)
+  totalQuestions  Int             @default(10)
+  streakMax       Int             @default(0)
+  durationSeconds Int             @default(0)
+  isCompleted     Boolean         @default(false)
+  xpEarned        Int             @default(0)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  answers         RiddleAnswer[]
+
+  @@index([userId])
+  @@index([createdAt])
+  @@map("riddle_sessions")
+}
+
+model RiddleAnswer {
+  id         String         @id @default(cuid())
+  sessionId  String
+  session    RiddleSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  questionId String
+  question   RiddleQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  userAnswer String?
+  isCorrect  Boolean
+  answeredAt DateTime       @default(now())
+
+  @@index([sessionId])
+  @@index([questionId])
+  @@map("riddle_answers")
+}

@@ -980,3 +980,87 @@ https://kanto.mg`.trim();
 
   return { subject, html, text };
 }
+
+/**
+ * 10. Email de confirmation de suppression définitive de compte (RGPD).
+ *     Envoyé immédiatement après l'exécution de la suppression du compte.
+ */
+export interface AccountDeletionEmailData {
+  to: string;
+  userName?: string;
+  deletedAt?: Date;
+}
+
+export function buildAccountDeletionEmail(
+  data: AccountDeletionEmailData,
+): EmailRenderOutput {
+  const greeting = data.userName?.trim()
+    ? `Bonjour ${data.userName.trim()},`
+    : 'Bonjour,';
+
+  const subject = 'Confirmation de suppression de votre compte Kanto';
+
+  const dateStr = (data.deletedAt ?? new Date()).toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
+  const text = `${greeting}
+
+Nous vous confirmons que votre compte Kanto associé à cette adresse email a été définitivement supprimé le ${dateStr}, conformément à votre demande.
+
+Ce qui a été effectué :
+- Votre profil personnel, vos identifiants et vos sessions actives ont été définitivement révoqués et supprimés.
+- Vos données d'activité personnelle (favoris, historique, progression et amitiés) ont été effacées.
+- Conformément aux conditions d'utilisation et à la mission de préservation culturelle de Kanto, les contributions publiques approuvées sont conservées sous forme strictement anonymisée, sans aucun lien vers votre ancienne identité.
+
+Si vous souhaitez utiliser Kanto à l'avenir, vous pourrez créer un nouveau compte à tout moment.
+
+Pour toute question relative à vos données personnelles, vous pouvez contacter notre équipe à : contact@kanto.mg
+
+Kanto — Lova, Kolontsaina & Tantara Malagasy
+https://kanto.mg`.trim();
+
+  const contentHtml = `
+    <h1 style="font-size: 18px; font-weight: 700; color: ${KANTO_COLORS.textPrimary}; margin: 0 0 16px 0; line-height: 24px; letter-spacing: -0.2px;">
+      Votre compte Kanto a été supprimé
+    </h1>
+
+    <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 14px 0;">
+      ${greeting}
+    </p>
+
+    <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 16px 0;">
+      Conformément à votre demande, votre compte Kanto ainsi que vos données personnelles associées ont été définitivement supprimés le <strong>${dateStr}</strong>.
+    </p>
+
+    ${renderNotice({
+      title: 'Résumé du traitement de vos données',
+      content:
+        '• Profil, avatar et identifiants de connexion : <strong>supprimés</strong><br>' +
+        '• Sessions actives et jetons de renouvellement : <strong>révoqués</strong><br>' +
+        '• Favoris, progression, interactions et amitiés : <strong>effacés</strong><br>' +
+        '• Contributions culturelles publiques : <strong>anonymisées</strong> pour la préservation du patrimoine malgache.',
+      variant: 'security',
+    })}
+
+    <p style="font-size: 13px; line-height: 20px; color: ${KANTO_COLORS.textSecondary}; margin: 20px 0 0 0;">
+      Si vous souhaitez revenir sur Kanto ultérieurement, vous serez toujours le bienvenu pour créer un nouveau compte.
+    </p>
+
+    <p style="font-size: 12px; line-height: 18px; color: ${KANTO_COLORS.textFootnote}; margin: 24px 0 0 0;">
+      Cet email confirme l'exécution de votre demande de suppression au titre du droit à l'effacement (RGPD). Aucune autre démarche n'est requise.
+    </p>
+  `;
+
+  const html = renderEmailLayout({
+    title: subject,
+    preheader: 'Confirmation de la suppression définitive de votre compte Kanto',
+    headerBadge: { label: 'Compte supprimé', variant: 'terracotta' },
+    contentHtml,
+  });
+
+  return { subject, html, text };
+}
+

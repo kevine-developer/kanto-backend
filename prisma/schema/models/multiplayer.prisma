@@ -1,0 +1,88 @@
+// ============================================================
+// MODÈLES — MODE DUEL TEMPS RÉEL (1v1 BATTLE)
+// ============================================================
+
+model DuelSession {
+  id                   String       @id @default(cuid())
+  code                 String       @unique // Code court à 6 caractères (ex: "KN7X92")
+  gameType             DuelGameType @default(TRUE_FALSE)
+  status               DuelStatus   @default(WAITING)
+  player1Id            String       // Identifiant de l'hôte créateur
+  player2Id            String?
+  player1Name          String?
+  player2Name          String?
+  player1Avatar        String?
+  player2Avatar        String?
+  winnerId             String?
+  questionIds          String[]     // Liste ordonnée des IDs de questions synchronisées
+  totalQuestions       Int          @default(5)
+  player1Score         Int          @default(0)
+  player2Score         Int          @default(0)
+  player1Finished      Boolean      @default(false)
+  player2Finished      Boolean      @default(false)
+  timePerQuestion      Int          @default(15) // secondes allouées par question (compte à rebours)
+  maxPlayers           Int          @default(10) // Limite max de joueurs par salon (10)
+  currentQuestionIndex Int          @default(0)  // Index de la question en cours
+  theme                String?      @default("ALL") // Thème culturel ("ALL", "GEO", "HIST", "CULT", "LITT", "PROV", "GEN")
+  themeChooserId       String?                   // ID du joueur qui a actuellement la main pour choisir le thème (player1Id par défaut)
+  roundStartedAt       DateTime?                 // Timestamp précis du début du round pour Server-Authoritative timing
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+  finishedAt           DateTime?
+
+  customQuizSetId      String?
+  customQuizSet        UserQuizSet? @relation(fields: [customQuizSetId], references: [id])
+
+  players              DuelPlayer[]
+  answers              DuelAnswer[]
+
+  @@index([code])
+  @@index([status])
+  @@index([player1Id])
+  @@index([player2Id])
+  @@map("duel_sessions")
+}
+
+model DuelPlayer {
+  id                 String      @id @default(cuid())
+  sessionId          String
+  session            DuelSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  userId             String
+  name               String
+  avatar             String?
+  isHost             Boolean     @default(false)
+  score              Int         @default(0)
+  currentRoundScore  Int         @default(0) // Points remportés sur le round courant
+  streak             Int         @default(0) // Série consécutive de bonnes réponses
+  answersCount       Int         @default(0)
+  totalTimeMs        Int         @default(0)
+  rank               Int?
+  previousRank       Int?        // Pour déterminer le delta de place (🔺 +2, 🔻 -1...)
+  earnedXp           Int         @default(0)
+  hasAnsweredCurrent Boolean     @default(false) // A répondu à la question en cours
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+
+  @@unique([sessionId, userId])
+  @@index([sessionId])
+  @@index([userId])
+  @@map("duel_players")
+}
+
+model DuelAnswer {
+  id            String      @id @default(cuid())
+  sessionId     String
+  session       DuelSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  userId        String
+  questionId    String
+  questionIndex Int
+  userAnswer    String
+  isCorrect     Boolean
+  timeTakenMs   Int         @default(0)
+  pointsAwarded Int         @default(0)
+  answeredAt    DateTime    @default(now())
+
+  @@index([sessionId])
+  @@index([userId])
+  @@map("duel_answers")
+}

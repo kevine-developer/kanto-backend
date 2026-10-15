@@ -1,0 +1,25 @@
+// ============================================================
+// ENUMS — CONTENU CULTUREL (partagés)
+// ============================================================
+
+enum CategoryType {
+  PROVERBE    // Ohabolana
+  EXPRESSION  // Oha-pitenenana
+  DICTON      // Fomba fiteny / Fady
+  CITATION
+  CONTE
+  KABARY
+}
+
+enum ContentStatus {
+  DRAFT      // Brouillon
+  PUBLISHED  // Publié et visible
+  ARCHIVED   // Archivé
+}
+
+enum DifficultyLevel {
+  EASY    // Courant / Débutant
+  MEDIUM  // Intermédiaire
+  HARD    // Littéraire / Ancien
+  EXPERT  // Expert / Spécialiste
+}

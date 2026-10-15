@@ -1,0 +1,100 @@
+// ============================================================
+// MODÈLES — AUTH & AUTHENTIFICATION (Better Auth)
+// ============================================================
+
+model User {
+  id            String           @id @default(cuid())
+  email         String           @unique
+  name          String
+  username      String?          @unique
+  emailVerified Boolean          @default(false)
+  image         String?
+  role          UserRole         @default(USER)
+  tier          SubscriptionTier @default(FREE)
+  pushToken     String?          // Expo Push Notification Token (ex: ExponentPushToken[xxx])
+  termsAcceptedAt DateTime?      // Horodatage acceptation CGU & politique de confidentialité
+  termsVersion    String?        @default("1.0") // Version des CGU acceptées
+  banned        Boolean?
+  banReason     String?
+  banExpires    DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  // Better Auth relations
+  sessions Session[]
+  accounts Account[]
+
+  // Relations d'activité
+  favorites         Favorite[]
+  likes             Like[]
+  viewHistories     ViewHistory[]
+  reports           ContentReport[]
+  contributions        Contribution[]
+  contributionVotes    ContributionVote[]
+  contributionComments ContributionComment[]
+  notifications        Notification[]
+
+  // Progression & Gamification
+  progress       UserProgress?
+  gameProgress   GameProgression[]
+  xpTransactions XpTransaction[]
+  badges         UserBadge[]
+
+  // Relations sociales & Amis
+  sentFriendships        Friendship[]    @relation("SentFriendships")
+  receivedFriendships    Friendship[]    @relation("ReceivedFriendships")
+  sentEncouragements     Encouragement[] @relation("SentEncouragements")
+  receivedEncouragements Encouragement[] @relation("ReceivedEncouragements")
+
+  // Relations UGC (Quiz persos)
+  quizSets               UserQuizSet[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?   @db.Text
+  refreshToken          String?   @db.Text
+  idToken               String?   @db.Text
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  issuer                String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String   @db.Text
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verifications")
+}
