@@ -1,0 +1,75 @@
+// ============================================================
+// MODÈLES — UI & MARKETING
+// Slides d'accueil, d'onboarding, bannières marketing
+// ============================================================
+
+model WelcomeSlide {
+  id          String   @id @default(cuid())
+  title       String
+  titleMg     String?
+  badge       String
+  badgeMg     String
+  tag         String?
+  imageUrl    String
+  accentColor String   @default("#4A6741")
+  orderIndex  Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([orderIndex])
+  @@map("welcome_slides")
+}
+
+model OnboardingSlide {
+  id          String   @id @default(cuid())
+  order       Int      @default(0)
+  title       String
+  titleMg     String
+  subtitle    String?
+  description String   @db.Text
+  imageUrl    String?
+  accentColor String?  @default("#4A6741")
+  iconName    String?  @default("BookOpen")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+  @@index([isActive])
+  @@map("onboarding_slides")
+}
+
+model MarketingBanner {
+  id              String   @id @default(cuid())
+  badgeFr         String
+  badgeMg         String
+  titleFr         String
+  titleMg         String
+  descriptionFr   String   @db.Text
+  descriptionMg   String   @db.Text
+  ctaFr           String   @default("Découvrir")
+  ctaMg           String   @default("Hizaha")
+  imageUrl        String
+  deepLink        String   @default("/(screens)/subscription")
+  accentColor     String   @default("#F59E0B")
+  orderIndex      Int      @default(0)
+  isActive        Boolean  @default(true)
+
+  // Actions étendues : DEEP_LINK, BOTTOM_SHEET (long), CENTER_MODAL (court)
+  actionType      String   @default("DEEP_LINK")
+  modalBodyFr     String?  @db.Text
+  modalBodyMg     String?  @db.Text
+  modalImageUrl   String?
+  modalCtaLabelFr String?
+  modalCtaLabelMg String?
+  modalCtaLink    String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([orderIndex])
+  @@map("marketing_banners")
+}

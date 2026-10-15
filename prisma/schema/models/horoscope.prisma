@@ -1,0 +1,31 @@
+// ============================================================
+// MODÈLES — HOROSCOPE MALGACHE (Vintana)
+// ============================================================
+
+model VintanaSign {
+  id          String   @id @default(cuid())
+  nameMg      String   @unique
+  nameFr      String
+  element     String
+  description String   @db.Text
+  luckyColor  String?
+  luckyDay    String?
+
+  forecasts   VintanaForecast[]
+
+  @@map("vintana_signs")
+}
+
+model VintanaForecast {
+  id          String       @id @default(cuid())
+  signId      String
+  sign        VintanaSign  @relation(fields: [signId], references: [id], onDelete: Cascade)
+  date        DateTime     @db.Date
+  prediction  String       @db.Text
+  mood        String?
+  createdAt   DateTime     @default(now())
+
+  @@unique([signId, date])
+  @@index([date])
+  @@map("vintana_forecasts")
+}

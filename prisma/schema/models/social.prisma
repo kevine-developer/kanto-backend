@@ -1,0 +1,35 @@
+// ============================================================
+// MODÈLES — SOCIAL (Fihavanana)
+// Amis & Encouragements quotidiens
+// ============================================================
+
+model Friendship {
+  id         String           @id @default(cuid())
+  senderId   String
+  sender     User             @relation("SentFriendships", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId String
+  receiver   User             @relation("ReceivedFriendships", fields: [receiverId], references: [id], onDelete: Cascade)
+  status     FriendshipStatus @default(PENDING)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  @@unique([senderId, receiverId])
+  @@index([senderId, status])
+  @@index([receiverId, status])
+  @@map("friendships")
+}
+
+model Encouragement {
+  id         String   @id @default(cuid())
+  senderId   String
+  sender     User     @relation("SentEncouragements", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId String
+  receiver   User     @relation("ReceivedEncouragements", fields: [receiverId], references: [id], onDelete: Cascade)
+  date       DateTime @db.Date // Date normalisée UTC pour contrainte unique journalière
+  createdAt  DateTime @default(now())
+
+  @@unique([senderId, receiverId, date])
+  @@index([senderId, date])
+  @@index([receiverId, date])
+  @@map("encouragements")
+}

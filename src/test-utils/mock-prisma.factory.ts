@@ -42,7 +42,7 @@ function createModelMock(): DeepMockModel {
 }
 
 export function createPrismaMock() {
-  return {
+  const mock = {
     // Auth / Users
     user: createModelMock(),
     session: createModelMock(),
@@ -82,9 +82,11 @@ export function createPrismaMock() {
     badge: createModelMock(),
     userBadge: createModelMock(),
 
-    // Leaderboard / Duel
+    // Leaderboard / Duel / UGC
     duelPlayer: createModelMock(),
     duelSession: createModelMock(),
+    userQuizSet: createModelMock(),
+    userQuestion: createModelMock(),
 
     // Vintana
     vintanaSign: createModelMock(),
@@ -94,14 +96,23 @@ export function createPrismaMock() {
     theme: createModelMock(),
     lock: createModelMock(),
     notification: createModelMock(),
+    contributionAuditLog: createModelMock(),
 
     // Transactions Prisma
-    $transaction: jest.fn<(...args: any[]) => Promise<any>>(
-      (fn: (tx: any) => Promise<any>) => fn(createPrismaMock()),
-    ),
+    $transaction: jest.fn<(...args: any[]) => Promise<any>>(),
     $connect: jest.fn<(...args: any[]) => Promise<any>>(),
     $disconnect: jest.fn<(...args: any[]) => Promise<any>>(),
   };
+
+  mock.$transaction.mockImplementation((fnOrArray: any) => {
+    if (typeof fnOrArray === 'function') {
+      return fnOrArray(mock);
+    }
+    return Promise.all(fnOrArray);
+  });
+
+  return mock;
 }
 
 export type PrismaMock = ReturnType<typeof createPrismaMock>;
+

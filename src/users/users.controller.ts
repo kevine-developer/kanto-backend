@@ -13,6 +13,7 @@ import { UsersService } from './users.service.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
 import { UploadAvatarDto } from './dto/upload-avatar.dto.js';
 import { AddPasswordDto } from './dto/add-password.dto.js';
+import { DeleteAccountDto } from './dto/delete-account.dto.js';
 import {
   AuthGuard,
   OptionalAuth,
@@ -109,4 +110,20 @@ export class UsersController {
   addPassword(@Body() body: AddPasswordDto, @Session() session: UserSession) {
     return this.usersService.addPassword(session.user.id, body.newPassword);
   }
+
+  /**
+   * Suppression définitive du compte utilisateur (Droit à l'effacement RGPD).
+   * Nécessite une authentification active (AuthGuard).
+   * Throttling strict : 3 tentatives par 5 minutes pour prévenir les abus par force brute.
+   */
+  @Delete('me')
+  @UseGuards(AuthGuard)
+  @Throttle({ default: { limit: 3, ttl: 300000 } })
+  deleteAccount(
+    @Body() body: DeleteAccountDto,
+    @Session() session: UserSession,
+  ) {
+    return this.usersService.deleteAccount(session.user.id, body);
+  }
 }
+

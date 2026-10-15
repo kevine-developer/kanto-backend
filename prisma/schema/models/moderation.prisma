@@ -1,0 +1,41 @@
+// ============================================================
+// MODÈLES — MODÉRATION
+// Signalements de contenu
+// ============================================================
+
+model ContentReport {
+  id          String       @id @default(cuid())
+  reason      ReportReason
+  description String?      @db.Text
+  resolved    Boolean      @default(false)
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  itemId String?
+  item   MalagasyItem? @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  citationId String?
+  citation   Citation? @relation(fields: [citationId], references: [id], onDelete: Cascade)
+
+  conteId String?
+  conte   Conte?  @relation(fields: [conteId], references: [id], onDelete: Cascade)
+
+  kabaryId String?
+  kabary   Kabary? @relation(fields: [kabaryId], references: [id], onDelete: Cascade)
+
+  poesieId String?
+  poesie   Poesie? @relation(fields: [poesieId], references: [id], onDelete: Cascade)
+
+  recitationId String?
+  recitation   Recitation? @relation(fields: [recitationId], references: [id], onDelete: Cascade)
+
+  quizSetId String?
+  quizSet   UserQuizSet? @relation(fields: [quizSetId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([resolved])
+  @@index([quizSetId])
+  @@map("content_reports")
+}

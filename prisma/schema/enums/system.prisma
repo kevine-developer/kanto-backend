@@ -1,0 +1,16 @@
+// ============================================================
+// ENUMS — SYSTÈME & BETA
+// ============================================================
+
+enum AnnouncementType {
+  INFO
+  MAINTENANCE
+  NEW_FEATURE
+}
+
+enum TesterStatus {
+  PENDING
+  APPROVED
+  INVITED
+  REJECTED
+}

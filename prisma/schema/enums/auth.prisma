@@ -1,0 +1,15 @@
+// ============================================================
+// ENUMS — AUTH & UTILISATEURS
+// ============================================================
+
+enum UserRole {
+  USER
+  CONTRIBUTOR
+  MODERATOR
+  ADMIN
+}
+
+enum SubscriptionTier {
+  FREE
+  PREMIUM
+}

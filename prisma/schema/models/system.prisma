@@ -1,0 +1,38 @@
+// ============================================================
+// MODÈLES — SYSTÈME
+// Verrouillage des modules & Annonces système
+// ============================================================
+
+model ModuleLock {
+  id         String     @id @default(cuid())
+  key        String     @unique // ex: "game:trueFalseGame", "category:conte", "feature:subscription"
+  type       ModuleType
+  nameFr     String // Nom français
+  nameMg     String // Nom malgache
+  isLocked   Boolean    @default(false)
+  lockReason String? // Ex: "En cours de maintenance", "Bientôt disponible"
+  isVisible  Boolean    @default(true) // Visibilité dans l'application mobile (affiché ou masqué)
+  imageUrl   String? // Image / illustration du jeu ou de la catégorie
+  bgImageUrl String? // Image d'arrière-plan immersive (Chemin de niveaux / jeu)
+  minTier    String?    @default("FREE")
+  updatedAt  DateTime   @updatedAt
+  createdAt  DateTime   @default(now())
+
+  @@map("module_locks")
+}
+
+model SystemAnnouncement {
+  id        String           @id @default(cuid())
+  titleFr   String
+  titleMg   String
+  messageFr String           @db.Text
+  messageMg String           @db.Text
+  type      AnnouncementType @default(INFO)
+  isActive  Boolean          @default(false)
+  version   Int              @default(1)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@index([isActive])
+  @@map("system_announcements")
+}

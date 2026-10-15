@@ -1,0 +1,55 @@
+// ============================================================
+// MODÈLES — GAMIFICATION & PROGRESSION
+// ============================================================
+
+model UserProgress {
+  userId        String    @id
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totalXp       Float     @default(0)
+  level         Int       @default(0)
+  coins         Int       @default(0)
+  streakDays    Int       @default(0)
+  lastLoginDate DateTime?
+  updatedAt     DateTime  @updatedAt
+
+  @@index([totalXp(sort: Desc)])
+  @@map("user_progress")
+}
+
+model GameProgression {
+  id                 String @id @default(cuid())
+  userId             String
+  user               User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gameType           String // Ex: "QUIZ", "MISSING_WORD", "PUZZLE_WORD", "RIDDLE"
+  unlockedLevelIndex Int    @default(0)
+  levelStars         Json   @default("{}") // Ex: {"lvl_1": 3, "lvl_2": 2}
+
+  @@unique([userId, gameType])
+  @@map("game_progressions")
+}
+
+model XpTransaction {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount      Float
+  source      String // Ex: "quiz_level_1", "daily_login", "reading_citation_123"
+  description String?
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@map("xp_transactions")
+}
+
+model UserBadge {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badgeId    String   // Identifiant du badge dans le catalogue (ex: "streak_7", "proverbs_20", "xp_1000")
+  unlockedAt DateTime @default(now())
+  progress   Int      @default(0)
+
+  @@unique([userId, badgeId])
+  @@index([userId])
+  @@map("user_badges")
+}

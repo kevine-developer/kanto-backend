@@ -1,0 +1,28 @@
+// ============================================================
+// MODÈLES — NOTIFICATIONS & ALERTES
+// ============================================================
+
+model Notification {
+  id          String   @id @default(cuid())
+  titleMg     String // Titre en malgache (ex: "Ohabolana anio")
+  titleFr     String? // Titre en français (ex: "Proverbe du jour")
+  messageMg   String   @db.Text // Message / description en malgache
+  messageFr   String?  @db.Text // Message / description en français
+  category    String   @default("culture") // culture, game, civic, community, system
+  badgeText   String? // Badge text (ex: "Ohabolana", "+25 Pts", "Vaovao")
+  badgeType   String?  @default("new") // new, streak, reward, civic, info
+  iconName    String?  @default("bulb-outline") // Ionicons glyph name
+  iconColor   String?  @default("#C0392B") // Couleur de l'icône
+  targetRoute String? // Route deep-link optionnelle
+  isBroadcast Boolean  @default(true) // Visible pour tous les utilisateurs
+  userId      String? // Cible utilisateur optionnelle
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@index([category])
+  @@index([createdAt])
+  @@map("notifications")
+}

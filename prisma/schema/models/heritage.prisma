@@ -1,0 +1,158 @@
+// ============================================================
+// MODÈLES — PATRIMOINE & MÉMOIRE DE MADAGASCAR
+// Présidents, Billets, Provinces, Emblèmes naturels,
+// Dates historiques, Emblèmes nationaux
+// ============================================================
+
+model President {
+  id             String        @id
+  name           String
+  titleFr        String
+  titleMg        String
+  republic       String
+  republicMg     String
+  period         String
+  quoteFr        String?       @db.Text
+  quoteMg        String?       @db.Text
+  bioFr          String        @db.Text
+  bioMg          String        @db.Text
+  achievementsFr String[]      @default([])
+  achievementsMg String[]      @default([])
+  badgeColor     String?       @default("#2A6B3D")
+  imageUrl       String?
+  orderIndex     Int           @default(0)
+  status         ContentStatus @default(PUBLISHED)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([status])
+  @@index([orderIndex])
+  @@map("presidents")
+}
+
+model Banknote {
+  id                   String        @id
+  valueAriary          Int           @default(0)
+  valueFmg             Int           @default(0)
+  titleFr              String
+  titleMg              String
+  series               String
+  seriesLabelFr        String
+  seriesLabelMg        String
+  period               String
+  colorLight           String        @default("#2C4075")
+  colorDark            String        @default("#3E5AA1")
+  obverseDescriptionFr String?       @db.Text
+  obverseDescriptionMg String?       @db.Text
+  reverseDescriptionFr String?       @db.Text
+  reverseDescriptionMg String?       @db.Text
+  symbolismFr          String?       @db.Text
+  symbolismMg          String?       @db.Text
+  securityFeaturesFr   String[]      @default([])
+  imageUrl             String?
+  imageUrlVerso        String?
+  isComingSoon         Boolean       @default(false)
+  orderIndex           Int           @default(0)
+  status               ContentStatus @default(PUBLISHED)
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  @@index([status])
+  @@index([series])
+  @@index([orderIndex])
+  @@map("banknotes")
+}
+
+model ProvinceBlason {
+  id            String        @id
+  province      String
+  chefLieu      String
+  titleFr       String
+  titleMg       String
+  color         String
+  bgLight       String
+  borderLight   String
+  descriptionFr String        @db.Text
+  descriptionMg String        @db.Text
+  symbols       Json?
+  keyFactsFr    String[]      @default([])
+  keyFactsMg    String[]      @default([])
+  imageUrl      String?
+  orderIndex    Int           @default(0)
+  status        ContentStatus @default(PUBLISHED)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([status])
+  @@index([orderIndex])
+  @@map("province_blasons")
+}
+
+model NatureEmblem {
+  id             String        @id
+  nameFr         String
+  nameMg         String
+  scientificName String
+  type           String
+  statusFr       String
+  statusMg       String
+  descriptionFr  String        @db.Text
+  descriptionMg  String        @db.Text
+  culturalRoleFr String        @db.Text
+  culturalRoleMg String        @db.Text
+  proverbMg      String?
+  proverbFr      String?
+  accentColor    String?       @default("#1B5E20")
+  imageUrl       String?
+  orderIndex     Int           @default(0)
+  status         ContentStatus @default(PUBLISHED)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([status])
+  @@index([type])
+  @@index([orderIndex])
+  @@map("nature_emblems")
+}
+
+model HistoryDate {
+  id          String        @id
+  year        String
+  exactDate   String
+  titleFr     String
+  titleMg     String
+  era         String
+  summaryFr   String        @db.Text
+  summaryMg   String        @db.Text
+  impactFr    String        @db.Text
+  impactMg    String        @db.Text
+  accentColor String?       @default("#B71C1C")
+  imageUrl    String?
+  orderIndex  Int           @default(0)
+  status      ContentStatus @default(PUBLISHED)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status])
+  @@index([orderIndex])
+  @@map("history_dates")
+}
+
+model NationalEmblem {
+  id            String        @id @default(cuid())
+  period        String
+  imageUrl      String?
+  government    String
+  descriptionFr String        @db.Text
+  descriptionMg String?       @db.Text
+  notesFr       String?       @db.Text
+  notesMg       String?       @db.Text
+  orderIndex    Int           @default(0)
+  status        ContentStatus @default(PUBLISHED)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([status])
+  @@index([orderIndex])
+  @@map("national_emblems")
+}

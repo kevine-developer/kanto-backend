@@ -1,0 +1,56 @@
+// ============================================================
+// MODÈLES — UGC (User Generated Content)
+// Quiz personnalisés créés par les utilisateurs
+// ============================================================
+
+model UserQuizSet {
+  id          String         @id @default(uuid())
+  title       String         // ex: "Histoire de Madagascar - Niveau Expert"
+  description String?        @db.Text
+  imageUrl    String?        @db.Text
+  category    String?        @default("culture_generale")
+  visibility  DeckVisibility @default(PUBLIC)
+  isPublic    Boolean        @default(false)
+  verified    Boolean        @default(false)
+  verifiedAt  DateTime?
+  verifiedBy  String?
+  playsCount  Int            @default(0)
+  authorId    String
+  author      User           @relation(fields: [authorId], references: [id])
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  questions   UserQuestion[]
+  sessions    DuelSession[]
+  reports     ContentReport[]
+
+  @@index([authorId])
+  @@index([visibility])
+  @@index([verified])
+  @@index([isPublic])
+  @@index([category])
+  @@map("user_quiz_sets")
+}
+
+model UserQuestion {
+  id            String   @id @default(uuid())
+  quizSetId     String
+  quizSet       UserQuizSet @relation(fields: [quizSetId], references: [id], onDelete: Cascade)
+
+  gameType      String   // "QUIZ" ou "TRUE_FALSE"
+  questionMg    String   @db.Text
+  questionFr    String?  @db.Text
+
+  isTrue        Boolean?
+  choices       String[] // Pour QUIZ (JSON array)
+  answerIndex   Int?
+
+  explanationMg String?  @db.Text
+  explanationFr String?  @db.Text
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([quizSetId])
+  @@map("user_questions")
+}

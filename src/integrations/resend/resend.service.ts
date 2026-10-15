@@ -10,6 +10,7 @@ import {
   buildModerationAlertAdminEmail,
   buildContributionStatusUpdateEmail,
   buildSecurityChangeEmail,
+  buildAccountDeletionEmail,
 } from './templates/index.js';
 
 export interface SendEmailOptions {
@@ -376,4 +377,26 @@ export class ResendService {
       html,
     });
   }
+
+  /**
+   * Confirmation formelle de suppression de compte utilisateur (droit à l'effacement RGPD).
+   */
+  async sendAccountDeletionEmail(options: {
+    to: string;
+    userName?: string;
+  }): Promise<{ id?: string; simulated?: boolean }> {
+    const { subject, html, text } = buildAccountDeletionEmail({
+      to: options.to,
+      userName: options.userName,
+      deletedAt: new Date(),
+    });
+
+    return this.sendEmail({
+      to: options.to,
+      subject,
+      text,
+      html,
+    });
+  }
 }
+

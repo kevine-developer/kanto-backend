@@ -4,6 +4,7 @@ import {
   Injectable,
   Logger,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -11,6 +12,7 @@ import { PrismaService } from '../prisma/prisma.service.js';
 import { CloudinaryService } from '../integrations/cloudinary/cloudinary.service.js';
 import { ResendService } from '../integrations/resend/resend.service.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
+import { DeleteAccountDto } from './dto/delete-account.dto.js';
 import { FriendshipStatus } from '../../generated/prisma/client.js';
 
 @Injectable()
@@ -616,5 +618,265 @@ export class UsersService {
       });
 
     return { success: true };
+  }
+
+  /**
+   * Suppression définitive d'un compte utilisateur et de ses données personnelles (Droit à l'effacement RGPD).
+   *
+   * Sécurité & Conformité :
+   * 1. Vérification de l'identité :
+   *    - Compte avec mot de passe (credential) : exige la vérification du mot de passe actuel.
+   *    - Compte exclusivement OAuth (ex: Google) : s'appuie sur la session authentifiée forte et la phrase de confirmation.
+   * 2. Confirmation explicite obligatoire : saisie exacte de « SUPPRIMER MON COMPTE ».
+   * 3. Préservation du patrimoine culturel malgache (CGU Kanto) :
+   *    - Les contributions non approuvées (brouillons, en attente, refusées) sont supprimées.
+   *    - Les contributions publiques approuvées sont conservées sous forme strictement anonymisée
+   *      (réassignées à l'utilisateur système d'archive "Contributeur Kanto", sans aucun lien vers l'ancien compte).
+   * 4. Nettoyage relationnel & UGC :
+   *    - Détachement et suppression des quiz créés par l'utilisateur (UserQuizSet).
+   *    - Anonymisation des logs de modération, d'audit et des participations multijoueurs.
+   *    - Suppression atomique en cascade de toutes les données personnelles (profil, sessions, jetons, favoris, historique, amitiés).
+   * 5. Nettoyage des actifs externes (Cloudinary / disques) et envoi d'un email de confirmation formel.
+   */
+  async deleteAccount(
+    userId: string,
+    dto: DeleteAccountDto,
+  ): Promise<{ success: boolean; message: string }> {
+    // 1. Récupération de l'utilisateur avec ses comptes liés
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        accounts: true,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Utilisateur introuvable');
+    }
+
+    // 2. Vérification stricte de la phrase de confirmation
+    if (dto.confirmationPhrase?.trim() !== 'SUPPRIMER MON COMPTE') {
+      throw new BadRequestException(
+        'Veuillez saisir exactement « SUPPRIMER MON COMPTE » pour confirmer la suppression.',
+      );
+    }
+
+    // 3. Vérification de l'identité selon le mode d'authentification
+    const credentialAccount = user.accounts.find(
+      (acc) => acc.providerId === 'credential',
+    );
+
+    if (credentialAccount) {
+      if (!dto.password) {
+        throw new BadRequestException(
+          'Votre mot de passe actuel est requis pour confirmer la suppression de votre compte.',
+        );
+      }
+
+      if (!credentialAccount.password) {
+        this.logger.error(
+          `[deleteAccount] Compte credential sans mot de passe stocké pour userId: ${userId}`,
+        );
+        throw new BadRequestException(
+          'Une erreur interne est survenue. Veuillez contacter le support.',
+        );
+      }
+
+      let isValidPassword = false;
+      try {
+        const { verifyPassword } = await import('@better-auth/utils/password');
+        isValidPassword = await verifyPassword(
+          credentialAccount.password,
+          dto.password,
+        );
+      } catch (importErr) {
+        try {
+          const { verifyPassword } = await import(
+            'better-auth/dist/crypto/index.mjs' as string
+          );
+          isValidPassword = await verifyPassword(
+            credentialAccount.password,
+            dto.password,
+          );
+        } catch (fallbackErr) {
+          this.logger.error(
+            '[deleteAccount] Échec de la vérification du mot de passe :',
+            fallbackErr,
+          );
+          throw new BadRequestException(
+            'Impossible de valider votre mot de passe. Veuillez réessayer.',
+          );
+        }
+      }
+
+      if (!isValidPassword) {
+        throw new UnauthorizedException('Mot de passe incorrect.');
+      }
+    }
+
+    // Conserver en mémoire les données nécessaires aux opérations post-suppression
+    const userEmail = user.email;
+    const userName = user.name;
+    const userImage = user.image;
+
+    // 4. Transaction de suppression atomique en base de données
+    await this.prisma.$transaction(async (tx) => {
+      // A. Détacher les duels référençant un jeu de quiz créé par l'utilisateur
+      await tx.duelSession.updateMany({
+        where: {
+          customQuizSet: {
+            authorId: userId,
+          },
+        },
+        data: {
+          customQuizSetId: null,
+        },
+      });
+
+      // B. Supprimer les questions UGC créées par l'utilisateur
+      await tx.userQuestion.deleteMany({
+        where: {
+          quizSet: {
+            authorId: userId,
+          },
+        },
+      });
+
+      // C. Supprimer les quiz sets UGC de l'utilisateur
+      await tx.userQuizSet.deleteMany({
+        where: {
+          authorId: userId,
+        },
+      });
+
+      // D. Anonymiser les participations multijoueurs (DuelPlayer)
+      await tx.duelPlayer.updateMany({
+        where: { userId },
+        data: {
+          name: 'Joueur supprimé',
+          avatar: null,
+        },
+      });
+
+      // E. Anonymiser les duels 1v1 où l'utilisateur était joueur ou vainqueur
+      await tx.duelSession.updateMany({
+        where: { player1Id: userId },
+        data: {
+          player1Name: 'Joueur supprimé',
+          player1Avatar: null,
+        },
+      });
+
+      await tx.duelSession.updateMany({
+        where: { player2Id: userId },
+        data: {
+          player2Name: 'Joueur supprimé',
+          player2Avatar: null,
+        },
+      });
+
+      await tx.duelSession.updateMany({
+        where: { winnerId: userId },
+        data: {
+          winnerId: null,
+        },
+      });
+
+      // F. Anonymiser les logs d'audit des contributions
+      await tx.contributionAuditLog.updateMany({
+        where: { userId },
+        data: {
+          userId: null,
+        },
+      });
+
+      // G. Traitement des contributions culturelles (CGU Kanto & RGPD)
+      // 1. Supprimer les contributions non approuvées (brouillons, en attente, rejetées)
+      await tx.contribution.deleteMany({
+        where: {
+          userId,
+          status: {
+            not: 'APPROVED',
+          },
+        },
+      });
+
+      // 2. Anonymiser les contributions approuvées en les réassignant au compte d'archive
+      const approvedCount = await tx.contribution.count({
+        where: {
+          userId,
+          status: 'APPROVED',
+        },
+      });
+
+      if (approvedCount > 0) {
+        const archiveUser = await tx.user.upsert({
+          where: { email: 'archive@kanto.mg' },
+          update: {},
+          create: {
+            name: 'Contributeur Kanto',
+            email: 'archive@kanto.mg',
+            username: 'kanto_archive',
+            emailVerified: true,
+            role: 'USER',
+            termsAcceptedAt: new Date(),
+            termsVersion: '1.0',
+          },
+        });
+
+        await tx.contribution.updateMany({
+          where: {
+            userId,
+            status: 'APPROVED',
+          },
+          data: {
+            userId: archiveUser.id,
+          },
+        });
+      }
+
+      // H. Suppression définitive du compte utilisateur (Cascade automatique pour les sessions, favoris, etc.)
+      await tx.user.delete({
+        where: { id: userId },
+      });
+    });
+
+    this.logger.log(
+      `[deleteAccount] Compte et données personnelles supprimés avec succès pour l'utilisateur ${userId}`,
+    );
+
+    // 5. Opérations post-transactionnelles (non-bloquantes)
+    // A. Suppression de l'avatar personnalisé
+    if (
+      userImage &&
+      userImage !== '/uploads/avatars/default-avatar.png' &&
+      !userImage.includes('default-avatar.png')
+    ) {
+      this.cloudinaryService.deleteMediaFromUrl(userImage).catch((err) => {
+        this.logger.warn(
+          `[deleteAccount] Échec suppression média avatar pour ${userId} :`,
+          err,
+        );
+      });
+    }
+
+    // B. Envoi de l'email de confirmation formelle
+    this.resendService
+      .sendAccountDeletionEmail({
+        to: userEmail,
+        userName,
+      })
+      .catch((err) => {
+        this.logger.warn(
+          `[deleteAccount] Échec envoi email confirmation suppression pour ${userEmail} :`,
+          err,
+        );
+      });
+
+    return {
+      success: true,
+      message:
+        'Votre compte et l’ensemble de vos données personnelles ont été supprimés avec succès.',
+    };
   }
 }

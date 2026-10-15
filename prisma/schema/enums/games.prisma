@@ -1,0 +1,32 @@
+// ============================================================
+// ENUMS — JEUX & ADMINISTRATION
+// ============================================================
+
+enum TrueFalseTheme {
+  GEN   // Connaissances Générales
+  CULT  // Culture & Traditions
+  GEO   // Géographie & Nature
+  HIST  // Histoire & Société
+  LITT  // Littérature & Arts
+  PROV  // Proverbes & Expressions
+}
+
+enum DuelStatus {
+  WAITING      // En attente d'un adversaire
+  READY        // Les 2 joueurs sont connectés et prêts
+  IN_PROGRESS  // Duel en cours
+  FINISHED     // Duel terminé
+  CANCELLED    // Abandon / Annulé
+}
+
+enum DuelGameType {
+  TRUE_FALSE
+  MISSING_WORD
+  QUIZ
+}
+
+enum ModuleType {
+  GAME
+  CATEGORY
+  FEATURE
+}
