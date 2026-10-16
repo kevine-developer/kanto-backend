@@ -72,6 +72,7 @@ export function createPrismaMock() {
     civicContent: createModelMock(),
     civicQuizQuestion: createModelMock(),
     civicQuizSession: createModelMock(),
+    civicQuizAnswer: createModelMock(),
 
     // Interactions
     like: createModelMock(),
@@ -85,6 +86,7 @@ export function createPrismaMock() {
     // Leaderboard / Duel / UGC
     duelPlayer: createModelMock(),
     duelSession: createModelMock(),
+    duelAnswer: createModelMock(),
     userQuizSet: createModelMock(),
     userQuestion: createModelMock(),
 

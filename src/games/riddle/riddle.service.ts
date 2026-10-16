@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
 
+import { isAnswerMatching } from './riddle-validator.util.js';
+
 @Injectable()
 export class RiddleService {
   constructor(private readonly prisma: PrismaService) {}
@@ -63,7 +65,7 @@ export class RiddleService {
 
     if (!question) throw new NotFoundException('Question not found');
 
-    const isCorrect = userAnswer === question.correctAnswer;
+    const isCorrect = isAnswerMatching(userAnswer, question.correctAnswer);
 
     await this.prisma.riddleAnswer.create({
       data: {

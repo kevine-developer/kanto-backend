@@ -231,11 +231,36 @@ export class CivicQuizService {
     questionId: string,
     userAnswerIndex: number | null,
   ) {
+    const session = await this.prisma.civicQuizSession.findUnique({
+      where: { id: sessionId },
+    });
+    if (!session) throw new NotFoundException('Session de quiz introuvable');
+    if (session.isCompleted) {
+      const q = await this.prisma.civicQuizQuestion.findUnique({ where: { id: questionId } });
+      return {
+        isCorrect: false,
+        correctIndex: q?.answerIndex ?? 0,
+        explanation: 'Session de quiz déjà terminée',
+      };
+    }
+
     const question = await this.prisma.civicQuizQuestion.findUnique({
       where: { id: questionId },
     });
 
-    if (!question) throw new NotFoundException('Question not found');
+    if (!question) throw new NotFoundException('Question introuvable');
+
+    // Protection contre les doubles soumissions pour une même question dans la session
+    const existingAnswer = await this.prisma.civicQuizAnswer.findFirst({
+      where: { sessionId, questionId },
+    });
+    if (existingAnswer) {
+      return {
+        isCorrect: existingAnswer.isCorrect,
+        correctIndex: question.answerIndex,
+        explanation: question.explanation,
+      };
+    }
 
     const isCorrect = userAnswerIndex === question.answerIndex;
 
@@ -249,7 +274,7 @@ export class CivicQuizService {
       },
     });
 
-    // Update global stats
+    // Mettre à jour les statistiques de la question
     await this.prisma.civicQuizQuestion.update({
       where: { id: questionId },
       data: {
@@ -266,8 +291,22 @@ export class CivicQuizService {
   }
 
   async finishSession(sessionId: string, durationSeconds: number) {
+    const existingSession = await this.prisma.civicQuizSession.findUnique({
+      where: { id: sessionId },
+    });
+
+    if (!existingSession) {
+      throw new NotFoundException('Session de quiz introuvable');
+    }
+
+    // Protection contre la ré-attribution accidentelle d'XP
+    if (existingSession.isCompleted) {
+      return existingSession;
+    }
+
     const answers = await this.prisma.civicQuizAnswer.findMany({
       where: { sessionId },
+      orderBy: { answeredAt: 'asc' },
     });
 
     const score = answers.filter((a) => a.isCorrect).length;
@@ -283,7 +322,9 @@ export class CivicQuizService {
       }
     }
 
-    const xpEarned = score * 10;
+    // Calcul de l'XP : 10 XP par bonne réponse + bonus streak si streak >= 3
+    const streakBonus = maxStreak >= 5 ? 15 : maxStreak >= 3 ? 10 : 0;
+    const xpEarned = score * 10 + streakBonus;
 
     const session = await this.prisma.civicQuizSession.update({
       where: { id: sessionId },

@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsEnum,
   IsInt,
   IsNotEmpty,
@@ -54,6 +55,10 @@ export class CreateMultiplayerGameDto {
   @IsOptional()
   @IsString()
   customQuizSetId?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isHostSpectator?: boolean;
 }
 
 export class JoinMultiplayerGameDto {

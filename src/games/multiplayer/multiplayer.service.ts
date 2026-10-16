@@ -119,6 +119,33 @@ export class MultiplayerService {
   }
 
   /**
+   * Récupère une question soit depuis le snapshot Redis figé au lancement, soit en base de données.
+   * Immunise la session multijoueur contre les modifications ou suppressions concurrentes de deck.
+   */
+  private async getQuestionFromSnapshotOrDb(
+    code: string,
+    customQuizSetId: string | null | undefined,
+    qId: string,
+  ) {
+    if (customQuizSetId) {
+      const cleanCode = code.trim().toUpperCase();
+      try {
+        const cached = await this.redisService.get<any[]>(
+          `duel:snapshot_questions:${cleanCode}`,
+        );
+        if (Array.isArray(cached)) {
+          const found = cached.find((q) => q.id === qId);
+          if (found) return found;
+        }
+      } catch {
+        // Fallback transparent sur la base de données
+      }
+      return this.prisma.userQuestion.findUnique({ where: { id: qId } });
+    }
+    return null;
+  }
+
+  /**
    * Détails de régie de la question courante pour l'hôte animateur (bonne réponse et explications).
    */
   async getHostQuestionDetails(code: string, questionIndex: number) {
@@ -135,9 +162,11 @@ export class MultiplayerService {
     let explanationFr: string | null = null;
 
     if (session.customQuizSetId) {
-      const q = await this.prisma.userQuestion.findUnique({
-        where: { id: qId },
-      });
+      const q = await this.getQuestionFromSnapshotOrDb(
+        cleanCode,
+        session.customQuizSetId,
+        qId,
+      );
       if (q) {
         if (q.gameType === 'TRUE_FALSE') {
           correctAnswer = q.isTrue ? 'true' : 'false';
@@ -363,6 +392,7 @@ export class MultiplayerService {
 
     // Vérifier si un deck personnalisé UGC est sélectionné
     let customQuizTitle: string | null = null;
+    let isDeckAuthorUser = false;
     if (dto.customQuizSetId) {
       const quizSet = await this.prisma.userQuizSet.findUnique({
         where: { id: dto.customQuizSetId },
@@ -370,12 +400,26 @@ export class MultiplayerService {
           id: true,
           authorId: true,
           title: true,
+          visibility: true,
+          isPublic: true,
           _count: { select: { questions: true } },
         },
       });
       if (!quizSet) {
         throw new NotFoundException('Deck introuvable.');
       }
+
+      // Contrôle de sécurité : deck privé accessible uniquement à son créateur
+      if (
+        quizSet.visibility !== 'PUBLIC' &&
+        !quizSet.isPublic &&
+        quizSet.authorId !== userId
+      ) {
+        throw new ForbiddenException(
+          'Vous n’avez pas l’autorisation d’utiliser ce deck privé.',
+        );
+      }
+
       const questionsCount = quizSet._count?.questions ?? 0;
       if (questionsCount < 5) {
         throw new BadRequestException(
@@ -383,6 +427,7 @@ export class MultiplayerService {
         );
       }
       customQuizTitle = quizSet.title;
+      isDeckAuthorUser = quizSet.authorId === userId;
     }
 
     // Si deck personnalisé : le thème est fixé au titre du deck, et aucune délégation de thème possible
@@ -417,7 +462,14 @@ export class MultiplayerService {
       attempts++;
     }
 
-    // Créer la session et enregistrer le créateur en tant qu'Hôte
+    // Déterminer le statut animateur/spectateur de l'hôte
+    // Un créateur de son propre deck est d'office animateur spectateur pour éviter la triche
+    const hostIsSpectator = Boolean(dto.isHostSpectator || isDeckAuthorUser);
+    if (hostIsSpectator) {
+      await this.setHostSpectator(code, true);
+    }
+
+    // Créer la session et enregistrer le créateur en tant qu'Hôte (Limite stricte : 5 joueurs max)
     const session = await this.prisma.duelSession.create({
       data: {
         code,
@@ -428,7 +480,7 @@ export class MultiplayerService {
         player1Avatar: playerAvatar,
         totalQuestions: questionIds.length,
         timePerQuestion,
-        maxPlayers: 10,
+        maxPlayers: 5,
         currentQuestionIndex: 0,
         theme,
         themeChooserId,
@@ -534,8 +586,8 @@ export class MultiplayerService {
       session,
       questions,
       players: session.players,
-      isHostSpectator: false,
-      isDeckCreator: false,
+      isHostSpectator: hostIsSpectator,
+      isDeckCreator: isDeckAuthorUser,
     };
   }
 
@@ -796,21 +848,7 @@ export class MultiplayerService {
       throw new BadRequestException('Cette partie est déjà terminée.');
     }
 
-    const existingPlayer = session.players.find((p) => p.userId === userId);
-
-    // Si la session est en cours et que l'utilisateur n'en fait pas déjà partie
-    if (session.status !== 'WAITING' && !existingPlayer) {
-      throw new BadRequestException(
-        "Ce salon n'est plus accessible (la partie a déjà commencé).",
-      );
-    }
-
-    // Limite stricte de 10 personnes maximum
-    if (!existingPlayer && session.players.length >= session.maxPlayers) {
-      throw new BadRequestException(
-        `Le salon est complet (${session.maxPlayers}/${session.maxPlayers} joueurs).`,
-      );
-    }
+    const hostIsSpectator = await this.isHostSpectator(cleanCode);
 
     // Profil du joueur entrant
     const user = await this.prisma.user.findUnique({
@@ -821,28 +859,72 @@ export class MultiplayerService {
       dto.userName || user?.name || `Joueur ${session.players.length + 1}`;
     const playerAvatar = dto.userAvatar || user?.image || null;
 
-    if (!existingPlayer) {
-      await this.prisma.duelPlayer.create({
-        data: {
-          sessionId: session.id,
-          userId,
-          name: playerName,
-          avatar: playerAvatar,
-          isHost: session.player1Id === userId,
-          score: 0,
-          streak: 0,
-          rank: session.players.length + 1,
-        },
+    // Transaction atomique pour garantir la limite absolue de 5 joueurs même lors d'arrivées concurrentes
+    const updatedPlayers = await this.prisma.$transaction(async (tx) => {
+      const freshSession = await tx.duelSession.findUnique({
+        where: { code: cleanCode },
+        include: { players: { orderBy: { createdAt: 'asc' } } },
       });
-    }
 
-    const updatedPlayers = await this.prisma.duelPlayer.findMany({
-      where: { sessionId: session.id },
-      orderBy: { createdAt: 'asc' },
+      if (!freshSession) {
+        throw new NotFoundException(`Ce salon n'existe pas ou a expiré (${cleanCode}).`);
+      }
+
+      if (freshSession.status === 'CANCELLED') {
+        throw new BadRequestException('Ce salon a été fermé par son organisateur.');
+      }
+
+      if (freshSession.status === 'FINISHED') {
+        throw new BadRequestException('Cette partie est déjà terminée.');
+      }
+
+      const existingInTx = freshSession.players.find((p) => p.userId === userId);
+
+      // Si la session est en cours et que l'utilisateur n'en fait pas déjà partie
+      if (freshSession.status !== 'WAITING' && !existingInTx) {
+        throw new BadRequestException(
+          "Ce salon n'est plus accessible (la partie a déjà commencé).",
+        );
+      }
+
+      // Calcul des vrais compétiteurs actifs (l'organisateur spectateur ne compte pas dans les 5 joueurs)
+      const realContenders = hostIsSpectator
+        ? freshSession.players.filter((p) => p.userId !== freshSession.player1Id)
+        : freshSession.players;
+
+      if (!existingInTx && realContenders.length >= 5) {
+        throw new BadRequestException(
+          'Le salon est complet (5/5 joueurs maximum).',
+        );
+      }
+
+      if (!existingInTx) {
+        await tx.duelPlayer.create({
+          data: {
+            sessionId: freshSession.id,
+            userId,
+            name: playerName,
+            avatar: playerAvatar,
+            isHost: freshSession.player1Id === userId,
+            score: 0,
+            streak: 0,
+            rank: freshSession.players.length + 1,
+          },
+        });
+      }
+
+      return tx.duelPlayer.findMany({
+        where: { sessionId: freshSession.id },
+        orderBy: { createdAt: 'asc' },
+      });
     });
 
+    const activeContendersCount = hostIsSpectator
+      ? updatedPlayers.filter((p) => p.userId !== session.player1Id).length
+      : updatedPlayers.length;
+
     this.logger.log(
-      `⚔️ [Multiplayer] Joueur ${userId} a rejoint le salon ${cleanCode} (${updatedPlayers.length}/${session.maxPlayers})`,
+      `⚔️ [Multiplayer] Joueur ${userId} a rejoint le salon ${cleanCode} (${activeContendersCount}/5 joueurs actifs${hostIsSpectator ? ' + Hôte spectateur' : ''})`,
     );
 
     const questions = await this.getPublicQuestions(
@@ -925,6 +1007,22 @@ export class MultiplayerService {
       },
     });
 
+    // Figer un snapshot complet des questions du deck dans Redis pour résister aux modifications/suppressions concurrentes du deck
+    if (session.customQuizSetId) {
+      try {
+        const fullCustomQuestions = await this.prisma.userQuestion.findMany({
+          where: { id: { in: session.questionIds } },
+        });
+        await this.redisService.set(
+          `duel:snapshot_questions:${cleanCode}`,
+          fullCustomQuestions,
+          7200,
+        );
+      } catch (err: unknown) {
+        this.logger.warn(`Impossible de figer le snapshot du deck : ${err}`);
+      }
+    }
+
     const questions = await this.getPublicQuestions(
       session.gameType,
       session.questionIds,
@@ -934,7 +1032,7 @@ export class MultiplayerService {
     const currentQuestion = questions[0];
 
     this.logger.log(
-      `🚀 [Multiplayer] Salon ${cleanCode} démarré par ${userId} avec ${session.players.length} joueurs !`,
+      `🚀 [Multiplayer] Salon ${cleanCode} démarré par ${userId} avec ${session.players.length} participants !`,
     );
 
     return {
@@ -1063,6 +1161,40 @@ export class MultiplayerService {
       };
     }
 
+    // Verrou éphémère anti-doublon Redis (protection contre les doubles clics ou requêtes réseau concurrentes)
+    const answerLockKey = `duel:lock:ans:${cleanCode}:${userId}:${session.currentQuestionIndex}`;
+    const isLocked = await this.redisService.get(answerLockKey);
+    if (isLocked) {
+      const existingAnswer = await this.prisma.duelAnswer.findFirst({
+        where: {
+          sessionId: session.id,
+          userId,
+          questionIndex: session.currentQuestionIndex,
+        },
+      });
+
+      const contenders = hostIsSpectator
+        ? session.players.filter((p) => !p.isHost)
+        : session.players;
+      const answeredCount = contenders.filter(
+        (p) => p.hasAnsweredCurrent,
+      ).length;
+      const allAnswered =
+        contenders.length > 0 && answeredCount >= contenders.length;
+
+      return {
+        alreadyAnswered: true,
+        isCorrect: existingAnswer?.isCorrect ?? false,
+        pointsAwarded: existingAnswer?.pointsAwarded ?? 0,
+        streak: player.streak,
+        score: player.score,
+        answeredCount,
+        totalPlayersCount: contenders.length,
+        allAnswered,
+      };
+    }
+    await this.redisService.set(answerLockKey, '1', 5);
+
     // 2. Server-Authoritative Timing : Calcul précis du temps pris
     const now = Date.now();
     const roundStart = session.roundStartedAt
@@ -1080,9 +1212,11 @@ export class MultiplayerService {
 
     if (!isTimeout) {
       if (session.customQuizSetId) {
-        const q = await this.prisma.userQuestion.findUnique({
-          where: { id: dto.questionId },
-        });
+        const q = await this.getQuestionFromSnapshotOrDb(
+          cleanCode,
+          session.customQuizSetId,
+          dto.questionId,
+        );
         if (q) {
           if (q.gameType === 'TRUE_FALSE') {
             const boolAnswer = dto.userAnswer.toLowerCase() === 'true';
@@ -1165,31 +1299,45 @@ export class MultiplayerService {
       pointsAwarded = 0;
     }
 
-    // 5. Enregistrer la réponse atomiquement
-    await this.prisma.duelAnswer.create({
-      data: {
-        sessionId: session.id,
-        userId,
-        questionId: dto.questionId,
-        questionIndex: session.currentQuestionIndex,
-        userAnswer: dto.userAnswer,
-        isCorrect,
-        timeTakenMs: serverTimeTakenMs,
-        pointsAwarded,
-      },
-    });
+    // 5. Enregistrement atomique de la réponse et mise à jour du score
+    const updatedPlayer = await this.prisma.$transaction(async (tx) => {
+      // Re-vérifier l'idempotence au sein de la transaction
+      const existingInTx = await tx.duelAnswer.findFirst({
+        where: {
+          sessionId: session.id,
+          userId,
+          questionIndex: session.currentQuestionIndex,
+        },
+      });
 
-    // 6. Mettre à jour le joueur
-    const updatedPlayer = await this.prisma.duelPlayer.update({
-      where: { id: player.id },
-      data: {
-        score: { increment: pointsAwarded },
-        currentRoundScore: pointsAwarded,
-        streak: newStreak,
-        answersCount: { increment: 1 },
-        totalTimeMs: { increment: serverTimeTakenMs },
-        hasAnsweredCurrent: true,
-      },
+      if (existingInTx) {
+        return tx.duelPlayer.findUniqueOrThrow({ where: { id: player.id } });
+      }
+
+      await tx.duelAnswer.create({
+        data: {
+          sessionId: session.id,
+          userId,
+          questionId: dto.questionId,
+          questionIndex: session.currentQuestionIndex,
+          userAnswer: dto.userAnswer,
+          isCorrect,
+          timeTakenMs: serverTimeTakenMs,
+          pointsAwarded,
+        },
+      });
+
+      return tx.duelPlayer.update({
+        where: { id: player.id },
+        data: {
+          score: { increment: pointsAwarded },
+          currentRoundScore: pointsAwarded,
+          streak: newStreak,
+          answersCount: { increment: 1 },
+          totalTimeMs: { increment: serverTimeTakenMs },
+          hasAnsweredCurrent: true,
+        },
+      });
     });
 
     // 7. Vérifier si TOUS les participants connectés ont répondu (Fast-Forward)
@@ -1242,9 +1390,11 @@ export class MultiplayerService {
     let explanationFr: string | null = null;
 
     if (session.customQuizSetId) {
-      const q = await this.prisma.userQuestion.findUnique({
-        where: { id: currentQId },
-      });
+      const q = await this.getQuestionFromSnapshotOrDb(
+        cleanCode,
+        session.customQuizSetId,
+        currentQId,
+      );
       if (q) {
         if (q.gameType === 'TRUE_FALSE') {
           correctAnswer = q.isTrue ? 'true' : 'false';

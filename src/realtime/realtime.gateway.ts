@@ -690,7 +690,19 @@ export class RealtimeGateway
         userId,
       });
 
-      return { success: true };
+      let gameState: any = null;
+      try {
+        gameState = await this.duelService.getGameState(cleanCode);
+      } catch {
+        // La session est peut-être déjà conclue ou annulée
+      }
+
+      return {
+        success: true,
+        session: gameState?.session,
+        questions: gameState?.questions,
+        players: gameState?.players,
+      };
     } catch {
       return { success: false };
     }
