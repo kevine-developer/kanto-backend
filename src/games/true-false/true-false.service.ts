@@ -1,9 +1,11 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
+import { RedisService } from '../../redis/redis.service.js';
 import {
   Prisma,
   TrueFalseTheme,
@@ -14,10 +16,21 @@ import {
   FindQuestionsQueryDto,
   UpdateQuestionDto,
 } from './dto/true-false.dto.js';
+import { CACHE_KEYS, CACHE_TTL } from '../../common/constants/cache.constant.js';
 
 @Injectable()
 export class TrueFalseService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(TrueFalseService.name);
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly redis: RedisService,
+  ) {}
+
+  private async invalidateCache() {
+    await this.redis.delByPattern(CACHE_KEYS.TRUE_FALSE_PATTERN);
+    this.logger.debug('🧹 [Redis] Cache True/False invalidé');
+  }
 
   /**
    * Initialise une session de jeu sécurisée.
@@ -315,6 +328,12 @@ export class TrueFalseService {
     const limit = Math.min(100, Math.max(1, Number(query.limit) || 20));
     const skip = (page - 1) * limit;
 
+    const cacheKey = `${CACHE_KEYS.TRUE_FALSE_LIST_PREFIX}${JSON.stringify(query)}`;
+    const cached = await this.redis.get<any>(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
     const where: Prisma.TrueFalseQuestionWhereInput = {};
     if (query.theme && query.theme !== 'ALL') {
       where.theme = query.theme as TrueFalseTheme;
@@ -342,13 +361,16 @@ export class TrueFalseService {
       this.prisma.trueFalseQuestion.count({ where }),
     ]);
 
-    return {
+    const result = {
       items,
       total,
       page,
       limit,
       totalPages: Math.ceil(total / limit),
     };
+
+    await this.redis.set(cacheKey, result, CACHE_TTL.SHORT);
+    return result;
   }
 
   async findOneQuestion(id: string) {
@@ -360,7 +382,7 @@ export class TrueFalseService {
   }
 
   async createQuestion(dto: CreateQuestionDto) {
-    return this.prisma.trueFalseQuestion.create({
+    const question = await this.prisma.trueFalseQuestion.create({
       data: {
         questionMg: dto.questionMg,
         questionFr: dto.questionFr || dto.questionMg,
@@ -373,6 +395,8 @@ export class TrueFalseService {
         image: dto.image || null,
       },
     });
+    await this.invalidateCache();
+    return question;
   }
 
   async updateQuestion(id: string, dto: UpdateQuestionDto) {
@@ -381,12 +405,14 @@ export class TrueFalseService {
     });
     if (!exists) throw new NotFoundException('Question introuvable.');
 
-    return this.prisma.trueFalseQuestion.update({
+    const updated = await this.prisma.trueFalseQuestion.update({
       where: { id },
       data: {
         ...dto,
       },
     });
+    await this.invalidateCache();
+    return updated;
   }
 
   async removeQuestion(id: string) {
@@ -395,12 +421,19 @@ export class TrueFalseService {
     });
     if (!exists) throw new NotFoundException('Question introuvable.');
 
-    return this.prisma.trueFalseQuestion.delete({
+    const deleted = await this.prisma.trueFalseQuestion.delete({
       where: { id },
     });
+    await this.invalidateCache();
+    return deleted;
   }
 
   async getStats() {
+    const cached = await this.redis.get<any>(CACHE_KEYS.TRUE_FALSE_STATS);
+    if (cached) {
+      return cached;
+    }
+
     const [totalQuestions, totalSessions, themesCount, difficultiesCount] =
       await Promise.all([
         this.prisma.trueFalseQuestion.count(),
@@ -415,7 +448,7 @@ export class TrueFalseService {
         }),
       ]);
 
-    return {
+    const result = {
       totalQuestions,
       totalSessions,
       themes: themesCount.map((t) => ({
@@ -427,9 +460,17 @@ export class TrueFalseService {
         count: d._count._all,
       })),
     };
+
+    await this.redis.set(CACHE_KEYS.TRUE_FALSE_STATS, result, CACHE_TTL.MEDIUM);
+    return result;
   }
 
   async getQuestionCounts(): Promise<Record<string, number>> {
+    const cached = await this.redis.get<Record<string, number>>(CACHE_KEYS.TRUE_FALSE_COUNTS);
+    if (cached) {
+      return cached;
+    }
+
     const grouped = await this.prisma.trueFalseQuestion.groupBy({
       by: ['theme', 'difficulty'],
       where: { status: 'PUBLISHED' },
@@ -440,6 +481,8 @@ export class TrueFalseService {
     for (const g of grouped) {
       counts[`${g.theme}_${g.difficulty}`] = g._count._all;
     }
+
+    await this.redis.set(CACHE_KEYS.TRUE_FALSE_COUNTS, counts, CACHE_TTL.MEDIUM);
     return counts;
   }
 }

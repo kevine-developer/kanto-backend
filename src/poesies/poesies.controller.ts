@@ -53,26 +53,26 @@ export class PoesiesController {
 
   @Post(':id/like')
   @UseGuards(AuthGuard)
-  like(@Param('id') id: string, @Session() session?: UserSession) {
-    return this.poesiesService.like(id, session!.user.id);
+  like(@Param('id') id: string, @Session() session: UserSession) {
+    return this.poesiesService.like(id, session.user.id);
   }
 
   @Post(':id/unlike')
   @UseGuards(AuthGuard)
-  unlike(@Param('id') id: string, @Session() session?: UserSession) {
-    return this.poesiesService.unlike(id, session!.user.id);
+  unlike(@Param('id') id: string, @Session() session: UserSession) {
+    return this.poesiesService.unlike(id, session.user.id);
   }
 
   @Post(':id/favorite')
   @UseGuards(AuthGuard)
-  favorite(@Param('id') id: string, @Session() session?: UserSession) {
-    return this.poesiesService.favorite(id, session!.user.id);
+  favorite(@Param('id') id: string, @Session() session: UserSession) {
+    return this.poesiesService.favorite(id, session.user.id);
   }
 
   @Post(':id/unfavorite')
   @UseGuards(AuthGuard)
-  unfavorite(@Param('id') id: string, @Session() session?: UserSession) {
-    return this.poesiesService.unfavorite(id, session!.user.id);
+  unfavorite(@Param('id') id: string, @Session() session: UserSession) {
+    return this.poesiesService.unfavorite(id, session.user.id);
   }
 
   @Post(':id/view')

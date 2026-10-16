@@ -182,13 +182,17 @@ export class CitationsService {
     }
 
     if (query.search && query.search.trim()) {
-      const searchTerm = query.search.trim();
-      where.OR = [
-        { citationMg: { contains: searchTerm, mode: 'insensitive' } },
-        { citationFr: { contains: searchTerm, mode: 'insensitive' } },
-        { sourceName: { contains: searchTerm, mode: 'insensitive' } },
-        { contexte: { contains: searchTerm, mode: 'insensitive' } },
-      ];
+      const rawSearch = query.search.trim();
+      const straight = rawSearch.replace(/[’‘`]/g, "'");
+      const curly = rawSearch.replace(/'/g, '’');
+      const terms = Array.from(new Set([rawSearch, straight, curly]));
+
+      where.OR = terms.flatMap((term) => [
+        { citationMg: { contains: term, mode: 'insensitive' } },
+        { citationFr: { contains: term, mode: 'insensitive' } },
+        { sourceName: { contains: term, mode: 'insensitive' } },
+        { contexte: { contains: term, mode: 'insensitive' } },
+      ]);
     }
 
     // Tirage aléatoire global à partir de TOUTES les citations
