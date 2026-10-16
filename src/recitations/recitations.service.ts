@@ -138,13 +138,21 @@ export class RecitationsService {
       ...(author ? { author: { contains: author, mode: 'insensitive' } } : {}),
       ...(tag ? { tags: { has: tag } } : {}),
       ...(search
-        ? {
-            OR: [
-              { title: { contains: search, mode: 'insensitive' } },
-              { titleFr: { contains: search, mode: 'insensitive' } },
-              { author: { contains: search, mode: 'insensitive' } },
-            ],
-          }
+        ? (() => {
+            const rawSearch = search.trim();
+            const straight = rawSearch.replace(/[’‘`]/g, "'");
+            const curly = rawSearch.replace(/'/g, '’');
+            const terms = Array.from(new Set([rawSearch, straight, curly]));
+
+            return {
+              OR: terms.flatMap((term) => [
+                { title: { contains: term, mode: 'insensitive' } },
+                { titleFr: { contains: term, mode: 'insensitive' } },
+                { author: { contains: term, mode: 'insensitive' } },
+                { description: { contains: term, mode: 'insensitive' } },
+              ]),
+            };
+          })()
         : {}),
     };
 

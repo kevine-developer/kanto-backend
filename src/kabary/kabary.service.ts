@@ -211,15 +211,19 @@ export class KabaryService {
     }
 
     if (query.search && query.search.trim()) {
-      const searchTerm = query.search.trim();
-      where.OR = [
-        { title: { contains: searchTerm, mode: 'insensitive' } },
-        { titleFr: { contains: searchTerm, mode: 'insensitive' } },
-        { subtitle: { contains: searchTerm, mode: 'insensitive' } },
-        { subtitleFr: { contains: searchTerm, mode: 'insensitive' } },
-        { occasion: { contains: searchTerm, mode: 'insensitive' } },
-        { occasionFr: { contains: searchTerm, mode: 'insensitive' } },
-      ];
+      const rawSearch = query.search.trim();
+      const straight = rawSearch.replace(/[’‘`]/g, "'");
+      const curly = rawSearch.replace(/'/g, '’');
+      const terms = Array.from(new Set([rawSearch, straight, curly]));
+
+      where.OR = terms.flatMap((term) => [
+        { title: { contains: term, mode: 'insensitive' } },
+        { titleFr: { contains: term, mode: 'insensitive' } },
+        { subtitle: { contains: term, mode: 'insensitive' } },
+        { subtitleFr: { contains: term, mode: 'insensitive' } },
+        { occasion: { contains: term, mode: 'insensitive' } },
+        { occasionFr: { contains: term, mode: 'insensitive' } },
+      ]);
     }
 
     const [kabaries, total] = await Promise.all([

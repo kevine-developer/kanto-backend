@@ -166,13 +166,22 @@ export class PoesiesService {
         : {}),
       ...(author ? { author: { contains: author, mode: 'insensitive' } } : {}),
       ...(search
-        ? {
-            OR: [
-              { title: { contains: search, mode: 'insensitive' } },
-              { titleFr: { contains: search, mode: 'insensitive' } },
-              { author: { contains: search, mode: 'insensitive' } },
-            ],
-          }
+        ? (() => {
+            const rawSearch = search.trim();
+            const straight = rawSearch.replace(/[’‘`]/g, "'");
+            const curly = rawSearch.replace(/'/g, '’');
+            const terms = Array.from(new Set([rawSearch, straight, curly]));
+
+            return {
+              OR: terms.flatMap((term) => [
+                { title: { contains: term, mode: 'insensitive' } },
+                { titleFr: { contains: term, mode: 'insensitive' } },
+                { author: { contains: term, mode: 'insensitive' } },
+                { explanationMg: { contains: term, mode: 'insensitive' } },
+                { explanationFr: { contains: term, mode: 'insensitive' } },
+              ]),
+            };
+          })()
         : {}),
     };
 

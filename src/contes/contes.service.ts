@@ -193,15 +193,19 @@ export class ContesService {
     }
 
     if (query.search && query.search.trim()) {
-      const searchTerm = query.search.trim();
-      where.OR = [
-        { title: { contains: searchTerm, mode: 'insensitive' } },
-        { titleFr: { contains: searchTerm, mode: 'insensitive' } },
-        { subtitle: { contains: searchTerm, mode: 'insensitive' } },
-        { subtitleFr: { contains: searchTerm, mode: 'insensitive' } },
-        { moralMg: { contains: searchTerm, mode: 'insensitive' } },
-        { moralFr: { contains: searchTerm, mode: 'insensitive' } },
-      ];
+      const rawSearch = query.search.trim();
+      const straight = rawSearch.replace(/[’‘`]/g, "'");
+      const curly = rawSearch.replace(/'/g, '’');
+      const terms = Array.from(new Set([rawSearch, straight, curly]));
+
+      where.OR = terms.flatMap((term) => [
+        { title: { contains: term, mode: 'insensitive' } },
+        { titleFr: { contains: term, mode: 'insensitive' } },
+        { subtitle: { contains: term, mode: 'insensitive' } },
+        { subtitleFr: { contains: term, mode: 'insensitive' } },
+        { moralMg: { contains: term, mode: 'insensitive' } },
+        { moralFr: { contains: term, mode: 'insensitive' } },
+      ]);
     }
 
     const [contes, total] = await Promise.all([

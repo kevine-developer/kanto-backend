@@ -58,6 +58,16 @@ export const CACHE_KEYS = {
   // Histoire & Emblèmes
   HISTORY_LIST_PATTERN: 'kanto:history:*',
   HISTORY_LIST_PREFIX: 'kanto:history:list:',
+
+  // Vrai ou Faux (Jeux)
+  TRUE_FALSE_PATTERN: 'kanto:true-false:*',
+  TRUE_FALSE_STATS: 'kanto:true-false:stats',
+  TRUE_FALSE_COUNTS: 'kanto:true-false:counts',
+  TRUE_FALSE_LIST_PREFIX: 'kanto:true-false:list:',
+
+  // Devinettes (Riddles)
+  RIDDLE_PATTERN: 'kanto:riddle:*',
+  RIDDLE_QUESTIONS_PREFIX: 'kanto:riddle:questions:',
 } as const;
 
 export const CACHE_TTL = {

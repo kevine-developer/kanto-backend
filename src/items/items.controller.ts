@@ -7,11 +7,14 @@ import {
   Patch,
   Post,
   Query,
+  Res,
   UseGuards,
 } from '@nestjs/common';
+import type { Response } from 'express';
 import { FindItemsQueryDto } from './dto/find-items.dto.js';
 import { CreateItemDto } from './dto/create-item.dto.js';
 import { UpdateItemDto } from './dto/update-item.dto.js';
+import { ImportItemsBatchDto } from './dto/import-items.dto.js';
 import { ReportItemDto } from './dto/report-item.dto.js';
 import { ItemsService } from './items.service.js';
 import { DailyItemsService } from './daily-items.service.js';
@@ -50,6 +53,26 @@ export class ItemsController {
   @Get()
   findAll(@Query() query: FindItemsQueryDto) {
     return this.itemsService.findAll(query);
+  }
+
+  @Post('import-csv')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  importCsv(@Body() body: ImportItemsBatchDto) {
+    return this.itemsService.importBatch(body);
+  }
+
+  @Get('export-csv')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  async exportCsv(@Query() query: FindItemsQueryDto, @Res() res: Response) {
+    const csvData = await this.itemsService.exportCsv(query);
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename="proverbes-kanto.csv"',
+    );
+    return res.send(csvData);
   }
 
   @Get('daily')

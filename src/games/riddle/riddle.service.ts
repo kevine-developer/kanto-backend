@@ -1,21 +1,48 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, Optional } from '@nestjs/common';
+import { Prisma } from '../../../generated/prisma/client.js';
 import { PrismaService } from '../../prisma/prisma.service.js';
-
+import { RedisService } from '../../redis/redis.service.js';
+import { CACHE_KEYS, CACHE_TTL } from '../../common/constants/cache.constant.js';
 import { isAnswerMatching } from './riddle-validator.util.js';
 
 @Injectable()
 export class RiddleService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(RiddleService.name);
+
+  constructor(
+    private readonly prisma: PrismaService,
+    @Optional() private readonly redis?: RedisService,
+  ) {}
+
+  async invalidateCache() {
+    if (this.redis) {
+      await this.redis.delByPattern(CACHE_KEYS.RIDDLE_PATTERN);
+      this.logger.debug('🧹 [Redis] Cache Devinettes invalidé');
+    }
+  }
 
   async getQuestions(level?: number) {
-    if (level) {
-      return this.prisma.riddleQuestion.findMany({
-        where: { level, status: 'PUBLISHED' },
-      });
+    const cacheKey = `${CACHE_KEYS.RIDDLE_QUESTIONS_PREFIX}${level ?? 'ALL'}`;
+    if (this.redis) {
+      const cached = await this.redis.get<any>(cacheKey);
+      if (cached) {
+        return cached;
+      }
     }
-    return this.prisma.riddleQuestion.findMany({
-      where: { status: 'PUBLISHED' },
+
+    const where: Prisma.RiddleQuestionWhereInput = level
+      ? { level, status: 'PUBLISHED' }
+      : { status: 'PUBLISHED' };
+
+    const questions = await this.prisma.riddleQuestion.findMany({
+      where,
     });
+
+    if (this.redis) {
+      await this.redis.set(cacheKey, questions, CACHE_TTL.MEDIUM);
+    }
+
+    return questions;
   }
 
   async startSession(

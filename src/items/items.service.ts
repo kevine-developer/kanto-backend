@@ -5,6 +5,7 @@ import { RedisService } from '../redis/redis.service.js';
 import { FindItemsQueryDto } from './dto/find-items.dto.js';
 import { CreateItemDto } from './dto/create-item.dto.js';
 import { UpdateItemDto } from './dto/update-item.dto.js';
+import { ImportItemsBatchDto, ImportItemsResult } from './dto/import-items.dto.js';
 import { slugify } from '../common/utils/slug.util.js';
 import {
   calculatePagination,
@@ -208,12 +209,16 @@ export class ItemsService {
     }
 
     if (query.search && query.search.trim()) {
-      const searchTerm = query.search.trim();
-      where.OR = [
-        { malagasy: { contains: searchTerm, mode: 'insensitive' } },
-        { french: { contains: searchTerm, mode: 'insensitive' } },
-        { meaning: { contains: searchTerm, mode: 'insensitive' } },
-      ];
+      const rawSearch = query.search.trim();
+      const straight = rawSearch.replace(/[’‘`]/g, "'");
+      const curly = rawSearch.replace(/'/g, '’');
+      const terms = Array.from(new Set([rawSearch, straight, curly]));
+
+      where.OR = terms.flatMap((term) => [
+        { malagasy: { contains: term, mode: 'insensitive' } },
+        { french: { contains: term, mode: 'insensitive' } },
+        { meaning: { contains: term, mode: 'insensitive' } },
+      ]);
     }
 
     // Tirage aléatoire global à partir de TOUS les contenus de la catégorie
@@ -341,5 +346,193 @@ export class ItemsService {
 
     await this.redis.set(cacheKey, item, 600); // 10 min
     return item;
+  }
+
+  /**
+   * Import par lot de proverbes / expressions / dictons (CSV ou Excel)
+   */
+  async importBatch(dto: ImportItemsBatchDto): Promise<ImportItemsResult> {
+    const rows = dto.items || [];
+    const skipDuplicates = dto.skipDuplicates !== false;
+    let importedCount = 0;
+    let duplicatesSkipped = 0;
+    const errors: Array<{ row: number; text: string; reason: string }> = [];
+
+    // Récupérer les proverbes existants pour détection rapide de doublons
+    const existingItems = await this.prisma.malagasyItem.findMany({
+      select: { malagasy: true, slug: true },
+    });
+    const existingTexts = new Set(
+      existingItems.map((i) => i.malagasy.trim().toLowerCase()),
+    );
+    const existingSlugs = new Set(existingItems.map((i) => i.slug));
+
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const rowIndex = i + 1;
+
+      // Validation minimale
+      if (!row.malagasy || !row.malagasy.trim()) {
+        errors.push({
+          row: rowIndex,
+          text: row.malagasy || '(vide)',
+          reason: 'Texte en malgache obligatoire',
+        });
+        continue;
+      }
+      if (!row.french || !row.french.trim()) {
+        errors.push({
+          row: rowIndex,
+          text: row.malagasy,
+          reason: 'Traduction française obligatoire',
+        });
+        continue;
+      }
+      if (!row.meaning || !row.meaning.trim()) {
+        errors.push({
+          row: rowIndex,
+          text: row.malagasy,
+          reason: 'Explication / sens obligatoire',
+        });
+        continue;
+      }
+
+      const cleanMalagasy = row.malagasy.trim();
+      const normalizedKey = cleanMalagasy.toLowerCase();
+
+      // Détection de doublon
+      if (existingTexts.has(normalizedKey)) {
+        if (skipDuplicates) {
+          duplicatesSkipped++;
+          continue;
+        } else {
+          errors.push({
+            row: rowIndex,
+            text: cleanMalagasy,
+            reason: 'Proverbe déjà existant en base',
+          });
+          continue;
+        }
+      }
+
+      // Génération de slug unique
+      let baseSlug = slugify(cleanMalagasy.substring(0, 50));
+      if (!baseSlug) baseSlug = 'item';
+      let slug = baseSlug;
+      let counter = 1;
+      while (existingSlugs.has(slug)) {
+        slug = `${baseSlug}-${counter++}`;
+      }
+
+      try {
+        await this.prisma.malagasyItem.create({
+          data: {
+            slug,
+            malagasy: cleanMalagasy,
+            french: row.french.trim(),
+            meaning: row.meaning.trim(),
+            example: row.example?.trim() || null,
+            category: row.category || 'PROVERBE',
+            difficulty: row.difficulty || 'EASY',
+            isFeatured: row.isFeatured || false,
+            status: 'PUBLISHED',
+            dialectVariants:
+              row.dialectName && row.dialectText
+                ? {
+                    create: [
+                      {
+                        dialectName: row.dialectName.trim(),
+                        text: row.dialectText.trim(),
+                      },
+                    ],
+                  }
+                : undefined,
+          },
+        });
+
+        existingTexts.add(normalizedKey);
+        existingSlugs.add(slug);
+        importedCount++;
+      } catch (err: any) {
+        errors.push({
+          row: rowIndex,
+          text: cleanMalagasy,
+          reason: err?.message || 'Erreur inconnue lors de l insertion',
+        });
+      }
+    }
+
+    if (importedCount > 0) {
+      await this.invalidateCache();
+      this.logger.log(
+        `📥 [Items Batch] ${importedCount} éléments importés avec succès (${duplicatesSkipped} doublons ignorés, ${errors.length} erreurs).`,
+      );
+    }
+
+    return {
+      totalReceived: rows.length,
+      importedCount,
+      duplicatesSkipped,
+      errorsCount: errors.length,
+      errors,
+    };
+  }
+
+  /**
+   * Exporte les proverbes / expressions en format CSV (UTF-8 avec BOM pour Excel)
+   */
+  async exportCsv(query: FindItemsQueryDto = {}): Promise<string> {
+    const where: Prisma.MalagasyItemWhereInput = {
+      status: 'PUBLISHED',
+    };
+    if (query.category) where.category = query.category;
+    if (query.difficulty) where.difficulty = query.difficulty;
+
+    const items = await this.prisma.malagasyItem.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      take: 5000,
+      include: {
+        dialectVariants: true,
+      },
+    });
+
+    const escapeCsv = (val?: string | null): string => {
+      if (!val) return '""';
+      const clean = val.replace(/"/g, '""');
+      return `"${clean}"`;
+    };
+
+    const headers = [
+      'Malagasy',
+      'Traduction Francaise',
+      'Signification',
+      'Exemple',
+      'Categorie',
+      'Difficulte',
+      'Dialecte',
+      'Variante Dialectale',
+    ];
+
+    const lines: string[] = [headers.join(',')];
+
+    for (const item of items) {
+      const dialect = item.dialectVariants?.[0]?.dialectName || '';
+      const dialectText = item.dialectVariants?.[0]?.text || '';
+      const row = [
+        escapeCsv(item.malagasy),
+        escapeCsv(item.french),
+        escapeCsv(item.meaning),
+        escapeCsv(item.example),
+        escapeCsv(item.category),
+        escapeCsv(item.difficulty),
+        escapeCsv(dialect),
+        escapeCsv(dialectText),
+      ];
+      lines.push(row.join(','));
+    }
+
+    // BOM UTF-8 (\uFEFF) pour compatibilité Excel
+    return '\uFEFF' + lines.join('\r\n');
   }
 }

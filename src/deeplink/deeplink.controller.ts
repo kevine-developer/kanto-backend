@@ -206,6 +206,120 @@ export class DeeplinkController {
     );
   }
 
+  @Get(['conte/:id', 'angano/:id'])
+  handleConte(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): void {
+    const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderDeeplinkGatewayPage({
+        path: `conte/${id}`,
+        fullQueryString: qs,
+        title: 'Kanto • Angano sy Tantara (Conte)',
+        description:
+          'Découvrez ce conte et récit traditionnel du patrimoine malgache sur Kanto.',
+      }),
+    );
+  }
+
+  @Get(['kabary/:id', 'discours/:id'])
+  handleKabary(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): void {
+    const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderDeeplinkGatewayPage({
+        path: `kabary/${id}`,
+        fullQueryString: qs,
+        title: 'Kanto • Kabary Malagasy (Art Oratoire)',
+        description:
+          'Explorez ce discours traditionnel et les secrets du kabary malgache sur Kanto.',
+      }),
+    );
+  }
+
+  @Get(['poesie/:id', 'tononkalo/:id'])
+  handlePoesie(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): void {
+    const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderDeeplinkGatewayPage({
+        path: `poesie/${id}`,
+        fullQueryString: qs,
+        title: 'Kanto • Tononkalo (Poésie Malgache)',
+        description:
+          'Laissez-vous émouvoir par les vers et la poésie de la littérature malgache sur Kanto.',
+      }),
+    );
+  }
+
+  @Get(['recitation/:id', 'tsianjery/:id'])
+  handleRecitation(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): void {
+    const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderDeeplinkGatewayPage({
+        path: `recitation/${id}`,
+        fullQueryString: qs,
+        title: 'Kanto • Tsianjery (Récitation & Mémoire)',
+        description:
+          'Apprenez et déclamez ce texte du patrimoine éducatif malgache sur Kanto.',
+      }),
+    );
+  }
+
+  @Get(['civic/droit/:id', 'civique/droit/:id'])
+  handleCivicDroit(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): void {
+    const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderDeeplinkGatewayPage({
+        path: `civic/droit/${id}`,
+        fullQueryString: qs,
+        title: 'Kanto • Zo sy Adidy (Droits & Devoirs)',
+        description:
+          'Comprenez vos droits fondamentaux et devoirs de citoyen sur Kanto.',
+      }),
+    );
+  }
+
+  @Get(['civic/institution/:id', 'civique/institution/:id'])
+  handleCivicInstitution(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): void {
+    const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderDeeplinkGatewayPage({
+        path: `civic/institution/${id}`,
+        fullQueryString: qs,
+        title: 'Kanto • Andrim-panjakana (Institutions)',
+        description:
+          'Découvrez le rôle et les missions des institutions malgaches sur Kanto.',
+      }),
+    );
+  }
+
   @Get('download')
   handleDownload(@Req() req: Request, @Res() res: Response): void {
     const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
