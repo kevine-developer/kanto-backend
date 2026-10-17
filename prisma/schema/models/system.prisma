@@ -36,3 +36,23 @@ model SystemAnnouncement {
   @@index([isActive])
   @@map("system_announcements")
 }
+
+model AdminAuditLog {
+  id          String   @id @default(cuid())
+  userId      String   // ID de l'administrateur ou modérateur
+  userName    String?  // Nom ou email de l'administrateur
+  action      String   // ex: "USER_ROLE_CHANGED", "USER_BANNED", "USER_UNBANNED", "REPORT_RESOLVED", "COMMENT_DELETED", "SETTINGS_UPDATED"
+  targetType  String   // "USER", "CONTRIBUTION", "COMMENT", "REPORT", "MODULE_LOCK"
+  targetId    String   // ID de la ressource concernée
+  targetLabel String?  // Libellé textuel pour identification immédiate
+  reason      String?  @db.Text // Motif fourni
+  details     Json?    // Détails complémentaires ou état antérieur/nouveau
+  ipAddress   String?
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([targetType])
+  @@index([createdAt])
+  @@map("admin_audit_logs")
+}

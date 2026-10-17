@@ -7,6 +7,9 @@ import { AdminLegalController } from './admin-legal.controller.js';
 import { AdminDecksController } from './admin-decks.controller.js';
 import { UserQuizModule } from '../user-quiz/user-quiz.module.js';
 
+import { AdminStatsController } from './admin-stats.controller.js';
+import { AdminAuditService } from './admin-audit.service.js';
+
 @Module({
   imports: [UserQuizModule],
   controllers: [
@@ -15,8 +18,10 @@ import { UserQuizModule } from '../user-quiz/user-quiz.module.js';
     AdminCoinsController,
     AdminLegalController,
     AdminDecksController,
+    AdminStatsController,
   ],
-  providers: [AdminUsersService],
-  exports: [AdminUsersService],
+  providers: [AdminUsersService, AdminAuditService],
+  exports: [AdminUsersService, AdminAuditService],
 })
 export class AdminModule {}
+
