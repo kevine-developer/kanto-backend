@@ -19,7 +19,9 @@ export class LeaderboardController {
     @Query() query: LeaderboardQueryDto,
     @Session() session?: UserSession,
   ) {
-    const currentUserId = session?.user?.id || query?.userId;
+    // Sécurité stricte : currentUserId provient EXCLUSIVEMENT de la session authentifiée.
+    // query.userId ne peut pas être utilisé pour s'auto-authentifier.
+    const currentUserId = session?.user?.id;
     return this.leaderboardService.getLeaderboard(currentUserId, query);
   }
 }

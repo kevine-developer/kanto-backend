@@ -13,6 +13,7 @@ model UserProgress {
   updatedAt     DateTime  @updatedAt
 
   @@index([totalXp(sort: Desc)])
+  @@index([level, totalXp(sort: Desc)])
   @@map("user_progress")
 }
 
@@ -38,6 +39,8 @@ model XpTransaction {
   createdAt   DateTime @default(now())
 
   @@index([userId])
+  @@index([createdAt])
+  @@index([userId, createdAt])
   @@map("xp_transactions")
 }
 

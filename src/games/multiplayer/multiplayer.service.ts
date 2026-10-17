@@ -390,6 +390,44 @@ export class MultiplayerService {
     const playerName = dto.userName || user.name || 'Mpilalao 1';
     const playerAvatar = dto.userAvatar || user.image || null;
 
+    // Validation et sécurisation spécifique au Mode Duel 1v1 (Fail-Fast)
+    const is1v1Duel = Boolean(dto.opponentId);
+    let opponentUser: { id: string; name: string | null; image: string | null } | null = null;
+
+    if (is1v1Duel) {
+      if (dto.opponentId === userId) {
+        throw new BadRequestException('Vous ne pouvez pas vous défier vous-même.');
+      }
+
+      opponentUser = await this.prisma.user.findUnique({
+        where: { id: dto.opponentId },
+        select: { id: true, name: true, image: true },
+      });
+
+      if (!opponentUser) {
+        throw new NotFoundException('Le joueur défié est introuvable.');
+      }
+
+      // Garde-fou Anti-Spam : Vérifier s'il n'y a pas déjà un défi en attente entre ces deux mêmes joueurs (< 10 minutes)
+      const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
+      const activePendingDuel = await this.prisma.duelSession.findFirst({
+        where: {
+          status: 'WAITING',
+          createdAt: { gte: tenMinutesAgo },
+          OR: [
+            { player1Id: userId, player2Id: dto.opponentId },
+            { player1Id: dto.opponentId, player2Id: userId },
+          ],
+        },
+      });
+
+      if (activePendingDuel) {
+        throw new BadRequestException(
+          'Un défi est déjà en attente avec ce joueur. Veuillez patienter ou rejoindre ce défi.',
+        );
+      }
+    }
+
     // Vérifier si un deck personnalisé UGC est sélectionné
     let customQuizTitle: string | null = null;
     let isDeckAuthorUser = false;
@@ -463,13 +501,15 @@ export class MultiplayerService {
     }
 
     // Déterminer le statut animateur/spectateur de l'hôte
-    // Un créateur de son propre deck est d'office animateur spectateur pour éviter la triche
-    const hostIsSpectator = Boolean(dto.isHostSpectator || isDeckAuthorUser);
+    // Un créateur de son propre deck est d'office animateur spectateur pour éviter la triche (interdit en duel 1v1)
+    const hostIsSpectator = is1v1Duel
+      ? false
+      : Boolean(dto.isHostSpectator || isDeckAuthorUser);
     if (hostIsSpectator) {
       await this.setHostSpectator(code, true);
     }
 
-    // Créer la session et enregistrer le créateur en tant qu'Hôte (Limite stricte : 5 joueurs max)
+    // Créer la session et enregistrer le créateur en tant qu'Hôte (Limite stricte : 2 joueurs pour duel 1v1, 5 pour salon)
     const session = await this.prisma.duelSession.create({
       data: {
         code,
@@ -478,9 +518,12 @@ export class MultiplayerService {
         player1Id: userId,
         player1Name: playerName,
         player1Avatar: playerAvatar,
+        player2Id: is1v1Duel && opponentUser ? opponentUser.id : null,
+        player2Name: is1v1Duel && opponentUser ? (opponentUser.name || 'Adversaire') : null,
+        player2Avatar: is1v1Duel && opponentUser ? opponentUser.image : null,
         totalQuestions: questionIds.length,
         timePerQuestion,
-        maxPlayers: 5,
+        maxPlayers: is1v1Duel ? 2 : 5,
         currentQuestionIndex: 0,
         theme,
         themeChooserId,
@@ -524,49 +567,44 @@ export class MultiplayerService {
     }
 
     this.logger.log(
-      `🎮 [Multiplayer] Salon créé avec le code ${code} par ${userId} (Hôte, thème: ${theme}, customDeck: ${Boolean(dto.customQuizSetId)})`,
+      `🎮 [Multiplayer] Salon ${is1v1Duel ? 'Duel 1v1' : 'Multijoueur'} créé avec le code ${code} par ${userId} (Hôte, thème: ${theme}, customDeck: ${Boolean(dto.customQuizSetId)})`,
     );
 
     // Envoi asynchrone d'une notification push & in-app au joueur défié
-    if (dto.opponentId && dto.opponentId !== userId) {
+    if (is1v1Duel && opponentUser) {
+      const challengedOpponent = opponentUser;
       void (async () => {
         try {
-          const opponent = await this.prisma.user.findUnique({
-            where: { id: dto.opponentId },
-            select: { id: true, name: true },
-          });
-          if (opponent) {
-            const gameLabelFr =
-              gameType === MultiplayerGameTypeEnum.QUIZ
-                ? 'Quiz'
-                : gameType === MultiplayerGameTypeEnum.TRUE_FALSE
-                  ? 'Vrai ou Faux'
-                  : 'Mot Manquant';
-            const gameLabelMg =
-              gameType === MultiplayerGameTypeEnum.QUIZ
-                ? 'Quiz'
-                : gameType === MultiplayerGameTypeEnum.TRUE_FALSE
-                  ? 'Marina sa Diso'
-                  : 'Teny Mikorontana';
+          const gameLabelFr =
+            gameType === MultiplayerGameTypeEnum.QUIZ
+              ? 'Quiz'
+              : gameType === MultiplayerGameTypeEnum.TRUE_FALSE
+                ? 'Vrai ou Faux'
+                : 'Mot Manquant';
+          const gameLabelMg =
+            gameType === MultiplayerGameTypeEnum.QUIZ
+              ? 'Quiz'
+              : gameType === MultiplayerGameTypeEnum.TRUE_FALSE
+                ? 'Marina sa Diso'
+                : 'Teny Mikorontana';
 
-            await this.notificationsService.createNotification({
-              userId: opponent.id,
-              isBroadcast: false,
-              titleMg: `Fanamby vaovao : ${gameLabelMg} ! ⚔️`,
-              titleFr: `Nouveau défi : ${gameLabelFr} ! ⚔️`,
-              messageMg: `${playerName} dia manasa anao hifaninana amin'ny ${gameLabelMg} ! Vonona ve ianao handray ny fanamby ? (Kaody : ${code})`,
-              messageFr: `${playerName} vous défie sur une partie de ${gameLabelFr} ! Relevez le défi dès maintenant. (Code : ${code})`,
-              category: 'duel',
-              badgeText: 'Défi',
-              badgeType: 'duel',
-              iconName: 'game-controller-outline',
-              iconColor: '#E05615',
-              targetRoute: `/(screens)/gamesAllScreen/multiplayerGame?code=${code}`,
-            });
-            this.logger.log(
-              `⚔️ [Multiplayer] Notification et push envoyées à l'adversaire ${opponent.id} (${opponent.name}) pour le salon ${code}`,
-            );
-          }
+          await this.notificationsService.createNotification({
+            userId: challengedOpponent.id,
+            isBroadcast: false,
+            titleMg: `Fanamby vaovao : ${gameLabelMg} ! ⚔️`,
+            titleFr: `Nouveau défi : ${gameLabelFr} ! ⚔️`,
+            messageMg: `${playerName} dia manasa anao hifaninana amin'ny ${gameLabelMg} ! Vonona ve ianao handray ny fanamby ? (Kaody : ${code})`,
+            messageFr: `${playerName} vous défie sur une partie de ${gameLabelFr} ! Relevez le défi dès maintenant. (Code : ${code})`,
+            category: 'duel',
+            badgeText: 'Défi',
+            badgeType: 'duel',
+            iconName: 'game-controller-outline',
+            iconColor: '#E05615',
+            targetRoute: `/(screens)/gamesAllScreen/multiplayerGame?code=${code}`,
+          });
+          this.logger.log(
+            `⚔️ [Multiplayer] Notification et push envoyées à l'adversaire ${challengedOpponent.id} (${challengedOpponent.name}) pour le salon ${code}`,
+          );
         } catch (notifErr) {
           this.logger.warn(
             `⚠️ [Multiplayer] Impossible d'envoyer la notification de défi à ${dto.opponentId}:`,
@@ -784,6 +822,23 @@ export class MultiplayerService {
       declinerName = user?.name;
     }
 
+    const session = await this.prisma.duelSession.findUnique({
+      where: { code: cleanCode },
+    });
+
+    if (session && (session.status === 'WAITING' || session.status === 'READY')) {
+      await this.prisma.duelSession.update({
+        where: { id: session.id },
+        data: {
+          status: 'CANCELLED',
+          finishedAt: new Date(),
+        },
+      });
+      this.logger.log(
+        `⚔️ [Multiplayer] Défi du salon ${cleanCode} décliné par ${declinerName || opponentId}. Session annulée.`,
+      );
+    }
+
     return {
       code: cleanCode,
       declinerName: declinerName || "L'adversaire",
@@ -880,22 +935,44 @@ export class MultiplayerService {
 
       const existingInTx = freshSession.players.find((p) => p.userId === userId);
 
-      // Si la session est en cours et que l'utilisateur n'en fait pas déjà partie
-      if (freshSession.status !== 'WAITING' && !existingInTx) {
+      // Si la session a déjà démarré et que l'utilisateur n'en fait pas déjà partie
+      if (
+        freshSession.status !== 'WAITING' &&
+        freshSession.status !== 'READY' &&
+        !existingInTx
+      ) {
         throw new BadRequestException(
           "Ce salon n'est plus accessible (la partie a déjà commencé).",
         );
       }
 
-      // Calcul des vrais compétiteurs actifs (l'organisateur spectateur ne compte pas dans les 5 joueurs)
-      const realContenders = hostIsSpectator
-        ? freshSession.players.filter((p) => p.userId !== freshSession.player1Id)
-        : freshSession.players;
+      // Règle stricte Duel 1v1 : Seuls player1Id et player2Id sont autorisés, et max 2 joueurs
+      if (freshSession.player2Id) {
+        if (
+          userId !== freshSession.player1Id &&
+          userId !== freshSession.player2Id
+        ) {
+          throw new ForbiddenException(
+            'Ce duel est strictement privé et réservé aux deux joueurs désignés.',
+          );
+        }
+        if (!existingInTx && freshSession.players.length >= 2) {
+          throw new BadRequestException(
+            'Le duel est complet (2/2 joueurs maximum).',
+          );
+        }
+      } else {
+        // Mode multijoueur classique : limite selon maxPlayers (par défaut 5)
+        const realContenders = hostIsSpectator
+          ? freshSession.players.filter((p) => p.userId !== freshSession.player1Id)
+          : freshSession.players;
 
-      if (!existingInTx && realContenders.length >= 5) {
-        throw new BadRequestException(
-          'Le salon est complet (5/5 joueurs maximum).',
-        );
+        const maxAllowed = freshSession.maxPlayers || 5;
+        if (!existingInTx && realContenders.length >= maxAllowed) {
+          throw new BadRequestException(
+            `Le salon est complet (${maxAllowed}/${maxAllowed} joueurs maximum).`,
+          );
+        }
       }
 
       if (!existingInTx) {
@@ -911,6 +988,18 @@ export class MultiplayerService {
             rank: freshSession.players.length + 1,
           },
         });
+
+        // Si l'adversaire défié rejoint le duel, mettre à jour ses métadonnées et passer le salon à READY
+        if (freshSession.player2Id === userId) {
+          await tx.duelSession.update({
+            where: { id: freshSession.id },
+            data: {
+              player2Name: playerName,
+              player2Avatar: playerAvatar,
+              status: freshSession.status === 'WAITING' ? 'READY' : freshSession.status,
+            },
+          });
+        }
       }
 
       return tx.duelPlayer.findMany({
@@ -969,8 +1058,8 @@ export class MultiplayerService {
       );
     }
 
-    if (session.status !== 'WAITING') {
-      throw new BadRequestException('La partie a déjà démarré.');
+    if (session.status !== 'WAITING' && session.status !== 'READY') {
+      throw new BadRequestException('La partie a déjà démarré ou n’est plus disponible.');
     }
 
     // Exiger au moins 2 vrais joueurs actifs (non-spectateurs) pour démarrer la partie
@@ -983,8 +1072,19 @@ export class MultiplayerService {
       throw new BadRequestException(
         hostIsSpectator
           ? 'Il faut au moins 2 vrais joueurs (hors animateur spectateur) pour commencer la partie.'
-          : 'Il faut au moins 2 vrais joueurs pour commencer la partie multijoueur.',
+          : 'Il faut au moins 2 vrais joueurs pour commencer la partie.',
       );
+    }
+
+    // Règle stricte Duel 1v1 : Les deux joueurs doivent être connectés avant de pouvoir démarrer
+    if (session.player2Id) {
+      const hasPlayer1 = session.players.some((p) => p.userId === session.player1Id);
+      const hasPlayer2 = session.players.some((p) => p.userId === session.player2Id);
+      if (!hasPlayer1 || !hasPlayer2) {
+        throw new BadRequestException(
+          'Les deux joueurs du duel doivent être connectés avant de lancer la confrontation.',
+        );
+      }
     }
 
     // Mettre la session en statut IN_PROGRESS et initialiser le round 1
@@ -1119,6 +1219,13 @@ export class MultiplayerService {
     const player = session.players.find((p) => p.userId === userId);
     if (!player) {
       throw new BadRequestException('Vous ne faites pas partie de ce salon.');
+    }
+
+    // Garde-fou 1v1 : Seuls les deux participants désignés du duel ont le droit de répondre
+    if (session.player2Id && userId !== session.player1Id && userId !== session.player2Id) {
+      throw new ForbiddenException(
+        'Vous n’êtes pas autorisé à soumettre de réponses dans ce duel.',
+      );
     }
 
     // Garde-fou Anti-Triche : Les spectateurs et créateurs de deck ne peuvent pas répondre
@@ -1514,12 +1621,21 @@ export class MultiplayerService {
         ? session.players.filter((p) => !p.isHost)
         : session.players;
 
+      const is1v1 = Boolean(session.player2Id) || contenders.length === 2;
+
       const sortedPlayers = [...contenders].sort((a, b) => {
         if (b.score !== a.score) return b.score - a.score;
         return a.totalTimeMs - b.totalTimeMs;
       });
 
-      const winner = sortedPlayers[0];
+      // Détection stricte d'égalité parfaite en 1v1 (score égal et temps total identique)
+      const isDraw =
+        is1v1 &&
+        sortedPlayers.length === 2 &&
+        sortedPlayers[0].score === sortedPlayers[1].score &&
+        sortedPlayers[0].totalTimeMs === sortedPlayers[1].totalTimeMs;
+
+      const winner = isDraw ? null : sortedPlayers[0];
 
       await this.prisma.duelSession.update({
         where: { id: session.id },
@@ -1530,13 +1646,47 @@ export class MultiplayerService {
         },
       });
 
-      // Distribution d'XP proportionnelle au classement
+      // Distribution d'XP proportionnelle au classement & sécurisée contre les désignations arbitraires
       const finalLeaderboard = await Promise.all(
         sortedPlayers.map(async (p, idx) => {
-          const rank = idx + 1;
-          const xp = rank === 1 ? 120 : rank === 2 ? 80 : rank === 3 ? 60 : 35;
+          let rank: number;
+          let xp: number;
+          let xpDescription: string;
 
-          await this.awardMultiplayerXp(p.userId, rank, xp);
+          if (is1v1) {
+            if (isDraw) {
+              rank = 1;
+              xp = 75;
+              xpDescription = 'Match Nul en Duel 1v1 🤝';
+            } else if (idx === 0) {
+              rank = 1;
+              xp = 120;
+              xpDescription = 'Victoire en Duel 1v1 🥇';
+            } else {
+              rank = 2;
+              xp = 40;
+              xpDescription = 'Défaite honorable en Duel 1v1 ⚔️';
+            }
+          } else {
+            rank = idx + 1;
+            xp = rank === 1 ? 120 : rank === 2 ? 80 : rank === 3 ? 60 : 35;
+            xpDescription =
+              rank === 1
+                ? 'Victoire Multijoueur 🥇'
+                : rank === 2
+                  ? '2ème Place Multijoueur 🥈'
+                  : rank === 3
+                    ? '3ème Place Multijoueur 🥉'
+                    : 'Participation Multijoueur 🎮';
+          }
+
+          await this.awardMultiplayerXp(
+            p.userId,
+            rank,
+            xp,
+            is1v1 ? 'duel_1v1' : 'duel_battle',
+            xpDescription,
+          );
 
           await this.prisma.duelPlayer.update({
             where: { id: p.id },
@@ -1740,8 +1890,14 @@ export class MultiplayerService {
           },
         });
 
-        // Attribution des 120 XP de victoire
-        await this.awardMultiplayerXp(remainingWinner.userId, 1, 120);
+        // Attribution des 120 XP de victoire par forfait
+        await this.awardMultiplayerXp(
+          remainingWinner.userId,
+          1,
+          120,
+          'duel_1v1',
+          'Victoire par forfait en Duel 1v1 🥇',
+        );
 
         await this.prisma.duelPlayer.update({
           where: { id: remainingWinner.id },
@@ -1972,6 +2128,8 @@ export class MultiplayerService {
     userId: string,
     rank: number,
     amount: number,
+    source: string = 'duel_battle',
+    customDesc?: string,
   ) {
     if (!userId || amount <= 0) return;
 
@@ -1987,13 +2145,14 @@ export class MultiplayerService {
     }
 
     const desc =
-      rank === 1
+      customDesc ||
+      (rank === 1
         ? 'Victoire Multijoueur 🥇'
         : rank === 2
           ? '2ème Place Multijoueur 🥈'
           : rank === 3
             ? '3ème Place Multijoueur 🥉'
-            : 'Participation Multijoueur 🎮';
+            : 'Participation Multijoueur 🎮');
 
     try {
       await this.prisma.$transaction(async (tx) => {
@@ -2001,7 +2160,7 @@ export class MultiplayerService {
           data: {
             userId,
             amount: Math.ceil(amount),
-            source: 'duel_battle',
+            source,
             description: desc,
           },
         });

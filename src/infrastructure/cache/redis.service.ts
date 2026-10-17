@@ -366,6 +366,23 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     return set ? Array.from(set) : [];
   }
 
+  async sIsMember(key: string, member: string): Promise<boolean> {
+    if (!member) return false;
+    if (this.isAvailable() && this.client) {
+      try {
+        const res = await this.client.sismember(key, member);
+        return res === 1;
+      } catch (err: any) {
+        this.logger.debug(
+          `[Redis] Erreur sIsMember sur ${key} : ${err?.message}`,
+        );
+      }
+    }
+
+    const set = this.localSets.get(key);
+    return set ? set.has(member) : false;
+  }
+
   async sRem(key: string, ...members: string[]): Promise<number> {
     const validMembers = members.filter((m) => m && m.trim().length > 0);
     if (validMembers.length === 0) return 0;

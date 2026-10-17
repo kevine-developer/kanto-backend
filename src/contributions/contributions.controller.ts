@@ -182,7 +182,12 @@ export class ContributionsController {
   /** GET /contributions/:id — Détail d'une contribution */
   @Get(':id')
   findOne(@Param('id') id: string, @Session() session?: UserSession) {
-    return this.contributionsService.findOne(id, session?.user?.id);
+    const role = session?.user?.role
+      ? (Array.isArray(session.user.role)
+          ? session.user.role[0]
+          : session.user.role)
+      : undefined;
+    return this.contributionsService.findOne(id, session?.user?.id, role);
   }
 
   /** POST /contributions/:id/view — Incrémenter le nombre de vues d'une contribution */
@@ -318,6 +323,26 @@ export class ContributionsController {
       role,
       id,
       commentId,
+    );
+  }
+
+  /** POST /contributions/:id/comments/:commentId/report — Signaler un commentaire abusif */
+  @Post(':id/comments/:commentId/report')
+  @UseGuards(AuthGuard)
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
+  @HttpCode(HttpStatus.CREATED)
+  reportComment(
+    @Param('id') id: string,
+    @Param('commentId') commentId: string,
+    @Body() body: ReportContributionDto,
+    @Session() session: UserSession,
+  ) {
+    return this.contributionsService.reportComment(
+      session.user.id,
+      id,
+      commentId,
+      body.reason,
+      body.description,
     );
   }
 

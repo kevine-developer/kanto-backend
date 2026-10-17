@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   Logger,
   NotFoundException,
@@ -130,10 +131,13 @@ export class UserQuizService {
     category?: string,
     _currentUserId?: string,
   ) {
-    void _currentUserId;
     const where: any = {
       OR: [{ visibility: DeckVisibility.PUBLIC }, { isPublic: true }],
     };
+    // Règle d'intégrité Kanto : un auteur ne voit pas ses propres decks dans la liste communautaire
+    if (_currentUserId) {
+      where.authorId = { not: _currentUserId };
+    }
     if (category && category !== 'all') {
       where.category = category;
     }
@@ -156,7 +160,7 @@ export class UserQuizService {
         ? [{ playsCount: 'desc' }, { createdAt: 'desc' }]
         : { createdAt: 'desc' };
 
-    return await this.prisma.userQuizSet.findMany({
+    const decks = await this.prisma.userQuizSet.findMany({
       where,
       include: {
         author: {
@@ -170,6 +174,24 @@ export class UserQuizService {
       skip,
       take,
     });
+
+    if (!_currentUserId) {
+      return decks;
+    }
+
+    const playedDeckIds = new Set(
+      await this.redisService.sMembers(`ugc:user_played_decks:${_currentUserId}`),
+    );
+
+    return decks.map((deck) => ({
+      ...deck,
+      hasPlayed: playedDeckIds.has(deck.id),
+    }));
+  }
+
+  async getMyPlayedDecks(userId: string): Promise<string[]> {
+    if (!userId) return [];
+    return await this.redisService.sMembers(`ugc:user_played_decks:${userId}`);
   }
 
   async recordPlay(
@@ -191,18 +213,45 @@ export class UserQuizService {
       select: { id: true, playsCount: true },
     });
 
-    // Si c'est l'auteur : pas de royalties ou d'XP d'abus, mais jeu autorisé
+    // Règle d'intégrité Kanto : l'auteur ne peut jamais jouer à son propre deck
     const isOwner = Boolean(currentUserId && set.authorId === currentUserId);
     if (isOwner) {
+      throw new ForbiddenException(
+        "Vous êtes l'auteur de ce deck. Vous ne pouvez pas jouer à votre propre création afin de préserver l'équité des scores et des récompenses.",
+      );
+    }
+
+    // Vérifier si le joueur a déjà joué à ce deck auparavant
+    const playedDeckKey = currentUserId
+      ? `ugc:user_played_decks:${currentUserId}`
+      : null;
+    const isAlreadyPlayed = playedDeckKey
+      ? await this.redisService.sIsMember(playedDeckKey, setId)
+      : false;
+
+    // Règle économique Kanto : Rejouer à un deck déjà joué n'attribue AUCUN XP au joueur
+    // et ne crédite aucune royalty au créateur
+    if (isAlreadyPlayed) {
       return {
         ...updated,
+        isReplay: true,
+        canEarnXp: false,
+        xpAwarded: 0,
         royaltyGranted: false,
-        reason: 'SELF_PLAY_NO_ROYALTY',
+        reason: 'ALREADY_PLAYED_NO_XP',
       };
     }
+
+    // Premier jeu valide : enregistrement persistant dans le set des decks joués
+    if (playedDeckKey) {
+      await this.redisService.sAdd(playedDeckKey, setId);
+    }
+
     if (!set.authorId) {
       return {
         ...updated,
+        isReplay: false,
+        canEarnXp: true,
         royaltyGranted: false,
         reason: 'SELF_OR_NO_AUTHOR',
       };
@@ -355,6 +404,8 @@ export class UserQuizService {
 
     return {
       ...updated,
+      isReplay: false,
+      canEarnXp: true,
       royaltyGranted: true,
       xpAwarded: xpReward,
       coinsAwarded: coinsReward,

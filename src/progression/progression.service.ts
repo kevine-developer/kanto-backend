@@ -282,8 +282,13 @@ export class ProgressionService {
           const safeAmount = Math.ceil(Number(xpTx.amount));
           if (safeAmount <= 0) continue;
 
-          // Déduplication des sources "reading_time:<id>"
-          if (xpTx.source && xpTx.source.startsWith('reading_time:')) {
+          // Déduplication des sources uniques : temps de lecture et quiz UGC (gain unique par deck)
+          if (
+            xpTx.source &&
+            (xpTx.source.startsWith('reading_time:') ||
+              xpTx.source.startsWith('ugc_play:') ||
+              xpTx.source.startsWith('ugc_deck:'))
+          ) {
             const existing = await tx.xpTransaction.findFirst({
               where: { userId, source: xpTx.source },
             });
