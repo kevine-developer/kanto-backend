@@ -55,7 +55,14 @@ export class UserQuizController {
     return this.userQuizService.getMyQuizSets(session.user.id);
   }
 
+  @Get('my-played-decks')
+  @UseGuards(AuthGuard)
+  async getMyPlayedDecks(@Session() session: UserSession) {
+    return this.userQuizService.getMyPlayedDecks(session.user.id);
+  }
+
   @Get('explore')
+  @UseGuards(AuthGuard)
   @OptionalAuth()
   async getPublicQuizSets(
     @Query('skip') skip?: string,
@@ -86,6 +93,7 @@ export class UserQuizController {
   }
 
   @Post(':id/record-play')
+  @UseGuards(AuthGuard)
   @OptionalAuth()
   async recordPlay(
     @Param('id') id: string,

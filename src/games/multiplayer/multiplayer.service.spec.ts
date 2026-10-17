@@ -273,4 +273,207 @@ describe('MultiplayerService', () => {
       expect(prismaMock.duelAnswer.create).not.toHaveBeenCalled();
     });
   });
+
+  describe('Mode Duel 1v1 - Isolation stricte et règles métier', () => {
+    it('devrait refuser qu’un joueur se défie lui-même', async () => {
+      (prismaMock.user.findUnique as jest.Mock).mockResolvedValue({
+        id: 'user_same',
+        name: 'Même Joueur',
+      });
+
+      await expect(
+        service.createGame('user_same', {
+          opponentId: 'user_same',
+        }),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('devrait créer une session 1v1 avec maxPlayers: 2 et player2Id verrouillé', async () => {
+      (prismaMock.user.findUnique as jest.Mock).mockImplementation(
+        ({ where }: any) => {
+          if (where.id === 'challenger_1') {
+            return Promise.resolve({ id: 'challenger_1', name: 'Challenger' });
+          }
+          if (where.id === 'opponent_2') {
+            return Promise.resolve({
+              id: 'opponent_2',
+              name: 'Adversaire Cible',
+              image: 'avatar2.jpg',
+            });
+          }
+          return Promise.resolve(null);
+        },
+      );
+
+      (prismaMock.trueFalseQuestion.findMany as jest.Mock).mockResolvedValue([
+        { id: 'q1' },
+        { id: 'q2' },
+        { id: 'q3' },
+        { id: 'q4' },
+        { id: 'q5' },
+      ]);
+
+      (prismaMock.duelSession.findFirst as jest.Mock).mockResolvedValue(null);
+      (prismaMock.duelSession.findUnique as jest.Mock).mockResolvedValue(null);
+
+      (prismaMock.duelSession.create as jest.Mock).mockImplementation((args: any) =>
+        Promise.resolve({
+          id: 'sess_1v1',
+          code: args.data.code,
+          gameType: args.data.gameType,
+          status: 'WAITING',
+          maxPlayers: args.data.maxPlayers,
+          player1Id: 'challenger_1',
+          player2Id: args.data.player2Id,
+          player2Name: args.data.player2Name,
+          players: [
+            {
+              id: 'p_ch',
+              userId: 'challenger_1',
+              name: 'Challenger',
+              isHost: true,
+            },
+          ],
+        }),
+      );
+
+      const res = await service.createGame('challenger_1', {
+        opponentId: 'opponent_2',
+        gameType: MultiplayerGameTypeEnum.TRUE_FALSE,
+      });
+
+      expect(res.session.maxPlayers).toBe(2);
+      expect(res.session.player2Id).toBe('opponent_2');
+      expect(res.session.player2Name).toBe('Adversaire Cible');
+    });
+
+    it('devrait refuser qu’un tiers étranger rejoigne un duel 1v1 privé', async () => {
+      const privateDuel = {
+        id: 'duel_priv',
+        code: 'PRIV01',
+        status: 'WAITING',
+        player1Id: 'player_a',
+        player2Id: 'player_b',
+        maxPlayers: 2,
+        players: [{ userId: 'player_a', isHost: true }],
+      };
+
+      (prismaMock.duelSession.findUnique as jest.Mock).mockResolvedValue(privateDuel);
+      (prismaMock.user.findUnique as jest.Mock).mockResolvedValue({
+        id: 'intruder_c',
+        name: 'Intrus',
+      });
+
+      await expect(
+        service.joinGame('intruder_c', { code: 'PRIV01' }),
+      ).rejects.toThrow(ForbiddenException);
+    });
+
+    it('devrait refuser un 3ème joueur si les deux duellistes sont déjà connectés', async () => {
+      const fullDuel = {
+        id: 'duel_full',
+        code: 'FULL01',
+        status: 'READY',
+        player1Id: 'player_a',
+        player2Id: 'player_b',
+        maxPlayers: 2,
+        players: [
+          { userId: 'player_a', isHost: true },
+          { userId: 'player_b', isHost: false },
+        ],
+      };
+
+      (prismaMock.duelSession.findUnique as jest.Mock).mockResolvedValue(fullDuel);
+      (prismaMock.user.findUnique as jest.Mock).mockResolvedValue({
+        id: 'intruder_d',
+        name: 'Autre Intrus',
+      });
+
+      await expect(
+        service.joinGame('intruder_d', { code: 'FULL01' }),
+      ).rejects.toThrow(ForbiddenException);
+    });
+
+    it('devrait déclarer un match nul (winnerId: null) et attribuer 75 XP en cas d’égalité stricte de score et de temps', async () => {
+      const finishedDuel = {
+        id: 'duel_draw',
+        code: 'DRAW01',
+        status: 'IN_PROGRESS',
+        player1Id: 'duelist_1',
+        player2Id: 'duelist_2',
+        currentQuestionIndex: 4,
+        totalQuestions: 5,
+        players: [
+          {
+            id: 'dp1',
+            userId: 'duelist_1',
+            name: 'Joueur 1',
+            score: 500,
+            totalTimeMs: 12000,
+            streak: 3,
+            isHost: true,
+          },
+          {
+            id: 'dp2',
+            userId: 'duelist_2',
+            name: 'Joueur 2',
+            score: 500,
+            totalTimeMs: 12000,
+            streak: 3,
+            isHost: false,
+          },
+        ],
+      };
+
+      (prismaMock.duelSession.findUnique as jest.Mock).mockResolvedValue(finishedDuel);
+      (prismaMock.duelSession.update as jest.Mock).mockResolvedValue({
+        ...finishedDuel,
+        status: 'FINISHED',
+        winnerId: null,
+      });
+      (prismaMock.duelPlayer.update as jest.Mock).mockResolvedValue({});
+      (prismaMock.user.findUnique as jest.Mock).mockResolvedValue({ id: 'user_ok' });
+      (prismaMock.userProgress.findUnique as jest.Mock).mockResolvedValue({
+        userId: 'user_ok',
+        totalXp: 100,
+        level: 1,
+        coins: 0,
+      });
+      (prismaMock.userProgress.update as jest.Mock).mockResolvedValue({});
+
+      const outcome = await service.advanceToNextRoundOrFinish('DRAW01');
+
+      expect(outcome.isFinished).toBe(true);
+      expect(outcome.winnerId).toBeNull();
+      expect(outcome.finalLeaderboard[0].rank).toBe(1);
+      expect(outcome.finalLeaderboard[1].rank).toBe(1);
+      expect(outcome.finalLeaderboard[0].earnedXp).toBe(75);
+      expect(outcome.finalLeaderboard[1].earnedXp).toBe(75);
+    });
+
+    it('devrait annuler la session en base si le défi est décliné', async () => {
+      const pendingSession = {
+        id: 'sess_dec',
+        code: 'DECL01',
+        status: 'WAITING',
+      };
+
+      (prismaMock.duelSession.findUnique as jest.Mock).mockResolvedValue(pendingSession);
+      (prismaMock.duelSession.update as jest.Mock).mockResolvedValue({
+        ...pendingSession,
+        status: 'CANCELLED',
+      });
+
+      const res = await service.declineDuelChallenge('DECL01', 'opp_1', 'Rakoto');
+
+      expect(res.code).toBe('DECL01');
+      expect(res.declinerName).toBe('Rakoto');
+      expect(prismaMock.duelSession.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: 'sess_dec' },
+          data: expect.objectContaining({ status: 'CANCELLED' }),
+        }),
+      );
+    });
+  });
 });

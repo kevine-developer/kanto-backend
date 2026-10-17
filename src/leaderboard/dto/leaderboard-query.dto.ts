@@ -26,11 +26,6 @@ export class LeaderboardQueryDto {
 
   @IsOptional()
   @Type(() => Number)
-  @IsNumber()
-  currentXp?: number;
-
-  @IsOptional()
-  @Type(() => Number)
   @IsInt()
   @Min(1)
   level?: number;

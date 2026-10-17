@@ -133,6 +133,8 @@ export class UsersService {
       quizSessions,
       duelCount,
       badgesCount,
+      approvedContributions,
+      badges,
     ] = await Promise.all([
       this.prisma.user.findUnique({
         where: { id: targetUserId },
@@ -168,6 +170,32 @@ export class UsersService {
       this.prisma.userBadge.count({
         where: { userId: targetUserId },
       }),
+      this.prisma.contribution.findMany({
+        where: {
+          userId: targetUserId,
+          status: 'APPROVED',
+        },
+        select: {
+          id: true,
+          category: true,
+          textMg: true,
+          textFr: true,
+          meaning: true,
+          score: true,
+          createdAt: true,
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+      }),
+      this.prisma.userBadge.findMany({
+        where: { userId: targetUserId },
+        select: {
+          badgeId: true,
+          unlockedAt: true,
+        },
+        orderBy: { unlockedAt: 'desc' },
+        take: 12,
+      }),
     ]);
 
     if (!user) {
@@ -202,16 +230,51 @@ export class UsersService {
     let friendshipId: string | undefined = undefined;
     let canEncourage = false;
     let hasEncouragedToday = false;
+    let h2h = {
+      totalDuels: 0,
+      myWins: 0,
+      friendWins: 0,
+      draws: 0,
+    };
 
     if (currentUserId && currentUserId !== targetUserId) {
-      const friendship = await this.prisma.friendship.findFirst({
-        where: {
-          OR: [
-            { senderId: currentUserId, receiverId: targetUserId },
-            { senderId: targetUserId, receiverId: currentUserId },
-          ],
-        },
-      });
+      const [friendship, existingEncouragement, h2hSessions] = await Promise.all([
+        this.prisma.friendship.findFirst({
+          where: {
+            OR: [
+              { senderId: currentUserId, receiverId: targetUserId },
+              { senderId: targetUserId, receiverId: currentUserId },
+            ],
+          },
+        }),
+        this.prisma.encouragement.findUnique({
+          where: {
+            senderId_receiverId_date: {
+              senderId: currentUserId,
+              receiverId: targetUserId,
+              date: new Date(
+                Date.UTC(
+                  new Date().getUTCFullYear(),
+                  new Date().getUTCMonth(),
+                  new Date().getUTCDate(),
+                ),
+              ),
+            },
+          },
+        }),
+        this.prisma.duelSession.findMany({
+          where: {
+            status: 'FINISHED',
+            OR: [
+              { player1Id: currentUserId, player2Id: targetUserId },
+              { player1Id: targetUserId, player2Id: currentUserId },
+            ],
+          },
+          select: {
+            winnerId: true,
+          },
+        }),
+      ]);
 
       if (friendship) {
         friendshipId = friendship.id;
@@ -227,26 +290,27 @@ export class UsersService {
         }
       }
 
-      // Vérifier encouragement journalier
-      const today = new Date(
-        Date.UTC(
-          new Date().getUTCFullYear(),
-          new Date().getUTCMonth(),
-          new Date().getUTCDate(),
-        ),
-      );
-      const existingEncouragement = await this.prisma.encouragement.findUnique({
-        where: {
-          senderId_receiverId_date: {
-            senderId: currentUserId,
-            receiverId: targetUserId,
-            date: today,
-          },
-        },
-      });
-
       hasEncouragedToday = !!existingEncouragement;
       canEncourage = !existingEncouragement;
+
+      let myWins = 0;
+      let friendWins = 0;
+      let draws = 0;
+      for (const duel of h2hSessions) {
+        if (!duel.winnerId) {
+          draws++;
+        } else if (duel.winnerId === currentUserId) {
+          myWins++;
+        } else {
+          friendWins++;
+        }
+      }
+      h2h = {
+        totalDuels: h2hSessions.length,
+        myWins,
+        friendWins,
+        draws,
+      };
     }
 
     return {
@@ -275,6 +339,9 @@ export class UsersService {
         canEncourage,
         hasEncouragedToday,
       },
+      h2h,
+      badges,
+      approvedContributions,
     };
   }
 

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class CreateContributionCommentDto {
   @IsString()
@@ -10,4 +10,8 @@ export class CreateContributionCommentDto {
     message: 'Le commentaire ne peut pas dépasser 1000 caractères',
   })
   content!: string;
+
+  @IsOptional()
+  @IsString()
+  parentId?: string;
 }

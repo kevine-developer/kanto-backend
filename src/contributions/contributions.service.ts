@@ -3,13 +3,14 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  ConflictException,
   Logger,
   OnModuleInit,
   OnModuleDestroy,
   Optional,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
-import { ContributionStatus } from '../../generated/prisma/client.js';
+import { ContributionStatus, ReportReason } from '../../generated/prisma/client.js';
 import { CreateContributionDto } from './dto/create-contribution.dto.js';
 import { CreateKabaryContributionDto } from './dto/create-kabary-contribution.dto.js';
 import { CreateProverbeContributionDto } from './dto/create-proverbe-contribution.dto.js';
@@ -33,9 +34,9 @@ import {
 const REDIS_CHANNEL_COMMENTS = REALTIME_CHANNELS.COMMENTS;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Sélecteurs réutilisables
+// Sélecteurs réutilisables (Sécurité & Confidentialité)
 // ─────────────────────────────────────────────────────────────────────────────
-const CONTRIBUTION_BASE_SELECT = {
+export const CONTRIBUTION_PUBLIC_SELECT = {
   id: true,
   category: true,
   textMg: true,
@@ -48,7 +49,7 @@ const CONTRIBUTION_BASE_SELECT = {
   createdAt: true,
   updatedAt: true,
   userId: true,
-  user: { select: { id: true, name: true, image: true, email: true } },
+  user: { select: { id: true, name: true, image: true } },
   _count: { select: { comments: true } },
   duplicateScore: true,
   duplicateOfId: true,
@@ -56,6 +57,10 @@ const CONTRIBUTION_BASE_SELECT = {
   duplicateTargetTitle: true,
   isDuplicateConfirmed: true,
   markedForDeletionAt: true,
+} as const;
+
+export const CONTRIBUTION_BASE_SELECT = {
+  ...CONTRIBUTION_PUBLIC_SELECT,
   disputeMessage: true,
   disputeStatus: true,
   disputedAt: true,
@@ -753,7 +758,7 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       },
       take: safeLimit,
       select: {
-        ...CONTRIBUTION_BASE_SELECT,
+        ...CONTRIBUTION_PUBLIC_SELECT,
         textMg: true,
         textFr: true,
         meaning: true,
@@ -776,7 +781,7 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
   // ───────────────────────────────────────────────────────────────────────────
   // GET /contributions/:id
   // ───────────────────────────────────────────────────────────────────────────
-  async findOne(id: string, userId?: string) {
+  async findOne(id: string, userId?: string, role?: string) {
     const contribution = await this.prisma.contribution.findUnique({
       where: { id },
       select: {
@@ -792,6 +797,14 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
 
     if (!contribution) throw new NotFoundException('Contribution introuvable');
 
+    const isAdmin = role === 'ADMIN' || role === 'admin';
+    const isAuthor = Boolean(userId && contribution.userId === userId);
+
+    // ⛔ Sécurité stricte : Si non approuvée, accessible uniquement à l'auteur ou à un admin
+    if (contribution.status !== 'APPROVED' && !isAuthor && !isAdmin) {
+      throw new NotFoundException('Contribution introuvable');
+    }
+
     // Incrémenter les vues de façon asynchrone non-bloquante
     void this.prisma.contribution
       .update({
@@ -801,6 +814,18 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       .catch(() => {});
 
     const { votes, ...rest } = contribution as Record<string, unknown>;
+
+    // Filtrer les détails internes de modération si l'utilisateur n'est pas administrateur
+    if (!isAdmin) {
+      delete rest.moderationDetails;
+      delete rest.moderationReason;
+      delete rest.adminReviewedBy;
+      delete rest.lastNotificationSentAt;
+      // Ne laisser adminFeedback que pour l'auteur de la contribution
+      if (!isAuthor) {
+        delete rest.adminFeedback;
+      }
+    }
 
     const userVote =
       (votes as Array<{ value: number }> | undefined)?.[0]?.value ?? 0;
@@ -881,10 +906,10 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
     });
     if (!contribution) throw new NotFoundException('Contribution introuvable');
 
-    // ⛔ Vérifier que la contribution est active
-    if (contribution.status === 'ARCHIVED') {
+    // ⛔ Seules les contributions approuvées et publiées peuvent recevoir des votes
+    if (contribution.status !== 'APPROVED') {
       throw new BadRequestException(
-        'Cette contribution est archivée et ne peut plus recevoir de votes',
+        'Seules les contributions approuvées et publiées peuvent recevoir des votes',
       );
     }
 
@@ -964,26 +989,119 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       );
     }
 
-    // Enregistrement dans content_reports avec tag de traçabilité
-    const reportDesc = description
-      ? `[CONTRIBUTION:${contributionId}] ${reason} — ${description}`
-      : `[CONTRIBUTION:${contributionId}] ${reason}`;
+    // Garde-fou anti-spam : vérifier s'il existe déjà un signalement non résolu
+    const existingReport = await this.prisma.contentReport.findFirst({
+      where: {
+        userId,
+        contributionId,
+        resolved: false,
+      },
+    });
+    if (existingReport) {
+      throw new ConflictException(
+        'Vous avez déjà transmis un signalement en attente de traitement pour cette contribution.',
+      );
+    }
+
+    // Valider le motif selon l'énumération ReportReason
+    const validReason = Object.values(ReportReason).includes(
+      reason as ReportReason,
+    )
+      ? (reason as ReportReason)
+      : ReportReason.OTHER;
+
+    const reportDesc = description?.trim()
+      ? `[CONTRIBUTION:${contributionId}] ${validReason} — ${description.trim()}`
+      : `[CONTRIBUTION:${contributionId}] ${validReason}`;
 
     const report = await this.prisma.contentReport.create({
       data: {
         userId,
-        reason: 'OTHER',
+        contributionId,
+        reason: validReason,
         description: reportDesc,
       },
     });
 
     this.logger.warn(
-      `🚩 [Contributions] Signalement reçu pour contribution ${contributionId} par utilisateur ${userId} (Motif: ${reason})`,
+      `🚩 [Contributions] Signalement reçu pour contribution ${contributionId} par utilisateur ${userId} (Motif: ${validReason})`,
     );
 
     return {
       success: true,
       message: 'Signalement transmis avec succès aux modérateurs',
+      reportId: report.id,
+    };
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // POST /contributions/:id/comments/:commentId/report
+  // ───────────────────────────────────────────────────────────────────────────
+  async reportComment(
+    userId: string,
+    contributionId: string,
+    commentId: string,
+    reason: string,
+    description?: string,
+  ) {
+    const comment = await this.prisma.contributionComment.findUnique({
+      where: { id: commentId },
+      select: { id: true, userId: true, contributionId: true },
+    });
+    if (!comment || comment.contributionId !== contributionId) {
+      throw new NotFoundException(
+        'Commentaire introuvable pour cette contribution',
+      );
+    }
+
+    if (comment.userId === userId) {
+      throw new BadRequestException(
+        'Vous ne pouvez pas signaler votre propre commentaire',
+      );
+    }
+
+    // Garde-fou anti-spam : vérifier s'il existe déjà un signalement non résolu
+    const existingReport = await this.prisma.contentReport.findFirst({
+      where: {
+        userId,
+        commentId,
+        resolved: false,
+      },
+    });
+    if (existingReport) {
+      throw new ConflictException(
+        'Vous avez déjà transmis un signalement en attente de traitement pour ce commentaire.',
+      );
+    }
+
+    // Valider le motif selon l'énumération ReportReason
+    const validReason = Object.values(ReportReason).includes(
+      reason as ReportReason,
+    )
+      ? (reason as ReportReason)
+      : ReportReason.OTHER;
+
+    const reportDesc = description?.trim()
+      ? `[COMMENT:${commentId}] ${validReason} — ${description.trim()}`
+      : `[COMMENT:${commentId}] ${validReason}`;
+
+    const report = await this.prisma.contentReport.create({
+      data: {
+        userId,
+        contributionId,
+        commentId,
+        reason: validReason,
+        description: reportDesc,
+      },
+    });
+
+    this.logger.warn(
+      `🚩 [Commentaires] Signalement reçu pour commentaire ${commentId} par utilisateur ${userId} (Motif: ${validReason})`,
+    );
+
+    return {
+      success: true,
+      message: 'Signalement du commentaire transmis avec succès aux modérateurs',
       reportId: report.id,
     };
   }
@@ -1087,7 +1205,12 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       }),
       this.prisma.contentReport.count({
         where: {
-          description: { startsWith: '[CONTRIBUTION:' },
+          OR: [
+            { contributionId: { not: null } },
+            { commentId: { not: null } },
+            { description: { startsWith: '[CONTRIBUTION:' } },
+            { description: { startsWith: '[COMMENT:' } },
+          ],
           resolved: false,
         },
       }),
@@ -1113,11 +1236,33 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
   async getAdminReports() {
     return this.prisma.contentReport.findMany({
       where: {
-        description: { startsWith: '[CONTRIBUTION:' },
+        OR: [
+          { contributionId: { not: null } },
+          { commentId: { not: null } },
+          { description: { startsWith: '[CONTRIBUTION:' } },
+          { description: { startsWith: '[COMMENT:' } },
+        ],
         resolved: false,
       },
       include: {
         user: { select: { id: true, name: true, email: true, image: true } },
+        contribution: {
+          select: {
+            id: true,
+            category: true,
+            textMg: true,
+            textFr: true,
+            status: true,
+            user: { select: { id: true, name: true } },
+          },
+        },
+        comment: {
+          select: {
+            id: true,
+            content: true,
+            user: { select: { id: true, name: true } },
+          },
+        },
       },
       orderBy: { createdAt: 'desc' },
       take: 50,
@@ -1199,18 +1344,24 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
           });
 
         // Email à l'auteur si possible
-        if (this.resendService && updated.user?.email) {
-          void this.resendService
-            .sendContributionStatusUpdateEmail({
-              to: updated.user.email,
-              userName: updated.user.name || undefined,
-              contributionTitle: preview,
-              status: 'CHANGES_REQUESTED',
-              feedbackReason: feedback,
-            })
-            .catch((err) => {
-              this.logger.warn(`Échec email demande modifications : ${err}`);
-            });
+        if (this.resendService && contribution.userId) {
+          const authorUser = await this.prisma.user.findUnique({
+            where: { id: contribution.userId },
+            select: { email: true, name: true },
+          });
+          if (authorUser?.email) {
+            void this.resendService
+              .sendContributionStatusUpdateEmail({
+                to: authorUser.email,
+                userName: authorUser.name || undefined,
+                contributionTitle: preview,
+                status: 'CHANGES_REQUESTED',
+                feedbackReason: feedback,
+              })
+              .catch((err) => {
+                this.logger.warn(`Échec email demande modifications : ${err}`);
+              });
+          }
         }
       }
 
@@ -1270,18 +1421,24 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
             this.logger.warn(`Échec notification rejet contribution : ${err}`);
           });
 
-        if (this.resendService && updated.user?.email) {
-          void this.resendService
-            .sendContributionStatusUpdateEmail({
-              to: updated.user.email,
-              userName: updated.user.name || undefined,
-              contributionTitle: preview,
-              status: 'REJECTED',
-              feedbackReason: rejectionReason,
-            })
-            .catch((err) => {
-              this.logger.warn(`Échec email rejet contribution : ${err}`);
-            });
+        if (this.resendService && contribution.userId) {
+          const authorUser = await this.prisma.user.findUnique({
+            where: { id: contribution.userId },
+            select: { email: true, name: true },
+          });
+          if (authorUser?.email) {
+            void this.resendService
+              .sendContributionStatusUpdateEmail({
+                to: authorUser.email,
+                userName: authorUser.name || undefined,
+                contributionTitle: preview,
+                status: 'REJECTED',
+                feedbackReason: rejectionReason,
+              })
+              .catch((err) => {
+                this.logger.warn(`Échec email rejet contribution : ${err}`);
+              });
+          }
         }
       }
 
@@ -1690,16 +1847,25 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       contributionId: id,
       userId,
       userRole: isAdmin ? 'ADMIN' : 'USER',
-      action: 'DELETED',
+      action: contribution.status === 'DRAFT' ? 'DELETED' : 'ARCHIVED',
       fromStatus: contribution.status,
       toStatus: 'ARCHIVED',
     });
 
-    await this.prisma.contribution.delete({
+    if (contribution.status === 'DRAFT') {
+      await this.prisma.contribution.delete({
+        where: { id },
+      });
+      return { success: true, message: 'Brouillon supprimé définitivement' };
+    }
+
+    // Pour les contributions soumises ou approuvées : archivage logique préservant l'intégrité
+    await this.prisma.contribution.update({
       where: { id },
+      data: { status: 'ARCHIVED' },
     });
 
-    return { success: true, message: 'Contribution supprimée avec succès' };
+    return { success: true, message: 'Contribution archivée avec succès' };
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -1726,7 +1892,7 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
   async getComments(contributionId: string) {
     const contribution = await this.prisma.contribution.findUnique({
       where: { id: contributionId },
-      select: { id: true, userId: true },
+      select: { id: true, userId: true, status: true },
     });
     if (!contribution) throw new NotFoundException('Contribution introuvable');
 
@@ -1751,7 +1917,7 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
     }));
   }
 
-  /** POST /contributions/:id/comments — Ajouter un commentaire */
+  /** POST /contributions/:id/comments — Ajouter un commentaire ou une réponse */
   async addComment(
     userId: string,
     contributionId: string,
@@ -1762,13 +1928,21 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       select: {
         id: true,
         userId: true,
+        status: true,
         isDuplicateConfirmed: true,
         markedForDeletionAt: true,
       },
     });
     if (!contribution) throw new NotFoundException('Contribution introuvable');
 
-    // Règle stricte : Interdiction formelle de commenter si la contribution est marquée comme doublon
+    // ⛔ Contribution archivée
+    if (contribution.status === 'ARCHIVED') {
+      throw new BadRequestException(
+        'Cette contribution est archivée et ne peut plus recevoir de commentaires.',
+      );
+    }
+
+    // ⛔ Règle stricte : Interdiction formelle de commenter si la contribution est marquée comme doublon
     if (
       contribution.isDuplicateConfirmed ||
       (contribution.markedForDeletionAt &&
@@ -1779,11 +1953,46 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       );
     }
 
+    const trimmedContent = dto.content.trim();
+    if (!trimmedContent) {
+      throw new BadRequestException('Le commentaire ne peut pas être vide.');
+    }
+
+    // 🛡️ Modération automatique du contenu du commentaire
+    const modResult = this.contentModerationService.moderateContent({
+      content: trimmedContent,
+    });
+    if (modResult.isFlagged) {
+      this.logger.warn(
+        `🚩 [Commentaires] Contenu bloqué pour utilisateur ${userId}: ${modResult.summary}`,
+      );
+      throw new BadRequestException(
+        'Votre commentaire contient des propos non conformes à notre charte de respect communautaire.',
+      );
+    }
+
+    // 🌿 Gestion de la réponse hiérarchique (1 niveau d'imbrication max sur mobile)
+    let effectiveParentId: string | null = null;
+    if (dto.parentId) {
+      const parentComment = await this.prisma.contributionComment.findUnique({
+        where: { id: dto.parentId },
+        select: { id: true, contributionId: true, parentId: true },
+      });
+      if (!parentComment || parentComment.contributionId !== contributionId) {
+        throw new BadRequestException(
+          'Le commentaire parent spécifié est introuvable sur cette contribution.',
+        );
+      }
+      // Si le parent est déjà une réponse, rattacher au parent racine pour éviter les arbres profonds
+      effectiveParentId = parentComment.parentId || parentComment.id;
+    }
+
     const comment = await this.prisma.contributionComment.create({
       data: {
         userId,
         contributionId,
-        content: dto.content.trim(),
+        parentId: effectiveParentId,
+        content: trimmedContent,
       },
       include: {
         user: {
@@ -1885,10 +2094,28 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       }
     }
 
+    const trimmedContent = dto.content.trim();
+    if (!trimmedContent) {
+      throw new BadRequestException('Le commentaire ne peut pas être vide.');
+    }
+
+    // 🛡️ Modération automatique du contenu modifié
+    const modResult = this.contentModerationService.moderateContent({
+      content: trimmedContent,
+    });
+    if (modResult.isFlagged) {
+      this.logger.warn(
+        `🚩 [Commentaires] Modification bloquée pour contenu suspect par ${userId}: ${modResult.summary}`,
+      );
+      throw new BadRequestException(
+        'Votre modification contient des propos non conformes à notre charte de respect communautaire.',
+      );
+    }
+
     const updated = await this.prisma.contributionComment.update({
       where: { id: commentId },
       data: {
-        content: dto.content.trim(),
+        content: trimmedContent,
       },
       include: {
         user: {

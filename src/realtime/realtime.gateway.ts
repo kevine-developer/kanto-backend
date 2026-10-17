@@ -637,8 +637,19 @@ export class RealtimeGateway
         players: result.players,
       });
 
+      // Si c'est un duel 1v1 et que les deux joueurs sont présents, émettre l'événement duel:ready
+      if (result.session.player2Id && result.players.length === 2) {
+        this.server.to(room).emit('duel:ready', {
+          code: result.session.code,
+          players: result.players,
+        });
+        this.logger.log(
+          `⚔️ [DuelGateway] Les 2 joueurs du duel ${room} sont connectés et prêts !`,
+        );
+      }
+
       this.logger.log(
-        `👥 [DuelGateway] Joueur ${userId} a rejoint ${room} (${result.players.length}/10)`,
+        `👥 [DuelGateway] Joueur ${userId} a rejoint ${room} (${result.players.length}/${result.session.maxPlayers || 2})`,
       );
       return {
         success: true,
@@ -1108,6 +1119,19 @@ export class RealtimeGateway
       if (!data?.code) return { success: false, message: 'Code requis' };
 
       const userId = this.getClientUserId(client, data?.userId);
+
+      // Le mode animateur/spectateur est strictement interdit en duel 1v1
+      const session = await this.prisma.duelSession.findUnique({
+        where: { code: data.code.trim().toUpperCase() },
+        select: { player2Id: true },
+      });
+      if (session?.player2Id) {
+        return {
+          success: false,
+          isSpectator: false,
+          message: "Le mode spectateur n'est pas autorisé dans un duel 1 contre 1.",
+        };
+      }
 
       // Si l'utilisateur est le créateur du deck, il ne peut pas passer en tant que joueur
       const isCreator = await this.duelService.isDeckAuthor(data.code, userId);

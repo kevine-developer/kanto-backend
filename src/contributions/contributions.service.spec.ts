@@ -152,21 +152,26 @@ describe('ContributionsService - Deadlines & Permissions', () => {
   });
 
   describe('remove() - Règle des 24h (1 jour)', () => {
-    it('doit autoriser la suppression par l auteur si moins de 24h se sont écoulées', async () => {
+    it('doit autoriser la suppression logique (archivage) par l auteur si moins de 24h se sont écoulées', async () => {
       const recentDate = new Date(Date.now() - 5 * 60 * 60 * 1000); // Il y a 5h
       const mockContrib = {
         id: 'c1',
         userId: 'u1',
+        status: 'PENDING_REVIEW',
         createdAt: recentDate,
       };
       prismaMock.contribution.findUnique.mockResolvedValue(mockContrib as any);
-      prismaMock.contribution.delete.mockResolvedValue(mockContrib as any);
+      prismaMock.contribution.update.mockResolvedValue({
+        ...mockContrib,
+        status: 'ARCHIVED',
+      } as any);
 
       const result = await service.remove('c1', 'u1', 'USER');
 
       expect(result.success).toBe(true);
-      expect(prismaMock.contribution.delete).toHaveBeenCalledWith({
+      expect(prismaMock.contribution.update).toHaveBeenCalledWith({
         where: { id: 'c1' },
+        data: { status: 'ARCHIVED' },
       });
     });
 
@@ -175,6 +180,7 @@ describe('ContributionsService - Deadlines & Permissions', () => {
       const mockContrib = {
         id: 'c1',
         userId: 'u1',
+        status: 'PENDING_REVIEW',
         createdAt: oldDate,
       };
       prismaMock.contribution.findUnique.mockResolvedValue(mockContrib as any);
@@ -193,21 +199,26 @@ describe('ContributionsService - Deadlines & Permissions', () => {
       }
     });
 
-    it('doit autoriser un ADMIN à supprimer même si plus de 24h se sont écoulées', async () => {
+    it('doit autoriser un ADMIN à archiver même si plus de 24h se sont écoulées', async () => {
       const oldDate = new Date(Date.now() - 72 * 60 * 60 * 1000); // Il y a 3 jours
       const mockContrib = {
         id: 'c1',
         userId: 'u1',
+        status: 'PENDING_REVIEW',
         createdAt: oldDate,
       };
       prismaMock.contribution.findUnique.mockResolvedValue(mockContrib as any);
-      prismaMock.contribution.delete.mockResolvedValue(mockContrib as any);
+      prismaMock.contribution.update.mockResolvedValue({
+        ...mockContrib,
+        status: 'ARCHIVED',
+      } as any);
 
       const result = await service.remove('c1', 'admin_1', 'ADMIN');
 
       expect(result.success).toBe(true);
-      expect(prismaMock.contribution.delete).toHaveBeenCalledWith({
+      expect(prismaMock.contribution.update).toHaveBeenCalledWith({
         where: { id: 'c1' },
+        data: { status: 'ARCHIVED' },
       });
     });
 
@@ -355,6 +366,127 @@ describe('ContributionsService - Deadlines & Permissions', () => {
 
       expect(result.success).toBe(true);
       expect(result.status).toBe('APPROVED');
+    });
+  });
+
+  describe('voteContribution() - Intégrité et Sécurité', () => {
+    it('doit refuser le vote si la contribution n est pas au statut APPROVED', async () => {
+      prismaMock.contribution.findUnique.mockResolvedValue({
+        id: 'c-pending',
+        userId: 'author-1',
+        status: 'PENDING_REVIEW',
+        score: 0,
+      } as any);
+
+      await expect(
+        service.voteContribution('user-2', 'c-pending', 1),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('doit interdire l auto-vote par l auteur de la contribution', async () => {
+      prismaMock.contribution.findUnique.mockResolvedValue({
+        id: 'c-approved',
+        userId: 'author-1',
+        status: 'APPROVED',
+        score: 5,
+      } as any);
+
+      await expect(
+        service.voteContribution('author-1', 'c-approved', 1),
+      ).rejects.toThrow(ForbiddenException);
+    });
+  });
+
+  describe('findOne() - Contrôle d accès et Confidentialité', () => {
+    it('doit renvoyer NotFoundException si la contribution est en PENDING_REVIEW et demandée par un tiers non-admin', async () => {
+      prismaMock.contribution.findUnique.mockResolvedValue({
+        id: 'c-pending',
+        userId: 'author-1',
+        status: 'PENDING_REVIEW',
+        textMg: 'Ohabolana',
+        textFr: 'Proverbe',
+        meaning: 'Sens',
+      } as any);
+
+      await expect(
+        service.findOne('c-pending', 'other-user', 'USER'),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('doit autoriser l accès à l auteur pour sa propre contribution non encore approuvée', async () => {
+      prismaMock.contribution.findUnique.mockResolvedValue({
+        id: 'c-pending',
+        userId: 'author-1',
+        status: 'PENDING_REVIEW',
+        textMg: 'Ohabolana',
+        textFr: 'Proverbe',
+        meaning: 'Sens',
+        adminFeedback: 'Note admin',
+      } as any);
+      prismaMock.contribution.update.mockResolvedValue({} as any);
+
+      const result = await service.findOne('c-pending', 'author-1', 'USER');
+      expect(result.id).toBe('c-pending');
+      expect(result.adminFeedback).toBe('Note admin');
+    });
+
+    it('doit autoriser l accès à un administrateur même si non approuvée', async () => {
+      prismaMock.contribution.findUnique.mockResolvedValue({
+        id: 'c-pending',
+        userId: 'author-1',
+        status: 'PENDING_REVIEW',
+        textMg: 'Ohabolana',
+        textFr: 'Proverbe',
+        meaning: 'Sens',
+      } as any);
+      prismaMock.contribution.update.mockResolvedValue({} as any);
+
+      const result = await service.findOne('c-pending', 'admin-id', 'ADMIN');
+      expect(result.id).toBe('c-pending');
+    });
+  });
+
+  describe('Signalements & Commentaires - Sécurité', () => {
+    it('doit refuser le signalement de sa propre contribution', async () => {
+      prismaMock.contribution.findUnique.mockResolvedValue({
+        id: 'c-1',
+        userId: 'user-1',
+        status: 'APPROVED',
+      } as any);
+
+      await expect(
+        service.reportContribution('user-1', 'c-1', 'SPAM'),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('doit rejeter un signalement en double par le même utilisateur', async () => {
+      prismaMock.contribution.findUnique.mockResolvedValue({
+        id: 'c-1',
+        userId: 'author-1',
+        status: 'APPROVED',
+      } as any);
+      prismaMock.contentReport.findFirst.mockResolvedValue({
+        id: 'rep-1',
+        resolved: false,
+      } as any);
+
+      await expect(
+        service.reportContribution('reporter-1', 'c-1', 'SPAM'),
+      ).rejects.toThrow();
+    });
+
+    it('doit refuser un commentaire si la contribution est archivée', async () => {
+      prismaMock.contribution.findUnique.mockResolvedValue({
+        id: 'c-archived',
+        userId: 'author-1',
+        status: 'ARCHIVED',
+        isDuplicateConfirmed: false,
+        markedForDeletionAt: null,
+      } as any);
+
+      await expect(
+        service.addComment('user-2', 'c-archived', { content: 'Salama' }),
+      ).rejects.toThrow(BadRequestException);
     });
   });
 });

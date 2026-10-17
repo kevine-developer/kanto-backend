@@ -12,6 +12,12 @@ model ContentReport {
   userId String?
   user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
+  contributionId String?
+  contribution   Contribution? @relation(fields: [contributionId], references: [id], onDelete: Cascade)
+
+  commentId String?
+  comment   ContributionComment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
   itemId String?
   item   MalagasyItem? @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
@@ -36,6 +42,8 @@ model ContentReport {
   createdAt DateTime @default(now())
 
   @@index([resolved])
+  @@index([contributionId])
+  @@index([commentId])
   @@index([quizSetId])
   @@map("content_reports")
 }
