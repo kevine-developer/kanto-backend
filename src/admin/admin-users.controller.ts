@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -22,8 +23,21 @@ export class AdminUsersController {
     @Query('page') pageStr?: string,
     @Query('limit') limitStr?: string,
     @Query('search') search?: string,
+    @Query('role') role?: string,
+    @Query('status') status?: string,
   ) {
-    return this.adminUsersService.listUsers(pageStr, limitStr, search);
+    return this.adminUsersService.listUsers(
+      pageStr,
+      limitStr,
+      search,
+      role,
+      status,
+    );
+  }
+
+  @Get(':id')
+  async getUserDetails(@Param('id') id: string) {
+    return this.adminUsersService.getUserDetails(id);
   }
 
   @Patch(':id/role')
@@ -35,11 +49,36 @@ export class AdminUsersController {
     return this.adminUsersService.updateRole(id, role, session.user.id);
   }
 
+  @Patch(':id/ban')
+  async banUser(
+    @Param('id') id: string,
+    @Body('reason') reason: string,
+    @Body('expiresAt') expiresAt: string | undefined,
+    @Session() session: UserSession,
+  ) {
+    return this.adminUsersService.banUser(
+      id,
+      reason,
+      expiresAt,
+      session.user.id,
+    );
+  }
+
+  @Patch(':id/unban')
+  async unbanUser(@Param('id') id: string, @Session() session: UserSession) {
+    return this.adminUsersService.unbanUser(id, session.user.id);
+  }
+
   @Post(':id/reset-password')
   async resetPassword(
     @Param('id') id: string,
     @Session() session: UserSession,
   ) {
     return this.adminUsersService.resetUserPassword(id, session.user.id);
+  }
+
+  @Delete(':id')
+  async deleteUser(@Param('id') id: string, @Session() session: UserSession) {
+    return this.adminUsersService.deleteUser(id, session.user.id);
   }
 }
