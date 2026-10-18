@@ -13,7 +13,13 @@ import { Throttle } from '@nestjs/throttler';
 import { NotificationsService } from './notifications.service.js';
 import { CreateNotificationDto } from './dto/notifications.dto.js';
 import { RegisterPushTokenDto } from './dto/push-token.dto.js';
-import { AuthGuard, Roles, Session, type UserSession } from '../auth/index.js';
+import {
+  AuthGuard,
+  OptionalAuth,
+  Roles,
+  Session,
+  type UserSession,
+} from '../auth/index.js';
 
 @Controller()
 export class NotificationsController {
@@ -21,14 +27,17 @@ export class NotificationsController {
 
   /**
    * Enregistre le token Expo Push d'un utilisateur ou d'un visiteur anonyme (invité).
+   * L'identité est strictement dérivée de la session active si authentifiée.
    */
   @Post('notifications/push-token')
+  @UseGuards(AuthGuard)
+  @OptionalAuth()
   @Throttle({ default: { limit: 30, ttl: 60000 } })
   registerPushToken(
     @Body() body: RegisterPushTokenDto,
     @Session() session?: UserSession,
   ) {
-    const effectiveUserId = session?.user?.id || body.userId;
+    const effectiveUserId = session?.user?.id;
     return this.notificationsService.registerPushToken(
       effectiveUserId,
       body.pushToken,
@@ -36,15 +45,18 @@ export class NotificationsController {
   }
 
   /**
-   * Endpoint public mobile : Récupère les notifications groupées par date.
+   * Endpoint mobile : Récupère les notifications groupées par date.
+   * Si l'utilisateur est authentifié, retourne ses notifications + broadcast.
+   * Si l'utilisateur est anonyme, retourne strictement les notifications broadcast publiques.
    */
   @Get('notifications')
+  @UseGuards(AuthGuard)
+  @OptionalAuth()
   getPublicNotifications(
     @Query('lang') lang: 'mg' | 'fr' = 'mg',
-    @Query('userId') queryUserId?: string,
     @Session() session?: UserSession,
   ) {
-    const effectiveUserId = session?.user?.id || queryUserId;
+    const effectiveUserId = session?.user?.id;
     return this.notificationsService.getPublicNotifications(
       lang,
       effectiveUserId,
@@ -76,73 +88,72 @@ export class NotificationsController {
   }
 
   /**
-   * Marque une notification comme lue.
+   * Marque une notification comme lue pour l'utilisateur connecté.
    */
   @Patch('notifications/:id/read')
-  markAsRead(
-    @Param('id') id: string,
-    @Query('userId') queryUserId?: string,
-    @Session() session?: UserSession,
-  ) {
-    const effectiveUserId = session?.user?.id || queryUserId;
-    return this.notificationsService.markAsRead(id, effectiveUserId);
+  @UseGuards(AuthGuard)
+  markAsRead(@Param('id') id: string, @Session() session: UserSession) {
+    return this.notificationsService.markAsRead(id, session.user.id);
   }
 
   /**
    * Marque toutes les notifications comme lues pour l'utilisateur connecté.
    */
   @Post('notifications/read-all')
-  markAllAsRead(
-    @Query('userId') queryUserId?: string,
-    @Session() session?: UserSession,
-  ) {
-    const effectiveUserId = session?.user?.id || queryUserId;
-    return this.notificationsService.markAllAsRead(effectiveUserId);
+  @UseGuards(AuthGuard)
+  markAllAsRead(@Session() session: UserSession) {
+    return this.notificationsService.markAllAsRead(session.user.id);
   }
 
   /**
-   * Supprime une notification pour l'utilisateur.
+   * Supprime une notification pour l'utilisateur connecté (ou n'importe laquelle si rôle ADMIN).
    */
   @Delete('notifications/:id')
+  @UseGuards(AuthGuard)
   deleteNotificationUser(
     @Param('id') id: string,
-    @Query('userId') queryUserId?: string,
-    @Session() session?: UserSession,
+    @Session() session: UserSession,
   ) {
-    const effectiveUserId = session?.user?.id || queryUserId;
-    const role = session?.user?.role
+    const role = session.user.role
       ? Array.isArray(session.user.role)
         ? session.user.role[0]
         : session.user.role
       : undefined;
     return this.notificationsService.deleteNotification(
       id,
-      effectiveUserId,
+      session.user.id,
       role,
     );
   }
 
   /**
-   * Supprime toutes les notifications pour l'utilisateur connecté.
+   * Supprime toutes les notifications privées pour l'utilisateur connecté.
    */
   @Delete('notifications')
-  clearAllNotifications(
-    @Query('userId') queryUserId?: string,
-    @Session() session?: UserSession,
-  ) {
-    const effectiveUserId = session?.user?.id || queryUserId;
-    const role = session?.user?.role
+  @UseGuards(AuthGuard)
+  clearAllNotifications(@Session() session: UserSession) {
+    const role = session.user.role
       ? Array.isArray(session.user.role)
         ? session.user.role[0]
         : session.user.role
       : undefined;
     return this.notificationsService.clearAllNotifications(
-      effectiveUserId,
+      session.user.id,
       role,
     );
   }
 
   // ─── ENDPOINTS ADMINISTRATION ─────────────────────────────────────────────
+
+  /**
+   * Endpoint administration : Récupère les alertes de modération et opérationnelles du CRM.
+   */
+  @Get('admin/notifications/alerts')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  getAdminAlerts() {
+    return this.notificationsService.getAdminAlerts();
+  }
 
   /**
    * Endpoint administration : Récupère toutes les notifications envoyées.

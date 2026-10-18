@@ -47,6 +47,19 @@ export const FONT_STACK =
   "-apple-system, BlinkMacSystemFont, 'Plus Jakarta Sans', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 
 /**
+ * Échappe les caractères HTML spéciaux pour prévenir toute injection XSS dans les modèles d'e-mails.
+ */
+export function escapeHtml(str: string | null | undefined): string {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/**
  * Icône vectorielle officielle Google Play (compatible email HTML inline).
  * Conçue sans aucune dépendance d'image externe ni d'emoji.
  */

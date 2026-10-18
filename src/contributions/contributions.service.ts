@@ -1995,16 +1995,18 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
 
     // 🌿 Gestion de la réponse hiérarchique (1 niveau d'imbrication max sur mobile)
     let effectiveParentId: string | null = null;
+    let parentCommentAuthorId: string | null = null;
     if (dto.parentId) {
       const parentComment = await this.prisma.contributionComment.findUnique({
         where: { id: dto.parentId },
-        select: { id: true, contributionId: true, parentId: true },
+        select: { id: true, contributionId: true, parentId: true, userId: true },
       });
       if (!parentComment || parentComment.contributionId !== contributionId) {
         throw new BadRequestException(
           'Le commentaire parent spécifié est introuvable sur cette contribution.',
         );
       }
+      parentCommentAuthorId = parentComment.userId;
       // Si le parent est déjà une réponse, rattacher au parent racine pour éviter les arbres profonds
       effectiveParentId = parentComment.parentId || parentComment.id;
     }
@@ -2050,6 +2052,35 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
         this.logger.error(
           'Erreur envoi notification commentaire à l’auteur :',
           notifErr,
+        );
+      }
+    }
+
+    // Notifier également l'auteur du commentaire parent s'il s'agit d'une réponse
+    if (
+      parentCommentAuthorId &&
+      parentCommentAuthorId !== userId &&
+      parentCommentAuthorId !== contribution.userId
+    ) {
+      const replierName = comment.user?.name || 'Mpikambana iray';
+      try {
+        await this.notificationsService.createNotification({
+          titleMg: 'Valin-kafatra tamin’ny hevitrao 💬',
+          titleFr: 'Réponse à votre commentaire 💬',
+          messageMg: `Namaly ny hevitrao teo amin'ny fandraisana anjara i ${replierName}.`,
+          messageFr: `${replierName} a répondu à votre commentaire sur la contribution.`,
+          category: 'community',
+          badgeText: 'Hevitra',
+          badgeType: 'info',
+          iconName: 'chatbubble-ellipses-outline',
+          iconColor: '#2563EB',
+          isBroadcast: false,
+          userId: parentCommentAuthorId,
+          targetRoute: '/(tabs)/communaute',
+        });
+      } catch (replyNotifErr) {
+        this.logger.warn(
+          `Erreur notification réponse commentaire : ${replyNotifErr}`,
         );
       }
     }

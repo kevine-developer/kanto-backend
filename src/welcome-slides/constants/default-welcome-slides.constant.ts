@@ -79,7 +79,7 @@ export const DEFAULT_WELCOME_SLIDES: DefaultWelcomeSlideItem[] = [
     titleMg: 'Marina sa Diso',
     tag: 'Quiz & Multijoueur',
     imageUrl:
-      'https://res.cloudinary.com/dhe585mze/image/upload/v1753433200/Photoroom-20250725_025113719_voarxl.png',
+      'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&auto=format&fit=crop&q=80',
     accentColor: '#C58B38',
     orderIndex: 5,
   },

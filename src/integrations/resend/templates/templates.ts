@@ -1,4 +1,4 @@
-import { KANTO_COLORS } from './common.js';
+import { KANTO_COLORS, escapeHtml } from './common.js';
 import { renderEmailLayout } from './email-layout.js';
 import {
   renderButton,
@@ -27,12 +27,14 @@ export interface PasswordResetEmailData {
 export function buildPasswordResetEmail(
   data: PasswordResetEmailData,
 ): EmailRenderOutput {
-  const greeting = data.userName?.trim()
+  const safeName = escapeHtml(data.userName?.trim());
+  const greetingHtml = safeName ? `Bonjour ${safeName},` : 'Bonjour,';
+  const greetingText = data.userName?.trim()
     ? `Bonjour ${data.userName.trim()},`
     : 'Bonjour,';
   const subject = 'Réinitialisation de votre mot de passe — Kanto';
 
-  const text = `${greeting}
+  const text = `${greetingText}
 
 Vous avez demandé la réinitialisation de votre mot de passe pour votre compte Kanto.
 
@@ -50,7 +52,7 @@ https://kanto.mg`.trim();
     </h1>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 14px 0;">
-      ${greeting}
+      ${greetingHtml}
     </p>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 20px 0;">
@@ -95,12 +97,14 @@ export interface WelcomeEmailData {
 }
 
 export function buildWelcomeEmail(data: WelcomeEmailData): EmailRenderOutput {
-  const greeting = data.userName?.trim()
+  const safeName = escapeHtml(data.userName?.trim());
+  const greetingHtml = safeName ? `Tongasoa ${safeName},` : 'Tongasoa,';
+  const greetingText = data.userName?.trim()
     ? `Tongasoa ${data.userName.trim()},`
     : 'Tongasoa,';
   const subject = "Tongasoa eto amin'ny Kanto — Bienvenue";
 
-  const text = `${greeting}
+  const text = `${greetingText}
 
 Bienvenue sur Kanto, la plateforme dédiée au patrimoine, aux contes, à l'histoire et à la sagesse de Madagascar.
 
@@ -117,7 +121,7 @@ https://kanto.mg`.trim();
 
   const contentHtml = `
     <h1 style="font-size: 19px; font-weight: 700; color: ${KANTO_COLORS.textPrimary}; margin: 0 0 16px 0; line-height: 26px; letter-spacing: -0.2px;">
-      ${greeting}
+      ${greetingHtml}
     </h1>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 22px 0;">
@@ -180,12 +184,14 @@ export interface VerificationEmailData {
 export function buildVerificationEmail(
   data: VerificationEmailData,
 ): EmailRenderOutput {
-  const greeting = data.userName?.trim()
+  const safeName = escapeHtml(data.userName?.trim());
+  const greetingHtml = safeName ? `Bonjour ${safeName},` : 'Bonjour,';
+  const greetingText = data.userName?.trim()
     ? `Bonjour ${data.userName.trim()},`
     : 'Bonjour,';
   const subject = 'Confirmation de votre adresse email — Kanto';
 
-  const text = `${greeting}
+  const text = `${greetingText}
 
 Merci de rejoindre Kanto.
 
@@ -203,7 +209,7 @@ https://kanto.mg`.trim();
     </h1>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 14px 0;">
-      ${greeting}
+      ${greetingHtml}
     </p>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 20px 0;">
@@ -251,10 +257,11 @@ export interface BetaTesterRegistrationEmailData {
 export function buildBetaTesterRegistrationEmail(
   data: BetaTesterRegistrationEmailData,
 ): EmailRenderOutput {
-  const name = data.fullName?.trim() || 'Cher testeur';
+  const rawName = data.fullName?.trim() || 'Cher testeur';
+  const safeName = escapeHtml(rawName);
   const subject = 'Candidature enregistrée au programme Bêta — Kanto';
 
-  const text = `Bonjour ${name},
+  const text = `Bonjour ${rawName},
 
 Votre demande pour rejoindre le programme de test fermé de Kanto sur Google Play a bien été prise en compte.
 
@@ -293,7 +300,7 @@ https://kanto.mg`.trim();
     </h1>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 14px 0;">
-      Bonjour <strong>${name}</strong>,
+      Bonjour <strong>${safeName}</strong>,
     </p>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 20px 0;">
@@ -372,7 +379,9 @@ export interface BetaTesterInvitationEmailData {
 export function buildBetaTesterInvitationEmail(
   data: BetaTesterInvitationEmailData,
 ): EmailRenderOutput {
-  const name = data.fullName?.trim() || 'Cher testeur';
+  const rawName = data.fullName?.trim() || 'Cher testeur';
+  const safeName = escapeHtml(rawName);
+  const safeEmail = escapeHtml(data.to);
   const webLink =
     data.playStoreWebLink?.trim() ||
     'https://play.google.com/apps/testing/com.devengalere.kantomg';
@@ -382,7 +391,7 @@ export function buildBetaTesterInvitationEmail(
 
   const subject = 'Votre accès Google Play pour Kanto est disponible';
 
-  const text = `Bonjour ${name},
+  const text = `Bonjour ${rawName},
 
 Bonne nouvelle : votre compte (${data.to}) a été autorisé pour le test privé de Kanto sur le Google Play Store.
 
@@ -415,11 +424,11 @@ https://kanto.mg`.trim();
     </h1>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 14px 0;">
-      Bonjour <strong>${name}</strong>,
+      Bonjour <strong>${safeName}</strong>,
     </p>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 24px 0;">
-      Votre adresse <strong>${data.to}</strong> est désormais habilitée sur la console de test de Google. Pour installer et exécuter la version d'évaluation sur votre appareil Android, veuillez suivre dans l'ordre les <strong>deux étapes</strong> suivantes :
+      Votre adresse <strong>${safeEmail}</strong> est désormais habilitée sur la console de test de Google. Pour installer et exécuter la version d'évaluation sur votre appareil Android, veuillez suivre dans l'ordre les <strong>deux étapes</strong> suivantes :
     </p>
 
     <!-- ÉTAPE 1 : Validation Web Obligatoire (Mise en valeur) -->
@@ -641,11 +650,15 @@ export interface ContributionApprovedEmailData {
 export function buildContributionApprovedEmail(
   data: ContributionApprovedEmailData,
 ): EmailRenderOutput {
-  const greeting = data.userName?.trim()
+  const safeName = escapeHtml(data.userName?.trim());
+  const greetingHtml = safeName
+    ? `Manao ahoana ${safeName},`
+    : 'Manao ahoana,';
+  const greetingText = data.userName?.trim()
     ? `Manao ahoana ${data.userName.trim()},`
     : 'Manao ahoana,';
   const subject =
-    'Félicitations ! Votre contribution a été publiée sur Kanto 🎉';
+    'Félicitations ! Votre contribution a été publiée sur Kanto';
   const xpReward = data.xpReward ?? 50;
 
   const categoryLabels: Record<string, string> = {
@@ -658,7 +671,7 @@ export function buildContributionApprovedEmail(
   };
   const categoryLabel = categoryLabels[data.category] || data.category;
 
-  const text = `${greeting}
+  const text = `${greetingText}
 
 Misaotra betsaka ! Votre contribution (« ${data.contributionTitle} ») dans la catégorie ${categoryLabel} a été examinée et approuvée avec succès par l'équipe Kanto.
 
@@ -684,7 +697,7 @@ Kanto — Lova, Kolontsaina & Tantara Malagasy`.trim();
     </h1>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 16px 0;">
-      ${greeting}
+      ${greetingHtml}
     </p>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 20px 0;">
@@ -739,7 +752,7 @@ export interface ModerationAlertAdminEmailData {
 export function buildModerationAlertAdminEmail(
   data: ModerationAlertAdminEmailData,
 ): EmailRenderOutput {
-  const subject = `⚠️ [Modération requise] Contribution signalée — ${data.contributionTitle}`;
+  const subject = `[Modération requise] Contribution signalée — ${data.contributionTitle}`;
 
   const text = `Alerte de modération — Kanto MG
 
@@ -829,7 +842,11 @@ export interface ContributionStatusUpdateEmailData {
 export function buildContributionStatusUpdateEmail(
   data: ContributionStatusUpdateEmailData,
 ): EmailRenderOutput {
-  const greeting = data.userName?.trim()
+  const safeName = escapeHtml(data.userName?.trim());
+  const greetingHtml = safeName
+    ? `Manao ahoana ${safeName},`
+    : 'Manao ahoana,';
+  const greetingText = data.userName?.trim()
     ? `Manao ahoana ${data.userName.trim()},`
     : 'Manao ahoana,';
 
@@ -837,6 +854,11 @@ export function buildContributionStatusUpdateEmail(
   const subject = isChangesRequested
     ? `Ajustements demandés pour votre contribution — Kanto`
     : `Mise à jour concernant votre contribution — Kanto`;
+
+  const safeTitle = escapeHtml(data.contributionTitle);
+  const actionTextHtml = isChangesRequested
+    ? `notre équipe de modération a examiné votre proposition (« ${safeTitle} ») et vous invite à apporter quelques ajustements pour qu'elle puisse être publiée.`
+    : `votre proposition (« ${safeTitle} ») n'a malheureusement pas pu être retenue pour intégrer le catalogue officiel Kanto.`;
 
   const actionText = isChangesRequested
     ? `notre équipe de modération a examiné votre proposition (« ${data.contributionTitle} ») et vous invite à apporter quelques ajustements pour qu'elle puisse être publiée.`
@@ -846,7 +868,7 @@ export function buildContributionStatusUpdateEmail(
     ? `\n\nMotif / Remarques de l'équipe :\n« ${data.feedbackReason} »`
     : '';
 
-  const text = `${greeting}
+  const text = `${greetingText}
 
 Nous vous remercions pour votre intérêt pour la culture malgache. Suite à l'examen de votre contribution : ${actionText}${reasonBlock}
 
@@ -861,11 +883,11 @@ https://kanto.mg`.trim();
     </h1>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 16px 0;">
-      ${greeting}
+      ${greetingHtml}
     </p>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 18px 0;">
-      ${actionText}
+      ${actionTextHtml}
     </p>
 
     ${
@@ -874,10 +896,12 @@ https://kanto.mg`.trim();
             title: isChangesRequested
               ? 'Consignes de l’équipe'
               : 'Motif de la décision',
-            content: data.feedbackReason,
+            content: escapeHtml(data.feedbackReason),
             variant: isChangesRequested ? 'info' : 'warning',
           })
         : ''
+    }
+
     }
 
     <div style="margin-top: 26px;">
@@ -919,7 +943,9 @@ export interface SecurityChangeEmailData {
 export function buildSecurityChangeEmail(
   data: SecurityChangeEmailData,
 ): EmailRenderOutput {
-  const greeting = data.userName?.trim()
+  const safeName = escapeHtml(data.userName?.trim());
+  const greetingHtml = safeName ? `Bonjour ${safeName},` : 'Bonjour,';
+  const greetingText = data.userName?.trim()
     ? `Bonjour ${data.userName.trim()},`
     : 'Bonjour,';
 
@@ -933,7 +959,7 @@ export function buildSecurityChangeEmail(
     ? 'Un mot de passe de connexion a été ajouté à votre compte Kanto. Vous pouvez désormais vous connecter avec votre adresse email et ce mot de passe, en plus de votre méthode de connexion habituelle.'
     : "Le mot de passe de votre compte Kanto vient d'être modifié avec succès.";
 
-  const text = `${greeting}
+  const text = `${greetingText}
 
 ${actionDescription}
 
@@ -950,7 +976,7 @@ https://kanto.mg`.trim();
     </h1>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 14px 0;">
-      ${greeting}
+      ${greetingHtml}
     </p>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 20px 0;">
@@ -994,7 +1020,9 @@ export interface AccountDeletionEmailData {
 export function buildAccountDeletionEmail(
   data: AccountDeletionEmailData,
 ): EmailRenderOutput {
-  const greeting = data.userName?.trim()
+  const safeName = escapeHtml(data.userName?.trim());
+  const greetingHtml = safeName ? `Bonjour ${safeName},` : 'Bonjour,';
+  const greetingText = data.userName?.trim()
     ? `Bonjour ${data.userName.trim()},`
     : 'Bonjour,';
 
@@ -1006,7 +1034,7 @@ export function buildAccountDeletionEmail(
     year: 'numeric',
   });
 
-  const text = `${greeting}
+  const text = `${greetingText}
 
 Nous vous confirmons que votre compte Kanto associé à cette adresse email a été définitivement supprimé le ${dateStr}, conformément à votre demande.
 
@@ -1028,8 +1056,9 @@ https://kanto.mg`.trim();
     </h1>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 14px 0;">
-      ${greeting}
+      ${greetingHtml}
     </p>
+
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 16px 0;">
       Conformément à votre demande, votre compte Kanto ainsi que vos données personnelles associées ont été définitivement supprimés le <strong>${dateStr}</strong>.

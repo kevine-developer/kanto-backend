@@ -38,6 +38,7 @@
     "migrate:locks": "tsx src/scripts/migrate-module-locks.ts",
     "migrate:reports": "tsx src/scripts/migrate-content-reports.ts",
     "clean:avatars": "tsx src/scripts/clean-default-avatars.ts",
+    "fix:media": "tsx src/scripts/fix-broken-media-urls.ts",
     "test:email": "tsx src/scripts/test-email.ts"
   },
   "prisma": {
@@ -71,6 +72,7 @@
     "resend": "^6.28.1",
     "rxjs": "^7.8.1",
     "socket.io": "^4.8.3",
+    "svix": "^2.8.0",
     "tsx": "^4.23.12"
   },
   "devDependencies": {

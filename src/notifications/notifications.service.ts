@@ -8,6 +8,10 @@ import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateNotificationDto } from './dto/notifications.dto.js';
 import { RedisService } from '../redis/redis.service.js';
 import { REALTIME_CHANNELS } from '../realtime/realtime.constants.js';
+import {
+  ContributionStatus,
+  DisputeStatus,
+} from '../../generated/prisma/client.js';
 
 export interface FormattedNotificationItem {
   id: string;
@@ -119,6 +123,57 @@ function localizeNotificationBadge(rawBadge?: string | null, isMg = false) {
   };
 }
 
+export interface UserNotificationPreferences {
+  enabled: boolean;
+  socialActivity: boolean; // Amis, encouragements
+  gameInvites: boolean; // Défis multijoueur JvJ
+  gameResults: boolean; // Résultats et podiums de quiz/défis
+  contributions: boolean; // Statuts et modération des contributions
+  announcements: boolean; // Actualités et annonces culturelles
+  dailyContent: boolean;
+  dailyQuiz: boolean;
+  revision: boolean;
+  newStory: boolean;
+  weeklyChallenge: boolean;
+  customHours: Record<string, { hour: number; minute: number; weekday?: number }>;
+  timeZone: string;
+}
+
+export const DEFAULT_USER_NOTIFICATION_PREFERENCES: UserNotificationPreferences = {
+  enabled: true,
+  socialActivity: true,
+  gameInvites: true,
+  gameResults: true,
+  contributions: true,
+  announcements: true,
+  dailyContent: true,
+  dailyQuiz: true,
+  revision: true,
+  newStory: true,
+  weeklyChallenge: true,
+  customHours: {
+    dailyContent: { hour: 8, minute: 30 },
+    dailyQuiz: { hour: 12, minute: 30 },
+    revision: { hour: 17, minute: 30 },
+    newStory: { hour: 20, minute: 45 },
+    weeklyChallenge: { hour: 9, minute: 30, weekday: 2 },
+  },
+  timeZone: 'Indian/Antananarivo',
+};
+
+export interface AdminAlertItem {
+  id: string;
+  type: 'REPORT_PENDING' | 'PENDING_CONTRIBUTION' | 'FLAGGED_CONTENT' | 'DUPLICATE_DISPUTE' | 'SYSTEM_ALERT';
+  title: string;
+  description: string;
+  priority: 'critical' | 'high' | 'medium' | 'low';
+  category: string;
+  createdAt: Date;
+  resourceId?: string;
+  targetRoute: string;
+  status: 'open' | 'in_review' | 'resolved';
+}
+
 export interface FormattedNotificationGroup {
   date: string;
   notifications: FormattedNotificationItem[];
@@ -135,7 +190,8 @@ export class NotificationsService {
 
   /**
    * Récupère les notifications pour l'application mobile, groupées par date.
-   * Ne renvoie strictement que les données réelles présentes en base de données.
+   * Ne renvoie strictement que les données réelles autorisées pour l'utilisateur.
+   * Si non authentifié, seules les diffusions publiques (isBroadcast: true) sont accessibles.
    */
   async getPublicNotifications(
     language: 'mg' | 'fr' = 'mg',
@@ -145,11 +201,19 @@ export class NotificationsService {
     unreadCount: number;
     totalCount: number;
   }> {
+    // Si aucun userId valide, filtrer strictement sur les notifications broadcast
+    const whereClause = userId
+      ? {
+          OR: [{ isBroadcast: true }, { userId }],
+        }
+      : {
+          isBroadcast: true,
+        };
+
     const notifs = await this.prisma.notification.findMany({
-      where: {
-        OR: [{ isBroadcast: true }, ...(userId ? [{ userId }] : [])],
-      },
+      where: whereClause,
       orderBy: { createdAt: 'desc' },
+      take: 60, // Limite de pagination saine pour préserver la mémoire mobile
     });
 
     const now = new Date();
@@ -322,6 +386,7 @@ export class NotificationsService {
   /**
    * Envoie des notifications push via le service officiel Expo Push.
    * Accepte un token unique ou un tableau de tokens.
+   * Nettoie automatiquement les tokens déclarés DeviceNotRegistered ou expirés.
    */
   async sendExpoPush(
     pushTokens: string | string[],
@@ -345,41 +410,88 @@ export class NotificationsService {
       return;
     }
 
-    const messages = validTokens.map((to) => ({
-      to,
-      sound: payload.sound || 'default',
-      title: payload.title,
-      body: payload.body,
-      data: payload.data || {},
-      priority: 'high',
-      channelId: 'default',
-    }));
+    const CHUNK_SIZE = 100;
+    let totalSent = 0;
 
-    try {
-      const response = await fetch('https://exp.host/--/api/v2/push/send', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Accept-Encoding': 'gzip, deflate',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(messages),
-      });
+    for (let offset = 0; offset < validTokens.length; offset += CHUNK_SIZE) {
+      const chunkTokens = validTokens.slice(offset, offset + CHUNK_SIZE);
+      const messages = chunkTokens.map((to) => ({
+        to,
+        sound: payload.sound || 'default',
+        title: payload.title,
+        body: payload.body,
+        data: payload.data || {},
+        priority: 'high',
+        channelId: 'default',
+      }));
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        this.logger.warn(
-          `⚠️ [Expo Push] Réponse API Expo non-OK (${response.status}) : ${errorText}`,
-        );
-      } else {
-        this.logger.log(
-          `🚀 [Expo Push] ${validTokens.length} notification(s) push transmise(s) avec succès.`,
+      try {
+        const response = await fetch('https://exp.host/--/api/v2/push/send', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Accept-Encoding': 'gzip, deflate',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(messages),
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          this.logger.warn(
+            `⚠️ [Expo Push] Réponse API Expo non-OK (${response.status}) pour le lot ${Math.floor(offset / CHUNK_SIZE) + 1} : ${errorText}`,
+          );
+          continue;
+        }
+
+        const jsonResponse: {
+          data?: Array<{
+            status: 'ok' | 'error';
+            message?: string;
+            details?: { error?: string };
+          }>;
+        } = (await response.json()) as any;
+
+        if (Array.isArray(jsonResponse?.data)) {
+          for (let i = 0; i < jsonResponse.data.length; i++) {
+            const ticket = jsonResponse.data[i];
+            const token = chunkTokens[i];
+            if (ticket.status === 'error') {
+              const errorType = ticket.details?.error;
+              if (
+                errorType === 'DeviceNotRegistered' ||
+                errorType === 'InvalidCredentials'
+              ) {
+                this.logger.warn(
+                  `🧹 [Expo Push] Jeton push obsolète ou non enregistré (${errorType}) détecté : ${token}`,
+                );
+                // Nettoyage en base de données et dans le cache invité
+                void this.prisma.user
+                  .updateMany({
+                    where: { pushToken: token },
+                    data: { pushToken: null },
+                  })
+                  .catch(() => {});
+                void this.redisService
+                  .sRem('expo_push_tokens:guests', token)
+                  .catch(() => {});
+              }
+            }
+          }
+        }
+
+        totalSent += chunkTokens.length;
+      } catch (chunkErr) {
+        this.logger.error(
+          `❌ [Expo Push] Erreur lors de l'appel HTTP vers Expo (lot ${Math.floor(offset / CHUNK_SIZE) + 1}) :`,
+          chunkErr,
         );
       }
-    } catch (err) {
-      this.logger.error(
-        `❌ [Expo Push] Erreur lors de l'appel HTTP vers Expo :`,
-        err,
+    }
+
+    if (totalSent > 0) {
+      this.logger.log(
+        `🚀 [Expo Push] ${totalSent}/${validTokens.length} notification(s) push transmise(s) avec succès (découpées en lots de 100 max).`,
       );
     }
   }
@@ -437,6 +549,7 @@ export class NotificationsService {
 
   /**
    * Crée une nouvelle notification (Admin ou système) et envoie la notification push associée.
+   * Intègre une vérification d'idempotence et une protection anti-doublon en rafale.
    */
   async createNotification(dto: CreateNotificationDto) {
     const titleMg = dto.titleMg?.trim();
@@ -445,6 +558,42 @@ export class NotificationsService {
       throw new BadRequestException(
         'Le titre et le message en malgache sont obligatoires.',
       );
+    }
+
+    // 1. Clé d'idempotence explicite (ex: webhook ou retry d'action métier)
+    if (dto.idempotencyKey) {
+      const idempotencyKey = `notif_idem:${dto.idempotencyKey.trim()}`;
+      const existingNotifId = await this.redisService.get<string>(idempotencyKey);
+      if (existingNotifId) {
+        const existing = await this.prisma.notification.findUnique({
+          where: { id: existingNotifId },
+        });
+        if (existing) {
+          this.logger.log(
+            `🔁 [Notifications] Doublon évité via idempotencyKey "${dto.idempotencyKey}" : ${existing.id}`,
+          );
+          return existing;
+        }
+      }
+    }
+
+    // 2. Déduplication anti-rafale automatique pour les notifications privées (30 secondes)
+    let dedupeKey: string | null = null;
+    if (dto.userId) {
+      const safeRoute = dto.targetRoute || '';
+      dedupeKey = `notif_rate_limit:${dto.userId}:${dto.category || 'culture'}:${titleMg}:${safeRoute}`;
+      const existingNotifId = await this.redisService.get<string>(dedupeKey);
+      if (existingNotifId) {
+        const existing = await this.prisma.notification.findUnique({
+          where: { id: existingNotifId },
+        });
+        if (existing) {
+          this.logger.log(
+            `⚡ [Notifications] Anti-rafale / doublon évité pour ${dto.userId} ("${titleMg}")`,
+          );
+          return existing;
+        }
+      }
     }
 
     const created = await this.prisma.notification.create({
@@ -468,6 +617,18 @@ export class NotificationsService {
     this.logger.log(
       `📢 [Notifications] Nouvelle notification créée : "${created.titleMg}" (${created.category})`,
     );
+
+    // Enregistrer les clés d'idempotence et d'anti-rafale dans Redis
+    if (dto.idempotencyKey) {
+      void this.redisService.set(
+        `notif_idem:${dto.idempotencyKey.trim()}`,
+        created.id,
+        86400, // 24 heures
+      );
+    }
+    if (dedupeKey) {
+      void this.redisService.set(dedupeKey, created.id, 30); // 30 secondes
+    }
 
     const { badgeFr, badgeMg } = localizeNotificationBadge(created.badgeText);
 
@@ -500,7 +661,7 @@ export class NotificationsService {
       isBroadcast: created.isBroadcast,
     });
 
-    // Déclencher l'envoi de notification push en tâche asynchrone non-bloquante
+    // Déclencher l'envoi de notification push en tâche asynchrone non-bloquante avec vérification des préférences
     void (async () => {
       try {
         const pushTitle = created.titleFr || created.titleMg;
@@ -512,11 +673,43 @@ export class NotificationsService {
         };
 
         if (created.userId) {
-          // Notification ciblée à un utilisateur précis (ex: auteur d'une contribution commentée)
+          // Notification ciblée à un utilisateur précis (ex: défi, ami, commentaire, modération)
           const prefs = await this.getUserPreferences(created.userId);
           if (!prefs.enabled) {
             this.logger.log(
               `ℹ️ [Push] Notifications désactivées pour ${created.userId}, push ignoré.`,
+            );
+            return;
+          }
+
+          // Filtrage intelligent selon les préférences granulaires
+          if (
+            (created.category === 'community' || created.category === 'social') &&
+            prefs.socialActivity === false
+          ) {
+            this.logger.log(
+              `ℹ️ [Push] Préférence activité sociale désactivée pour ${created.userId}`,
+            );
+            return;
+          }
+          if (created.category === 'duel' && prefs.gameInvites === false) {
+            this.logger.log(
+              `ℹ️ [Push] Préférence défis jeu désactivée pour ${created.userId}`,
+            );
+            return;
+          }
+          if (created.category === 'game' && prefs.gameResults === false) {
+            this.logger.log(
+              `ℹ️ [Push] Préférence résultats parties désactivée pour ${created.userId}`,
+            );
+            return;
+          }
+          if (
+            (created.category === 'contribution' || created.category === 'moderation') &&
+            prefs.contributions === false
+          ) {
+            this.logger.log(
+              `ℹ️ [Push] Préférence contributions désactivée pour ${created.userId}`,
             );
             return;
           }
@@ -540,13 +733,16 @@ export class NotificationsService {
             select: { pushToken: true },
           });
 
-          const userTokens = usersWithToken
+          const userTokens = (usersWithToken || [])
             .map((u) => u.pushToken)
             .filter((t): t is string => Boolean(t));
 
-          const guestTokens = await this.redisService.sMembers(
+          const rawGuestTokens = await this.redisService.sMembers(
             'expo_push_tokens:guests',
           );
+          const guestTokens = Array.isArray(rawGuestTokens)
+            ? rawGuestTokens
+            : [];
 
           // Fusionner et dédupliquer
           const allTokens = Array.from(
@@ -645,12 +841,19 @@ export class NotificationsService {
 
   /**
    * Supprime toutes les notifications de l'utilisateur connecté en base de données.
+   * Empêche strictement toute purge globale par un simple utilisateur non-admin.
    */
   async clearAllNotifications(userId?: string, role?: string) {
     const isAdmin = role?.toUpperCase() === 'ADMIN';
 
-    // Si admin ou aucun userId spécifié (ex: purge globale de test/dev), tout supprimer
-    if (isAdmin || !userId) {
+    if (!userId && !isAdmin) {
+      throw new ForbiddenException(
+        'Action non autorisée sans authentification utilisateur.',
+      );
+    }
+
+    // Si admin sans userId cible : purge globale explicite
+    if (isAdmin && !userId) {
       const result = await this.prisma.notification.deleteMany();
       this.logger.log(
         `🧹 [Notifications] Suppression complète : ${result.count} notification(s) supprimée(s).`,
@@ -658,9 +861,10 @@ export class NotificationsService {
       return { count: result.count, success: true };
     }
 
+    // Suppression sécurisée des notifications privées de l'utilisateur
     const result = await this.prisma.notification.deleteMany({
       where: {
-        OR: [{ userId }, { isBroadcast: true }],
+        userId: userId!,
       },
     });
     this.logger.log(
@@ -683,32 +887,16 @@ export class NotificationsService {
   /**
    * Récupère les préférences de notifications d'un utilisateur (avec fallback par défaut).
    */
-  async getUserPreferences(userId: string) {
-    const defaultPrefs = {
-      enabled: true,
-      dailyContent: true,
-      dailyQuiz: true,
-      revision: true,
-      newStory: true,
-      weeklyChallenge: true,
-      customHours: {
-        dailyContent: { hour: 8, minute: 30 },
-        dailyQuiz: { hour: 12, minute: 30 },
-        revision: { hour: 17, minute: 30 },
-        newStory: { hour: 20, minute: 45 },
-        weeklyChallenge: { hour: 9, minute: 30, weekday: 2 },
-      },
-      timeZone: 'Indian/Antananarivo',
-    };
-    if (!userId) return defaultPrefs;
+  async getUserPreferences(userId: string): Promise<UserNotificationPreferences> {
+    if (!userId) return { ...DEFAULT_USER_NOTIFICATION_PREFERENCES };
     try {
-      const cached = await this.redisService.get<Record<string, unknown>>(
+      const cached = await this.redisService.get<Partial<UserNotificationPreferences>>(
         `user_notif_prefs:${userId}`,
       );
-      if (!cached) return defaultPrefs;
-      return { ...defaultPrefs, ...cached };
+      if (!cached) return { ...DEFAULT_USER_NOTIFICATION_PREFERENCES };
+      return { ...DEFAULT_USER_NOTIFICATION_PREFERENCES, ...cached };
     } catch {
-      return defaultPrefs;
+      return { ...DEFAULT_USER_NOTIFICATION_PREFERENCES };
     }
   }
 
@@ -720,7 +908,10 @@ export class NotificationsService {
       return { success: false, message: 'Utilisateur non identifié' };
     try {
       const current = await this.getUserPreferences(userId);
-      const updated = { ...current, ...prefs };
+      const updated: UserNotificationPreferences = {
+        ...current,
+        ...(prefs as any),
+      };
       await this.redisService.set(`user_notif_prefs:${userId}`, updated);
       this.logger.log(
         `⚙️ [Notifications] Préférences mises à jour pour ${userId}`,
@@ -733,5 +924,136 @@ export class NotificationsService {
       );
       return { success: false };
     }
+  }
+
+  /**
+   * Récupère les alertes opérationnelles et de modération destinées au CRM administrateur.
+   */
+  async getAdminAlerts(): Promise<{
+    alerts: AdminAlertItem[];
+    pendingReportsCount: number;
+    pendingContributionsCount: number;
+    flaggedContributionsCount: number;
+    totalUnresolved: number;
+  }> {
+    // 1. Signalements de contenu non résolus
+    const reports = await this.prisma.contentReport.findMany({
+      where: { resolved: false },
+      include: {
+        user: { select: { id: true, name: true } },
+        contribution: { select: { id: true, textMg: true } },
+        comment: { select: { id: true, content: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 20,
+    });
+
+    // 2. Contributions en attente de modération ou marquées par le filtre de grossièretés
+    const pendingContributions = await this.prisma.contribution.findMany({
+      where: {
+        OR: [
+          { status: ContributionStatus.PENDING_REVIEW },
+          { moderationFlagged: true },
+        ],
+      },
+      include: {
+        user: { select: { id: true, name: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 20,
+    });
+
+    // 3. Litiges de doublons en attente
+    const disputedContributions = await this.prisma.contribution.findMany({
+      where: { disputeStatus: DisputeStatus.PENDING },
+      include: {
+        user: { select: { id: true, name: true } },
+      },
+      take: 10,
+    });
+
+    const alerts: AdminAlertItem[] = [];
+
+    for (const r of reports) {
+      alerts.push({
+        id: `report-${r.id}`,
+        type: 'REPORT_PENDING',
+        title: `Signalement de contenu (${r.reason})`,
+        description:
+          r.description || `Signalé par ${r.user?.name || 'un utilisateur'}.`,
+        priority: 'high',
+        category: 'moderation',
+        createdAt: r.createdAt,
+        resourceId: r.contributionId || r.commentId || r.itemId || undefined,
+        targetRoute: r.contributionId
+          ? `/contributions?id=${r.contributionId}`
+          : '/contributions',
+        status: 'open',
+      });
+    }
+
+    for (const c of pendingContributions) {
+      const isFlagged = c.moderationFlagged;
+      const authorName = (c as any).user?.name || 'Auteur';
+      alerts.push({
+        id: `contrib-${c.id}`,
+        type: isFlagged ? 'FLAGGED_CONTENT' : 'PENDING_CONTRIBUTION',
+        title: isFlagged
+          ? `Alerte Filtre : Contribution de ${authorName}`
+          : `Nouvelle proposition : ${c.category}`,
+        description: c.textMg.slice(0, 80) + '...',
+        priority: isFlagged ? 'critical' : 'medium',
+        category: 'contribution',
+        createdAt: c.createdAt,
+        resourceId: c.id,
+        targetRoute: `/contributions?id=${c.id}`,
+        status: isFlagged ? 'in_review' : 'open',
+      });
+    }
+
+    for (const d of disputedContributions) {
+      const authorName = (d as any).user?.name || 'Auteur';
+      alerts.push({
+        id: `dispute-${d.id}`,
+        type: 'DUPLICATE_DISPUTE',
+        title: `Recours doublon : ${authorName}`,
+        description:
+          d.disputeMessage || 'Contestation du marquage comme doublon.',
+        priority: 'medium',
+        category: 'dispute',
+        createdAt: d.disputedAt || d.createdAt,
+        resourceId: d.id,
+        targetRoute: `/contributions?id=${d.id}`,
+        status: 'open',
+      });
+    }
+
+    const priorityRank: Record<string, number> = {
+      critical: 4,
+      high: 3,
+      medium: 2,
+      low: 1,
+    };
+    alerts.sort((a, b) => {
+      const pDiff = priorityRank[b.priority] - priorityRank[a.priority];
+      if (pDiff !== 0) return pDiff;
+      return b.createdAt.getTime() - a.createdAt.getTime();
+    });
+
+    const pendingReportsCount = reports.length;
+    const pendingContributionsCount = pendingContributions.filter(
+      (c) => c.status === ContributionStatus.PENDING_REVIEW,
+    ).length;
+    const flaggedContributionsCount = pendingContributions.filter(
+      (c) => c.moderationFlagged,
+    ).length;
+
+    return {
+      alerts,
+      pendingReportsCount,
+      pendingContributionsCount,
+      flaggedContributionsCount,
+      totalUnresolved: alerts.length,
+    };
   }
 }
