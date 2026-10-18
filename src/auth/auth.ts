@@ -265,9 +265,9 @@ export const auth = betterAuth({
           Promise.resolve({
             data: {
               ...user,
-              // Photo de profil par défaut : icône officielle de l'application Kanto
-              image:
-                (user as any).image || '/uploads/avatars/default-avatar.png',
+              // Photo de profil : null par défaut si aucune image fournie (ex: inscription email/mot de passe).
+              // Les clients mobile et admin affichent automatiquement le logo officiel sans générer d'asset Cloudinary.
+              image: (user as any).image || null,
               // Preuve d'audit légale : horodatage systématique de l'acceptation des CGU
               termsAcceptedAt: (user as any).termsAcceptedAt || new Date(),
               termsVersion: (user as any).termsVersion || '1.0',

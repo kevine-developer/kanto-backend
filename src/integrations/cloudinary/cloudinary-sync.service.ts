@@ -175,6 +175,16 @@ export class CloudinarySyncService implements OnModuleInit, OnModuleDestroy {
     const pathParts = relPath.split('/');
     const subfolder = pathParts.length > 1 ? pathParts[0] : 'general';
     const fileName = path.basename(filePath);
+    const lowerFileName = fileName.toLowerCase();
+
+    // Protection stricte : l'avatar par défaut de l'application ne doit JAMAIS être téléversé sur Cloudinary
+    if (
+      lowerFileName.includes('default-avatar') ||
+      lowerFileName.includes('default_avatar')
+    ) {
+      return true;
+    }
+
     const safeBaseName = path
       .parse(fileName)
       .name.replace(/[^a-zA-Z0-9_-]/g, '_')
@@ -275,18 +285,25 @@ export class CloudinarySyncService implements OnModuleInit, OnModuleDestroy {
   ): Promise<void> {
     const searchPattern = relPath;
     const filePattern = fileName;
+    const isDefaultAvatarPattern =
+      searchPattern.toLowerCase().includes('default-avatar') ||
+      filePattern.toLowerCase().includes('default-avatar') ||
+      searchPattern.toLowerCase().includes('default_avatar') ||
+      filePattern.toLowerCase().includes('default_avatar');
 
     await Promise.allSettled([
-      // 1. Utilisateurs (avatars)
-      this.prisma.user.updateMany({
-        where: {
-          OR: [
-            { image: { contains: searchPattern } },
-            { image: { contains: filePattern } },
-          ],
-        },
-        data: { image: secureUrl },
-      }),
+      // 1. Utilisateurs (avatars) - Exclure les avatars par défaut pour ne pas générer d'URL Cloudinary inutile
+      !isDefaultAvatarPattern
+        ? this.prisma.user.updateMany({
+            where: {
+              OR: [
+                { image: { contains: searchPattern } },
+                { image: { contains: filePattern } },
+              ],
+            },
+            data: { image: secureUrl },
+          })
+        : Promise.resolve({ count: 0 }),
 
       // 2. Modules verrouilles (icones et illustrations)
       this.prisma.moduleLock.updateMany({
@@ -463,8 +480,14 @@ export class CloudinarySyncService implements OnModuleInit, OnModuleDestroy {
         const subFiles = await this.collectFiles(fullPath);
         results.push(...subFiles);
       } else if (entry.isFile()) {
-        // Ignorer les fichiers caches ou de configuration (.gitkeep, etc.)
-        if (!entry.name.startsWith('.')) {
+        // Ignorer les fichiers cachés ou de configuration (.gitkeep, etc.)
+        // ET ignorer expressément l'avatar par défaut pour ne JAMAIS le pousser vers Cloudinary
+        const lowerName = entry.name.toLowerCase();
+        if (
+          !entry.name.startsWith('.') &&
+          !lowerName.includes('default-avatar') &&
+          !lowerName.includes('default_avatar')
+        ) {
           results.push(fullPath);
         }
       }
@@ -504,6 +527,14 @@ export class CloudinarySyncService implements OnModuleInit, OnModuleDestroy {
     relPath: string,
     fileName: string,
   ): Promise<boolean> {
+    const lowerName = fileName.toLowerCase();
+    if (
+      lowerName.includes('default-avatar') ||
+      lowerName.includes('default_avatar')
+    ) {
+      return false;
+    }
+
     const patterns = [{ contains: relPath }, { contains: fileName }];
 
     const userCount = await this.prisma.user.count({

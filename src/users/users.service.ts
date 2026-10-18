@@ -546,7 +546,7 @@ export class UsersService {
 
     const updatedUser = await this.prisma.user.update({
       where: { id: userId },
-      data: { image: '/uploads/avatars/default-avatar.png' },
+      data: { image: null },
       select: {
         id: true,
         name: true,
@@ -562,7 +562,8 @@ export class UsersService {
     if (
       oldImageUrl &&
       oldImageUrl !== '/uploads/avatars/default-avatar.png' &&
-      !oldImageUrl.includes('default-avatar.png')
+      !oldImageUrl.includes('default-avatar') &&
+      !oldImageUrl.includes('default_avatar')
     ) {
       this.cloudinaryService.deleteMediaFromUrl(oldImageUrl).catch(() => {});
     }
@@ -914,7 +915,8 @@ export class UsersService {
     if (
       userImage &&
       userImage !== '/uploads/avatars/default-avatar.png' &&
-      !userImage.includes('default-avatar.png')
+      !userImage.includes('default-avatar') &&
+      !userImage.includes('default_avatar')
     ) {
       this.cloudinaryService.deleteMediaFromUrl(userImage).catch((err) => {
         this.logger.warn(
