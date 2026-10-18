@@ -13,7 +13,7 @@ export interface ResendWebhookPayload {
     subject?: string;
     bounce?: {
       message?: string;
-      type?: 'Permanent' | 'Transient' | 'Undetermined' | string;
+      type?: 'Permanent' | 'Transient' | 'Undetermined' | (string & {});
       subType?: string;
     };
     error?: {
@@ -95,7 +95,10 @@ export class ResendWebhookService {
       // Traiter les rebonds et plaintes même sur un email créé par le webhook
       await this.handleSuppressionFromEvent(eventType, recipient, eventData);
 
-      return { handled: true, reason: 'Enregistrement externe créé et mis à jour' };
+      return {
+        handled: true,
+        reason: 'Enregistrement externe créé et mis à jour',
+      };
     }
 
     // Protection contre les doublons : vérifier si cet événement a déjà été consigné
@@ -166,10 +169,7 @@ export class ResendWebhookService {
    * Règle : un statut DELIVERED ne peut pas être rétrogradé par un retardataire email.sent.
    * Mais un BOUNCED ou COMPLAINED est un statut terminal critique qui prévaut.
    */
-  private determineNextStatus(
-    currentStatus: string,
-    eventType: string,
-  ): any {
+  private determineNextStatus(currentStatus: string, eventType: string): any {
     switch (eventType) {
       case 'email.sent':
         // Ne rétrograde pas si déjà livré ou en erreur terminale
@@ -185,10 +185,7 @@ export class ResendWebhookService {
 
       case 'email.delivered':
         // Ne rétrograde pas si rebondi ou signalé en spam
-        if (
-          currentStatus === 'BOUNCED' ||
-          currentStatus === 'COMPLAINED'
-        ) {
+        if (currentStatus === 'BOUNCED' || currentStatus === 'COMPLAINED') {
           return currentStatus;
         }
         return 'DELIVERED';
@@ -297,12 +294,14 @@ export class ResendWebhookService {
           where: { email: normalizedEmail },
           update: {
             reason: 'COMPLAINT',
-            details: 'Signalement utilisateur comme courrier indésirable (Spam complaint)',
+            details:
+              'Signalement utilisateur comme courrier indésirable (Spam complaint)',
           },
           create: {
             email: normalizedEmail,
             reason: 'COMPLAINT',
-            details: 'Signalement utilisateur comme courrier indésirable (Spam complaint)',
+            details:
+              'Signalement utilisateur comme courrier indésirable (Spam complaint)',
           },
         })
         .catch((err) =>

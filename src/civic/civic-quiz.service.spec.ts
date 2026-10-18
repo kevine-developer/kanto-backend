@@ -53,11 +53,22 @@ describe('CivicQuizService', () => {
     };
 
     it('devrait valider une réponse correcte et incrémenter les stats', async () => {
-      (prismaMock.civicQuizSession.findUnique as jest.Mock).mockResolvedValue(mockSession);
-      (prismaMock.civicQuizQuestion.findUnique as jest.Mock).mockResolvedValue(mockQuestion);
-      (prismaMock.civicQuizAnswer.findFirst as jest.Mock).mockResolvedValue(null);
-      (prismaMock.civicQuizAnswer.create as jest.Mock).mockResolvedValue({ id: 'ans_1' });
-      (prismaMock.civicQuizQuestion.update as jest.Mock).mockResolvedValue({ ...mockQuestion, timesPlayed: 6 });
+      (prismaMock.civicQuizSession.findUnique as jest.Mock).mockResolvedValue(
+        mockSession,
+      );
+      (prismaMock.civicQuizQuestion.findUnique as jest.Mock).mockResolvedValue(
+        mockQuestion,
+      );
+      (prismaMock.civicQuizAnswer.findFirst as jest.Mock).mockResolvedValue(
+        null,
+      );
+      (prismaMock.civicQuizAnswer.create as jest.Mock).mockResolvedValue({
+        id: 'ans_1',
+      });
+      (prismaMock.civicQuizQuestion.update as jest.Mock).mockResolvedValue({
+        ...mockQuestion,
+        timesPlayed: 6,
+      });
 
       const result = await service.answerSessionQuestion('sess_1', 'q_1', 0);
 
@@ -74,11 +85,21 @@ describe('CivicQuizService', () => {
     });
 
     it('devrait détecter une réponse incorrecte', async () => {
-      (prismaMock.civicQuizSession.findUnique as jest.Mock).mockResolvedValue(mockSession);
-      (prismaMock.civicQuizQuestion.findUnique as jest.Mock).mockResolvedValue(mockQuestion);
-      (prismaMock.civicQuizAnswer.findFirst as jest.Mock).mockResolvedValue(null);
-      (prismaMock.civicQuizAnswer.create as jest.Mock).mockResolvedValue({ id: 'ans_2' });
-      (prismaMock.civicQuizQuestion.update as jest.Mock).mockResolvedValue(mockQuestion);
+      (prismaMock.civicQuizSession.findUnique as jest.Mock).mockResolvedValue(
+        mockSession,
+      );
+      (prismaMock.civicQuizQuestion.findUnique as jest.Mock).mockResolvedValue(
+        mockQuestion,
+      );
+      (prismaMock.civicQuizAnswer.findFirst as jest.Mock).mockResolvedValue(
+        null,
+      );
+      (prismaMock.civicQuizAnswer.create as jest.Mock).mockResolvedValue({
+        id: 'ans_2',
+      });
+      (prismaMock.civicQuizQuestion.update as jest.Mock).mockResolvedValue(
+        mockQuestion,
+      );
 
       const result = await service.answerSessionQuestion('sess_1', 'q_1', 1);
 
@@ -94,9 +115,15 @@ describe('CivicQuizService', () => {
         isCorrect: true,
       };
 
-      (prismaMock.civicQuizSession.findUnique as jest.Mock).mockResolvedValue(mockSession);
-      (prismaMock.civicQuizQuestion.findUnique as jest.Mock).mockResolvedValue(mockQuestion);
-      (prismaMock.civicQuizAnswer.findFirst as jest.Mock).mockResolvedValue(existingAns);
+      (prismaMock.civicQuizSession.findUnique as jest.Mock).mockResolvedValue(
+        mockSession,
+      );
+      (prismaMock.civicQuizQuestion.findUnique as jest.Mock).mockResolvedValue(
+        mockQuestion,
+      );
+      (prismaMock.civicQuizAnswer.findFirst as jest.Mock).mockResolvedValue(
+        existingAns,
+      );
 
       const result = await service.answerSessionQuestion('sess_1', 'q_1', 0);
 
@@ -110,7 +137,9 @@ describe('CivicQuizService', () => {
         ...mockSession,
         isCompleted: true,
       });
-      (prismaMock.civicQuizQuestion.findUnique as jest.Mock).mockResolvedValue(mockQuestion);
+      (prismaMock.civicQuizQuestion.findUnique as jest.Mock).mockResolvedValue(
+        mockQuestion,
+      );
 
       const result = await service.answerSessionQuestion('sess_1', 'q_1', 0);
 
@@ -119,12 +148,14 @@ describe('CivicQuizService', () => {
       expect(prismaMock.civicQuizAnswer.create).not.toHaveBeenCalled();
     });
 
-    it('devrait lever NotFoundException si la session n\'existe pas', async () => {
-      (prismaMock.civicQuizSession.findUnique as jest.Mock).mockResolvedValue(null);
-
-      await expect(service.answerSessionQuestion('sess_null', 'q_1', 0)).rejects.toThrow(
-        NotFoundException,
+    it("devrait lever NotFoundException si la session n'existe pas", async () => {
+      (prismaMock.civicQuizSession.findUnique as jest.Mock).mockResolvedValue(
+        null,
       );
+
+      await expect(
+        service.answerSessionQuestion('sess_null', 'q_1', 0),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 
@@ -144,8 +175,12 @@ describe('CivicQuizService', () => {
         { isCorrect: true },
       ];
 
-      (prismaMock.civicQuizSession.findUnique as jest.Mock).mockResolvedValue(mockSession);
-      (prismaMock.civicQuizAnswer.findMany as jest.Mock).mockResolvedValue(mockAnswers);
+      (prismaMock.civicQuizSession.findUnique as jest.Mock).mockResolvedValue(
+        mockSession,
+      );
+      (prismaMock.civicQuizAnswer.findMany as jest.Mock).mockResolvedValue(
+        mockAnswers,
+      );
       (prismaMock.civicQuizSession.update as jest.Mock).mockResolvedValue({
         ...mockSession,
         score: 4,
@@ -172,7 +207,7 @@ describe('CivicQuizService', () => {
       expect(prismaMock.userProgress.upsert).toHaveBeenCalled();
     });
 
-    it('ne devrait pas ré-attribuer d\'XP si la session était déjà finalisée', async () => {
+    it("ne devrait pas ré-attribuer d'XP si la session était déjà finalisée", async () => {
       const completedSession = {
         id: 'sess_done',
         userId: 'usr_1',
@@ -181,7 +216,9 @@ describe('CivicQuizService', () => {
         xpEarned: 50,
       };
 
-      (prismaMock.civicQuizSession.findUnique as jest.Mock).mockResolvedValue(completedSession);
+      (prismaMock.civicQuizSession.findUnique as jest.Mock).mockResolvedValue(
+        completedSession,
+      );
 
       const result = await service.finishSession('sess_done', 30);
 

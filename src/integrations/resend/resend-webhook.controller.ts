@@ -90,13 +90,16 @@ export class ResendWebhookController {
     let event: ResendWebhookPayload;
     try {
       event =
-        typeof req.body === 'object' && req.body !== null && !Buffer.isBuffer(req.body)
+        typeof req.body === 'object' &&
+        req.body !== null &&
+        !Buffer.isBuffer(req.body)
           ? (req.body as ResendWebhookPayload)
           : (JSON.parse(payloadString) as ResendWebhookPayload);
     } catch {
-      throw new BadRequestException('Format JSON du corps de webhook invalide.');
+      throw new BadRequestException(
+        'Format JSON du corps de webhook invalide.',
+      );
     }
-
 
     // 5. Traitement métier de l'événement validé
     const result = await this.webhookService.handleWebhookEvent(event);

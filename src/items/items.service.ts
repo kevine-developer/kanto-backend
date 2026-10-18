@@ -5,7 +5,10 @@ import { RedisService } from '../redis/redis.service.js';
 import { FindItemsQueryDto } from './dto/find-items.dto.js';
 import { CreateItemDto } from './dto/create-item.dto.js';
 import { UpdateItemDto } from './dto/update-item.dto.js';
-import { ImportItemsBatchDto, ImportItemsResult } from './dto/import-items.dto.js';
+import {
+  ImportItemsBatchDto,
+  ImportItemsResult,
+} from './dto/import-items.dto.js';
 import { slugify } from '../common/utils/slug.util.js';
 import {
   calculatePagination,

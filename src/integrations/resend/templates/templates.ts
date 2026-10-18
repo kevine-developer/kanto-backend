@@ -17,34 +17,46 @@ export interface EmailRenderOutput {
 /**
  * 1. Email de réinitialisation de mot de passe.
  */
-export interface PasswordResetEmailData {
+export interface NativePasswordResetEmailData {
   to: string;
   resetUrl: string;
   userName?: string;
   token?: string;
 }
 
-export function buildPasswordResetEmail(
-  data: PasswordResetEmailData,
+export interface AdminPasswordResetEmailData {
+  to: string;
+  resetUrl: string;
+  userName?: string;
+  token?: string;
+}
+
+export type PasswordResetEmailData = NativePasswordResetEmailData;
+
+/**
+ * 1a. Email de réinitialisation de mot de passe — Utilisateur de l'application native Kanto MG
+ */
+export function buildNativeUserPasswordResetEmail(
+  data: NativePasswordResetEmailData,
 ): EmailRenderOutput {
   const safeName = escapeHtml(data.userName?.trim());
   const greetingHtml = safeName ? `Bonjour ${safeName},` : 'Bonjour,';
   const greetingText = data.userName?.trim()
     ? `Bonjour ${data.userName.trim()},`
     : 'Bonjour,';
-  const subject = 'Réinitialisation de votre mot de passe — Kanto';
+  const subject = 'Réinitialisation de votre mot de passe — Kanto MG';
 
   const text = `${greetingText}
 
-Vous avez demandé la réinitialisation de votre mot de passe pour votre compte Kanto.
+Vous avez demandé la réinitialisation du mot de passe de votre compte sur l'application mobile Kanto MG.
 
-Pour choisir un nouveau mot de passe, ouvrez le lien suivant dans votre navigateur :
+Pour choisir votre nouveau mot de passe, ouvrez le lien suivant dans votre navigateur ou votre application :
 ${data.resetUrl}
 
-Ce lien est valable pendant 1 heure. Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce message en toute sécurité.
+Ce lien sécurisé est valable pendant 1 heure et ne peut être utilisé qu'une seule fois. Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce message en toute sécurité : votre compte demeure protégé.
 
-Kanto — Lova, Kolontsaina & Tantara Malagasy
-https://kanto.mg`.trim();
+Kanto MG — Lova, Kolontsaina & Tantara Malagasy
+https://app-kanto.gastsar.fr`.trim();
 
   const contentHtml = `
     <h1 style="font-size: 18px; font-weight: 700; color: ${KANTO_COLORS.textPrimary}; margin: 0 0 16px 0; line-height: 24px; letter-spacing: -0.2px;">
@@ -56,36 +68,112 @@ https://kanto.mg`.trim();
     </p>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 20px 0;">
-      Nous avons reçu une demande pour modifier le mot de passe de votre compte Kanto. Cliquez sur le bouton ci-dessous pour choisir votre nouvel identifiant de connexion :
+      Nous avons reçu une demande pour modifier le mot de passe de votre compte sur l'application mobile <strong>Kanto MG</strong>. Cliquez sur le bouton ci-dessous pour choisir votre nouveau mot de passe :
     </p>
 
     ${renderButton({
-      text: 'Choisir un nouveau mot de passe',
+      text: 'Réinitialiser mon mot de passe',
       url: data.resetUrl,
       variant: 'terracotta',
     })}
 
     ${renderNotice({
-      title: 'Validité du lien',
+      title: 'Validité et sécurité du compte',
       content:
-        "Ce lien sécurisé reste actif pendant <strong>1 heure</strong>. Si vous n'êtes pas à l'origine de cette démarche, votre compte demeure protégé et vous pouvez ignorer cet email.",
+        "Ce lien sécurisé est à <strong>usage unique</strong> et expire dans <strong>1 heure</strong>. Si vous n'êtes pas à l'origine de cette demande, votre compte demeure protégé et vous pouvez ignorer cet email.",
       variant: 'security',
     })}
 
     <p style="font-size: 12px; line-height: 18px; color: ${KANTO_COLORS.textFootnote}; margin: 24px 0 0 0; word-break: break-all;">
-      Si le bouton ne s'affiche pas correctement, copiez ce lien dans la barre d'adresse de votre navigateur :<br>
+      Si le bouton ne s'affiche pas correctement, copiez ce lien sécurisé dans votre navigateur :<br>
       <a href="${data.resetUrl}" style="color: ${KANTO_COLORS.terracotta}; text-decoration: underline;">${data.resetUrl}</a>
     </p>
   `;
 
   const html = renderEmailLayout({
     title: subject,
-    preheader: 'Lien de réinitialisation de votre mot de passe Kanto',
-    headerBadge: { label: 'Sécurité du compte', variant: 'terracotta' },
+    preheader: "Lien de réinitialisation pour l'application mobile Kanto MG",
+    headerBadge: { label: 'Application Kanto MG', variant: 'terracotta' },
     contentHtml,
   });
 
   return { subject, html, text };
+}
+
+/**
+ * 1b. Email de réinitialisation de mot de passe — Administrateur de Kanto MG
+ */
+export function buildAdminPasswordResetEmail(
+  data: AdminPasswordResetEmailData,
+): EmailRenderOutput {
+  const safeName = escapeHtml(data.userName?.trim());
+  const greetingHtml = safeName ? `Bonjour ${safeName},` : 'Bonjour,';
+  const greetingText = data.userName?.trim()
+    ? `Bonjour ${data.userName.trim()},`
+    : 'Bonjour,';
+  const subject =
+    'Réinitialisation de votre mot de passe administrateur — Kanto MG';
+
+  const text = `${greetingText}
+
+Une demande de réinitialisation de mot de passe a été émise pour votre compte administrateur sur l'interface de gestion Kanto MG.
+
+Pour définir votre nouveau mot de passe d'administration, ouvrez le lien suivant dans votre navigateur :
+${data.resetUrl}
+
+Ce lien à usage unique est valable pendant 1 heure. Si vous n'êtes pas à l'origine de cette demande, veuillez vérifier la sécurité de vos identifiants administrateur.
+
+Kanto Administration — Gestion & Gouvernance`.trim();
+
+  const contentHtml = `
+    <h1 style="font-size: 18px; font-weight: 700; color: ${KANTO_COLORS.textPrimary}; margin: 0 0 16px 0; line-height: 24px; letter-spacing: -0.2px;">
+      Accès Administrateur — Réinitialisation de mot de passe
+    </h1>
+
+    <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 14px 0;">
+      ${greetingHtml}
+    </p>
+
+    <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 20px 0;">
+      Une demande de réinitialisation de mot de passe a été enregistrée pour votre compte d'accès à l'<strong>interface d'administration Kanto MG</strong>. Cliquez sur le bouton ci-dessous pour choisir votre nouveau mot de passe administrateur :
+    </p>
+
+    ${renderButton({
+      text: 'Réinitialiser mon mot de passe administrateur',
+      url: data.resetUrl,
+      variant: 'primary',
+    })}
+
+    ${renderNotice({
+      title: "Sécurité de l'administration",
+      content:
+        "Ce lien d'administration est strictement personnel, à <strong>usage unique</strong> et valable pendant <strong>1 heure</strong>. L'accès administrateur autorisant la gestion des utilisateurs et des données sensibles de la plateforme, si vous n'êtes pas à l'origine de cette demande, signalez-le immédiatement à l'équipe technique.",
+      variant: 'security',
+    })}
+
+    <p style="font-size: 12px; line-height: 18px; color: ${KANTO_COLORS.textFootnote}; margin: 24px 0 0 0; word-break: break-all;">
+      Si le bouton ne fonctionne pas, accédez directement au lien suivant :<br>
+      <a href="${data.resetUrl}" style="color: ${KANTO_COLORS.tanimbary}; text-decoration: underline;">${data.resetUrl}</a>
+    </p>
+  `;
+
+  const html = renderEmailLayout({
+    title: subject,
+    preheader: "Lien de sécurité pour l'interface d'administration Kanto MG",
+    headerBadge: { label: 'Administration Kanto MG', variant: 'tanimbary' },
+    contentHtml,
+  });
+
+  return { subject, html, text };
+}
+
+/**
+ * 1c. Fonction de compatibilité générale
+ */
+export function buildPasswordResetEmail(
+  data: PasswordResetEmailData,
+): EmailRenderOutput {
+  return buildNativeUserPasswordResetEmail(data);
 }
 
 /**
@@ -651,14 +739,11 @@ export function buildContributionApprovedEmail(
   data: ContributionApprovedEmailData,
 ): EmailRenderOutput {
   const safeName = escapeHtml(data.userName?.trim());
-  const greetingHtml = safeName
-    ? `Manao ahoana ${safeName},`
-    : 'Manao ahoana,';
+  const greetingHtml = safeName ? `Manao ahoana ${safeName},` : 'Manao ahoana,';
   const greetingText = data.userName?.trim()
     ? `Manao ahoana ${data.userName.trim()},`
     : 'Manao ahoana,';
-  const subject =
-    'Félicitations ! Votre contribution a été publiée sur Kanto';
+  const subject = 'Félicitations ! Votre contribution a été publiée sur Kanto';
   const xpReward = data.xpReward ?? 50;
 
   const categoryLabels: Record<string, string> = {
@@ -843,9 +928,7 @@ export function buildContributionStatusUpdateEmail(
   data: ContributionStatusUpdateEmailData,
 ): EmailRenderOutput {
   const safeName = escapeHtml(data.userName?.trim());
-  const greetingHtml = safeName
-    ? `Manao ahoana ${safeName},`
-    : 'Manao ahoana,';
+  const greetingHtml = safeName ? `Manao ahoana ${safeName},` : 'Manao ahoana,';
   const greetingText = data.userName?.trim()
     ? `Manao ahoana ${data.userName.trim()},`
     : 'Manao ahoana,';

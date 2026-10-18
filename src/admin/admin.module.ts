@@ -25,6 +25,4 @@ import { AdminAuditService } from './admin-audit.service.js';
   providers: [AdminUsersService, AdminAuditService],
   exports: [AdminUsersService, AdminAuditService],
 })
-
 export class AdminModule {}
-

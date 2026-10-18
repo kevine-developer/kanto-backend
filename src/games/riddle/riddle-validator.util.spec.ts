@@ -15,8 +15,8 @@ describe('RiddleValidatorUtil', () => {
 
     it('standardise les apostrophes typographiques malgaches', () => {
       expect(normalizeRiddleText("an'ala")).toBe("an'ala");
-      expect(normalizeRiddleText("an’ala")).toBe("an'ala");
-      expect(normalizeRiddleText("an‘ala")).toBe("an'ala");
+      expect(normalizeRiddleText('an’ala')).toBe("an'ala");
+      expect(normalizeRiddleText('an‘ala')).toBe("an'ala");
     });
 
     it('supprime la ponctuation finale de saisie', () => {
@@ -72,7 +72,7 @@ describe('RiddleValidatorUtil', () => {
     });
 
     it('valide les apostrophes courbes et typographiques', () => {
-      expect(isAnswerMatching("zava-man'aina", "zava-man’aina")).toBe(true);
+      expect(isAnswerMatching("zava-man'aina", 'zava-man’aina')).toBe(true);
     });
 
     it('valide les variantes entre parenthèses', () => {
@@ -82,7 +82,12 @@ describe('RiddleValidatorUtil', () => {
     });
 
     it('valide les réponses alternatives (acceptedAnswers)', () => {
-      expect(isAnswerMatching('akondro', 'Hazo fihinam-boa', ['akondro', 'voankazo'])).toBe(true);
+      expect(
+        isAnswerMatching('akondro', 'Hazo fihinam-boa', [
+          'akondro',
+          'voankazo',
+        ]),
+      ).toBe(true);
     });
 
     it('rejette les réponses incorrectes ou vides', () => {

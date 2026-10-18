@@ -1,8 +1,16 @@
-import { Injectable, Logger, NotFoundException, Optional } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  Optional,
+} from '@nestjs/common';
 import { Prisma } from '../../../generated/prisma/client.js';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import { RedisService } from '../../redis/redis.service.js';
-import { CACHE_KEYS, CACHE_TTL } from '../../common/constants/cache.constant.js';
+import {
+  CACHE_KEYS,
+  CACHE_TTL,
+} from '../../common/constants/cache.constant.js';
 import { isAnswerMatching } from './riddle-validator.util.js';
 
 @Injectable()

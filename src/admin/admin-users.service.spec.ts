@@ -1,8 +1,6 @@
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { AdminUsersService } from './admin-users.service.js';
-import { PrismaService } from '../prisma/prisma.service.js';
-import { AdminAuditService } from './admin-audit.service.js';
 
 describe('AdminUsersService - updateTier', () => {
   let service: AdminUsersService;
@@ -20,13 +18,12 @@ describe('AdminUsersService - updateTier', () => {
     };
 
     auditServiceMock = {
-      logAction: jest.fn().mockResolvedValue({ id: 'audit_1' }),
+      logAction: jest
+        .fn()
+        .mockImplementation(() => Promise.resolve({ id: 'audit_1' })),
     };
 
-    service = new AdminUsersService(
-      prismaMock as unknown as PrismaService,
-      auditServiceMock as unknown as AdminAuditService,
-    );
+    service = new AdminUsersService(prismaMock, auditServiceMock);
   });
 
   it('doit refuser une valeur de tier inconnue', async () => {

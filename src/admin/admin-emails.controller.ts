@@ -100,7 +100,10 @@ export class AdminEmailsController {
     @Query('endDate') endDate?: string,
   ) {
     const page = Math.max(1, parseInt(pageStr || '1', 10) || 1);
-    const limit = Math.min(100, Math.max(1, parseInt(limitStr || '20', 10) || 20));
+    const limit = Math.min(
+      100,
+      Math.max(1, parseInt(limitStr || '20', 10) || 20),
+    );
     const skip = (page - 1) * limit;
 
     const where: any = {};
@@ -169,7 +172,9 @@ export class AdminEmailsController {
     });
 
     if (!email) {
-      throw new NotFoundException(`E-mail avec l'identifiant ${id} introuvable.`);
+      throw new NotFoundException(
+        `E-mail avec l'identifiant ${id} introuvable.`,
+      );
     }
 
     return {
@@ -192,7 +197,9 @@ export class AdminEmailsController {
       };
     } catch (err: unknown) {
       const errorMsg = err instanceof Error ? err.message : String(err);
-      this.logger.error(`❌ [Admin Email Retry] Échec de relance : ${errorMsg}`);
+      this.logger.error(
+        `❌ [Admin Email Retry] Échec de relance : ${errorMsg}`,
+      );
       throw new BadRequestException(errorMsg);
     }
   }
@@ -207,7 +214,10 @@ export class AdminEmailsController {
     @Query('search') search?: string,
   ) {
     const page = Math.max(1, parseInt(pageStr || '1', 10) || 1);
-    const limit = Math.min(100, Math.max(1, parseInt(limitStr || '20', 10) || 20));
+    const limit = Math.min(
+      100,
+      Math.max(1, parseInt(limitStr || '20', 10) || 20),
+    );
     const skip = (page - 1) * limit;
 
     const where: any = {};

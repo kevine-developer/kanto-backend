@@ -9,7 +9,11 @@ import {
 import crypto from 'node:crypto';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { UserRole } from '../../generated/prisma/client.js';
-import { auth } from '../auth/auth.js';
+import {
+  auth,
+  getConfiguredAdminUrl,
+  getConfiguredNativeUrl,
+} from '../auth/auth.js';
 import {
   calculatePagination,
   formatPaginatedResponse,
@@ -110,14 +114,8 @@ export class AdminUsersService implements OnApplicationBootstrap {
 
       this.logger.log(`✅ [Admin] Rôle ADMIN attribué à ${adminEmail}.`);
 
-      // ADMIN_FRONTEND_URL doit pointer vers le frontend admin (ex: https://admin.kanto.mg)
-      // et NON vers l'API. Fallback sur ADMIN_URL pour compatibilité rétrograde.
-      const adminFrontendUrl =
-        process.env.ADMIN_FRONTEND_URL ||
-        process.env.ADMIN_URL ||
-        (process.env.NODE_ENV === 'production'
-          ? 'https://admin.kanto.mg'
-          : 'http://localhost:3001');
+      // ADMIN_FRONTEND_URL prioritaire via variables d'environnement
+      const adminFrontendUrl = getConfiguredAdminUrl();
       await auth.api.requestPasswordReset({
         body: {
           email: adminEmail,
@@ -173,7 +171,6 @@ export class AdminUsersService implements OnApplicationBootstrap {
     } else if (statusFilter === 'ACTIVE') {
       where.OR = [{ banned: false }, { banned: null }];
     }
-
 
     const [total, users] = await Promise.all([
       this.prisma.user.count({ where }),
@@ -464,7 +461,6 @@ export class AdminUsersService implements OnApplicationBootstrap {
     };
   }
 
-
   /**
    * Suspend ou bannit un utilisateur avec motif obligatoire.
    */
@@ -657,17 +653,19 @@ export class AdminUsersService implements OnApplicationBootstrap {
       throw new NotFoundException('Utilisateur introuvable');
     }
 
-    const adminFrontendUrl =
-      process.env.ADMIN_FRONTEND_URL ||
-      process.env.ADMIN_URL ||
-      (process.env.NODE_ENV === 'production'
-        ? 'https://admin.kanto.mg'
-        : 'http://localhost:3001');
+    const adminFrontendUrl = getConfiguredAdminUrl();
+    const nativeAppUrl = getConfiguredNativeUrl();
+
+    // Aiguillage strict : un utilisateur mobile natif ne doit JAMAIS recevoir de lien vers l'admin
+    const effectiveRedirectUrl =
+      user.role === 'ADMIN'
+        ? `${adminFrontendUrl}/reset-password`
+        : `${nativeAppUrl}/reset-password`;
 
     await auth.api.requestPasswordReset({
       body: {
         email: user.email,
-        redirectTo: `${adminFrontendUrl}/reset-password`,
+        redirectTo: effectiveRedirectUrl,
       },
     });
 

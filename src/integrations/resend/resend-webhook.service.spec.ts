@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import { ResendWebhookService } from './resend-webhook.service.js';
-import { PrismaService } from '../../infrastructure/database/prisma.service.js';
 
 describe('ResendWebhookService', () => {
   let service: ResendWebhookService;
@@ -11,14 +10,18 @@ describe('ResendWebhookService', () => {
       emailLog: {
         findFirst: jest.fn(),
         create: jest.fn(),
-        update: jest.fn().mockImplementation(({ data }) => Promise.resolve(data)),
+        update: jest
+          .fn()
+          .mockImplementation(({ data }) => Promise.resolve(data)),
       },
       emailSuppression: {
-        upsert: jest.fn().mockResolvedValue({ id: 'suppression_1' }),
+        upsert: jest
+          .fn()
+          .mockImplementation(() => Promise.resolve({ id: 'suppression_1' })),
       },
     };
 
-    service = new ResendWebhookService(prismaMock as unknown as PrismaService);
+    service = new ResendWebhookService(prismaMock);
   });
 
   describe('Transition d état normale', () => {

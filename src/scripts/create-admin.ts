@@ -140,7 +140,7 @@ async function createDefaultAdmin(): Promise<void> {
             process.env.ADMIN_FRONTEND_URL ||
             process.env.ADMIN_URL ||
             (process.env.NODE_ENV === 'production'
-              ? 'https://admin.kanto.mg'
+              ? 'https://kanto-admin.vercel.app'
               : 'http://localhost:3001')
           }/reset-password`,
         },

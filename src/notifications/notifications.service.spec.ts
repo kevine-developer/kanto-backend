@@ -1,7 +1,10 @@
 import { jest } from '@jest/globals';
 import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { NotificationsService } from './notifications.service.js';
-import { ContributionStatus, DisputeStatus } from '../../generated/prisma/client.js';
+import {
+  ContributionStatus,
+  DisputeStatus,
+} from '../../generated/prisma/client.js';
 
 describe('NotificationsService', () => {
   let service: NotificationsService;

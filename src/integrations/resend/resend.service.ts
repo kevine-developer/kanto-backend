@@ -2,7 +2,8 @@ import { Injectable, Logger, Optional } from '@nestjs/common';
 import { Resend } from 'resend';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
 import {
-  buildPasswordResetEmail,
+  buildNativeUserPasswordResetEmail,
+  buildAdminPasswordResetEmail,
   buildWelcomeEmail,
   buildVerificationEmail,
   buildBetaTesterRegistrationEmail,
@@ -28,12 +29,29 @@ export interface SendEmailOptions {
   bypassSuppression?: boolean; // Strictement réservé aux alertes critiques de sécurité
 }
 
+export interface NativePasswordResetEmailOptions {
+  to: string;
+  resetUrl: string;
+  token?: string;
+  userName?: string;
+  idempotencyKey?: string;
+}
+
+export interface AdminPasswordResetEmailOptions {
+  to: string;
+  resetUrl: string;
+  token?: string;
+  userName?: string;
+  idempotencyKey?: string;
+}
+
 export interface PasswordResetEmailOptions {
   to: string;
   resetUrl: string;
   token?: string;
   userName?: string;
   idempotencyKey?: string;
+  context?: 'native' | 'admin';
 }
 
 export interface WelcomeEmailOptions {
@@ -448,7 +466,9 @@ export class ResendService {
     });
 
     if (!log) {
-      throw new Error(`Enregistrement d'e-mail introuvable (ID: ${emailLogId})`);
+      throw new Error(
+        `Enregistrement d'e-mail introuvable (ID: ${emailLogId})`,
+      );
     }
 
     // Protection anti-doublon absolue
@@ -567,12 +587,12 @@ export class ResendService {
   // ─── MODÈLES MÉTIER KANTO MG ──────────────────────────────────────────────
 
   /**
-   * 1. Email de réinitialisation de mot de passe.
+   * 1a. Email de réinitialisation de mot de passe — Application mobile native Kanto MG.
    */
-  async sendPasswordResetEmail(
-    options: PasswordResetEmailOptions,
+  async sendNativeUserPasswordResetEmail(
+    options: NativePasswordResetEmailOptions,
   ): Promise<SendEmailResult> {
-    const { subject, html, text } = buildPasswordResetEmail({
+    const { subject, html, text } = buildNativeUserPasswordResetEmail({
       to: options.to,
       resetUrl: options.resetUrl,
       userName: options.userName,
@@ -584,19 +604,62 @@ export class ResendService {
       subject,
       text,
       html,
-      templateType: 'PASSWORD_RESET',
+      templateType: 'PASSWORD_RESET_NATIVE',
       recipientName: options.userName,
       idempotencyKey: options.idempotencyKey,
       metadata: {
+        context: 'native',
         resetUrlSet: Boolean(options.resetUrl),
       },
     });
   }
 
   /**
+   * 1b. Email de réinitialisation de mot de passe — Interface d'administration Kanto MG.
+   */
+  async sendAdminPasswordResetEmail(
+    options: AdminPasswordResetEmailOptions,
+  ): Promise<SendEmailResult> {
+    const { subject, html, text } = buildAdminPasswordResetEmail({
+      to: options.to,
+      resetUrl: options.resetUrl,
+      userName: options.userName,
+      token: options.token,
+    });
+
+    return this.sendEmail({
+      to: options.to,
+      subject,
+      text,
+      html,
+      templateType: 'PASSWORD_RESET_ADMIN',
+      recipientName: options.userName,
+      idempotencyKey: options.idempotencyKey,
+      metadata: {
+        context: 'admin',
+        resetUrlSet: Boolean(options.resetUrl),
+      },
+    });
+  }
+
+  /**
+   * 1c. Email de réinitialisation de mot de passe (aiguillage intelligent selon contexte).
+   */
+  async sendPasswordResetEmail(
+    options: PasswordResetEmailOptions,
+  ): Promise<SendEmailResult> {
+    if (options.context === 'admin') {
+      return this.sendAdminPasswordResetEmail(options);
+    }
+    return this.sendNativeUserPasswordResetEmail(options);
+  }
+
+  /**
    * 2. Email de bienvenue lors de l'inscription.
    */
-  async sendWelcomeEmail(options: WelcomeEmailOptions): Promise<SendEmailResult> {
+  async sendWelcomeEmail(
+    options: WelcomeEmailOptions,
+  ): Promise<SendEmailResult> {
     const { subject, html, text } = buildWelcomeEmail({
       to: options.to,
       userName: options.userName,
