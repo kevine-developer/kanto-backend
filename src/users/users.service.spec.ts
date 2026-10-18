@@ -510,22 +510,22 @@ describe('UsersService', () => {
       );
     });
 
-    it('should set user image to default avatar in database', async () => {
+    it('should set user image to null in database', async () => {
       const user = buildUser({ id: 'user-1', image: 'https://image.png' });
       prismaMock.user.findUnique.mockResolvedValue(user);
       prismaMock.user.update.mockResolvedValue({
         ...user,
-        image: '/uploads/avatars/default-avatar.png',
+        image: null,
       });
 
       const result = await service.deleteAvatar('user-1');
 
       expect(result.success).toBe(true);
-      expect(result.user.image).toBe('/uploads/avatars/default-avatar.png');
+      expect(result.user.image).toBeNull();
       expect(prismaMock.user.update).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { id: 'user-1' },
-          data: { image: '/uploads/avatars/default-avatar.png' },
+          data: { image: null },
         }),
       );
     });

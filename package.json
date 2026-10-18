@@ -37,6 +37,7 @@
     "reset:prod:progression": "tsx src/scripts/reset-prod-progression.ts",
     "migrate:locks": "tsx src/scripts/migrate-module-locks.ts",
     "migrate:reports": "tsx src/scripts/migrate-content-reports.ts",
+    "clean:avatars": "tsx src/scripts/clean-default-avatars.ts",
     "test:email": "tsx src/scripts/test-email.ts"
   },
   "prisma": {

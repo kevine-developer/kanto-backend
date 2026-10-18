@@ -254,25 +254,38 @@ export class AdminUsersService implements OnApplicationBootstrap {
         }),
       ]);
 
-    // Signalements visant les contenus créés par cet utilisateur
-    const reportsAgainstUser = await this.prisma.contentReport.findMany({
-      where: {
-        OR: [
-          { contribution: { userId: id } },
-          { comment: { userId: id } },
-          { quizSet: { authorId: id } },
-        ],
-      },
-      take: 10,
-      orderBy: { createdAt: 'desc' },
-      select: {
-        id: true,
-        reason: true,
-        description: true,
-        resolved: true,
-        createdAt: true,
-      },
-    });
+    // Signalements visant les contenus créés par cet utilisateur (résilient si schéma en cours de migration)
+    let reportsAgainstUser: Array<{
+      id: string;
+      reason: any;
+      description: string | null;
+      resolved: boolean;
+      createdAt: Date;
+    }> = [];
+    try {
+      reportsAgainstUser = await this.prisma.contentReport.findMany({
+        where: {
+          OR: [
+            { contribution: { userId: id } },
+            { comment: { userId: id } },
+            { quizSet: { authorId: id } },
+          ],
+        },
+        take: 10,
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          reason: true,
+          description: true,
+          resolved: true,
+          createdAt: true,
+        },
+      });
+    } catch (err: unknown) {
+      this.logger.warn(
+        `[AdminUsers] Impossible de charger les signalements pour l'utilisateur ${id}: ${String(err)}`,
+      );
+    }
 
     return {
       user: {
@@ -316,7 +329,9 @@ export class AdminUsersService implements OnApplicationBootstrap {
    */
   async updateRole(id: string, role: string, requestingUserId: string) {
     const normalizedRole = role?.toUpperCase();
-    if (!['ADMIN', 'MODERATOR', 'CONTRIBUTOR', 'USER'].includes(normalizedRole)) {
+    if (
+      !['ADMIN', 'MODERATOR', 'CONTRIBUTOR', 'USER'].includes(normalizedRole)
+    ) {
       throw new BadRequestException(
         'Rôle invalide. Valeurs acceptées : ADMIN, MODERATOR, CONTRIBUTOR, USER',
       );
@@ -549,7 +564,8 @@ export class AdminUsersService implements OnApplicationBootstrap {
       targetType: 'USER',
       targetId: id,
       targetLabel: targetUser.email,
-      reason: 'Suppression définitive du compte utilisateur (RGPD / modération)',
+      reason:
+        'Suppression définitive du compte utilisateur (RGPD / modération)',
     });
 
     return {
