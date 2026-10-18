@@ -2,7 +2,6 @@ import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import { UnauthorizedException } from '@nestjs/common';
 import { Webhook } from 'svix';
 import { ResendWebhookController } from './resend-webhook.controller.js';
-import { ResendWebhookService } from './resend-webhook.service.js';
 
 describe('ResendWebhookController', () => {
   let controller: ResendWebhookController;
@@ -13,12 +12,12 @@ describe('ResendWebhookController', () => {
     process.env.RESEND_WEBHOOK_SECRET = testSecret;
 
     webhookServiceMock = {
-      handleWebhookEvent: jest.fn().mockResolvedValue({ handled: true }),
+      handleWebhookEvent: jest
+        .fn()
+        .mockImplementation(() => Promise.resolve({ handled: true })),
     };
 
-    controller = new ResendWebhookController(
-      webhookServiceMock as unknown as ResendWebhookService,
-    );
+    controller = new ResendWebhookController(webhookServiceMock);
   });
 
   it('doit rejeter si RESEND_WEBHOOK_SECRET n est pas configuré', async () => {
@@ -46,7 +45,10 @@ describe('ResendWebhookController', () => {
   });
 
   it('doit rejeter si la signature Svix est invalide', async () => {
-    const rawPayload = JSON.stringify({ type: 'email.sent', data: { id: 're_1' } });
+    const rawPayload = JSON.stringify({
+      type: 'email.sent',
+      data: { id: 're_1' },
+    });
 
     await expect(
       controller.handleResendWebhook(

@@ -1,7 +1,5 @@
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import { ResendService } from './resend.service.js';
-import { PrismaService } from '../../infrastructure/database/prisma.service.js';
-
 
 describe('ResendService', () => {
   let service: ResendService;
@@ -29,14 +27,14 @@ describe('ResendService', () => {
         ),
       },
       emailSuppression: {
-        findUnique: jest.fn().mockResolvedValue(null),
+        findUnique: jest.fn().mockImplementation(() => Promise.resolve(null)),
         upsert: jest.fn(),
       },
     };
 
     // Par défaut, pas de clé API dans l'environnement de test pour éviter tout envoi externe accidentel
     delete process.env.RESEND_API_KEY;
-    service = new ResendService(prismaMock as unknown as PrismaService);
+    service = new ResendService(prismaMock);
   });
 
   describe('Validation des adresses et sécurité', () => {

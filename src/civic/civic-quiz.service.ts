@@ -236,7 +236,9 @@ export class CivicQuizService {
     });
     if (!session) throw new NotFoundException('Session de quiz introuvable');
     if (session.isCompleted) {
-      const q = await this.prisma.civicQuizQuestion.findUnique({ where: { id: questionId } });
+      const q = await this.prisma.civicQuizQuestion.findUnique({
+        where: { id: questionId },
+      });
       return {
         isCorrect: false,
         correctIndex: q?.answerIndex ?? 0,

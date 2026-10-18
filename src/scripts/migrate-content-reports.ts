@@ -41,7 +41,9 @@ async function main() {
     await client.connect();
     console.log('🔌 Connecté à PostgreSQL');
     await client.query(sql);
-    console.log('✅ DDL content_reports (contributionId, commentId) appliqué avec succès !');
+    console.log(
+      '✅ DDL content_reports (contributionId, commentId) appliqué avec succès !',
+    );
   } catch (err) {
     console.error("❌ Erreur d'application DDL:", err);
     process.exit(1);

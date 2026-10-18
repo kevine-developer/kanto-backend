@@ -1,9 +1,6 @@
 import { jest } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  ConflictException,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, NotFoundException } from '@nestjs/common';
 import { UsersService } from './users.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CloudinaryService } from '../integrations/cloudinary/cloudinary.service.js';

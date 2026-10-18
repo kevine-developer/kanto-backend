@@ -21,7 +21,6 @@ const prisma = new PrismaClient({ adapter });
 // Instance Resend pour les emails d'authentification avec traçabilité complète
 const resendService = new ResendService(prisma as unknown as PrismaService);
 
-
 const isProduction = process.env.NODE_ENV === 'production';
 
 const devOrigins = [
@@ -61,6 +60,27 @@ const prodOrigins = [
   'https://*.kanto.mg',
 ];
 
+export function getConfiguredAdminUrl(): string {
+  if (process.env.ADMIN_FRONTEND_URL) {
+    return process.env.ADMIN_FRONTEND_URL.replace(/\/+$/, '');
+  }
+  if (process.env.ADMIN_URL) {
+    return process.env.ADMIN_URL.replace(/\/+$/, '');
+  }
+  return isProduction
+    ? 'https://kanto-admin.vercel.app'
+    : 'http://localhost:3001';
+}
+
+export function getConfiguredNativeUrl(): string {
+  if (process.env.NATIVE_APP_URL) {
+    return process.env.NATIVE_APP_URL.replace(/\/+$/, '');
+  }
+  return isProduction
+    ? 'https://app-kanto.gastsar.fr'
+    : 'http://192.168.1.100:3000';
+}
+
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
@@ -70,6 +90,9 @@ export const auth = betterAuth({
   trustedOrigins: [
     'kanto://',
     'kantomg://',
+    ...(process.env.ADMIN_FRONTEND_URL ? [process.env.ADMIN_FRONTEND_URL] : []),
+    ...(process.env.ADMIN_URL ? [process.env.ADMIN_URL] : []),
+    ...(process.env.NATIVE_APP_URL ? [process.env.NATIVE_APP_URL] : []),
     ...(isProduction ? prodOrigins : devOrigins),
     ...(process.env.BETTER_AUTH_TRUSTED_ORIGINS
       ? process.env.BETTER_AUTH_TRUSTED_ORIGINS.split(',').map((o) => o.trim())
@@ -189,33 +212,150 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     resetPasswordTokenExpiresIn: 3600, // 1 heure
-    sendResetPassword: async ({ user, token }) => {
+    revokeSessionsOnPasswordReset: true, // Invalidation automatique de toutes les sessions actives
+    sendResetPassword: async ({ user, url, token }, request) => {
       console.log(
         `[Better-Auth] 🔑 Demande de réinitialisation de mot de passe pour : ${user.email}`,
       );
       try {
-        const adminFrontendUrl =
-          process.env.ADMIN_FRONTEND_URL ||
-          process.env.ADMIN_URL ||
-          (isProduction
-            ? 'https://admin.kanto.mg'
-            : 'http://192.168.1.100:3001');
-        const resetPasswordUrl = new URL('/reset-password', adminFrontendUrl);
-        resetPasswordUrl.searchParams.set('token', token);
-        const effectiveResetUrl = resetPasswordUrl.toString();
+        // 1. Détection intelligente et vérification stricte du contexte (Admin vs Native)
+        // Priorité absolue aux variables d'environnement (ADMIN_FRONTEND_URL, ADMIN_URL, NATIVE_APP_URL)
+        const configuredAdminBase = getConfiguredAdminUrl();
+        let configuredAdminHost = '';
+        try {
+          configuredAdminHost = new URL(configuredAdminBase).host.toLowerCase();
+        } catch {
+          // Format d'URL non standard
+        }
 
-        await resendService.sendPasswordResetEmail({
-          to: user.email,
-          resetUrl: effectiveResetUrl,
-          token,
-          userName: user.name || undefined,
-        });
+        let isTargetingAdmin = false;
+
+        // Analyse de callbackURL dans l'url fournie par Better-Auth
+        if (url) {
+          try {
+            const parsedUrl = new URL(url);
+            const callbackParam =
+              parsedUrl.searchParams.get('callbackURL') || '';
+            if (callbackParam) {
+              const decoded = decodeURIComponent(callbackParam).toLowerCase();
+              if (
+                (configuredAdminHost &&
+                  decoded.includes(configuredAdminHost)) ||
+                decoded.includes('kanto-admin') ||
+                decoded.includes('admin') ||
+                decoded.includes(':3001') ||
+                decoded.includes('vercel.app')
+              ) {
+                isTargetingAdmin = true;
+              }
+            }
+          } catch {
+            // URL non analysable
+          }
+        }
+
+        // Analyse des en-têtes HTTP de la requête (origin, referer, x-client-context)
+        if (request && typeof (request as any).headers?.get === 'function') {
+          const origin = (
+            (request as any).headers.get('origin') || ''
+          ).toLowerCase();
+          const referer = (
+            (request as any).headers.get('referer') || ''
+          ).toLowerCase();
+          const clientContext = (
+            (request as any).headers.get('x-client-context') || ''
+          ).toLowerCase();
+
+          if (
+            clientContext === 'admin' ||
+            (configuredAdminHost &&
+              (origin.includes(configuredAdminHost) ||
+                referer.includes(configuredAdminHost))) ||
+            origin.includes('kanto-admin') ||
+            origin.includes('admin') ||
+            origin.includes(':3001') ||
+            referer.includes('kanto-admin') ||
+            referer.includes('admin') ||
+            referer.includes(':3001')
+          ) {
+            isTargetingAdmin = true;
+          }
+        }
+
+        // 2. RÈGLE CRITIQUE DE SÉCURITÉ :
+        // Un utilisateur ayant le rôle standard (USER) ne peut JAMAIS réinitialiser dans le contexte admin.
+        // Seuls les comptes avec rôle effectif ADMIN peuvent recevoir un lien d'administration.
+        const isAdminUser =
+          (user as any).role === 'ADMIN' || (user as any).role === 'admin';
+        const context: 'admin' | 'native' =
+          isTargetingAdmin && isAdminUser ? 'admin' : 'native';
+
+        // 3. Verrouillage du jeton en base pour assurer l'étanchéité stricte des parcours
+        try {
+          await prisma.verification.create({
+            data: {
+              identifier: `reset-password-context:${token}`,
+              value: JSON.stringify({
+                context,
+                userId: user.id,
+                role: (user as any).role || 'USER',
+              }),
+              expiresAt: new Date(Date.now() + 3600 * 1000),
+            },
+          });
+        } catch (ctxErr) {
+          console.warn(
+            `[Better-Auth] ⚠️ Impossible de persister le contexte du jeton :`,
+            ctxErr,
+          );
+        }
+
+        // 4. Génération de l'URL sécurisée et envoi de l'e-mail dédié
+        if (context === 'admin') {
+          // Parcours Administrateur Kanto MG (priorité absolue à la variable d'environnement)
+          const adminFrontendUrl = getConfiguredAdminUrl();
+          const resetPasswordUrl = new URL('/reset-password', adminFrontendUrl);
+          resetPasswordUrl.searchParams.set('token', token);
+
+          console.log(
+            `[Better-Auth] 🛡️ Envoi d'email de réinitialisation administrateur vers ${user.email} (${resetPasswordUrl.origin})`,
+          );
+
+          await resendService.sendAdminPasswordResetEmail({
+            to: user.email,
+            resetUrl: resetPasswordUrl.toString(),
+            token,
+            userName: user.name || undefined,
+          });
+        } else {
+          // Parcours Application Native Kanto MG (priorité absolue à la variable d'environnement)
+          const nativeAppUrl = getConfiguredNativeUrl();
+          const resetPasswordUrl = new URL('/reset-password', nativeAppUrl);
+          resetPasswordUrl.searchParams.set('token', token);
+
+          console.log(
+            `[Better-Auth] 📱 Envoi d'email de réinitialisation natif vers ${user.email} (${resetPasswordUrl.origin})`,
+          );
+
+          await resendService.sendNativeUserPasswordResetEmail({
+            to: user.email,
+            resetUrl: resetPasswordUrl.toString(),
+            token,
+            userName: user.name || undefined,
+          });
+        }
       } catch (err: unknown) {
         console.error(
           `[Better-Auth] ❌ Erreur lors de l'envoi de l'email via Resend :`,
           err,
         );
       }
+    },
+    onPasswordReset: ({ user }): Promise<void> => {
+      console.log(
+        `[Better-Auth] 🔒 Mot de passe réinitialisé avec succès pour : ${user.email}`,
+      );
+      return Promise.resolve();
     },
   },
   plugins: [

@@ -60,7 +60,6 @@ export class AdminUsersController {
     return this.adminUsersService.updateTier(id, tier, session.user.id);
   }
 
-
   @Patch(':id/ban')
   async banUser(
     @Param('id') id: string,

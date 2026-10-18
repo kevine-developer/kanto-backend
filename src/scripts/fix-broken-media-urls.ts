@@ -54,7 +54,9 @@ async function main() {
       (rWs2.rowCount ?? 0) +
       (rWs3.rowCount ?? 0) +
       (rWs4.rowCount ?? 0);
-    console.log(`🖼️ Slides d'accueil (welcome_slides) mises à jour : ${totalWsUpdated} ligne(s).`);
+    console.log(
+      `🖼️ Slides d'accueil (welcome_slides) mises à jour : ${totalWsUpdated} ligne(s).`,
+    );
 
     // 2. Correction des bannières marketing (marketing_banners)
     const rBanners = await client.query(`
@@ -64,7 +66,9 @@ async function main() {
          OR "imageUrl" ILIKE '%placeholder.jpg%'
          OR "imageUrl" ILIKE '%Photoroom%';
     `);
-    console.log(`📢 Bannières marketing mises à jour : ${rBanners.rowCount ?? 0} ligne(s).`);
+    console.log(
+      `📢 Bannières marketing mises à jour : ${rBanners.rowCount ?? 0} ligne(s).`,
+    );
 
     // 3. Correction des jeux dans module_locks
     const rLock1 = await client.query(`
@@ -105,7 +109,9 @@ async function main() {
       SET "illustration" = 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=800&auto=format&fit=crop&q=80'
       WHERE "illustration" ILIKE '%Photoroom%';
     `);
-    console.log(`📜 Kabaries mis à jour : ${rKabaries.rowCount ?? 0} ligne(s).`);
+    console.log(
+      `📜 Kabaries mis à jour : ${rKabaries.rowCount ?? 0} ligne(s).`,
+    );
 
     // 5. Réinitialisation des audios introuvables (404) sur les contes
     const rAudiosFr = await client.query(`

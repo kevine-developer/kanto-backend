@@ -17,6 +17,7 @@ import { Throttle } from '@nestjs/throttler';
 import type { Request, Response } from 'express';
 import { AppService } from './app.service.js';
 import { renderEmailVerificationPage } from './auth/views/email-verification.view.js';
+import { renderNativePasswordResetPage } from './auth/views/native-password-reset.view.js';
 import {
   renderBetaLandingPage,
   renderBetaWaitlistScript,
@@ -179,35 +180,81 @@ export class AppController {
   }
 
   /**
-   * Redirection automatique pour les liens de réinitialisation de mot de passe (reset-password)
-   * Redirige immédiatement le navigateur vers l'interface d'administration kanto-admin.
+   * Route de réinitialisation de mot de passe (GET /reset-password)
+   * - Si l'hôte correspond à l'interface d'administration (ex: admin.kanto.mg, :3001) :
+   *   Redirige vers l'interface kanto-admin.
+   * - Si l'hôte correspond au domaine public natif (ex: app-kanto.gastsar.fr) ou requêtes mobiles :
+   *   Sert directement la page web responsive Kanto MG avec déclenchement deep link et fallback sécurisé.
+   *   NE JAMAIS rediriger un utilisateur natif vers l'administration.
    */
   @Get('reset-password')
   handleResetPasswordRedirect(
     @Query('token') token: string,
+    @Query('error') error: string,
     @Res() res: Response,
+    @Req() req: Request,
   ): void {
     const isProduction = process.env.NODE_ENV === 'production';
     const adminFrontendUrl =
       process.env.ADMIN_FRONTEND_URL ||
       process.env.ADMIN_URL ||
-      (isProduction ? 'https://admin.kanto.mg' : 'http://192.168.1.100:3001');
+      (isProduction
+        ? 'https://kanto-admin.vercel.app'
+        : 'http://localhost:3001');
 
+    const host = (
+      (req?.headers?.['x-forwarded-host'] as string) ||
+      req?.headers?.host ||
+      ''
+    ).toLowerCase();
+
+    const referer = ((req?.headers?.referer as string) || '').toLowerCase();
+
+    // Détection dynamique : comparaison avec l'hôte de l'URL admin configurée en priorité
+    let configuredAdminHost = '';
     try {
-      const targetUrl = new URL('/reset-password', adminFrontendUrl);
-      if (token) {
-        targetUrl.searchParams.set('token', token);
-      }
-      this.logger.log(
-        `🔄 Redirection de /reset-password vers l'interface admin : ${targetUrl.toString()}`,
-      );
-      res.redirect(302, targetUrl.toString());
+      configuredAdminHost = new URL(adminFrontendUrl).host.toLowerCase();
     } catch {
-      res.redirect(
-        302,
-        `${adminFrontendUrl}/reset-password?token=${encodeURIComponent(token || '')}`,
-      );
+      // Ignorer si URL invalide
     }
+
+    const isAdminDomain =
+      (configuredAdminHost &&
+        (host.includes(configuredAdminHost) ||
+          referer.includes(configuredAdminHost))) ||
+      host.includes('kanto-admin') ||
+      host.includes('admin') ||
+      host.includes(':3001') ||
+      referer.includes('kanto-admin') ||
+      referer.includes('admin') ||
+      referer.includes(':3001');
+
+    if (isAdminDomain) {
+      try {
+        const targetUrl = new URL('/reset-password', adminFrontendUrl);
+        if (token) {
+          targetUrl.searchParams.set('token', token);
+        }
+        this.logger.log(
+          `🔄 [Admin] Redirection de /reset-password vers l'interface admin : ${targetUrl.toString()}`,
+        );
+        res.redirect(302, targetUrl.toString());
+        return;
+      } catch {
+        res.redirect(
+          302,
+          `${adminFrontendUrl}/reset-password?token=${encodeURIComponent(token || '')}`,
+        );
+        return;
+      }
+    }
+
+    // Parcours utilisateur natif Kanto MG (ex: https://app-kanto.gastsar.fr/reset-password)
+    this.logger.log(
+      `📱 [Native] Affichage de la vue web de réinitialisation native pour l'hôte : ${host || 'app-kanto.gastsar.fr'}`,
+    );
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.status(200).send(renderNativePasswordResetPage({ token, error }));
   }
 
   /**

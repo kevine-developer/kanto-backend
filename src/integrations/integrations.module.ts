@@ -25,4 +25,3 @@ import { ResendWebhookController } from './resend/resend-webhook.controller.js';
   ],
 })
 export class IntegrationsModule {}
-

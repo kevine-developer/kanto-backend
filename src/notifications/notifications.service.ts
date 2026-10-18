@@ -135,35 +135,44 @@ export interface UserNotificationPreferences {
   revision: boolean;
   newStory: boolean;
   weeklyChallenge: boolean;
-  customHours: Record<string, { hour: number; minute: number; weekday?: number }>;
+  customHours: Record<
+    string,
+    { hour: number; minute: number; weekday?: number }
+  >;
   timeZone: string;
 }
 
-export const DEFAULT_USER_NOTIFICATION_PREFERENCES: UserNotificationPreferences = {
-  enabled: true,
-  socialActivity: true,
-  gameInvites: true,
-  gameResults: true,
-  contributions: true,
-  announcements: true,
-  dailyContent: true,
-  dailyQuiz: true,
-  revision: true,
-  newStory: true,
-  weeklyChallenge: true,
-  customHours: {
-    dailyContent: { hour: 8, minute: 30 },
-    dailyQuiz: { hour: 12, minute: 30 },
-    revision: { hour: 17, minute: 30 },
-    newStory: { hour: 20, minute: 45 },
-    weeklyChallenge: { hour: 9, minute: 30, weekday: 2 },
-  },
-  timeZone: 'Indian/Antananarivo',
-};
+export const DEFAULT_USER_NOTIFICATION_PREFERENCES: UserNotificationPreferences =
+  {
+    enabled: true,
+    socialActivity: true,
+    gameInvites: true,
+    gameResults: true,
+    contributions: true,
+    announcements: true,
+    dailyContent: true,
+    dailyQuiz: true,
+    revision: true,
+    newStory: true,
+    weeklyChallenge: true,
+    customHours: {
+      dailyContent: { hour: 8, minute: 30 },
+      dailyQuiz: { hour: 12, minute: 30 },
+      revision: { hour: 17, minute: 30 },
+      newStory: { hour: 20, minute: 45 },
+      weeklyChallenge: { hour: 9, minute: 30, weekday: 2 },
+    },
+    timeZone: 'Indian/Antananarivo',
+  };
 
 export interface AdminAlertItem {
   id: string;
-  type: 'REPORT_PENDING' | 'PENDING_CONTRIBUTION' | 'FLAGGED_CONTENT' | 'DUPLICATE_DISPUTE' | 'SYSTEM_ALERT';
+  type:
+    | 'REPORT_PENDING'
+    | 'PENDING_CONTRIBUTION'
+    | 'FLAGGED_CONTENT'
+    | 'DUPLICATE_DISPUTE'
+    | 'SYSTEM_ALERT';
   title: string;
   description: string;
   priority: 'critical' | 'high' | 'medium' | 'low';
@@ -450,7 +459,7 @@ export class NotificationsService {
             message?: string;
             details?: { error?: string };
           }>;
-        } = (await response.json()) as any;
+        } = await response.json();
 
         if (Array.isArray(jsonResponse?.data)) {
           for (let i = 0; i < jsonResponse.data.length; i++) {
@@ -563,7 +572,8 @@ export class NotificationsService {
     // 1. Clé d'idempotence explicite (ex: webhook ou retry d'action métier)
     if (dto.idempotencyKey) {
       const idempotencyKey = `notif_idem:${dto.idempotencyKey.trim()}`;
-      const existingNotifId = await this.redisService.get<string>(idempotencyKey);
+      const existingNotifId =
+        await this.redisService.get<string>(idempotencyKey);
       if (existingNotifId) {
         const existing = await this.prisma.notification.findUnique({
           where: { id: existingNotifId },
@@ -684,7 +694,8 @@ export class NotificationsService {
 
           // Filtrage intelligent selon les préférences granulaires
           if (
-            (created.category === 'community' || created.category === 'social') &&
+            (created.category === 'community' ||
+              created.category === 'social') &&
             prefs.socialActivity === false
           ) {
             this.logger.log(
@@ -705,7 +716,8 @@ export class NotificationsService {
             return;
           }
           if (
-            (created.category === 'contribution' || created.category === 'moderation') &&
+            (created.category === 'contribution' ||
+              created.category === 'moderation') &&
             prefs.contributions === false
           ) {
             this.logger.log(
@@ -887,12 +899,14 @@ export class NotificationsService {
   /**
    * Récupère les préférences de notifications d'un utilisateur (avec fallback par défaut).
    */
-  async getUserPreferences(userId: string): Promise<UserNotificationPreferences> {
+  async getUserPreferences(
+    userId: string,
+  ): Promise<UserNotificationPreferences> {
     if (!userId) return { ...DEFAULT_USER_NOTIFICATION_PREFERENCES };
     try {
-      const cached = await this.redisService.get<Partial<UserNotificationPreferences>>(
-        `user_notif_prefs:${userId}`,
-      );
+      const cached = await this.redisService.get<
+        Partial<UserNotificationPreferences>
+      >(`user_notif_prefs:${userId}`);
       if (!cached) return { ...DEFAULT_USER_NOTIFICATION_PREFERENCES };
       return { ...DEFAULT_USER_NOTIFICATION_PREFERENCES, ...cached };
     } catch {

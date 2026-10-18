@@ -12,7 +12,6 @@ export interface ButtonOptions {
   fullWidth?: boolean;
 }
 
-
 /**
  * Bouton d'action standardisé pour les e-mails Kanto.
  * Sans emoji, optimisé pour le clic et le rendu multi-clients (Gmail, Apple Mail, Outlook).
@@ -275,4 +274,3 @@ export function renderMetadataTable(
     ${rowsHtml}
   </table>`;
 }
-

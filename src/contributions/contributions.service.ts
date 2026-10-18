@@ -1999,7 +1999,12 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
     if (dto.parentId) {
       const parentComment = await this.prisma.contributionComment.findUnique({
         where: { id: dto.parentId },
-        select: { id: true, contributionId: true, parentId: true, userId: true },
+        select: {
+          id: true,
+          contributionId: true,
+          parentId: true,
+          userId: true,
+        },
       });
       if (!parentComment || parentComment.contributionId !== contributionId) {
         throw new BadRequestException(

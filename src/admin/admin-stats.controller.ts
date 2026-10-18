@@ -56,7 +56,9 @@ export class AdminStatsController {
       dbCheck,
     ] = await Promise.all([
       this.prisma.user.count(),
-      dateFilter ? this.prisma.user.count({ where: { createdAt: dateFilter } }) : Promise.resolve(0),
+      dateFilter
+        ? this.prisma.user.count({ where: { createdAt: dateFilter } })
+        : Promise.resolve(0),
       this.prisma.user.count({ where: { banned: true } }),
       this.prisma.user.count({ where: { role: 'ADMIN' } }),
       this.prisma.user.count({ where: { role: 'MODERATOR' } }),
@@ -72,11 +74,15 @@ export class AdminStatsController {
       this.prisma.contribution.count({ where: { status: 'PENDING_REVIEW' } }),
       this.prisma.contribution.count({ where: { disputeStatus: 'PENDING' } }),
       this.prisma.contentReport.count({ where: { resolved: false } }),
-      this.prisma.contribution.count({ where: { moderationFlagged: true, status: 'PENDING_REVIEW' } }),
+      this.prisma.contribution.count({
+        where: { moderationFlagged: true, status: 'PENDING_REVIEW' },
+      }),
       this.prisma.userQuizSet.count(),
       this.prisma.moduleLock.count({ where: { isLocked: true } }),
       this.prisma.systemAnnouncement.count({ where: { isActive: true } }),
-      this.prisma.$queryRaw`SELECT 1 as ping`.then(() => true).catch(() => false),
+      this.prisma.$queryRaw`SELECT 1 as ping`
+        .then(() => true)
+        .catch(() => false),
     ]);
 
     return {
@@ -98,8 +104,14 @@ export class AdminStatsController {
           total: totalContes,
           withAudioMg: contesWithAudioMg,
           withAudioFr: contesWithAudioFr,
-          audioCoverageMg: totalContes > 0 ? Math.round((contesWithAudioMg / totalContes) * 100) : 0,
-          audioCoverageFr: totalContes > 0 ? Math.round((contesWithAudioFr / totalContes) * 100) : 0,
+          audioCoverageMg:
+            totalContes > 0
+              ? Math.round((contesWithAudioMg / totalContes) * 100)
+              : 0,
+          audioCoverageFr:
+            totalContes > 0
+              ? Math.round((contesWithAudioFr / totalContes) * 100)
+              : 0,
         },
         items: totalItems,
         citations: totalCitations,
@@ -111,7 +123,8 @@ export class AdminStatsController {
         disputedContributions,
         pendingReports,
         flaggedContributions,
-        totalUrgent: pendingContributions + pendingReports + disputedContributions,
+        totalUrgent:
+          pendingContributions + pendingReports + disputedContributions,
       },
       activity: {
         ugcQuizSets,

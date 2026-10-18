@@ -16,7 +16,10 @@ import {
   FindQuestionsQueryDto,
   UpdateQuestionDto,
 } from './dto/true-false.dto.js';
-import { CACHE_KEYS, CACHE_TTL } from '../../common/constants/cache.constant.js';
+import {
+  CACHE_KEYS,
+  CACHE_TTL,
+} from '../../common/constants/cache.constant.js';
 
 @Injectable()
 export class TrueFalseService {
@@ -466,7 +469,9 @@ export class TrueFalseService {
   }
 
   async getQuestionCounts(): Promise<Record<string, number>> {
-    const cached = await this.redis.get<Record<string, number>>(CACHE_KEYS.TRUE_FALSE_COUNTS);
+    const cached = await this.redis.get<Record<string, number>>(
+      CACHE_KEYS.TRUE_FALSE_COUNTS,
+    );
     if (cached) {
       return cached;
     }
@@ -482,7 +487,11 @@ export class TrueFalseService {
       counts[`${g.theme}_${g.difficulty}`] = g._count._all;
     }
 
-    await this.redis.set(CACHE_KEYS.TRUE_FALSE_COUNTS, counts, CACHE_TTL.MEDIUM);
+    await this.redis.set(
+      CACHE_KEYS.TRUE_FALSE_COUNTS,
+      counts,
+      CACHE_TTL.MEDIUM,
+    );
     return counts;
   }
 }
