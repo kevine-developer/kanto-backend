@@ -361,7 +361,6 @@ export class LeaderboardService implements OnModuleInit {
       currentUserId,
       formattedEntries,
       since,
-      period,
     );
 
     return {
@@ -481,7 +480,6 @@ export class LeaderboardService implements OnModuleInit {
     currentUserId: string | undefined,
     entries: LeaderboardItemDto[],
     since: Date,
-    period: LeaderboardPeriod,
   ): Promise<LeaderboardItemDto | null> {
     if (!currentUserId) return null;
 

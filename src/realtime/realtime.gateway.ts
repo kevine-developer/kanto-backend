@@ -1129,7 +1129,8 @@ export class RealtimeGateway
         return {
           success: false,
           isSpectator: false,
-          message: "Le mode spectateur n'est pas autorisé dans un duel 1 contre 1.",
+          message:
+            "Le mode spectateur n'est pas autorisé dans un duel 1 contre 1.",
         };
       }
 

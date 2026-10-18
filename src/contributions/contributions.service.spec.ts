@@ -339,20 +339,23 @@ describe('ContributionsService - Deadlines & Permissions', () => {
         region: 'Imerina',
       };
       prismaMock.contribution.findUnique.mockResolvedValue(mockContrib as any);
-      prismaMock.$transaction.mockImplementation(async (callback: any) => {
+      prismaMock.$transaction.mockImplementation((callback: any) => {
         return callback({
           contribution: {
-            update: jest.fn().mockResolvedValue({
+            update: (jest.fn as any)().mockResolvedValue({
               ...mockContrib,
               status: 'APPROVED',
             }),
           },
           malagasyItem: {
-            findUnique: jest.fn().mockResolvedValue(null),
-            create: jest.fn().mockResolvedValue({ id: 'item-1' }),
+            findUnique: (jest.fn as any)().mockResolvedValue(null),
+            create: (jest.fn as any)().mockResolvedValue({ id: 'item-1' }),
           },
           userProgress: {
-            upsert: jest.fn().mockResolvedValue({ totalXp: 50, level: 1 }),
+            upsert: (jest.fn as any)().mockResolvedValue({
+              totalXp: 50,
+              level: 1,
+            }),
           },
         });
       });

@@ -183,9 +183,9 @@ export class ContributionsController {
   @Get(':id')
   findOne(@Param('id') id: string, @Session() session?: UserSession) {
     const role = session?.user?.role
-      ? (Array.isArray(session.user.role)
-          ? session.user.role[0]
-          : session.user.role)
+      ? Array.isArray(session.user.role)
+        ? session.user.role[0]
+        : session.user.role
       : undefined;
     return this.contributionsService.findOne(id, session?.user?.id, role);
   }
