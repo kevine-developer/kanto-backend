@@ -25,6 +25,7 @@ export class AdminUsersController {
     @Query('search') search?: string,
     @Query('role') role?: string,
     @Query('status') status?: string,
+    @Query('tier') tier?: string,
   ) {
     return this.adminUsersService.listUsers(
       pageStr,
@@ -32,6 +33,7 @@ export class AdminUsersController {
       search,
       role,
       status,
+      tier,
     );
   }
 
@@ -48,6 +50,16 @@ export class AdminUsersController {
   ) {
     return this.adminUsersService.updateRole(id, role, session.user.id);
   }
+
+  @Patch(':id/tier')
+  async updateTier(
+    @Param('id') id: string,
+    @Body('tier') tier: string,
+    @Session() session: UserSession,
+  ) {
+    return this.adminUsersService.updateTier(id, tier, session.user.id);
+  }
+
 
   @Patch(':id/ban')
   async banUser(
