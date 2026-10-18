@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import pg from 'pg';
+import { Client } from 'pg';
 
 /**
  * Script de nettoyage des avatars par défaut en base de données.
@@ -13,7 +13,7 @@ async function main() {
     process.exit(1);
   }
 
-  const client = new pg.Client({ connectionString });
+  const client = new Client({ connectionString });
   try {
     await client.connect();
     console.log('🔌 Connecté à PostgreSQL.');

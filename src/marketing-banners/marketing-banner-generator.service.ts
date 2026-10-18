@@ -75,9 +75,9 @@ export class MarketingBannerGeneratorService {
           descriptionMg: content.descriptionMg,
           ctaFr: content.ctaFr,
           ctaMg: content.ctaMg,
-          // Placeholder image — l'admin peut la remplacer via le panneau admin
+          // Image d'illustration par défaut (Unsplash valide) — modifiable par l'admin
           imageUrl:
-            'https://res.cloudinary.com/kanto/image/upload/v1/banners/placeholder.jpg',
+            'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&q=80',
           deepLink: content.deepLink,
           accentColor: content.accentColor,
           orderIndex,

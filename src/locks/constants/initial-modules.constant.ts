@@ -29,7 +29,7 @@ export const INITIAL_MODULES: DefaultModuleConfig[] = [
     nameFr: 'Vrai ou Faux',
     nameMg: 'Marina sa Diso',
     imageUrl:
-      'https://res.cloudinary.com/dhe585mze/image/upload/v1753433200/Photoroom-20250725_025113719_voarxl.png',
+      'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&auto=format&fit=crop&q=80',
     isLocked: false,
     lockReason: null,
   },
@@ -39,7 +39,7 @@ export const INITIAL_MODULES: DefaultModuleConfig[] = [
     nameFr: "Remets dans l'ordre",
     nameMg: 'Alamino ny fehezanteny',
     imageUrl:
-      'https://res.cloudinary.com/dhe585mze/image/upload/v1753433199/Photoroom-20250725_024251458_je18mm.png',
+      'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=600&auto=format&fit=crop&q=80',
     isLocked: false,
     lockReason: null,
   },
@@ -49,7 +49,7 @@ export const INITIAL_MODULES: DefaultModuleConfig[] = [
     nameFr: 'Mot manquant',
     nameMg: 'Fenohy ny banga',
     imageUrl:
-      'https://res.cloudinary.com/dhe585mze/image/upload/v1753433199/Photoroom-20250725_024716464_vp5ivb.png',
+      'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&auto=format&fit=crop&q=80',
     isLocked: false,
     lockReason: null,
   },
@@ -59,7 +59,7 @@ export const INITIAL_MODULES: DefaultModuleConfig[] = [
     nameFr: 'Devinettes & Énigmes',
     nameMg: 'Ankamantatra',
     imageUrl:
-      'https://res.cloudinary.com/dhe585mze/image/upload/v1753433199/Photoroom-20250725_024504502_zotwmr.png',
+      'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=80',
     isLocked: false,
     lockReason: null,
   },

@@ -56,3 +56,44 @@ model AdminAuditLog {
   @@index([createdAt])
   @@map("admin_audit_logs")
 }
+
+model EmailLog {
+  id             String              @id @default(cuid())
+  resendId       String?             // Identifiant retourné par Resend (ex: "re_xxxx")
+  idempotencyKey String?             @unique // Clé d'idempotence pour déduplication
+  recipient      String              // Adresse e-mail du destinataire
+  recipientName  String?             // Nom du destinataire si fourni
+  from           String              // Adresse d'expédition
+  subject        String              // Objet de l'e-mail
+  templateType   String              // Type métier de template (WELCOME, VERIFICATION, etc.)
+  status         EmailDeliveryStatus @default(PENDING)
+  bounceType     String?             // "Permanent" | "Transient" | "Undetermined"
+  bounceSubtype  String?             // "General" | "NoEmail" | "Suppressed" | etc.
+  errorReason    String?             @db.Text // Erreur si échec
+  attempts       Int                 @default(1)
+  lastAttemptAt  DateTime?
+  metadata       Json?               // Données contextuelles (ex: userId, contributionId) sans secrets
+  events         Json?               // Historique complet des événements webhook reçus
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  @@index([recipient])
+  @@index([status])
+  @@index([templateType])
+  @@index([resendId])
+  @@index([createdAt])
+  @@map("email_logs")
+}
+
+model EmailSuppression {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  reason    String   // "BOUNCE_PERMANENT", "COMPLAINT", "MANUAL"
+  details   String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@map("email_suppressions")
+}
+

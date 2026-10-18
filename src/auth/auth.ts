@@ -9,9 +9,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import pg from 'pg';
 
 import { ResendService } from '../integrations/resend/resend.service.js';
-
-// Instance Resend pour les emails d'authentification
-const resendService = new ResendService();
+import type { PrismaService } from '../infrastructure/database/prisma.service.js';
 
 // Instance Prisma dédiée à Better Auth
 const pool = new pg.Pool({
@@ -19,6 +17,10 @@ const pool = new pg.Pool({
 });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
+
+// Instance Resend pour les emails d'authentification avec traçabilité complète
+const resendService = new ResendService(prisma as unknown as PrismaService);
+
 
 const isProduction = process.env.NODE_ENV === 'production';
 

@@ -1,4 +1,9 @@
-import { KANTO_COLORS, FONT_STACK, getGooglePlaySvgIcon } from './common.js';
+import {
+  KANTO_COLORS,
+  FONT_STACK,
+  getGooglePlaySvgIcon,
+  escapeHtml,
+} from './common.js';
 
 export interface ButtonOptions {
   text: string;
@@ -6,6 +11,7 @@ export interface ButtonOptions {
   variant?: 'primary' | 'terracotta' | 'dark' | 'outline';
   fullWidth?: boolean;
 }
+
 
 /**
  * Bouton d'action standardisé pour les e-mails Kanto.
@@ -154,7 +160,7 @@ export function renderNotice(options: NoticeOptions): string {
   }
 
   const titleHtml = title
-    ? `<div style="font-size: 12.5px; font-weight: 700; color: ${titleColor}; margin-bottom: 4px; letter-spacing: 0.1px;">${title}</div>`
+    ? `<div style="font-size: 12.5px; font-weight: 700; color: ${titleColor}; margin-bottom: 4px; letter-spacing: 0.1px;">${escapeHtml(title)}</div>`
     : '';
 
   return `<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color: ${bg}; border-left: 3px solid ${borderLeft}; border-radius: 4px; margin: 20px 0;">
@@ -211,7 +217,7 @@ export function renderStepCard(options: StepCardOptions): string {
               <table cellpadding="0" cellspacing="0" role="presentation" style="width: 32px; height: 32px; background-color: ${numBg}; border-radius: 6px; text-align: center;">
                 <tr>
                   <td align="center" valign="middle" style="font-size: 13px; font-weight: 700; color: ${numColor};">
-                    ${stepNumber}
+                    ${escapeHtml(stepNumber)}
                   </td>
                 </tr>
               </table>
@@ -220,7 +226,7 @@ export function renderStepCard(options: StepCardOptions): string {
             <!-- Contenu textuel -->
             <td valign="top">
               <div style="font-size: 14.5px; font-weight: 700; color: ${KANTO_COLORS.textPrimary}; line-height: 20px; margin-bottom: 6px;">
-                ${title}
+                ${escapeHtml(title)}
               </div>
               <div style="font-size: 13px; line-height: 21px; color: ${KANTO_COLORS.textSecondary}; margin-bottom: 16px;">
                 ${description}
@@ -254,12 +260,12 @@ export function renderMetadataTable(
       <td style="padding: 8px 12px; font-size: 12px; font-weight: 600; color: ${KANTO_COLORS.textMuted}; width: 140px; border-bottom: ${
         idx === items.length - 1 ? 'none' : `1px solid ${KANTO_COLORS.divider}`
       };">
-        ${item.label}
+        ${escapeHtml(item.label)}
       </td>
       <td style="padding: 8px 12px; font-size: 13px; font-weight: 500; color: ${KANTO_COLORS.textPrimary}; border-bottom: ${
         idx === items.length - 1 ? 'none' : `1px solid ${KANTO_COLORS.divider}`
       }; font-family: monospace, ${FONT_STACK};">
-        ${item.value}
+        ${escapeHtml(item.value)}
       </td>
     </tr>`,
     )
@@ -269,3 +275,4 @@ export function renderMetadataTable(
     ${rowsHtml}
   </table>`;
 }
+

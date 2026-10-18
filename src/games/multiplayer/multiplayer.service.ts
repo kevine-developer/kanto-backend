@@ -847,6 +847,29 @@ export class MultiplayerService {
       this.logger.log(
         `⚔️ [Multiplayer] Défi du salon ${cleanCode} décliné par ${declinerName || opponentId}. Session annulée.`,
       );
+
+      // Notification bienveillante au créateur du défi
+      if (session.player1Id) {
+        const opponentDisplayName = declinerName || 'Votre adversaire';
+        void this.notificationsService
+          .createNotification({
+            userId: session.player1Id,
+            isBroadcast: false,
+            titleMg: 'Fanamby tsy voaray ⚔️',
+            titleFr: 'Défi décliné ⚔️',
+            messageMg: `Tsy afaka nandray ny fanambinao tamin'ity indray mitoraka ity i ${opponentDisplayName}. Manasà namana hafa !`,
+            messageFr: `${opponentDisplayName} n'est pas disponible pour relever votre défi pour le moment. Lancez un défi à un autre ami !`,
+            category: 'duel',
+            badgeText: 'Défi',
+            badgeType: 'duel',
+            iconName: 'game-controller-outline',
+            iconColor: '#64748B',
+            targetRoute: '/(screens)/gamesAllScreen/multiplayerGame',
+          })
+          .catch((err) => {
+            this.logger.warn(`Échec envoi notification déclin défi : ${err}`);
+          });
+      }
     }
 
     return {
@@ -1746,6 +1769,74 @@ export class MultiplayerService {
       this.logger.log(
         `🏆 [Multiplayer] Salon ${cleanCode} terminé ! Vainqueur: ${winner?.name} (${winner?.score} pts)`,
       );
+
+      // Envoi asynchrone des notifications in-app & push du résultat aux duellistes
+      void (async () => {
+        try {
+          if (is1v1 && sortedPlayers.length === 2) {
+            const p1 = sortedPlayers[0];
+            const p2 = sortedPlayers[1];
+
+            if (isDraw) {
+              for (const p of [p1, p2]) {
+                await this.notificationsService.createNotification({
+                  userId: p.userId,
+                  isBroadcast: false,
+                  idempotencyKey: `duel_result_${session.id}_${p.userId}`,
+                  titleMg: 'Vokatra : Sahala ny lalao ! 🤝',
+                  titleFr: 'Résultat : Match nul en duel ! 🤝',
+                  messageMg: `Tsy nisy resy tsy nisy mpandresy ! Sahala ny isa (${p1.score} - ${p2.score}). Nahazo +75 XP ianareo roa tonta !`,
+                  messageFr: `Match nul parfait avec votre adversaire (${p1.score} - ${p2.score}) ! Vous remportez +75 XP chacun.`,
+                  category: 'game',
+                  badgeText: '+75 XP',
+                  badgeType: 'reward',
+                  iconName: 'trophy-outline',
+                  iconColor: '#F59E0B',
+                  targetRoute: '/(screens)/gamesAllScreen/multiplayerGame',
+                });
+              }
+            } else {
+              // Notification Vainqueur
+              await this.notificationsService.createNotification({
+                userId: p1.userId,
+                isBroadcast: false,
+                idempotencyKey: `duel_result_${session.id}_${p1.userId}`,
+                titleMg: 'Fandresena tamin’ny Fanamby ! 🏆',
+                titleFr: 'Victoire en Duel ! 🏆',
+                messageMg: `Arahabaina ! Nandresy an’i ${p2.name} ianao (${p1.score} noho ${p2.score} isa). Nahazo +120 XP !`,
+                messageFr: `Félicitations ! Vous avez battu ${p2.name} (${p1.score} à ${p2.score} pts). Vous gagnez +120 XP !`,
+                category: 'game',
+                badgeText: 'Victoire',
+                badgeType: 'reward',
+                iconName: 'trophy',
+                iconColor: '#10B981',
+                targetRoute: '/(screens)/gamesAllScreen/multiplayerGame',
+              });
+
+              // Notification Défaite honorable
+              await this.notificationsService.createNotification({
+                userId: p2.userId,
+                isBroadcast: false,
+                idempotencyKey: `duel_result_${session.id}_${p2.userId}`,
+                titleMg: 'Vokatry ny Fanamby ⚔️',
+                titleFr: 'Fin du Duel ⚔️',
+                messageMg: `Nandresy tamin’ity i ${p1.name} (${p1.score} - ${p2.score}). Nahazo +40 XP ianao tamin’ny fandraisana anjara !`,
+                messageFr: `${p1.name} a remporté ce duel (${p1.score} - ${p2.score} pts). Vous gagnez +40 XP pour votre combativité !`,
+                category: 'game',
+                badgeText: 'Duel',
+                badgeType: 'info',
+                iconName: 'game-controller-outline',
+                iconColor: '#64748B',
+                targetRoute: '/(screens)/gamesAllScreen/multiplayerGame',
+              });
+            }
+          }
+        } catch (duelNotifErr) {
+          this.logger.warn(
+            `Échec envoi notification résultat duel : ${duelNotifErr}`,
+          );
+        }
+      })();
 
       return {
         isFinished: true,

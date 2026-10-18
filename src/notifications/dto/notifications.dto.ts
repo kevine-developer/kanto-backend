@@ -48,6 +48,10 @@ export class CreateNotificationDto {
   @IsString()
   @IsOptional()
   userId?: string;
+
+  @IsString()
+  @IsOptional()
+  idempotencyKey?: string;
 }
 
 export class UpdateNotificationDto {
