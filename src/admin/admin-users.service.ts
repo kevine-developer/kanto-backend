@@ -144,6 +144,7 @@ export class AdminUsersService implements OnApplicationBootstrap {
     search?: string,
     roleFilter?: string,
     statusFilter?: string,
+    tierFilter?: string,
   ) {
     const { page, limit, skip } = calculatePagination({
       page: pageStr,
@@ -163,11 +164,16 @@ export class AdminUsersService implements OnApplicationBootstrap {
       where.role = roleFilter.toUpperCase();
     }
 
+    if (tierFilter && tierFilter !== 'ALL') {
+      where.tier = tierFilter.toUpperCase();
+    }
+
     if (statusFilter === 'BANNED') {
       where.banned = true;
     } else if (statusFilter === 'ACTIVE') {
       where.OR = [{ banned: false }, { banned: null }];
     }
+
 
     const [total, users] = await Promise.all([
       this.prisma.user.count({ where }),
@@ -393,6 +399,71 @@ export class AdminUsersService implements OnApplicationBootstrap {
       user: updated,
     };
   }
+
+  /**
+   * Met à jour le tier d'un utilisateur (ex: FREE -> VIP pour désactiver les publicités).
+   */
+  async updateTier(id: string, tier: string, requestingUserId: string) {
+    const normalizedTier = tier?.toUpperCase();
+    if (!['FREE', 'PREMIUM', 'VIP'].includes(normalizedTier)) {
+      throw new BadRequestException(
+        'Tier invalide. Valeurs acceptées : FREE, PREMIUM, VIP',
+      );
+    }
+
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      select: { id: true, name: true, email: true, role: true, tier: true },
+    });
+    if (!user) {
+      throw new NotFoundException('Utilisateur introuvable.');
+    }
+
+    const updated = await this.prisma.user.update({
+      where: { id },
+      data: { tier: normalizedTier as any },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        tier: true,
+      },
+    });
+
+    const isNoAds = normalizedTier === 'VIP' || normalizedTier === 'PREMIUM';
+    this.logger.log(
+      `👑 [Admin] Statut de ${updated.email} mis à jour : ${user.tier} → ${normalizedTier} (Publicités désactivées: ${isNoAds}) par admin ${requestingUserId}`,
+    );
+
+    // Enregistrement dans le journal d'audit
+    await this.auditService.logAction({
+      userId: requestingUserId,
+      action: 'USER_TIER_CHANGED',
+      targetType: 'USER',
+      targetId: id,
+      targetLabel: user.name || user.email,
+      reason: isNoAds
+        ? 'Attribution statut VIP / Désactivation des publicités'
+        : 'Rétablissement du compte standard FREE',
+      details: {
+        previousTier: user.tier,
+        newTier: normalizedTier,
+        adsDisabled: isNoAds,
+      },
+    });
+
+    return {
+      success: true,
+      message: `Statut de ${updated.name || updated.email} mis à jour vers ${normalizedTier}.${
+        isNoAds
+          ? ' Les publicités sont désactivées sur son application mobile.'
+          : ' Les publicités standard sont actives.'
+      }`,
+      user: updated,
+    };
+  }
+
 
   /**
    * Suspend ou bannit un utilisateur avec motif obligatoire.

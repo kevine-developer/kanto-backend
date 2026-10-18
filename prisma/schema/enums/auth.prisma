@@ -12,4 +12,6 @@ enum UserRole {
 enum SubscriptionTier {
   FREE
   PREMIUM
+  VIP
 }
+
