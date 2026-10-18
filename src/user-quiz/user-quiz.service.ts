@@ -180,7 +180,9 @@ export class UserQuizService {
     }
 
     const playedDeckIds = new Set(
-      await this.redisService.sMembers(`ugc:user_played_decks:${_currentUserId}`),
+      await this.redisService.sMembers(
+        `ugc:user_played_decks:${_currentUserId}`,
+      ),
     );
 
     return decks.map((deck) => ({

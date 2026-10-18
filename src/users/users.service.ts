@@ -238,43 +238,44 @@ export class UsersService {
     };
 
     if (currentUserId && currentUserId !== targetUserId) {
-      const [friendship, existingEncouragement, h2hSessions] = await Promise.all([
-        this.prisma.friendship.findFirst({
-          where: {
-            OR: [
-              { senderId: currentUserId, receiverId: targetUserId },
-              { senderId: targetUserId, receiverId: currentUserId },
-            ],
-          },
-        }),
-        this.prisma.encouragement.findUnique({
-          where: {
-            senderId_receiverId_date: {
-              senderId: currentUserId,
-              receiverId: targetUserId,
-              date: new Date(
-                Date.UTC(
-                  new Date().getUTCFullYear(),
-                  new Date().getUTCMonth(),
-                  new Date().getUTCDate(),
-                ),
-              ),
+      const [friendship, existingEncouragement, h2hSessions] =
+        await Promise.all([
+          this.prisma.friendship.findFirst({
+            where: {
+              OR: [
+                { senderId: currentUserId, receiverId: targetUserId },
+                { senderId: targetUserId, receiverId: currentUserId },
+              ],
             },
-          },
-        }),
-        this.prisma.duelSession.findMany({
-          where: {
-            status: 'FINISHED',
-            OR: [
-              { player1Id: currentUserId, player2Id: targetUserId },
-              { player1Id: targetUserId, player2Id: currentUserId },
-            ],
-          },
-          select: {
-            winnerId: true,
-          },
-        }),
-      ]);
+          }),
+          this.prisma.encouragement.findUnique({
+            where: {
+              senderId_receiverId_date: {
+                senderId: currentUserId,
+                receiverId: targetUserId,
+                date: new Date(
+                  Date.UTC(
+                    new Date().getUTCFullYear(),
+                    new Date().getUTCMonth(),
+                    new Date().getUTCDate(),
+                  ),
+                ),
+              },
+            },
+          }),
+          this.prisma.duelSession.findMany({
+            where: {
+              status: 'FINISHED',
+              OR: [
+                { player1Id: currentUserId, player2Id: targetUserId },
+                { player1Id: targetUserId, player2Id: currentUserId },
+              ],
+            },
+            select: {
+              winnerId: true,
+            },
+          }),
+        ]);
 
       if (friendship) {
         friendshipId = friendship.id;

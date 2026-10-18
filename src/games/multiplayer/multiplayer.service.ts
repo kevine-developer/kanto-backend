@@ -392,11 +392,17 @@ export class MultiplayerService {
 
     // Validation et sécurisation spécifique au Mode Duel 1v1 (Fail-Fast)
     const is1v1Duel = Boolean(dto.opponentId);
-    let opponentUser: { id: string; name: string | null; image: string | null } | null = null;
+    let opponentUser: {
+      id: string;
+      name: string | null;
+      image: string | null;
+    } | null = null;
 
     if (is1v1Duel) {
       if (dto.opponentId === userId) {
-        throw new BadRequestException('Vous ne pouvez pas vous défier vous-même.');
+        throw new BadRequestException(
+          'Vous ne pouvez pas vous défier vous-même.',
+        );
       }
 
       opponentUser = await this.prisma.user.findUnique({
@@ -519,7 +525,8 @@ export class MultiplayerService {
         player1Name: playerName,
         player1Avatar: playerAvatar,
         player2Id: is1v1Duel && opponentUser ? opponentUser.id : null,
-        player2Name: is1v1Duel && opponentUser ? (opponentUser.name || 'Adversaire') : null,
+        player2Name:
+          is1v1Duel && opponentUser ? opponentUser.name || 'Adversaire' : null,
         player2Avatar: is1v1Duel && opponentUser ? opponentUser.image : null,
         totalQuestions: questionIds.length,
         timePerQuestion,
@@ -826,7 +833,10 @@ export class MultiplayerService {
       where: { code: cleanCode },
     });
 
-    if (session && (session.status === 'WAITING' || session.status === 'READY')) {
+    if (
+      session &&
+      (session.status === 'WAITING' || session.status === 'READY')
+    ) {
       await this.prisma.duelSession.update({
         where: { id: session.id },
         data: {
@@ -922,18 +932,24 @@ export class MultiplayerService {
       });
 
       if (!freshSession) {
-        throw new NotFoundException(`Ce salon n'existe pas ou a expiré (${cleanCode}).`);
+        throw new NotFoundException(
+          `Ce salon n'existe pas ou a expiré (${cleanCode}).`,
+        );
       }
 
       if (freshSession.status === 'CANCELLED') {
-        throw new BadRequestException('Ce salon a été fermé par son organisateur.');
+        throw new BadRequestException(
+          'Ce salon a été fermé par son organisateur.',
+        );
       }
 
       if (freshSession.status === 'FINISHED') {
         throw new BadRequestException('Cette partie est déjà terminée.');
       }
 
-      const existingInTx = freshSession.players.find((p) => p.userId === userId);
+      const existingInTx = freshSession.players.find(
+        (p) => p.userId === userId,
+      );
 
       // Si la session a déjà démarré et que l'utilisateur n'en fait pas déjà partie
       if (
@@ -964,7 +980,9 @@ export class MultiplayerService {
       } else {
         // Mode multijoueur classique : limite selon maxPlayers (par défaut 5)
         const realContenders = hostIsSpectator
-          ? freshSession.players.filter((p) => p.userId !== freshSession.player1Id)
+          ? freshSession.players.filter(
+              (p) => p.userId !== freshSession.player1Id,
+            )
           : freshSession.players;
 
         const maxAllowed = freshSession.maxPlayers || 5;
@@ -996,7 +1014,10 @@ export class MultiplayerService {
             data: {
               player2Name: playerName,
               player2Avatar: playerAvatar,
-              status: freshSession.status === 'WAITING' ? 'READY' : freshSession.status,
+              status:
+                freshSession.status === 'WAITING'
+                  ? 'READY'
+                  : freshSession.status,
             },
           });
         }
@@ -1059,7 +1080,9 @@ export class MultiplayerService {
     }
 
     if (session.status !== 'WAITING' && session.status !== 'READY') {
-      throw new BadRequestException('La partie a déjà démarré ou n’est plus disponible.');
+      throw new BadRequestException(
+        'La partie a déjà démarré ou n’est plus disponible.',
+      );
     }
 
     // Exiger au moins 2 vrais joueurs actifs (non-spectateurs) pour démarrer la partie
@@ -1078,8 +1101,12 @@ export class MultiplayerService {
 
     // Règle stricte Duel 1v1 : Les deux joueurs doivent être connectés avant de pouvoir démarrer
     if (session.player2Id) {
-      const hasPlayer1 = session.players.some((p) => p.userId === session.player1Id);
-      const hasPlayer2 = session.players.some((p) => p.userId === session.player2Id);
+      const hasPlayer1 = session.players.some(
+        (p) => p.userId === session.player1Id,
+      );
+      const hasPlayer2 = session.players.some(
+        (p) => p.userId === session.player2Id,
+      );
       if (!hasPlayer1 || !hasPlayer2) {
         throw new BadRequestException(
           'Les deux joueurs du duel doivent être connectés avant de lancer la confrontation.',
@@ -1119,7 +1146,9 @@ export class MultiplayerService {
           7200,
         );
       } catch (err: unknown) {
-        this.logger.warn(`Impossible de figer le snapshot du deck : ${err}`);
+        this.logger.warn(
+          `Impossible de figer le snapshot du deck : ${String(err)}`,
+        );
       }
     }
 
@@ -1222,7 +1251,11 @@ export class MultiplayerService {
     }
 
     // Garde-fou 1v1 : Seuls les deux participants désignés du duel ont le droit de répondre
-    if (session.player2Id && userId !== session.player1Id && userId !== session.player2Id) {
+    if (
+      session.player2Id &&
+      userId !== session.player1Id &&
+      userId !== session.player2Id
+    ) {
       throw new ForbiddenException(
         'Vous n’êtes pas autorisé à soumettre de réponses dans ce duel.',
       );

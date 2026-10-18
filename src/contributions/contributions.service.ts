@@ -10,7 +10,10 @@ import {
   Optional,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
-import { ContributionStatus, ReportReason } from '../../generated/prisma/client.js';
+import {
+  ContributionStatus,
+  ReportReason,
+} from '../../generated/prisma/client.js';
 import { CreateContributionDto } from './dto/create-contribution.dto.js';
 import { CreateKabaryContributionDto } from './dto/create-kabary-contribution.dto.js';
 import { CreateProverbeContributionDto } from './dto/create-proverbe-contribution.dto.js';
@@ -781,7 +784,11 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
   // ───────────────────────────────────────────────────────────────────────────
   // GET /contributions/:id
   // ───────────────────────────────────────────────────────────────────────────
-  async findOne(id: string, userId?: string, role?: string) {
+  async findOne(
+    id: string,
+    userId?: string,
+    role?: string,
+  ): Promise<Record<string, any>> {
     const contribution = await this.prisma.contribution.findUnique({
       where: { id },
       select: {
@@ -1101,7 +1108,8 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
 
     return {
       success: true,
-      message: 'Signalement du commentaire transmis avec succès aux modérateurs',
+      message:
+        'Signalement du commentaire transmis avec succès aux modérateurs',
       reportId: report.id,
     };
   }
@@ -1203,17 +1211,24 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
           updatedAt: { gte: startOfWeek },
         },
       }),
-      this.prisma.contentReport.count({
-        where: {
-          OR: [
-            { contributionId: { not: null } },
-            { commentId: { not: null } },
-            { description: { startsWith: '[CONTRIBUTION:' } },
-            { description: { startsWith: '[COMMENT:' } },
-          ],
-          resolved: false,
-        },
-      }),
+      this.prisma.contentReport
+        .count({
+          where: {
+            OR: [
+              { contributionId: { not: null } },
+              { commentId: { not: null } },
+              { description: { startsWith: '[CONTRIBUTION:' } },
+              { description: { startsWith: '[COMMENT:' } },
+            ],
+            resolved: false,
+          },
+        })
+        .catch((err: unknown) => {
+          this.logger.warn(
+            `[AdminStats] Impossible de compter les signalements (fallback à 0): ${String(err)}`,
+          );
+          return 0;
+        }),
     ]);
 
     return {
@@ -1234,39 +1249,46 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
   // GET /contributions/admin/reports (Admin)
   // ───────────────────────────────────────────────────────────────────────────
   async getAdminReports() {
-    return this.prisma.contentReport.findMany({
-      where: {
-        OR: [
-          { contributionId: { not: null } },
-          { commentId: { not: null } },
-          { description: { startsWith: '[CONTRIBUTION:' } },
-          { description: { startsWith: '[COMMENT:' } },
-        ],
-        resolved: false,
-      },
-      include: {
-        user: { select: { id: true, name: true, email: true, image: true } },
-        contribution: {
-          select: {
-            id: true,
-            category: true,
-            textMg: true,
-            textFr: true,
-            status: true,
-            user: { select: { id: true, name: true } },
+    try {
+      return await this.prisma.contentReport.findMany({
+        where: {
+          OR: [
+            { contributionId: { not: null } },
+            { commentId: { not: null } },
+            { description: { startsWith: '[CONTRIBUTION:' } },
+            { description: { startsWith: '[COMMENT:' } },
+          ],
+          resolved: false,
+        },
+        include: {
+          user: { select: { id: true, name: true, email: true, image: true } },
+          contribution: {
+            select: {
+              id: true,
+              category: true,
+              textMg: true,
+              textFr: true,
+              status: true,
+              user: { select: { id: true, name: true } },
+            },
+          },
+          comment: {
+            select: {
+              id: true,
+              content: true,
+              user: { select: { id: true, name: true } },
+            },
           },
         },
-        comment: {
-          select: {
-            id: true,
-            content: true,
-            user: { select: { id: true, name: true } },
-          },
-        },
-      },
-      orderBy: { createdAt: 'desc' },
-      take: 50,
-    });
+        orderBy: { createdAt: 'desc' },
+        take: 50,
+      });
+    } catch (err: unknown) {
+      this.logger.error(
+        `[AdminReports] Erreur lors de la récupération des signalements: ${String(err)}`,
+      );
+      return [];
+    }
   }
 
   // ───────────────────────────────────────────────────────────────────────────

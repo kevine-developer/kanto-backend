@@ -270,7 +270,9 @@ describe('LeaderboardService', () => {
 
     it('invalide correctement le cache Redis via invalidateCache()', async () => {
       await service.invalidateCache();
-      expect(redisMock.delByPattern).toHaveBeenCalledWith('leaderboard:cache:*');
+      expect(redisMock.delByPattern).toHaveBeenCalledWith(
+        'leaderboard:cache:*',
+      );
     });
 
     it('ne doit exposer aucune donnée privée (email, token) dans les entrées', async () => {

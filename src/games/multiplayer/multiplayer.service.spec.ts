@@ -3,7 +3,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import {
   BadRequestException,
   ForbiddenException,
-  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { MultiplayerService } from './multiplayer.service.js';
@@ -29,23 +28,25 @@ describe('MultiplayerService', () => {
 
     const memoryCache = new Map<string, any>();
     redisMock = {
-      get: jest.fn(async (key: string) => memoryCache.get(key) ?? null),
-      set: jest.fn(async (key: string, val: any) => {
+      get: jest.fn((key: string) =>
+        Promise.resolve(memoryCache.get(key) ?? null),
+      ),
+      set: jest.fn((key: string, val: any) => {
         memoryCache.set(key, val);
-        return true;
+        return Promise.resolve(true);
       }),
-      del: jest.fn(async (key: string) => {
+      del: jest.fn((key: string) => {
         memoryCache.delete(key);
-        return 1;
+        return Promise.resolve(1);
       }),
     };
 
     notificationsMock = {
-      createNotification: jest.fn(async () => ({ id: 'notif_1' })),
+      createNotification: jest.fn(() => Promise.resolve({ id: 'notif_1' })),
     };
 
     userQuizMock = {
-      recordPlay: jest.fn(async () => ({ success: true })),
+      recordPlay: jest.fn(() => Promise.resolve({ success: true })),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -63,19 +64,19 @@ describe('MultiplayerService', () => {
 
   describe('createGame - Règles de jauge et sécurité', () => {
     it('devrait refuser la création si l’utilisateur est un invité anonyme', async () => {
-      await expect(
-        service.createGame('guest_123456', {}),
-      ).rejects.toThrow(UnauthorizedException);
+      await expect(service.createGame('guest_123456', {})).rejects.toThrow(
+        UnauthorizedException,
+      );
     });
 
     it('devrait créer une session avec maxPlayers: 5 et enregistrer l’hôte spectateur si demandé', async () => {
-      (prismaMock.user.findUnique as jest.Mock).mockResolvedValue({
+      (prismaMock.user.findUnique as any).mockResolvedValue({
         id: 'user_host',
         name: 'Andry Animateur',
         image: null,
       });
 
-      (prismaMock.trueFalseQuestion.findMany as jest.Mock).mockResolvedValue([
+      (prismaMock.trueFalseQuestion.findMany as any).mockResolvedValue([
         { id: 'q1' },
         { id: 'q2' },
         { id: 'q3' },
@@ -83,9 +84,9 @@ describe('MultiplayerService', () => {
         { id: 'q5' },
       ]);
 
-      (prismaMock.duelSession.findUnique as jest.Mock).mockResolvedValue(null);
+      (prismaMock.duelSession.findUnique as any).mockResolvedValue(null);
 
-      (prismaMock.duelSession.create as jest.Mock).mockImplementation((args: any) =>
+      (prismaMock.duelSession.create as any).mockImplementation((args: any) =>
         Promise.resolve({
           id: 'sess_1',
           code: args.data.code,
@@ -119,12 +120,12 @@ describe('MultiplayerService', () => {
     });
 
     it('devrait interdire d’utiliser un deck privé appartenant à un autre utilisateur', async () => {
-      (prismaMock.user.findUnique as jest.Mock).mockResolvedValue({
+      (prismaMock.user.findUnique as any).mockResolvedValue({
         id: 'user_voleur',
         name: 'Curieux',
       });
 
-      (prismaMock.userQuizSet.findUnique as jest.Mock).mockResolvedValue({
+      (prismaMock.userQuizSet.findUnique as any).mockResolvedValue({
         id: 'deck_private_1',
         title: 'Quiz Secret de Famille',
         authorId: 'user_autre',
@@ -157,8 +158,10 @@ describe('MultiplayerService', () => {
         ],
       };
 
-      (prismaMock.duelSession.findUnique as jest.Mock).mockResolvedValue(existingSession);
-      (prismaMock.user.findUnique as jest.Mock).mockResolvedValue({
+      (prismaMock.duelSession.findUnique as any).mockResolvedValue(
+        existingSession,
+      );
+      (prismaMock.user.findUnique as any).mockResolvedValue({
         id: 'user_6',
         name: 'Sixième Joueur',
       });
@@ -188,21 +191,23 @@ describe('MultiplayerService', () => {
         gameType: 'TRUE_FALSE',
       };
 
-      (prismaMock.duelSession.findUnique as jest.Mock).mockResolvedValue(sessionWithSpectatorHost);
-      (prismaMock.user.findUnique as jest.Mock).mockResolvedValue({
+      (prismaMock.duelSession.findUnique as any).mockResolvedValue(
+        sessionWithSpectatorHost,
+      );
+      (prismaMock.user.findUnique as any).mockResolvedValue({
         id: 'joueur_5',
         name: 'Cinquième Vrai Joueur',
       });
-      (prismaMock.duelPlayer.create as jest.Mock).mockResolvedValue({
+      (prismaMock.duelPlayer.create as any).mockResolvedValue({
         id: 'p5',
         userId: 'joueur_5',
         sessionId: 'sess_spec',
       });
-      (prismaMock.duelPlayer.findMany as jest.Mock).mockResolvedValue([
+      (prismaMock.duelPlayer.findMany as any).mockResolvedValue([
         ...sessionWithSpectatorHost.players,
         { userId: 'joueur_5', isHost: false },
       ]);
-      (prismaMock.trueFalseQuestion.findMany as jest.Mock).mockResolvedValue([
+      (prismaMock.trueFalseQuestion.findMany as any).mockResolvedValue([
         { id: 'q1', prompt: 'P1', choices: [], answerIndex: 0 },
       ]);
 
@@ -217,7 +222,7 @@ describe('MultiplayerService', () => {
     it('devrait refuser qu’un hôte spectateur soumette une réponse', async () => {
       await service.setHostSpectator('ANSW01', true);
 
-      (prismaMock.duelSession.findUnique as jest.Mock).mockResolvedValue({
+      (prismaMock.duelSession.findUnique as any).mockResolvedValue({
         id: 'sess_ans',
         code: 'ANSW01',
         status: 'IN_PROGRESS',
@@ -245,7 +250,7 @@ describe('MultiplayerService', () => {
         hasAnsweredCurrent: true,
       };
 
-      (prismaMock.duelSession.findUnique as jest.Mock).mockResolvedValue({
+      (prismaMock.duelSession.findUnique as any).mockResolvedValue({
         id: 'sess_idem',
         code: 'IDEM01',
         status: 'IN_PROGRESS',
@@ -253,7 +258,7 @@ describe('MultiplayerService', () => {
         players: [mockPlayer],
       });
 
-      (prismaMock.duelAnswer.findFirst as jest.Mock).mockResolvedValue({
+      (prismaMock.duelAnswer.findFirst as any).mockResolvedValue({
         id: 'ans_1',
         isCorrect: true,
         pointsAwarded: 150,
@@ -276,7 +281,7 @@ describe('MultiplayerService', () => {
 
   describe('Mode Duel 1v1 - Isolation stricte et règles métier', () => {
     it('devrait refuser qu’un joueur se défie lui-même', async () => {
-      (prismaMock.user.findUnique as jest.Mock).mockResolvedValue({
+      (prismaMock.user.findUnique as any).mockResolvedValue({
         id: 'user_same',
         name: 'Même Joueur',
       });
@@ -289,7 +294,7 @@ describe('MultiplayerService', () => {
     });
 
     it('devrait créer une session 1v1 avec maxPlayers: 2 et player2Id verrouillé', async () => {
-      (prismaMock.user.findUnique as jest.Mock).mockImplementation(
+      (prismaMock.user.findUnique as any).mockImplementation(
         ({ where }: any) => {
           if (where.id === 'challenger_1') {
             return Promise.resolve({ id: 'challenger_1', name: 'Challenger' });
@@ -305,7 +310,7 @@ describe('MultiplayerService', () => {
         },
       );
 
-      (prismaMock.trueFalseQuestion.findMany as jest.Mock).mockResolvedValue([
+      (prismaMock.trueFalseQuestion.findMany as any).mockResolvedValue([
         { id: 'q1' },
         { id: 'q2' },
         { id: 'q3' },
@@ -313,10 +318,10 @@ describe('MultiplayerService', () => {
         { id: 'q5' },
       ]);
 
-      (prismaMock.duelSession.findFirst as jest.Mock).mockResolvedValue(null);
-      (prismaMock.duelSession.findUnique as jest.Mock).mockResolvedValue(null);
+      (prismaMock.duelSession.findFirst as any).mockResolvedValue(null);
+      (prismaMock.duelSession.findUnique as any).mockResolvedValue(null);
 
-      (prismaMock.duelSession.create as jest.Mock).mockImplementation((args: any) =>
+      (prismaMock.duelSession.create as any).mockImplementation((args: any) =>
         Promise.resolve({
           id: 'sess_1v1',
           code: args.data.code,
@@ -358,8 +363,8 @@ describe('MultiplayerService', () => {
         players: [{ userId: 'player_a', isHost: true }],
       };
 
-      (prismaMock.duelSession.findUnique as jest.Mock).mockResolvedValue(privateDuel);
-      (prismaMock.user.findUnique as jest.Mock).mockResolvedValue({
+      (prismaMock.duelSession.findUnique as any).mockResolvedValue(privateDuel);
+      (prismaMock.user.findUnique as any).mockResolvedValue({
         id: 'intruder_c',
         name: 'Intrus',
       });
@@ -383,8 +388,8 @@ describe('MultiplayerService', () => {
         ],
       };
 
-      (prismaMock.duelSession.findUnique as jest.Mock).mockResolvedValue(fullDuel);
-      (prismaMock.user.findUnique as jest.Mock).mockResolvedValue({
+      (prismaMock.duelSession.findUnique as any).mockResolvedValue(fullDuel);
+      (prismaMock.user.findUnique as any).mockResolvedValue({
         id: 'intruder_d',
         name: 'Autre Intrus',
       });
@@ -425,30 +430,34 @@ describe('MultiplayerService', () => {
         ],
       };
 
-      (prismaMock.duelSession.findUnique as jest.Mock).mockResolvedValue(finishedDuel);
-      (prismaMock.duelSession.update as jest.Mock).mockResolvedValue({
+      (prismaMock.duelSession.findUnique as any).mockResolvedValue(
+        finishedDuel,
+      );
+      (prismaMock.duelSession.update as any).mockResolvedValue({
         ...finishedDuel,
         status: 'FINISHED',
         winnerId: null,
       });
-      (prismaMock.duelPlayer.update as jest.Mock).mockResolvedValue({});
-      (prismaMock.user.findUnique as jest.Mock).mockResolvedValue({ id: 'user_ok' });
-      (prismaMock.userProgress.findUnique as jest.Mock).mockResolvedValue({
+      (prismaMock.duelPlayer.update as any).mockResolvedValue({});
+      (prismaMock.user.findUnique as any).mockResolvedValue({
+        id: 'user_ok',
+      });
+      (prismaMock.userProgress.findUnique as any).mockResolvedValue({
         userId: 'user_ok',
         totalXp: 100,
         level: 1,
         coins: 0,
       });
-      (prismaMock.userProgress.update as jest.Mock).mockResolvedValue({});
+      (prismaMock.userProgress.update as any).mockResolvedValue({});
 
       const outcome = await service.advanceToNextRoundOrFinish('DRAW01');
 
       expect(outcome.isFinished).toBe(true);
       expect(outcome.winnerId).toBeNull();
-      expect(outcome.finalLeaderboard[0].rank).toBe(1);
-      expect(outcome.finalLeaderboard[1].rank).toBe(1);
-      expect(outcome.finalLeaderboard[0].earnedXp).toBe(75);
-      expect(outcome.finalLeaderboard[1].earnedXp).toBe(75);
+      expect(outcome.finalLeaderboard![0].rank).toBe(1);
+      expect(outcome.finalLeaderboard![1].rank).toBe(1);
+      expect(outcome.finalLeaderboard![0].earnedXp).toBe(75);
+      expect(outcome.finalLeaderboard![1].earnedXp).toBe(75);
     });
 
     it('devrait annuler la session en base si le défi est décliné', async () => {
@@ -458,13 +467,19 @@ describe('MultiplayerService', () => {
         status: 'WAITING',
       };
 
-      (prismaMock.duelSession.findUnique as jest.Mock).mockResolvedValue(pendingSession);
-      (prismaMock.duelSession.update as jest.Mock).mockResolvedValue({
+      (prismaMock.duelSession.findUnique as any).mockResolvedValue(
+        pendingSession,
+      );
+      (prismaMock.duelSession.update as any).mockResolvedValue({
         ...pendingSession,
         status: 'CANCELLED',
       });
 
-      const res = await service.declineDuelChallenge('DECL01', 'opp_1', 'Rakoto');
+      const res = await service.declineDuelChallenge(
+        'DECL01',
+        'opp_1',
+        'Rakoto',
+      );
 
       expect(res.code).toBe('DECL01');
       expect(res.declinerName).toBe('Rakoto');
