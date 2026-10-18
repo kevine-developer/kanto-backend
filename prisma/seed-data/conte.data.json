@@ -348,7 +348,7 @@
       "textMg": "Tsy ny hery na ny herisetra no mahatonga ny olona ho mpanjaka, fa ny hatsaran-toetra sy ny fahendrena.",
       "textFr": "Ce n'est pas la force ni la violence qui font un roi, mais la gentillesse et la sagesse."
     },
-    "audioUrlFr": "https://res.cloudinary.com/dhe585mze/video/upload/v1788024442/kanto/audio/contes/ny-vorona-nifidy-mpanjaka-7-fr.mp3"
+    "audioUrlFr": null
   },
   {
     "id": "CONTEID-9",
@@ -499,8 +499,8 @@
       "textMg": "Ny angano dia mampianatra fa ny hatsaram-panahy sy ny fahaizana mamaha olana dia mahery kokoa noho ny fialonana sy ny ratsy fanahy, ary ny fahamarinana dia mivoaka mandrakariva.",
       "textFr": "Le conte enseigne que la gentillesse et la ruse sont plus puissantes que la jalousie et la malice, et que la vérité finit toujours par éclater."
     },
-    "audioUrlMg": "https://res.cloudinary.com/dhe585mze/video/upload/v1788024037/kanto/audio/contes/farakely-sy-itrimobe-9-mg.wav",
-    "audioUrlFr": "https://res.cloudinary.com/dhe585mze/video/upload/v1788023737/kanto/audio/contes/farakely-sy-itrimobe-9-fr.wav"
+    "audioUrlMg": null,
+    "audioUrlFr": null
   },
   {
     "id": "CONTEID-11",
@@ -627,7 +627,7 @@
       "textMg": "Ity angano ity dia mampianatra fa ny fahendrena sy ny fitondran-tena tsara dia mendrika ny valisoa, fa ny fanambinana sy ny fitiavan-tena kosa dia mety hitarika amin'ny fatiantoka.",
       "textFr": "Ce conte enseigne que la sagesse et le bon comportement sont dignes de récompense, tandis que l'avidité et l'égoïsme peuvent mener à la perte."
     },
-    "audioUrlFr": "https://res.cloudinary.com/dhe585mze/video/upload/v1788024448/kanto/audio/contes/ny-nofinizy-telo-mirahalahy-11-fr.wav"
+    "audioUrlFr": null
   },
   {
     "id": "CONTEID-13",
@@ -707,6 +707,6 @@
       "textMg": "Ny angano dia mampianatra fa ny hakamoana dia mety hitarika ho amin'ny fatiantoka sy ny fahavakisana, ary ny asa mafy sy ny fikirizana no mitondra soa.",
       "textFr": "Ce conte enseigne que la paresse peut entraîner des pertes et des revers, tandis que le travail acharné et la persévérance apportent de bons résultats."
     },
-    "audioUrlFr": "https://res.cloudinary.com/dhe585mze/video/upload/v1788024445/kanto/audio/contes/ny-bitro-sy-ny-rambony-12-fr.wav"
+    "audioUrlFr": null
   }
 ]

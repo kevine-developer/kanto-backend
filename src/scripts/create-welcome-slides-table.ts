@@ -32,7 +32,7 @@ export const DEFAULT_WELCOME_SLIDES = [
     titleMg: 'Ikotofetsy sy Imahakà',
     tag: 'Récits & Audio',
     imageUrl:
-      'https://res.cloudinary.com/dhe585mze/image/upload/v1788022553/kanto/images/onboarding/capture_d__cran_2026-06-15_183248_1788022552959.png',
+      'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&auto=format&fit=crop&q=80',
     accentColor: '#4A6741',
     orderIndex: 0,
   },
@@ -44,7 +44,7 @@ export const DEFAULT_WELCOME_SLIDES = [
     titleMg: 'Kabary am-panambadiana',
     tag: 'Poésie & Rituels',
     imageUrl:
-      'https://res.cloudinary.com/dhe585mze/image/upload/v1788022563/kanto/images/onboarding/capture_d__cran_2026-01-08_161138_1788022563950.png',
+      'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=800&auto=format&fit=crop&q=80',
     accentColor: '#3E6B55',
     orderIndex: 1,
   },
@@ -56,7 +56,7 @@ export const DEFAULT_WELCOME_SLIDES = [
     titleMg: 'Ny Fihavanana no lehibe',
     tag: 'Sagesses Malagasy',
     imageUrl:
-      'https://res.cloudinary.com/dhe585mze/image/upload/v1788022560/kanto/images/onboarding/capture_d__cran_2025-12-08_164642_1788022559754.png',
+      'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=800&auto=format&fit=crop&q=80',
     accentColor: '#5C7A3E',
     orderIndex: 2,
   },
@@ -92,7 +92,7 @@ export const DEFAULT_WELCOME_SLIDES = [
     titleMg: 'Marina sa Diso',
     tag: 'Quiz & Multijoueur',
     imageUrl:
-      'https://res.cloudinary.com/dhe585mze/image/upload/v1753433200/Photoroom-20250725_025113719_voarxl.png',
+      'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&auto=format&fit=crop&q=80',
     accentColor: '#C58B38',
     orderIndex: 5,
   },
