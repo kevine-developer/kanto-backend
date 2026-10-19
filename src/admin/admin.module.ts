@@ -6,13 +6,14 @@ import { AdminCoinsController } from './admin-coins.controller.js';
 import { AdminLegalController } from './admin-legal.controller.js';
 import { AdminDecksController } from './admin-decks.controller.js';
 import { UserQuizModule } from '../user-quiz/user-quiz.module.js';
+import { NotificationsModule } from '../notifications/notifications.module.js';
 
 import { AdminStatsController } from './admin-stats.controller.js';
 import { AdminEmailsController } from './admin-emails.controller.js';
 import { AdminAuditService } from './admin-audit.service.js';
 
 @Module({
-  imports: [UserQuizModule],
+  imports: [UserQuizModule, NotificationsModule],
   controllers: [
     AdminUsersController,
     AdminSystemController,

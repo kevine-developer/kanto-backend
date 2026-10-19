@@ -71,6 +71,8 @@ export class AdminUsersController {
   async updateTier(
     @Param('id') id: string,
     @Body('tier') tier: string,
+    @Body('durationDays') durationDays?: number,
+    @Body('reason') reason?: string,
     @Session() session?: UserSession,
     @Req() req?: Request,
   ) {
@@ -78,6 +80,8 @@ export class AdminUsersController {
       id,
       tier,
       resolveAdminId(session, req),
+      durationDays ? Number(durationDays) : undefined,
+      reason,
     );
   }
 

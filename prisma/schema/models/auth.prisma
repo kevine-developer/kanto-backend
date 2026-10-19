@@ -11,6 +11,7 @@ model User {
   image         String?
   role          UserRole         @default(USER)
   tier          SubscriptionTier @default(FREE)
+  tierExpiresAt DateTime?        // Date d'expiration du statut VIP/Premium (null = permanent)
   pushToken     String?          // Expo Push Notification Token (ex: ExponentPushToken[xxx])
   termsAcceptedAt DateTime?      // Horodatage acceptation CGU & politique de confidentialité
   termsVersion    String?        @default("1.0") // Version des CGU acceptées
@@ -49,6 +50,7 @@ model User {
   // Relations UGC (Quiz persos)
   quizSets               UserQuizSet[]
 
+  @@index([tier, tierExpiresAt])
   @@map("users")
 }
 

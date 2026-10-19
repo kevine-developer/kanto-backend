@@ -10,6 +10,7 @@ import { DuplicateDetectionService } from './duplicate-detection.service.js';
 import { ContentModerationService } from './moderation/content-moderation.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { NotificationsService } from '../notifications/notifications.service.js';
+import { EventNotificationService } from '../notifications/event-notification.service.js';
 import { RedisService } from '../redis/redis.service.js';
 import {
   createPrismaMock,
@@ -23,6 +24,9 @@ describe('ContributionsService - Deadlines & Permissions', () => {
   const mockNotificationsService = {
     create: (jest.fn as any)().mockResolvedValue({}),
     createNotification: (jest.fn as any)().mockResolvedValue({}),
+  };
+  const mockEventNotificationService = {
+    dispatchNotificationEvent: (jest.fn as any)().mockResolvedValue({ success: true }),
   };
   const mockRedisService = createAvailableRedisMock();
   const mockDuplicateDetectionService = {
@@ -47,6 +51,7 @@ describe('ContributionsService - Deadlines & Permissions', () => {
         ContributionsService,
         { provide: PrismaService, useValue: prismaMock },
         { provide: NotificationsService, useValue: mockNotificationsService },
+        { provide: EventNotificationService, useValue: mockEventNotificationService },
         { provide: RedisService, useValue: mockRedisService },
         {
           provide: DuplicateDetectionService,

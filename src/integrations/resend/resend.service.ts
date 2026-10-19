@@ -13,6 +13,12 @@ import {
   buildContributionStatusUpdateEmail,
   buildSecurityChangeEmail,
   buildAccountDeletionEmail,
+  buildVipGrantedEmail,
+  buildVipExtendedEmail,
+  buildVipExpiringEmail,
+  buildVipExpiredEmail,
+  buildUserBannedEmail,
+  buildUserUnbannedEmail,
 } from './templates/index.js';
 
 export interface SendEmailOptions {
@@ -123,6 +129,50 @@ export interface SecurityChangeEmailOptions {
 }
 
 export interface AccountDeletionEmailOptions {
+  to: string;
+  userName?: string;
+  idempotencyKey?: string;
+}
+
+export interface VipGrantedEmailOptions {
+  to: string;
+  userName?: string;
+  durationDays?: number;
+  expiresAt?: Date | null;
+  idempotencyKey?: string;
+}
+
+export interface VipExtendedEmailOptions {
+  to: string;
+  userName?: string;
+  addedDays: number;
+  newExpiresAt: Date;
+  idempotencyKey?: string;
+}
+
+export interface VipExpiringSoonEmailOptions {
+  to: string;
+  userName?: string;
+  expiresAt: Date;
+  daysRemaining: number;
+  idempotencyKey?: string;
+}
+
+export interface VipExpiredEmailOptions {
+  to: string;
+  userName?: string;
+  idempotencyKey?: string;
+}
+
+export interface UserBannedEmailOptions {
+  to: string;
+  userName?: string;
+  reason: string;
+  banExpires?: Date | null;
+  idempotencyKey?: string;
+}
+
+export interface UserUnbannedEmailOptions {
   to: string;
   userName?: string;
   idempotencyKey?: string;
@@ -901,6 +951,163 @@ export class ResendService {
       recipientName: options.userName,
       idempotencyKey: options.idempotencyKey,
       bypassSuppression: true, // Notification légale RGPD obligatoire
+    });
+  }
+
+  /**
+   * 11. Notification d'attribution du statut VIP (Publicités désactivées).
+   */
+  async sendVipGrantedEmail(
+    options: VipGrantedEmailOptions,
+  ): Promise<SendEmailResult> {
+    const { subject, html, text } = buildVipGrantedEmail({
+      to: options.to,
+      userName: options.userName,
+      durationDays: options.durationDays,
+      expiresAt: options.expiresAt,
+    });
+
+    return this.sendEmail({
+      to: options.to,
+      subject,
+      text,
+      html,
+      templateType: 'VIP_GRANTED',
+      recipientName: options.userName,
+      idempotencyKey: options.idempotencyKey,
+      metadata: {
+        durationDays: options.durationDays,
+        expiresAt: options.expiresAt?.toISOString(),
+      },
+    });
+  }
+
+  /**
+   * 12. Notification de prolongation du statut VIP.
+   */
+  async sendVipExtendedEmail(
+    options: VipExtendedEmailOptions,
+  ): Promise<SendEmailResult> {
+    const { subject, html, text } = buildVipExtendedEmail({
+      to: options.to,
+      userName: options.userName,
+      addedDays: options.addedDays,
+      newExpiresAt: options.newExpiresAt,
+    });
+
+    return this.sendEmail({
+      to: options.to,
+      subject,
+      text,
+      html,
+      templateType: 'VIP_EXTENDED',
+      recipientName: options.userName,
+      idempotencyKey: options.idempotencyKey,
+      metadata: {
+        addedDays: options.addedDays,
+        newExpiresAt: options.newExpiresAt.toISOString(),
+      },
+    });
+  }
+
+  /**
+   * 13. Rappel préventif avant expiration du statut VIP (J-3).
+   */
+  async sendVipExpiringSoonEmail(
+    options: VipExpiringSoonEmailOptions,
+  ): Promise<SendEmailResult> {
+    const { subject, html, text } = buildVipExpiringEmail({
+      to: options.to,
+      userName: options.userName,
+      expiresAt: options.expiresAt,
+      daysRemaining: options.daysRemaining,
+    });
+
+    return this.sendEmail({
+      to: options.to,
+      subject,
+      text,
+      html,
+      templateType: 'VIP_EXPIRING_SOON',
+      recipientName: options.userName,
+      idempotencyKey: options.idempotencyKey,
+      metadata: {
+        expiresAt: options.expiresAt.toISOString(),
+        daysRemaining: options.daysRemaining,
+      },
+    });
+  }
+
+  /**
+   * 14. Notification d'expiration effective du statut VIP (retour à Standard).
+   */
+  async sendVipExpiredEmail(
+    options: VipExpiredEmailOptions,
+  ): Promise<SendEmailResult> {
+    const { subject, html, text } = buildVipExpiredEmail({
+      to: options.to,
+      userName: options.userName,
+    });
+
+    return this.sendEmail({
+      to: options.to,
+      subject,
+      text,
+      html,
+      templateType: 'VIP_EXPIRED',
+      recipientName: options.userName,
+      idempotencyKey: options.idempotencyKey,
+    });
+  }
+
+  /**
+   * 15. Notification administrative de suspension de compte.
+   */
+  async sendUserBannedEmail(
+    options: UserBannedEmailOptions,
+  ): Promise<SendEmailResult> {
+    const { subject, html, text } = buildUserBannedEmail({
+      to: options.to,
+      userName: options.userName,
+      reason: options.reason,
+      banExpires: options.banExpires,
+    });
+
+    return this.sendEmail({
+      to: options.to,
+      subject,
+      text,
+      html,
+      templateType: 'USER_BANNED',
+      recipientName: options.userName,
+      idempotencyKey: options.idempotencyKey,
+      bypassSuppression: true, // Notification de modération/sécurité obligatoire
+      metadata: {
+        banReason: options.reason,
+        banExpires: options.banExpires?.toISOString(),
+      },
+    });
+  }
+
+  /**
+   * 16. Notification administrative de réactivation de compte.
+   */
+  async sendUserUnbannedEmail(
+    options: UserUnbannedEmailOptions,
+  ): Promise<SendEmailResult> {
+    const { subject, html, text } = buildUserUnbannedEmail({
+      to: options.to,
+      userName: options.userName,
+    });
+
+    return this.sendEmail({
+      to: options.to,
+      subject,
+      text,
+      html,
+      templateType: 'USER_UNBANNED',
+      recipientName: options.userName,
+      idempotencyKey: options.idempotencyKey,
     });
   }
 }
