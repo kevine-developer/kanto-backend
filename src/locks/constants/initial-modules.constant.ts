@@ -155,6 +155,17 @@ export const INITIAL_MODULES: DefaultModuleConfig[] = [
     isLocked: false,
     lockReason: null,
   },
+  {
+    key: 'category:raki-teny',
+    type: 'CATEGORY',
+    nameFr: 'Mots Rares & Insolites',
+    nameMg: 'Raki-teny Miafina',
+    imageUrl:
+      'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=600&auto=format&fit=crop&q=80',
+    isLocked: false,
+    lockReason: null,
+    isVisible: true,
+  },
 
   // FONCTIONNALITÉS
   {

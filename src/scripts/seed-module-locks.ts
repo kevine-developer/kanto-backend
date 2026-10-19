@@ -19,13 +19,17 @@ async function main() {
           type: item.type,
           nameFr: item.nameFr,
           nameMg: item.nameMg,
+          imageUrl: item.imageUrl || null,
+          bgImageUrl: item.bgImageUrl || null,
           isLocked: item.isLocked,
           lockReason: item.lockReason,
+          isVisible: item.isVisible !== undefined ? item.isVisible : true,
           minTier: item.minTier || 'FREE',
         },
         update: {
           nameFr: item.nameFr,
           nameMg: item.nameMg,
+          ...(item.imageUrl ? { imageUrl: item.imageUrl } : {}),
         },
       });
     }
