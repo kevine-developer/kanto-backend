@@ -1,0 +1,11 @@
+// ============================================================
+// ENUMS — MOTS RARES & INSOLITES (Raki-teny Miafina)
+// ============================================================
+
+enum WordRarity {
+  LITERAL     // Littéraire / Fomba Fiteny
+  VERY_RARE   // Tena Vitsy Mpampiasa (Très Rare)
+  ARCHAIC     // Ntaolo / Fitenin-drazana (Archaïque)
+  POETIC      // Haisoratra & Kanto (Poétique)
+  PROVERBIAL  // Mifandray amin'ny Ohabolana
+}

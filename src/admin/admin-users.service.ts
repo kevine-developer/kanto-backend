@@ -416,17 +416,28 @@ export class AdminUsersService implements OnApplicationBootstrap {
       throw new NotFoundException('Utilisateur introuvable.');
     }
 
-    const updated = await this.prisma.user.update({
-      where: { id },
-      data: { tier: normalizedTier as any },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        tier: true,
-      },
-    });
+    let updated;
+    try {
+      updated = await this.prisma.user.update({
+        where: { id },
+        data: { tier: normalizedTier as any },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+          tier: true,
+        },
+      });
+    } catch (err) {
+      this.logger.error(
+        `❌ Erreur lors de la mise à jour du statut tier (${normalizedTier}) pour l'utilisateur ${id}:`,
+        err,
+      );
+      throw new BadRequestException(
+        `Impossible d'attribuer le statut ${normalizedTier}. La valeur doit être migrée dans l'enum PostgreSQL SubscriptionTier.`,
+      );
+    }
 
     const isNoAds = normalizedTier === 'VIP' || normalizedTier === 'PREMIUM';
     this.logger.log(

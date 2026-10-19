@@ -100,6 +100,7 @@ export function createPrismaMock() {
     notification: createModelMock(),
     contributionAuditLog: createModelMock(),
     contentReport: createModelMock(),
+    rakiTenyWord: createModelMock(),
 
     // Transactions Prisma
     $transaction: jest.fn<(...args: any[]) => Promise<any>>(),
