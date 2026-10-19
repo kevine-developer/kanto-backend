@@ -112,10 +112,10 @@ export class WelcomeSlidesService implements OnModuleInit {
 
     return this.prisma.welcomeSlide.create({
       data: {
-        title: dto.title,
+        title: dto.title || 'Photo carrousel',
         titleMg: dto.titleMg,
-        badge: dto.badge,
-        badgeMg: dto.badgeMg,
+        badge: dto.badge || 'Photo',
+        badgeMg: dto.badgeMg || 'Sary',
         tag: dto.tag,
         imageUrl: dto.imageUrl,
         accentColor: dto.accentColor || '#4A6741',

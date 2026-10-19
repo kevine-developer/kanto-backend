@@ -8,20 +8,20 @@ import {
 
 export class CreateWelcomeSlideDto {
   @IsString()
-  @IsNotEmpty()
-  title: string;
+  @IsOptional()
+  title?: string;
 
   @IsString()
   @IsOptional()
   titleMg?: string;
 
   @IsString()
-  @IsNotEmpty()
-  badge: string;
+  @IsOptional()
+  badge?: string;
 
   @IsString()
-  @IsNotEmpty()
-  badgeMg: string;
+  @IsOptional()
+  badgeMg?: string;
 
   @IsString()
   @IsOptional()
