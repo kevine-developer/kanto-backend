@@ -582,28 +582,58 @@ export class UsersService {
   }> {
     const accounts = await this.prisma.account.findMany({
       where: { userId },
-      select: { providerId: true },
+      select: {
+        id: true,
+        providerId: true,
+        password: true,
+        issuer: true,
+        accountId: true,
+      },
     });
 
     if (!accounts.length) {
       return { providers: [], hasPassword: false };
     }
 
+    // Auto-réparation proactive : si un compte credential existe avec un mot de passe
+    // mais sans l'issuer Better-Auth attendu ('local:credential'), on le normalise
+    // immédiatement pour que changePassword et sign-in fonctionnent sans accroc.
+    for (const acc of accounts) {
+      if (
+        acc.providerId === 'credential' &&
+        acc.password &&
+        (acc.issuer !== 'local:credential' || acc.accountId !== userId)
+      ) {
+        await this.prisma.account.update({
+          where: { id: acc.id },
+          data: {
+            issuer: 'local:credential',
+            accountId: userId,
+            updatedAt: new Date(),
+          },
+        });
+        this.logger.log(
+          `[getAuthMethods] Compte credential normalisé pour userId: ${userId} (issuer: local:credential)`,
+        );
+      }
+    }
+
     const providers = accounts.map((a) => a.providerId);
-    const hasPassword = providers.includes('credential');
+    const hasPassword = accounts.some(
+      (a) => a.providerId === 'credential' && Boolean(a.password),
+    );
 
     return { providers, hasPassword };
   }
 
   /**
-   * Ajoute un mot de passe Kanto à un compte qui n'en possède pas encore.
-   * Réservé exclusivement aux comptes utilisant uniquement des fournisseurs OAuth.
-   * Utilise hashPassword de Better-Auth pour garantir la compatibilité du format de hash.
+   * Ajoute un premier mot de passe Kanto à un compte OAuth (Situation A).
+   * Enregistre l'Account au format strictement conforme à Better-Auth (issuer: 'local:credential').
    *
    * Sécurité :
    * - Vérifie que le compte n'a pas déjà un mot de passe (idempotence)
-   * - Hashe le mot de passe avec le même algorithme que Better-Auth (scrypt)
-   * - Ne révèle pas l'existence d'un compte si userId invalide
+   * - Hashe le mot de passe avec le moteur cryptographique officiel de Better-Auth (scrypt)
+   * - Conserve le compte Google existant sans duplication
    * - Envoie une notification email de sécurité après succès
    */
   async addPassword(
@@ -622,51 +652,72 @@ export class UsersService {
     // Vérification idempotente : le compte possède-t-il déjà un mot de passe ?
     const existingCredential = await this.prisma.account.findFirst({
       where: { userId, providerId: 'credential' },
-      select: { id: true },
+      select: { id: true, password: true, issuer: true, accountId: true },
     });
 
-    if (existingCredential) {
+    if (existingCredential && Boolean(existingCredential.password)) {
+      // S'assurer que le compte existant a bien son issuer Better-Auth normalisé
+      if (
+        existingCredential.issuer !== 'local:credential' ||
+        existingCredential.accountId !== user.id
+      ) {
+        await this.prisma.account.update({
+          where: { id: existingCredential.id },
+          data: {
+            issuer: 'local:credential',
+            accountId: user.id,
+            updatedAt: new Date(),
+          },
+        });
+      }
       throw new ConflictException(
         'Ce compte possède déjà un mot de passe. Utilisez la fonctionnalité de modification du mot de passe.',
       );
     }
 
-    // Hachage sécurisé via le même algorithme que Better-Auth (scrypt, node:crypto)
+    // Hachage sécurisé officiel via better-auth/crypto (scrypt, compatible avec Better-Auth)
     let hashedPassword: string;
     try {
-      const { hashPassword } = await import('@better-auth/utils/password');
+      const { hashPassword } = await import('better-auth/crypto');
       hashedPassword = await hashPassword(newPassword);
-    } catch {
-      // Fallback: utiliser better-auth/crypto
-      try {
-        const { hashPassword: hashPasswordFallback } =
-          await import('better-auth/crypto');
-        hashedPassword = await hashPasswordFallback(newPassword);
-      } catch (fallbackErr) {
-        this.logger.error(
-          '[addPassword] Échec du hachage du mot de passe :',
-          fallbackErr,
-        );
-        throw new BadRequestException(
-          'Une erreur interne est survenue. Veuillez réessayer.',
-        );
-      }
+    } catch (hashErr) {
+      this.logger.error(
+        '[addPassword] Échec du hachage du mot de passe :',
+        hashErr,
+      );
+      throw new BadRequestException(
+        'Une erreur interne est survenue lors du chiffrement du mot de passe. Veuillez réessayer.',
+      );
     }
 
-    // Création de l'Account credential — format identique à celui créé par Better-Auth
-    await this.prisma.account.create({
-      data: {
-        accountId: user.id,
-        providerId: 'credential',
-        userId: user.id,
-        password: hashedPassword,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    });
+    if (existingCredential) {
+      // Mise à jour de l'Account credential existant (si créé sans mot de passe ou orphelin)
+      await this.prisma.account.update({
+        where: { id: existingCredential.id },
+        data: {
+          password: hashedPassword,
+          issuer: 'local:credential',
+          accountId: user.id,
+          updatedAt: new Date(),
+        },
+      });
+    } else {
+      // Création de l'Account credential — format STRICTEMENT conforme à Better-Auth
+      await this.prisma.account.create({
+        data: {
+          accountId: user.id,
+          providerId: 'credential',
+          issuer: 'local:credential',
+          userId: user.id,
+          password: hashedPassword,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      });
+    }
 
     this.logger.log(
-      `[addPassword] Mot de passe ajouté pour l'utilisateur ${userId}`,
+      `[addPassword] Mot de passe ajouté avec succès pour l'utilisateur ${userId} (issuer: local:credential)`,
     );
 
     // Notification email de sécurité (non bloquante)
@@ -679,6 +730,89 @@ export class UsersService {
       .catch((err) => {
         this.logger.warn(
           `[addPassword] Échec envoi email de notification sécurité pour ${user.email} :`,
+          err,
+        );
+      });
+
+    return { success: true };
+  }
+
+  /**
+   * Modifie un mot de passe existant avec vérification de l'ancien mot de passe (Situation B).
+   * Utilise le moteur cryptographique de Better-Auth et garantit la conformité de l'Account.
+   */
+  async changePassword(
+    userId: string,
+    currentPassword: string,
+    newPassword: string,
+    revokeOtherSessions = false,
+  ): Promise<{ success: boolean }> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, email: true, name: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Utilisateur introuvable');
+    }
+
+    const credentialAccount = await this.prisma.account.findFirst({
+      where: { userId, providerId: 'credential' },
+      select: { id: true, password: true, issuer: true, accountId: true },
+    });
+
+    if (!credentialAccount || !credentialAccount.password) {
+      throw new BadRequestException(
+        "Aucun mot de passe n'est associé à ce compte. Veuillez d'abord définir un mot de passe.",
+      );
+    }
+
+    // Vérification sécurisée du mot de passe actuel via better-auth/crypto
+    const { verifyPassword, hashPassword } = await import('better-auth/crypto');
+    const isValid = await verifyPassword({
+      hash: credentialAccount.password,
+      password: currentPassword,
+    });
+
+    if (!isValid) {
+      throw new BadRequestException('Le mot de passe actuel est incorrect.');
+    }
+
+    // Hachage du nouveau mot de passe
+    const newHashedPassword = await hashPassword(newPassword);
+
+    // Mise à jour de l'Account avec le standard Better-Auth garanti
+    await this.prisma.account.update({
+      where: { id: credentialAccount.id },
+      data: {
+        password: newHashedPassword,
+        issuer: 'local:credential',
+        accountId: user.id,
+        updatedAt: new Date(),
+      },
+    });
+
+    // Invalidation des autres sessions si demandé
+    if (revokeOtherSessions) {
+      await this.prisma.session.deleteMany({
+        where: { userId },
+      });
+    }
+
+    this.logger.log(
+      `[changePassword] Mot de passe modifié pour l'utilisateur ${userId}`,
+    );
+
+    // Notification email de sécurité (non bloquante)
+    this.resendService
+      .sendSecurityChangeEmail({
+        to: user.email,
+        userName: user.name,
+        action: 'changed',
+      })
+      .catch((err) => {
+        this.logger.warn(
+          `[changePassword] Échec envoi email de notification sécurité pour ${user.email} :`,
           err,
         );
       });

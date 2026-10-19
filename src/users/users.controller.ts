@@ -13,6 +13,7 @@ import { UsersService } from './users.service.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
 import { UploadAvatarDto } from './dto/upload-avatar.dto.js';
 import { AddPasswordDto } from './dto/add-password.dto.js';
+import { ChangePasswordDto } from './dto/change-password.dto.js';
 import { DeleteAccountDto } from './dto/delete-account.dto.js';
 import {
   AuthGuard,
@@ -109,6 +110,25 @@ export class UsersController {
   @Throttle({ default: { limit: 5, ttl: 60000 } })
   addPassword(@Body() body: AddPasswordDto, @Session() session: UserSession) {
     return this.usersService.addPassword(session.user.id, body.newPassword);
+  }
+
+  /**
+   * Modifie le mot de passe Kanto d'un compte avec vérification de l'ancien mot de passe (Situation B).
+   * Throttling strict : 5 tentatives par minute.
+   */
+  @Post('me/change-password')
+  @UseGuards(AuthGuard)
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
+  changePassword(
+    @Body() body: ChangePasswordDto,
+    @Session() session: UserSession,
+  ) {
+    return this.usersService.changePassword(
+      session.user.id,
+      body.currentPassword,
+      body.newPassword,
+      body.revokeOtherSessions,
+    );
   }
 
   /**
