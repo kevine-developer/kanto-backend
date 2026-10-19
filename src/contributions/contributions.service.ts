@@ -27,6 +27,7 @@ import { CheckDuplicateDto } from './dto/check-duplicate.dto.js';
 import { DuplicateDetectionService } from './duplicate-detection.service.js';
 import { ContentModerationService } from './moderation/content-moderation.service.js';
 import { NotificationsService } from '../notifications/notifications.service.js';
+import { EventNotificationService } from '../notifications/event-notification.service.js';
 import { RedisService } from '../redis/redis.service.js';
 import { ResendService } from '../integrations/resend/resend.service.js';
 import {
@@ -100,6 +101,7 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificationsService: NotificationsService,
+    private readonly eventNotificationService: EventNotificationService,
     private readonly redisService: RedisService,
     private readonly duplicateDetectionService: DuplicateDetectionService,
     private readonly contentModerationService: ContentModerationService,
@@ -1343,48 +1345,21 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
         reason: feedback,
       });
 
-      // Notification in-app au contributeur
+      // Notification centralisée et e-mail à l'auteur
       if (contribution.userId) {
         const preview = contribution.textMg.slice(0, 45);
-        void this.notificationsService
-          .createNotification({
-            userId: contribution.userId,
-            titleMg: 'Fanitsiana ilaina : Fandraisana anjara',
-            titleFr: 'Modifications demandées : Contribution',
-            messageMg: `Misy fanitsiana vitsivitsy ilaina amin'ny fandraisana anjaranao (« ${preview}... ») : ${feedback}`,
-            messageFr: `Des ajustements sont demandés sur votre proposition (« ${preview}... ») : ${feedback}`,
-            category: 'community',
-            badgeText: 'Fanitsiana',
-            badgeType: 'info',
-            iconName: 'create-outline',
-            iconColor: '#F59E0B',
-            isBroadcast: false,
-            targetRoute: '/(tabs)/profil',
+        void this.eventNotificationService
+          .dispatchNotificationEvent({
+            type: 'CONTRIBUTION_CHANGES_REQUESTED',
+            recipientUserId: contribution.userId,
+            contributionId: id,
+            contributionTitle: preview,
+            category: contribution.category,
+            feedbackReason: feedback,
           })
           .catch((err) => {
-            this.logger.warn(`Échec notif demande modifications : ${err}`);
+            this.logger.warn(`Échec dispatch CONTRIBUTION_CHANGES_REQUESTED : ${err}`);
           });
-
-        // Email à l'auteur si possible
-        if (this.resendService && contribution.userId) {
-          const authorUser = await this.prisma.user.findUnique({
-            where: { id: contribution.userId },
-            select: { email: true, name: true },
-          });
-          if (authorUser?.email) {
-            void this.resendService
-              .sendContributionStatusUpdateEmail({
-                to: authorUser.email,
-                userName: authorUser.name || undefined,
-                contributionTitle: preview,
-                status: 'CHANGES_REQUESTED',
-                feedbackReason: feedback,
-              })
-              .catch((err) => {
-                this.logger.warn(`Échec email demande modifications : ${err}`);
-              });
-          }
-        }
       }
 
       return {
@@ -1421,47 +1396,21 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
         reason: rejectionReason,
       });
 
-      // Notification bienveillante au contributeur
+      // Notification bienveillante et e-mail au contributeur via EventNotificationService
       if (contribution.userId) {
         const preview = contribution.textMg.slice(0, 45);
-        void this.notificationsService
-          .createNotification({
-            userId: contribution.userId,
-            titleMg: 'Fandraisana anjara : Tsy voatazona',
-            titleFr: 'Contribution : Non retenue',
-            messageMg: `Tsy voatazona tamin'ity indray mitoraka ity ny fandraisana anjaranao (« ${preview}... »). ${rejectionReason}`,
-            messageFr: `Votre contribution (« ${preview}... ») n'a pas pu être retenue pour le moment. ${rejectionReason}`,
-            category: 'community',
-            badgeText: 'Fandraisana anjara',
-            badgeType: 'info',
-            iconName: 'document-text-outline',
-            iconColor: '#64748B',
-            isBroadcast: false,
-            targetRoute: '/(tabs)/profil',
+        void this.eventNotificationService
+          .dispatchNotificationEvent({
+            type: 'CONTRIBUTION_REJECTED',
+            recipientUserId: contribution.userId,
+            contributionId: id,
+            contributionTitle: preview,
+            category: contribution.category,
+            feedbackReason: rejectionReason,
           })
           .catch((err) => {
-            this.logger.warn(`Échec notification rejet contribution : ${err}`);
+            this.logger.warn(`Échec dispatch CONTRIBUTION_REJECTED : ${err}`);
           });
-
-        if (this.resendService && contribution.userId) {
-          const authorUser = await this.prisma.user.findUnique({
-            where: { id: contribution.userId },
-            select: { email: true, name: true },
-          });
-          if (authorUser?.email) {
-            void this.resendService
-              .sendContributionStatusUpdateEmail({
-                to: authorUser.email,
-                userName: authorUser.name || undefined,
-                contributionTitle: preview,
-                status: 'REJECTED',
-                feedbackReason: rejectionReason,
-              })
-              .catch((err) => {
-                this.logger.warn(`Échec email rejet contribution : ${err}`);
-              });
-          }
-        }
       }
 
       return { success: true, status: 'REJECTED', contribution: updated };
@@ -1662,45 +1611,22 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       );
     }
 
-    // 2. Notification in-app et push à l'auteur de la contribution
+    // 2. Notification in-app, push et e-mail de félicitations centralisés via EventNotificationService
     const textPreview = updated.validated.textMg.slice(0, 45);
-    try {
-      await this.notificationsService.createNotification({
-        userId: updated.validated.userId,
-        titleMg: 'Arahabaina ! Nankatoavina ny fandraisana anjaranao 🎉',
-        titleFr: 'Félicitations ! Votre contribution a été approuvée 🎉',
-        messageMg: `Navoaka soa aman-tsara ny fandraisana anjaranao (« ${textPreview}... »). Nahazo +50 XP ianao ho fankasitrahana ny fanitarana ny kolontsaina !`,
-        messageFr: `Votre contribution (« ${textPreview}... ») est désormais publiée dans Kanto. Vous avez remporté +50 XP pour votre soutien au patrimoine malgache !`,
-        category: 'community',
-        badgeText: 'Nekena',
-        badgeType: 'new',
-        iconName: 'ribbon-outline',
-        iconColor: '#10B981',
-        isBroadcast: false,
-        targetRoute: '/(tabs)/communaute',
+    void this.eventNotificationService
+      .dispatchNotificationEvent({
+        type: 'CONTRIBUTION_APPROVED',
+        recipientUserId: updated.validated.userId,
+        contributionId: updated.validated.id,
+        contributionTitle: textPreview,
+        category: updated.validated.category,
+        xpReward: 50,
+      })
+      .catch((notifErr) => {
+        this.logger.warn(
+          `⚠️ [Contributions] Échec dispatch CONTRIBUTION_APPROVED pour ${updated.validated.userId} : ${notifErr}`,
+        );
       });
-    } catch (notifErr) {
-      this.logger.warn(
-        `Échec notification approbation contribution à ${updated.validated.userId}: ${notifErr}`,
-      );
-    }
-
-    // 3. Email de confirmation et félicitations à l'auteur
-    if (this.resendService && contributorUser?.email) {
-      void this.resendService
-        .sendContributionApprovedEmail({
-          to: contributorUser.email,
-          userName: contributorUser.name || undefined,
-          contributionTitle: textPreview,
-          category: updated.validated.category,
-          xpReward: 50,
-        })
-        .catch((emailErr) => {
-          this.logger.warn(
-            `Échec envoi email approbation contribution à ${contributorUser?.email}: ${emailErr}`,
-          );
-        });
-    }
 
     return {
       success: true,

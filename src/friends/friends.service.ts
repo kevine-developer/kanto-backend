@@ -8,6 +8,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service.js';
 import { ProgressionService } from '../progression/progression.service.js';
 import { NotificationsService } from '../notifications/notifications.service.js';
+import { EventNotificationService } from '../notifications/event-notification.service.js';
 import { FriendshipStatus } from '../../generated/prisma/client.js';
 
 export interface FriendItem {
@@ -31,6 +32,7 @@ export class FriendsService {
     private readonly prisma: PrismaService,
     private readonly progressionService: ProgressionService,
     private readonly notificationsService: NotificationsService,
+    private readonly eventNotificationService: EventNotificationService,
   ) {}
 
   /**
@@ -281,19 +283,16 @@ export class FriendsService {
           data: { status: FriendshipStatus.ACCEPTED },
         });
 
-        void this.notificationsService.createNotification({
-          titleMg: 'Namana vaovao nankatoavina ! 🤝',
-          titleFr: 'Demande d’ami acceptée ! 🤝',
-          messageMg: `Tafara-dia amin'ny fandalinana kolontsaina ao amin'ny Kanto ianao sy i ${sender?.name || 'Mpikambana'}. Faly miara-dalana !`,
-          messageFr: `Vous êtes désormais connectés avec ${sender?.name || 'un membre'} sur Kanto. Partagez votre passion pour la culture malgache !`,
-          category: 'community',
-          badgeText: 'Namana',
-          badgeType: 'info',
-          iconName: 'people',
-          iconColor: '#4A6741',
-          isBroadcast: false,
-          userId: targetUserId,
-        });
+        void this.eventNotificationService
+          .dispatchNotificationEvent({
+            type: 'FRIEND_REQUEST_ACCEPTED',
+            recipientUserId: targetUserId,
+            friendUserId: senderId,
+            friendName: sender?.name || 'Un membre',
+          })
+          .catch((err) => {
+            this.logger.warn(`Échec dispatch FRIEND_REQUEST_ACCEPTED : ${err}`);
+          });
 
         return {
           success: true,
@@ -312,20 +311,17 @@ export class FriendsService {
       },
     });
 
-    // Envoi d'une notification in-app au destinataire
-    void this.notificationsService.createNotification({
-      titleMg: 'Fangatahana ho namana vaovao 🤝',
-      titleFr: 'Nouvelle demande d’ami 🤝',
-      messageMg: `Maniry ny ho naman'ny fandalinana kolontsaina miaraka aminao i ${sender?.name || 'Mpikambana'}.`,
-      messageFr: `${sender?.name || 'Un membre'} souhaite devenir votre ami sur Kanto et partager cette aventure culturelle.`,
-      category: 'community',
-      badgeText: 'Fangatahana',
-      badgeType: 'info',
-      iconName: 'person-add',
-      iconColor: '#4A6741',
-      isBroadcast: false,
-      userId: targetUserId,
-    });
+    // Envoi de la notification centralisée de demande d'ami
+    void this.eventNotificationService
+      .dispatchNotificationEvent({
+        type: 'FRIEND_REQUEST_RECEIVED',
+        recipientUserId: targetUserId,
+        senderUserId: senderId,
+        senderName: sender?.name || 'Un membre',
+      })
+      .catch((err) => {
+        this.logger.warn(`Échec dispatch FRIEND_REQUEST_RECEIVED : ${err}`);
+      });
 
     return {
       success: true,
@@ -364,20 +360,17 @@ export class FriendsService {
       data: { status: FriendshipStatus.ACCEPTED },
     });
 
-    // Notification à l'expéditeur de la demande
-    void this.notificationsService.createNotification({
-      titleMg: 'Namana vaovao nankatoavina ! 🤝',
-      titleFr: 'Demande d’ami acceptée ! 🤝',
-      messageMg: `Nanaiky ny fangatahanao i ${friendship.receiver.name}. Tafara-dia amin'ny fandalinana kolontsaina ao amin'ny Kanto ianareo roa tonta !`,
-      messageFr: `${friendship.receiver.name} a accepté votre demande d'ami sur Kanto ! Relevez des défis et progressez ensemble.`,
-      category: 'community',
-      badgeText: 'Namana',
-      badgeType: 'info',
-      iconName: 'people',
-      iconColor: '#4A6741',
-      isBroadcast: false,
-      userId: friendship.senderId,
-    });
+    // Notification centralisée à l'expéditeur de la demande
+    void this.eventNotificationService
+      .dispatchNotificationEvent({
+        type: 'FRIEND_REQUEST_ACCEPTED',
+        recipientUserId: friendship.senderId,
+        friendUserId: userId,
+        friendName: friendship.receiver.name || 'Un membre',
+      })
+      .catch((err) => {
+        this.logger.warn(`Échec dispatch FRIEND_REQUEST_ACCEPTED : ${err}`);
+      });
 
     return {
       success: true,

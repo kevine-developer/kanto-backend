@@ -64,7 +64,7 @@ describe('AdminUsersService - updateTier', () => {
     expect(prismaMock.user.update).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { id: 'user_1' },
-        data: { tier: 'VIP' },
+        data: { tier: 'VIP', tierExpiresAt: null },
       }),
     );
     expect(auditServiceMock.logAction).toHaveBeenCalledWith(
@@ -105,7 +105,7 @@ describe('AdminUsersService - updateTier', () => {
     expect(prismaMock.user.update).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { id: 'user_2' },
-        data: { tier: 'FREE' },
+        data: { tier: 'FREE', tierExpiresAt: null },
       }),
     );
   });

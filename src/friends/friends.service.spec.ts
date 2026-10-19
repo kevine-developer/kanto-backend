@@ -9,12 +9,13 @@ import { FriendsService } from './friends.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { ProgressionService } from '../progression/progression.service.js';
 import { NotificationsService } from '../notifications/notifications.service.js';
+import { EventNotificationService } from '../notifications/event-notification.service.js';
 import { FriendshipStatus } from '../../generated/prisma/client.js';
 
 describe('FriendsService', () => {
   let service: FriendsService;
 
-  const mockPrisma = {
+  const mockPrisma: any = {
     user: {
       findUnique: jest.fn(),
       findMany: jest.fn(),
@@ -33,12 +34,18 @@ describe('FriendsService', () => {
     },
   };
 
-  const mockProgressionService = {
+  const mockProgressionService: any = {
     awardXp: jest.fn(),
   };
 
-  const mockNotificationsService = {
+  const mockNotificationsService: any = {
     createNotification: jest.fn(),
+  };
+
+  const mockEventNotificationService: any = {
+    dispatchNotificationEvent: jest
+      .fn()
+      .mockImplementation(() => Promise.resolve({ success: true })),
   };
 
   beforeEach(async () => {
@@ -50,6 +57,10 @@ describe('FriendsService', () => {
         { provide: PrismaService, useValue: mockPrisma },
         { provide: ProgressionService, useValue: mockProgressionService },
         { provide: NotificationsService, useValue: mockNotificationsService },
+        {
+          provide: EventNotificationService,
+          useValue: mockEventNotificationService,
+        },
       ],
     }).compile();
 
@@ -155,7 +166,14 @@ describe('FriendsService', () => {
         where: { id: 'f1' },
         data: { status: FriendshipStatus.ACCEPTED },
       });
-      expect(mockNotificationsService.createNotification).toHaveBeenCalled();
+      expect(
+        mockEventNotificationService.dispatchNotificationEvent,
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'FRIEND_REQUEST_ACCEPTED',
+          recipientUserId: 'u2',
+        }),
+      );
     });
 
     it('doit créer la demande si aucune relation existante', async () => {
@@ -175,8 +193,13 @@ describe('FriendsService', () => {
 
       expect(res.status).toBe('PENDING_SENT');
       expect(mockPrisma.friendship.create).toHaveBeenCalled();
-      expect(mockNotificationsService.createNotification).toHaveBeenCalledWith(
-        expect.objectContaining({ userId: 'u2' }),
+      expect(
+        mockEventNotificationService.dispatchNotificationEvent,
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'FRIEND_REQUEST_RECEIVED',
+          recipientUserId: 'u2',
+        }),
       );
     });
   });
@@ -203,8 +226,13 @@ describe('FriendsService', () => {
         where: { id: 'f1' },
         data: { status: FriendshipStatus.ACCEPTED },
       });
-      expect(mockNotificationsService.createNotification).toHaveBeenCalledWith(
-        expect.objectContaining({ userId: 'u2' }),
+      expect(
+        mockEventNotificationService.dispatchNotificationEvent,
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'FRIEND_REQUEST_ACCEPTED',
+          recipientUserId: 'u2',
+        }),
       );
     });
   });

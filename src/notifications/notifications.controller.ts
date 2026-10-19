@@ -21,9 +21,14 @@ import {
   type UserSession,
 } from '../auth/index.js';
 
+import { VipExpirationScheduler } from './scheduler/vip-expiration.scheduler.js';
+
 @Controller()
 export class NotificationsController {
-  constructor(private readonly notificationsService: NotificationsService) {}
+  constructor(
+    private readonly notificationsService: NotificationsService,
+    private readonly vipExpirationScheduler: VipExpirationScheduler,
+  ) {}
 
   /**
    * Enregistre le token Expo Push d'un utilisateur ou d'un visiteur anonyme (invité).
@@ -203,5 +208,15 @@ export class NotificationsController {
   @Roles(['ADMIN', 'admin'])
   clearAllAdminNotifications() {
     return this.notificationsService.clearAllAdminNotifications();
+  }
+
+  /**
+   * Endpoint administration : Déclenche manuellement la routine de scan et d'expiration des VIP.
+   */
+  @Post('admin/notifications/trigger-vip-expiration')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  triggerVipExpiration() {
+    return this.vipExpirationScheduler.runVipExpirationRoutine();
   }
 }

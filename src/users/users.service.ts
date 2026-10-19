@@ -4,6 +4,7 @@ import {
   Injectable,
   Logger,
   NotFoundException,
+  Optional,
   UnauthorizedException,
 } from '@nestjs/common';
 import fs from 'node:fs';
@@ -11,6 +12,7 @@ import path from 'node:path';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CloudinaryService } from '../integrations/cloudinary/cloudinary.service.js';
 import { ResendService } from '../integrations/resend/resend.service.js';
+import { EventNotificationService } from '../notifications/event-notification.service.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
 import { DeleteAccountDto } from './dto/delete-account.dto.js';
 import { FriendshipStatus } from '../../generated/prisma/client.js';
@@ -23,6 +25,7 @@ export class UsersService {
     private readonly prisma: PrismaService,
     private readonly cloudinaryService: CloudinaryService,
     private readonly resendService: ResendService,
+    @Optional() private readonly eventNotificationService?: EventNotificationService,
   ) {}
 
   async getMyStats(userId: string) {
@@ -720,19 +723,32 @@ export class UsersService {
       `[addPassword] Mot de passe ajouté avec succès pour l'utilisateur ${userId} (issuer: local:credential)`,
     );
 
-    // Notification email de sécurité (non bloquante)
-    this.resendService
-      .sendSecurityChangeEmail({
-        to: user.email,
-        userName: user.name,
-        action: 'added',
-      })
-      .catch((err) => {
-        this.logger.warn(
-          `[addPassword] Échec envoi email de notification sécurité pour ${user.email} :`,
-          err,
-        );
-      });
+    // Notification de sécurité centralisée (in-app et e-mail transactionnel)
+    if (this.eventNotificationService) {
+      void this.eventNotificationService
+        .dispatchNotificationEvent({
+          type: 'SECURITY_PASSWORD_ADDED',
+          recipientUserId: user.id,
+        })
+        .catch((err) => {
+          this.logger.warn(
+            `[addPassword] Échec notification sécurité pour ${user.email} : ${err}`,
+          );
+        });
+    } else {
+      this.resendService
+        .sendSecurityChangeEmail({
+          to: user.email,
+          userName: user.name,
+          action: 'added',
+        })
+        .catch((err) => {
+          this.logger.warn(
+            `[addPassword] Échec envoi email de notification sécurité pour ${user.email} :`,
+            err,
+          );
+        });
+    }
 
     return { success: true };
   }
@@ -803,19 +819,32 @@ export class UsersService {
       `[changePassword] Mot de passe modifié pour l'utilisateur ${userId}`,
     );
 
-    // Notification email de sécurité (non bloquante)
-    this.resendService
-      .sendSecurityChangeEmail({
-        to: user.email,
-        userName: user.name,
-        action: 'changed',
-      })
-      .catch((err) => {
-        this.logger.warn(
-          `[changePassword] Échec envoi email de notification sécurité pour ${user.email} :`,
-          err,
-        );
-      });
+    // Notification de sécurité centralisée (in-app et e-mail transactionnel)
+    if (this.eventNotificationService) {
+      void this.eventNotificationService
+        .dispatchNotificationEvent({
+          type: 'SECURITY_PASSWORD_CHANGED',
+          recipientUserId: user.id,
+        })
+        .catch((err) => {
+          this.logger.warn(
+            `[changePassword] Échec notification sécurité pour ${user.email} : ${err}`,
+          );
+        });
+    } else {
+      this.resendService
+        .sendSecurityChangeEmail({
+          to: user.email,
+          userName: user.name,
+          action: 'changed',
+        })
+        .catch((err) => {
+          this.logger.warn(
+            `[changePassword] Échec envoi email de notification sécurité pour ${user.email} :`,
+            err,
+          );
+        });
+    }
 
     return { success: true };
   }

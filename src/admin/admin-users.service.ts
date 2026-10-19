@@ -19,6 +19,7 @@ import {
   formatPaginatedResponse,
 } from '../common/utils/pagination.util.js';
 import { AdminAuditService } from './admin-audit.service.js';
+import { EventNotificationService } from '../notifications/event-notification.service.js';
 
 @Injectable()
 export class AdminUsersService implements OnApplicationBootstrap {
@@ -27,6 +28,7 @@ export class AdminUsersService implements OnApplicationBootstrap {
   constructor(
     private readonly prisma: PrismaService,
     private readonly auditService: AdminAuditService,
+    private readonly eventNotificationService: EventNotificationService,
   ) {}
 
   async onApplicationBootstrap() {
@@ -188,6 +190,7 @@ export class AdminUsersService implements OnApplicationBootstrap {
           image: true,
           role: true,
           tier: true,
+          tierExpiresAt: true,
           banned: true,
           banReason: true,
           banExpires: true,
@@ -300,6 +303,7 @@ export class AdminUsersService implements OnApplicationBootstrap {
         image: user.image,
         role: user.role,
         tier: user.tier,
+        tierExpiresAt: user.tierExpiresAt,
         termsAcceptedAt: user.termsAcceptedAt,
         termsVersion: user.termsVersion,
         banned: Boolean(user.banned),
@@ -399,8 +403,16 @@ export class AdminUsersService implements OnApplicationBootstrap {
 
   /**
    * Met à jour le tier d'un utilisateur (ex: FREE -> VIP pour désactiver les publicités).
+   * Gère la durée (durationDays), le calcul d'expiration (tierExpiresAt), les prolongations
+   * et déclenche les notifications et emails transactionnels via EventNotificationService.
    */
-  async updateTier(id: string, tier: string, requestingUserId: string) {
+  async updateTier(
+    id: string,
+    tier: string,
+    requestingUserId: string,
+    durationDays?: number,
+    reason?: string,
+  ) {
     const normalizedTier = tier?.toUpperCase();
     if (!['FREE', 'PREMIUM', 'VIP'].includes(normalizedTier)) {
       throw new BadRequestException(
@@ -410,23 +422,71 @@ export class AdminUsersService implements OnApplicationBootstrap {
 
     const user = await this.prisma.user.findUnique({
       where: { id },
-      select: { id: true, name: true, email: true, role: true, tier: true },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        tier: true,
+        tierExpiresAt: true,
+      },
     });
     if (!user) {
       throw new NotFoundException('Utilisateur introuvable.');
+    }
+
+    const now = new Date();
+    let newExpiresAt: Date | null = null;
+    let eventType: 'USER_VIP_GRANTED' | 'USER_VIP_EXTENDED' | 'USER_VIP_REVOKED' | null = null;
+    let isExtension = false;
+
+    if (normalizedTier === 'VIP' || normalizedTier === 'PREMIUM') {
+      if (durationDays && durationDays > 0) {
+        // Prolongation si déjà VIP avec expiration future
+        if (
+          user.tier === normalizedTier &&
+          user.tierExpiresAt &&
+          user.tierExpiresAt > now
+        ) {
+          isExtension = true;
+          eventType = 'USER_VIP_EXTENDED';
+          newExpiresAt = new Date(
+            user.tierExpiresAt.getTime() + durationDays * 24 * 60 * 60 * 1000,
+          );
+        } else {
+          eventType = 'USER_VIP_GRANTED';
+          newExpiresAt = new Date(
+            now.getTime() + durationDays * 24 * 60 * 60 * 1000,
+          );
+        }
+      } else {
+        // Accès permanent (sans date d'expiration)
+        eventType = 'USER_VIP_GRANTED';
+        newExpiresAt = null;
+      }
+    } else {
+      // Retour à FREE (retrait ou expiration manuelle)
+      newExpiresAt = null;
+      if (user.tier === 'VIP' || user.tier === 'PREMIUM') {
+        eventType = 'USER_VIP_REVOKED';
+      }
     }
 
     let updated;
     try {
       updated = await this.prisma.user.update({
         where: { id },
-        data: { tier: normalizedTier as any },
+        data: {
+          tier: normalizedTier as any,
+          tierExpiresAt: newExpiresAt,
+        },
         select: {
           id: true,
           name: true,
           email: true,
           role: true,
           tier: true,
+          tierExpiresAt: true,
         },
       });
     } catch (err) {
@@ -441,31 +501,73 @@ export class AdminUsersService implements OnApplicationBootstrap {
 
     const isNoAds = normalizedTier === 'VIP' || normalizedTier === 'PREMIUM';
     this.logger.log(
-      `👑 [Admin] Statut de ${updated.email} mis à jour : ${user.tier} → ${normalizedTier} (Publicités désactivées: ${isNoAds}) par admin ${requestingUserId}`,
+      `👑 [Admin] Statut de ${updated.email} mis à jour : ${user.tier} → ${normalizedTier} (Publicités désactivées: ${isNoAds}, Expire le: ${newExpiresAt?.toISOString() || 'Permanent'}) par admin ${requestingUserId}`,
     );
 
     // Enregistrement dans le journal d'audit
     await this.auditService.logAction({
       userId: requestingUserId,
-      action: 'USER_TIER_CHANGED',
+      action: isExtension ? 'USER_TIER_EXTENDED' : 'USER_TIER_CHANGED',
       targetType: 'USER',
       targetId: id,
       targetLabel: user.name || user.email,
-      reason: isNoAds
-        ? 'Attribution statut VIP / Désactivation des publicités'
-        : 'Rétablissement du compte standard FREE',
+      reason:
+        reason ||
+        (isExtension
+          ? `Prolongation VIP de ${durationDays} jours`
+          : isNoAds
+          ? `Attribution statut ${normalizedTier} (${durationDays ? `${durationDays} jours` : 'Permanent'})`
+          : 'Rétablissement du compte standard FREE'),
       details: {
         previousTier: user.tier,
         newTier: normalizedTier,
+        durationDays: durationDays || null,
+        expiresAt: newExpiresAt?.toISOString() || null,
         adsDisabled: isNoAds,
       },
     });
+
+    // Déclenchement de l'événement de notification centralisé
+    if (eventType) {
+      void (async () => {
+        try {
+          if (eventType === 'USER_VIP_EXTENDED') {
+            await this.eventNotificationService.dispatchNotificationEvent({
+              type: 'USER_VIP_EXTENDED',
+              recipientUserId: id,
+              addedDays: durationDays!,
+              newExpiresAt: newExpiresAt!,
+              adminId: requestingUserId,
+            });
+          } else if (eventType === 'USER_VIP_GRANTED') {
+            await this.eventNotificationService.dispatchNotificationEvent({
+              type: 'USER_VIP_GRANTED',
+              recipientUserId: id,
+              durationDays,
+              expiresAt: newExpiresAt,
+              adminId: requestingUserId,
+            });
+          } else if (eventType === 'USER_VIP_REVOKED') {
+            await this.eventNotificationService.dispatchNotificationEvent({
+              type: 'USER_VIP_REVOKED',
+              recipientUserId: id,
+              reason,
+              adminId: requestingUserId,
+            });
+          }
+        } catch (notifErr) {
+          this.logger.warn(
+            `⚠️ [AdminUsers] Échec dispatch notification VIP pour ${id} : ${notifErr}`,
+          );
+        }
+      })();
+    }
 
     return {
       success: true,
       message: `Statut de ${updated.name || updated.email} mis à jour vers ${normalizedTier}.${
         isNoAds
-          ? ' Les publicités sont désactivées sur son application mobile.'
+          ? ` Les publicités sont désactivées sur son application mobile (${newExpiresAt ? `jusqu'au ${newExpiresAt.toLocaleDateString('fr-FR')}` : 'Accès permanent'}).`
           : ' Les publicités standard sont actives.'
       }`,
       user: updated,
@@ -545,6 +647,19 @@ export class AdminUsersService implements OnApplicationBootstrap {
       details: { banExpires: expiresDate?.toISOString() || null },
     });
 
+    // Envoi de la notification et de l'e-mail de suspension
+    void this.eventNotificationService
+      .dispatchNotificationEvent({
+        type: 'USER_BANNED',
+        recipientUserId: id,
+        reason: reason.trim(),
+        banExpires: expiresDate,
+        adminId: requestingUserId,
+      })
+      .catch((err) => {
+        this.logger.warn(`Échec dispatch USER_BANNED pour ${id} : ${err}`);
+      });
+
     return {
       success: true,
       message: `Le compte ${targetUser.email} a été suspendu avec succès.`,
@@ -591,6 +706,17 @@ export class AdminUsersService implements OnApplicationBootstrap {
       targetLabel: targetUser.email,
       reason: 'Réactivation manuelle du compte utilisateur',
     });
+
+    // Envoi de la notification et de l'e-mail de réactivation
+    void this.eventNotificationService
+      .dispatchNotificationEvent({
+        type: 'USER_UNBANNED',
+        recipientUserId: id,
+        adminId: requestingUserId,
+      })
+      .catch((err) => {
+        this.logger.warn(`Échec dispatch USER_UNBANNED pour ${id} : ${err}`);
+      });
 
     return {
       success: true,
