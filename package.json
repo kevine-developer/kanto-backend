@@ -39,6 +39,7 @@
     "migrate:reports": "tsx src/scripts/migrate-content-reports.ts",
     "clean:avatars": "tsx src/scripts/clean-default-avatars.ts",
     "fix:media": "tsx src/scripts/fix-broken-media-urls.ts",
+    "seed:raki-teny": "tsx src/scripts/seed-raki-teny.ts",
     "test:email": "tsx src/scripts/test-email.ts"
   },
   "prisma": {

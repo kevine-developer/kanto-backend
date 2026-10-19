@@ -1,0 +1,41 @@
+// ============================================================
+// MODÈLE — MOTS RARES & INSOLITES (Raki-teny Miafina)
+// Dictionnaire culturel des trésors de la langue malgache
+// ============================================================
+
+model RakiTenyWord {
+  id            String        @id @default(cuid())
+  slug          String        @unique // Ex: "somambisamby"
+  word          String        // Mot malgache (ex: "Somambisamby")
+  phonetic      String?       // Transcription phonétique (ex: "sou-mam-bi-sam-by")
+  category      String        @default("nature_temps") // nature_temps, art_musique, etc.
+  wordClassMg   String        // Classe grammaticale MG (ex: "Mpamari-toetra / Anarana")
+  wordClassFr   String        // Classe grammaticale FR (ex: "Adjectif / Nom")
+  rarity        WordRarity    @default(VERY_RARE)
+  rarityLabelMg String        // Libellé rareté MG (ex: "Haisoratra & Kanto")
+  rarityLabelFr String        // Libellé rareté FR (ex: "Poétique & Évocateur")
+  meaningMg     String        @db.Text // Définition / sens en malgache
+  meaningFr     String        @db.Text // Définition / traduction en français
+  exampleMg     String        @db.Text // Exemple d'usage en malgache
+  exampleFr     String        @db.Text // Traduction de l'exemple en français
+  contextUsage  String        @db.Text // Contexte d'usage littéraire ou rituel
+  etymology     String?       @db.Text // Origine et racine étymologique
+  audioUrl      String?       // Prononciation audio
+  status        ContentStatus @default(PUBLISHED)
+  isFeatured    Boolean       @default(false)
+
+  // Compteurs & Statistiques
+  viewCount     Int           @default(0)
+  likesCount    Int           @default(0)
+  shareCount    Int           @default(0)
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([status])
+  @@index([rarity])
+  @@index([category])
+  @@index([word])
+  @@index([createdAt])
+  @@map("raki_teny_words")
+}

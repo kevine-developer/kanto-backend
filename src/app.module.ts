@@ -43,6 +43,7 @@ import { UserQuizModule } from './user-quiz/user-quiz.module.js';
 import { BetaTestersModule } from './beta-testers/beta-testers.module.js';
 import { DeeplinkModule } from './deeplink/deeplink.module.js';
 import { ModerationModule } from './modules/moderation/index.js';
+import { RakiTenyModule } from './raki-teny/raki-teny.module.js';
 
 @Module({
   imports: [
@@ -110,6 +111,7 @@ import { ModerationModule } from './modules/moderation/index.js';
     BetaTestersModule,
     DeeplinkModule,
     ModerationModule,
+    RakiTenyModule,
   ],
   controllers: [AppController],
   providers: [
