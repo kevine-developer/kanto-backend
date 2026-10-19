@@ -42,6 +42,12 @@ export function renderBetaLandingPage(
       ? `${count} testeur${count > 1 ? 's' : ''} inscrit${count > 1 ? 's' : ''}`
       : 'Inscriptions ouvertes';
 
+  const legalBaseUrl =
+    process.env.NATIVE_APP_URL ||
+    process.env.PUBLIC_WEB_URL ||
+    process.env.APP_URL ||
+    'https://app-kanto.gastsar.fr';
+
   return `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -1659,8 +1665,8 @@ export function renderBetaLandingPage(
   <!-- Pied de page officiel -->
   <footer>
     <div class="footer-nav">
-      <a href="https://auth-kanto.gastsar.fr/pages/terms">Conditions d'utilisation (CGU)</a>
-      <a href="https://auth-kanto.gastsar.fr/pages/privacy">Confidentialité</a>
+      <a href="${legalBaseUrl}/pages/terms">Conditions d'utilisation (CGU)</a>
+      <a href="${legalBaseUrl}/pages/privacy">Confidentialité</a>
       <button type="button" class="footer-cookie-btn" id="btn-cookie-settings">Gestion des cookies</button>
       <a href="mailto:contact@kanto.mg">Contact</a>
     </div>

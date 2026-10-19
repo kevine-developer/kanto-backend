@@ -147,6 +147,37 @@ describe('UsersService — gestion du mot de passe', () => {
       expect(result.hasPassword).toBe(false);
       expect(result.providers).toContain('apple');
     });
+
+    it('normalise automatiquement en base les comptes credential dont issuer !== "local:credential"', async () => {
+      const user = buildUser({ id: 'user-legacy' });
+      const legacyAccount = buildAccount({
+        id: 'acc-legacy',
+        providerId: 'credential',
+        userId: user.id,
+        accountId: user.id,
+        password: '$scrypt$...',
+        issuer: null,
+      });
+
+      prismaMock.account.findMany.mockResolvedValue([legacyAccount]);
+      prismaMock.account.update.mockResolvedValue({
+        ...legacyAccount,
+        issuer: 'local:credential',
+      });
+
+      const result = await service.getAuthMethods(user.id);
+
+      expect(result.hasPassword).toBe(true);
+      expect(prismaMock.account.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: 'acc-legacy' },
+          data: expect.objectContaining({
+            issuer: 'local:credential',
+            accountId: user.id,
+          }),
+        }),
+      );
+    });
   });
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -154,10 +185,10 @@ describe('UsersService — gestion du mot de passe', () => {
   // ─────────────────────────────────────────────────────────────────────────
 
   describe('addPassword', () => {
-    it('ajoute un mot de passe à un compte OAuth sans mot de passe', async () => {
+    it('ajoute un mot de passe avec issuer="local:credential" et accountId=user.id (indispensable pour Better Auth)', async () => {
       const user = buildUser({ id: 'user-oauth' });
       prismaMock.user.findUnique.mockResolvedValue(user);
-      prismaMock.account.findFirst.mockResolvedValue(null); // pas de credential existant
+      prismaMock.account.findFirst.mockResolvedValue(null);
       prismaMock.account.create.mockResolvedValue({ id: 'new-account' });
 
       const result = await service.addPassword(user.id, 'ValidPass1!');
@@ -168,6 +199,8 @@ describe('UsersService — gestion du mot de passe', () => {
           data: expect.objectContaining({
             providerId: 'credential',
             userId: user.id,
+            accountId: user.id,
+            issuer: 'local:credential',
           }),
         }),
       );
@@ -261,6 +294,113 @@ describe('UsersService — gestion du mot de passe', () => {
       // Un utilisateur Apple peut aussi ajouter un mot de passe
       const result = await service.addPassword(user.id, 'ValidPass1!');
       expect(result.success).toBe(true);
+    });
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // changePassword
+  // ─────────────────────────────────────────────────────────────────────────
+
+  describe('changePassword', () => {
+    it('modifie avec succès un mot de passe existant après vérification de l ancien mot de passe', async () => {
+      const { hashPassword } = await import('better-auth/crypto');
+      const oldPassword = 'CurrentPass1!';
+      const newPassword = 'BrandNewPass2@';
+      const oldHash = await hashPassword(oldPassword);
+
+      const user = buildUser({ id: 'user-change-pw', email: 'change@kanto.mg' });
+      const credentialAccount = buildAccount({
+        id: 'account-change',
+        providerId: 'credential',
+        userId: user.id,
+        accountId: user.id,
+        password: oldHash,
+        issuer: 'local:credential',
+      });
+
+      prismaMock.user.findUnique.mockResolvedValue(user);
+      prismaMock.account.findFirst.mockResolvedValue(credentialAccount);
+      prismaMock.account.update.mockResolvedValue({ ...credentialAccount, id: 'account-change' });
+
+      const result = await service.changePassword(user.id, oldPassword, newPassword, false);
+
+      expect(result.success).toBe(true);
+      expect(prismaMock.account.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: 'account-change' },
+          data: expect.objectContaining({
+            issuer: 'local:credential',
+            accountId: user.id,
+          }),
+        }),
+      );
+
+      // Email de notification de modification
+      await new Promise((r) => setTimeout(r, 50));
+      expect(resendMock.sendSecurityChangeEmail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: user.email,
+          action: 'changed',
+        }),
+      );
+    });
+
+    it('refuse la modification si l ancien mot de passe est incorrect', async () => {
+      const { hashPassword } = await import('better-auth/crypto');
+      const oldHash = await hashPassword('CorrectPass1!');
+
+      const user = buildUser({ id: 'user-wrong-pw' });
+      const credentialAccount = buildAccount({
+        id: 'account-wrong',
+        providerId: 'credential',
+        userId: user.id,
+        password: oldHash,
+      });
+
+      prismaMock.user.findUnique.mockResolvedValue(user);
+      prismaMock.account.findFirst.mockResolvedValue(credentialAccount);
+
+      await expect(
+        service.changePassword(user.id, 'WrongPass123!', 'NewValidPass1@', false),
+      ).rejects.toThrow();
+
+      expect(prismaMock.account.update).not.toHaveBeenCalled();
+    });
+
+    it('révoque les autres sessions de l utilisateur si demandé', async () => {
+      const { hashPassword } = await import('better-auth/crypto');
+      const oldHash = await hashPassword('CurrentPass1!');
+
+      const user = buildUser({ id: 'user-revoke-sessions' });
+      const credentialAccount = buildAccount({
+        id: 'account-rev',
+        userId: user.id,
+        password: oldHash,
+      });
+
+      prismaMock.user.findUnique.mockResolvedValue(user);
+      prismaMock.account.findFirst.mockResolvedValue(credentialAccount);
+      prismaMock.account.update.mockResolvedValue(credentialAccount);
+      prismaMock.session.deleteMany.mockResolvedValue({ count: 2 });
+
+      const result = await service.changePassword(user.id, 'CurrentPass1!', 'NewPass1@', true);
+
+      expect(result.success).toBe(true);
+      expect(prismaMock.session.deleteMany).toHaveBeenCalledWith({
+        where: { userId: user.id },
+      });
+    });
+
+    it('rejette la modification si le compte ne possède pas encore de mot de passe', async () => {
+      const user = buildUser({ id: 'user-oauth-only' });
+      prismaMock.user.findUnique.mockResolvedValue(user);
+      prismaMock.account.findFirst.mockResolvedValue(null);
+
+      await expect(
+        service.changePassword(user.id, 'SomeOldPass!', 'NewPass1@', false),
+      ).rejects.toThrow();
+
+      expect(prismaMock.account.update).not.toHaveBeenCalled();
     });
   });
 });

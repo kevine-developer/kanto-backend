@@ -25,6 +25,7 @@ describe('UsersController', () => {
     uploadAvatar: jest.Mock<(...args: any[]) => Promise<any>>;
     deleteAvatar: jest.Mock<(...args: any[]) => Promise<any>>;
     deleteAccount: jest.Mock<(...args: any[]) => Promise<any>>;
+    changePassword: jest.Mock<(...args: any[]) => Promise<any>>;
   };
 
   beforeEach(async () => {
@@ -35,6 +36,7 @@ describe('UsersController', () => {
       uploadAvatar: jest.fn<(...args: any[]) => Promise<any>>(),
       deleteAvatar: jest.fn<(...args: any[]) => Promise<any>>(),
       deleteAccount: jest.fn<(...args: any[]) => Promise<any>>(),
+      changePassword: jest.fn<(...args: any[]) => Promise<any>>(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -233,6 +235,41 @@ describe('UsersController', () => {
       expect(usersServiceMock.deleteAccount).toHaveBeenCalledWith(
         'user-to-delete',
         dto,
+      );
+      expect(result).toBe(expectedResponse);
+    });
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // changePassword
+  // ─────────────────────────────────────────────────────────────────────────
+
+  describe('changePassword', () => {
+    it('transmet userId de la session et le DTO au service', async () => {
+      const user = buildUser({ id: 'user-change' });
+      const { session } = buildUserSession(user);
+      const dto = {
+        currentPassword: 'OldPassword123!',
+        newPassword: 'NewPassword123!',
+        revokeOtherSessions: true,
+      };
+      const expectedResponse = {
+        success: true,
+        message: 'Votre mot de passe a été modifié avec succès.',
+      };
+
+      usersServiceMock.changePassword.mockResolvedValue(expectedResponse);
+
+      const result = await controller.changePassword(dto, {
+        user,
+        session,
+      } as any);
+
+      expect(usersServiceMock.changePassword).toHaveBeenCalledWith(
+        'user-change',
+        dto.currentPassword,
+        dto.newPassword,
+        dto.revokeOtherSessions,
       );
       expect(result).toBe(expectedResponse);
     });
