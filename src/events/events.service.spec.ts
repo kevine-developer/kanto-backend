@@ -1,6 +1,10 @@
 import { jest } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
-import { BadRequestException, ConflictException, ForbiddenException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { EventsService } from './events.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { ProgressionService } from '../progression/progression.service.js';
@@ -21,7 +25,6 @@ describe('EventsService', () => {
   let notificationsService: any;
   let badgesService: any;
 
-  const mockDate = new Date('2026-10-25T10:00:00.000Z');
   const mockFutureStart = new Date('2026-10-26T10:00:00.000Z');
   const mockFutureEnd = new Date('2026-11-05T10:00:00.000Z');
 
@@ -63,60 +66,62 @@ describe('EventsService', () => {
   beforeEach(async () => {
     prisma = {
       event: {
-        findMany: jest.fn().mockResolvedValue([mockEvent]),
-        findUnique: jest.fn().mockResolvedValue(mockEvent),
-        findFirst: jest.fn().mockResolvedValue(mockEvent),
-        count: jest.fn().mockResolvedValue(1),
-        create: jest.fn().mockResolvedValue(mockEvent),
-        update: jest.fn().mockResolvedValue(mockEvent),
-        delete: jest.fn().mockResolvedValue(mockEvent),
+        findMany: jest.fn<any>().mockResolvedValue([mockEvent]),
+        findUnique: jest.fn<any>().mockResolvedValue(mockEvent),
+        findFirst: jest.fn<any>().mockResolvedValue(mockEvent),
+        count: jest.fn<any>().mockResolvedValue(1),
+        create: jest.fn<any>().mockResolvedValue(mockEvent),
+        update: jest.fn<any>().mockResolvedValue(mockEvent),
+        delete: jest.fn<any>().mockResolvedValue(mockEvent),
       },
       eventParticipation: {
-        findUnique: jest.fn(),
-        findMany: jest.fn().mockResolvedValue([]),
-        create: jest.fn(),
-        update: jest.fn(),
-        count: jest.fn().mockResolvedValue(5),
+        findUnique: jest.fn<any>(),
+        findMany: jest.fn<any>().mockResolvedValue([]),
+        create: jest.fn<any>(),
+        update: jest.fn<any>(),
+        count: jest.fn<any>().mockResolvedValue(5),
       },
       eventReward: {
-        findUnique: jest.fn(),
-        create: jest.fn(),
-        update: jest.fn(),
+        findUnique: jest.fn<any>(),
+        create: jest.fn<any>(),
+        update: jest.fn<any>(),
       },
       eventRewardClaim: {
-        findUnique: jest.fn(),
-        create: jest.fn(),
-        count: jest.fn().mockResolvedValue(2),
+        findUnique: jest.fn<any>(),
+        create: jest.fn<any>(),
+        count: jest.fn<any>().mockResolvedValue(2),
       },
       eventLeaderboardEntry: {
-        findMany: jest.fn().mockResolvedValue([]),
-        upsert: jest.fn(),
+        findMany: jest.fn<any>().mockResolvedValue([]),
+        upsert: jest.fn<any>(),
       },
       user: {
-        findUnique: jest.fn().mockResolvedValue({ id: 'user_1', tier: 'FREE' }),
+        findUnique: jest
+          .fn<any>()
+          .mockResolvedValue({ id: 'user_1', tier: 'FREE' }),
       },
       userProgress: {
-        upsert: jest.fn(),
+        upsert: jest.fn<any>(),
       },
       userBadge: {
-        upsert: jest.fn(),
+        upsert: jest.fn<any>(),
       },
       adminAuditLog: {
-        create: jest.fn().mockResolvedValue({ id: 'log_1' }),
+        create: jest.fn<any>().mockResolvedValue({ id: 'log_1' }),
       },
-      $transaction: jest.fn((callback: any) => callback(prisma)),
+      $transaction: jest.fn<any>((callback: any) => callback(prisma)),
     };
 
     progressionService = {
-      awardXp: jest.fn().mockResolvedValue(true),
+      awardXp: jest.fn<any>().mockResolvedValue(true),
     };
 
     notificationsService = {
-      createNotification: jest.fn().mockResolvedValue(true),
+      createNotification: jest.fn<any>().mockResolvedValue(true),
     };
 
     badgesService = {
-      getUserBadges: jest.fn().mockResolvedValue([]),
+      getUserBadges: jest.fn<any>().mockResolvedValue([]),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -152,7 +157,10 @@ describe('EventsService', () => {
     });
 
     it('renvoie la fiche détaillée par slug ou id et incrémente les vues', async () => {
-      const res = await service.getEventBySlugOrId('fety-malagasy-2026', 'user_1');
+      const res = await service.getEventBySlugOrId(
+        'fety-malagasy-2026',
+        'user_1',
+      );
       expect(res.slug).toBe('fety-malagasy-2026');
       expect(prisma.event.update).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -164,9 +172,9 @@ describe('EventsService', () => {
 
     it('lève une NotFoundException si l’événement est introuvable', async () => {
       prisma.event.findFirst.mockResolvedValueOnce(null);
-      await expect(
-        service.getEventBySlugOrId('inconnu'),
-      ).rejects.toThrow(NotFoundException);
+      await expect(service.getEventBySlugOrId('inconnu')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -182,7 +190,9 @@ describe('EventsService', () => {
 
       const res = await service.participateInEvent(mockEvent.id, 'user_1');
       expect(res.success).toBe(true);
-      expect(res.participation.status).toBe(EventParticipationStatus.REGISTERED);
+      expect(res.participation.status).toBe(
+        EventParticipationStatus.REGISTERED,
+      );
       expect(prisma.event.update).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { id: mockEvent.id },
