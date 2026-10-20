@@ -1,0 +1,128 @@
+// ============================================================
+// MODÈLES — ÉVÉNEMENTS & FANAMBY
+// ============================================================
+
+model Event {
+  id                       String                 @id @default(cuid())
+  slug                     String                 @unique // ex: "fety-malagasy-2026", "defi-ohabolana-mai"
+  titleMg                  String                 // Titre en malgache
+  titleFr                  String                 // Titre en français
+  descriptionMg            String                 @db.Text
+  descriptionFr            String                 @db.Text
+  shortDescMg              String?                // Description courte pour cartes d'aperçu
+  shortDescFr              String?
+  category                 EventCategory          @default(CULTURE)
+  status                   EventStatus            @default(DRAFT)
+  participationType        EventParticipationType @default(OPEN)
+  minTier                  String?                @default("FREE") // "FREE", "PREMIUM", "VIP"
+  imageUrl                 String?                // Affiche / illustration principale
+  bannerUrl                String?                // Bannière panoramique
+  location                 String?                // Lieu physique ou "En ligne"
+  externalUrl              String?                // Lien externe billetterie ou ressources
+  startDate                DateTime
+  endDate                  DateTime
+  registrationDeadline     DateTime?
+  maxParticipants          Int?                   // null = illimité
+  currentParticipantsCount Int                    @default(0)
+  viewsCount               Int                    @default(0)
+  sharesCount              Int                    @default(0)
+  isFeatured               Boolean                @default(false)
+  rulesMg                  String?                @db.Text
+  rulesFr                  String?                @db.Text
+  metadata                 Json?                  // Configuration spécifique (ex: { associatedQuizId: "...", targetScore: 80 })
+  creatorId                String?                // ID de l'administrateur créateur
+  cancelledReason          String?
+  createdAt                DateTime               @default(now())
+  updatedAt                DateTime               @updatedAt
+
+  participations           EventParticipation[]
+  rewards                  EventReward[]
+  leaderboardEntries       EventLeaderboardEntry[]
+
+  @@index([status])
+  @@index([category])
+  @@index([startDate])
+  @@index([endDate])
+  @@index([isFeatured])
+  @@map("events")
+}
+
+model EventReward {
+  id             String          @id @default(cuid())
+  eventId        String
+  event          Event           @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  rewardType     EventRewardType
+  titleMg        String
+  titleFr        String
+  amount         Float?          // Valeur numérique pour XP ou Coins
+  badgeId        String?         // Identifiant badge officiel si rewardType === BADGE
+  lotDescription String?         // Descriptif du lot physique ou avantage
+  criteria       String?         // "top_1", "top_3", "completion", "score_above_80"
+  maxWinners     Int?            // Plafond de bénéficiaires (null = tous les éligibles)
+  claimsCount    Int             @default(0)
+  createdAt      DateTime        @default(now())
+
+  claims         EventRewardClaim[]
+
+  @@index([eventId])
+  @@map("event_rewards")
+}
+
+model EventParticipation {
+  id              String                   @id @default(cuid())
+  eventId         String
+  event           Event                    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId          String
+  user            User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status          EventParticipationStatus @default(REGISTERED)
+  score           Float                    @default(0)
+  progressPercent Int                      @default(0) // 0 à 100
+  attemptsCount   Int                      @default(1)
+  completedAt     DateTime?
+  notes           String?
+  metadata        Json?                    // Réponses, checkpoints atteints
+  createdAt       DateTime                 @default(now())
+  updatedAt       DateTime                 @updatedAt
+
+  rewardClaims    EventRewardClaim[]
+
+  @@unique([eventId, userId])
+  @@index([eventId, status])
+  @@index([userId])
+  @@map("event_participations")
+}
+
+model EventRewardClaim {
+  id               String              @id @default(cuid())
+  eventId          String
+  rewardId         String
+  reward           EventReward         @relation(fields: [rewardId], references: [id], onDelete: Cascade)
+  userId           String
+  user             User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  participationId  String?
+  participation    EventParticipation? @relation(fields: [participationId], references: [id], onDelete: SetNull)
+  awardedAt        DateTime            @default(now())
+  isFulfilled      Boolean             @default(true) // false pour lots physiques en cours d'expédition
+  fulfillmentNotes String?
+
+  @@unique([rewardId, userId])
+  @@index([eventId])
+  @@index([userId])
+  @@map("event_reward_claims")
+}
+
+model EventLeaderboardEntry {
+  id               String   @id @default(cuid())
+  eventId          String
+  event            Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  score            Float
+  rank             Int
+  timeTakenSeconds Int?     // Départage en cas d'égalité de score
+  completedAt      DateTime @default(now())
+
+  @@unique([eventId, userId])
+  @@index([eventId, rank])
+  @@map("event_leaderboard_entries")
+}

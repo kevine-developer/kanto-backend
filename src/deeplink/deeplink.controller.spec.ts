@@ -29,6 +29,7 @@ describe('DeeplinkController (Passerelle universelle & QR codes)', () => {
       },
       contribution: {
         findUnique: jest.fn(),
+        findFirst: jest.fn().mockImplementation(() => Promise.resolve(null)),
       },
       user: {
         findFirst: jest.fn(),

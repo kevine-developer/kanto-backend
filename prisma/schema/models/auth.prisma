@@ -50,6 +50,16 @@ model User {
   // Relations UGC (Quiz persos)
   quizSets               UserQuizSet[]
 
+  // Relations Parrainage & Referral
+  referralCode           ReferralCode?   @relation("UserReferralCode")
+  sentReferrals          Referral[]      @relation("ReferrerReferrals")
+  receivedReferral       Referral?       @relation("RefereeReferral")
+
+  // Relations Événements & Fanamby
+  eventParticipations    EventParticipation[]
+  eventRewardClaims      EventRewardClaim[]
+  eventLeaderboardEntries EventLeaderboardEntry[]
+
   @@index([tier, tierExpiresAt])
   @@map("users")
 }

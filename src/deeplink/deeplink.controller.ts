@@ -81,6 +81,12 @@ export class DeeplinkController {
               '/p/*',
               '/proverbe/*',
               '/ohabolana/*',
+              '/expression/*',
+              '/expressions/*',
+              '/dicton/*',
+              '/dictons/*',
+              '/raki-teny/*',
+              '/rakiteny/*',
               '/u/*',
               '/user/*',
               '/c/*',
@@ -99,6 +105,10 @@ export class DeeplinkController {
               '/classement*',
               '/ugc/*',
               '/deck/*',
+              '/invite/*',
+              '/parrainage/*',
+              '/ref/*',
+              '/referral*',
             ],
           },
         ],
@@ -119,6 +129,7 @@ export class DeeplinkController {
       categoryLabel: 'Proverbe Malgache',
       badge: 'Ohabolana Malagasy',
     };
+    let resolvedPath = `proverbe/${id}`;
 
     if (this.prisma && id) {
       try {
@@ -141,7 +152,31 @@ export class DeeplinkController {
             metaInfo: 'Kanto MG',
           };
         } else {
-          content.isNotFound = true;
+          // Résilience rétrocompatible : Si un ancien lien /p/:id ciblait une contribution
+          const contrib = await this.prisma.contribution.findFirst({
+            where: { id, status: 'APPROVED' },
+            include: { user: { select: { name: true, username: true } } },
+          });
+
+          if (contrib) {
+            resolvedPath = `c/${id}`;
+            content = {
+              categoryLabel: contrib.category || 'Contribution',
+              badge: 'Fandraisana anjara • Kanto',
+              title: contrib.textMg,
+              textMg: contrib.textMg,
+              textFr: contrib.textFr || undefined,
+              notes: contrib.meaning || undefined,
+              author:
+                contrib.user?.name ||
+                (contrib.user?.username
+                  ? `@${contrib.user.username}`
+                  : 'Mpandray anjara Kanto'),
+              metaInfo: 'Communauté Kanto MG',
+            };
+          } else {
+            content.isNotFound = true;
+          }
         }
       } catch (err) {
         this.logger.warn(`Erreur récupération proverbe ${id}: ${err}`);
@@ -151,7 +186,7 @@ export class DeeplinkController {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.send(
       renderDeeplinkGatewayPage({
-        path: `proverbe/${id}`,
+        path: resolvedPath,
         fullQueryString: qs,
         title: content.textMg
           ? `« ${content.textMg} » — Ohabolana Kanto MG`
@@ -159,6 +194,180 @@ export class DeeplinkController {
         description:
           content.textFr ||
           'Découvrez ce trésor de la sagesse et de la culture malgache sur Kanto MG.',
+        content,
+      }),
+    );
+  }
+
+  // ─── 2b. Expressions Imagées & Oha-pitenenana ───────────────────────────────
+
+  @Get(['expression/:id', 'expressions/:id', 'oha-pitenenana/:id'])
+  async handleExpression(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): Promise<void> {
+    const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+    let content: DeeplinkContentDetails = {
+      categoryLabel: 'Expression Imagée',
+      badge: 'Oha-pitenenana Malagasy',
+    };
+
+    if (this.prisma && id) {
+      try {
+        const item = await this.prisma.malagasyItem.findFirst({
+          where: {
+            OR: [{ id }, { slug: id }],
+            status: 'PUBLISHED',
+          },
+        });
+
+        if (item) {
+          content = {
+            categoryLabel: 'Expression Imagée',
+            badge: 'Oha-pitenenana Malagasy',
+            title: item.malagasy,
+            textMg: item.malagasy,
+            textFr: item.french,
+            notes: item.meaning,
+            author: item.origins?.[0] || 'Fahendrena Malagasy',
+            metaInfo: 'Kanto MG',
+          };
+        } else {
+          content.isNotFound = true;
+        }
+      } catch (err) {
+        this.logger.warn(`Erreur récupération expression ${id}: ${err}`);
+      }
+    }
+
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderDeeplinkGatewayPage({
+        path: `expression/${id}`,
+        fullQueryString: qs,
+        title: content.textMg
+          ? `« ${content.textMg} » — Oha-pitenenana Kanto MG`
+          : 'Oha-pitenenana Malagasy — Kanto MG',
+        description:
+          content.textFr ||
+          'Découvrez cette expression imagée traditionnelle malgache sur Kanto MG.',
+        content,
+      }),
+    );
+  }
+
+  // ─── 2c. Dictons Populaires & Fomba fiteny ──────────────────────────────────
+
+  @Get(['dicton/:id', 'dictons/:id', 'fomba-fiteny/:id'])
+  async handleDicton(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): Promise<void> {
+    const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+    let content: DeeplinkContentDetails = {
+      categoryLabel: 'Dicton Populaire',
+      badge: 'Fomba Fiteny Malagasy',
+    };
+
+    if (this.prisma && id) {
+      try {
+        const item = await this.prisma.malagasyItem.findFirst({
+          where: {
+            OR: [{ id }, { slug: id }],
+            status: 'PUBLISHED',
+          },
+        });
+
+        if (item) {
+          content = {
+            categoryLabel: 'Dicton Populaire',
+            badge: 'Fomba Fiteny Malagasy',
+            title: item.malagasy,
+            textMg: item.malagasy,
+            textFr: item.french,
+            notes: item.meaning,
+            author: item.origins?.[0] || 'Fahendrena Malagasy',
+            metaInfo: 'Kanto MG',
+          };
+        } else {
+          content.isNotFound = true;
+        }
+      } catch (err) {
+        this.logger.warn(`Erreur récupération dicton ${id}: ${err}`);
+      }
+    }
+
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderDeeplinkGatewayPage({
+        path: `dicton/${id}`,
+        fullQueryString: qs,
+        title: content.textMg
+          ? `« ${content.textMg} » — Fomba Fiteny Kanto MG`
+          : 'Fomba Fiteny Malagasy — Kanto MG',
+        description:
+          content.textFr ||
+          'Découvrez ce dicton populaire traditionnel sur Kanto MG.',
+        content,
+      }),
+    );
+  }
+
+  // ─── 2d. Mots Rares & Raki-teny Miafina ─────────────────────────────────────
+
+  @Get(['raki-teny/:id', 'rakiteny/:id', 'word/:id', 'teny/:id', 'mot-rare/:id'])
+  async handleRakiTeny(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): Promise<void> {
+    const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+    let content: DeeplinkContentDetails = {
+      categoryLabel: 'Mot Rare Malgache',
+      badge: 'Raki-teny Miafina',
+    };
+
+    if (this.prisma && id) {
+      try {
+        const word = await this.prisma.rakiTenyWord.findFirst({
+          where: {
+            OR: [{ id }, { slug: id }],
+            status: 'PUBLISHED',
+          },
+        });
+
+        if (word) {
+          content = {
+            categoryLabel: 'Raki-teny Miafina',
+            badge: word.rarityLabelMg || 'Mot Rare',
+            title: word.word,
+            textMg: word.word,
+            textFr: word.meaningFr,
+            notes: word.meaningMg,
+            author: word.wordClassFr || 'Dictionnaire Kanto',
+            metaInfo: 'Kanto MG',
+          };
+        } else {
+          content.isNotFound = true;
+        }
+      } catch (err) {
+        this.logger.warn(`Erreur récupération mot rare ${id}: ${err}`);
+      }
+    }
+
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderDeeplinkGatewayPage({
+        path: `raki-teny/${id}`,
+        fullQueryString: qs,
+        title: content.title
+          ? `« ${content.title} » — Raki-teny Miafina Kanto MG`
+          : 'Raki-teny Miafina — Kanto MG',
+        description:
+          content.textFr ||
+          'Découvrez ce mot rare et insolite de la langue malgache sur Kanto MG.',
         content,
       }),
     );
@@ -730,15 +939,17 @@ export class DeeplinkController {
     @Query('scope') scope: string | undefined,
     @Query('level') level: string | undefined,
     @Query('user') user: string | undefined,
+    @Query('userId') userId: string | undefined,
     @Req() req: Request,
     @Res() res: Response,
   ): void {
     const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+    const targetUser = user || userId;
     const content: DeeplinkContentDetails = {
-      categoryLabel: 'Classement',
+      categoryLabel: targetUser ? 'Profil Joueur' : 'Classement',
       badge: level ? `Dingana ${level}` : 'Filaharana Voninahitra',
-      title: user
-        ? `Progression de ${user} (Niveau ${level || '1'})`
+      title: targetUser
+        ? `Progression de ${targetUser} (Niveau ${level || '1'})`
         : "Classement d'Honneur Kanto MG",
       textMg:
         'Jereo ireo mpikaroka sy mpiaro ny teny ary ny kolontsaina malagasy.',
@@ -751,11 +962,116 @@ export class DeeplinkController {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.send(
       renderDeeplinkGatewayPage({
-        path: 'classement',
+        path: targetUser ? `u/${targetUser}` : 'classement',
         fullQueryString: qs,
-        title: "Classement d'Honneur — Kanto MG",
+        title: targetUser
+          ? `Profil de ${targetUser} — Kanto MG`
+          : "Classement d'Honneur — Kanto MG",
         description:
           'Découvrez les membres les plus actifs et le tableau des scores sur Kanto MG.',
+        content,
+      }),
+    );
+  }
+
+  // ─── 12b. Hubs & Catégories Culturelles Directes ─────────────────────────────
+
+  @Get([
+    'proverbes',
+    'expressions',
+    'dictons',
+    'contes',
+    'kabary',
+    'poesies',
+    'recitations',
+    'citations',
+    'raki-teny',
+    'civique',
+    'games',
+    'communaute',
+    'categories',
+  ])
+  handleCategoryHub(@Req() req: Request, @Res() res: Response): void {
+    const rawPath = req.path.replace(/^\/+|\/+$/g, '').toLowerCase();
+    const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+
+    const titles: Record<string, { title: string; desc: string }> = {
+      proverbes: {
+        title: 'Proverbes Malgaches (Ohabolana)',
+        desc: 'Explorez la sagesse ancestrale et les proverbes de Madagascar.',
+      },
+      expressions: {
+        title: 'Expressions Imagées (Oha-pitenenana)',
+        desc: 'Découvrez la richesse métaphorique de la langue malgache.',
+      },
+      dictons: {
+        title: 'Dictons Populaires (Fomba fiteny)',
+        desc: 'Retrouvez les formules et dictons du quotidien malgache.',
+      },
+      contes: {
+        title: 'Contes Traditionnels (Angano)',
+        desc: 'Plongez dans les légendes et mythes oraux de Madagascar.',
+      },
+      kabary: {
+        title: 'Art Oratoire & Discours (Kabary)',
+        desc: 'Apprenez les discours rituels et l’art du verbe malgache.',
+      },
+      poesies: {
+        title: 'Poésies & Hainteny (Tononkalo)',
+        desc: 'Anthologie de la poésie et des jeux poétiques traditionnels.',
+      },
+      recitations: {
+        title: 'Récitations & Mémoire (Tsianjery)',
+        desc: 'Les textes classiques de récitation du patrimoine malgache.',
+      },
+      citations: {
+        title: 'Citations & Pensées de Sages (Tenin-drazana)',
+        desc: 'Les paroles mémorables des grands penseurs et sages malgaches.',
+      },
+      'raki-teny': {
+        title: 'Dictionnaire des Mots Rares (Raki-teny Miafina)',
+        desc: 'Trésors lexicaux et perles méconnues de la langue malgache.',
+      },
+      civique: {
+        title: 'Éducation Civique & Institutions',
+        desc: 'Citoyenneté, droits et histoire des institutions malgaches.',
+      },
+      games: {
+        title: 'Jeux & Quiz Culturels',
+        desc: 'Jouez, testez vos connaissances et grimpez dans le classement.',
+      },
+      communaute: {
+        title: 'Espace Communautaire Kanto',
+        desc: 'Partagez vos proverbes, contes et échangez avec la communauté.',
+      },
+      categories: {
+        title: 'Toutes les Catégories Culturelles',
+        desc: 'Accédez à l’ensemble du patrimoine et des trésors Kanto MG.',
+      },
+    };
+
+    const info = titles[rawPath] || {
+      title: 'Culture & Patrimoine Malgache',
+      desc: 'Découvrez le riche héritage de Madagascar sur Kanto MG.',
+    };
+
+    const content: DeeplinkContentDetails = {
+      categoryLabel: 'Catégorie Culturelle',
+      badge: 'Vakoka Malagasy',
+      title: info.title,
+      textMg: 'Tsidiho ny tahirin-kevitra sy ny vakoka malagasy ato amin’ny Kanto MG.',
+      textFr: info.desc,
+      author: 'Kanto MG',
+      metaInfo: 'Patrimoine & Culture',
+    };
+
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderDeeplinkGatewayPage({
+        path: rawPath,
+        fullQueryString: qs,
+        title: `${info.title} — Kanto MG`,
+        description: info.desc,
         content,
       }),
     );
@@ -786,6 +1102,80 @@ export class DeeplinkController {
         title: "Télécharger l'application Kanto MG",
         description:
           'Installez Kanto MG sur votre smartphone pour explorer la culture et la sagesse malgaches.',
+        content,
+      }),
+    );
+  }
+
+  // ─── 14. Parrainage & Invitations Personnelles (/invite/:code, /parrainage/:code) ────
+
+  @Get(['invite/:code', 'parrainage/:code', 'ref/:code', 'join/:code'])
+  async handleReferralInvite(
+    @Param('code') rawCode: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): Promise<void> {
+    const code = (rawCode || '').trim().toUpperCase();
+    const qs = req.url.includes('?') ? req.url.split('?')[1] : '';
+
+    let referrerName = 'Un membre Kanto MG';
+    let referrerAvatar: string | undefined;
+
+    if (this.prisma && code) {
+      try {
+        const referralCode = await this.prisma.referralCode.findUnique({
+          where: { code },
+          include: {
+            user: {
+              select: {
+                name: true,
+                username: true,
+                image: true,
+                banned: true,
+              },
+            },
+          },
+        });
+
+        if (referralCode && !referralCode.user?.banned) {
+          referrerName = referralCode.user.name || (referralCode.user.username ? `@${referralCode.user.username}` : 'Un ami Kanto');
+          referrerAvatar = referralCode.user.image || undefined;
+
+          // Incrément non bloquant des clics
+          this.prisma.referralCode.update({
+            where: { id: referralCode.id },
+            data: { clicksCount: { increment: 1 } },
+          }).catch(() => {});
+        }
+      } catch (err) {
+        this.logger.warn(`Erreur récupération invitation parrainage ${code}: ${err}`);
+      }
+    }
+
+    const content: DeeplinkContentDetails = {
+      categoryLabel: 'Invitation Kanto MG',
+      badge: `Code : ${code}`,
+      title: `${referrerName} vous invite sur Kanto MG`,
+      textMg: `Asain'i ${referrerName} ianao hanatevin-daharana ny fianakaviamben'ny Kanto MG ! Mahazoa +100 XP sy +20 Vola avy hatrany amin'ny fidiranao.`,
+      textFr: `${referrerName} vous invite à découvrir la richesse de la langue et de la culture malgaches sur Kanto MG ! Obtenez +100 XP et +20 Vola dès votre inscription.`,
+      notes: `Utilisez le code de parrainage : ${code}`,
+      author: referrerName,
+      metaInfo: 'Programme de Parrainage Kanto MG',
+      userStats: referrerAvatar ? {
+        level: 1,
+        totalXp: 0,
+        streak: 0,
+        avatar: referrerAvatar,
+      } : undefined,
+    };
+
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderDeeplinkGatewayPage({
+        path: `referral?code=${encodeURIComponent(code)}`,
+        fullQueryString: qs,
+        title: `Rejoignez ${referrerName} sur Kanto MG (Code : ${code})`,
+        description: `${referrerName} vous parraine sur Kanto MG. Découvrez proverbes, contes, sagesses et gagnez vos récompenses de bienvenue.`,
         content,
       }),
     );

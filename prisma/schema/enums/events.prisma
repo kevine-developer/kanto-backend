@@ -1,0 +1,47 @@
+// ============================================================
+// ENUMS — ÉVÉNEMENTS & FANAMBY
+// ============================================================
+
+enum EventCategory {
+  CULTURE     // Événements culturels, traditions, patrimoine, conférences
+  CHALLENGE   // Défis, quiz spéciaux, compétitions, tournois
+  REWARD      // Concours avec lots, tirages au sort, récompenses exclusives
+  SEASONAL    // Fêtes calendaires, Asaramanitra, saisons
+  COMMUNITY   // Objectifs collectifs, défis de contributions
+  SPECIAL     // Lancements Kanto MG, opérations VIP, bêta-testeurs
+}
+
+enum EventStatus {
+  DRAFT       // Brouillon (admin uniquement)
+  SCHEDULED   // Planifié (publication future)
+  PUBLISHED   // Publié et visible publiquement
+  ACTIVE      // En cours (participations et actions actives)
+  SUSPENDED   // Suspendu temporairement
+  COMPLETED   // Terminé (résultats et récompenses consultables)
+  CANCELLED   // Annulé avec motif
+  ARCHIVED    // Archivé
+}
+
+enum EventParticipationType {
+  OPEN                    // Accès libre immédiat
+  REGISTRATION_REQUIRED   // Inscription préalable obligatoire
+  EXCLUSIVE_TIER          // Réservé à un statut (VIP, Premium, etc.)
+}
+
+enum EventParticipationStatus {
+  REGISTERED    // Inscrit
+  IN_PROGRESS   // Participation en cours
+  COMPLETED     // Participation terminée avec succès
+  FAILED        // Échec des critères minimaux
+  DISQUALIFIED  // Disqualifié pour non-respect des règles
+  CANCELLED     // Inscription annulée
+}
+
+enum EventRewardType {
+  XP              // Points d'expérience
+  COINS           // Pièces Vola
+  BADGE           // Badge officiel Kanto MG
+  PREMIUM_ACCESS  // Période d'accès VIP / Premium
+  PHYSICAL_LOT    // Lot physique expédié
+  CUSTOM          // Récompense personnalisée
+}
