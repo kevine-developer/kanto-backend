@@ -44,6 +44,8 @@ import { BetaTestersModule } from './beta-testers/beta-testers.module.js';
 import { DeeplinkModule } from './deeplink/deeplink.module.js';
 import { ModerationModule } from './modules/moderation/index.js';
 import { RakiTenyModule } from './raki-teny/raki-teny.module.js';
+import { ReferralModule } from './referral/referral.module.js';
+import { EventsModule } from './events/events.module.js';
 
 @Module({
   imports: [
@@ -112,6 +114,8 @@ import { RakiTenyModule } from './raki-teny/raki-teny.module.js';
     DeeplinkModule,
     ModerationModule,
     RakiTenyModule,
+    ReferralModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [

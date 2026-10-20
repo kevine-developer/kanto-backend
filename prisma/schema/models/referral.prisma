@@ -1,0 +1,61 @@
+// ============================================================
+// MODÈLES — PARRAINAGE & REFERRAL PROGRAM
+// ============================================================
+
+model ReferralCode {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation("UserReferralCode", fields: [userId], references: [id], onDelete: Cascade)
+  code        String   @unique // Ex: "KANTO-7X8K"
+  clicksCount Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([code])
+  @@map("referral_codes")
+}
+
+model Referral {
+  id                   String         @id @default(cuid())
+  referrerId           String
+  referrer             User           @relation("ReferrerReferrals", fields: [referrerId], references: [id], onDelete: Cascade)
+  refereeId            String         @unique // Garantit qu'un filleul ne peut être parrainé qu'une seule fois
+  referee              User           @relation("RefereeReferral", fields: [refereeId], references: [id], onDelete: Cascade)
+  code                 String         // Code de parrainage utilisé
+  status               ReferralStatus @default(PENDING)
+  referrerXpAwarded    Float          @default(0)
+  referrerCoinsAwarded Int            @default(0)
+  refereeXpAwarded     Float          @default(0)
+  refereeCoinsAwarded  Int            @default(0)
+  completedAt          DateTime?
+  rejectionReason      String?
+  ipAddress            String?
+  userAgent            String?
+  metadata             Json?
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+
+  @@index([referrerId])
+  @@index([refereeId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("referrals")
+}
+
+model ReferralConfig {
+  id                   String   @id @default("default")
+  isEnabled            Boolean  @default(true)
+  referrerXp           Float    @default(250)
+  referrerCoins        Int      @default(50)
+  refereeXp            Float    @default(100)
+  refereeCoins         Int      @default(20)
+  maxRewardsPerReferrer Int     @default(20)
+  requireFirstActivity Boolean  @default(true)
+  welcomeMessageMg     String?  @db.Text
+  welcomeMessageFr     String?  @db.Text
+  updatedAt            DateTime @updatedAt
+  createdAt            DateTime @default(now())
+
+  @@map("referral_configs")
+}

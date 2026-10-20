@@ -23,6 +23,7 @@ import {
   renderBetaWaitlistScript,
 } from './beta-testers/views/beta-landing.view.js';
 import { PrismaService } from './prisma/prisma.service.js';
+import { RedisService } from './redis/redis.service.js';
 import { ResendService } from './integrations/resend/resend.service.js';
 import { buildFeedbackAdminEmail } from './integrations/resend/templates/index.js';
 import { BetaTestersService } from './beta-testers/beta-testers.service.js';
@@ -34,6 +35,7 @@ export class AppController {
   constructor(
     private readonly appService: AppService,
     @Optional() private readonly prisma?: PrismaService,
+    @Optional() private readonly redisService?: RedisService,
     @Optional() private readonly resendService?: ResendService,
     @Optional() private readonly betaTestersService?: BetaTestersService,
   ) {}
@@ -419,11 +421,51 @@ export class AppController {
   }
 
   @Get('health')
-  getHealth() {
+  async getHealth(@Res({ passthrough: true }) res: Response) {
+    let dbStatus: 'up' | 'down' = 'up';
+    let redisStatus: 'up' | 'down' | 'disabled' = 'disabled';
+
+    // 1. Sonde PostgreSQL non bloquante (timeout strict 2 secondes via Promise.race)
+    if (this.prisma) {
+      try {
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('PostgreSQL check timeout')), 2000),
+        );
+        await Promise.race([
+          this.prisma.$queryRaw`SELECT 1`,
+          timeoutPromise,
+        ]);
+        dbStatus = 'up';
+      } catch (err: any) {
+        this.logger.error(
+          `❌ [HealthCheck] PostgreSQL indisponible : ${err?.message || 'Erreur inconnue'}`,
+        );
+        dbStatus = 'down';
+      }
+    }
+
+    // 2. Sonde Redis (si configuré)
+    if (this.redisService) {
+      if (!process.env.REDIS_URL?.trim()) {
+        redisStatus = 'disabled';
+      } else {
+        redisStatus = this.redisService.isAvailable() ? 'up' : 'down';
+      }
+    }
+
+    const isHealthy = dbStatus === 'up';
+    if (!isHealthy) {
+      res.status(HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
     return {
-      status: 'ok',
+      status: isHealthy ? 'ok' : 'degraded',
       timestamp: new Date().toISOString(),
       service: 'kanto-backend',
+      checks: {
+        database: dbStatus,
+        redis: redisStatus,
+      },
     };
   }
 

@@ -1,0 +1,10 @@
+// ============================================================
+// ENUMS — PARRAINAGE & REFERRAL
+// ============================================================
+
+enum ReferralStatus {
+  PENDING    // Invitation enregistrée, en attente d'activation du filleul
+  COMPLETED  // Parrainage validé avec succès, récompenses attribuées
+  REJECTED   // Parrainage refusé (auto-parrainage, détection abus, compte inéligible)
+  EXPIRED    // Délai d'activation dépassé
+}
