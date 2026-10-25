@@ -98,6 +98,18 @@ export class ReferralController {
   }
 
   /**
+   * Diagnostic des notifications et événements de parrainage pour l'administration.
+   */
+  @Get('admin/notifications')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  async getAdminReferralNotifications(@Query('limit') limit?: number) {
+    return this.referralService.getAdminReferralNotifications(
+      limit ? Number(limit) : 50,
+    );
+  }
+
+  /**
    * Récupère la configuration actuelle du parrainage.
    */
   @Get('admin/config')

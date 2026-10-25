@@ -405,4 +405,17 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     }
     return removed;
   }
+
+  async sCard(key: string): Promise<number> {
+    if (this.isAvailable() && this.client) {
+      try {
+        return await this.client.scard(key);
+      } catch (err: any) {
+        this.logger.debug(`[Redis] Erreur sCard sur ${key} : ${err?.message}`);
+      }
+    }
+
+    const set = this.localSets.get(key);
+    return set ? set.size : 0;
+  }
 }
