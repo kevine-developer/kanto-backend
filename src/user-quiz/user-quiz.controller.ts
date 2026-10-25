@@ -104,8 +104,13 @@ export class UserQuizController {
   }
 
   @Get(':id')
-  async getQuizSetById(@Param('id') id: string) {
-    return this.userQuizService.getQuizSetById(id);
+  @UseGuards(AuthGuard)
+  @OptionalAuth()
+  async getQuizSetById(
+    @Param('id') id: string,
+    @Session() session?: UserSession,
+  ) {
+    return this.userQuizService.getQuizSetById(id, session?.user?.id);
   }
 
   @Patch(':id')

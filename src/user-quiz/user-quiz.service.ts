@@ -414,14 +414,26 @@ export class UserQuizService {
     };
   }
 
-  async getQuizSetById(setId: string) {
+  async getQuizSetById(setId: string, currentUserId?: string) {
     const set = await this.prisma.userQuizSet.findUnique({
       where: { id: setId },
       include: {
         author: {
-          select: { id: true, name: true, image: true },
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            image: true,
+            tier: true,
+            createdAt: true,
+            _count: {
+              select: { quizSets: true },
+            },
+          },
         },
-        questions: true,
+        questions: {
+          orderBy: { createdAt: 'asc' },
+        },
       },
     });
 
@@ -429,7 +441,69 @@ export class UserQuizService {
       throw new NotFoundException('Quiz set not found');
     }
 
-    return set;
+    // Statistiques réelles et vérifiables (zéro donnée fictive)
+    let redisUniqueCount = 0;
+    try {
+      redisUniqueCount = await this.redisService.sCard(
+        `ugc:deck_unique_players:${setId}`,
+      );
+    } catch {
+      redisUniqueCount = 0;
+    }
+
+    // Le nombre de joueurs distincts réels
+    const uniquePlayersCount = Math.max(
+      redisUniqueCount,
+      set.playsCount > 0 ? 1 : 0,
+    );
+
+    // Vérifier si l'utilisateur connecté a déjà joué à ce deck
+    let hasPlayed = false;
+    if (currentUserId) {
+      try {
+        hasPlayed = await this.redisService.sIsMember(
+          `ugc:user_played_decks:${currentUserId}`,
+          setId,
+        );
+      } catch {
+        hasPlayed = false;
+      }
+    }
+
+    const quizCount = set.questions.filter(
+      (q) => q.gameType === 'QUIZ',
+    ).length;
+    const trueFalseCount = set.questions.filter(
+      (q) => q.gameType === 'TRUE_FALSE',
+    ).length;
+    const hasBilingualQuestions = set.questions.some(
+      (q) => Boolean(q.questionMg && q.questionFr),
+    );
+    // 15 secondes par question (durée standard Kanto Quiz)
+    const estimatedDurationMinutes = Math.max(
+      1,
+      Math.ceil((set.questions.length * 15) / 60),
+    );
+
+    return {
+      ...set,
+      uniquePlayersCount,
+      hasPlayed,
+      isOwner: Boolean(currentUserId && set.authorId === currentUserId),
+      stats: {
+        totalQuestions: set.questions.length,
+        playsCount: set.playsCount,
+        uniquePlayersCount,
+        quizCount,
+        trueFalseCount,
+        hasBilingualQuestions,
+        estimatedDurationMinutes,
+      },
+      _count: {
+        questions: set.questions.length,
+        sessions: set.playsCount,
+      },
+    };
   }
 
   async deleteQuizSet(userId: string, setId: string) {

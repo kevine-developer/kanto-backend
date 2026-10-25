@@ -95,6 +95,8 @@ async function bootstrap() {
     /^http:\/\/172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+:\d+$/,
     /^http:\/\/169\.254\.\d+\.\d+:\d+$/,
     'https://kanto-admin.vercel.app',
+    /^https:\/\/kanto-admin.*\.vercel\.app$/,
+    /^https:\/\/.*\.vercel\.app$/,
   ];
 
   const defaultProdOrigins: (string | RegExp)[] = [
@@ -106,6 +108,8 @@ async function bootstrap() {
     'https://app-kanto.gastsar.fr',
     /^https:\/\/.*\.gastsar\.fr$/,
     'https://kanto-admin.vercel.app',
+    /^https:\/\/kanto-admin.*\.vercel\.app$/,
+    /^https:\/\/.*\.vercel\.app$/,
     /^https:\/\/.*\.kanto\.mg$/,
     /^kanto:\/\//,
     /^kantomg:\/\//,
@@ -130,8 +134,11 @@ async function bootstrap() {
         callback(null, true);
         return;
       }
+      const cleanOrigin = origin.trim().replace(/\/$/, '');
       const allowed = allowedOrigins.some((pattern) =>
-        pattern instanceof RegExp ? pattern.test(origin) : pattern === origin,
+        pattern instanceof RegExp
+          ? pattern.test(cleanOrigin) || pattern.test(origin)
+          : pattern === cleanOrigin || pattern === origin,
       );
       if (allowed) {
         callback(null, true);
@@ -153,9 +160,18 @@ async function bootstrap() {
       'Origin',
       'Cookie',
       'Set-Cookie',
+      'Cache-Control',
+      'Pragma',
+      'Expires',
       'baggage',
       'sentry-trace',
+      'x-client-platform',
+      'x-client-version',
+      'x-app-version',
     ],
+    exposedHeaders: ['Set-Cookie', 'X-Traffic-Regulation'],
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   });
 
   // ─── Sécurité HTTP & Content Security Policy (CSP) ──────────────────────────

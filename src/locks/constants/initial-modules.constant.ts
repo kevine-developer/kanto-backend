@@ -187,4 +187,15 @@ export const INITIAL_MODULES: DefaultModuleConfig[] = [
     isLocked: false,
     lockReason: null,
   },
+  {
+    key: 'feature:dailyChallenge',
+    type: 'FEATURE',
+    nameFr: 'Défi du jour (Image de couverture)',
+    nameMg: 'Fanamby anio (Sary)',
+    imageUrl:
+      'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=1000&auto=format&fit=crop&q=80',
+    isLocked: false,
+    lockReason: null,
+    isVisible: true,
+  },
 ];

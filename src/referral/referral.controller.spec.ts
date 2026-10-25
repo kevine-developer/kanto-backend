@@ -27,6 +27,7 @@ describe('ReferralController', () => {
       getAdminReferralsList: jest.fn().mockResolvedValue({ items: [], pagination: {} }),
       getOrCreateConfig: jest.fn().mockResolvedValue({ isEnabled: true }),
       updateAdminConfig: jest.fn().mockResolvedValue({ isEnabled: true }),
+      getAdminReferralNotifications: jest.fn().mockResolvedValue({ total: 1, items: [] }),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -67,5 +68,11 @@ describe('ReferralController', () => {
     const res = await controller.getAdminOverview();
     expect(service.getAdminOverview).toHaveBeenCalled();
     expect(res).toEqual({ metrics: {} });
+  });
+
+  it('getAdminReferralNotifications appelle service.getAdminReferralNotifications avec la limite', async () => {
+    const res = await controller.getAdminReferralNotifications(25);
+    expect(service.getAdminReferralNotifications).toHaveBeenCalledWith(25);
+    expect(res).toEqual({ total: 1, items: [] });
   });
 });
