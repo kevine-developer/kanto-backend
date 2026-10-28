@@ -68,7 +68,7 @@ describe('RiddleController', () => {
       );
     });
 
-    it('should default questionCount to 5 when not provided in body', async () => {
+    it('should default questionCount to 10 when not provided in body', async () => {
       riddleServiceMock.startSession.mockResolvedValue({
         session: {},
         questions: [],
@@ -79,7 +79,7 @@ describe('RiddleController', () => {
       expect(riddleServiceMock.startSession).toHaveBeenCalledWith(
         undefined,
         undefined,
-        5,
+        10,
       );
     });
   });

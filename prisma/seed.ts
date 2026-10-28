@@ -754,31 +754,129 @@ async function main() {
       `✅ ${rawQuestions.length} questions de quiz civique importées`,
     );
   }
-  // 17. Import des Devinettes (Ankamantatra)
-  const existingRiddlesCount = await prisma.riddleQuestion.count();
-  if (existingRiddlesCount > 0) {
-    console.log(
-      `ℹ️ Devinettes déjà initialisées (${existingRiddlesCount} entrées). Étape ignorée.`,
+
+  // 12b. Synchronisation des 30 Questions de Quiz vérifiées
+  const quizVerifiedFilePath = path.join(
+    seedDataDir,
+    'quiz-verified.data.json',
+  );
+  if (fs.existsSync(quizVerifiedFilePath)) {
+    const rawQuizVerified = JSON.parse(
+      fs.readFileSync(quizVerifiedFilePath, 'utf-8'),
     );
-  } else {
     console.log(
-      `📖 Importation de ${RIDDLES_DATA.length} devinettes (Ankamantatra)...`,
+      `📖 Synchronisation de ${rawQuizVerified.length} questions de quiz vérifiées...`,
     );
-    for (const r of RIDDLES_DATA) {
+    let quizSynced = 0;
+    for (const q of rawQuizVerified) {
+      const existing = await prisma.civicQuizQuestion.findFirst({
+        where: {
+          OR: [{ id: q.id }, { prompt: q.promptFr }, { prompt: q.promptMg }],
+        },
+      });
+
+      const diff: DifficultyLevel =
+        q.difficulty === 'HARD'
+          ? DifficultyLevel.HARD
+          : q.difficulty === 'MEDIUM'
+            ? DifficultyLevel.MEDIUM
+            : DifficultyLevel.EASY;
+
+      const quizData = {
+        category: q.category || 'culture_generale',
+        prompt: q.promptFr,
+        choices: q.optionsFr || [],
+        answerIndex:
+          typeof q.correctAnswerIndex === 'number' ? q.correctAnswerIndex : 0,
+        explanation: q.explanation || '',
+        explanationMg: q.promptMg || null,
+        difficulty: diff,
+        tags: [q.category, q.contentSourceType].filter(Boolean),
+        imageUrl: q.imageUrl || null,
+        imageAlt: q.imageAlt || null,
+        sourceReference: q.sourceReference || null,
+        contentSourceType: q.contentSourceType || null,
+        contentSourceId: q.contentSourceId || null,
+        levelNumber: q.levelNumber || 1,
+        historicalPeriod: q.historicalPeriod || null,
+        status: 'PUBLISHED' as const,
+      };
+
+      if (existing) {
+        await prisma.civicQuizQuestion.update({
+          where: { id: existing.id },
+          data: quizData,
+        });
+      } else {
+        await prisma.civicQuizQuestion.create({
+          data: {
+            id: q.id,
+            ...quizData,
+          },
+        });
+      }
+      quizSynced++;
+    }
+    console.log(
+      `✅ ${quizSynced} questions de quiz vérifiées synchronisées avec succès`,
+    );
+  }
+
+  // 17. Import et synchronisation des Devinettes (Ankamantatra)
+  console.log(
+    `📖 Synchronisation de ${RIDDLES_DATA.length} devinettes (Ankamantatra)...`,
+  );
+  let riddlesSynced = 0;
+  for (const r of RIDDLES_DATA) {
+    const existing = await prisma.riddleQuestion.findFirst({
+      where: { riddleMg: r.riddleMg },
+    });
+
+    const diff: DifficultyLevel =
+      r.difficulty === 'HARD'
+        ? DifficultyLevel.HARD
+        : r.difficulty === 'MEDIUM'
+          ? DifficultyLevel.MEDIUM
+          : DifficultyLevel.EASY;
+
+    if (existing) {
+      await prisma.riddleQuestion.update({
+        where: { id: existing.id },
+        data: {
+          riddleFr: r.riddleFr,
+          options: r.options,
+          correctAnswer: r.correctAnswer,
+          acceptedAnswers: r.acceptedAnswers,
+          explanation: r.explanation,
+          clue: r.clue || null,
+          level: r.level,
+          difficulty: diff,
+          sourceReference: r.sourceReference || null,
+          contentSourceType: r.contentSourceType || 'MALAGASY_ITEM',
+          status: 'PUBLISHED',
+        },
+      });
+    } else {
       await prisma.riddleQuestion.create({
         data: {
           riddleMg: r.riddleMg,
           riddleFr: r.riddleFr,
           options: r.options,
           correctAnswer: r.correctAnswer,
+          acceptedAnswers: r.acceptedAnswers,
           explanation: r.explanation,
           clue: r.clue || null,
           level: r.level,
+          difficulty: diff,
+          sourceReference: r.sourceReference || null,
+          contentSourceType: r.contentSourceType || 'MALAGASY_ITEM',
+          status: 'PUBLISHED',
         },
       });
     }
-    console.log(`✅ ${RIDDLES_DATA.length} devinettes importées`);
+    riddlesSynced++;
   }
+  console.log(`✅ ${riddlesSynced} devinettes synchronisées avec succès`);
 
   // 18. Import des Signes du Zodiaque (Vintana)
   const existingVintanaCount = await prisma.vintanaSign.count();
@@ -879,6 +977,97 @@ async function main() {
       }
     }
     console.log(`✅ ${tfCount} questions Vrai/Faux importées`);
+  }
+
+  // 19b. Synchronisation des 30 Questions Vrai ou Faux vérifiées
+  const tfVerifiedFilePath = path.join(
+    seedDataDir,
+    'true-false-verified.data.json',
+  );
+  if (fs.existsSync(tfVerifiedFilePath)) {
+    const rawTfVerified = JSON.parse(
+      fs.readFileSync(tfVerifiedFilePath, 'utf-8'),
+    );
+    console.log(
+      `📖 Synchronisation de ${rawTfVerified.length} questions Vrai/Faux vérifiées...`,
+    );
+
+    const TF_THEME_CATEGORY_MAP: Record<string, TrueFalseTheme> = {
+      monnaie_economie: TrueFalseTheme.HIST,
+      histoire_dates: TrueFalseTheme.HIST,
+      presidents_dirigeants: TrueFalseTheme.HIST,
+      citoyennete_fihavanana: TrueFalseTheme.CULT,
+      patrimoine_culture: TrueFalseTheme.CULT,
+      geographie_territoires: TrueFalseTheme.GEO,
+      symboles_emblemes: TrueFalseTheme.CULT,
+      personnalites_historiques: TrueFalseTheme.HIST,
+      traditions_valeurs: TrueFalseTheme.CULT,
+    };
+
+    let tfSynced = 0;
+    for (const vf of rawTfVerified) {
+      const existing = await prisma.trueFalseQuestion.findFirst({
+        where: {
+          OR: [
+            { id: vf.id },
+            { questionMg: vf.promptMg },
+            { questionFr: vf.promptFr },
+          ],
+        },
+      });
+
+      const diff: DifficultyLevel =
+        vf.difficulty === 'HARD'
+          ? DifficultyLevel.HARD
+          : vf.difficulty === 'MEDIUM'
+            ? DifficultyLevel.MEDIUM
+            : DifficultyLevel.EASY;
+
+      const theme =
+        (vf.category && TF_THEME_CATEGORY_MAP[vf.category]) ||
+        TrueFalseTheme.GEN;
+
+      const tfData = {
+        questionMg: vf.promptMg,
+        questionFr: vf.promptFr,
+        isTrue: Boolean(vf.isTrue),
+        explanationMg: vf.explanationTrueMg || vf.explanation || '',
+        explanationFr: vf.explanation || '',
+        explanationTrueFr: vf.explanationTrueFr || null,
+        explanationTrueMg: vf.explanationTrueMg || null,
+        explanationFalseFr: vf.explanationFalseFr || null,
+        explanationFalseMg: vf.explanationFalseMg || null,
+        theme,
+        difficulty: diff,
+        source: vf.sourceReference || null,
+        sourceReference: vf.sourceReference || null,
+        image: vf.imageUrl || null,
+        imageAlt: vf.imageAlt || null,
+        contentSourceType: vf.contentSourceType || null,
+        contentSourceId: vf.contentSourceId || null,
+        levelNumber: vf.levelNumber || 1,
+        historicalPeriod: vf.historicalPeriod || null,
+        status: 'PUBLISHED' as const,
+      };
+
+      if (existing) {
+        await prisma.trueFalseQuestion.update({
+          where: { id: existing.id },
+          data: tfData,
+        });
+      } else {
+        await prisma.trueFalseQuestion.create({
+          data: {
+            id: vf.id,
+            ...tfData,
+          },
+        });
+      }
+      tfSynced++;
+    }
+    console.log(
+      `✅ ${tfSynced} questions Vrai/Faux vérifiées synchronisées avec succès`,
+    );
   }
 
   // ==========================================

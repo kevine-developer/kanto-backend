@@ -25,6 +25,16 @@ export class StartSessionDto {
   @Min(1)
   @Max(50)
   questionCount?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  levelNumber?: number;
+
+  @IsOptional()
+  @IsString()
+  levelId?: string;
 }
 
 export class AnswerQuestionDto {

@@ -37,6 +37,59 @@ export class TrueFalseService {
 
   /**
    * Initialise une session de jeu sécurisée.
+  /**
+   * Calcule et renvoie dynamiquement les niveaux disponibles pour un thème Vrai ou Faux.
+   * Règle stricte : 10 questions éligibles (PUBLISHED) = 1 niveau complet.
+   * Pas de niveaux fictifs, pas de niveaux orphelins (< 10 questions).
+   */
+  async getAvailableLevels(theme?: string) {
+    const where: Prisma.TrueFalseQuestionWhereInput = { status: 'PUBLISHED' };
+    if (theme && theme !== 'ALL') {
+      where.theme = theme as TrueFalseTheme;
+    }
+
+    const totalQuestions = await this.prisma.trueFalseQuestion.count({ where });
+    const questionsPerLevel = 10;
+    const availableLevelCount = Math.floor(totalQuestions / questionsPerLevel);
+
+    const LEVEL_METADATA = [
+      { nameFr: 'Débutant', nameMg: 'Fiantombohana', badgeColor: '#355239', badgeBg: '#EEF4EF' },
+      { nameFr: 'Initié', nameMg: 'Fianarana', badgeColor: '#2C4A52', badgeBg: '#EDF3F5' },
+      { nameFr: 'Curieux', nameMg: 'Fahalalana', badgeColor: '#15803D', badgeBg: '#DCFCE7' },
+      { nameFr: 'Intermédiaire', nameMg: 'Fivoarana', badgeColor: '#2563EB', badgeBg: '#EFF6FF' },
+      { nameFr: 'Avancé', nameMg: 'Fanazavana', badgeColor: '#7A4A28', badgeBg: '#F7EFEA' },
+      { nameFr: 'Confirmé', nameMg: 'Fahazarana', badgeColor: '#D97706', badgeBg: '#FEF3C7' },
+      { nameFr: 'Érudit', nameMg: 'Faharanitana', badgeColor: '#7C3AED', badgeBg: '#F5F3FF' },
+      { nameFr: 'Sagesse', nameMg: 'Fahendrena', badgeColor: '#6B3A48', badgeBg: '#F7EEF0' },
+      { nameFr: 'Maître', nameMg: 'Fahaizana', badgeColor: '#9333EA', badgeBg: '#FAF5FF' },
+      { nameFr: 'Palier Suprême', nameMg: 'Fandresena Rova', badgeColor: '#B45309', badgeBg: '#FFFBEB' },
+    ];
+
+    const levels = Array.from({ length: availableLevelCount }, (_, idx) => {
+      const levelNumber = idx + 1;
+      const meta = LEVEL_METADATA[idx % LEVEL_METADATA.length];
+      return {
+        levelNumber,
+        levelId: `LVL_${levelNumber}`,
+        nameFr: meta.nameFr,
+        nameMg: meta.nameMg,
+        badgeColor: meta.badgeColor,
+        badgeBg: meta.badgeBg,
+        questionCount: questionsPerLevel,
+      };
+    });
+
+    return {
+      theme: theme || 'ALL',
+      totalQuestions,
+      questionsPerLevel,
+      availableLevelCount,
+      levels,
+    };
+  }
+
+  /**
+   * Démarre une session de jeu sécurisée.
    * Les questions renvoyées au client sont débarrassées du champ 'isTrue' et des 'explanations'.
    */
   async startSession(
@@ -44,63 +97,47 @@ export class TrueFalseService {
     theme?: string,
     difficulty?: string,
     questionCount: number = 10,
+    levelNumber?: number,
   ) {
     const where: Prisma.TrueFalseQuestionWhereInput = { status: 'PUBLISHED' };
     if (theme && theme !== 'ALL') {
       where.theme = theme as TrueFalseTheme;
     }
-    let resolvedDifficulty: DifficultyLevel = DifficultyLevel.EASY;
-    if (difficulty && difficulty !== 'ALL') {
-      const difficultyMap: Record<string, DifficultyLevel> = {
-        LVL_1: DifficultyLevel.EASY,
-        LVL_2: DifficultyLevel.EASY,
-        LVL_3: DifficultyLevel.EASY,
-        LVL_4: DifficultyLevel.MEDIUM,
-        LVL_5: DifficultyLevel.MEDIUM,
-        LVL_6: DifficultyLevel.MEDIUM,
-        LVL_7: DifficultyLevel.HARD,
-        LVL_8: DifficultyLevel.HARD,
-        LVL_9: DifficultyLevel.EXPERT,
-        LVL_10: DifficultyLevel.EXPERT,
-        EASY: DifficultyLevel.EASY,
-        MEDIUM: DifficultyLevel.MEDIUM,
-        HARD: DifficultyLevel.HARD,
-        EXPERT: DifficultyLevel.EXPERT,
-      };
-      const mappedDiff = difficultyMap[difficulty];
-      if (mappedDiff) {
-        where.difficulty = mappedDiff;
-        resolvedDifficulty = mappedDiff;
-      }
-    }
 
-    // Récupération des IDs disponibles
-    let availableQuestions = await this.prisma.trueFalseQuestion.findMany({
+    const totalAvailable = await this.prisma.trueFalseQuestion.count({
       where,
-      select: { id: true },
     });
+    const maxLevels = Math.floor(totalAvailable / questionCount);
 
-    // Fallback permissif : si aucune question pour cette difficulté spécifique dans ce thème, chercher dans le thème
-    if (availableQuestions.length === 0 && where.difficulty) {
-      const fallbackWhere: Prisma.TrueFalseQuestionWhereInput = {
-        status: 'PUBLISHED',
-      };
-      if (where.theme) fallbackWhere.theme = where.theme;
-      availableQuestions = await this.prisma.trueFalseQuestion.findMany({
-        where: fallbackWhere,
+    let selectedIds: string[];
+
+    if (levelNumber !== undefined && levelNumber > 0) {
+      if (levelNumber > maxLevels) {
+        throw new NotFoundException(
+          `Le niveau ${levelNumber} n'est pas disponible pour ce thème (seuls ${maxLevels} niveau(x) complet(s) sont disponibles).`,
+        );
+      }
+      const questionsPage = await this.prisma.trueFalseQuestion.findMany({
+        where,
+        orderBy: { id: 'asc' },
+        skip: (levelNumber - 1) * questionCount,
+        take: questionCount,
         select: { id: true },
       });
+      selectedIds = questionsPage.map((q) => q.id);
+    } else {
+      if (totalAvailable < questionCount) {
+        throw new NotFoundException(
+          `Nombre insuffisant de questions disponibles (${totalAvailable} disponibles, ${questionCount} requises).`,
+        );
+      }
+      const allQuestions = await this.prisma.trueFalseQuestion.findMany({
+        where,
+        select: { id: true },
+      });
+      const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
+      selectedIds = shuffled.slice(0, questionCount).map((q) => q.id);
     }
-
-    if (availableQuestions.length === 0) {
-      throw new NotFoundException(
-        'Aucune question trouvée pour ce thème et ce niveau.',
-      );
-    }
-
-    // Sélection aléatoire sans répétition
-    const shuffled = [...availableQuestions].sort(() => Math.random() - 0.5);
-    const selectedIds = shuffled.slice(0, questionCount).map((q) => q.id);
 
     const questions = await this.prisma.trueFalseQuestion.findMany({
       where: { id: { in: selectedIds } },
@@ -113,6 +150,16 @@ export class TrueFalseService {
         image: true,
       },
     });
+
+    const difficultyMap: Record<string, DifficultyLevel> = {
+      EASY: DifficultyLevel.EASY,
+      MEDIUM: DifficultyLevel.MEDIUM,
+      HARD: DifficultyLevel.HARD,
+      EXPERT: DifficultyLevel.EXPERT,
+    };
+    const resolvedDifficulty = difficulty
+      ? difficultyMap[difficulty.toUpperCase()] || DifficultyLevel.EASY
+      : DifficultyLevel.EASY;
 
     // Création de la session en base
     const session = await this.prisma.trueFalseSession.create({

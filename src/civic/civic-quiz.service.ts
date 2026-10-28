@@ -36,8 +36,17 @@ export class CivicQuizService {
         choices: data.choices,
         answerIndex: data.answerIndex,
         explanation: data.explanation,
+        explanationMg: data.explanationMg,
         difficulty: data.difficulty || 'EASY',
         tags: data.tags || [],
+        imageUrl: data.imageUrl,
+        imageAlt: data.imageAlt,
+        sourceReference: data.sourceReference,
+        sourceUrl: data.sourceUrl,
+        historicalPeriod: data.historicalPeriod,
+        contentSourceType: data.contentSourceType,
+        contentSourceId: data.contentSourceId,
+        levelNumber: data.levelNumber || 1,
         status: 'PUBLISHED',
       },
     });
@@ -67,9 +76,24 @@ export class CivicQuizService {
           data.answerIndex !== undefined ? data.answerIndex : undefined,
         explanation:
           data.explanation !== undefined ? data.explanation : undefined,
+        explanationMg:
+          data.explanationMg !== undefined ? data.explanationMg : undefined,
         difficulty: data.difficulty !== undefined ? data.difficulty : undefined,
         tags: data.tags !== undefined ? data.tags : undefined,
         status: data.status !== undefined ? data.status : undefined,
+        imageUrl: data.imageUrl !== undefined ? data.imageUrl : undefined,
+        imageAlt: data.imageAlt !== undefined ? data.imageAlt : undefined,
+        sourceReference:
+          data.sourceReference !== undefined ? data.sourceReference : undefined,
+        sourceUrl: data.sourceUrl !== undefined ? data.sourceUrl : undefined,
+        historicalPeriod:
+          data.historicalPeriod !== undefined ? data.historicalPeriod : undefined,
+        contentSourceType:
+          data.contentSourceType !== undefined ? data.contentSourceType : undefined,
+        contentSourceId:
+          data.contentSourceId !== undefined ? data.contentSourceId : undefined,
+        levelNumber:
+          data.levelNumber !== undefined ? data.levelNumber : undefined,
       },
     });
 
@@ -190,39 +214,127 @@ export class CivicQuizService {
     return { success: true };
   }
 
+  /**
+   * Calcule et renvoie dynamiquement les niveaux disponibles pour une catégorie de quiz.
+   * Règle stricte : 10 questions éligibles (PUBLISHED) = 1 niveau complet.
+   * Pas de niveaux fictifs, pas de niveaux orphelins (< 10 questions).
+   */
+  async getAvailableLevels(category?: string) {
+    const where: Prisma.CivicQuizQuestionWhereInput = { status: 'PUBLISHED' };
+    if (category && category !== 'all') {
+      where.category = category;
+    }
+
+    const totalQuestions = await this.prisma.civicQuizQuestion.count({ where });
+    const questionsPerLevel = 10;
+    const availableLevelCount = Math.floor(totalQuestions / questionsPerLevel);
+
+    const LEVEL_METADATA = [
+      { nameFr: 'Débutant', nameMg: 'Fiantombohana', badgeColor: '#355239', badgeBg: '#EEF4EF' },
+      { nameFr: 'Initié', nameMg: 'Fianarana', badgeColor: '#2C4A52', badgeBg: '#EDF3F5' },
+      { nameFr: 'Curieux', nameMg: 'Fahalalana', badgeColor: '#15803D', badgeBg: '#DCFCE7' },
+      { nameFr: 'Intermédiaire', nameMg: 'Fivoarana', badgeColor: '#2563EB', badgeBg: '#EFF6FF' },
+      { nameFr: 'Avancé', nameMg: 'Fanazavana', badgeColor: '#7A4A28', badgeBg: '#F7EFEA' },
+      { nameFr: 'Confirmé', nameMg: 'Fahazarana', badgeColor: '#D97706', badgeBg: '#FEF3C7' },
+      { nameFr: 'Érudit', nameMg: 'Faharanitana', badgeColor: '#7C3AED', badgeBg: '#F5F3FF' },
+      { nameFr: 'Sagesse', nameMg: 'Fahendrena', badgeColor: '#6B3A48', badgeBg: '#F7EEF0' },
+      { nameFr: 'Maître', nameMg: 'Fahaizana', badgeColor: '#9333EA', badgeBg: '#FAF5FF' },
+      { nameFr: 'Palier Suprême', nameMg: 'Fandresena Rova', badgeColor: '#B45309', badgeBg: '#FFFBEB' },
+    ];
+
+    const levels = Array.from({ length: availableLevelCount }, (_, idx) => {
+      const levelNumber = idx + 1;
+      const meta = LEVEL_METADATA[idx % LEVEL_METADATA.length];
+      return {
+        levelNumber,
+        levelId: `LVL_${levelNumber}`,
+        nameFr: meta.nameFr,
+        nameMg: meta.nameMg,
+        badgeColor: meta.badgeColor,
+        badgeBg: meta.badgeBg,
+        questionCount: questionsPerLevel,
+      };
+    });
+
+    return {
+      category: category || 'all',
+      totalQuestions,
+      questionsPerLevel,
+      availableLevelCount,
+      levels,
+    };
+  }
+
+  /**
+   * Démarre une session de quiz sécurisée basée sur les niveaux dynamiques de 10 questions.
+   */
   async startSession(
     userId: string | undefined,
     category: string | undefined,
     difficulty: string | undefined,
     questionCount: number = 10,
+    levelNumber?: number,
   ) {
-    const whereClause: any = { status: 'PUBLISHED' };
-    if (category) whereClause.category = category;
-    if (difficulty) whereClause.difficulty = difficulty;
+    const whereClause: Prisma.CivicQuizQuestionWhereInput = {
+      status: 'PUBLISHED',
+    };
+    if (category && category !== 'all') whereClause.category = category;
+    if (difficulty && difficulty !== 'ALL') {
+      whereClause.difficulty = difficulty as any;
+    }
 
-    const availableQuestions = await this.prisma.civicQuizQuestion.findMany({
+    const totalAvailable = await this.prisma.civicQuizQuestion.count({
       where: whereClause,
-      select: { id: true },
+    });
+    const maxLevels = Math.floor(totalAvailable / questionCount);
+
+    let selectedQuestions: { id: string }[];
+
+    if (levelNumber !== undefined && levelNumber > 0) {
+      if (levelNumber > maxLevels) {
+        throw new NotFoundException(
+          `Le niveau ${levelNumber} n'est pas disponible (seuls ${maxLevels} niveau(x) complet(s) sont disponibles).`,
+        );
+      }
+      selectedQuestions = await this.prisma.civicQuizQuestion.findMany({
+        where: whereClause,
+        orderBy: { id: 'asc' },
+        skip: (levelNumber - 1) * questionCount,
+        take: questionCount,
+        select: { id: true },
+      });
+    } else {
+      if (totalAvailable < questionCount) {
+        throw new NotFoundException(
+          `Nombre insuffisant de questions disponibles (${totalAvailable} disponibles, ${questionCount} requises).`,
+        );
+      }
+      const allIds = await this.prisma.civicQuizQuestion.findMany({
+        where: whereClause,
+        select: { id: true },
+      });
+      const shuffled = allIds.sort(() => 0.5 - Math.random());
+      selectedQuestions = shuffled.slice(0, questionCount);
+    }
+
+    const fullQuestions = await this.prisma.civicQuizQuestion.findMany({
+      where: { id: { in: selectedQuestions.map((q) => q.id) } },
     });
 
-    // Shuffle and pick
-    const shuffled = availableQuestions.sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, questionCount);
+    // Mélange aléatoire de l'ordre d'affichage des 10 questions du niveau
+    const randomized = [...fullQuestions].sort(() => 0.5 - Math.random());
 
     const session = await this.prisma.civicQuizSession.create({
       data: {
         userId,
-        totalQuestions: selected.length,
+        totalQuestions: randomized.length,
       },
-    });
-
-    const fullQuestions = await this.prisma.civicQuizQuestion.findMany({
-      where: { id: { in: selected.map((q) => q.id) } },
     });
 
     return {
       session,
-      questions: fullQuestions,
+      questions: randomized,
+      levelNumber: levelNumber ?? 1,
     };
   }
 

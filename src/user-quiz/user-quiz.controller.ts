@@ -9,12 +9,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import {
-  AuthGuard,
-  OptionalAuth,
-  Session,
-  type UserSession,
-} from '../auth/index.js';
+import { AuthGuard, Session, type UserSession } from '../auth/index.js';
 import { UserQuizService } from './user-quiz.service.js';
 import {
   CreateUserQuestionDto,
@@ -63,14 +58,13 @@ export class UserQuizController {
 
   @Get('explore')
   @UseGuards(AuthGuard)
-  @OptionalAuth()
   async getPublicQuizSets(
+    @Session() session: UserSession,
     @Query('skip') skip?: string,
     @Query('take') take?: string,
     @Query('search') search?: string,
     @Query('sort') sort?: 'recent' | 'popular',
     @Query('category') category?: string,
-    @Session() session?: UserSession,
   ) {
     return this.userQuizService.getPublicQuizSets(
       skip ? parseInt(skip, 10) : 0,
@@ -78,7 +72,7 @@ export class UserQuizController {
       search,
       sort,
       category,
-      session?.user?.id,
+      session.user.id,
     );
   }
 
@@ -94,23 +88,21 @@ export class UserQuizController {
 
   @Post(':id/record-play')
   @UseGuards(AuthGuard)
-  @OptionalAuth()
   async recordPlay(
     @Param('id') id: string,
+    @Session() session: UserSession,
     @Body() body?: { correctCount?: number; totalQuestions?: number },
-    @Session() session?: UserSession,
   ) {
-    return this.userQuizService.recordPlay(id, session?.user?.id, body);
+    return this.userQuizService.recordPlay(id, session.user.id, body);
   }
 
   @Get(':id')
   @UseGuards(AuthGuard)
-  @OptionalAuth()
   async getQuizSetById(
     @Param('id') id: string,
-    @Session() session?: UserSession,
+    @Session() session: UserSession,
   ) {
-    return this.userQuizService.getQuizSetById(id, session?.user?.id);
+    return this.userQuizService.getQuizSetById(id, session.user.id);
   }
 
   @Patch(':id')

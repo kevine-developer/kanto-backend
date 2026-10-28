@@ -62,9 +62,19 @@ model CivicQuizQuestion {
   choices     String[] // 4 choix de réponse
   answerIndex Int // Index de la bonne réponse (0-3)
   explanation String          @db.Text
+  explanationMg String?       @db.Text
   difficulty  DifficultyLevel @default(EASY)
   tags        String[]        @default([])
   status      ContentStatus   @default(PUBLISHED)
+
+  imageUrl          String?
+  imageAlt          String?
+  sourceReference   String?
+  sourceUrl         String?
+  contentSourceType String?
+  contentSourceId   String?
+  levelNumber       Int?            @default(1)
+  historicalPeriod  String?
 
   timesPlayed  Int @default(0)
   timesCorrect Int @default(0)
@@ -77,6 +87,7 @@ model CivicQuizQuestion {
   @@index([category])
   @@index([difficulty])
   @@index([status])
+  @@index([contentSourceType, contentSourceId])
   @@map("civic_quiz_questions")
 }
 

@@ -46,6 +46,7 @@ import { ModerationModule } from './modules/moderation/index.js';
 import { RakiTenyModule } from './raki-teny/raki-teny.module.js';
 import { ReferralModule } from './referral/referral.module.js';
 import { EventsModule } from './events/events.module.js';
+import { ContentWizardModule } from './games/content-wizard/content-wizard.module.js';
 
 @Module({
   imports: [
@@ -116,6 +117,7 @@ import { EventsModule } from './events/events.module.js';
     RakiTenyModule,
     ReferralModule,
     EventsModule,
+    ContentWizardModule,
   ],
   controllers: [AppController],
   providers: [

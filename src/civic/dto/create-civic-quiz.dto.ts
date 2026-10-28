@@ -44,4 +44,40 @@ export class CreateCivicQuizDto {
   @IsOptional()
   @IsString({ each: true })
   tags?: string[];
+
+  @IsString()
+  @IsOptional()
+  imageUrl?: string;
+
+  @IsString()
+  @IsOptional()
+  imageAlt?: string;
+
+  @IsString()
+  @IsOptional()
+  sourceReference?: string;
+
+  @IsString()
+  @IsOptional()
+  sourceUrl?: string;
+
+  @IsString()
+  @IsOptional()
+  historicalPeriod?: string;
+
+  @IsString()
+  @IsOptional()
+  contentSourceType?: string;
+
+  @IsString()
+  @IsOptional()
+  contentSourceId?: string;
+
+  @IsInt()
+  @IsOptional()
+  levelNumber?: number;
+
+  @IsString()
+  @IsOptional()
+  explanationMg?: string;
 }
