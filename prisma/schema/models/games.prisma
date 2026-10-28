@@ -15,10 +15,20 @@ model TrueFalseQuestion {
   isTrue        Boolean
   explanationMg String          @db.Text
   explanationFr String?         @db.Text
+  explanationTrueMg  String?    @db.Text
+  explanationTrueFr  String?    @db.Text
+  explanationFalseMg String?    @db.Text
+  explanationFalseFr String?    @db.Text
   theme         TrueFalseTheme  @default(GEN)
   difficulty    DifficultyLevel @default(EASY)
   source        String?
   image         String?
+  imageAlt      String?
+  sourceReference    String?
+  contentSourceType  String?
+  contentSourceId    String?
+  levelNumber        Int?            @default(1)
+  historicalPeriod   String?
   status        ContentStatus   @default(PUBLISHED)
   timesPlayed   Int             @default(0)
   timesCorrect  Int             @default(0)
@@ -31,6 +41,7 @@ model TrueFalseQuestion {
   @@index([theme])
   @@index([difficulty])
   @@index([status])
+  @@index([contentSourceType, contentSourceId])
   @@map("true_false_questions")
 }
 
@@ -162,9 +173,16 @@ model RiddleQuestion {
   riddleFr      String          @db.Text
   options       String[]
   correctAnswer String
+  acceptedAnswers String[]      @default([])
   explanation   String          @db.Text
   clue          String?
   level         Int             @default(1)
+  difficulty    DifficultyLevel @default(EASY)
+  imageUrl      String?
+  imageAlt      String?
+  sourceReference   String?
+  contentSourceType String?
+  contentSourceId   String?
   status        ContentStatus   @default(PUBLISHED)
   timesPlayed   Int             @default(0)
   timesCorrect  Int             @default(0)
@@ -175,6 +193,7 @@ model RiddleQuestion {
 
   @@index([level])
   @@index([status])
+  @@index([contentSourceType, contentSourceId])
   @@map("riddle_questions")
 }
 

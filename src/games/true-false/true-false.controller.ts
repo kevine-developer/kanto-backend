@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { Session, type UserSession } from '../../auth/index.js';
 import {
   AnswerQuestionDto,
@@ -11,14 +11,23 @@ import { TrueFalseService } from './true-false.service.js';
 export class TrueFalseController {
   constructor(private readonly trueFalseService: TrueFalseService) {}
 
+  @Get('levels')
+  getAvailableLevels(@Query('theme') theme?: string) {
+    return this.trueFalseService.getAvailableLevels(theme);
+  }
+
   @Post('start')
   startSession(@Body() dto: StartSessionDto, @Session() session?: UserSession) {
     const userId = session?.user?.id;
+    const resolvedLvl =
+      dto.levelNumber ??
+      (dto.levelId ? parseInt(dto.levelId.replace('LVL_', ''), 10) : undefined);
     return this.trueFalseService.startSession(
       userId,
       dto.theme,
       dto.difficulty,
       dto.questionCount || 10,
+      resolvedLvl && !isNaN(resolvedLvl) ? resolvedLvl : undefined,
     );
   }
 

@@ -53,39 +53,106 @@ export class RiddleService {
     return questions;
   }
 
-  async startSession(
-    userId: string | undefined,
-    level: number | undefined = undefined,
-    questionCount: number = 5,
-  ) {
-    const whereClause: any = { status: 'PUBLISHED' };
-    if (level) {
-      whereClause.level = level;
-    }
-
-    const availableQuestions = await this.prisma.riddleQuestion.findMany({
-      where: whereClause,
-      select: { id: true },
+  /**
+   * Calcule et renvoie dynamiquement les groupes disponibles de 10 devinettes.
+   * Règle stricte Kanto : Aucun système de niveaux pour les devinettes.
+   * Les devinettes sont réparties en groupes séquentiels de 10 :
+   * Groupe 1 = 1 à 10, Groupe 2 = 11 à 20, Groupe 3 = 21 à 30, etc.
+   * Ne génère que des groupes complets de 10 devinettes réellement publiées.
+   */
+  async getAvailableGroups() {
+    const totalRiddles = await this.prisma.riddleQuestion.count({
+      where: { status: 'PUBLISHED' },
     });
 
-    // Shuffle and pick
-    const shuffled = availableQuestions.sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, questionCount);
+    const riddlesPerGroup = 10;
+    const availableGroupCount = Math.floor(totalRiddles / riddlesPerGroup);
+
+    const groups = Array.from({ length: availableGroupCount }, (_, idx) => {
+      const groupNumber = idx + 1;
+      const start = idx * riddlesPerGroup + 1;
+      const end = (idx + 1) * riddlesPerGroup;
+      return {
+        groupNumber,
+        groupId: `group_${groupNumber}`,
+        titleFr: `Groupe ${groupNumber}`,
+        titleMg: `Andiany ${groupNumber}`,
+        rangeTextFr: `Devinettes ${start} à ${end}`,
+        rangeTextMg: `Ankamantatra ${start} hatramin'ny ${end}`,
+        range: { start, end },
+        count: riddlesPerGroup,
+      };
+    });
+
+    return {
+      totalRiddles,
+      riddlesPerGroup,
+      availableGroupCount,
+      groups,
+    };
+  }
+
+  async startSession(
+    userId: string | undefined,
+    levelOrGroupNumber: number | undefined = undefined,
+    questionCount: number = 10,
+    groupNumber?: number,
+  ) {
+    const whereClause: Prisma.RiddleQuestionWhereInput = {
+      status: 'PUBLISHED',
+    };
+
+    const targetGroup = groupNumber ?? levelOrGroupNumber;
+    const totalAvailable = await this.prisma.riddleQuestion.count({
+      where: whereClause,
+    });
+    const maxGroups = Math.floor(totalAvailable / questionCount);
+
+    let selectedQuestions: { id: string }[];
+
+    if (targetGroup !== undefined && targetGroup > 0) {
+      if (targetGroup > maxGroups) {
+        throw new NotFoundException(
+          `Le groupe ${targetGroup} n'est pas disponible (seuls ${maxGroups} groupe(s) complet(s) sont disponibles).`,
+        );
+      }
+      // Sélection exacte et déterministe des 10 devinettes du groupe
+      selectedQuestions = await this.prisma.riddleQuestion.findMany({
+        where: whereClause,
+        orderBy: { id: 'asc' },
+        skip: (targetGroup - 1) * questionCount,
+        take: questionCount,
+        select: { id: true },
+      });
+    } else {
+      if (totalAvailable < questionCount) {
+        throw new NotFoundException(
+          `Nombre insuffisant de devinettes disponibles (${totalAvailable} disponibles, ${questionCount} requises).`,
+        );
+      }
+      const allQuestions = await this.prisma.riddleQuestion.findMany({
+        where: whereClause,
+        select: { id: true },
+      });
+      const shuffled = allQuestions.sort(() => 0.5 - Math.random());
+      selectedQuestions = shuffled.slice(0, questionCount);
+    }
 
     const session = await this.prisma.riddleSession.create({
       data: {
         userId,
-        totalQuestions: selected.length,
+        totalQuestions: selectedQuestions.length,
       },
     });
 
     const fullQuestions = await this.prisma.riddleQuestion.findMany({
-      where: { id: { in: selected.map((q) => q.id) } },
+      where: { id: { in: selectedQuestions.map((q) => q.id) } },
     });
 
     return {
       session,
       questions: fullQuestions,
+      groupNumber: targetGroup ?? 1,
     };
   }
 

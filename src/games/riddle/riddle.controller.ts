@@ -6,13 +6,23 @@ import { RiddleService } from './riddle.service.js';
 export class RiddleController {
   constructor(private readonly riddleService: RiddleService) {}
 
+  @Get('groups')
+  getAvailableGroups() {
+    return this.riddleService.getAvailableGroups();
+  }
+
   @Post('start')
   startSession(@Body() dto: any, @Session() session?: UserSession) {
     const userId = session?.user?.id;
+    const targetGroup = dto.groupNumber ?? dto.level;
+    const parsedGroup =
+      targetGroup !== undefined && targetGroup !== null && targetGroup !== ''
+        ? parseInt(String(targetGroup), 10)
+        : undefined;
     return this.riddleService.startSession(
       userId,
-      dto.level,
-      dto.questionCount || 5,
+      parsedGroup,
+      dto.questionCount || 10,
     );
   }
 

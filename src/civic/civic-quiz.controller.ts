@@ -44,6 +44,11 @@ export class CivicQuizController {
     return this.civicQuizService.remove(id);
   }
 
+  @Get('levels')
+  getAvailableLevels(@Query('category') category?: string) {
+    return this.civicQuizService.getAvailableLevels(category);
+  }
+
   @Get('random')
   getRandomQuestions(@Query() query: RandomQuizQueryDto) {
     return this.civicQuizService.getRandomQuestions(query);
@@ -62,6 +67,7 @@ export class CivicQuizController {
       dto.category,
       dto.difficulty,
       dto.questionCount || 10,
+      dto.levelNumber ? parseInt(dto.levelNumber, 10) : undefined,
     );
   }
 

@@ -1,0 +1,892 @@
+[
+  {
+    "id": "quiz_001",
+    "format": "QUIZ",
+    "category": "monnaie_economie",
+    "promptMg": "Inona no tetezana malaza hita eo amin'ny lafiny anoloana (recto) amin'ny volavita 1 000 Ariary navoaka tamin'ny taona 2017 ?",
+    "promptFr": "Quel pont célèbre est représenté au recto du billet de 1 000 Ariary de la gamme mise en circulation en 2017 ?",
+    "optionsFr": [
+      "Le pont suspendu de la Kamoro",
+      "Le pont de la Betsiboka",
+      "Le pont de Brickaville",
+      "Le pont de Mananjary"
+    ],
+    "optionsMg": [
+      "Ny tetezan'i Kamoro",
+      "Ny tetezan'i Betsiboka",
+      "Ny tetezan'i Brickaville",
+      "Ny tetezan'i Mananjary"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Le pont suspendu de la Kamoro",
+    "explanation": "Mis en circulation le 18 septembre 2017, le billet de 1 000 Ariary illustre au recto le pont suspendu de la Kamoro (sur la RN4, région Boeny) et au verso la formation rocheuse « La Reine de l'Isalo ».",
+    "difficulty": "EASY",
+    "levelNumber": 1,
+    "imageUrl": "https://en.numista.com/catalogue/photos/madagascar/626e4a0ed76d81.77634154-original.jpg",
+    "imageAlt": "Billet de 1 000 Ariary (2017) montrant le pont de la Kamoro",
+    "sourceReference": "Banky Foiben'i Madagasikara / Catalogue Numista N#202983",
+    "historicalPeriod": "2017-présent",
+    "contentSourceType": "BANKNOTE",
+    "contentSourceId": "banknote_1000",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_002",
+    "format": "QUIZ",
+    "category": "monnaie_economie",
+    "promptMg": "Biby an-dranomasina inona no hita mitsambikina ao ambadiky ny volavita 5 000 Ariary (andiany 2017) ?",
+    "promptFr": "Quel animal marin est illustré en train de plonger au verso du billet de 5 000 Ariary de la gamme 2017 ?",
+    "optionsFr": [
+      "Une baleine à bosse",
+      "Un dauphin à long bec",
+      "Un requin-baleine",
+      "Une tortue verte"
+    ],
+    "optionsMg": [
+      "Trozona (Baleine à bosse)",
+      "Feso (Dauphin)",
+      "Antsantsa",
+      "Fano (Tortue de mer)"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Une baleine à bosse",
+    "explanation": "Le billet rouge de 5 000 Ariary (mis en circulation le 17 juillet 2017) présente au recto une chute d'eau du parc national de Ranomafana et au verso la queue d'une baleine à bosse plongeant au large de l'île Sainte-Marie (Nosy Boraha).",
+    "difficulty": "EASY",
+    "levelNumber": 1,
+    "imageUrl": "https://en.numista.com/catalogue/photos/madagascar/653954a1d1cc03.89394900-original.jpg",
+    "imageAlt": "Billet de 5 000 Ariary (2017)",
+    "sourceReference": "Banky Foiben'i Madagasikara / Catalogue Numista N#202993",
+    "historicalPeriod": "2017-présent",
+    "contentSourceType": "BANKNOTE",
+    "contentSourceId": "banknote_5000",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_003",
+    "format": "QUIZ",
+    "category": "monnaie_economie",
+    "promptMg": "Karazana varika (lémurien) inona, tsy hita raha tsy ao amin'ny Farihin'Alaotra, no aseho eo amin'ny volavita 2 000 Ariary (andiany 2017) ?",
+    "promptFr": "Quelle espèce de lémurien, endémique des roselières du lac Alaotra, figure au recto du billet de 2 000 Ariary de la gamme 2017 ?",
+    "optionsFr": [
+      "Le Bandro (Hapalemur alaotrensis)",
+      "L'Indri (Babakoto)",
+      "Le Maki Catta (Lemur catta)",
+      "L'Aye-aye (Daubentonia madagascariensis)"
+    ],
+    "optionsMg": [
+      "Ny Bandro (Hapalemur alaotrensis)",
+      "Ny Babakoto (Indri indri)",
+      "Ny Maki (Lemur catta)",
+      "Ny Haihay (Aye-aye)"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Le Bandro (Hapalemur alaotrensis)",
+    "explanation": "Le billet vert de 2 000 Ariary (2017) met à l'honneur au recto le Bandro (Hapalemur alaotrensis), unique primate au monde vivant exclusivement dans les papyrus et roselières du lac Alaotra, et au verso une plante carnivore Nepenthes madagascariensis.",
+    "difficulty": "HARD",
+    "levelNumber": 3,
+    "imageUrl": "https://en.numista.com/catalogue/photos/madagascar/626e4a2995d493.26515148-original.jpg",
+    "imageAlt": "Billet de 2 000 Ariary (2017) représentant le lémurien Bandro",
+    "sourceReference": "Banky Foiben'i Madagasikara / Catalogue Numista N#202985",
+    "historicalPeriod": "2017-présent",
+    "contentSourceType": "BANKNOTE",
+    "contentSourceId": "banknote_2000",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_004",
+    "format": "QUIZ",
+    "category": "monnaie_economie",
+    "promptMg": "Tanàna aiza no misy ny Katedralin'Ambozontany izay hita eo amin'ny lafiny anoloana amin'ny volavita 100 Ariary (andiany 2017) ?",
+    "promptFr": "Dans quelle ville se situe la cathédrale d'Ambozontany, représentée au recto du billet de 100 Ariary de la gamme 2017 ?",
+    "optionsFr": [
+      "Fianarantsoa",
+      "Antsirabe",
+      "Toamasina",
+      "Mahajanga"
+    ],
+    "optionsMg": [
+      "Fianarantsoa",
+      "Antsirabe",
+      "Toamasina",
+      "Mahajanga"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Fianarantsoa",
+    "explanation": "Le billet de 100 Ariary mis en circulation le 18 septembre 2017 représente au recto la cathédrale du Saint-Nom-de-Jésus d'Ambozontany et la Haute Ville de Fianarantsoa, et au verso la grenouille endémique Mantella baroni.",
+    "difficulty": "MEDIUM",
+    "levelNumber": 2,
+    "imageUrl": "https://en.numista.com/catalogue/photos/madagascar/626e49a9cec388.51209237-original.jpg",
+    "imageAlt": "Billet de 100 Ariary (2017) illustrant la cathédrale d'Ambozontany",
+    "sourceReference": "Banky Foiben'i Madagasikara / Catalogue Numista N#202898",
+    "historicalPeriod": "2017-présent",
+    "contentSourceType": "BANKNOTE",
+    "contentSourceId": "banknote_100",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_005",
+    "format": "QUIZ",
+    "category": "monnaie_economie",
+    "promptMg": "Tamin'ny daty inona no navoaka voalohany ny volavita 2 000, 5 000, 10 000 ary 20 000 Ariary amin'ilay andiany vaovao tamin'ny taona 2017 ?",
+    "promptFr": "À quelle date précise les quatre grandes coupures (2 000, 5 000, 10 000 et 20 000 Ariary) de la gamme 2017 ont-elles été mises en circulation par la Banky Foiben'i Madagasikara ?",
+    "optionsFr": [
+      "Le 17 juillet 2017",
+      "Le 26 juin 2017",
+      "Le 1er janvier 2017",
+      "Le 31 décembre 2017"
+    ],
+    "optionsMg": [
+      "17 Jolay 2017",
+      "26 Jona 2017",
+      "1 Janoary 2017",
+      "31 Desambra 2017"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Le 17 juillet 2017",
+    "explanation": "En application du décret n° 2017-400 adopté le 23 mai 2017, la mise en circulation s'est faite en deux étapes : le 17 juillet 2017 pour les coupures de 2 000, 5 000, 10 000 et 20 000 Ariary, puis le 18 septembre 2017 pour celles de 100, 200, 500 et 1 000 Ariary.",
+    "difficulty": "HARD",
+    "levelNumber": 3,
+    "sourceReference": "Décret n° 2017-400 du 23 mai 2017 / Banky Foiben'i Madagasikara",
+    "historicalPeriod": "2017",
+    "contentSourceType": "BANKNOTE",
+    "contentSourceId": "banknote_series_2017",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_006",
+    "format": "QUIZ",
+    "category": "histoire_dates",
+    "promptMg": "Tamin'ny taona inona no nankatoavin'ny Fanjakana Britanika tamin'ny fomba ofisialy ny Mpanjaka Radama I ho « Mpanjakan'i Madagasikara » tamin'ny alalan'ny fifanarahana ?",
+    "promptFr": "En quelle année le roi Radama Ier a-t-il signé avec la Grande-Bretagne le traité qui le reconnaît officiellement comme « Roi de Madagascar » ?",
+    "optionsFr": [
+      "1817",
+      "1787",
+      "1861",
+      "1885"
+    ],
+    "optionsMg": [
+      "1817",
+      "1787",
+      "1861",
+      "1885"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "1817",
+    "explanation": "Le 23 octobre 1817, par le traité signé à Tamatave avec les représentants du gouverneur britannique de l'île Maurice (Robert Farquhar), Radama Ier est diplomatiquement reconnu comme « Roi de Madagascar » en échange de l'abolition de la traite des esclaves.",
+    "difficulty": "MEDIUM",
+    "levelNumber": 2,
+    "sourceReference": "Histoire du Royaume de Madagascar — Traité anglo-merina du 23 octobre 1817",
+    "historicalPeriod": "1817",
+    "contentSourceType": "HISTORICAL_EVENT",
+    "contentSourceId": "event_treaty_1817",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_007",
+    "format": "QUIZ",
+    "category": "histoire_dates",
+    "promptMg": "Antoko politika inona no naorin'ireo solombavambahoaka malagasy Joseph Ravoahangy, Joseph Raseta ary Jacques Rabemananjara tany Paris tamin'ny Febroary 1946 ?",
+    "promptFr": "Quel parti nationaliste a été fondé à Paris en février 1946 par les députés malgaches Joseph Ravoahangy, Joseph Raseta et Jacques Rabemananjara ?",
+    "optionsFr": [
+      "Le MDRM (Mouvement Démocratique de la Rénovation Malgache)",
+      "Le PADESM (Parti des Déshérités de Madagascar)",
+      "La VVS (Vy Vato Sakelika)",
+      "Le PSD (Parti Social Démocrate)"
+    ],
+    "optionsMg": [
+      "Ny MDRM (Mouvement Démocratique de la Rénovation Malgache)",
+      "Ny PADESM",
+      "Ny VVS (Vy Vato Sakelika)",
+      "Ny PSD"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Le MDRM (Mouvement Démocratique de la Rénovation Malgache)",
+    "explanation": "Fondé en février 1946 à Paris par les députés malgaches à l'Assemblée constituante française, le MDRM (Mouvement Démocratique de la Rénovation Malgache) réclamait pacifiquement l'indépendance de Madagascar avant d'être dissous par l'administration coloniale après l'insurrection de mars 1947.",
+    "difficulty": "MEDIUM",
+    "levelNumber": 2,
+    "sourceReference": "UNESCO / Le Maitron — Histoire du MDRM (1946-1947)",
+    "historicalPeriod": "1946-1947",
+    "contentSourceType": "HISTORICAL_EVENT",
+    "contentSourceId": "event_mdrm_1946",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_008",
+    "format": "QUIZ",
+    "category": "histoire_dates",
+    "promptMg": "Tamin'ny daty inona no nolanian'ny Antenimiera frantsay ny lalàna nanambatra an'i Madagasikara ho zanatany frantsay ?",
+    "promptFr": "À quelle date a été promulguée la loi française déclarant officiellement Madagascar et les îles qui en dépendent « colonie française » ?",
+    "optionsFr": [
+      "Le 6 août 1896",
+      "Le 1er octobre 1895",
+      "Le 26 juin 1900",
+      "Le 14 octobre 1912"
+    ],
+    "optionsMg": [
+      "6 Aogositra 1896",
+      "1 Oktobra 1895",
+      "26 Jona 1900",
+      "14 Oktobra 1912"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Le 6 août 1896",
+    "explanation": "Après la prise d'Antananarivo le 30 septembre 1895 et un bref protectorat, le Parlement français vote la loi d'annexion promulguée le 6 août 1896 déclarant Madagascar colonie française, suivie de l'abolition de la royauté par Gallieni le 28 février 1897.",
+    "difficulty": "HARD",
+    "levelNumber": 3,
+    "sourceReference": "Digithèque MJP — Loi du 6 août 1896 déclarant colonie française l'île de Madagascar",
+    "historicalPeriod": "1896",
+    "contentSourceType": "HISTORICAL_EVENT",
+    "contentSourceId": "event_annexation_1896",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_009",
+    "format": "QUIZ",
+    "category": "histoire_dates",
+    "promptMg": "Tamin'ny taona inona no niova anarana ho « Repoblika Demokratika Malagasy » (Repoblika Faharoa) i Madagasikara ?",
+    "promptFr": "En quelle année la Constitution de la IIe République a-t-elle été adoptée par référendum, instaurant la « République Démocratique de Madagascar » ?",
+    "optionsFr": [
+      "1975",
+      "1960",
+      "1982",
+      "1992"
+    ],
+    "optionsMg": [
+      "1975",
+      "1960",
+      "1982",
+      "1992"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "1975",
+    "explanation": "Le référendum du 21 décembre 1975 approuve la Charte de la Révolution socialiste malgache (Boky Mena) et la Constitution de la IIe République, proclamée le 30 décembre 1975 sous le nom de République Démocratique de Madagascar (RDM).",
+    "difficulty": "MEDIUM",
+    "levelNumber": 2,
+    "sourceReference": "Digithèque MJP — Chronologie constitutionnelle de Madagascar (1975)",
+    "historicalPeriod": "1975-1992",
+    "contentSourceType": "HISTORICAL_EVENT",
+    "contentSourceId": "event_second_republic_1975",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_010",
+    "format": "QUIZ",
+    "category": "presidents_dirigeants",
+    "promptMg": "Iza no Mpanjakan'Imerina nanjaka teo anelanelan'ny taona 1787 sy 1810 ka nanambatra indray an'Imerina ary nanao ilay teny malaza hoe : « Ny ranomasina no valamparihiko » ?",
+    "promptFr": "Quel grand roi (1787-1810), parti d'Ambohimanga, a réunifié l'Imerina et prononcé la célèbre formule politique : « La mer est la limite de ma rizière » (Ny ranomasina no valamparihiko) ?",
+    "optionsFr": [
+      "Andrianampoinimerina",
+      "Andrianjaka",
+      "Ralambo",
+      "Andriamasinavalona"
+    ],
+    "optionsMg": [
+      "Andrianampoinimerina",
+      "Andrianjaka",
+      "Ralambo",
+      "Andriamasinavalona"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Andrianampoinimerina",
+    "explanation": "Le roi Andrianampoinimerina (règne de 1787 à 1810) a réunifié le royaume d'Imerina, structuré l'administration et l'agriculture, et légué à son fils Radama Ier l'ambition d'unifier toute l'île résumée par l'adage « Ny ranomasina no valamparihiko ».",
+    "difficulty": "EASY",
+    "levelNumber": 1,
+    "sourceReference": "UNESCO — Dossier de la Colline royale d'Ambohimanga (Bien n° 950)",
+    "historicalPeriod": "1787-1810",
+    "contentSourceType": "LEADER",
+    "contentSourceId": "leader_andrianampoinimerina",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_011",
+    "format": "QUIZ",
+    "category": "presidents_dirigeants",
+    "promptMg": "Iza no voafidy ho Filohan'ny Repoblika voalohany tamin'ny Repoblika Fahatelo tamin'ny taona 1993, ka nitondra hatramin'ny taona 1996 ?",
+    "promptFr": "Qui a été élu premier Président de la IIIe République malgache en février 1993, exerçant son mandat du 27 mars 1993 au 5 septembre 1996 ?",
+    "optionsFr": [
+      "Albert Zafy",
+      "Norbert Ratsirahonana",
+      "Didier Ratsiraka",
+      "Marc Ravalomanana"
+    ],
+    "optionsMg": [
+      "Albert Zafy",
+      "Norbert Ratsirahonana",
+      "Didier Ratsiraka",
+      "Marc Ravalomanana"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Albert Zafy",
+    "explanation": "Après avoir dirigé la Haute Autorité de l'État durant la Transition (1991-1993), le professeur Albert Zafy (1927-2017) a remporté l'élection présidentielle du 10 février 1993 face à Didier Ratsiraka et a exercé ses fonctions du 27 mars 1993 au 5 septembre 1996.",
+    "difficulty": "MEDIUM",
+    "levelNumber": 2,
+    "sourceReference": "Digithèque MJP — Histoire constitutionnelle de la IIIe République malgache",
+    "historicalPeriod": "1993-1996",
+    "contentSourceType": "LEADER",
+    "contentSourceId": "leader_albert_zafy",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_012",
+    "format": "QUIZ",
+    "category": "presidents_dirigeants",
+    "promptMg": "Iza no Praiminisitra nalaza nitondra nandritra ny 31 taona (1864-1895) ary vadin'ireo mpanjakavavy telo nifandimby (Rasoherina, Ranavalona II ary Ranavalona III) ?",
+    "promptFr": "Quel Premier ministre du Royaume de Madagascar est resté au pouvoir pendant 31 ans (1864-1895) en étant l'époux politique de trois reines successives (Rasoherina, Ranavalona II et Ranavalona III) ?",
+    "optionsFr": [
+      "Rainilaiarivony",
+      "Rainiharo",
+      "Rainivoninahitriniony",
+      "Andriamihaja"
+    ],
+    "optionsMg": [
+      "Rainilaiarivony",
+      "Rainiharo",
+      "Rainivoninahitriniony",
+      "Andriamihaja"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Rainilaiarivony",
+    "explanation": "Fils de Rainiharo et frère de Rainivoninahitriniony, le Premier ministre et Commandant en chef Rainilaiarivony (1828-1896) a dirigé la politique intérieure et diplomatique du Royaume de Madagascar de 1864 à 1895, modernisant le droit (Code des 305 articles), l'école et l'armée.",
+    "difficulty": "MEDIUM",
+    "levelNumber": 2,
+    "sourceReference": "Histoire du Royaume de Madagascar — Les Premiers ministres du XIXe siècle",
+    "historicalPeriod": "1864-1895",
+    "contentSourceType": "LEADER",
+    "contentSourceId": "leader_rainilaiarivony",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_013",
+    "format": "QUIZ",
+    "category": "presidents_dirigeants",
+    "promptMg": "Iza no Filoham-pirenena voalohany voafidy tamin'ny Repoblika Fahefatra tamin'ny desambra 2013 ka nitondra nanomboka ny Janoary 2014 hatramin'ny Septambra 2018 ?",
+    "promptFr": "Qui a été le premier Président de la République élu sous la Constitution de la IVe République (en décembre 2013), en fonction de janvier 2014 à septembre 2018 ?",
+    "optionsFr": [
+      "Hery Rajaonarimampianina",
+      "Marc Ravalomanana",
+      "Jean Omer Beriziky",
+      "Norbert Ratsirahonana"
+    ],
+    "optionsMg": [
+      "Hery Rajaonarimampianina",
+      "Marc Ravalomanana",
+      "Jean Omer Beriziky",
+      "Norbert Ratsirahonana"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Hery Rajaonarimampianina",
+    "explanation": "Après la période de Transition (2009-2014) et la promulgation de la Constitution de la IVe République le 11 décembre 2010, Hery Rajaonarimampianina a remporté le second tour de la présidentielle du 20 décembre 2013 et a été investi le 25 janvier 2014.",
+    "difficulty": "EASY",
+    "levelNumber": 1,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Hery_Rajaonarimampianina_2014.jpg/250px-Hery_Rajaonarimampianina_2014.jpg",
+    "imageAlt": "Portrait de Hery Rajaonarimampianina (2014)",
+    "sourceReference": "Digithèque MJP / Haute Cour Constitutionnelle — Élection présidentielle de 2013",
+    "historicalPeriod": "2014-2018",
+    "contentSourceType": "LEADER",
+    "contentSourceId": "leader_rajaonarimampianina",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_014",
+    "format": "QUIZ",
+    "category": "citoyennete_fihavanana",
+    "promptMg": "Firy taona farafahakeliny ny olom-pirenena malagasy iray vao mahazo milatsaka hofidiana ho Filohan'ny Repoblika araka ny Andininy faha-46 amin'ny Lalàmpanorenana 2010 ?",
+    "promptFr": "Selon l'article 46 de la Constitution de la IVe République (2010), quel est l'âge minimum requis pour être candidat à l'élection présidentielle à Madagascar ?",
+    "optionsFr": [
+      "35 ans révolus",
+      "40 ans révolus",
+      "25 ans révolus",
+      "30 ans révolus"
+    ],
+    "optionsMg": [
+      "Feno 35 taona",
+      "Feno 40 taona",
+      "Feno 25 taona",
+      "Feno 30 taona"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "35 ans révolus",
+    "explanation": "L'article 46 de la Constitution du 11 décembre 2010 dispose que tout candidat aux fonctions de Président de la République doit être de nationalité malagasy, jouir de ses droits civils et politiques, et avoir au moins trente-cinq (35) ans à la date de clôture du dépôt des candidatures (contre 40 ans sous la Constitution de 1992).",
+    "difficulty": "HARD",
+    "levelNumber": 3,
+    "sourceReference": "Haute Cour Constitutionnelle (HCC) — Constitution de la IVe République, Article 46",
+    "historicalPeriod": "2010-présent",
+    "contentSourceType": "CONSTITUTION",
+    "contentSourceId": "const_2010_art46",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_015",
+    "format": "QUIZ",
+    "category": "citoyennete_fihavanana",
+    "promptMg": "Andrimpanjakana inona no misolo vonjimaika ny Filohan'ny Repoblika raha sendra misy fahabangana tampoka eo amin'ny toerana, araka ny Andininy faha-52 amin'ny Lalàmpanorenana 2010 ?",
+    "promptFr": "Selon l'article 52 de la Constitution de 2010, qui exerce provisoirement les fonctions de chef de l'État en cas de vacance de la Présidence de la République ?",
+    "optionsFr": [
+      "Le Président du Sénat",
+      "Le Président de l'Assemblée nationale",
+      "Le Premier Président de la Cour Suprême",
+      "Le Médiateur de la République"
+    ],
+    "optionsMg": [
+      "Ny Filohan'ny Antenimierandoholona (Sénat)",
+      "Ny Filohan'ny Antenimierampirenena",
+      "Ny Filoha voalohan'ny Fitsarana Tampony",
+      "Ny Mpanelanelana ny Repoblika"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Le Président du Sénat",
+    "explanation": "Conformément à l'article 52 de la Constitution de la IVe République, en cas de vacance de la Présidence de la République par suite de démission, de décès ou d'empêchement définitif constaté par la HCC, les fonctions de chef de l'État sont exercées provisoirement par le Président du Sénat (ou à défaut par le Gouvernement collégialement).",
+    "difficulty": "MEDIUM",
+    "levelNumber": 2,
+    "sourceReference": "Haute Cour Constitutionnelle (HCC) — Constitution de la IVe République, Article 52",
+    "historicalPeriod": "2010-présent",
+    "contentSourceType": "CONSTITUTION",
+    "contentSourceId": "const_2010_art52",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_016",
+    "format": "QUIZ",
+    "category": "citoyennete_fihavanana",
+    "promptMg": "Firy ny isan'ireo mpikambana (Mpanolotsaina Avo) mandrafitra ny Fitsarana Avo momba ny Lalàmpanorenana (HCC) araka ny Andininy faha-114 ?",
+    "promptFr": "Combien de membres composent la Haute Cour Constitutionnelle (HCC) selon l'article 114 de la Constitution de la IVe République ?",
+    "optionsFr": [
+      "9 membres",
+      "7 membres",
+      "12 membres",
+      "15 membres"
+    ],
+    "optionsMg": [
+      "Mpikambana 9",
+      "Mpikambana 7",
+      "Mpikambana 12",
+      "Mpikambana 15"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "9 membres",
+    "explanation": "Selon l'article 114 de la Constitution de 2010, la Haute Cour Constitutionnelle comprend 9 membres (dont le mandat est de 7 ans non renouvelable) : 3 sont nommés par le Président de la République, 2 élus par l'Assemblée nationale, 2 par le Sénat et 2 par le Conseil supérieur de la magistrature.",
+    "difficulty": "HARD",
+    "levelNumber": 3,
+    "sourceReference": "Haute Cour Constitutionnelle (HCC) — Constitution de la IVe République, Article 114",
+    "historicalPeriod": "2010-présent",
+    "contentSourceType": "CONSTITUTION",
+    "contentSourceId": "const_2010_art114_count",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_017",
+    "format": "QUIZ",
+    "category": "patrimoine_culture",
+    "promptMg": "Toerana voajanahary inona no voalohany teto Madagasikara voasoratra ho Vakoka iraisam-pirenena ao amin'ny UNESCO tamin'ny taona 1990 ?",
+    "promptFr": "Quel site naturel malgache a été le tout premier bien de Madagascar inscrit sur la Liste du patrimoine mondial de l'UNESCO en 1990 ?",
+    "optionsFr": [
+      "La Réserve naturelle intégrale du Tsingy de Bemaraha",
+      "Le Parc national de l'Isalo",
+      "Les Forêts humides de l'Atsinanana",
+      "L'Allée des Baobabs de Morondava"
+    ],
+    "optionsMg": [
+      "Ny Tsingin'i Bemaraha",
+      "Ny Valan-javaboarin'Isalo",
+      "Ny Ala mandon'i Atsinanana",
+      "Ny lalan'ny Reniala ao Morondava"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "La Réserve naturelle intégrale du Tsingy de Bemaraha",
+    "explanation": "Inscrite en 1990 (bien n° 494, étendu en 2023 sous l'intitulé « Les forêts sèches de l'Andrefana »), la réserve du Tsingy de Bemaraha dans la région Melaky a été le premier site malgache classé au patrimoine mondial de l'UNESCO, avant Ambohimanga (2001) et les Forêts humides de l'Atsinanana (2007).",
+    "difficulty": "MEDIUM",
+    "levelNumber": 2,
+    "sourceReference": "UNESCO Centre du patrimoine mondial — Bien n° 494 (Tsingy de Bemaraha / Forêts sèches de l'Andrefana)",
+    "historicalPeriod": "1990",
+    "contentSourceType": "HERITAGE",
+    "contentSourceId": "unesco_bemaraha_494",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_018",
+    "format": "QUIZ",
+    "category": "patrimoine_culture",
+    "promptMg": "Fahaiza-manao nentim-paharazana inona avy any amin'ny faritra Amoron'i Mania (manodidina an'Ambositra) no voasoratra tao amin'ny UNESCO tamin'ny taona 2008 ?",
+    "promptFr": "Quel savoir-faire artisanal malgache, pratiqué dans les montagnes boisées au sud-est d'Ambositra, a été inscrit en 2008 au patrimoine culturel immatériel de l'UNESCO ?",
+    "optionsFr": [
+      "Le savoir-faire du travail du bois des Zafimaniry",
+      "Le tissage de la soie sauvage (Landibe)",
+      "La fabrication du papier Antemoro",
+      "La poterie traditionnelle d'Ambatolampy"
+    ],
+    "optionsMg": [
+      "Ny fahaiza-manao amin'ny sary sokitra sy rafitra hazo Zafimaniry",
+      "Ny fanenomana lamba landy",
+      "Ny fanamboarana taratasy Antemoro",
+      "Ny fanefena vilany tany"
+    ],
+    "optionsFr": [
+      "Le savoir-faire du travail du bois des Zafimaniry",
+      "Le tissage de la soie sauvage (Landibe)",
+      "La fabrication du papier Antemoro",
+      "La poterie traditionnelle d'Ambatolampy"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Le savoir-faire du travail du bois des Zafimaniry",
+    "explanation": "Proclamé chef-d'œuvre du patrimoine oral et immatériel en 2003 puis inscrit sur la Liste représentative de l'UNESCO en 2008 (dossier n° 00080), le savoir-faire du travail du bois des Zafimaniry se distingue par des constructions assemblées sans clous et ornées de motifs géométriques codifiés.",
+    "difficulty": "EASY",
+    "levelNumber": 1,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Zafimaniry_house.JPG/250px-Zafimaniry_house.JPG",
+    "imageAlt": "Maison traditionnelle en bois sculpté Zafimaniry",
+    "sourceReference": "UNESCO Patrimoine culturel immatériel — Dossier n° 00080 (2008)",
+    "historicalPeriod": "2008",
+    "contentSourceType": "HERITAGE",
+    "contentSourceId": "unesco_ich_zafimaniry",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_019",
+    "format": "QUIZ",
+    "category": "patrimoine_culture",
+    "promptMg": "Gadona sy dihy avy any amin'ny faritra Atsimo-Andrefana (Toliara) inona no nampidirin'ny UNESCO ho vakoka ara-kolontsaina tsy azo tsapain-tanana tamin'ny taona 2025 ?",
+    "promptFr": "Quel rythme et style musical caractéristique de la région Sud-Ouest de Madagascar (Toliara) a été inscrit au patrimoine culturel immatériel de l'UNESCO en 2025 ?",
+    "optionsFr": [
+      "Le Tsapiky",
+      "Le Salegy",
+      "Le Basesa",
+      "Le Kilalaky"
+    ],
+    "optionsMg": [
+      "Ny Tsapiky",
+      "Ny Salegy",
+      "Ny Basesa",
+      "Ny Kilalaky"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Le Tsapiky",
+    "explanation": "En 2025, l'UNESCO a inscrit « Tsapiky, rythme et style musical caractéristique de la région Sud-ouest de Madagascar » (dossier n° 02272) sur la Liste représentative du patrimoine culturel immatériel de l'humanité, devenant le 4e élément malgache après le bois Zafimaniry (2008), le Kabary (2021) et le Hiragasy (2023).",
+    "difficulty": "MEDIUM",
+    "levelNumber": 2,
+    "sourceReference": "UNESCO Patrimoine culturel immatériel — Dossier n° 02272 (2025)",
+    "historicalPeriod": "2025",
+    "contentSourceType": "HERITAGE",
+    "contentSourceId": "unesco_ich_tsapiky",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_020",
+    "format": "QUIZ",
+    "category": "patrimoine_culture",
+    "promptMg": "Taiza no naorin'ny injeniera Jean Laborde tamin'ny taonjato faha-19 ilay tanàna indostrialy voalohany teto Madagasikara (nanaovana vy, tafondro, savony, loko) ?",
+    "promptFr": "Sur quel site à l'est d'Antananarivo l'aventurier et ingénieur français Jean Laborde a-t-il édifié au XIXe siècle le premier complexe industriel de Madagascar pour la reine Ranavalona Ire ?",
+    "optionsFr": [
+      "Mantasoa",
+      "Ambohidratrimo",
+      "Antsirabe",
+      "Arivonimamo"
+    ],
+    "optionsMg": [
+      "Mantasoa",
+      "Ambohidratrimo",
+      "Antsirabe",
+      "Arivonimamo"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Mantasoa",
+    "explanation": "À partir de 1837, sous le règne de Ranavalona Ire, Jean Laborde a créé à Mantasoa une véritable cité industrielle comprenant un haut-fourneau, des forges, une fonderie de canons, une verrerie, ainsi que des fabriques de poudre, de savon et de tuiles.",
+    "difficulty": "MEDIUM",
+    "levelNumber": 2,
+    "sourceReference": "Histoire du Royaume de Madagascar — Cité industrielle de Mantasoa (Jean Laborde)",
+    "historicalPeriod": "1837-1857",
+    "contentSourceType": "HERITAGE",
+    "contentSourceId": "heritage_mantasoa",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_021",
+    "format": "QUIZ",
+    "category": "geographie_territoires",
+    "promptMg": "Firy ny isan'ireo Faritany (Provinces) ara-tantara teto Madagasikara talohan'ny nametrahana ireo Faritra (Régions) tamin'ny taona 2004 ?",
+    "promptFr": "Combien de grandes provinces historiques (Faritany) composaient l'organisation territoriale de Madagascar avant la création des régions en 2004 ?",
+    "optionsFr": [
+      "6 provinces",
+      "4 provinces",
+      "8 provinces",
+      "12 provinces"
+    ],
+    "optionsMg": [
+      "Faritany 6",
+      "Faritany 4",
+      "Faritany 8",
+      "Faritany 12"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "6 provinces",
+    "explanation": "Madagascar compte historiquement 6 provinces (Faritany) : Antananarivo, Antsiranana, Fianarantsoa, Mahajanga, Toamasina et Toliara. En 2004 (loi n° 2004-001), le territoire a été subdivisé en régions (22 à l'origine, 24 depuis 2023).",
+    "difficulty": "EASY",
+    "levelNumber": 1,
+    "sourceReference": "Constitution de Madagascar / Loi n° 2004-001 relative aux Régions",
+    "historicalPeriod": "1958-présent",
+    "contentSourceType": "GEOGRAPHY",
+    "contentSourceId": "geo_6_provinces",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_022",
+    "format": "QUIZ",
+    "category": "geographie_territoires",
+    "promptMg": "Inona no renivohitry ny Faritra Vakinankaratra ?",
+    "promptFr": "Quelle ville est le chef-lieu de la région Vakinankaratra ?",
+    "optionsFr": [
+      "Antsirabe",
+      "Ambatolampy",
+      "Ambositra",
+      "Miarinarivo"
+    ],
+    "optionsMg": [
+      "Antsirabe",
+      "Ambatolampy",
+      "Ambositra",
+      "Miarinarivo"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Antsirabe",
+    "explanation": "Située sur les Hautes Terres centrales au pied du massif de l'Ankaratra, la ville thermale et industrielle d'Antsirabe est le chef-lieu de la région Vakinankaratra (tandis que Miarinarivo est celui de l'Itasy et Ambositra celui d'Amoron'i Mania).",
+    "difficulty": "EASY",
+    "levelNumber": 1,
+    "sourceReference": "Loi n° 2014-020 du 27 septembre 2014 relative aux Collectivités territoriales décentralisées",
+    "historicalPeriod": "Géographie contemporaine",
+    "contentSourceType": "GEOGRAPHY",
+    "contentSourceId": "geo_vakinankaratra_antsirabe",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_023",
+    "format": "QUIZ",
+    "category": "geographie_territoires",
+    "promptMg": "Avy amin'ny anaran'ny distrika efatra inona any avaratra-atsinanan'i Madagasikara no nakana ny fanafohezan-teny hoe faritra « SAVA » ?",
+    "promptFr": "De quelles quatre villes (et districts) du nord-est de Madagascar le nom de la région « SAVA » est-il l'acronyme ?",
+    "optionsFr": [
+      "Sambava, Antalaha, Vohemar et Andapa",
+      "Sakaraha, Ambanja, Vangaindrano et Ambilobe",
+      "Soanierana, Ambatondrazaka, Vatomandry et Anosibe",
+      "Soalala, Antsohihy, Vondrozo et Amboasary"
+    ],
+    "optionsMg": [
+      "Sambava, Antalaha, Vohemar ary Andapa",
+      "Sakaraha, Ambanja, Vangaindrano ary Ambilobe",
+      "Soanierana, Ambatondrazaka, Vatomandry ary Anosibe",
+      "Soalala, Antsohihy, Vondrozo ary Amboasary"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Sambava, Antalaha, Vohemar et Andapa",
+    "explanation": "Mondialement connue pour sa production de vanille, la région SAVA (dont le chef-lieu est Sambava) tire son nom des initiales de ses quatre districts : Sambava, Antalaha, Vohemar (Iharana) et Andapa.",
+    "difficulty": "MEDIUM",
+    "levelNumber": 2,
+    "sourceReference": "Loi n° 2004-001 et Loi n° 2014-020 — Découpage des régions et districts de Madagascar",
+    "historicalPeriod": "2004-présent",
+    "contentSourceType": "GEOGRAPHY",
+    "contentSourceId": "geo_region_sava",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_024",
+    "format": "QUIZ",
+    "category": "geographie_territoires",
+    "promptMg": "Inona no laharana misy an'i Madagasikara maneran-tany raha ny haben'ny nosy (587 041 km²) no jerena ?",
+    "promptFr": "Avec une superficie d'environ 587 041 km², quel rang Madagascar occupe-t-elle parmi les plus grandes îles du monde (hors continents) ?",
+    "optionsFr": [
+      "La 4e plus grande île du monde",
+      "La 2e plus grande île du monde",
+      "La 6e plus grande île du monde",
+      "La 1re plus grande île du monde"
+    ],
+    "optionsMg": [
+      "Nosin-tany faha-4 lehibe indrindra maneran-tany",
+      "Nosin-tany faha-2 lehibe indrindra",
+      "Nosin-tany faha-6 lehibe indrindra",
+      "Nosin-tany voalohany lehibe indrindra"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "La 4e plus grande île du monde",
+    "explanation": "Avec environ 587 041 km², Madagascar est la plus grande île d'Afrique et de l'océan Indien, et la 4e plus grande île du monde après le Groenland, la Nouvelle-Guinée et Bornéo.",
+    "difficulty": "EASY",
+    "levelNumber": 1,
+    "sourceReference": "Encyclopédie géographique / Données officielles de la République de Madagascar",
+    "historicalPeriod": "Géographie contemporaine",
+    "contentSourceType": "GEOGRAPHY",
+    "contentSourceId": "geo_island_rank",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_025",
+    "format": "QUIZ",
+    "category": "symboles_emblemes",
+    "promptMg": "Zavamaniry mampiavaka an'i Madagasikara inona no hita eo amin'ny Tombokasem-panjakana malagasy, miaraka amin'ny lohan'omby sy ny salohim-bary ?",
+    "promptFr": "Outre la tête de zébu et les épis de riz, quelle plante emblématique de Madagascar est stylisée au sommet du sceau officiel de la République ?",
+    "optionsFr": [
+      "Le Ravinala (Arbre du voyageur)",
+      "Le Baobab de Grandidier",
+      "Le Pachypodium",
+      "Le Flamboyant"
+    ],
+    "optionsMg": [
+      "Ny Ravinala",
+      "Ny Reniala (Baobab)",
+      "Ny Vontaka (Pachypodium)",
+      "Ny Hintsina na Flamboyant"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Le Ravinala (Arbre du voyageur)",
+    "explanation": "Au sommet du disque du sceau de la République de Madagascar s'épanouissent en éventail les feuilles stylisées du Ravinala (Ravenala madagascariensis, ou arbre du voyageur), au-dessus de la silhouette de l'île et de la tête de zébu.",
+    "difficulty": "EASY",
+    "levelNumber": 1,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Seal_of_Madagascar.svg/250px-Seal_of_Madagascar.svg.png",
+    "imageAlt": "Sceau de la République de Madagascar",
+    "sourceReference": "Symboles de la République de Madagascar — Sceau officiel",
+    "historicalPeriod": "1959-présent",
+    "contentSourceType": "SYMBOL",
+    "contentSourceId": "symbol_ravinala_seal",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_026",
+    "format": "QUIZ",
+    "category": "symboles_emblemes",
+    "promptMg": "Tamin'ny volana sy taona inona no nampisehoana voalohany tamin'ny fomba ofisialy ny sainam-pirenena malagasy fotsy, mena sy maitso ?",
+    "promptFr": "En quel mois et quelle année le drapeau national tricolore (blanc, rouge, vert) de la République malgache a-t-il été adopté et présenté officiellement ?",
+    "optionsFr": [
+      "En octobre 1958",
+      "En mars 1947",
+      "En décembre 1975",
+      "En août 1896"
+    ],
+    "optionsMg": [
+      "Oktobra 1958",
+      "Martsa 1947",
+      "Desambra 1975",
+      "Aogositra 1896"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "En octobre 1958",
+    "explanation": "Le drapeau tricolore blanc, rouge et vert a été choisi et présenté officiellement le 21 octobre 1958, une semaine après la proclamation de la Ire République malgache (14 octobre 1958), avant même la proclamation de l'indépendance du 26 juin 1960.",
+    "difficulty": "HARD",
+    "levelNumber": 3,
+    "sourceReference": "Archives de la République de Madagascar — Adoption du drapeau national (octobre 1958)",
+    "historicalPeriod": "1958",
+    "contentSourceType": "SYMBOL",
+    "contentSourceId": "symbol_flag_1958",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_027",
+    "format": "QUIZ",
+    "category": "personnalites_historiques",
+    "promptMg": "Iza ilay mpanao gazety sy mpitarika nasionalista malagasy (1884-1943) nitaky ny zo maha-olom-pirenena sy ny fahafahana tamin'ny alalan'ny gazety « L'Opinion » tamin'ny taona 1920-1930 ?",
+    "promptFr": "Quel ancien combattant, instituteur et journaliste malgache (1884-1943) est considéré comme le pionnier de la lutte anticoloniale durant l'entre-deux-guerres, notamment lors de la manifestation du 19 mai 1929 à Antananarivo ?",
+    "optionsFr": [
+      "Jean Ralaimongo",
+      "Andriamanelo",
+      "Norbert Raharisoa",
+      "Jean Laborde"
+    ],
+    "optionsMg": [
+      "Jean Ralaimongo",
+      "Andriamanelo",
+      "Norbert Raharisoa",
+      "Jean Laborde"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Jean Ralaimongo",
+    "explanation": "Originaire du Betsileo, ancien combattant de la Première Guerre mondiale en France, Jean Ralaimongo (1884-1943) a fondé le journal « L'Opinion » et animé le mouvement de revendication des droits civiques et d'émancipation qui culmina lors de la grande manifestation du 19 mai 1929 devant le cinéma Excelsior à Antananarivo.",
+    "difficulty": "HARD",
+    "levelNumber": 3,
+    "sourceReference": "Dictionnaire biographique Le Maitron / UNESCO — Histoire du mouvement nationaliste malgache (Jean Ralaimongo)",
+    "historicalPeriod": "1919-1943",
+    "contentSourceType": "PERSONALITY",
+    "contentSourceId": "pers_ralaimongo",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_028",
+    "format": "QUIZ",
+    "category": "personnalites_historiques",
+    "promptMg": "Iza ilay mpahay siansa sy dokotera malagasy malaza (1907-2001) nanorina ny IMRA (Institut Malgache de Recherches Appliquées) momba ny zavamaniry fanao fanafody ?",
+    "promptFr": "Quel illustre scientifique, médecin et diplomate malgache (1907-2001) a fondé en 1957 l'IMRA (Institut Malgache de Recherches Appliquées) dédié aux plantes médicinales de Madagascar ?",
+    "optionsFr": [
+      "Le professeur Albert Rakoto Ratsimamanga",
+      "Le professeur Raymond Ranjeva",
+      "Le docteur Joseph Raseta",
+      "Le professeur Philippe Rasoanaivo"
+    ],
+    "optionsMg": [
+      "Ny Profesora Albert Rakoto Ratsimamanga",
+      "Ny Profesora Raymond Ranjeva",
+      "Ny Dokotera Joseph Raseta",
+      "Ny Profesora Philippe Rasoanaivo"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Le professeur Albert Rakoto Ratsimamanga",
+    "explanation": "Directeur de recherche au CNRS en France et premier ambassadeur de Madagascar à Paris à l'indépendance, le professeur Albert Rakoto Ratsimamanga (1907-2001), avec son épouse Suzanne Urverg-Ratsimamanga, a fondé l'IMRA en 1957 à Avarabohitra Itaosy pour valoriser la pharmacopée traditionnelle malgache (notamment à partir de la Centella asiatica / Talapetraka).",
+    "difficulty": "MEDIUM",
+    "levelNumber": 2,
+    "sourceReference": "Académie Nationale Malgache / CNRS — Biographie du Pr Albert Rakoto Ratsimamanga (1907-2001)",
+    "historicalPeriod": "1957-2001",
+    "contentSourceType": "PERSONALITY",
+    "contentSourceId": "pers_rakoto_ratsimamanga",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_029",
+    "format": "QUIZ",
+    "category": "traditions_valeurs",
+    "promptMg": "Inona no anaran'ilay sary sokitra hazo avo dia avo mitsangana eo ambonin'ny fasan'ny Mahafaly sy ny Antandroy any atsimon'i Madagasikara ?",
+    "promptFr": "Comment appelle-t-on les grands poteaux funéraires en bois sculpté qui surmontent les tombeaux traditionnels Mahafaly et Antandroy dans le Sud de Madagascar ?",
+    "optionsFr": [
+      "Les Aloalo",
+      "Les Orimbato",
+      "Les Tatao",
+      "Les Tranomanara"
+    ],
+    "optionsMg": [
+      "Ny Aloalo",
+      "Ny Orimbato",
+      "Ny Tatao",
+      "Ny Tranomanara"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Les Aloalo",
+    "explanation": "Les Aloalo sont de hauts poteaux funéraires en bois sculpté (souvent en bois d'arofy ou de tamarinier), surmontés de scènes de la vie du défunt et de zébus, qui ornent les tombeaux de pierres (valavato) chez les Mahafaly et les Antandroy dans le Grand Sud.",
+    "difficulty": "EASY",
+    "levelNumber": 1,
+    "sourceReference": "Musée d'Art et d'Archéologie d'Antananarivo / Patrimoine culturel du Sud malgache",
+    "historicalPeriod": "Tradition vivante",
+    "contentSourceType": "TRADITION",
+    "contentSourceId": "trad_aloalo",
+    "status": "PUBLISHED"
+  },
+  {
+    "id": "quiz_030",
+    "format": "QUIZ",
+    "category": "traditions_valeurs",
+    "promptMg": "Inona no anaran'ny soratra tranainy nampiasa ny abidy arabo hanoratana ny teny malagasy, indrindra tany amin'ny faritra Antemoro any atsimo-atsinanana ?",
+    "promptFr": "Comment s'appelle l'écriture traditionnelle ancienne utilisant les caractères arabes pour transcrire la langue malgache, préservée notamment chez les Antemoro du Sud-Est ?",
+    "optionsFr": [
+      "Le Sorabe",
+      "Le Sikidy",
+      "Le Kabary",
+      "Le Fanorona"
+    ],
+    "optionsMg": [
+      "Ny Sorabe",
+      "Ny Sikidy",
+      "Ny Kabary",
+      "Ny Fanorona"
+    ],
+    "correctAnswerIndex": 0,
+    "correctAnswer": "Le Sorabe",
+    "explanation": "Le Sorabe (« grande écriture ») est le système d'écriture en caractères arabes adapté à la langue malgache bien avant l'introduction de l'alphabet latin par Radama Ier en 1823. Les manuscrits Sorabe sont particulièrement célèbres dans la tradition des scribes (Katibo) Antemoro de la vallée de la Matitanana (Vohipeno).",
+    "difficulty": "MEDIUM",
+    "levelNumber": 2,
+    "sourceReference": "Délégation Permanente de Madagascar auprès de l'UNESCO — Liste indicative du patrimoine immatériel (Sorabe)",
+    "historicalPeriod": "XVe-XIXe siècle",
+    "contentSourceType": "TRADITION",
+    "contentSourceId": "trad_sorabe",
+    "status": "PUBLISHED"
+  }
+]

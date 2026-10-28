@@ -25,8 +25,8 @@ describe('EventsService', () => {
   let notificationsService: any;
   let badgesService: any;
 
-  const mockFutureStart = new Date('2026-10-26T10:00:00.000Z');
-  const mockFutureEnd = new Date('2026-11-05T10:00:00.000Z');
+  const mockFutureStart = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+  const mockFutureEnd = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
 
   const mockEvent = {
     id: 'evt_123456789012345678901',

@@ -30,6 +30,8 @@
     "seed:emblemes": "tsx src/scripts/seed-emblemes-madagascar.ts",
     "seed:emblemes:prod": "node dist/src/scripts/seed-emblemes-madagascar.js",
     "seed:true-false": "tsx src/scripts/seed-true-false.ts",
+    "seed:riddles": "tsx src/scripts/seed-riddles.ts",
+    "seed:riddles:prod": "node dist/src/scripts/seed-riddles.js",
     "seed:admin": "tsx src/scripts/create-admin.ts",
     "seed:admin:prod": "node dist/src/scripts/create-admin.js",
     "admin:reset": "tsx src/scripts/inspect-and-delete-admin.ts && tsx src/scripts/create-admin.ts",

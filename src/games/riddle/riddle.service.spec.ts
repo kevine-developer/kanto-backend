@@ -107,39 +107,43 @@ describe('RiddleService', () => {
       expect(result.session.userId).toBeNull();
     });
 
-    it('should filter questions by level when provided', async () => {
-      const levelQuestions = [buildRiddleQuestion({ level: 3 })];
+    it('should paginate questions by group number when provided', async () => {
+      const groupQuestions = [buildRiddleQuestion({ id: 'riddle-g2-1' })];
       const session = buildRiddleSession('user-1');
 
+      prismaMock.riddleQuestion.count.mockResolvedValue(20);
       prismaMock.riddleQuestion.findMany
-        .mockResolvedValueOnce([{ id: levelQuestions[0].id }])
-        .mockResolvedValueOnce(levelQuestions);
+        .mockResolvedValueOnce([{ id: groupQuestions[0].id }])
+        .mockResolvedValueOnce(groupQuestions);
       prismaMock.riddleSession.create.mockResolvedValue(session);
 
-      await service.startSession('user-1', 3, 1);
+      await service.startSession('user-1', 2, 10);
 
       expect(prismaMock.riddleQuestion.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: expect.objectContaining({ level: 3 }),
+          where: { status: 'PUBLISHED' },
+          skip: 10, // (2 - 1) * 10
+          take: 10,
+          orderBy: { id: 'asc' },
         }),
       );
     });
 
-    it('should default to 5 questions when questionCount is not provided', async () => {
-      const questions = Array.from({ length: 10 }, () => buildRiddleQuestion());
+    it('should default to 10 questions when questionCount is not provided', async () => {
+      const questions = Array.from({ length: 15 }, () => buildRiddleQuestion());
       const session = buildRiddleSession('user-1');
 
       prismaMock.riddleQuestion.findMany
         .mockResolvedValueOnce(questions.map((q) => ({ id: q.id })))
-        .mockResolvedValueOnce(questions.slice(0, 5));
+        .mockResolvedValueOnce(questions.slice(0, 10));
       prismaMock.riddleSession.create.mockResolvedValue({
         ...session,
-        totalQuestions: 5,
+        totalQuestions: 10,
       });
 
       const result = await service.startSession('user-1');
 
-      expect(result.session.totalQuestions).toBe(5);
+      expect(result.session.totalQuestions).toBe(10);
     });
 
     /**
@@ -531,6 +535,110 @@ describe('RiddleService', () => {
           data: expect.objectContaining({ durationSeconds: 123 }),
         }),
       );
+    });
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Groupes dynamiques de devinettes (Aucun système de niveaux)
+  // ─────────────────────────────────────────────────────────────────────────
+  describe('Groupes dynamiques de devinettes (10 devinettes = 1 groupe, aucun niveau)', () => {
+    describe('getAvailableGroups', () => {
+      it('0 devinette disponible => 0 groupe disponible', async () => {
+        prismaMock.riddleQuestion.count.mockResolvedValue(0);
+
+        const result = await service.getAvailableGroups();
+
+        expect(result.totalRiddles).toBe(0);
+        expect(result.availableGroupCount).toBe(0);
+        expect(result.groups).toHaveLength(0);
+      });
+
+      it('9 devinettes disponibles => 0 groupe disponible (seuil de 10 non atteint)', async () => {
+        prismaMock.riddleQuestion.count.mockResolvedValue(9);
+
+        const result = await service.getAvailableGroups();
+
+        expect(result.totalRiddles).toBe(9);
+        expect(result.availableGroupCount).toBe(0);
+        expect(result.groups).toHaveLength(0);
+      });
+
+      it('10 devinettes disponibles => 1 groupe complet (1 à 10)', async () => {
+        prismaMock.riddleQuestion.count.mockResolvedValue(10);
+
+        const result = await service.getAvailableGroups();
+
+        expect(result.totalRiddles).toBe(10);
+        expect(result.availableGroupCount).toBe(1);
+        expect(result.groups).toHaveLength(1);
+        expect(result.groups[0].groupNumber).toBe(1);
+        expect(result.groups[0].range).toEqual({ start: 1, end: 10 });
+        expect(result.groups[0].titleMg).toBe('Andiany 1');
+      });
+
+      it('20 devinettes disponibles => 2 groupes (1 à 10, 11 à 20)', async () => {
+        prismaMock.riddleQuestion.count.mockResolvedValue(20);
+
+        const result = await service.getAvailableGroups();
+
+        expect(result.totalRiddles).toBe(20);
+        expect(result.availableGroupCount).toBe(2);
+        expect(result.groups).toHaveLength(2);
+        expect(result.groups[1].groupNumber).toBe(2);
+        expect(result.groups[1].range).toEqual({ start: 11, end: 20 });
+        expect(result.groups[1].titleMg).toBe('Andiany 2');
+      });
+
+      it('25 devinettes disponibles => 2 groupes (les 5 restantes ne forment pas de groupe)', async () => {
+        prismaMock.riddleQuestion.count.mockResolvedValue(25);
+
+        const result = await service.getAvailableGroups();
+
+        expect(result.totalRiddles).toBe(25);
+        expect(result.availableGroupCount).toBe(2);
+        expect(result.groups).toHaveLength(2);
+      });
+
+      it('ne compte que les devinettes avec status PUBLISHED', async () => {
+        prismaMock.riddleQuestion.count.mockResolvedValue(10);
+
+        await service.getAvailableGroups();
+
+        expect(prismaMock.riddleQuestion.count).toHaveBeenCalledWith({
+          where: { status: 'PUBLISHED' },
+        });
+      });
+    });
+
+    describe('startSession avec groupNumber', () => {
+      it('sélectionne exactement les 10 devinettes du groupe ordonnées par ID sans doublon', async () => {
+        prismaMock.riddleQuestion.count.mockResolvedValue(30);
+        const mockQuestions = Array.from({ length: 10 }, (_, i) =>
+          buildRiddleQuestion({ id: `riddle_${i + 11}` }),
+        );
+        prismaMock.riddleQuestion.findMany.mockResolvedValue(mockQuestions);
+        const session = buildRiddleSession('user-1');
+        prismaMock.riddleSession.create.mockResolvedValue(session);
+
+        const result = await service.startSession('user-1', undefined, 10, 2);
+
+        expect(prismaMock.riddleQuestion.findMany).toHaveBeenCalledWith({
+          where: { status: 'PUBLISHED' },
+          orderBy: { id: 'asc' },
+          skip: 10, // (2 - 1) * 10
+          take: 10,
+          select: { id: true },
+        });
+        expect(result.session).toBeDefined();
+      });
+
+      it('jette NotFoundException si le groupe demandé dépasse les groupes disponibles', async () => {
+        prismaMock.riddleQuestion.count.mockResolvedValue(15); // Seulement 1 groupe complet
+
+        await expect(
+          service.startSession('user-1', undefined, 10, 2),
+        ).rejects.toThrow(NotFoundException);
+      });
     });
   });
 });
