@@ -68,7 +68,11 @@ else
     docker compose ps
 fi
 
-# 10. Nettoyage des images intermédiaires inutilisées (libération disque)
+# 10. Synchronisation automatique du contenu culturel de production (Seed idempotent)
+echo "🌱 [Kanto Seed] Synchronisation du contenu culturel de production (proverbes, citations, mots rares)..."
+docker exec kanto_backend node dist/src/scripts/seed-prod-content.js || echo "⚠️  [Seed Prod] Avertissement lors de l'exécution du seed (non bloquant)."
+
+# 11. Nettoyage des images intermédiaires inutilisées (libération disque)
 echo "🧹 Nettoyage des images Docker orphelines..."
 docker image prune -f
 

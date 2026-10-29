@@ -21,6 +21,7 @@ services:
       - RUN_MIGRATIONS=${RUN_MIGRATIONS:-true}
       # En production, refuser le démarrage si les migrations échouent
       - STRICT_MIGRATIONS=${STRICT_MIGRATIONS:-true}
+      - AUTO_SEED_PROD=${AUTO_SEED_PROD:-true}
       - NODE_OPTIONS=--max-old-space-size=384
     volumes:
       - kanto_uploads:/app/uploads
