@@ -6,13 +6,29 @@ export class ImportItemRowDto {
   category?: 'PROVERBE' | 'EXPRESSION' | 'DICTON';
   difficulty?: 'EASY' | 'MEDIUM' | 'HARD';
   isFeatured?: boolean;
+  phonetic?: string;
+  origins?: string[] | string;
+  themes?: string[] | string;
   dialectName?: string;
   dialectText?: string;
+  dialectVariants?: Array<{
+    dialectName: string;
+    text: string;
+    notes?: string;
+  }>;
 }
 
 export class ImportItemsBatchDto {
   items!: ImportItemRowDto[];
   skipDuplicates?: boolean;
+}
+
+export class CheckDuplicatesDto {
+  texts!: string[];
+}
+
+export interface CheckDuplicatesResultDto {
+  duplicates: string[];
 }
 
 export interface ImportItemsResult {
