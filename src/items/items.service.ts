@@ -352,7 +352,40 @@ export class ItemsService {
   }
 
   /**
-   * Import par lot de proverbes / expressions / dictons (CSV ou Excel)
+   * Vérifie une liste de textes pour identifier les doublons déjà présents en base
+   */
+  async checkDuplicates(texts: string[]): Promise<string[]> {
+    if (!texts || texts.length === 0) return [];
+
+    const existingItems = await this.prisma.malagasyItem.findMany({
+      select: { malagasy: true },
+    });
+
+    const normalize = (t: string) =>
+      t.toLowerCase().replace(/[\s\p{P}]+/gu, '').trim();
+
+    const existingNormalizedSet = new Set(
+      existingItems.map((i) => normalize(i.malagasy)),
+    );
+
+    const duplicates: string[] = [];
+    const seenInBatch = new Set<string>();
+
+    for (const text of texts) {
+      if (!text || typeof text !== 'string') continue;
+      const norm = normalize(text);
+      if (existingNormalizedSet.has(norm) && !seenInBatch.has(norm)) {
+        duplicates.push(text.trim());
+        seenInBatch.add(norm);
+      }
+    }
+
+    return duplicates;
+  }
+
+  /**
+   * Import par lot de proverbes / expressions / dictons (JSON, CSV ou Excel)
+   * avec support étendu des thèmes, origines, prononciations phonétiques et dialectes.
    */
   async importBatch(dto: ImportItemsBatchDto): Promise<ImportItemsResult> {
     const rows = dto.items || [];
@@ -361,14 +394,27 @@ export class ItemsService {
     let duplicatesSkipped = 0;
     const errors: Array<{ row: number; text: string; reason: string }> = [];
 
-    // Récupérer les proverbes existants pour détection rapide de doublons
+    // Récupérer les proverbes existants pour détection rapide et insensible à la ponctuation
     const existingItems = await this.prisma.malagasyItem.findMany({
       select: { malagasy: true, slug: true },
     });
+
+    const normalize = (t: string) =>
+      t.toLowerCase().replace(/[\s\p{P}]+/gu, '').trim();
+
     const existingTexts = new Set(
-      existingItems.map((i) => i.malagasy.trim().toLowerCase()),
+      existingItems.map((i) => normalize(i.malagasy)),
     );
     const existingSlugs = new Set(existingItems.map((i) => i.slug));
+
+    // Précharger les thèmes pour liaison rapide
+    const allThemes = await this.prisma.theme.findMany();
+    const themeMap = new Map<string, string>(); // normName -> themeId
+    for (const t of allThemes) {
+      themeMap.set(t.nameFr.toLowerCase().trim(), t.id);
+      themeMap.set(t.nameMg.toLowerCase().trim(), t.id);
+      themeMap.set(t.slug.toLowerCase().trim(), t.id);
+    }
 
     for (let i = 0; i < rows.length; i++) {
       const row = rows[i];
@@ -401,7 +447,7 @@ export class ItemsService {
       }
 
       const cleanMalagasy = row.malagasy.trim();
-      const normalizedKey = cleanMalagasy.toLowerCase();
+      const normalizedKey = normalize(cleanMalagasy);
 
       // Détection de doublon
       if (existingTexts.has(normalizedKey)) {
@@ -424,7 +470,86 @@ export class ItemsService {
       let slug = baseSlug;
       let counter = 1;
       while (existingSlugs.has(slug)) {
-        slug = `${baseSlug}-${counter++}`;
+        slug = baseSlug + '-' + (counter++);
+      }
+
+      // Normalisation catégorie
+      let category: 'PROVERBE' | 'EXPRESSION' | 'DICTON' = 'PROVERBE';
+      if (row.category) {
+        const catUpper = String(row.category).toUpperCase().trim();
+        if (catUpper === 'DICTON') category = 'DICTON';
+        else if (catUpper === 'EXPRESSION') category = 'EXPRESSION';
+      }
+
+      // Normalisation difficulté
+      let difficulty: 'EASY' | 'MEDIUM' | 'HARD' = 'EASY';
+      if (row.difficulty) {
+        const diffUpper = String(row.difficulty).toUpperCase().trim();
+        if (diffUpper === 'MEDIUM') difficulty = 'MEDIUM';
+        else if (diffUpper === 'HARD') difficulty = 'HARD';
+      }
+
+      // Origines
+      let origins: string[] = [];
+      if (Array.isArray(row.origins)) {
+        origins = row.origins.map((o) => String(o).trim()).filter(Boolean);
+      } else if (typeof row.origins === 'string' && row.origins.trim()) {
+        origins = row.origins.split(',').map((o) => o.trim()).filter(Boolean);
+      }
+
+      // Variantes dialectales
+      let dialectVariantsToCreate: Array<{ dialectName: string; text: string; notes?: string | null }> = [];
+      if (Array.isArray(row.dialectVariants) && row.dialectVariants.length > 0) {
+        dialectVariantsToCreate = row.dialectVariants
+          .filter((v) => v.dialectName && v.text)
+          .map((v) => ({
+            dialectName: String(v.dialectName).trim(),
+            text: String(v.text).trim(),
+            notes: v.notes ? String(v.notes).trim() : null,
+          }));
+      } else if (row.dialectName?.trim() && row.dialectText?.trim()) {
+        dialectVariantsToCreate = [
+          {
+            dialectName: row.dialectName.trim(),
+            text: row.dialectText.trim(),
+            notes: null,
+          },
+        ];
+      }
+
+      // Thèmes à associer
+      const themeIdsToConnect: string[] = [];
+      let inputThemes: string[] = [];
+      if (Array.isArray(row.themes)) {
+        inputThemes = row.themes.map((t) => String(t).trim()).filter(Boolean);
+      } else if (typeof row.themes === 'string' && row.themes.trim()) {
+        inputThemes = row.themes.split(',').map((t) => t.trim()).filter(Boolean);
+      }
+
+      for (const tName of inputThemes) {
+        const normT = tName.toLowerCase();
+        let tId = themeMap.get(normT);
+        if (!tId) {
+          // Créer le thème s'il n'existe pas encore
+          try {
+            const tSlug = slugify(tName) || ('theme-' + Date.now());
+            const createdTheme = await this.prisma.theme.create({
+              data: {
+                nameMg: tName,
+                nameFr: tName,
+                slug: tSlug,
+              },
+            });
+            tId = createdTheme.id;
+            themeMap.set(normT, tId);
+            themeMap.set(createdTheme.slug.toLowerCase(), tId);
+          } catch {
+            // Ignorer si conflit concurrent sur le slug
+          }
+        }
+        if (tId && !themeIdsToConnect.includes(tId)) {
+          themeIdsToConnect.push(tId);
+        }
       }
 
       try {
@@ -435,19 +560,24 @@ export class ItemsService {
             french: row.french.trim(),
             meaning: row.meaning.trim(),
             example: row.example?.trim() || null,
-            category: row.category || 'PROVERBE',
-            difficulty: row.difficulty || 'EASY',
-            isFeatured: row.isFeatured || false,
+            phonetic: row.phonetic?.trim() || null,
+            origins,
+            category,
+            difficulty,
+            isFeatured: Boolean(row.isFeatured),
             status: 'PUBLISHED',
             dialectVariants:
-              row.dialectName && row.dialectText
+              dialectVariantsToCreate.length > 0
                 ? {
-                    create: [
-                      {
-                        dialectName: row.dialectName.trim(),
-                        text: row.dialectText.trim(),
-                      },
-                    ],
+                    create: dialectVariantsToCreate,
+                  }
+                : undefined,
+            themes:
+              themeIdsToConnect.length > 0
+                ? {
+                    create: themeIdsToConnect.map((themeId) => ({
+                      themeId,
+                    })),
                   }
                 : undefined,
           },
