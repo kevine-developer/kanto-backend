@@ -1,0 +1,50 @@
+[
+  {
+    "id": "citationID-101",
+    "citationMg": "Andrianiko ny teniko, ny an'ny hafa koa feheziko.",
+    "citationFr": "Je tiens ma langue en souveraine estime, et je maîtrise aussi celles des autres.",
+    "source": "Henri Rahaingoson (Di...)",
+    "contexte": "Devise formulée en 1993 lors de l'instauration des journées de la langue malgache et adoptée comme devise de promotion du malgache par l'Académie Malgache.",
+    "themes": ["Langue", "Identité", "Ouverture", "Patrimoine"]
+  },
+  {
+    "id": "citationID-102",
+    "citationMg": "Ny ranomasina no valamparihiko.",
+    "citationFr": "La mer est la limite de ma rizière.",
+    "source": "Andrianampoinimerina",
+    "contexte": "Déclaration politique historique du souverain (règne env. 1787-1810) exprimant la volonté d'unifier l'ensemble de l'île de Madagascar.",
+    "themes": ["Histoire", "Unité", "Souveraineté", "Territoire"]
+  },
+  {
+    "id": "citationID-103",
+    "citationMg": "Ny teny sy ny sain'ny firenena iray dia mifaningotra aina hatrany.",
+    "citationFr": "La langue et l'esprit d'une nation ont leurs vies intimement entrelacées.",
+    "source": "Randja Zanamihoatra",
+    "contexte": "Extrait de l'ouvrage Vainafo tononkira (p. 9).",
+    "themes": ["Langue", "Nation", "Pensée", "Culture"]
+  },
+  {
+    "id": "citationID-104",
+    "citationMg": "Rah' misy mitady ny tena hafaliana / Tsy azon'ny ratsy akory ravana, / Dia tokana monja no azo valiana : / Ny Fanantenana !",
+    "citationFr": "S'il est quelqu'un qui cherche la vraie joie / Que le mal ne saurait jamais détruire, / Il n'est qu'une seule réponse possible : / L'Espérance !",
+    "source": "Régis Rajemisa-Raolison",
+    "contexte": "Strophe poétique célébrant la résilience et l'espérance.",
+    "themes": ["Espérance", "Joie", "Poésie", "Sagesse"]
+  },
+  {
+    "id": "citationID-105",
+    "citationMg": "Fa fitiavako ianao, fifaliako, fahasambarako… Vahatr'aina, tanjon-tokana, eny tokana ifaharako…",
+    "citationFr": "Car tu es mon amour, ma joie, mon bonheur… Racine de vie, but unique, oui le seul sur lequel je m'appuie…",
+    "source": "Dox (Jean Verdi Salomon Razakandraina)",
+    "contexte": "Premiers vers du poème Antsam-pitiavana, publié dans Izy Mirahavavy (1940) et le recueil Folihala.",
+    "themes": ["Amour", "Poésie", "Littérature"]
+  },
+  {
+    "id": "citationID-106",
+    "citationMg": "Raha maratra izany vava, miainga hisafo eo ny tanana ; raha maratra koa ny tanana, io mitsoka eo ny vava.",
+    "citationFr": "Si la bouche vient à être blessée, la main s'élève pour la caresser ; et si la main est blessée à son tour, voici la bouche qui souffle sur elle.",
+    "source": "Rado (Georges Andriamanantena)",
+    "contexte": "Vers illustrant la complémentarité et l'entraide fraternelle au sein d'une même communauté.",
+    "themes": ["Solidarité", "Entraide", "Fraternité", "Poésie"]
+  }
+]
