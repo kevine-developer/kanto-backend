@@ -39,6 +39,18 @@ if [ "${AUTO_CREATE_ADMIN:-true}" = "true" ]; then
   fi
 fi
 
+# ─── Synchronisation automatique du contenu culturel de production ────────────
+if [ "${AUTO_SEED_PROD:-true}" = "true" ]; then
+  echo "🌱 [Seed Prod] Synchronisation automatique du corpus culturel vérifié..."
+  if [ -f "dist/src/scripts/seed-prod-content.js" ]; then
+    node dist/src/scripts/seed-prod-content.js || echo "⚠️  [Seed Prod] Étape seed prod ignorée ou non bloquante."
+  elif [ -f "src/scripts/seed-prod-content.ts" ]; then
+    npx tsx src/scripts/seed-prod-content.ts || echo "⚠️  [Seed Prod] Étape seed prod ignorée ou non bloquante."
+  else
+    echo "ℹ️  [Seed Prod] Script seed-prod-content introuvable, étape ignorée."
+  fi
+fi
+
 # ─── Démarrage de l'application ───────────────────────────────────────────────
 echo "▶️  [Kanto Backend] Lancement de l'application..."
 exec "$@"

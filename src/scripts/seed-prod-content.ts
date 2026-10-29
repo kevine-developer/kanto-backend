@@ -691,10 +691,13 @@ async function seedProduction() {
 seedProduction()
   .catch((e) => {
     console.error('❌ Erreur critique lors du seed production :', e);
-    process.exit(1);
+    process.exitCode = 1;
   })
   .finally(async () => {
-    await prisma.$disconnect();
-    await pool.end();
+    try {
+      await prisma.$disconnect();
+      await pool.end();
+    } catch {}
+    process.exit(process.exitCode || 0);
   });
 
