@@ -21,6 +21,27 @@ import {
 } from './dto/multiplayer.dto.js';
 import { REALTIME_CHANNELS } from '../../realtime/realtime.constants.js';
 
+/**
+ * Mélange pseudo-aléatoire déterministe (Fisher-Yates basé sur une graine textuelle).
+ * Garantit que tous les participants d'un même salon (duel/multijoueur) voient exactement
+ * les mêmes propositions dans le même ordre, tout en supprimant tout biais de distribution (ex: réponse A).
+ */
+export function deterministicShuffle<T>(items: T[], seedStr: string): T[] {
+  if (!items || items.length <= 1) return items;
+  const result = [...items];
+  let seed = 0;
+  for (let i = 0; i < seedStr.length; i++) {
+    seed = (seed * 31 + seedStr.charCodeAt(i)) >>> 0;
+  }
+  for (let i = result.length - 1; i > 0; i--) {
+    seed = (seed * 9301 + 49297) % 233280;
+    const rnd = seed / 233280;
+    const j = Math.floor(rnd * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
 export interface PublicMultiplayerQuestion {
   id: string;
   orderIndex: number;
@@ -625,6 +646,7 @@ export class MultiplayerService {
       session.gameType,
       questionIds,
       session.customQuizSetId,
+      session.code,
     );
 
     return {
@@ -697,6 +719,7 @@ export class MultiplayerService {
       updatedSession.gameType,
       questionIds,
       updatedSession.customQuizSetId,
+      updatedSession.code,
     );
 
     this.logger.log(
@@ -791,6 +814,7 @@ export class MultiplayerService {
       updatedSession.gameType,
       updatedSession.questionIds,
       updatedSession.customQuizSetId,
+      updatedSession.code,
     );
 
     return {
@@ -1064,6 +1088,7 @@ export class MultiplayerService {
       session.gameType,
       session.questionIds,
       session.customQuizSetId,
+      session.code,
     );
 
     return {
@@ -1179,6 +1204,7 @@ export class MultiplayerService {
       session.gameType,
       session.questionIds,
       session.customQuizSetId,
+      session.code,
     );
 
     const currentQuestion = questions[0];
@@ -1233,6 +1259,7 @@ export class MultiplayerService {
       session.gameType,
       session.questionIds,
       session.customQuizSetId,
+      session.code,
     );
 
     return { session, questions, players: session.players };
@@ -1389,9 +1416,15 @@ export class MultiplayerService {
             correctAnswer = q.isTrue ? 'true' : 'false';
           } else if (q.gameType === 'QUIZ' && q.answerIndex != null) {
             const expectedChoice = q.choices[q.answerIndex] || '';
+            const shuffledChoices = deterministicShuffle(
+              q.choices,
+              `${cleanCode}:${q.id}`,
+            );
+            const shuffledIndex = shuffledChoices.indexOf(expectedChoice);
             isCorrect =
               dto.userAnswer.trim().toLowerCase() ===
                 expectedChoice.trim().toLowerCase() ||
+              dto.userAnswer.trim() === String(shuffledIndex) ||
               dto.userAnswer.trim() === String(q.answerIndex);
             explanationMg = q.explanationMg;
             explanationFr = q.explanationFr;
@@ -1415,9 +1448,15 @@ export class MultiplayerService {
         });
         if (q) {
           const expectedChoice = q.choices[q.answerIndex] || '';
+          const shuffledChoices = deterministicShuffle(
+            q.choices,
+            `${cleanCode}:${q.id}`,
+          );
+          const shuffledIndex = shuffledChoices.indexOf(expectedChoice);
           isCorrect =
             dto.userAnswer.trim().toLowerCase() ===
               expectedChoice.trim().toLowerCase() ||
+            dto.userAnswer.trim() === String(shuffledIndex) ||
             dto.userAnswer.trim() === String(q.answerIndex);
           explanationMg = q.explanation;
           explanationFr = q.explanation;
@@ -1868,6 +1907,7 @@ export class MultiplayerService {
         session.gameType,
         session.questionIds,
         session.customQuizSetId,
+        session.code,
       );
 
       const nextQuestion = questions[nextIndex];
@@ -2363,6 +2403,7 @@ export class MultiplayerService {
     gameType: MultiplayerGameTypeEnum | string,
     questionIds: string[],
     customQuizSetId?: string | null,
+    roomCode?: string,
   ): Promise<PublicMultiplayerQuestion[]> {
     if (customQuizSetId) {
       const questions = await this.prisma.userQuestion.findMany({
@@ -2389,7 +2430,14 @@ export class MultiplayerService {
             questionTextFr: q.questionFr || undefined,
             gameType: q.gameType as MultiplayerGameTypeEnum,
             choices:
-              q.gameType === 'TRUE_FALSE' ? ['true', 'false'] : q.choices || [],
+              q.gameType === 'TRUE_FALSE'
+                ? ['true', 'false']
+                : roomCode && q.gameType === 'QUIZ'
+                  ? deterministicShuffle(
+                      q.choices || [],
+                      `${roomCode}:${q.id}`,
+                    )
+                  : q.choices || [],
           });
         }
       });
@@ -2447,7 +2495,9 @@ export class MultiplayerService {
             questionText: q.prompt,
             questionTextFr: undefined,
             gameType: MultiplayerGameTypeEnum.QUIZ,
-            choices: q.choices,
+            choices: roomCode
+              ? deterministicShuffle(q.choices, `${roomCode}:${q.id}`)
+              : q.choices,
           });
         }
       });

@@ -47,6 +47,7 @@ import { RakiTenyModule } from './raki-teny/raki-teny.module.js';
 import { ReferralModule } from './referral/referral.module.js';
 import { EventsModule } from './events/events.module.js';
 import { ContentWizardModule } from './games/content-wizard/content-wizard.module.js';
+import { DailyChallengeModule } from './games/daily-challenge/daily-challenge.module.js';
 
 @Module({
   imports: [
@@ -118,6 +119,7 @@ import { ContentWizardModule } from './games/content-wizard/content-wizard.modul
     ReferralModule,
     EventsModule,
     ContentWizardModule,
+    DailyChallengeModule,
   ],
   controllers: [AppController],
   providers: [
