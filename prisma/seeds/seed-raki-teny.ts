@@ -1,29 +1,8 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { PrismaClient } from '../../generated/prisma/client.js';
-import { SeedCategoryStats } from './types.js';
+import { PrismaClient, WordRarity } from '../../generated/prisma/client.js';
+import { SeedCategoryStats, RawRakiTeny } from './types.js';
 import { validateRakiTenyBatch } from './validator.js';
-
-interface RawRakiTeny {
-  id?: string;
-  slug?: string;
-  word: string;
-  phonetic?: string;
-  category?: string;
-  wordClassMg: string;
-  wordClassFr: string;
-  rarity?: 'LITERAL' | 'VERY_RARE' | 'ARCHAIC' | 'POETIC' | 'PROVERBIAL';
-  rarityLabelMg?: string;
-  rarityLabelFr?: string;
-  meaningMg: string;
-  meaningFr: string;
-  exampleMg: string;
-  exampleFr: string;
-  contextUsage?: string;
-  etymology?: string;
-  audioUrl?: string;
-  isFeatured?: boolean;
-}
 
 function slugify(text: string): string {
   return text
@@ -42,7 +21,7 @@ export async function seedRakiTeny(
   seedDataDir: string,
 ): Promise<SeedCategoryStats> {
   const stats: SeedCategoryStats = {
-    category: 'Mots Rares & Insolites (RakiTenyWord)',
+    category: 'Mots Rares & Insolites (Raki-teny)',
     totalInFile: 0,
     created: 0,
     updated: 0,
@@ -73,6 +52,7 @@ export async function seedRakiTeny(
   }
 
   stats.totalInFile = rawList.length;
+  const processedWords = new Set<string>();
 
   for (let i = 0; i < rawList.length; i++) {
     const item = rawList[i];
@@ -82,12 +62,23 @@ export async function seedRakiTeny(
     }
 
     const cleanWord = item.word.trim();
+    const normKey = cleanWord.toLowerCase();
+    if (processedWords.has(normKey)) {
+      stats.skipped++;
+      continue;
+    }
+    processedWords.add(normKey);
+
     const slug = item.slug ? item.slug.trim() : slugify(cleanWord);
 
-    const validRarities = ['LITERAL', 'VERY_RARE', 'ARCHAIC', 'POETIC', 'PROVERBIAL'];
-    const rarity = (
-      item.rarity && validRarities.includes(item.rarity) ? item.rarity : 'VERY_RARE'
-    ) as 'LITERAL' | 'VERY_RARE' | 'ARCHAIC' | 'POETIC' | 'PROVERBIAL';
+    const validRarities: Record<string, WordRarity> = {
+      LITERAL: WordRarity.LITERAL,
+      VERY_RARE: WordRarity.VERY_RARE,
+      ARCHAIC: WordRarity.ARCHAIC,
+      POETIC: WordRarity.POETIC,
+      PROVERBIAL: WordRarity.PROVERBIAL,
+    };
+    const rarity: WordRarity = (item.rarity && validRarities[item.rarity]) || WordRarity.VERY_RARE;
 
     try {
       const existing = await prisma.rakiTenyWord.findFirst({
@@ -98,7 +89,7 @@ export async function seedRakiTeny(
             {
               word: {
                 equals: cleanWord,
-                mode: 'insensitive',
+                mode: 'insensitive' as const,
               },
             },
           ],

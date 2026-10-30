@@ -1,7 +1,7 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { PrismaClient } from '../../generated/prisma/client.js';
-import { SeedCategoryStats } from './types.js';
+import { SeedCategoryStats, RawCitation } from './types.js';
 import { validateCitationsBatch } from './validator.js';
 
 function slugify(text: string): string {
@@ -16,24 +16,13 @@ function slugify(text: string): string {
     .replace(/--+/g, '-');
 }
 
-interface RawCitation {
-  id?: string;
-  citationMg: string;
-  citationFr: string;
-  source?: string;
-  sourceName?: string;
-  contexte?: string;
-  isPremium?: boolean;
-  themes?: string[];
-}
-
 export async function seedCitations(
   prisma: PrismaClient,
   seedDataDir: string,
   themeMap: Map<string, string>,
 ): Promise<SeedCategoryStats> {
   const stats: SeedCategoryStats = {
-    category: 'Citations & Auteurs (Citation)',
+    category: 'Citations & Auteurs',
     totalInFile: 0,
     created: 0,
     updated: 0,
@@ -55,7 +44,7 @@ export async function seedCitations(
     try {
       rawList = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
     } catch (err) {
-      console.error(`❌ [Seed Citations] Erreur de syntaxe JSON dans ${fileName}:`, err);
+      console.error(`❌ [Seed Citations] Erreur de lecture/syntaxe JSON dans ${fileName}:`, err);
       stats.errors++;
       continue;
     }
@@ -63,7 +52,7 @@ export async function seedCitations(
     const validation = validateCitationsBatch(rawList);
     if (!validation.isValid) {
       console.warn(
-        `⚠️ [Seed Citations] ${validation.issues.length} problème(s) de validation détecté(s) dans ${fileName}.`,
+        `⚠️ [Seed Citations] ${validation.issues.length} anomalie(s) de validation dans ${fileName}.`,
       );
     }
 
@@ -107,7 +96,7 @@ export async function seedCitations(
               {
                 citationMg: {
                   equals: cleanCitationMg,
-                  mode: 'insensitive',
+                  mode: 'insensitive' as const,
                 },
               },
             ],

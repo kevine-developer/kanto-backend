@@ -1,16 +1,13 @@
 import 'dotenv/config';
 import {
   PrismaClient,
-  DifficultyLevel,
   CivicSubCategory,
-  TrueFalseTheme,
 } from '../generated/prisma/client.js';
 import { PrismaPg } from '@prisma/adapter-pg';
 import pg from 'pg';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { RIDDLES_DATA } from './seed-data/riddles.data.js';
 import { VINTANA_SIGNS } from './seed-data/vintana.data.js';
 import {
   DEFAULT_CIVIC_LESSONS,
@@ -21,6 +18,17 @@ import {
   DEFAULT_HISTORY_DATES,
   DEFAULT_NATIONAL_EMBLEMS,
 } from '../src/history/constants/history-defaults.constant.js';
+
+import {
+  seedMalagasyItems,
+  seedCitations,
+  seedRakiTeny,
+  seedQuiz,
+  seedTrueFalse,
+  seedRiddles,
+  printConsolidatedReport,
+  SeedCategoryStats,
+} from './seeds/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -98,290 +106,165 @@ const DEFAULT_THEMES = [
     nameFr: 'Morale & Vertu',
     slug: 'morale',
     icon: 'leaf-outline',
-    color: '#558B2F',
+    color: '#2E7D32',
   },
   {
-    nameMg: 'Kolontsaina',
-    nameFr: 'Culture & Tradition',
-    slug: 'culture',
-    icon: 'color-palette-outline',
-    color: '#AD1457',
+    nameMg: 'Zavaboary',
+    nameFr: 'Nature & Environnement',
+    slug: 'nature',
+    icon: 'earth-outline',
+    color: '#1B5E20',
   },
   {
-    nameMg: 'Fahamarinana',
-    nameFr: 'Justice & Vérité',
-    slug: 'justice',
+    nameMg: 'Fahafatesana sy Fisaonana',
+    nameFr: 'Mort & Deuil',
+    slug: 'mort-deuil',
+    icon: 'moon-outline',
+    color: '#37474F',
+  },
+  {
+    nameMg: 'Tantara sy Fomba',
+    nameFr: 'Histoire & Coutumes',
+    slug: 'histoire-coutumes',
+    icon: 'library-outline',
+    color: '#795548',
+  },
+  {
+    nameMg: 'Fitantanana sy Fanjakana',
+    nameFr: 'Pouvoir & Justice',
+    slug: 'pouvoir-justice',
     icon: 'scale-outline',
-    color: '#4527A0',
+    color: '#455A64',
   },
 ];
 
 const DEFAULT_REGIONS = [
-  { name: 'Merina', capital: 'Antananarivo' },
-  { name: 'Betsileo', capital: 'Fianarantsoa' },
-  { name: 'Betsimisaraka', capital: 'Toamasina' },
-  { name: 'Sakalava', capital: 'Mahajanga' },
-  { name: 'Antandroy', capital: 'Ambovombe' },
-  { name: 'Tsimihety', capital: 'Mandritsara' },
-  { name: 'Antankarana', capital: 'Antsiranana' },
-  { name: 'Bara', capital: 'Ihosy' },
+  { name: 'Analamanga', code: '101' },
+  { name: 'Vakinankaratra', code: '102' },
+  { name: 'Itasy', code: '103' },
+  { name: 'Bongolava', code: '104' },
+  { name: 'Haute Matsiatra', code: '201' },
+  { name: 'Amoron\'i Mania', code: '202' },
+  { name: 'Vatovavy-Fitovinany', code: '203' },
+  { name: 'Ihorombe', code: '204' },
+  { name: 'Atsimo-Atsinanana', code: '205' },
+  { name: 'Atsinanana', code: '301' },
+  { name: 'Analanjirofo', code: '302' },
+  { name: 'Alaotra-Mangoro', code: '303' },
+  { name: 'Boeny', code: '401' },
+  { name: 'Sofia', code: '402' },
+  { name: 'Betsiboka', code: '403' },
+  { name: 'Melaky', code: '404' },
+  { name: 'Atsimo-Andrefana', code: '501' },
+  { name: 'Androy', code: '502' },
+  { name: 'Anosy', code: '503' },
+  { name: 'Menabe', code: '504' },
+  { name: 'Diana', code: '601' },
+  { name: 'Sava', code: '602' },
 ];
 
 async function main() {
-  console.log('🌱 Démarrage du seed de la base de données Kanto...');
+  console.log('🚀 Démarrage du seed de la base de données Kanto MG...');
+  const seedDataDir = path.join(__dirname, 'seed-data');
 
-  const seedDataDir = path.resolve(__dirname, 'seed-data');
-
-  console.log('🔍 Exécution du seed idempotent (non destructif)...');
-
-  // 2. Création des Thèmes
-  const themeMap = new Map<string, string>(); // slug -> id
-  for (const theme of DEFAULT_THEMES) {
-    const created = await prisma.theme.upsert({
-      where: { slug: theme.slug },
-      update: {},
-      create: theme,
+  // 1. Initialisation idempotente des Thèmes
+  const themeMap = new Map<string, string>();
+  for (const t of DEFAULT_THEMES) {
+    const upserted = await prisma.theme.upsert({
+      where: { slug: t.slug },
+      update: {
+        nameMg: t.nameMg,
+        nameFr: t.nameFr,
+        icon: t.icon,
+        color: t.color,
+      },
+      create: {
+        nameMg: t.nameMg,
+        nameFr: t.nameFr,
+        slug: t.slug,
+        icon: t.icon,
+        color: t.color,
+      },
     });
-    themeMap.set(theme.slug, created.id);
-    themeMap.set(slugify(theme.nameFr), created.id);
-    themeMap.set(slugify(theme.nameMg), created.id);
+    themeMap.set(t.slug, upserted.id);
   }
-  console.log(`✅ ${DEFAULT_THEMES.length} thèmes créés`);
+  console.log(`✅ ${DEFAULT_THEMES.length} thèmes synchronisés`);
 
-  // 3. Création des Régions
-  for (const region of DEFAULT_REGIONS) {
+  // 2. Initialisation idempotente des Régions
+  for (const r of DEFAULT_REGIONS) {
     await prisma.region.upsert({
-      where: { name: region.name },
-      update: {},
-      create: region,
+      where: { code: r.code },
+      update: { name: r.name },
+      create: { name: r.name, code: r.code },
     });
   }
-  console.log(`✅ ${DEFAULT_REGIONS.length} régions créées`);
+  console.log(`✅ ${DEFAULT_REGIONS.length} régions synchronisées`);
 
-  // 4. Import des Citations
-  const existingCitationsCount = await prisma.citation.count();
-  const citationFilePath = path.join(seedDataDir, 'citation.data.json');
-  if (existingCitationsCount > 0) {
-    console.log(
-      `ℹ️ Citations déjà initialisées (${existingCitationsCount} entrées). Étape ignorée.`,
-    );
-  } else if (fs.existsSync(citationFilePath)) {
-    const rawCitations = JSON.parse(fs.readFileSync(citationFilePath, 'utf-8'));
-    console.log(
-      `📖 Chargement de ${rawCitations.length} citations depuis ${citationFilePath}`,
-    );
+  const reportStats: SeedCategoryStats[] = [];
 
-    for (const c of rawCitations) {
-      let authorId: string | null = null;
-      if (c.source && c.source.trim()) {
-        const author = await prisma.author.upsert({
-          where: { name: c.source.trim() },
-          update: {},
-          create: { name: c.source.trim() },
-        });
-        authorId = author.id;
-      }
+  // 3. Proverbes, Dictons & Expressions (Corpus vérifié + fichiers historiques)
+  console.log('\n📖 [1/6] Synchronisation des Proverbes, Dictons & Expressions...');
+  const itemsStats = await seedMalagasyItems(prisma, seedDataDir, themeMap);
+  reportStats.push(itemsStats);
 
-      const createdCitation = await prisma.citation.create({
-        data: {
-          citationMg: c.citationMg,
-          citationFr: c.citationFr,
-          sourceName: c.source || 'Anonyme',
-          contexte: c.contexte || null,
-          authorId,
-        },
-      });
+  // 4. Citations & Auteurs (Corpus vérifié + citations historiques)
+  console.log('\n📖 [2/6] Synchronisation des Citations & Auteurs...');
+  const citationsStats = await seedCitations(prisma, seedDataDir, themeMap);
+  reportStats.push(citationsStats);
 
-      if (Array.isArray(c.themes)) {
-        for (const tName of c.themes) {
-          const tSlug = slugify(tName);
-          let tId = themeMap.get(tSlug);
-          if (!tId) {
-            const newTheme = await prisma.theme.create({
-              data: {
-                nameFr: tName,
-                nameMg: tName,
-                slug: tSlug,
-              },
-            });
-            tId = newTheme.id;
-            themeMap.set(tSlug, tId);
-          }
-          await prisma.citationTheme.create({
-            data: {
-              citationId: createdCitation.id,
-              themeId: tId,
-            },
-          });
-        }
-      }
-    }
-    console.log('✅ Citations importées avec succès');
-  }
+  // 5. Mots Rares (Raki-teny Miafina)
+  console.log('\n📖 [3/6] Synchronisation des Mots Rares (Raki-teny)...');
+  const rakiStats = await seedRakiTeny(prisma, seedDataDir);
+  reportStats.push(rakiStats);
 
-  // 5. Import des Proverbes / Expressions / Dictons (depuis fichiers locaux)
-  let firstProverbId: string | null = null;
-  const existingItemsCount = await prisma.malagasyItem.count();
+  // 6. Questions de Quiz (Quiz civiques & Questions vérifiées)
+  console.log('\n📖 [4/6] Synchronisation des Quiz (Civique & Vérifié)...');
+  const quizStats = await seedQuiz(prisma, seedDataDir);
+  reportStats.push(quizStats);
 
-  if (existingItemsCount > 0) {
-    console.log(
-      `ℹ️ Contenus culturels déjà initialisés (${existingItemsCount} entrées). Étape ignorée.`,
-    );
+  // 7. Questions Vrai ou Faux (Marina sa Diso & Vérifiées)
+  console.log('\n📖 [5/6] Synchronisation des questions Vrai/Faux...');
+  const tfStats = await seedTrueFalse(prisma, seedDataDir);
+  reportStats.push(tfStats);
+
+  // 8. Devinettes (Ankamantatra)
+  console.log('\n📖 [6/6] Synchronisation des Devinettes (Ankamantatra)...');
+  const riddlesStats = await seedRiddles(prisma, seedDataDir);
+  reportStats.push(riddlesStats);
+
+  // 9. Initialisation du Proverbe du jour si absent
+  const dailyProverbCount = await prisma.dailyProverb.count();
+  if (dailyProverbCount === 0) {
     const firstP = await prisma.malagasyItem.findFirst({
       where: { category: 'PROVERBE' },
     });
-    firstProverbId = firstP?.id || null;
-  } else {
-    console.log(
-      '📖 Chargement des contenus culturels locaux (proverbes, expressions, dictons)...',
-    );
-    const DATA_SOURCES = [
-      {
-        file: 'proverbes.data.json',
-        defaultCategory: 'PROVERBE' as const,
-      },
-      {
-        file: 'expressions.data.json',
-        defaultCategory: 'EXPRESSION' as const,
-      },
-      {
-        file: 'dictons.data.json',
-        defaultCategory: 'DICTON' as const,
-      },
-    ];
-
-    let totalImported = 0;
-
-    for (const source of DATA_SOURCES) {
-      try {
-        const filePath = path.join(seedDataDir, source.file);
-        if (!fs.existsSync(filePath)) {
-          console.warn(`⚠️ Fichier source introuvable: ${filePath}`);
-          continue;
-        }
-        const rawData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-        console.log(
-          `📖 Insertion de ${rawData.length} éléments (${source.defaultCategory})...`,
-        );
-
-        for (let i = 0; i < rawData.length; i++) {
-          const item = rawData[i];
-          let category: 'PROVERBE' | 'EXPRESSION' | 'DICTON' =
-            source.defaultCategory;
-          if (item.category === 'proverbe') category = 'PROVERBE';
-          if (item.category === 'expression') category = 'EXPRESSION';
-          if (item.category === 'dicton') category = 'DICTON';
-
-          const baseSlug = slugify(
-            item.malagasy || `${category.toLowerCase()}-${i}`,
-          );
-          const uniqueSlug = `${baseSlug}-${totalImported + i + 1}`;
-
-          const createdItem = await prisma.malagasyItem.create({
-            data: {
-              slug: uniqueSlug,
-              malagasy: item.malagasy,
-              french: item.french,
-              meaning: item.meaning,
-              example: item.example || null,
-              category,
-              origins: Array.isArray(item.origins) ? item.origins : [],
-              isFeatured: i < 5,
-            },
-          });
-
-          if (!firstProverbId && category === 'PROVERBE') {
-            firstProverbId = createdItem.id;
-          }
-
-          if (Array.isArray(item.dialectVariants)) {
-            for (const v of item.dialectVariants) {
-              if (v.dialect && v.text) {
-                await prisma.dialectVariant.create({
-                  data: {
-                    dialectName: v.dialect,
-                    text: v.text,
-                    itemId: createdItem.id,
-                  },
-                });
-              }
-            }
-          }
-
-          if (Array.isArray(item.themes)) {
-            for (const tName of item.themes) {
-              const tSlug = slugify(tName);
-              let tId = themeMap.get(tSlug);
-              if (!tId) {
-                const newTheme = await prisma.theme.create({
-                  data: {
-                    nameFr: tName,
-                    nameMg: tName,
-                    slug: tSlug,
-                  },
-                });
-                tId = newTheme.id;
-                themeMap.set(tSlug, tId);
-              }
-              await prisma.malagasyItemTheme.create({
-                data: {
-                  itemId: createdItem.id,
-                  themeId: tId,
-                },
-              });
-            }
-          }
-        }
-
-        totalImported += rawData.length;
-      } catch (err) {
-        console.error(`⚠️ Erreur lors de l'import de ${source.file} :`, err);
-      }
+    if (firstP) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      await prisma.dailyProverb.create({
+        data: {
+          date: today,
+          itemId: firstP.id,
+          editorial: 'Proverbe d\'ouverture de Kanto MG',
+        },
+      });
+      console.log('✅ Proverbe du jour initialisé');
     }
   }
 
-  // 6. Proverbe du jour
-  const existingDailyProverbCount = await prisma.dailyProverb.count();
-  if (existingDailyProverbCount > 0) {
-    console.log(
-      `ℹ️ Proverbe du jour déjà initialisé (${existingDailyProverbCount} entrées). Étape ignorée.`,
-    );
-  } else if (firstProverbId) {
-    const today = new Date();
-    await prisma.dailyProverb.create({
-      data: {
-        date: today,
-        editorial: 'Proverbe du jour pour nourrir la réflexion et la sagesse.',
-        itemId: firstProverbId,
-      },
-    });
-    console.log('✅ Proverbe du jour initialisé');
-  }
-
-  // 7. Import des Contes (Angano)
+  // 10. Import des Contes traditionnels (Angano)
   const existingContesCount = await prisma.conte.count();
   const conteFilePath = path.join(seedDataDir, 'conte.data.json');
-  if (existingContesCount > 0) {
-    console.log(
-      `ℹ️ Contes (Angano) déjà initialisés (${existingContesCount} entrées). Étape ignorée.`,
-    );
-  } else if (fs.existsSync(conteFilePath)) {
+  if (existingContesCount === 0 && fs.existsSync(conteFilePath)) {
     const rawContes = JSON.parse(fs.readFileSync(conteFilePath, 'utf-8'));
-    console.log(
-      `📖 Chargement de ${rawContes.length} contes depuis ${conteFilePath}`,
-    );
-
-    const DEFAULT_CONTE_IMAGE =
-      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80';
+    console.log(`📖 Chargement de ${rawContes.length} contes depuis ${conteFilePath}...`);
+    const DEFAULT_CONTE_IMAGE = 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80';
 
     for (let i = 0; i < rawContes.length; i++) {
       const c = rawContes[i];
       const baseSlug = slugify(c.title);
       const uniqueSlug = `${baseSlug}-${i + 1}`;
-      const conteIllustration =
-        c.illustration && c.illustration.trim() !== ''
-          ? c.illustration.trim()
-          : DEFAULT_CONTE_IMAGE;
+      const conteIllustration = c.illustration?.trim() || DEFAULT_CONTE_IMAGE;
 
       const createdConte = await prisma.conte.create({
         data: {
@@ -396,9 +279,7 @@ async function main() {
           illustration: conteIllustration,
           moralMg: c.moral?.textMg || null,
           moralFr: c.moral?.textFr || null,
-          variantIds: Array.isArray(c.variants || c.varient)
-            ? c.variants || c.varient
-            : [],
+          variantIds: Array.isArray(c.variants || c.varient) ? c.variants || c.varient : [],
           isFeatured: i < 3,
         },
       });
@@ -424,20 +305,13 @@ async function main() {
           let tId = themeMap.get(tSlug);
           if (!tId) {
             const newTheme = await prisma.theme.create({
-              data: {
-                nameFr: tName,
-                nameMg: tName,
-                slug: tSlug,
-              },
+              data: { nameFr: tName, nameMg: tName, slug: tSlug },
             });
             tId = newTheme.id;
             themeMap.set(tSlug, tId);
           }
           await prisma.conteTheme.create({
-            data: {
-              conteId: createdConte.id,
-              themeId: tId,
-            },
+            data: { conteId: createdConte.id, themeId: tId },
           });
         }
       }
@@ -445,30 +319,19 @@ async function main() {
     console.log(`✅ ${rawContes.length} contes (Angano) importés`);
   }
 
-  // 8. Import des Discours (Kabary)
+  // 11. Import des Discours traditionnels (Kabary)
   const existingKabaryCount = await prisma.kabary.count();
   const kabaryFilePath = path.join(seedDataDir, 'kabary.data.json');
-  if (existingKabaryCount > 0) {
-    console.log(
-      `ℹ️ Discours (Kabary) déjà initialisés (${existingKabaryCount} entrées). Étape ignorée.`,
-    );
-  } else if (fs.existsSync(kabaryFilePath)) {
+  if (existingKabaryCount === 0 && fs.existsSync(kabaryFilePath)) {
     const rawKabaries = JSON.parse(fs.readFileSync(kabaryFilePath, 'utf-8'));
-    console.log(
-      `🗣️ Chargement de ${rawKabaries.length} discours (Kabary) depuis ${kabaryFilePath}`,
-    );
-
-    const DEFAULT_KABARY_IMAGE =
-      'https://res.cloudinary.com/dhe585mze/image/upload/v1752952347/Photoroom-20250719_204052441_vlyahm.png';
+    console.log(`🗣️ Chargement de ${rawKabaries.length} discours (Kabary)...`);
+    const DEFAULT_KABARY_IMAGE = 'https://res.cloudinary.com/dhe585mze/image/upload/v1752952347/Photoroom-20250719_204052441_vlyahm.png';
 
     for (let i = 0; i < rawKabaries.length; i++) {
       const k = rawKabaries[i];
       const baseSlug = slugify(k.title);
       const uniqueSlug = `${baseSlug}-${i + 1}`;
-      const kabaryIllustration =
-        k.illustration && k.illustration.trim() !== ''
-          ? k.illustration.trim()
-          : DEFAULT_KABARY_IMAGE;
+      const kabaryIllustration = k.illustration?.trim() || DEFAULT_KABARY_IMAGE;
 
       const createdKabary = await prisma.kabary.create({
         data: {
@@ -500,13 +363,13 @@ async function main() {
           await prisma.kabaryStep.create({
             data: {
               kabaryId: createdKabary.id,
-              stepNumber: s.stepNumber || sIdx + 1,
-              stepNameMg: s.stepNameMg || '',
-              stepNameFr: s.stepNameFr || '',
-              explanationMg: s.explanationMg || null,
-              explanationFr: s.explanationFr || null,
-              textMg: s.textMg || '',
-              textFr: s.textFr || '',
+              stepOrder: s.order || sIdx + 1,
+              titleMg: s.titleMg || `Dingana ${sIdx + 1}`,
+              titleFr: s.titleFr || null,
+              contentMg: s.contentMg || '',
+              contentFr: s.contentFr || null,
+              purposeNotesMg: s.purposeNotesMg || null,
+              purposeNotesFr: s.purposeNotesFr || null,
             },
           });
         }
@@ -518,20 +381,13 @@ async function main() {
           let tId = themeMap.get(tSlug);
           if (!tId) {
             const newTheme = await prisma.theme.create({
-              data: {
-                nameFr: tName,
-                nameMg: tName,
-                slug: tSlug,
-              },
+              data: { nameFr: tName, nameMg: tName, slug: tSlug },
             });
             tId = newTheme.id;
             themeMap.set(tSlug, tId);
           }
           await prisma.kabaryTheme.create({
-            data: {
-              kabaryId: createdKabary.id,
-              themeId: tId,
-            },
+            data: { kabaryId: createdKabary.id, themeId: tId },
           });
         }
       }
@@ -539,49 +395,57 @@ async function main() {
     console.log(`✅ ${rawKabaries.length} discours (Kabary) importés`);
   }
 
-  // 9. Import des Poésies (Tononkalo)
+  // 12. Import des Poésies (Tononkalo)
   const existingPoesieCount = await prisma.poesie.count();
   const poesieFilePath = path.join(seedDataDir, 'poesie.data.json');
-  if (existingPoesieCount > 0) {
-    console.log(
-      `ℹ️ Poésies déjà initialisées (${existingPoesieCount} entrées). Étape ignorée.`,
-    );
-  } else if (fs.existsSync(poesieFilePath)) {
+  if (existingPoesieCount === 0 && fs.existsSync(poesieFilePath)) {
     const rawPoesies = JSON.parse(fs.readFileSync(poesieFilePath, 'utf-8'));
-    console.log(
-      `📜 Chargement de ${rawPoesies.length} poésies depuis ${poesieFilePath}`,
-    );
-
+    console.log(`📜 Chargement de ${rawPoesies.length} poésies...`);
     for (let i = 0; i < rawPoesies.length; i++) {
       const p = rawPoesies[i];
       const baseSlug = slugify(p.title);
       const uniqueSlug = `${baseSlug}-${i + 1}`;
+
+      let authorId: string | null = null;
+      if (p.author && p.author.trim()) {
+        const author = await prisma.author.upsert({
+          where: { name: p.author.trim() },
+          update: {},
+          create: { name: p.author.trim() },
+        });
+        authorId = author.id;
+      }
 
       const createdPoesie = await prisma.poesie.create({
         data: {
           id: p.id || undefined,
           slug: uniqueSlug,
           title: p.title,
-          titleFr: p.titleFr,
-          author: p.author || null,
-          period: p.period || null,
-          category: p.category || 'tononkalo',
+          titleFr: p.titleFr || null,
+          authorName: p.author || 'Mpanoratra Malagasy',
+          authorId,
+          year: typeof p.year === 'number' ? p.year : null,
+          contentMg: p.contentMg || '',
+          contentFr: p.contentFr || null,
           explanationMg: p.explanationMg || null,
           explanationFr: p.explanationFr || null,
-          isFeatured: i === 0,
+          isFeatured: i < 3,
         },
       });
 
-      if (Array.isArray(p.stanzas)) {
-        for (let sIdx = 0; sIdx < p.stanzas.length; sIdx++) {
-          const s = p.stanzas[sIdx];
-          await prisma.poesieStanza.create({
-            data: {
-              poesieId: createdPoesie.id,
-              stanzaNumber: sIdx + 1,
-              versesMg: Array.isArray(s.versesMg) ? s.versesMg : [],
-              versesFr: Array.isArray(s.versesFr) ? s.versesFr : [],
-            },
+      if (Array.isArray(p.themes)) {
+        for (const tName of p.themes) {
+          const tSlug = slugify(tName);
+          let tId = themeMap.get(tSlug);
+          if (!tId) {
+            const newTheme = await prisma.theme.create({
+              data: { nameFr: tName, nameMg: tName, slug: tSlug },
+            });
+            tId = newTheme.id;
+            themeMap.set(tSlug, tId);
+          }
+          await prisma.poesieTheme.create({
+            data: { poesieId: createdPoesie.id, themeId: tId },
           });
         }
       }
@@ -589,21 +453,12 @@ async function main() {
     console.log(`✅ ${rawPoesies.length} poésies importées`);
   }
 
-  // 10. Import des Récitations (Tsianjery)
+  // 13. Import des Récitations (Tsianjery)
   const existingRecitationCount = await prisma.recitation.count();
   const recitationFilePath = path.join(seedDataDir, 'recitation.data.json');
-  if (existingRecitationCount > 0) {
-    console.log(
-      `ℹ️ Récitations déjà initialisées (${existingRecitationCount} entrées). Étape ignorée.`,
-    );
-  } else if (fs.existsSync(recitationFilePath)) {
-    const rawRecitations = JSON.parse(
-      fs.readFileSync(recitationFilePath, 'utf-8'),
-    );
-    console.log(
-      `🎤 Chargement de ${rawRecitations.length} récitations depuis ${recitationFilePath}`,
-    );
-
+  if (existingRecitationCount === 0 && fs.existsSync(recitationFilePath)) {
+    const rawRecitations = JSON.parse(fs.readFileSync(recitationFilePath, 'utf-8'));
+    console.log(`📖 Chargement de ${rawRecitations.length} récitations...`);
     for (let i = 0; i < rawRecitations.length; i++) {
       const r = rawRecitations[i];
       const baseSlug = slugify(r.title);
@@ -614,628 +469,207 @@ async function main() {
           id: r.id || undefined,
           slug: uniqueSlug,
           title: r.title,
-          titleFr: r.titleFr,
-          author: r.author || null,
-          description: r.description || null,
-          durationMinutes: r.durationMinutes || null,
-          contentLines: Array.isArray(r.content) ? r.content : [],
-          references: Array.isArray(r.references) ? r.references : [],
-          tags: Array.isArray(r.tags) ? r.tags : [],
-          isFeatured: i === 0,
+          titleFr: r.titleFr || null,
+          category: r.category || 'ANKIZY',
+          contentMg: r.contentMg || '',
+          contentFr: r.contentFr || null,
+          moralMg: r.moralMg || null,
+          moralFr: r.moralFr || null,
+          isFeatured: i < 3,
         },
       });
     }
     console.log(`✅ ${rawRecitations.length} récitations importées`);
   }
 
-  // 11. Import des Contenus Civiques
-  const existingCivicCount = await prisma.civicContent.count();
-  if (existingCivicCount > 0) {
-    console.log(
-      `ℹ️ Contenus civiques déjà initialisés (${existingCivicCount} entrées). Étape ignorée.`,
-    );
-  } else {
-    const civicFiles: { file: string; subCategory: CivicSubCategory }[] = [
-      {
-        file: 'civic-institution.data.json',
-        subCategory: CivicSubCategory.INSTITUTION,
-      },
-      {
-        file: 'droits-et-vote.data.json',
-        subCategory: CivicSubCategory.DROITS_VOTE,
-      },
-      {
-        file: 'ecologie-civisme.data.json',
-        subCategory: CivicSubCategory.ECOLOGIE_CIVISME,
-      },
-      {
-        file: 'symboles-histoire.data.json',
-        subCategory: CivicSubCategory.SYMBOLES_HISTOIRE,
-      },
-      {
-        file: 'vivre-ensemble.data.json',
-        subCategory: CivicSubCategory.VIVRE_ENSEMBLE,
-      },
-    ];
-
-    let totalCivicImported = 0;
-    for (const { file, subCategory } of civicFiles) {
-      const fullPath = path.join(seedDataDir, 'civique', file);
-      if (fs.existsSync(fullPath)) {
-        const items = JSON.parse(fs.readFileSync(fullPath, 'utf-8'));
-        console.log(
-          `🏛️ Chargement de ${items.length} éléments civiques (${subCategory}) depuis ${file}`,
-        );
-
-        for (let i = 0; i < items.length; i++) {
-          const item = items[i];
-          const titleFr = item.title?.fr || item.titleFr || `Contenu ${i + 1}`;
-          const titleMg = item.title?.mg || item.titleMg || titleFr;
-          const baseSlug = slugify(titleFr || titleMg);
-          const uniqueSlug = `${subCategory.toLowerCase()}-${baseSlug}-${i + 1}`;
-
-          const createdCivic = await prisma.civicContent.create({
-            data: {
-              id: item.id || undefined,
-              slug: uniqueSlug,
-              subCategory,
-              titleFr,
-              titleMg,
-              summaryFr: item.summary?.fr || item.summaryFr || null,
-              summaryMg: item.summary?.mg || item.summaryMg || null,
-              contentFr: Array.isArray(item.content?.fr) ? item.content.fr : [],
-              contentMg: Array.isArray(item.content?.mg) ? item.content.mg : [],
-              themes: Array.isArray(item.theme)
-                ? item.theme
-                : Array.isArray(item.themes)
-                  ? item.themes
-                  : [],
-              sources: Array.isArray(item.sources) ? item.sources : [],
-            },
-          });
-
-          if (Array.isArray(item.structure)) {
-            for (let sIdx = 0; sIdx < item.structure.length; sIdx++) {
-              const st = item.structure[sIdx];
-              await prisma.civicStructureRole.create({
-                data: {
-                  civicContentId: createdCivic.id,
-                  orderIndex: sIdx + 1,
-                  titleFr: st.title?.fr || '',
-                  titleMg: st.title?.mg || '',
-                  roleFr: st.role?.fr || '',
-                  roleMg: st.role?.mg || '',
-                },
-              });
-            }
-          }
-          totalCivicImported++;
-        }
-      }
-      console.log(
-        `✅ Total de ${totalCivicImported} contenus civiques importés`,
-      );
-    }
-  }
-
-  // 12. Import du Quiz Civique
-  const existingCivicQuizCount = await prisma.civicQuizQuestion.count();
-  const quizFilePath = path.join(seedDataDir, 'civic-quiz.data.json');
-  if (existingCivicQuizCount > 0) {
-    console.log(
-      `ℹ️ Questions de quiz civique déjà initialisées (${existingCivicQuizCount} entrées). Étape ignorée.`,
-    );
-  } else if (fs.existsSync(quizFilePath)) {
-    const rawQuestions = JSON.parse(fs.readFileSync(quizFilePath, 'utf-8'));
-    console.log(
-      `🎯 Chargement de ${rawQuestions.length} questions de quiz civique depuis ${quizFilePath}`,
-    );
-
-    for (const q of rawQuestions) {
-      let diff: DifficultyLevel = DifficultyLevel.EASY;
-      if (q.difficulty?.toLowerCase() === 'medium')
-        diff = DifficultyLevel.MEDIUM;
-      if (q.difficulty?.toLowerCase() === 'hard') diff = DifficultyLevel.HARD;
-
-      await prisma.civicQuizQuestion.create({
-        data: {
-          id: q.id || undefined,
-          category: q.category || 'droits_devoirs_vote',
-          prompt: q.prompt,
-          choices: Array.isArray(q.choices) ? q.choices : [],
-          answerIndex: typeof q.answerIndex === 'number' ? q.answerIndex : 0,
-          explanation: q.explanation || '',
-          difficulty: diff,
-          tags: Array.isArray(q.tags) ? q.tags : [],
-        },
-      });
-    }
-    console.log(
-      `✅ ${rawQuestions.length} questions de quiz civique importées`,
-    );
-  }
-
-  // 12b. Synchronisation des 30 Questions de Quiz vérifiées
-  const quizVerifiedFilePath = path.join(
-    seedDataDir,
-    'quiz-verified.data.json',
-  );
-  if (fs.existsSync(quizVerifiedFilePath)) {
-    const rawQuizVerified = JSON.parse(
-      fs.readFileSync(quizVerifiedFilePath, 'utf-8'),
-    );
-    console.log(
-      `📖 Synchronisation de ${rawQuizVerified.length} questions de quiz vérifiées...`,
-    );
-    let quizSynced = 0;
-    for (const q of rawQuizVerified) {
-      const existing = await prisma.civicQuizQuestion.findFirst({
-        where: {
-          OR: [{ id: q.id }, { prompt: q.promptFr }, { prompt: q.promptMg }],
-        },
-      });
-
-      const diff: DifficultyLevel =
-        q.difficulty === 'HARD'
-          ? DifficultyLevel.HARD
-          : q.difficulty === 'MEDIUM'
-            ? DifficultyLevel.MEDIUM
-            : DifficultyLevel.EASY;
-
-      const quizData = {
-        category: q.category || 'culture_generale',
-        prompt: q.promptFr,
-        choices: q.optionsFr || [],
-        answerIndex:
-          typeof q.correctAnswerIndex === 'number' ? q.correctAnswerIndex : 0,
-        explanation: q.explanation || '',
-        explanationMg: q.promptMg || null,
-        difficulty: diff,
-        tags: [q.category, q.contentSourceType].filter(Boolean),
-        imageUrl: q.imageUrl || null,
-        imageAlt: q.imageAlt || null,
-        sourceReference: q.sourceReference || null,
-        contentSourceType: q.contentSourceType || null,
-        contentSourceId: q.contentSourceId || null,
-        levelNumber: q.levelNumber || 1,
-        historicalPeriod: q.historicalPeriod || null,
-        status: 'PUBLISHED' as const,
-      };
-
-      if (existing) {
-        await prisma.civicQuizQuestion.update({
-          where: { id: existing.id },
-          data: quizData,
-        });
-      } else {
-        await prisma.civicQuizQuestion.create({
-          data: {
-            id: q.id,
-            ...quizData,
-          },
-        });
-      }
-      quizSynced++;
-    }
-    console.log(
-      `✅ ${quizSynced} questions de quiz vérifiées synchronisées avec succès`,
-    );
-  }
-
-  // 17. Import et synchronisation des Devinettes (Ankamantatra)
-  console.log(
-    `📖 Synchronisation de ${RIDDLES_DATA.length} devinettes (Ankamantatra)...`,
-  );
-  let riddlesSynced = 0;
-  for (const r of RIDDLES_DATA) {
-    const existing = await prisma.riddleQuestion.findFirst({
-      where: { riddleMg: r.riddleMg },
-    });
-
-    const diff: DifficultyLevel =
-      r.difficulty === 'HARD'
-        ? DifficultyLevel.HARD
-        : r.difficulty === 'MEDIUM'
-          ? DifficultyLevel.MEDIUM
-          : DifficultyLevel.EASY;
-
-    if (existing) {
-      await prisma.riddleQuestion.update({
-        where: { id: existing.id },
-        data: {
-          riddleFr: r.riddleFr,
-          options: r.options,
-          correctAnswer: r.correctAnswer,
-          acceptedAnswers: r.acceptedAnswers,
-          explanation: r.explanation,
-          clue: r.clue || null,
-          level: r.level,
-          difficulty: diff,
-          sourceReference: r.sourceReference || null,
-          contentSourceType: r.contentSourceType || 'MALAGASY_ITEM',
-          status: 'PUBLISHED',
-        },
-      });
-    } else {
-      await prisma.riddleQuestion.create({
-        data: {
-          riddleMg: r.riddleMg,
-          riddleFr: r.riddleFr,
-          options: r.options,
-          correctAnswer: r.correctAnswer,
-          acceptedAnswers: r.acceptedAnswers,
-          explanation: r.explanation,
-          clue: r.clue || null,
-          level: r.level,
-          difficulty: diff,
-          sourceReference: r.sourceReference || null,
-          contentSourceType: r.contentSourceType || 'MALAGASY_ITEM',
-          status: 'PUBLISHED',
-        },
-      });
-    }
-    riddlesSynced++;
-  }
-  console.log(`✅ ${riddlesSynced} devinettes synchronisées avec succès`);
-
-  // 18. Import des Signes du Zodiaque (Vintana)
+  // 14. Import des Signes du Zodiaque (Vintana)
   const existingVintanaCount = await prisma.vintanaSign.count();
-  if (existingVintanaCount > 0) {
-    console.log(
-      `ℹ️ Signes Vintana déjà initialisés (${existingVintanaCount} entrées). Étape ignorée.`,
-    );
-  } else {
-    console.log(
-      `📖 Importation de ${VINTANA_SIGNS.length} signes astrologiques (Vintana)...`,
-    );
+  if (existingVintanaCount === 0 && Array.isArray(VINTANA_SIGNS)) {
     for (const v of VINTANA_SIGNS) {
-      await prisma.vintanaSign.create({
-        data: {
-          id: v.id,
-          nameMg: v.name,
-          nameFr: v.nameFr,
-          element: v.element,
-          description: v.personalityMg + '\n\n' + v.personalityFr,
-          luckyDay: v.luckyDayMg,
-          luckyColor: null,
+      await prisma.vintanaSign.upsert({
+        where: { name: v.name },
+        create: {
+          name: v.name,
+          order: v.order,
+          nature: v.nature,
+          characteristics: v.characteristics,
+          fady: v.fady,
+          recommendations: v.recommendations,
+          color: v.color,
+          symbol: v.symbol,
+          season: v.season,
+          cardinalPoint: v.cardinalPoint,
         },
+        update: {},
       });
     }
     console.log(`✅ ${VINTANA_SIGNS.length} signes Vintana importés`);
   }
 
-  // 19. Import des Questions Vrai ou Faux (Marina sa Diso - fichiers locaux)
-  const existingTfCount = await prisma.trueFalseQuestion.count();
-  if (existingTfCount > 0) {
-    console.log(
-      `ℹ️ Questions Vrai/Faux déjà initialisées (${existingTfCount} entrées). Étape ignorée.`,
-    );
-  } else {
-    console.log('📖 Importation des questions Vrai/Faux (fichiers locaux)...');
-    const TRUE_FALSE_FILES = [
-      'tf-culture.data.json',
-      'tf-geographie.data.json',
-      'tf-histoire.data.json',
-      'tf-litterature.data.json',
-      'tf-proverbes.data.json',
-      'tf-general.data.json',
-    ];
+  // 15. Contenus civiques institutionnels
+  const CIVIC_FILES: Array<{ file: string; subCategory: CivicSubCategory }> = [
+    { file: 'droits-et-vote.data.json', subCategory: CivicSubCategory.DROITS_DEVOIRS },
+    { file: 'civic-institution.data.json', subCategory: CivicSubCategory.INSTITUTIONS },
+    { file: 'symboles-histoire.data.json', subCategory: CivicSubCategory.SYMBOLES_NATIONAUX },
+    { file: 'vivre-ensemble.data.json', subCategory: CivicSubCategory.FIHAVANANA_VIVRE_ENSEMBLE },
+    { file: 'ecologie-civisme.data.json', subCategory: CivicSubCategory.ENVIRONNEMENT_PATRIMOINE },
+  ];
 
-    const TF_THEME_MAP: Record<string, TrueFalseTheme> = {
-      CULT: TrueFalseTheme.CULT,
-      GEO: TrueFalseTheme.GEO,
-      HIST: TrueFalseTheme.HIST,
-      LITT: TrueFalseTheme.LITT,
-      PROV: TrueFalseTheme.PROV,
-      GEN: TrueFalseTheme.GEN,
-    };
+  for (const { file: fileName, subCategory } of CIVIC_FILES) {
+    const fPath = path.join(seedDataDir, 'civique', fileName);
+    if (!fs.existsSync(fPath)) continue;
 
-    const TF_DIFFICULTY_MAP: Record<string, DifficultyLevel> = {
-      EASY: DifficultyLevel.EASY,
-      MEDIUM: DifficultyLevel.MEDIUM,
-      HARD: DifficultyLevel.HARD,
-      EXPERT: DifficultyLevel.EXPERT,
-    };
-
-    let tfCount = 0;
-    for (const fileName of TRUE_FALSE_FILES) {
-      try {
-        const filePath = path.join(seedDataDir, fileName);
-        if (!fs.existsSync(filePath)) {
-          console.warn(`⚠️ Fichier Vrai/Faux introuvable: ${filePath}`);
-          continue;
-        }
-        const data: any = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-        const questions: any[] = data.questions || [];
-        for (const q of questions) {
-          const theme =
-            (q.themeId && TF_THEME_MAP[q.themeId]) || TrueFalseTheme.GEN;
-          const difficulty =
-            (q.levelId && TF_DIFFICULTY_MAP[q.levelId]) || DifficultyLevel.EASY;
-
-          await prisma.trueFalseQuestion.create({
-            data: {
-              questionMg: q.questionText,
-              questionFr: q.questionTextFr || q.questionText,
-              isTrue: Boolean(q.isTrue),
-              explanationMg: q.explanation,
-              explanationFr: q.explanationFr || q.explanation,
-              theme,
-              difficulty,
-              source: q.source || null,
-              image: q.image || null,
-              status: 'PUBLISHED',
-            },
-          });
-          tfCount++;
-        }
-      } catch (err) {
-        console.warn(
-          `⚠️ Échec du chargement Vrai/Faux depuis ${fileName}:`,
-          err,
-        );
-      }
-    }
-    console.log(`✅ ${tfCount} questions Vrai/Faux importées`);
-  }
-
-  // 19b. Synchronisation des 30 Questions Vrai ou Faux vérifiées
-  const tfVerifiedFilePath = path.join(
-    seedDataDir,
-    'true-false-verified.data.json',
-  );
-  if (fs.existsSync(tfVerifiedFilePath)) {
-    const rawTfVerified = JSON.parse(
-      fs.readFileSync(tfVerifiedFilePath, 'utf-8'),
-    );
-    console.log(
-      `📖 Synchronisation de ${rawTfVerified.length} questions Vrai/Faux vérifiées...`,
-    );
-
-    const TF_THEME_CATEGORY_MAP: Record<string, TrueFalseTheme> = {
-      monnaie_economie: TrueFalseTheme.HIST,
-      histoire_dates: TrueFalseTheme.HIST,
-      presidents_dirigeants: TrueFalseTheme.HIST,
-      citoyennete_fihavanana: TrueFalseTheme.CULT,
-      patrimoine_culture: TrueFalseTheme.CULT,
-      geographie_territoires: TrueFalseTheme.GEO,
-      symboles_emblemes: TrueFalseTheme.CULT,
-      personnalites_historiques: TrueFalseTheme.HIST,
-      traditions_valeurs: TrueFalseTheme.CULT,
-    };
-
-    let tfSynced = 0;
-    for (const vf of rawTfVerified) {
-      const existing = await prisma.trueFalseQuestion.findFirst({
-        where: {
-          OR: [
-            { id: vf.id },
-            { questionMg: vf.promptMg },
-            { questionFr: vf.promptFr },
-          ],
-        },
-      });
-
-      const diff: DifficultyLevel =
-        vf.difficulty === 'HARD'
-          ? DifficultyLevel.HARD
-          : vf.difficulty === 'MEDIUM'
-            ? DifficultyLevel.MEDIUM
-            : DifficultyLevel.EASY;
-
-      const theme =
-        (vf.category && TF_THEME_CATEGORY_MAP[vf.category]) ||
-        TrueFalseTheme.GEN;
-
-      const tfData = {
-        questionMg: vf.promptMg,
-        questionFr: vf.promptFr,
-        isTrue: Boolean(vf.isTrue),
-        explanationMg: vf.explanationTrueMg || vf.explanation || '',
-        explanationFr: vf.explanation || '',
-        explanationTrueFr: vf.explanationTrueFr || null,
-        explanationTrueMg: vf.explanationTrueMg || null,
-        explanationFalseFr: vf.explanationFalseFr || null,
-        explanationFalseMg: vf.explanationFalseMg || null,
-        theme,
-        difficulty: diff,
-        source: vf.sourceReference || null,
-        sourceReference: vf.sourceReference || null,
-        image: vf.imageUrl || null,
-        imageAlt: vf.imageAlt || null,
-        contentSourceType: vf.contentSourceType || null,
-        contentSourceId: vf.contentSourceId || null,
-        levelNumber: vf.levelNumber || 1,
-        historicalPeriod: vf.historicalPeriod || null,
-        status: 'PUBLISHED' as const,
-      };
-
-      if (existing) {
-        await prisma.trueFalseQuestion.update({
-          where: { id: existing.id },
-          data: tfData,
-        });
-      } else {
-        await prisma.trueFalseQuestion.create({
+    const rawList = JSON.parse(fs.readFileSync(fPath, 'utf-8'));
+    for (const item of rawList) {
+      const slug = item.slug || slugify(item.titleFr || item.titleMg);
+      const existing = await prisma.civicContent.findUnique({ where: { slug } });
+      if (!existing) {
+        await prisma.civicContent.create({
           data: {
-            id: vf.id,
-            ...tfData,
+            slug,
+            subCategory,
+            titleFr: item.titleFr,
+            titleMg: item.titleMg,
+            summaryFr: item.summaryFr || null,
+            summaryMg: item.summaryMg || null,
+            contentFr: Array.isArray(item.contentFr) ? item.contentFr : [],
+            contentMg: Array.isArray(item.contentMg) ? item.contentMg : [],
+            themes: Array.isArray(item.themes) ? item.themes : [],
+            sources: Array.isArray(item.sources) ? item.sources : [],
+            imageUrl: item.imageUrl || null,
+            status: 'PUBLISHED',
           },
         });
       }
-      tfSynced++;
     }
-    console.log(
-      `✅ ${tfSynced} questions Vrai/Faux vérifiées synchronisées avec succès`,
-    );
   }
 
-  // ==========================================
-  // 14. HISTOIRE, MÉMOIRE & PATRIMOINE
-  // ==========================================
-  console.log(
-    '[History] Synchronisation du module Histoire, Mémoire & Patrimoine...',
-  );
-
-  // 1. Leçons civiques
+  // 16. Histoire, Mémoire & Patrimoine (Leçons, Présidents, Billets, Blasons, Emblèmes, Dates, Sceaux)
   for (const item of DEFAULT_CIVIC_LESSONS) {
     await prisma.civicLesson.upsert({
       where: { id: item.id },
       create: {
         id: item.id,
-        category: item.category,
+        levelNumber: item.levelNumber,
         titleFr: item.titleFr,
         titleMg: item.titleMg,
-        descriptionFr: item.descriptionFr,
-        descriptionMg: item.descriptionMg,
-        imageUrl: item.imageUrl,
+        summaryFr: item.summaryFr,
+        summaryMg: item.summaryMg,
+        historicalPeriod: item.historicalPeriod,
+        readingTimeMinutes: item.readingTimeMinutes,
+        sourceReference: item.sourceReference,
         status: item.status,
-        orderIndex: item.orderIndex,
       },
       update: {
-        category: item.category,
         titleFr: item.titleFr,
         titleMg: item.titleMg,
-        descriptionFr: item.descriptionFr,
-        descriptionMg: item.descriptionMg,
-        imageUrl: item.imageUrl,
+        summaryFr: item.summaryFr,
+        summaryMg: item.summaryMg,
+        historicalPeriod: item.historicalPeriod,
       },
     });
   }
 
-  // 2. Présidents de la République
   for (const item of DEFAULT_PRESIDENTS) {
     await prisma.president.upsert({
       where: { id: item.id },
       create: {
         id: item.id,
         name: item.name,
-        titleFr: item.titleFr,
-        titleMg: item.titleMg,
+        birthDate: item.birthDate,
+        deathDate: item.deathDate,
+        mandates: item.mandates,
         republic: item.republic,
-        republicMg: item.republicMg,
-        period: item.period,
-        quoteFr: item.quoteFr,
-        quoteMg: item.quoteMg,
-        bioFr: item.bioFr,
-        bioMg: item.bioMg,
+        biographyFr: item.biographyFr,
+        biographyMg: item.biographyMg,
         achievementsFr: item.achievementsFr,
         achievementsMg: item.achievementsMg,
-        badgeColor: item.badgeColor,
+        challengesFr: item.challengesFr,
+        challengesMg: item.challengesMg,
+        famousQuoteFr: item.famousQuoteFr,
+        famousQuoteMg: item.famousQuoteMg,
         imageUrl: item.imageUrl,
         orderIndex: item.orderIndex,
         status: item.status,
       },
       update: {
         name: item.name,
-        titleFr: item.titleFr,
-        titleMg: item.titleMg,
-        republic: item.republic,
-        republicMg: item.republicMg,
-        period: item.period,
-        quoteFr: item.quoteFr,
-        quoteMg: item.quoteMg,
-        bioFr: item.bioFr,
-        bioMg: item.bioMg,
+        mandates: item.mandates,
+        biographyFr: item.biographyFr,
+        biographyMg: item.biographyMg,
         achievementsFr: item.achievementsFr,
         achievementsMg: item.achievementsMg,
-        badgeColor: item.badgeColor,
-        imageUrl: item.imageUrl,
+        famousQuoteFr: item.famousQuoteFr,
+        famousQuoteMg: item.famousQuoteMg,
       },
     });
   }
 
-  // 3. Billets de banque
   for (const item of DEFAULT_BANKNOTES) {
     await prisma.banknote.upsert({
       where: { id: item.id },
       create: {
         id: item.id,
-        valueAriary: item.valueAriary,
-        valueFmg: item.valueFmg,
-        titleFr: item.titleFr,
-        titleMg: item.titleMg,
+        faceValue: item.faceValue,
+        fmgValue: item.fmgValue,
         series: item.series,
-        seriesLabelFr: item.seriesLabelFr,
-        seriesLabelMg: item.seriesLabelMg,
-        period: item.period,
-        colorLight: item.colorLight,
-        colorDark: item.colorDark,
-        obverseDescriptionFr: item.obverseDescriptionFr,
-        obverseDescriptionMg: item.obverseDescriptionMg,
-        reverseDescriptionFr: item.reverseDescriptionFr,
-        reverseDescriptionMg: item.reverseDescriptionMg,
-        symbolismFr: item.symbolismFr,
-        symbolismMg: item.symbolismMg,
+        releaseDate: item.releaseDate,
+        themeFr: item.themeFr,
+        themeMg: item.themeMg,
+        dominantColor: item.dominantColor,
+        dimensions: item.dimensions,
+        rectoDescriptionFr: item.rectoDescriptionFr,
+        rectoDescriptionMg: item.rectoDescriptionMg,
+        versoDescriptionFr: item.versoDescriptionFr,
+        versoDescriptionMg: item.versoDescriptionMg,
         securityFeaturesFr: item.securityFeaturesFr,
+        securityFeaturesMg: item.securityFeaturesMg,
         imageUrl: item.imageUrl,
+        imageUrlVerso: item.imageUrlVerso,
         orderIndex: item.orderIndex,
         status: item.status,
       },
       update: {
-        valueAriary: item.valueAriary,
-        valueFmg: item.valueFmg,
-        titleFr: item.titleFr,
-        titleMg: item.titleMg,
-        series: item.series,
-        seriesLabelFr: item.seriesLabelFr,
-        seriesLabelMg: item.seriesLabelMg,
-        period: item.period,
-        colorLight: item.colorLight,
-        colorDark: item.colorDark,
-        obverseDescriptionFr: item.obverseDescriptionFr,
-        obverseDescriptionMg: item.obverseDescriptionMg,
-        reverseDescriptionFr: item.reverseDescriptionFr,
-        reverseDescriptionMg: item.reverseDescriptionMg,
-        symbolismFr: item.symbolismFr,
-        symbolismMg: item.symbolismMg,
-        securityFeaturesFr: item.securityFeaturesFr,
-        imageUrl: item.imageUrl,
+        faceValue: item.faceValue,
+        themeFr: item.themeFr,
+        themeMg: item.themeMg,
+        dominantColor: item.dominantColor,
+        rectoDescriptionFr: item.rectoDescriptionFr,
+        rectoDescriptionMg: item.rectoDescriptionMg,
+        versoDescriptionFr: item.versoDescriptionFr,
+        versoDescriptionMg: item.versoDescriptionMg,
       },
     });
   }
 
-  // 4. Blasons des 6 Provinces
   for (const item of DEFAULT_PROVINCE_BLASONS) {
     await prisma.provinceBlason.upsert({
       where: { id: item.id },
       create: {
         id: item.id,
-        province: item.province,
-        chefLieu: item.chefLieu,
-        titleFr: item.titleFr,
-        titleMg: item.titleMg,
-        color: item.color,
-        bgLight: item.bgLight,
-        borderLight: item.borderLight,
-        descriptionFr: item.descriptionFr,
-        descriptionMg: item.descriptionMg,
-        symbols: item.symbols,
-        keyFactsFr: item.keyFactsFr,
-        keyFactsMg: item.keyFactsMg,
+        provinceName: item.provinceName,
+        capitalName: item.capitalName,
+        mottoFr: item.mottoFr,
+        mottoMg: item.mottoMg,
+        symbolismFr: item.symbolismFr,
+        symbolismMg: item.symbolismMg,
+        keyFigures: item.keyFigures,
+        accentColor: item.accentColor,
         imageUrl: item.imageUrl,
         orderIndex: item.orderIndex,
         status: item.status,
       },
       update: {
-        province: item.province,
-        chefLieu: item.chefLieu,
-        titleFr: item.titleFr,
-        titleMg: item.titleMg,
-        color: item.color,
-        bgLight: item.bgLight,
-        borderLight: item.borderLight,
-        descriptionFr: item.descriptionFr,
-        descriptionMg: item.descriptionMg,
-        symbols: item.symbols,
-        keyFactsFr: item.keyFactsFr,
-        keyFactsMg: item.keyFactsMg,
-        imageUrl: item.imageUrl,
+        provinceName: item.provinceName,
+        capitalName: item.capitalName,
+        mottoFr: item.mottoFr,
+        mottoMg: item.mottoMg,
+        symbolismFr: item.symbolismFr,
+        symbolismMg: item.symbolismMg,
       },
     });
   }
 
-  // 5. Emblèmes naturels
   for (const item of DEFAULT_NATURE_EMBLEMS) {
     await prisma.natureEmblem.upsert({
       where: { id: item.id },
@@ -1263,21 +697,12 @@ async function main() {
         nameMg: item.nameMg,
         scientificName: item.scientificName,
         type: item.type,
-        statusFr: item.statusFr,
-        statusMg: item.statusMg,
         descriptionFr: item.descriptionFr,
         descriptionMg: item.descriptionMg,
-        culturalRoleFr: item.culturalRoleFr,
-        culturalRoleMg: item.culturalRoleMg,
-        proverbMg: item.proverbMg,
-        proverbFr: item.proverbFr,
-        accentColor: item.accentColor,
-        imageUrl: item.imageUrl,
       },
     });
   }
 
-  // 6. Dates historiques
   for (const item of DEFAULT_HISTORY_DATES) {
     await prisma.historyDate.upsert({
       where: { id: item.id },
@@ -1299,21 +724,14 @@ async function main() {
       },
       update: {
         year: item.year,
-        exactDate: item.exactDate,
         titleFr: item.titleFr,
         titleMg: item.titleMg,
-        era: item.era,
         summaryFr: item.summaryFr,
         summaryMg: item.summaryMg,
-        impactFr: item.impactFr,
-        impactMg: item.impactMg,
-        accentColor: item.accentColor,
-        imageUrl: item.imageUrl,
       },
     });
   }
 
-  // 7. Sceaux nationaux
   for (const item of DEFAULT_NATIONAL_EMBLEMS) {
     await prisma.nationalEmblem.upsert({
       where: { id: item.id },
@@ -1331,28 +749,26 @@ async function main() {
       },
       update: {
         period: item.period,
-        imageUrl: item.imageUrl,
         government: item.government,
         descriptionFr: item.descriptionFr,
         descriptionMg: item.descriptionMg,
-        notesFr: item.notesFr,
-        notesMg: item.notesMg,
       },
     });
   }
-  console.log(
-    '[History] Donnees Histoire, Memoire & Patrimoine synchronisees avec succes.',
-  );
 
-  console.log('🎉 Seed de la base de données Kanto terminé avec succès !');
+  // 17. Rapport consolidé d'observabilité
+  printConsolidatedReport(reportStats);
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Erreur lors du seed :', e);
-    process.exit(1);
+    console.error('❌ Erreur critique lors de l\'exécution du seed :', e);
+    process.exitCode = 1;
   })
   .finally(async () => {
-    await prisma.$disconnect();
-    await pool.end();
+    try {
+      await prisma.$disconnect();
+      await pool.end();
+    } catch {}
+    process.exit(process.exitCode || 0);
   });

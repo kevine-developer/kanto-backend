@@ -27,6 +27,7 @@ services:
       - kanto_uploads:/app/uploads
       # Bind mount en lecture seule : nouvelles migrations disponibles sans rebuild
       - ./prisma/migrations:/app/prisma/migrations:ro
+      - ./prisma/seed-data:/app/prisma/seed-data:ro
     logging:
       driver: "json-file"
       options:
