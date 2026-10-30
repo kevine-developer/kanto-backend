@@ -71,8 +71,46 @@ const TF_THEME_CATEGORY_MAP: Record<string, TrueFalseTheme> = {
   traditions_valeurs: TrueFalseTheme.CULT,
 };
 
+async function ensureSchemaColumns() {
+  try {
+    await pool.query(`
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "explanationMg" TEXT;
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "imageUrl" TEXT;
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "imageAlt" TEXT;
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "sourceReference" TEXT;
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "sourceUrl" TEXT;
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "contentSourceType" TEXT;
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "contentSourceId" TEXT;
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "levelNumber" INTEGER DEFAULT 1;
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "historicalPeriod" TEXT;
+
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "explanationTrueMg" TEXT;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "explanationTrueFr" TEXT;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "explanationFalseMg" TEXT;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "explanationFalseFr" TEXT;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "imageAlt" TEXT;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "sourceReference" TEXT;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "contentSourceType" TEXT;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "contentSourceId" TEXT;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "levelNumber" INTEGER DEFAULT 1;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "historicalPeriod" TEXT;
+
+      ALTER TABLE IF EXISTS "riddle_questions" ADD COLUMN IF NOT EXISTS "acceptedAnswers" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[];
+      ALTER TABLE IF EXISTS "riddle_questions" ADD COLUMN IF NOT EXISTS "difficulty" "DifficultyLevel" NOT NULL DEFAULT 'EASY';
+      ALTER TABLE IF EXISTS "riddle_questions" ADD COLUMN IF NOT EXISTS "imageUrl" TEXT;
+      ALTER TABLE IF EXISTS "riddle_questions" ADD COLUMN IF NOT EXISTS "imageAlt" TEXT;
+      ALTER TABLE IF EXISTS "riddle_questions" ADD COLUMN IF NOT EXISTS "sourceReference" TEXT;
+      ALTER TABLE IF EXISTS "riddle_questions" ADD COLUMN IF NOT EXISTS "contentSourceType" TEXT;
+      ALTER TABLE IF EXISTS "riddle_questions" ADD COLUMN IF NOT EXISTS "contentSourceId" TEXT;
+    `);
+  } catch (err: any) {
+    console.warn('⚠️ [Preflight Schema] Contrôle de schéma non bloquant :', err.message);
+  }
+}
+
 async function seedProduction() {
   console.log('🚀 [Kanto Backend] Démarrage du seed idempotent de production...');
+  await ensureSchemaColumns();
   const seedDataDir = findSeedDataDir();
   console.log(`📁 [Kanto Backend] Répertoire de données : ${seedDataDir}`);
 
