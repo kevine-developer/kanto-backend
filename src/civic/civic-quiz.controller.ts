@@ -76,7 +76,8 @@ export class CivicQuizController {
     return this.civicQuizService.answerSessionQuestion(
       dto.sessionId,
       dto.questionId,
-      dto.userAnswerIndex,
+      dto.userAnswerIndex !== undefined ? dto.userAnswerIndex : null,
+      dto.userAnswerText,
     );
   }
 

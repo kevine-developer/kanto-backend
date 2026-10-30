@@ -14,6 +14,39 @@ import {
 } from '../common/utils/pagination.util.js';
 import { CACHE_KEYS } from '../common/constants/cache.constant.js';
 
+/**
+ * Mélange aléatoire uniforme (Fisher-Yates) d'un tableau
+ */
+export function shuffleArray<T>(items: T[]): T[] {
+  const result = [...items];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+/**
+ * Mélange aléatoirement les choix d'une question tout en recalculant
+ * l'index de la bonne réponse afin de supprimer tout biais de position (ex: réponse A récurrente).
+ */
+export function shuffleChoicesAndRecalculateIndex<
+  T extends { choices: string[]; answerIndex: number },
+>(question: T): T {
+  if (!question.choices || question.choices.length <= 1) {
+    return question;
+  }
+  const originalCorrectChoice = question.choices[question.answerIndex];
+  const shuffledChoices = shuffleArray(question.choices);
+  const newAnswerIndex = shuffledChoices.indexOf(originalCorrectChoice);
+
+  return {
+    ...question,
+    choices: shuffledChoices,
+    answerIndex: newAnswerIndex >= 0 ? newAnswerIndex : question.answerIndex,
+  };
+}
+
 @Injectable()
 export class CivicQuizService {
   private readonly logger = new Logger(CivicQuizService.name);
@@ -190,14 +223,11 @@ export class CivicQuizService {
       where,
     });
 
-    // Mélange aléatoire (Fisher-Yates)
-    const shuffled = [...allQuestions];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
+    // Mélange aléatoire (Fisher-Yates) des questions
+    const shuffledQuestions = shuffleArray(allQuestions).slice(0, count);
 
-    return shuffled.slice(0, count);
+    // Mélange équitable des choix de chaque question pour supprimer le biais réponse A
+    return shuffledQuestions.map((q) => shuffleChoicesAndRecalculateIndex(q));
   }
 
   async recordAnswer(id: string, isCorrect: boolean) {
@@ -321,19 +351,41 @@ export class CivicQuizService {
       where: { id: { in: selectedQuestions.map((q) => q.id) } },
     });
 
-    // Mélange aléatoire de l'ordre d'affichage des 10 questions du niveau
-    const randomized = [...fullQuestions].sort(() => 0.5 - Math.random());
+    // Mélange aléatoire (Fisher-Yates) de l'ordre d'affichage des questions de la session
+    const randomized = shuffleArray(fullQuestions);
+
+    // Mélange aléatoire (Fisher-Yates) des 4 choix pour chaque question afin d'éliminer le biais Réponse A
+    const questionsWithShuffledChoices = randomized.map((q) =>
+      shuffleChoicesAndRecalculateIndex(q),
+    );
 
     const session = await this.prisma.civicQuizSession.create({
       data: {
         userId,
-        totalQuestions: randomized.length,
+        totalQuestions: questionsWithShuffledChoices.length,
       },
     });
 
+    // Sauvegarde en cache Redis du mapping exact des choix mélangés pour valider la session de jeu
+    const answersMap: Record<
+      string,
+      { answerIndex: number; correctChoice: string }
+    > = {};
+    for (const q of questionsWithShuffledChoices) {
+      answersMap[q.id] = {
+        answerIndex: q.answerIndex,
+        correctChoice: q.choices[q.answerIndex],
+      };
+    }
+    await this.redis.set(
+      `civic_quiz:session:${session.id}:answers_map`,
+      answersMap,
+      86400, // 24h
+    );
+
     return {
       session,
-      questions: randomized,
+      questions: questionsWithShuffledChoices,
       levelNumber: levelNumber ?? 1,
     };
   }
@@ -342,6 +394,7 @@ export class CivicQuizService {
     sessionId: string,
     questionId: string,
     userAnswerIndex: number | null,
+    userAnswerText?: string | null,
   ) {
     const session = await this.prisma.civicQuizSession.findUnique({
       where: { id: sessionId },
@@ -364,6 +417,18 @@ export class CivicQuizService {
 
     if (!question) throw new NotFoundException('Question introuvable');
 
+    // Récupérer le mapping des choix mélangés pour cette session depuis Redis
+    const answersMap = await this.redis.get<
+      Record<string, { answerIndex: number; correctChoice: string }>
+    >(`civic_quiz:session:${sessionId}:answers_map`);
+    const sessionQuestionMeta = answersMap?.[questionId];
+    const expectedIndex = sessionQuestionMeta
+      ? sessionQuestionMeta.answerIndex
+      : question.answerIndex;
+    const expectedChoiceText = sessionQuestionMeta
+      ? sessionQuestionMeta.correctChoice
+      : question.choices[question.answerIndex];
+
     // Protection contre les doubles soumissions pour une même question dans la session
     const existingAnswer = await this.prisma.civicQuizAnswer.findFirst({
       where: { sessionId, questionId },
@@ -371,19 +436,29 @@ export class CivicQuizService {
     if (existingAnswer) {
       return {
         isCorrect: existingAnswer.isCorrect,
-        correctIndex: question.answerIndex,
+        correctIndex: expectedIndex,
         explanation: question.explanation,
       };
     }
 
-    const isCorrect = userAnswerIndex === question.answerIndex;
+    // Vérification de la réponse : soit par index mélangé, soit par valeur textuelle
+    const isCorrect: boolean =
+      userAnswerIndex === expectedIndex ||
+      Boolean(
+        typeof userAnswerText === 'string' &&
+          expectedChoiceText &&
+          userAnswerText.trim().toLowerCase() ===
+            expectedChoiceText.trim().toLowerCase(),
+      );
 
     await this.prisma.civicQuizAnswer.create({
       data: {
         sessionId,
         questionId,
         userAnswer:
-          userAnswerIndex !== null ? userAnswerIndex.toString() : null,
+          userAnswerIndex !== null
+            ? userAnswerIndex.toString()
+            : (userAnswerText ?? null),
         isCorrect,
       },
     });
@@ -399,7 +474,7 @@ export class CivicQuizService {
 
     return {
       isCorrect,
-      correctIndex: question.answerIndex,
+      correctIndex: expectedIndex,
       explanation: question.explanation,
     };
   }
