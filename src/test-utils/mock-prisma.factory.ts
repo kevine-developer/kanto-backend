@@ -64,7 +64,12 @@ export function createPrismaMock() {
 
     // Contenu culturel
     item: createModelMock(),
+    malagasyItem: createModelMock(),
+    malagasyItemTheme: createModelMock(),
+    dialectVariant: createModelMock(),
+    author: createModelMock(),
     citation: createModelMock(),
+    citationTheme: createModelMock(),
     conte: createModelMock(),
     kabary: createModelMock(),
     poesie: createModelMock(),

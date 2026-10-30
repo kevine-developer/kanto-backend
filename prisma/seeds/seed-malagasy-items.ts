@@ -1,7 +1,7 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { PrismaClient } from '../../generated/prisma/client.js';
-import { SeedCategoryStats } from './types.js';
+import { SeedCategoryStats, RawMalagasyItem } from './types.js';
 import { validateMalagasyItemsBatch } from './validator.js';
 
 function slugify(text: string): string {
@@ -16,28 +16,13 @@ function slugify(text: string): string {
     .replace(/--+/g, '-');
 }
 
-interface RawMalagasyItem {
-  id?: string;
-  slug?: string;
-  malagasy: string;
-  french: string;
-  meaning: string;
-  example?: string;
-  phonetic?: string;
-  category?: string;
-  difficulty?: 'EASY' | 'MEDIUM' | 'HARD';
-  origins?: string[];
-  themes?: string[];
-  dialectVariants?: Array<{ dialect?: string; dialectName?: string; text: string }>;
-}
-
 export async function seedMalagasyItems(
   prisma: PrismaClient,
   seedDataDir: string,
   themeMap: Map<string, string>,
 ): Promise<SeedCategoryStats> {
   const stats: SeedCategoryStats = {
-    category: 'Proverbes, Dictons & Expressions (MalagasyItem)',
+    category: 'Proverbes, Dictons & Expressions',
     totalInFile: 0,
     created: 0,
     updated: 0,
@@ -53,6 +38,8 @@ export async function seedMalagasyItems(
     { file: 'expressions.data.json', defaultCat: 'EXPRESSION' },
   ];
 
+  const processedMgTexts = new Set<string>();
+
   for (const source of DATA_FILES) {
     const filePath = path.join(seedDataDir, source.file);
     if (!fs.existsSync(filePath)) {
@@ -63,7 +50,7 @@ export async function seedMalagasyItems(
     try {
       rawList = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
     } catch (err) {
-      console.error(`❌ [Seed Items] Erreur de syntaxe JSON dans ${source.file}:`, err);
+      console.error(`❌ [Seed Items] Erreur de lecture/syntaxe JSON dans ${source.file}:`, err);
       stats.errors++;
       continue;
     }
@@ -71,7 +58,7 @@ export async function seedMalagasyItems(
     const validation = validateMalagasyItemsBatch(rawList);
     if (!validation.isValid) {
       console.warn(
-        `⚠️ [Seed Items] ${validation.issues.length} problème(s) de validation détecté(s) dans ${source.file}.`,
+        `⚠️ [Seed Items] ${validation.issues.length} anomalie(s) de validation dans ${source.file}.`,
       );
     }
 
@@ -85,6 +72,15 @@ export async function seedMalagasyItems(
       }
 
       const cleanMalagasy = item.malagasy.trim();
+      const normKey = cleanMalagasy.toLowerCase();
+
+      // Dédoublonnage mémoire au sein d'une même passe multi-fichiers
+      if (processedMgTexts.has(normKey)) {
+        stats.skipped++;
+        continue;
+      }
+      processedMgTexts.add(normKey);
+
       let category: 'PROVERBE' | 'EXPRESSION' | 'DICTON' = 'PROVERBE';
       const rawCat = String(item.category || source.defaultCat).toUpperCase();
       if (rawCat.includes('DICTON')) category = 'DICTON';
@@ -99,15 +95,17 @@ export async function seedMalagasyItems(
               {
                 malagasy: {
                   equals: cleanMalagasy,
-                  mode: 'insensitive',
+                  mode: 'insensitive' as const,
                 },
               },
             ],
           },
         });
 
+        let targetItemId: string;
+
         if (existing) {
-          // Vérification si une mise à jour est réellement nécessaire
+          targetItemId = existing.id;
           const hasDiff =
             existing.french !== item.french ||
             existing.meaning !== item.meaning ||
@@ -125,7 +123,7 @@ export async function seedMalagasyItems(
                 phonetic: item.phonetic || null,
                 category,
                 origins: Array.isArray(item.origins) ? item.origins : existing.origins,
-                difficulty: item.difficulty || existing.difficulty,
+                difficulty: (item.difficulty as 'EASY' | 'MEDIUM' | 'HARD' | 'EXPERT') || existing.difficulty,
               },
             });
             stats.updated++;
@@ -151,12 +149,13 @@ export async function seedMalagasyItems(
               example: item.example || null,
               phonetic: item.phonetic || null,
               category,
-              difficulty: item.difficulty || 'EASY',
+              difficulty: (item.difficulty as 'EASY' | 'MEDIUM' | 'HARD' | 'EXPERT') || 'EASY',
               origins: Array.isArray(item.origins) ? item.origins : [],
               status: 'PUBLISHED',
               isFeatured: i < 5,
             },
           });
+          targetItemId = created.id;
 
           // Liaison des variantes dialectales
           if (Array.isArray(item.dialectVariants)) {
@@ -167,46 +166,60 @@ export async function seedMalagasyItems(
                   data: {
                     dialectName: dName,
                     text: v.text,
-                    itemId: created.id,
+                    itemId: targetItemId,
                   },
                 });
               }
-            }
-          }
-
-          // Liaison des thèmes culturels
-          if (Array.isArray(item.themes)) {
-            for (const tName of item.themes) {
-              const tSlug = slugify(tName);
-              let tId = themeMap.get(tSlug);
-              if (!tId) {
-                const newTheme = await prisma.theme.create({
-                  data: {
-                    nameFr: tName,
-                    nameMg: tName,
-                    slug: tSlug,
-                  },
-                });
-                tId = newTheme.id;
-                themeMap.set(tSlug, tId);
-              }
-              await prisma.malagasyItemTheme.upsert({
-                where: {
-                  itemId_themeId: {
-                    itemId: created.id,
-                    themeId: tId,
-                  },
-                },
-                update: {},
-                create: {
-                  itemId: created.id,
-                  themeId: tId,
-                },
-              });
             }
           }
 
           stats.created++;
+        }
+
+        // Liaison idempotente des thèmes culturels
+        if (Array.isArray(item.themes)) {
+          for (const tName of item.themes) {
+            const trimmedTheme = String(tName).trim();
+            if (!trimmedTheme) continue;
+
+            const tSlug = slugify(trimmedTheme);
+            let tId = themeMap.get(tSlug);
+            if (!tId) {
+              const existingTheme = await prisma.theme.findFirst({
+                where: {
+                  OR: [{ slug: tSlug }, { nameFr: trimmedTheme }, { nameMg: trimmedTheme }],
+                },
+              });
+
+              if (existingTheme) {
+                tId = existingTheme.id;
+              } else {
+                const newTheme = await prisma.theme.create({
+                  data: {
+                    nameFr: trimmedTheme,
+                    nameMg: trimmedTheme,
+                    slug: tSlug,
+                  },
+                });
+                tId = newTheme.id;
+              }
+              themeMap.set(tSlug, tId);
+            }
+
+            await prisma.malagasyItemTheme.upsert({
+              where: {
+                itemId_themeId: {
+                  itemId: targetItemId,
+                  themeId: tId,
+                },
+              },
+              update: {},
+              create: {
+                itemId: targetItemId,
+                themeId: tId,
+              },
+            });
+          }
         }
       } catch (itemErr) {
         console.error(`⚠️ [Seed Items] Erreur sur l'élément "${cleanMalagasy.substring(0, 30)}..." :`, itemErr);
