@@ -48,6 +48,7 @@ import { ReferralModule } from './referral/referral.module.js';
 import { EventsModule } from './events/events.module.js';
 import { ContentWizardModule } from './games/content-wizard/content-wizard.module.js';
 import { DailyChallengeModule } from './games/daily-challenge/daily-challenge.module.js';
+import { AppVersionModule } from './app-version/app-version.module.js';
 
 @Module({
   imports: [
@@ -120,6 +121,7 @@ import { DailyChallengeModule } from './games/daily-challenge/daily-challenge.mo
     EventsModule,
     ContentWizardModule,
     DailyChallengeModule,
+    AppVersionModule,
   ],
   controllers: [AppController],
   providers: [
