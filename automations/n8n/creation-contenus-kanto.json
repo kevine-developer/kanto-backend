@@ -1,0 +1,794 @@
+{
+  "name": "Kanto MG — Création & Diffusion de Contenus Culturels",
+  "nodes": [
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": {\n      \"type\": \"string\",\n      \"description\": \"Titre évocateur du contenu culturel\"\n    },\n    \"pillar\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"Angano\",\n        \"Kabary\",\n        \"Ohabolana\",\n        \"Tantara\",\n        \"Lalao\",\n        \"Teny Gasy\"\n      ],\n      \"description\": \"Pilier culturel Kanto (Angano, Kabary, Ohabolana, Tantara, Lalao, Teny Gasy)\"\n    },\n    \"description\": {\n      \"type\": \"string\",\n      \"description\": \"Résumé pédagogique du thème abordé\"\n    },\n    \"malagasy_quote\": {\n      \"type\": \"string\",\n      \"description\": \"Proverbe, citation ou phrase clé en malgache\"\n    },\n    \"french_translation\": {\n      \"type\": \"string\",\n      \"description\": \"Traduction française exacte et contextuelle\"\n    },\n    \"platform_posts\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"LinkedIn\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"image_suggestion\": {\n              \"type\": \"string\"\n            },\n            \"post\": {\n              \"type\": \"string\"\n            },\n            \"hashtags\": {\n              \"type\": \"array\",\n              \"items\": {\n                \"type\": \"string\"\n              }\n            },\n            \"call_to_action\": {\n              \"type\": \"string\"\n            }\n          }\n        },\n        \"Instagram\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"image_suggestion\": {\n              \"type\": \"string\"\n            },\n            \"caption\": {\n              \"type\": \"string\"\n            },\n            \"hashtags\": {\n              \"type\": \"array\",\n              \"items\": {\n                \"type\": \"string\"\n              }\n            },\n            \"emojis\": {\n              \"type\": \"array\",\n              \"items\": {\n                \"type\": \"string\"\n              }\n            },\n            \"call_to_action\": {\n              \"type\": \"string\"\n            }\n          }\n        },\n        \"Facebook\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"image_suggestion\": {\n              \"type\": \"string\"\n            },\n            \"post\": {\n              \"type\": \"string\"\n            },\n            \"hashtags\": {\n              \"type\": \"array\",\n              \"items\": {\n                \"type\": \"string\"\n              }\n            },\n            \"call_to_action\": {\n              \"type\": \"string\"\n            }\n          }\n        },\n        \"X-Twitter\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"video_suggestion\": {\n              \"type\": \"string\"\n            },\n            \"image_suggestion\": {\n              \"type\": \"string\"\n            },\n            \"post\": {\n              \"type\": \"string\"\n            },\n            \"hashtags\": {\n              \"type\": \"array\",\n              \"items\": {\n                \"type\": \"string\"\n              }\n            },\n            \"character_limit\": {\n              \"type\": \"integer\"\n            }\n          }\n        },\n        \"TikTok\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"video_suggestion\": {\n              \"type\": \"string\"\n            },\n            \"caption\": {\n              \"type\": \"string\"\n            },\n            \"hashtags\": {\n              \"type\": \"array\",\n              \"items\": {\n                \"type\": \"string\"\n              }\n            },\n            \"call_to_action\": {\n              \"type\": \"string\"\n            }\n          }\n        },\n        \"Threads\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"image_suggestion\": {\n              \"type\": \"string\"\n            },\n            \"text_post\": {\n              \"type\": \"string\"\n            },\n            \"hashtags\": {\n              \"type\": \"array\",\n              \"items\": {\n                \"type\": \"string\"\n              }\n            },\n            \"call_to_action\": {\n              \"type\": \"string\"\n            }\n          }\n        },\n        \"YouTube_Shorts\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"video_suggestion\": {\n              \"type\": \"string\"\n            },\n            \"title\": {\n              \"type\": \"string\"\n            },\n            \"description\": {\n              \"type\": \"string\"\n            },\n            \"hashtags\": {\n              \"type\": \"array\",\n              \"items\": {\n                \"type\": \"string\"\n              }\n            },\n            \"call_to_action\": {\n              \"type\": \"string\"\n            }\n          }\n        }\n      }\n    },\n    \"additional_notes\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+      },
+      "id": "ad7db948-7fd7-4d96-a03a-3ddb8993a218",
+      "name": "Social Media Content",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "position": [
+        -800,
+        720
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3-flash-preview",
+        "options": {}
+      },
+      "id": "a2a12740-f089-4cd0-b844-b0741b9f479b",
+      "name": "Google Gemini LLM",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "position": [
+        -464,
+        480
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "zB6KOEk2YwHwVeh6",
+          "name": "TelovavyN8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "agent": "conversationalAgent",
+        "promptType": "define",
+        "text": "=\n## Générer un e-mail HTML moderne, élégant et responsive pour la relecture des contenus Kanto MG :\n- Utiliser une mise en page par table avec CSS inline pour une compatibilité parfaite avec tous les webmails et clients mobiles.\n- En-tête officiel Kanto MG : Fond Vert Tanimbary (#4A6741), texte Ocre doré (#C58B38) et blanc (#F5F4F0) : \"KANTO MG — Relecture des Contenus Réseaux Sociaux\".\n- Mention du pilier culturel (Angano, Kabary, Ohabolana, Tantara, Lalao, Teny Gasy).\n- Créer une section carte pour chaque plateforme (LinkedIn, Instagram, Facebook, X, TikTok, Threads, YouTube Shorts) comprenant :\n  • En-tête avec nom du réseau social (20px, gras)\n  • Contenu de la publication (16px, interligne 1.5)\n  • Citation malgache et traduction française mises en valeur\n  • Suggestion de visuel / vidéo (en italique 14px, couleur #666)\n  • Badges de hashtags (#f0ede6 fond, arrondi 4px)\n  • Call-to-action bien visible (14px gras)\n- Conteneur de 600px max, fond parchemin doux (#F5F4F0), typographie propre (Arial / Plus Jakarta Sans).\n- Signature : \"Équipe Éditoriale Kanto MG — Lova • Kolontsaina • Tantara\".\n\nDonnées JSON en entrée : {{ $json.output.toJsonString() }}\n\nProduire UNIQUEMENT le code HTML brut sans blocs markdown.\n",
+        "options": {}
+      },
+      "id": "d297ac06-0e8e-4df2-acc0-a1f67e3cc385",
+      "name": "Préparer l’e-mail de relecture",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        -448,
+        240
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "=lakatsoprod@gmail.com",
+        "subject": "=✅ [Kanto MG] À approuver : {{ $('Contenus pour les réseaux.').item.json.output.name }} (Pilier: {{ $('Contenus pour les réseaux.').item.json.output.pillar }})",
+        "message": "={{ $json.output }}",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeAmount": 10,
+              "resumeUnit": "minutes"
+            }
+          },
+          "appendAttribution": false
+        }
+      },
+      "id": "ae002d24-db87-4bca-ba8e-55c265095e04",
+      "name": "Gmail de Récapitulation",
+      "type": "n8n-nodes-base.gmail",
+      "position": [
+        -160,
+        496
+      ],
+      "webhookId": "c506a778-fb40-4097-94bf-5cc3af6b7d70",
+      "typeVersion": 2.1,
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "VLc8ToBTogD6cB8q",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\n### Contexte Kanto MG\n\nTu conçois du contenu captivant, digne, enrichissant et stratégiquement optimisé pour **Kanto MG**, l'application mobile de référence dédiée à la culture, à la langue, au patrimoine immatériel et à l'histoire de Madagascar.\n\nSignature de marque : **KANTO — Lova • Kolontsaina • Tantara** (Héritage • Culture • Histoire).\n\nLes contenus s'adressent à :\n* La **diaspora malgache** (France, Canada, USA, Réunion, etc.) soucieuse de transmettre la culture et la langue à leurs proches.\n* La **jeunesse malgache** en quête d'une fierté culturelle moderne et accessible.\n* Les **passionnés de langues, traditions orales et d'histoire** de l'océan Indien et du monde austronésien.\n\nChaque publication doit être adaptée avec finesse aux formats spécifiques de chaque réseau :\n**LinkedIn, Instagram, Facebook, X (Twitter), TikTok, Threads et YouTube Shorts**.\n\n---\n\n## Les 4 Piliers Culturels Kanto (Non négociables) :\n1. **Angano** (Contes traditionnels oraux, leçons morales, récits de sagesse).\n2. **Kabary** (Art oratoire solennel, rhétorique traditionnelle, formules de respect et Fihavanana).\n3. **Tantara** (Chroniques royales, figures historiques, repères patrimoniaux et civiques).\n4. **Lalao & Ohabolana** (Proverbes malgaches, devinettes ankamantatra, vocabulaire rare raki-teny, jeux de mémoire).\n\n---\n\n## Règles Éditoriales Fondamentales :\n* **Bilinguisme systématique** : Intégrer toujours une phrase, proverbe ou expression en malgache avec sa traduction française immédiate.\n* **Respect et authenticité** : Éviter les clichés touristiques ou le folklore superficiel. Mettre en valeur la noblesse et l'élégance de la culture malgache.\n* **Sobriété visuelle et textuelle** : Zéro spam d'emojis criards (pas de 🚀🔥🎉), privilégier des symboles discrets (🌿, 📜, 🇲🇬, 🏛️).\n* **Palette visuelle conseillée** : Vert Tanimbary (#4A6741), Ocre doré (#C58B38), Parchemin chaud (#F5F4F0), Anthracite (#1A1A1A).\n* **Call to action Kanto** : Inviter à télécharger l'application, tester le quiz du jour ou écouter un conte audio dans Kanto.\n\n---\n\n## Hashtags de Référence :\n`#KantoApp` `#Madagascar` `#Kolontsaina` `#GasyDiaspora` `#MalagasyCulture` `#Ohabolana` `#Kabary` `#Angano` `#TantaraGasy`\n\n---\n\n## Directives par plateforme :\n\n### LinkedIn\n* **Style** : Culturel, analytique, éducatif\n* **Ton** : Réflexif, valorisant le patrimoine, transmission intergénérationnelle\n* **Format** : 4-5 phrases structurées avec proverbe malgache et analyse\n* **CTA** : Inviter au partage d'expérience culturelle ou à découvrir l'application\n\n### Instagram\n* **Style** : Visuel immersif, poétique\n* **Format** : Carrousel culturel ou énigme (Ankamantatra), accroche forte + phrase bilingue\n* **CTA** : Lien en bio pour écouter le conte ou relever le défi dans Kanto\n\n### Facebook\n* **Style** : Communautaire, chaleureux\n* **Ton** : Fihavanana, échange entre générations\n* **CTA** : Demander comment ce proverbe est dit dans différentes régions de Madagascar\n\n### X (Twitter)\n* **Style** : Percutant et concis\n* **Format** : Proverbe ou fait historique + traduction (max 280 caractères)\n* **CTA** : Retweet ou partage de proverbe\n\n### TikTok\n* **Style** : Éducatif dynamique (15-60s)\n* **Format** : Script vidéo immersif (ex: '3 proverbes malgaches qui vont changer ta vision de la famille')\n* **CTA** : Télécharger Kanto pour découvrir plus de contes\n\n### Threads\n* **Style** : Conversationnel et spontané\n* **Contenu** : Réflexion sur une expression idiomatique ou une tradition malgache\n\n### YouTube Shorts\n* **Style** : Mini-documentaire ou énigme illustrée (< 60s)\n* **Format** : Titre fort + description avec liens d'installation\n\n---\n\n## Workflow d'exécution :\n* Thème demandé : {{ $('Webhook').item.json.body.message }}\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=\nTu es le **Directeur Éditorial et Stratège de Contenu Senior de Kanto MG**.\nTu maîtrises parfaitement la culture malgache, l'art oratoire (*Kabary*), les contes populaires (*Angano*), la sagesse ancestrale des proverbes (*Ohabolana*), l'histoire des souverains et des 6 provinces de Madagascar, ainsi que les codes de diffusion sur les réseaux sociaux.\n\n> Date de référence : {{ $now }}\n\nMission principale :\nConcevoir des publications captivantes, dignes, authentiques et bilingues (malgache/français) qui valorisent le patrimoine de Madagascar et développent la notoriété de l'application mobile Kanto MG.\n"
+        }
+      },
+      "id": "c476b280-4177-45ee-b521-e4acc3038ee5",
+      "name": "Contenus pour les réseaux.",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        -832,
+        352
+      ],
+      "retryOnFail": false,
+      "typeVersion": 1.7,
+      "maxTries": 2,
+      "alwaysOutputData": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1splwIVpMGyosMWb_qmBJJrq5gSUSc-BRps4itAlX_64",
+          "mode": "list",
+          "cachedResultName": "kanto_marketing_suivi",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1splwIVpMGyosMWb_qmBJJrq5gSUSc-BRps4itAlX_64/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "suivi_contenu_kanto",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1splwIVpMGyosMWb_qmBJJrq5gSUSc-BRps4itAlX_64/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Contenu": "={{ $('Ajouter thème du contenue').item.json.Contenu }}",
+            "État": "Approuver",
+            "Linkedin": "={{ $('Contenus pour les réseaux.').item.json.output.platform_posts.LinkedIn }}",
+            "Description": "={{ $('Contenus pour les réseaux.').item.json.output.description }}",
+            "Instagram": "={{ $('Contenus pour les réseaux.').item.json.output.platform_posts.Instagram.caption }} :{{ $('Contenus pour les réseaux.').item.json.output.platform_posts.Instagram.hashtags }}",
+            "Tiktok": "={{ $('Contenus pour les réseaux.').item.json.output.platform_posts.TikTok.caption }} |{{ $('Contenus pour les réseaux.').item.json.output.platform_posts.TikTok.call_to_action }} :{{ $('Contenus pour les réseaux.').item.json.output.platform_posts.TikTok.hashtags }} ",
+            "Supplementaires": "={{ $('Contenus pour les réseaux.').item.json.output.platform_posts.Facebook.post }}  |  {{ $('Contenus pour les réseaux.').item.json.output.platform_posts.Threads.text_post }} | ",
+            "Pilier": "={{ $('Contenus pour les réseaux.').item.json.output.pillar }}",
+            "Citation_Mg": "={{ $('Contenus pour les réseaux.').item.json.output.malagasy_quote }}",
+            "Traduction_Fr": "={{ $('Contenus pour les réseaux.').item.json.output.french_translation }}"
+          },
+          "matchingColumns": [
+            "Contenu"
+          ],
+          "schema": [
+            {
+              "id": "Contenu",
+              "displayName": "Contenu",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Instagram",
+              "displayName": "Instagram",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Linkedin",
+              "displayName": "Linkedin",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Tiktok",
+              "displayName": "Tiktok",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Supplementaires",
+              "displayName": "Supplementaires",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "État",
+              "displayName": "État",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        304,
+        592
+      ],
+      "id": "79c5e1a4-c9dc-4d2c-b6eb-c195effb9339",
+      "name": "Update row in sheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "2GO5qMi8KPInGc1p",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1splwIVpMGyosMWb_qmBJJrq5gSUSc-BRps4itAlX_64",
+          "mode": "list",
+          "cachedResultName": "kanto_marketing_suivi",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1splwIVpMGyosMWb_qmBJJrq5gSUSc-BRps4itAlX_64/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "suivi_contenu_kanto",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1splwIVpMGyosMWb_qmBJJrq5gSUSc-BRps4itAlX_64/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Contenu": "={{ $('Ajouter thème du contenue').item.json.Contenu }}",
+            "État": "A approuver"
+          },
+          "matchingColumns": [
+            "Contenu"
+          ],
+          "schema": [
+            {
+              "id": "Contenu",
+              "displayName": "Contenu",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Instagram",
+              "displayName": "Instagram",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Linkedin",
+              "displayName": "Linkedin",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Tiktok",
+              "displayName": "Tiktok",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Supplementaires",
+              "displayName": "Supplementaires",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "État",
+              "displayName": "État",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -16,
+        256
+      ],
+      "id": "f06dd765-8cb2-4b55-adf9-1d7fa5026433",
+      "name": "Update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "2GO5qMi8KPInGc1p",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.data.approved }}",
+                    "rightValue": "Approuver",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "id": "c5858515-5377-4e1f-aa23-e8d4178e6e95"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Approuver"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "41dfbc71-64b6-42d2-8b13-de89f96f02b4",
+                    "leftValue": "={{ $json.data.approved }}",
+                    "rightValue": "A approuver",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "notExists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "A approuver"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ab951d5b-4d32-4c1c-95c5-61de93835853",
+                    "leftValue": "={{ $json.data.approved }}",
+                    "rightValue": "A refaire",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "false",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "A refaire"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        64,
+        704
+      ],
+      "id": "233a8a17-14aa-4451-92dc-6566a04d71a4",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "chatId": "5356857744",
+        "text": "={{\n\"🇲🇬 [Kanto MG] Un contenu culturel est en cours de génération : \" + $('Webhook').item.json.body.message\n}}\n",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -544,
+        32
+      ],
+      "id": "0d12dcca-d25d-4eb3-bbc4-73232b869124",
+      "name": "Notif type de contenue traité",
+      "webhookId": "daba6b5c-8a5a-4714-80d0-1ac0e9b93933",
+      "credentials": {
+        "telegramApi": {
+          "id": "FMfhed8GZu7A5658",
+          "name": "AssistantGeneral"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "5356857744",
+        "text": "={{\n\"⚠️ [Kanto MG] Échec de la génération de contenu pour : \" + $('Webhook').item.json.body.message\n}}\n",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -448,
+        640
+      ],
+      "id": "68fb0bb9-067d-4d3d-b8f0-89c58d780631",
+      "name": "Notif erreur de contenue",
+      "webhookId": "daba6b5c-8a5a-4714-80d0-1ac0e9b93933",
+      "credentials": {
+        "telegramApi": {
+          "id": "Tw63ui7OMvvtI2jv",
+          "name": "devEnGalere-telegram"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1splwIVpMGyosMWb_qmBJJrq5gSUSc-BRps4itAlX_64",
+          "mode": "list",
+          "cachedResultName": "kanto_marketing_suivi",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1splwIVpMGyosMWb_qmBJJrq5gSUSc-BRps4itAlX_64/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "suivi_contenu_kanto",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1splwIVpMGyosMWb_qmBJJrq5gSUSc-BRps4itAlX_64/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Contenu": "={{ $json.body.message }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Contenu",
+              "displayName": "Contenu",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Instagram",
+              "displayName": "Instagram",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Linkedin",
+              "displayName": "Linkedin",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Tiktok",
+              "displayName": "Tiktok",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Supplementaires",
+              "displayName": "Supplementaires",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "État",
+              "displayName": "État",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1088,
+        496
+      ],
+      "id": "18274468-ea5d-455c-af4d-948a7488cc55",
+      "name": "Ajouter thème du contenue",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "2GO5qMi8KPInGc1p",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "contenue-2d53-4d1d-a14c-dc4412e82d15",
+        "authentication": "basicAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1312,
+        496
+      ],
+      "id": "5036bb80-8acc-439b-9d96-dc7d14f31b41",
+      "name": "Webhook",
+      "webhookId": "e1421e98-2d53-4d1d-a14c-dc4412e82d15",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "rufUlN6s3t2Xs2aR",
+          "name": "authentification"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Social Media Content": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Contenus pour les réseaux.",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini LLM": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Contenus pour les réseaux.",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Préparer l’e-mail de relecture",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Préparer l’e-mail de relecture": {
+      "main": [
+        [
+          {
+            "node": "Gmail de Récapitulation",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail de Récapitulation": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contenus pour les réseaux.": {
+      "main": [
+        [
+          {
+            "node": "Notif type de contenue traité",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Préparer l’e-mail de relecture",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notif erreur de contenue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "Contenus pour les réseaux.",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ajouter thème du contenue": {
+      "main": [
+        [
+          {
+            "node": "Contenus pour les réseaux.",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Ajouter thème du contenue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "ed5e75ce-d5df-4dc1-b14e-c649c6c36224",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "30e36f881ae246ce935402c83fdc85ba38584cd6e4b790eb7f5fb41fd8602d78"
+  },
+  "id": "SK2qFCHu-Ib8gqzoG3oSm",
+  "tags": []
+}
