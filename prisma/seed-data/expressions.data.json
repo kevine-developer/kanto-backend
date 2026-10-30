@@ -5,9 +5,15 @@
     "french": "Le sexe faible (littéralement : meuble fragile)",
     "meaning": "Désigne de façon métaphorique la femme, en soulignant sa fragilité perçue ou la tendresse qu'elle inspire. L'expression peut être utilisée de manière affectueuse, mais aussi être perçue comme péjorative ou archaïque selon le contexte.",
     "example": "Parfois utilisée dans les discours traditionnels ou la poésie pour désigner les femmes. 'Tsy maintsy arovana ny fanaka malemy' (Il faut protéger les femmes/le sexe faible).",
-    "themes": ["Métaphore", "Femme", "Société"],
+    "themes": [
+      "Métaphore",
+      "Femme",
+      "Société"
+    ],
     "category": "expression",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -18,10 +24,21 @@
     "french": "Boire du lait",
     "meaning": "Expression imagée et courante pour dire 'être à la retraite'.",
     "example": "I Dadatoa efa misotro ronono, fa tsy miasa intsony. (Mon oncle est à la retraite, il ne travaille plus).",
-    "themes": ["Vie quotidienne", "Travail", "Métaphore"],
+    "themes": [
+      "Vie quotidienne",
+      "Travail",
+      "Métaphore"
+    ],
     "category": "expression",
-    "origins": ["Général"],
-    "dialectVariants": [{ "dialect": "Sakalava", "text": "Misotro tamboho" }],
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [
+      {
+        "dialect": "Sakalava",
+        "text": "Misotro tamboho"
+      }
+    ],
     "viewCount": 0,
     "reportCount": 0
   },
@@ -31,9 +48,14 @@
     "french": "Regarder sans agir",
     "meaning": "Indique la passivité ou le fait de ne pas intervenir face à une situation.",
     "example": "Aza mitazana fotsiny rehefa misy mila fanampiana. (Ne reste pas à regarder sans rien faire quand quelqu'un a besoin d'aide).",
-    "themes": ["Comportement", "Passivité"],
+    "themes": [
+      "Comportement",
+      "Passivité"
+    ],
     "category": "expression",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -44,9 +66,15 @@
     "french": "Agis comme un caméléon",
     "meaning": "Observe attentivement autour de toi avant d’agir, sois prudent et adaptable.",
     "example": "Conseil utile en contexte professionnel pour anticiper les obstacles avant d’agir.",
-    "themes": ["Prudence", "Observation", "Adaptabilité"],
+    "themes": [
+      "Prudence",
+      "Observation",
+      "Adaptabilité"
+    ],
     "category": "expression",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -57,23 +85,34 @@
     "french": "Regarde ce truc neuf !",
     "meaning": "Expression familière pour attirer l’attention sur quelque chose de tout juste acquis.",
     "example": "Tatanta sneakers Benny! (Regarde les baskets toutes neuves de Benny !)",
-    "themes": ["Humour", "Slang", "Nouveauté"],
+    "themes": [
+      "Humour",
+      "Slang",
+      "Nouveauté"
+    ],
     "category": "expression",
-    "origins": ["Argot moderne"],
+    "origins": [
+      "Argot moderne"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
   },
-
   {
     "id": "expressionID-11",
     "malagasy": "Mihanta",
     "french": "Être gâté / pomponné",
     "meaning": "Décrit quelqu’un qui est trop gâté ou habillé de façon sophistiquée.",
     "example": "Il mihanta ! (Il est trop gâté / surhabillé)",
-    "themes": ["Argot", "Apparence", "Humour"],
+    "themes": [
+      "Argot",
+      "Apparence",
+      "Humour"
+    ],
     "category": "expression",
-    "origins": ["Slang"],
+    "origins": [
+      "Slang"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -84,9 +123,14 @@
     "french": "Il a le papillon qui tape l’abat-jour",
     "meaning": "Façon imagée pour dire qu’il est tête en l’air ou perdu.",
     "example": "Izy, misy papillon tapaka abat-jour rehefa misaintsaina.",
-    "themes": ["Humour", "Distraction"],
+    "themes": [
+      "Humour",
+      "Distraction"
+    ],
     "category": "expression",
-    "origins": ["Culture populaire"],
+    "origins": [
+      "Culture populaire"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -97,9 +141,14 @@
     "french": "Aussi charismatique qu’une tortue asthmatique",
     "meaning": "Ironie pour dire qu'une personne manque complètement de charme ou présence.",
     "example": "Tena manan’aina toy ny tortue asthmatique izy.",
-    "themes": ["Humour", "Critique sociale"],
+    "themes": [
+      "Humour",
+      "Critique sociale"
+    ],
     "category": "expression",
-    "origins": ["Humour populaire"],
+    "origins": [
+      "Humour populaire"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -110,9 +159,14 @@
     "french": "Gracieuse comme un panier de marteaux",
     "meaning": "Humour absurde pour qualifier une allure maladroite.",
     "example": "Gracieuse comme un panier de marteaux ao amin'ny chat.",
-    "themes": ["Humour", "Auto-dérision"],
+    "themes": [
+      "Humour",
+      "Auto-dérision"
+    ],
     "category": "expression",
-    "origins": ["Humour populaire"],
+    "origins": [
+      "Humour populaire"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -123,9 +177,14 @@
     "french": "Tromper lumière",
     "meaning": "Faire semblant d’agir sous couverture.",
     "example": "Mikopa jiro ianao rehefa tsy te hahita olona.",
-    "themes": ["Subterfuge", "Comportement"],
+    "themes": [
+      "Subterfuge",
+      "Comportement"
+    ],
     "category": "expression",
-    "origins": ["Tradition orale"],
+    "origins": [
+      "Tradition orale"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -136,9 +195,14 @@
     "french": "Celui qui a un mot pour tout",
     "meaning": "Personne qui sait toujours quoi dire, souvent plein de répartie.",
     "example": "Izy dia tena manan‑keli‑dresaka amin'ny fotoana rehetra.",
-    "themes": ["Conversation", "Vivacité"],
+    "themes": [
+      "Conversation",
+      "Vivacité"
+    ],
     "category": "expression",
-    "origins": ["Tradition orale"],
+    "origins": [
+      "Tradition orale"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -149,9 +213,14 @@
     "french": "Avancer sur l’eau",
     "meaning": "Agir de façon exceptionnelle ou surprenante.",
     "example": "Mibento an‑drano izy rehefa nahavita ny asa haingana.",
-    "themes": ["Performance", "Surprise"],
+    "themes": [
+      "Performance",
+      "Surprise"
+    ],
     "category": "expression",
-    "origins": ["Métaphore populaire"],
+    "origins": [
+      "Métaphore populaire"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -162,9 +231,14 @@
     "french": "Manger avec le piment déjà en yeux",
     "meaning": "Faire face aux conséquences avant même de comprendre.",
     "example": "Mihinana amin'ny tombo‑vina ianao raha miasa tsy voahevitra.",
-    "themes": ["Conséquence", "Attention"],
+    "themes": [
+      "Conséquence",
+      "Attention"
+    ],
     "category": "expression",
-    "origins": ["Tradition orale"],
+    "origins": [
+      "Tradition orale"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -175,9 +249,16 @@
     "french": "Étouffé par un os",
     "meaning": "Se dit d'une personne qui fait face à une difficulté insurmontable ou à un obstacle majeur qui bloque toute progression. C'est une situation de crise ou une épreuve très difficile.",
     "example": "Very asa izy ka toy ny 'kendan'ny taolana', tsy mahita izay atao.",
-    "themes": ["Difficulté", "Obstacle", "Crise", "Métaphore"],
+    "themes": [
+      "Difficulté",
+      "Obstacle",
+      "Crise",
+      "Métaphore"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -188,9 +269,16 @@
     "french": "Avoir une bouche qui ne réfléchit pas, et qui parle pour ne rien dire",
     "meaning": "Désigne une personne qui parle sans réfléchir, dont les propos sont vains, inutiles ou hors de propos. C'est une critique du bavardage irréfléchi.",
     "example": "Aza 'mana-bava tsy mihevitra' fa mandanjalanja ny teny aloha.",
-    "themes": ["Parole", "Bavardage", "Sagesse", "Comportement"],
+    "themes": [
+      "Parole",
+      "Bavardage",
+      "Sagesse",
+      "Comportement"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -201,9 +289,16 @@
     "french": "Grillé trois fois sans être cuit",
     "meaning": "Se dit de quelqu'un d'extrêmement résistant, qui survit à de multiples épreuves ou dangers. C'est une métaphore pour la résilience ou l'endurance hors du commun.",
     "example": "Efa narary mafy imbetsaka izy nefa sitrana foana, olona 'mitono fahatelo tsy maty'.",
-    "themes": ["Résilience", "Endurance", "Force", "Survie"],
+    "themes": [
+      "Résilience",
+      "Endurance",
+      "Force",
+      "Survie"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -214,9 +309,16 @@
     "french": "Longue langue",
     "meaning": "Désigne une personne bavarde, indiscrète, qui a tendance à rapporter les commérages ou à parler plus qu'il ne le faudrait. C'est souvent péjoratif.",
     "example": "Aza mitantara tsiambaratelo aminy fa 'lava lela' io olona io.",
-    "themes": ["Bavardage", "Indiscrétion", "Commérage", "Comportement"],
+    "themes": [
+      "Bavardage",
+      "Indiscrétion",
+      "Commérage",
+      "Comportement"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -227,9 +329,15 @@
     "french": "Avoir un enfant dans la tête",
     "meaning": "Expression idiomatique pour dire 'avoir mal à la tête' ou, plus figurativement, 'avoir beaucoup de soucis, de tracas'.",
     "example": "Tsy afaka miasa tsara aho anio fa 'manana anaka-doha'.",
-    "themes": ["Santé", "Souci", "Métaphore"],
+    "themes": [
+      "Santé",
+      "Souci",
+      "Métaphore"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -240,9 +348,15 @@
     "french": "Mettre de l'eau sur le dos",
     "meaning": "Signifie faire quelque chose d'inutile, dont les effets disparaissent aussitôt, comme l'eau qui sèche sur le dos. C'est l'équivalent de 'donner un coup d'épée dans l'eau'.",
     "example": "Ny mananatra azy dia toy ny 'manao rano an-damosina', tsy misy vokany.",
-    "themes": ["Inutilité", "Effort vain", "Comportement"],
+    "themes": [
+      "Inutilité",
+      "Effort vain",
+      "Comportement"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -253,21 +367,34 @@
     "french": "Honte consumée / épuisée",
     "meaning": "Se dit de quelqu'un qui n'a plus aucune honte, qui est devenu effronté ou sans-gêne. La personne a 'perdu' sa capacité à ressentir de la honte.",
     "example": "Na dia tratra nangalatra aza izy, mbola mitsiky ihany, olona efa 'lany henat...",
-    "themes": ["Honte", "Effronterie", "Comportement"],
+    "themes": [
+      "Honte",
+      "Effronterie",
+      "Comportement"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
-  }, {
+  },
+  {
     "id": "expressionID-X1",
     "malagasy": "Tsy vaky volo",
     "french": "Ne pas casser un cheveu",
     "meaning": "Utilisée pour décrire quelqu'un qui est très doux, inoffensif, ou qui ne ferait pas de mal à une mouche. Elle insiste sur l'extrême délicatesse ou la gentillesse de la personne.",
     "example": "Tsy vaky volo izy, na dia tezitra aza. (Il ne casserait pas un cheveu, même en colère.)",
-    "themes": ["Douceur", "Caractère", "Gentillesse"],
+    "themes": [
+      "Douceur",
+      "Caractère",
+      "Gentillesse"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": []
   },
   {
@@ -276,9 +403,15 @@
     "french": "Faire le soleil couchant",
     "meaning": "Désigne une personne qui fait semblant d'être absente ou de ne pas voir quelque chose pour éviter une tâche, une confrontation ou une responsabilité. C'est l'équivalent de 'faire l'autruche' ou 'faire semblant de dormir'.",
     "example": "Manao masoandro mody izy rehefa misy asa tokony hatao. (Il fait le soleil couchant quand il y a du travail à faire.)",
-    "themes": ["Comportement", "Fuite", "Responsabilité"],
+    "themes": [
+      "Comportement",
+      "Fuite",
+      "Responsabilité"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": []
   },
   {
@@ -287,9 +420,15 @@
     "french": "Donner la faute / Accuser",
     "meaning": "Expression utilisée pour dire 'blâmer', 'reprocher', ou 'accuser' quelqu'un d'une erreur ou d'un tort.",
     "example": "Aza manome tsiny ahy amin'ny zavatra tsy nataoko. (Ne me blâme pas pour ce que je n'ai pas fait.)",
-    "themes": ["Responsabilité", "Conflit", "Accusation"],
+    "themes": [
+      "Responsabilité",
+      "Conflit",
+      "Accusation"
+    ],
     "category": "expression",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": []
   },
   {
@@ -298,9 +437,15 @@
     "french": "Courir comme le vent",
     "meaning": "Décrit quelqu'un qui est très rapide ou qui fait quelque chose à une vitesse impressionnante.",
     "example": "Mihazakazaka toy ny rivotra izy rehefa lalao baolina. (Il court comme le vent quand il joue au football.)",
-    "themes": ["Vitesse", "Performance", "Agilité"],
+    "themes": [
+      "Vitesse",
+      "Performance",
+      "Agilité"
+    ],
     "category": "expression",
-    "origins": ["Métaphore populaire"],
+    "origins": [
+      "Métaphore populaire"
+    ],
     "dialectVariants": []
   },
   {
@@ -309,9 +454,15 @@
     "french": "Faire un nœud de fusil (impossible à défaire)",
     "meaning": "Signifie prendre une décision ferme et irrévocable, ne pas revenir en arrière, ou agir de manière décisive.",
     "example": "Efa nanao fehim-basy izahay fa hiala eto. (Nous avons déjà pris une décision ferme de partir d'ici.)",
-    "themes": ["Décision", "Fermeté", "Volonté"],
+    "themes": [
+      "Décision",
+      "Fermeté",
+      "Volonté"
+    ],
     "category": "expression",
-    "origins": ["Tradition orale"],
+    "origins": [
+      "Tradition orale"
+    ],
     "dialectVariants": []
   },
   {
@@ -320,19 +471,32 @@
     "french": "Avoir de grands yeux",
     "meaning": "Employée pour décrire quelqu'un qui est cupide, avide, ou qui désire toujours plus que ce qu'il a ou ce qui lui est dû.",
     "example": "Manana maso be izy, tsy afa-po na oviana na oviana. (Il a de grands yeux, il n'est jamais satisfait.)",
-    "themes": ["Caractère", "Avarice", "Désir"],
+    "themes": [
+      "Caractère",
+      "Avarice",
+      "Désir"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": []
-  },{
+  },
+  {
     "id": "expressionID-X7",
     "malagasy": "Manao an-doloha",
     "french": "Faire à la tête / de front",
     "meaning": "Agir de manière directe, sans détour, ou prendre les devants. Peut aussi signifier affronter une situation directement.",
     "example": "Manao an-doloha izy manoloana ny olana. (Il fait face au problème de front.)",
-    "themes": ["Action", "Détermination", "Courage"],
+    "themes": [
+      "Action",
+      "Détermination",
+      "Courage"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": []
   },
   {
@@ -341,9 +505,15 @@
     "french": "Aller petit à petit",
     "meaning": "Avancer lentement mais sûrement, étape par étape. Insiste sur la patience et la persévérance.",
     "example": "Mandeha tsikelikely ny fanamboarana ny trano. (La construction de la maison avance petit à petit.)",
-    "themes": ["Patience", "Progrès", "Persévérance"],
+    "themes": [
+      "Patience",
+      "Progrès",
+      "Persévérance"
+    ],
     "category": "expression",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": []
   },
   {
@@ -352,9 +522,15 @@
     "french": "Avoir les mains chaudes",
     "meaning": "Désigne quelqu'un qui a de la chance, surtout aux jeux ou dans les affaires. Peut aussi signifier être doué pour faire pousser des choses (jardinage).",
     "example": "Manana tanana mafana izy amin'ny filokana. (Il a les mains chaudes aux jeux de hasard.)",
-    "themes": ["Chance", "Fortune", "Habilité"],
+    "themes": [
+      "Chance",
+      "Fortune",
+      "Habilité"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": []
   },
   {
@@ -363,9 +539,15 @@
     "french": "Viser loin",
     "meaning": "Avoir des ambitions élevées, des objectifs à long terme, ou une vision d'avenir. Penser au-delà de l'immédiat.",
     "example": "Tokony hikendry lavitra isika raha te hahomby. (Nous devons viser loin si nous voulons réussir.)",
-    "themes": ["Ambition", "Vision", "Objectifs"],
+    "themes": [
+      "Ambition",
+      "Vision",
+      "Objectifs"
+    ],
     "category": "expression",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": []
   },
   {
@@ -374,9 +556,15 @@
     "french": "Perdre sa part / être désavantagé",
     "meaning": "Signifie être privé de sa part légitime, être désavantagé, ou ne pas recevoir ce qui est dû.",
     "example": "Very anjara izy tamin'ny fizarana ny lova. (Il a été désavantagé lors du partage de l'héritage.)",
-    "themes": ["Injustice", "Perte", "Désavantage"],
+    "themes": [
+      "Injustice",
+      "Perte",
+      "Désavantage"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": []
   },
   {
@@ -385,19 +573,32 @@
     "french": "Riche en bouche",
     "meaning": "Désigne quelqu'un qui parle beaucoup de sa richesse ou de ses réalisations, mais qui, en réalité, n'a pas grand-chose. C'est le fait de se vanter sans substance.",
     "example": "Manan-karena am-bava fotsiny izy, tsy misy porofo. (Il n'est riche qu'en paroles, il n'y a aucune preuve.)",
-    "themes": ["Vanité", "Apparence", "Hypocrisie"],
+    "themes": [
+      "Vanité",
+      "Apparence",
+      "Hypocrisie"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": []
-  },{
+  },
+  {
     "id": "expressionID-X13",
     "malagasy": "Manao kely loha",
     "french": "Faire une petite tête",
     "meaning": "Se dit de quelqu'un qui **fait la moue, boude ou se vexe facilement**. Indique un comportement un peu capricieux ou une sensibilité à la critique.",
     "example": "Manao kely loha foana izy rehefa tsy nahazo izay niriny. (Il fait toujours la petite tête quand il n'obtient pas ce qu'il veut.)",
-    "themes": ["Comportement", "Humeur", "Caprice"],
+    "themes": [
+      "Comportement",
+      "Humeur",
+      "Caprice"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": []
   },
   {
@@ -406,9 +607,15 @@
     "french": "Partir à sec / Échouer",
     "meaning": "Signifie **échouer, ne rien obtenir après un effort, ou repartir bredouille**. Un effort n'a pas été récompensé.",
     "example": "Niezaka izy nefa niala maina. (Il a essayé mais a échoué / n'a rien obtenu.)",
-    "themes": ["Échec", "Effort vain", "Déception"],
+    "themes": [
+      "Échec",
+      "Effort vain",
+      "Déception"
+    ],
     "category": "expression",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": []
   },
   {
@@ -417,9 +624,15 @@
     "french": "Avoir de grandes oreilles",
     "meaning": "Désigne quelqu'un qui est **très à l'écoute, attentif aux ragots ou aux conversations**. Peut aussi impliquer une tendance à écouter aux portes.",
     "example": "Mitandrema amin'izay lazainao fa manana sofina be izy. (Fais attention à ce que tu dis car il a de grandes oreilles.)",
-    "themes": ["Écoute", "Indiscrétion", "Curiosité"],
+    "themes": [
+      "Écoute",
+      "Indiscrétion",
+      "Curiosité"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": []
   },
   {
@@ -428,9 +641,15 @@
     "french": "Tuer le temps",
     "meaning": "Signifie **passer le temps sans but précis, s'ennuyer ou faire des activités peu productives juste pour faire passer le temps**.",
     "example": "Mijery tele fotsiny aho mba hamono fotoana. (Je regarde juste la télé pour tuer le temps.)",
-    "themes": ["Temps", "Ennui", "Loisir"],
+    "themes": [
+      "Temps",
+      "Ennui",
+      "Loisir"
+    ],
     "category": "expression",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": []
   },
   {
@@ -439,9 +658,15 @@
     "french": "Faire l'œil aveugle",
     "meaning": "Ignorer volontairement une situation, **faire semblant de ne pas voir quelque chose** qui est évident ou qui nécessite une intervention. C'est le fait de fermer les yeux sur quelque chose.",
     "example": "Nanao maso jamba tamin'ny fandikan-dalàna izy. (Il a fermé les yeux sur l'infraction.)",
-    "themes": ["Comportement", "Ignorance", "Responsabilité"],
+    "themes": [
+      "Comportement",
+      "Ignorance",
+      "Responsabilité"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": []
   },
   {
@@ -450,9 +675,645 @@
     "french": "Parler à gauche",
     "meaning": "Signifie **parler indirectement, faire des allusions ou critiquer quelqu'un sans le nommer directement**. C'est une forme de communication évasive ou de commérage indirect.",
     "example": "Aza mitory teny an-kavia, lazao mivantana izay tianao holazaina. (Ne parle pas à gauche, dis directement ce que tu veux dire.)",
-    "themes": ["Communication", "Critique", "Commérage"],
+    "themes": [
+      "Communication",
+      "Critique",
+      "Commérage"
+    ],
     "category": "expression",
-    "origins": ["Populaire"],
+    "origins": [
+      "Populaire"
+    ],
     "dialectVariants": []
+  },
+  {
+    "id": "expressionID-101",
+    "malagasy": "Nitoto nahafotsy, nahandro nahamasaka.",
+    "french": "Avoir pilé le riz jusqu'à le blanchir, l'avoir cuit jusqu'à pleine cuisson.",
+    "meaning": "Expression idiomatique désignant le fait d'avoir accompli une tâche, un devoir ou une responsabilité avec dévouement depuis le début jusqu'à son achèvement complet.",
+    "example": "Misaotra ny ray aman-dreny sy ny mpikarakara rehetra izay nitoto nahafotsy sy nahandro nahamasaka tamin'izao lanonana izao.",
+    "themes": [
+      "Travail",
+      "Persévérance",
+      "Gratitude"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "nitoutou nahafoutsi, nahandrou nahamasaka",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-102",
+    "malagasy": "Mandry an-driran'antsy.",
+    "french": "Dormir sur le tranchant d'un couteau.",
+    "meaning": "Vivre dans une inquiétude constante, dans l'insécurité ou l'angoisse permanente d'un danger imminent, sans pouvoir trouver le repos de l'esprit.",
+    "example": "Mandry an-driran'antsy ny mponina amin'iny faritra iny rehefa miakatra be ny rano amin'ny fotoam-pahavaratra.",
+    "themes": [
+      "Inquiétude",
+      "Danger",
+      "Vie quotidienne"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "mandri an-driran antsi",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-103",
+    "malagasy": "Nofon-kena mitam-pihavanana.",
+    "french": "Morceau de viande qui scelle et entretient la fraternité.",
+    "meaning": "Désigne la part de viande partagée lors des cérémonies pour manifester l'unité communautaire et, par extension, tout présent offert pour raffermir les liens d'amitié.",
+    "example": "Indro ny fanomezana kely atolotra anareo ho toy ny nofon-kena mitam-pihavanana.",
+    "themes": [
+      "Fihavanana",
+      "Partage",
+      "Tradition"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "noufoun-kena mitam-pihavanana",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-104",
+    "malagasy": "Mahitsy ohatra ny tsinaim-balala.",
+    "french": "Droit comme l'intestin d'une sauterelle.",
+    "meaning": "Qualifie une personne d'une franchise absolue, directe et sans détour, ou un propos dépourvu de toute dissimulation.",
+    "example": "Tsy mba mahay miolakolaka izany i Dadabe fa mahitsy ohatra ny tsinaim-balala ny teniny.",
+    "themes": [
+      "Franchise",
+      "Caractère",
+      "Vérité"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "mahitsi ouhatra ni tsinaim-balala",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-105",
+    "malagasy": "Manao ambatonikaky.",
+    "french": "Se montrer inflexible comme le rocher du père ; refuser tout marchandage.",
+    "meaning": "Qualifie quelqu'un qui campe fermement sur sa position, et plus particulièrement un commerçant qui refuse toute négociation sur son prix.",
+    "example": "Niezaka niady varotra ihany izahay teny an-tsena fa nanao ambatonikaky ilay mpivarotra.",
+    "themes": [
+      "Commerce",
+      "Fermeté",
+      "Vie quotidienne"
+    ],
+    "category": "expression",
+    "origins": [
+      "Hautes Terres"
+    ],
+    "dialectVariants": [],
+    "phonetic": "manaou ambatounikaki",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-106",
+    "malagasy": "Vangavanga manan-tsoratra, sadasada manana endrika.",
+    "french": "Tacheté mais non sans motifs, bigarré mais non sans allure.",
+    "meaning": "Expression idiomatique employée avec modestie pour présenter une œuvre, un discours ou un présent qui, sans être parfait, possède son charme et sa valeur propre.",
+    "example": "Indro atolotra anareo ity boky kely nosoratako ity : vangavanga manan-tsoratra, sadasada manana endrika.",
+    "themes": [
+      "Modestie",
+      "Kabary",
+      "Esthétique"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "vangavanga manan-tsouratra, sadasada manana endrika",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-107",
+    "malagasy": "Manahaza tena.",
+    "french": "Se tenir à sa juste mesure ; savoir se contenter avec dignité.",
+    "meaning": "Avoir le sens de la mesure et de la modération, agir selon ses moyens réels sans ostentation ni excès.",
+    "example": "Olona mahay manahaza tena i Rabe ka tsy mba miditra amin'ny trosa mihoatra ny fahafahany.",
+    "themes": [
+      "Modération",
+      "Sagesse",
+      "Dignité"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "manahaza tena",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-108",
+    "malagasy": "Tsy hita veroka.",
+    "french": "Dont on ne saisit ni le fond ni le secret ; insondable, inexplicable.",
+    "meaning": "Qualifie un mystère, une attitude ou un événement dont on ne parvient pas à comprendre la cause ou le fonctionnement caché.",
+    "example": "Tsy hita veroka mihitsy izay antony nahatonga azy niova hevitra tampoka teo.",
+    "themes": [
+      "Mystère",
+      "Pensée",
+      "Incertitude"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "tsi hita verouka",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-109",
+    "malagasy": "Manokom-bary olona.",
+    "french": "À l'heure où les gens mettent la marmite de riz sur le feu.",
+    "meaning": "Locution traditionnelle désignant la tombée du jour, moment où chaque foyer prépare le repas du soir.",
+    "example": "Tonga tao an-tanàna izahay tokony ho tamin'ny manokom-bary olona.",
+    "themes": [
+      "Temps",
+      "Tradition",
+      "Vie quotidienne"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "manoukoum-bari oulouna",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-110",
+    "malagasy": "Manao voro-mitahy havana.",
+    "french": "Agir comme un oiseau qui ne bénit que sa propre parenté ; faire preuve de mollesse ou de favoritisme.",
+    "meaning": "Travailler sans ardeur, ménager ses efforts ou favoriser indûment ses proches au détriment de l'intérêt général.",
+    "example": "Tsy azo atao ny miraviravy tanana sy manao voro-mitahy havana rehefa miatrika adidy iombonana.",
+    "themes": [
+      "Devoir",
+      "Impartialité",
+      "Travail"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "manaou vourou-mitahi havana",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-111",
+    "malagasy": "Tsy misy kitotony.",
+    "french": "Sans rime ni raison ; dépourvu de tout sens et de tout ordre.",
+    "meaning": "Qualifie un propos incohérent, une affaire désordonnée ou une conduite qui n'a ni queue ni tête.",
+    "example": "Aza mandany andro mihaino resaka tsy misy kitotony toy izany.",
+    "themes": [
+      "Ordre",
+      "Parole",
+      "Logique"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "tsi misi kitoutouni",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-112",
+    "malagasy": "Tsy taka-polopolorina.",
+    "french": "D'une profondeur insondable ; qui dépasse l'entendement.",
+    "meaning": "Qualifie une pensée, un mystère ou un abîme si profond que l'esprit humain ne peut en atteindre la limite.",
+    "example": "Lalina sy tsy taka-polopolorina ny fahendrena voarakitra ao amin'ireny ohabolan'ny Ntaolo ireny.",
+    "themes": [
+      "Profondeur",
+      "Sagesse",
+      "Philosophie"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "tsi taka-pouloupoulourina",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-113",
+    "malagasy": "Feno tafotafo.",
+    "french": "Plein à ras bord ; comble au point de dépasser la mesure.",
+    "meaning": "Se dit initialement d'une mesure de grain qui déborde en dôme au-dessus du bord, et au figuré d'un lieu ou d'un cœur comblé.",
+    "example": "Feno tafotafo ny tsena isaky ny alakamisy amin'ny fotoana fiakaran'ny vokatra.",
+    "themes": [
+      "Abondance",
+      "Mesure",
+      "Vie quotidienne"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "fenou tafoutafou",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-114",
+    "malagasy": "Manao toho-tsofina.",
+    "french": "Parler tout contre l'oreille ; souffler des conseils secrets ou influencer en cachette.",
+    "meaning": "Chuchoter à l'oreille de quelqu'un pour l'influencer discrètement, le prévenir ou l'inciter à agir d'une certaine manière.",
+    "example": "Nisy nanao toho-tsofina taminy teo am-pivoriana ka niova tampoka ny fanapahan-keviny.",
+    "themes": [
+      "Parole",
+      "Discrétion",
+      "Influence"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "manaou touhou-tsoufina",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-115",
+    "malagasy": "Miraviravy tanana.",
+    "french": "Laisser pendre les bras ; rester les bras croisés dans l'inaction.",
+    "meaning": "Demeurer passif, découragé ou oisif face à un travail à accomplir ou une difficulté à surmonter.",
+    "example": "Tsy fotoanan'ny firaviraviana tanana izao fa mila mihetsika sy miasa mafy ny rehetra.",
+    "themes": [
+      "Action",
+      "Travail",
+      "Courage"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "miraviravi tanana",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-116",
+    "malagasy": "Manao tsimbalivaly.",
+    "french": "Se rendre la pareille ; agir par réciprocité.",
+    "meaning": "Répondre à un acte par un acte équivalent, qu'il s'agisse d'un échange de bons procédés ou d'une riposte.",
+    "example": "Nifanampy tamin'ny fijinjana vary izy ireo satria fanaon'ny mpiray tanàna ny manao tsimbalivaly amin'ny asa.",
+    "themes": [
+      "Réciprocité",
+      "Entraide",
+      "Relations humaines"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "manaou tsimbalivali",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-117",
+    "malagasy": "Latsaka an-kady.",
+    "french": "Tombé dans le fossé ; plongé dans une situation critique ou un grand embarras.",
+    "meaning": "Par allusion aux profonds fossés défensifs entourant les anciens villages, signifie subir un revers grave ou se retrouver dans l'impasse.",
+    "example": "Nanampy azy avy hatrany ny havany rehefa nahita fa latsaka an-kady ny raharahany.",
+    "themes": [
+      "Épreuve",
+      "Solidarité",
+      "Vie quotidienne"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "latsaka an-kadi",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-118",
+    "malagasy": "Manao vy very ny ainy.",
+    "french": "Considérer sa vie comme du fer perdu ; se dévouer au péril de sa vie.",
+    "meaning": "Faire preuve d'un courage et d'une abnégation extrêmes en s'engageant corps et âme pour une noble cause sans craindre le danger.",
+    "example": "Nanao vy very ny ainy ireo mpamonjy voina mba hanavotana ireo ankizy tratran'ny tondra-drano.",
+    "themes": [
+      "Courage",
+      "Sacrifice",
+      "Héroïsme"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "manaou vi veri ni aini",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-119",
+    "malagasy": "Tsy hita avanavana.",
+    "french": "Sans commune mesure ; séparé par un écart immense.",
+    "meaning": "Indique une différence considérable de taille, de niveau ou de valeur entre deux réalités que l'on compare.",
+    "example": "Tsy hita avanavana ny fivoaran'ilay tanàna raha oharina tamin'ny endriny folo taona lasa izay.",
+    "themes": [
+      "Comparaison",
+      "Grandeur",
+      "Langue"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "tsi hita avanavana",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-120",
+    "malagasy": "Danin'ny kibo.",
+    "french": "Au gré de son désir ; pour le seul plaisir de se satisfaire.",
+    "meaning": "Attestée dans le Rakibolana Malagasy sous l'entrée dany, cette expression signifie agir selon son bon plaisir ou céder à ses envies.",
+    "example": "Nividy voankazo maro teny an-tsena izy ireo mba hihinana izay danin'ny kibony.",
+    "themes": [
+      "Plaisir",
+      "Liberté",
+      "Vie quotidienne"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "danin ni kibou",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-121",
+    "malagasy": "Vaky vava.",
+    "french": "Avoir la bouche qui s'ouvre d'étonnement ; ne pouvoir retenir une exclamation d'admiration ou de surprise.",
+    "meaning": "Être si impressionné, émerveillé ou stupéfait devant un spectacle ou une parole que l'on exprime spontanément son émotion à voix haute.",
+    "example": "Vaky vava ny mpijery rehetra nahita ny hakanton'ny sary sokitra nataon'ilay mpanao asa tanana.",
+    "themes": [
+      "Admiration",
+      "Surprise",
+      "Émotion"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "vaki vava",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-122",
+    "malagasy": "Manao tari-dositra.",
+    "french": "Prendre la poudre d'escampette ; s'enfuir à toutes jambes.",
+    "meaning": "Quitter brusquement un lieu en courant pour échapper à un danger, à une réprimande ou à une responsabilité.",
+    "example": "Nanao tari-dositra ireo vorona rehefa nandre ny feon'ny kotro-baratra.",
+    "themes": [
+      "Fuite",
+      "Mouvement",
+      "Vie quotidienne"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "manaou tari-dousitra",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-123",
+    "malagasy": "Mikaon-doha.",
+    "french": "Rapprocher les têtes ; se concerter étroitement pour délibérer.",
+    "meaning": "Se réunir pour réfléchir ensemble, échanger des avis et prendre une décision commune face à une question importante.",
+    "example": "Nikaon-doha teo an-tokotany ny loholona mba handaminana ny fandaharam-potoanan'ny lanonana.",
+    "themes": [
+      "Concertation",
+      "Sagesse",
+      "Communauté"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "mikaoun-douha",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-124",
+    "malagasy": "Rava sarona.",
+    "french": "Avoir son couvercle ôté ; voir un secret dévoilé au grand jour.",
+    "meaning": "Se dit d'une affaire cachée, d'un complot ou d'un mystère qui finit par être découvert et connu de tous.",
+    "example": "Rava sarona ihany tamin'ny farany ny marina momba ilay raharaha nafenina hatry ny ela.",
+    "themes": [
+      "Vérité",
+      "Secret",
+      "Justice"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "rava sarouna",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-125",
+    "malagasy": "Mamindra fo.",
+    "french": "Déplacer son cœur vers autrui ; faire preuve de miséricorde et de compassion.",
+    "meaning": "Pardonner avec bienveillance, s'attendrir devant la détresse ou le repentir d'autrui en renonçant à la rigueur ou à la colère.",
+    "example": "Nifona tamim-pahatsorana ilay diso ka namindra fo taminy ny ray aman-dreniny.",
+    "themes": [
+      "Pardon",
+      "Compassion",
+      "Bienveillance"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "mamindra fou",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-126",
+    "malagasy": "Toran-tany.",
+    "french": "Pâmé de pleurs ; secoué de sanglots inextinguibles.",
+    "meaning": "Attestée dans le Rakibolana Malagasy, cette expression décrit une personne qui pleure à chaudes larmes au point d'en perdre le souffle.",
+    "example": "Toran-tany ilay zazakely rehefa tsy nahita an-dreniny teo akaikiny.",
+    "themes": [
+      "Émotion",
+      "Tristesse",
+      "Langue"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "touran-tani",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-127",
+    "malagasy": "Manao tokantranomaso.",
+    "french": "Faire ménage sous le seul regard des yeux ; vivre maritalement sans mariage officiel ni coutumier.",
+    "meaning": "Expression idiomatique désignant un couple qui cohabite sans avoir encore accompli les rites traditionnels ni le mariage civil.",
+    "example": "Nanapa-kevitra ny hanatanteraka ny vodiondry sy ny soratra izy roa mba tsy hanao tokantranomaso intsony.",
+    "themes": [
+      "Mariage",
+      "Tradition",
+      "Société"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "manaou toukantranoumasou",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-128",
+    "malagasy": "Velom-bolo.",
+    "french": "Voir son pelage reprendre vie ; reprendre espoir et vigueur.",
+    "meaning": "Retrouver le sourire, l'enthousiasme et la confiance après une période d'inquiétude ou de fatigue.",
+    "example": "Velom-bolo ny tantsaha rehefa nilatsaka ny orana voalohany tamin'ny taom-pambolena.",
+    "themes": [
+      "Espoir",
+      "Joie",
+      "Renouveau"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "veloum-boulou",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-129",
+    "malagasy": "Mikely soroka.",
+    "french": "Rétrécir les épaules ; ménager sa peine ou rechigner à l'effort.",
+    "meaning": "Presque toujours employée à la forme négative (tsy mikely soroka), cette expression signifie ne pas ménager ses efforts et travailler avec une ardeur infatigable.",
+    "example": "Tsy nikely soroka mihitsy ianao nanabe sy nampianatra ireo mpianatra mandritra ny taona.",
+    "themes": [
+      "Effort",
+      "Dévouement",
+      "Travail"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "mikeli sourouka",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "expressionID-130",
+    "malagasy": "Manao antsirambina.",
+    "french": "Traiter par-dessus l'épaule ; négliger ou bâcler une responsabilité.",
+    "meaning": "Accomplir une tâche sans soin, avec désinvolture ou indifférence, sans lui accorder l'attention qu'elle mérite.",
+    "example": "Aza atao antsirambina ny fikojakojana ny fahasalamana sy ny fanabeazana ny ankizy.",
+    "themes": [
+      "Soin",
+      "Responsabilité",
+      "Travail"
+    ],
+    "category": "expression",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "manaou antsirambina",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
   }
 ]

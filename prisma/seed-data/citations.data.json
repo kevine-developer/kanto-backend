@@ -4,8 +4,16 @@
     "citationMg": "Andrianiko ny teniko, ny an'ny hafa koa feheziko.",
     "citationFr": "Je tiens ma langue en souveraine estime, et je maîtrise aussi celles des autres.",
     "source": "Henri Rahaingoson (Di...)",
-    "contexte": "Devise formulée en 1993 lors de l'instauration des journées de la langue malgache et adoptée comme devise de promotion du malgache par l'Académie Malgache.",
-    "themes": ["Langue", "Identité", "Ouverture", "Patrimoine"]
+    "contexte": "Devise formulée en 1993 lors de l'instauration des journées de la langue malgache et adoptée par l'Académie Malgache.",
+    "themes": [
+      "Langue",
+      "Identité",
+      "Ouverture",
+      "Patrimoine"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
   },
   {
     "id": "citationID-102",
@@ -13,7 +21,15 @@
     "citationFr": "La mer est la limite de ma rizière.",
     "source": "Andrianampoinimerina",
     "contexte": "Déclaration politique historique du souverain (règne env. 1787-1810) exprimant la volonté d'unifier l'ensemble de l'île de Madagascar.",
-    "themes": ["Histoire", "Unité", "Souveraineté", "Territoire"]
+    "themes": [
+      "Histoire",
+      "Unité",
+      "Souveraineté",
+      "Territoire"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
   },
   {
     "id": "citationID-103",
@@ -21,7 +37,15 @@
     "citationFr": "La langue et l'esprit d'une nation ont leurs vies intimement entrelacées.",
     "source": "Randja Zanamihoatra",
     "contexte": "Extrait de l'ouvrage Vainafo tononkira (p. 9).",
-    "themes": ["Langue", "Nation", "Pensée", "Culture"]
+    "themes": [
+      "Langue",
+      "Nation",
+      "Pensée",
+      "Culture"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
   },
   {
     "id": "citationID-104",
@@ -29,7 +53,15 @@
     "citationFr": "S'il est quelqu'un qui cherche la vraie joie / Que le mal ne saurait jamais détruire, / Il n'est qu'une seule réponse possible : / L'Espérance !",
     "source": "Régis Rajemisa-Raolison",
     "contexte": "Strophe poétique célébrant la résilience et l'espérance.",
-    "themes": ["Espérance", "Joie", "Poésie", "Sagesse"]
+    "themes": [
+      "Espérance",
+      "Joie",
+      "Poésie",
+      "Sagesse"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
   },
   {
     "id": "citationID-105",
@@ -37,7 +69,14 @@
     "citationFr": "Car tu es mon amour, ma joie, mon bonheur… Racine de vie, but unique, oui le seul sur lequel je m'appuie…",
     "source": "Dox (Jean Verdi Salomon Razakandraina)",
     "contexte": "Premiers vers du poème Antsam-pitiavana, publié dans Izy Mirahavavy (1940) et le recueil Folihala.",
-    "themes": ["Amour", "Poésie", "Littérature"]
+    "themes": [
+      "Amour",
+      "Poésie",
+      "Littérature"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
   },
   {
     "id": "citationID-106",
@@ -45,6 +84,391 @@
     "citationFr": "Si la bouche vient à être blessée, la main s'élève pour la caresser ; et si la main est blessée à son tour, voici la bouche qui souffle sur elle.",
     "source": "Rado (Georges Andriamanantena)",
     "contexte": "Vers illustrant la complémentarité et l'entraide fraternelle au sein d'une même communauté.",
-    "themes": ["Solidarité", "Entraide", "Fraternité", "Poésie"]
+    "themes": [
+      "Solidarité",
+      "Entraide",
+      "Fraternité",
+      "Poésie"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-107",
+    "citationMg": "Mangataka indrindra ny mpanoratra any an-tsiraka aho mba hanangona sy handika ny fitenintsika izay tonon-kira aman-kalo tanindrana mety ho hitany ary handefa azy aty amiko.",
+    "citationFr": "Je prie instamment les écrivains des régions côtières de recueillir et de transcrire dans notre langue les chants et poèmes régionaux qu'ils pourront trouver et de me les envoyer.",
+    "source": "Jean-Joseph Rabearivelo",
+    "contexte": "Appel à la collecte du patrimoine oral de toute l'île publié dans le journal Ny Fandrosoam-baovao (n° 3, 19 septembre 1931).",
+    "themes": [
+      "Patrimoine",
+      "Langue",
+      "Littérature",
+      "Unité"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-108",
+    "citationMg": "Mikasoka amin'ny voninkazo koa ny molotro, ny voninkazo mihasaro-pantarina ary mihatsara tarehy, ary sahisahy tampoka.",
+    "citationFr": "Mes lèvres effleurent aussi les fleurs, ces fleurs qui deviennent plus mystérieuses et plus belles, et soudain pleines d'audace.",
+    "source": "Jean-Joseph Rabearivelo",
+    "contexte": "Extrait du poème LVII (avril 1932) du recueil bilingue Nadika tamin'ny Alina / Traduit de la Nuit.",
+    "themes": [
+      "Poésie",
+      "Nature",
+      "Beauté"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-109",
+    "citationMg": "Ny mpifankatia dia tsy mba manam-piadanana tanteraka, fa ny fahoriana mandalo sy ny loza mihelina no tohatra hiakarany ho amin'ny fahasambarana.",
+    "citationFr": "Ceux qui s'aiment ne connaissent pas un repos absolu, mais les peines passagères et les épreuves éphémères sont l'échelle par laquelle ils s'élèvent vers le bonheur.",
+    "source": "Samuel Ratany",
+    "contexte": "Publié dans la revue littéraire Vakio ity (n° 12, avril 1922).",
+    "themes": [
+      "Amour",
+      "Bonheur",
+      "Épreuve",
+      "Sagesse"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-110",
+    "citationMg": "Akanga saraky ny ala anie aho : misento ny alan-tapia, miherikerika an-tanin'olona, tsy mba manana izay hantsoina.",
+    "citationFr": "Je suis une pintade séparée de sa forêt : je soupire après le bois de tapia, je regarde autour de moi en terre étrangère, sans avoir personne à appeler.",
+    "source": "Fredy Rajaofera",
+    "contexte": "Premiers vers du célèbre poème nostalgique Kalon'ny Ntaolo.",
+    "themes": [
+      "Nostalgie",
+      "Terre natale",
+      "Poésie"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-111",
+    "citationMg": "Iry tendrombohitra tomandavana, / Soa malomaloka mavamavana ; / Topazo maso fa raha tazanina, / Manerinerina mahamanina ! / Izay tsy ho manina, ho'aho, mandainga, / Fa olon-te hody, ka te hanainga !",
+    "citationFr": "Ces montagnes qui s'étendent au loin, / Belles sous leur voile d'ombre et de clarté ; / Jette-leur un regard car, à les contempler, / Leur hauteur majestueuse éveille le mal du pays ! / Qui prétend ne pas avoir la nostalgie ment, / Car le cœur aspire à rentrer et veut déjà partir !",
+    "source": "Ny Avana Ramanantoanina",
+    "contexte": "Strophe d'ouverture du célèbre poème Vazon'ny lavitra, composé durant son exil à Mayotte.",
+    "themes": [
+      "Nostalgie",
+      "Exil",
+      "Patrie",
+      "Poésie"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-112",
+    "citationMg": "Angamba tsikitsiky ho azy nalefanao tsy iniana… / Tsy takatrao ny halehibeny, tsy nampoizinao ny asany… / Voninkazo iny anefa, voninkazom-pifaliana… / Nisy tia nioty azy, ny tsikitsikinao dia lasany !",
+    "citationFr": "Ce n'était peut-être qu'un sourire lancé sans y penser… / Tu n'en mesurais pas la grandeur, tu n'en soupçonnais pas l'effet… / C'était pourtant une fleur, une fleur de joie… / Quelqu'un a aimé la cueillir, et ton sourire fut sien !",
+    "source": "Dox (Jean Verdi Salomon Razakandraina)",
+    "contexte": "Première strophe du poème Ny Tsikitsikinao, extrait du recueil Folihala (p. 61).",
+    "themes": [
+      "Joie",
+      "Bienveillance",
+      "Poésie",
+      "Relations humaines"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-113",
+    "citationMg": "Lasa izay ilay sombiniaina, 'lay malala eram-po, / Nantenaina hotezaina, iza ange no nanampo ? / Amin'ny ananana azy mahafatifaty indrindra, / Vao mba nianatra miteny, vao mba nianatra mamindra !",
+    "citationFr": "Elle s'en est allée, cette parcelle de vie, cette bien-aimée de tout mon cœur, / Que l'on espérait élever, qui donc aurait pu le prévoir ? / À l'âge même où elle était la plus attachante, / Apprenant tout juste à parler, apprenant tout juste à marcher !",
+    "source": "Dox (Jean Verdi Salomon Razakandraina)",
+    "contexte": "Strophe initiale du poème élégiaque Lasa.",
+    "themes": [
+      "Deuil",
+      "Amour paternel",
+      "Émotion",
+      "Poésie"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-114",
+    "citationMg": "Ekeko fa misy veloma tokoa atao amin'ny maty : arahina saona, fa fara-veloma mangidy kokoa ny an'izay velona tsy afaka hihaona.",
+    "citationFr": "Je conviens qu'il est des adieux que l'on adresse aux morts, accompagnés de deuil ; mais plus amer encore est l'ultime adieu de ceux qui sont vivants sans pouvoir se revoir.",
+    "source": "Rado (Georges Andriamanantena)",
+    "contexte": "Poème Ekeko (mai 1969), publié dans le recueil Dinitra (p. 102).",
+    "themes": [
+      "Séparation",
+      "Regret",
+      "Amour",
+      "Poésie"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-115",
+    "citationMg": "Ny eritreritra ihany no alefaso hifanandrify, / Dia ho maito izao gadra mampisaraka ny dia. / Ny alahelontsika koa, aoka indrindra hifanitsy, / Dia ho foana ny elanelan-tsesitanin'ny fitia.",
+    "citationFr": "Envoie seulement tes pensées à la rencontre des miennes, / Et ces chaînes qui séparent nos pas se briseront. / Que nos mélancolies aussi s'accordent en vis-à-vis, / Et la distance qui exile notre amour s'effacera.",
+    "source": "Rado (Georges Andriamanantena)",
+    "contexte": "Première strophe du poème Eritreritra, extrait du recueil Sedra (p. 51).",
+    "themes": [
+      "Pensée",
+      "Liberté",
+      "Amour",
+      "Poésie"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-116",
+    "citationMg": "Tamin'ny voalohany ny teny, ary ny teny dia Andriamanitra ; tamin'ny faharoa ny soratra, ary ny soratra dia olombelona, ilay mampifanohitra ny fotoana sy tantara.",
+    "citationFr": "Au commencement était la parole, et la parole était Dieu ; en second vint l'écriture, et l'écriture est l'être humain, celui qui met face à face le temps et l'histoire.",
+    "source": "Randja Zanamihoatra",
+    "contexte": "Présentation de l'ouvrage philosophique et poétique Tontolo Isainana.",
+    "themes": [
+      "Écriture",
+      "Philosophie",
+      "Histoire",
+      "Humanité"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-117",
+    "citationMg": "Tsy mba mafy izany maty / Miaro tany nahabe : / Ny kanosa injato maty, / Fa ny sahy indray mandeha.",
+    "citationFr": "Il n'est point dur de mourir / En défendant la terre qui nous a vus grandir : / Le lâche meurt cent fois, / Mais l'homme courageux ne meurt qu'une seule fois.",
+    "source": "Rabary (Mpitandrina Rabary)",
+    "contexte": "Strophe célèbre du poème patriotique Ilazao ny Malagasy.",
+    "themes": [
+      "Courage",
+      "Patrie",
+      "Honneur",
+      "Histoire"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-118",
+    "citationMg": "Tsy mba misy tsy ho faty / Rehefa manana aina koa, / Nefa mamy 'zany maty, / Maty nahavita soa.",
+    "citationFr": "Nul n'échappe à la mort / Dès lors qu'il a reçu le souffle de vie, / Mais il est doux de mourir / Après avoir accompli le bien.",
+    "source": "Rabary (Mpitandrina Rabary)",
+    "contexte": "Strophe finale du poème Ilazao ny Malagasy.",
+    "themes": [
+      "Devoir",
+      "Sagesse",
+      "Bienveillance",
+      "Vie"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-119",
+    "citationMg": "Ny tany ialako dia fahambaniana, / Tanin'ny sento fa be fahoriana ; / Ao no manjaka ny fahadalana : / Hiainga mihitsy aho fa tsy tamana.",
+    "citationFr": "La terre que je quitte est celle de la bassesse, / Terre de soupirs accablée de peines ; / C'est là que règne la déraison : / Je partirai résolument car je ne puis m'y plaire.",
+    "source": "Jean Narivony",
+    "contexte": "Première strophe du poème classique Ny diako (publié dans Lahatsoratra Voafantina, p. 4).",
+    "themes": [
+      "Élévation morale",
+      "Sagesse",
+      "Poésie"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-120",
+    "citationMg": "Singan'olona toa very izany izaho, / Ravin-kazo tafasaraka aman-taho, / Tapak'ahitra entin-drano...",
+    "citationFr": "Je suis tel un être solitaire et comme égaré, / Une feuille détachée de sa branche, / Un brin d'herbe emporté par le courant...",
+    "source": "Eliza Freda (Alfred Andrianaly)",
+    "contexte": "Premiers vers du poème lyrique Vetsovetso takariva.",
+    "themes": [
+      "Solitude",
+      "Mélancolie",
+      "Poésie"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-121",
+    "citationMg": "Mba tazano somary alaviro / Izato Iarivo mirehitra jiro, / Fa manemboka aingam-panahy / Ny sento hofongarin'ny tsiahy. / Mirakitra zavatra lalina / Iarivo jerena amin'ny alina.",
+    "citationFr": "Contemple donc avec un peu de recul / Cette cité d'Iarivo illuminée de feux, / Car elle embaume l'inspiration / Des soupirs que le souvenir fait renaître. / Elle recèle une profondeur secrète, / Iarivo contemplée dans la nuit.",
+    "source": "Ener Lalandy",
+    "contexte": "Poème Iarivo mirehitra jiro.",
+    "themes": [
+      "Antananarivo",
+      "Inspiration",
+      "Nuit",
+      "Poésie"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-122",
+    "citationMg": "Nihorohoro ny vahoaka, nanombinana ny tahiry am-bata ; izay tsy nanana ny vonona dia nivarotra kely : vokatry ny tany, akoho amam-borona.",
+    "citationFr": "Le peuple tremblait d'inquiétude, on puisait dans les économies gardées au coffre ; ceux qui n'avaient pas d'argent prêt vendaient le peu qu'ils possédaient : produits de la terre et volailles.",
+    "source": "Clarisse Ratsifandrihamanana",
+    "contexte": "Extrait du roman historique Ramaitsoakanjo (p. 76), dépeignant les épreuves de la vie sociale malgache.",
+    "themes": [
+      "Histoire",
+      "Société",
+      "Littérature"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-123",
+    "citationMg": "Manjombonjombona ny Tany, / Toa malahelo, toa tomany ; / Izay rehetra taza-maso / Dia nosomparan'ny ankaso.",
+    "citationFr": "La Terre est sombre et voilée, / Comme triste, comme en pleurs ; / Tout ce qu'embrasse le regard / A été meurtri par l'adversité.",
+    "source": "Rafanoharana",
+    "contexte": "Strophe du poème classique Manjombonjombona.",
+    "themes": [
+      "Nature",
+      "Mélancolie",
+      "Poésie"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-124",
+    "citationMg": "Ry Tanindrazanay malala ô ! / Ry Madagasikara soa, / Ny fitiavanay anao tsy miala, / Fa ho anao, ho anao doria tokoa.",
+    "citationFr": "Ô notre chère Terre des ancêtres ! / Ô belle Madagascar, / Notre amour pour toi ne s'éloignera jamais, / Mais restera tien, vraiment tien pour toujours.",
+    "source": "Pasteur Rahajason",
+    "contexte": "Première strophe de l'hymne national de la République de Madagascar (1958).",
+    "themes": [
+      "Patrie",
+      "Amour",
+      "Fidélité",
+      "Histoire"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-125",
+    "citationMg": "Ny Fiombonana dia mifamatotra amin'ny Fitiavana. Toky ho an'ny mpifankatia ny fiombonam-pitia. Toky ho an'ny mpiara-monina ny fiombonam-pifaliana na ny fiombonam-pahoriana arakaraka ny zava-miseho eo amin'ny fiainana.",
+    "citationFr": "L'Union est intimement liée à l'Amour. L'union des cœurs est un gage de confiance pour ceux qui s'aiment. Le partage des joies comme des peines, selon les circonstances de la vie, est un gage de confiance pour la communauté.",
+    "source": "Solotiana Nirhy-Lanto",
+    "contexte": "Réflexion publiée dans les Korisam-penin'ny Pôetawebs (juillet 2024).",
+    "themes": [
+      "Solidarité",
+      "Amour",
+      "Fihavanana",
+      "Société"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-126",
+    "citationMg": "Mimenam-boaroihazo akaiky fahavaratra / Ireo molotrao homehy. / Sitraky ny fo fa mitahiry taratra / Sy hatsaran-tarehy monina ao anaty.",
+    "citationFr": "Elles ont le rouge des mûres sauvages à l'approche de l'été, / Tes lèvres prêtes à rire. / Le cœur s'en réjouit car elles gardent l'éclat / Et la beauté qui habitent au-dedans.",
+    "source": "Rado (Georges Andriamanantena)",
+    "contexte": "Première strophe du poème Mena, publié dans le recueil Zo (p. 53).",
+    "themes": [
+      "Beauté",
+      "Joie",
+      "Nature",
+      "Poésie"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-127",
+    "citationMg": "Tsaroako toa manonja / Raha tsy mahita anao / 'Ty androko misaona, / Ny iray minitra monja.",
+    "citationFr": "Je sens comme une houle / Lorsque je ne te vois pas / En ce jour endeuillé, / Ne serait-ce qu'une seule minute.",
+    "source": "Rado (Georges Andriamanantena)",
+    "contexte": "Extrait du poème Tsaroako, publié dans le recueil Dinitra.",
+    "themes": [
+      "Amour",
+      "Absence",
+      "Émotion",
+      "Poésie"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-128",
+    "citationMg": "Ny sento tokana aman-tany novokarin'ny fitia / Dia ampy hampifanatona ny fo izay mifankatia !",
+    "citationFr": "Un seul soupir au monde enfanté par l'amour / Suffit à rapprocher les cœurs qui s'aiment !",
+    "source": "Dox (Jean Verdi Salomon Razakandraina)",
+    "contexte": "Vers de conclusion du poème Ny Tsikitsikinao, extrait du recueil Folihala (p. 61).",
+    "themes": [
+      "Amour",
+      "Émotion",
+      "Poésie"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-129",
+    "citationMg": "Kalon'ny Ntaolo no indro ventesiko ka manakoako ao an-tendrombohitra ; ny vetsovetsony no indro tamberiko ho solon-tsikidy sy ody fitia !",
+    "citationFr": "C'est le chant des Anciens que j'entonne ici et qui résonne dans les montagnes ; ce sont leurs effusions intimes que je fais revivre en guise d'oracle et de charme d'amour !",
+    "source": "Fredy Rajaofera",
+    "contexte": "Refrain du poème classique Kalon'ny Ntaolo.",
+    "themes": [
+      "Patrimoine",
+      "Chant",
+      "Tradition",
+      "Poésie"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "citationID-130",
+    "citationMg": "Mimenam-bokala voadon-drivotra / Ny takolakao mangorintsina, / Mahatonga ahy hieritreritra / Ny fahadiovanao mangatsakatsaka.",
+    "citationFr": "Elles ont l'incarnat des fruits sauvages caressés par le vent, / Tes joues frémissantes, / Qui éveillent en ma pensée / L'image de ta pureté limpide.",
+    "source": "Rado (Georges Andriamanantena)",
+    "contexte": "Deuxième strophe du poème Mena, publié dans le recueil Zo (p. 53).",
+    "themes": [
+      "Pureté",
+      "Nature",
+      "Beauté",
+      "Poésie"
+    ],
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
   }
 ]
