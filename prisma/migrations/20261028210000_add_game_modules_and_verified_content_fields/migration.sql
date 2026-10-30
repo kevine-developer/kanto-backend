@@ -35,3 +35,4 @@ ALTER TABLE "riddle_questions" ADD COLUMN IF NOT EXISTS "contentSourceType" TEXT
 ALTER TABLE "riddle_questions" ADD COLUMN IF NOT EXISTS "contentSourceId" TEXT;
 
 CREATE INDEX IF NOT EXISTS "riddle_questions_contentSourceType_contentSourceId_idx" ON "riddle_questions"("contentSourceType", "contentSourceId");
+
