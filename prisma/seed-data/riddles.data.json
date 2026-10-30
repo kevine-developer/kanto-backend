@@ -1,0 +1,1131 @@
+[
+  {
+    "riddleMg": "Jereo aho hijereko anao ?",
+    "riddleFr": "Regarde-moi pour que je te regarde à mon tour ?",
+    "options": [
+      "Fitaratra",
+      "Fakan-tsary",
+      "Rano",
+      "Farisana"
+    ],
+    "correctAnswer": "Fitaratra",
+    "acceptedAnswers": [
+      "ny fitaratra",
+      "ilay fitaratra",
+      "tsiriry",
+      "miroir",
+      "glace"
+    ],
+    "clue": "Zavatra mamiratra ahitana ny endriky ny tena...",
+    "explanation": "Ny fitaratra (le miroir) dia mamerina ny sarin'izay mijery eo aminy, ka tahaka ny mijery anao koa izy rehefa mijery azy ianao.",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale malgache — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Mihiratra tsy mahita azy, mikimpy vao mahita azy ?",
+    "riddleFr": "Les yeux ouverts on ne le voit pas, il faut fermer les yeux pour le trouver ?",
+    "options": [
+      "Torimaso",
+      "Haizina",
+      "Nofy",
+      "Aloka"
+    ],
+    "correctAnswer": "Torimaso",
+    "acceptedAnswers": [
+      "ny torimaso",
+      "nofy",
+      "ny nofy",
+      "sommeil",
+      "rêve"
+    ],
+    "clue": "Mitranga rehefa matory amin'ny alina...",
+    "explanation": "Rehefa mikimpy sy matory ny olona vao mahazo torimaso sy mahita nofy (le sommeil / le rêve), fa tsy azo jerena amin'ny maso mihiratra izany.",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale malgache — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Ilay boka mitaingin-tseza ?",
+    "riddleFr": "Ce lépreux assis sur un trône ?",
+    "options": [
+      "Mananasy",
+      "Tsilo",
+      "Katsaka",
+      "Voatavo"
+    ],
+    "correctAnswer": "Mananasy",
+    "acceptedAnswers": [
+      "ny mananasy",
+      "ilay mananasy",
+      "voankazo mananasy",
+      "ananas"
+    ],
+    "clue": "Voankazo mamy be maso sy misy ravina maranitra...",
+    "explanation": "Ny hoditry ny mananasy (l'ananas) dia marokoroko sy feno maso kely oharina amin'ny hoditry ny boka, ary ny tahony sy raviny eo ambaniny na eo amboniny kosa dia tahaka ny seza fiandrianana.",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale malgache — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Miaramila iray kamiao, izay mivoaka maty avokoa ?",
+    "riddleFr": "Tout un camion de soldats, tous ceux qui en sortent meurent ?",
+    "options": [
+      "Afokasoka",
+      "Basim-borona",
+      "Vatosoa",
+      "Labozia"
+    ],
+    "correctAnswer": "Afokasoka",
+    "acceptedAnswers": [
+      "ny afokasoka",
+      "tsilitsilika",
+      "loha-tsilitsilika",
+      "allumettes",
+      "allumette"
+    ],
+    "clue": "Fitaovana kely ao anaty boaty fandrehetana afo...",
+    "explanation": "Ny singan'ny afokasoka (les allumettes) dia milahatra tsara ao anaty boaty toy ny miaramila, ary rehefa avoaka ka kosehina dia mirehitra sy maty avy hatrany.",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale populaire de Madagascar",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Lasa aho fa ianao avelako eo ?",
+    "riddleFr": "Je m'en vais mais toi, je te laisse là sur place ?",
+    "options": [
+      "Dia-tongotra",
+      "Aloka",
+      "Lalana",
+      "Tsipika"
+    ],
+    "correctAnswer": "Dia-tongotra",
+    "acceptedAnswers": [
+      "ny dia-tongotra",
+      "dia tongotra",
+      "diantongotra",
+      "ny dian-tongotra",
+      "empreinte de pas",
+      "trace de pas"
+    ],
+    "clue": "Marika tavela amin'ny tany rehefa mandeha...",
+    "explanation": "Rehefa mamindra ny olona dia mandroso ihany, fa ny mariky ny faladiany na ny dia-tongotra (l'empreinte de pas) kosa mijanona eo amin'ny tany nodiaviny.",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale malgache — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Alina izy tonga tsy nalaina, atoandro very tsy nangalarina ?",
+    "riddleFr": "La nuit il vient sans qu'on l'ait cherché, le jour il disparaît sans qu'on l'ait volé ?",
+    "options": [
+      "Kintana",
+      "Lolo",
+      "Ando",
+      "Vorona"
+    ],
+    "correctAnswer": "Kintana",
+    "acceptedAnswers": [
+      "ny kintana",
+      "ireo kintana",
+      "kintana eny amin'ny lanitra",
+      "étoiles",
+      "étoile"
+    ],
+    "clue": "Mamirapiratra eny amin'ny lanitra rehefa maizina ny andro...",
+    "explanation": "Ny kintana (les étoiles) dia mipoitra ho azy eny amin'ny habakabaka rehefa alina, ary tsy hita intsony rehefa miposaka ny masoandro amin'ny atoandro.",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale des Ntaolo — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Loharano an-tendron-kazo ?",
+    "riddleFr": "Une source d'eau à la cime des arbres ?",
+    "options": [
+      "Voasary",
+      "Voanio",
+      "Manga",
+      "Paiso"
+    ],
+    "correctAnswer": "Voasary",
+    "acceptedAnswers": [
+      "ny voasary",
+      "voanio",
+      "ny voanio",
+      "coco",
+      "orange",
+      "agrume"
+    ],
+    "clue": "Voankazo be ranony maniry eny ambony hazo...",
+    "explanation": "Ny voasary na ny voanio (l'orange ou la noix de coco) dia voankazo maniry eny ambony hazo nefa feno rano mamy azo sotroina ao anatiny, toy ny loharano mihantona.",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale malgache — Ankamantatry ny Ntaolo",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Tsy atoraka tsy avily nefa mahatonga lavitra ?",
+    "riddleFr": "On ne le lance pas, on ne le dirige pas avec les mains, pourtant il va très loin ?",
+    "options": [
+      "Maso",
+      "Eritreritra",
+      "Rivotra",
+      "Feo"
+    ],
+    "correctAnswer": "Maso",
+    "acceptedAnswers": [
+      "ny maso",
+      "eritreritra",
+      "ny eritreritra",
+      "ny fijery",
+      "oeil",
+      "yeux",
+      "pensée",
+      "regard"
+    ],
+    "clue": "Fitaovana fahitana eo amin'ny tarehy na fisainana...",
+    "explanation": "Ny maso na ny eritreritra (l'œil / le regard ou la pensée) dia afaka mitazana sy mahatakatra toerana lavitra be eo no ho eo tsy mila alefa na atoraka.",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale des Ntaolo — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Manam-bava hihinana, fa tsy manan-kibo hasiana ?",
+    "riddleFr": "Il a une bouche pour manger, mais n'a pas de ventre pour tout avaler ?",
+    "options": [
+      "Hety",
+      "Antsy",
+      "Famaky",
+      "Tsofa"
+    ],
+    "correctAnswer": "Hety",
+    "acceptedAnswers": [
+      "ny hety",
+      "antsy",
+      "ny antsy",
+      "tsofa",
+      "ciseaux",
+      "couteau"
+    ],
+    "clue": "Fitaovana maranitra fanapahana lamba na taratasy...",
+    "explanation": "Ny lelan'ny hety (les ciseaux) dia misokatra sy mikatona toy ny vava mihinana sy mitsako rehefa manapaka, saingy tsy manana vavony na kibo hitelina izany.",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale malgache — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Rehefa mandalo Ikotokely dia miala satroka Ingahibe ?",
+    "riddleFr": "Quand le petit garçon passe, le grand monsieur enlève son chapeau ?",
+    "options": [
+      "Zinga sy sinibe",
+      "Sotro sy lovia",
+      "Vilany sy sotrobe",
+      "Fatana sy afo"
+    ],
+    "correctAnswer": "Zinga sy sinibe",
+    "acceptedAnswers": [
+      "ny zinga sy ny sinibe",
+      "sinibe sy zinga",
+      "ny sinibe sy ny zinga",
+      "siny sy zinga",
+      "cruche et puisette"
+    ],
+    "clue": "Fitaovana fitahirizana sy fanaovana rano ao an-dakozia fahiny...",
+    "explanation": "Rehefa haka rano amin'ny zinga (Ikotokely / la petite puisette) ny olona, dia tsy maintsy sokafana aloha ny sarom-bilany na saron'ny sinibe (Ingahibe / la grande jarre) toy ny miala satroka.",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale des Hautes Terres — Ankamantatry ny Ntaolo",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Dobokelin'Andriamanitra tsy azo ilomanosana ?",
+    "riddleFr": "Le petit étang de Dieu dans lequel on ne peut pas nager ?",
+    "options": [
+      "Maso",
+      "Loharano",
+      "Vovon-drano",
+      "Dobokely"
+    ],
+    "correctAnswer": "Maso",
+    "acceptedAnswers": [
+      "ny maso",
+      "ilay maso",
+      "voamaso",
+      "oeil",
+      "yeux"
+    ],
+    "clue": "Misy ranomaso sy voamaso boribory...",
+    "explanation": "Ny maso (l'œil) dia mando mandrakariva amin'ny ranomaso ary boribory toy ny dobo kely voajanahary (dobokelin'Andriamanitra), saingy saro-pady sy kely loatra ka tsy azo ilomanosana.",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale des Ntaolo — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Akao bararata tsy loaka aho hisotroako rano ?",
+    "riddleFr": "Cueille-moi un bambou non creux pour que je puisse boire de l'eau ?",
+    "options": [
+      "Fary",
+      "Bararata",
+      "Volotsangana",
+      "Katsaka"
+    ],
+    "correctAnswer": "Fary",
+    "acceptedAnswers": [
+      "ny fary",
+      "ilay fary",
+      "tahom-pary",
+      "canne à sucre"
+    ],
+    "clue": "Zavamaniry mamy fanao siramamy...",
+    "explanation": "Ny fary (la canne à sucre) dia mitovy endrika amin'ny bararata (bambou) misy tonony, saingy tsy mba poakaty fa feno nofony sy ranony mamy azo tsakoina sy sotroina.",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale agraire — Ankamantatry ny Ntaolo",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Ilay mahia miankin-drindrina ?",
+    "riddleFr": "Ce personnage tout maigre qui s'appuie contre le mur ?",
+    "options": [
+      "Kifafa",
+      "Sahafa",
+      "Tonga",
+      "Tsihy"
+    ],
+    "correctAnswer": "Kifafa",
+    "acceptedAnswers": [
+      "ny kifafa",
+      "sahafa",
+      "ny sahafa",
+      "famafa",
+      "balai",
+      "van"
+    ],
+    "clue": "Fitaovana fanadiovana trano na fikarakarana vary apetraka an-joron-trano...",
+    "explanation": "Rehefa avy ampiasaina ny kifafa na ny sahafa (le balai ou le van à riz), dia apetraka miankina amin'ny rindrina foana izy noho ny endriny manify sy mahia.",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale des Hautes Terres — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Andrahoina tsy masaka, atono mora foana ?",
+    "riddleFr": "Quand on le fait bouillir il ne cuit jamais, mais grillé au feu il brûle tout de suite ?",
+    "options": [
+      "Volo",
+      "Hazo",
+      "Lamba",
+      "Tady"
+    ],
+    "correctAnswer": "Volo",
+    "acceptedAnswers": [
+      "ny volo",
+      "volon-doha",
+      "volom-biby",
+      "cheveux",
+      "poils"
+    ],
+    "clue": "Maniry eo amin'ny loha na hoditra...",
+    "explanation": "Ny volo (les cheveux / les poils) dia tsy mety malemy na levona na dia andrahoina ela ao anaty rano mangotraka aza, saingy mirehitra sy levona eo no ho eo raha vao tratran'ny afo.",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale des Ntaolo — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Faladia ambony ranjo ?",
+    "riddleFr": "Une plante de pied placée tout en haut de la jambe ?",
+    "options": [
+      "Ravin-tsaonjo",
+      "Ravinala",
+      "Ravin-tany",
+      "Tahon-katsaka"
+    ],
+    "correctAnswer": "Ravin-tsaonjo",
+    "acceptedAnswers": [
+      "ny ravin-tsaonjo",
+      "ravin-koririka",
+      "saonjo",
+      "ravina saonjo",
+      "feuille de taro"
+    ],
+    "clue": "Zavamaniry eny amin'ny tany mando manana ravina mivelatra be...",
+    "explanation": "Ny tahon'ny saonjo (la tige du taro) dia lava mahitsy toy ny ranjo, ary ny raviny kosa mivelatra fisaka eo amboniny toy ny faladia.",
+    "level": 3,
+    "difficulty": "HARD",
+    "sourceReference": "Tradition orale des Ntaolo — Fampanonona sy Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Aleveno aho haka ny taolako taloha ?",
+    "riddleFr": "Enterre-moi pour que j'aille récupérer mes os d'autrefois ?",
+    "options": [
+      "Katsaka",
+      "Tsaramaso",
+      "Vary",
+      "Vomanga"
+    ],
+    "correctAnswer": "Katsaka",
+    "acceptedAnswers": [
+      "ny katsaka",
+      "voan-katsaka",
+      "tsaramaso",
+      "ny tsaramaso",
+      "maïs",
+      "grain de maïs"
+    ],
+    "clue": "Voan-javamaniry afafy ao anaty tany ka mamoa maro...",
+    "explanation": "Ny voan-katsaka (le grain de maïs) dia esorina amin'ny tahony mafy (ny taolany), ary rehefa alevina (ambolena) ao anaty tany iny voany iny, dia maniry sy mamoa katsaka vaovao misy tahony mafy (taolana) indray.",
+    "level": 3,
+    "difficulty": "HARD",
+    "sourceReference": "Tradition orale agraire — Ankamantatry ny Ntaolo",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Vakiana ny vatam-paty, esorina ny lambamena, vao tsakoy fa hitera-menaka ?",
+    "riddleFr": "On brise le cercueil, on retire le linceul rouge, puis on le mâche pour qu'il produise de l'huile ?",
+    "options": [
+      "Voanjo",
+      "Voanjobory",
+      "Katsaka",
+      "Pistache"
+    ],
+    "correctAnswer": "Voanjo",
+    "acceptedAnswers": [
+      "ny voanjo",
+      "ilay voanjo",
+      "voanjobory",
+      "cacahuète",
+      "arachide"
+    ],
+    "clue": "Voan-javamaniry misy akorany mafy sy hoditra manify mena ao anatiny...",
+    "explanation": "Fanoharana lalina momba ny voanjo (l'arachide / la cacahuète) : ny akorany ivelany no vatam-paty, ilay hodiny manify menamena mandrakotra ny voany no lambamena, ary ny voany rehefa tsakoina dia mamoaka menaka.",
+    "level": 3,
+    "difficulty": "HARD",
+    "sourceReference": "Tradition orale de l'Imerina — Ankamantatry ny Ntaolo",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Izy mivady no miady ka ny ankizy no voaporiporitra ?",
+    "riddleFr": "Ce sont les époux qui se battent, mais ce sont les enfants qui se font écraser ?",
+    "options": [
+      "Laona sy fanoto",
+      "Vatofisaka sy vato boribory",
+      "Sotrobe sy vilany",
+      "Kalesy sy soavaly"
+    ],
+    "correctAnswer": "Laona sy fanoto",
+    "acceptedAnswers": [
+      "ny laona sy ny fanoto",
+      "fanoto sy laona",
+      "ny laona sy fanoto ary ny vary",
+      "mortier et pilon"
+    ],
+    "clue": "Fitaovana nentim-paharazana fitotoana vary...",
+    "explanation": "Ny laona sy ny fanoto (le mortier et le pilon) no oharina amin'ny mpivady mifandona rehefa mitoto vary, ary ny voam-bary ao anatiny izay potika sy voavaofy kosa no oharina amin'ny ankizy.",
+    "level": 3,
+    "difficulty": "HARD",
+    "sourceReference": "Tradition orale et proverbes des Ntaolo",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Any an-tsaha no mamela-pandrika ka ny any an-tanàna no voa ?",
+    "riddleFr": "On tend le piège là-bas dans les champs, mais ce sont ceux du village qui sont attrapés ?",
+    "options": [
+      "Fasana",
+      "Vala",
+      "Trano",
+      "Lalana"
+    ],
+    "correctAnswer": "Fasana",
+    "acceptedAnswers": [
+      "ny fasana",
+      "ilay fasana",
+      "fahafatesana",
+      "tombeau",
+      "tombe"
+    ],
+    "clue": "Toerana fandevenana eny ivelan'ny tanàna...",
+    "explanation": "Ny fasana (le tombeau) dia aorina any an-tsaha na eny an-tampon-tanety ivelan'ny tanàna, saingy ny olona monina any an-tanàna izay nodimandry no entina milevina ao anatiny.",
+    "level": 3,
+    "difficulty": "HARD",
+    "sourceReference": "Tradition orale des Hautes Terres — Philosophie Ntaolo",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Izy efa-dahy milanja, Ikotokely mikapoka lalitra, Ingahy Ndriana mitiritirina ery am-piandrianana ?",
+    "riddleFr": "Les quatre hommes portent, le petit garçon chasse les mouches, et le Seigneur trône fièrement là-haut ?",
+    "options": [
+      "Omby",
+      "Soavaly",
+      "Kisoa",
+      "Ondry"
+    ],
+    "correctAnswer": "Omby",
+    "acceptedAnswers": [
+      "ny omby",
+      "ilay omby",
+      "omby malagasy",
+      "zébu",
+      "vache",
+      "boeuf"
+    ],
+    "clue": "Biby fiompy lehibe manana trafo sy tandroka...",
+    "explanation": "Fanoharana ny vatan'ny omby (le zébu) : ny tongony efatra no efa-dahy milanja, ny rambony no Ikotokely mikapoka lalitra, ary ny trafony na ny tandrony avo kosa no Ingahy Ndriana mitiritirina.",
+    "level": 3,
+    "difficulty": "HARD",
+    "sourceReference": "Tradition orale pastorale de Madagascar — Ankamantatry ny Ntaolo",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Trano boribory tsy misy varavarana ?",
+    "riddleFr": "Une maison toute ronde qui n'a ni porte ni fenêtre ?",
+    "options": [
+      "Atody",
+      "Voatavo",
+      "Voanio",
+      "Manga"
+    ],
+    "correctAnswer": "Atody",
+    "acceptedAnswers": [
+      "ny atody",
+      "ilay atody",
+      "atodin'akoho",
+      "oeuf",
+      "œuf"
+    ],
+    "clue": "Zavatra fotsy na mavokely avy amin'ny akoho...",
+    "explanation": "Ny akoran'ny atody (l'œuf) dia mihidy tanteraka manodidina ny zanany ao anatiny, toy ny trano boribory tsy misy varavarana idirana na ivoahana raha tsy vaky.",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale malgache — Ankamantatra malaza",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Mihinana amin'ny lohany, mamoaka amin'ny kibony ?",
+    "riddleFr": "Il mange par la tête et rejette par le ventre ?",
+    "options": [
+      "Vavahady",
+      "Varavarana",
+      "Trano",
+      "Lalana"
+    ],
+    "correctAnswer": "Vavahady",
+    "acceptedAnswers": [
+      "ny vavahady",
+      "varavarana",
+      "ny varavarana",
+      "trano",
+      "porte",
+      "portail"
+    ],
+    "clue": "Fidirana sy fivoahana eo amin'ny trano na tanàna...",
+    "explanation": "Ny varavarana na ny trano (la porte / la maison) dia mandray ny olona miditra ary mamoaka azy ireo indray rehefa mivoaka eo am-bavahady.",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale malgache — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Mandeha tsy manan-tongotra, mitomany tsy manam-bava ?",
+    "riddleFr": "Il avance sans avoir de pieds, il pleure sans avoir de bouche ?",
+    "options": [
+      "Rahona",
+      "Rivotra",
+      "Rano",
+      "Zavona"
+    ],
+    "correctAnswer": "Rahona",
+    "acceptedAnswers": [
+      "ny rahona",
+      "ilay rahona",
+      "rahona sy orana",
+      "nuage"
+    ],
+    "clue": "Eny amin'ny lanitra no misy azy ary mitondra orana...",
+    "explanation": "Ny rahona (le nuage) dia entin'ny rivotra ka mandeha eny amin'ny habakabaka tsy misy tongotra, ary rehefa milatsaka ny ranonorana avy aminy dia oharina amin'ny ranomaso mitomany.",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale des Hautes Terres — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Manify tsy azo hetezana, matevina tsy azo tsoahina ?",
+    "riddleFr": "Mince on ne peut le couper, épais on ne peut l'arracher ?",
+    "options": [
+      "Aloka",
+      "Haizina",
+      "Rivotra",
+      "Hafanana"
+    ],
+    "correctAnswer": "Aloka",
+    "acceptedAnswers": [
+      "ny aloka",
+      "haizina",
+      "ny haizina",
+      "rivotra",
+      "ombre",
+      "obscurité"
+    ],
+    "clue": "Tsy azo tsapain-tanana nefa hita maso rehefa takona ny hazavana...",
+    "explanation": "Na manify na matevina ny aloka na ny haizina (l'ombre / l'obscurité), dia tsy mba zavatra azo tapahina amin'ny antsy na tsoahina amin'ny tanana.",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale des Ntaolo — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Kely mahabe, lehibe mahakely ?",
+    "riddleFr": "Petit il grandit, grand il rapetisse ?",
+    "options": [
+      "Labozia",
+      "Fatana",
+      "Kitay",
+      "Afokasoka"
+    ],
+    "correctAnswer": "Labozia",
+    "acceptedAnswers": [
+      "ny labozia",
+      "ilay labozia",
+      "savoka mirehitra",
+      "bougie",
+      "chandelle"
+    ],
+    "clue": "Mandrehitra hazavana ao anaty haizina fa mihalevona...",
+    "explanation": "Ny labozia (la bougie), arakaraka ny hirehetany sy hampitomboany ny hazavana na ny faharetan'ny fotoana, no mahafohy sy mahakely ny vatany.",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale populaire de Madagascar",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Tsy miasa, tsy mamboly, nefa mitafy lamba tsara tarehy ?",
+    "riddleFr": "Il ne travaille pas, il ne cultive pas, pourtant il porte de magnifiques vêtements ?",
+    "options": [
+      "Lolo",
+      "Vorona",
+      "Voninkazo",
+      "Manga"
+    ],
+    "correctAnswer": "Lolo",
+    "acceptedAnswers": [
+      "ny lolo",
+      "ilay lolo",
+      "voninkazo",
+      "ny voninkazo",
+      "papillon",
+      "fleur"
+    ],
+    "clue": "Bibikely manidina maro loko eny amin'ny voninkazo...",
+    "explanation": "Ny lolo (le papillon) na ny voninkazo (la fleur) dia tsy mba manenona lamba na miasa tany, kanefa nomen'ny zavaboary loko sy endrika kanto dia kanto.",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale malgache — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Tapa-kazo kely mahavoky iray trano ?",
+    "riddleFr": "Un petit bout de bois qui rassasie toute la maisonnée ?",
+    "options": [
+      "Sotro",
+      "Sotrobe",
+      "Antsy",
+      "Vilany"
+    ],
+    "correctAnswer": "Sotro",
+    "acceptedAnswers": [
+      "ny sotro",
+      "sotrobe",
+      "ny sotrobe",
+      "fanoharana",
+      "cuillère",
+      "louche"
+    ],
+    "clue": "Fitaovana fihinanana na fanovozana sakafo ao am-bilany...",
+    "explanation": "Ny sotrobe na ny sotro (la louche / la cuillère) izay vita tamin'ny hazo fahiny, no manavoaka sy mizara ny vary sy laoka ao am-bilany hahavoky ny fianakaviana manontolo.",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale des Hautes Terres — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Raha mihinana izy velona, raha misotro rano izy maty ?",
+    "riddleFr": "S'il mange il vit, mais s'il boit de l'eau il meurt ?",
+    "options": [
+      "Afo",
+      "Fatana",
+      "Labozia",
+      "Kitay"
+    ],
+    "correctAnswer": "Afo",
+    "acceptedAnswers": [
+      "ny afo",
+      "ilay afo",
+      "vain'afo",
+      "feu"
+    ],
+    "clue": "Mila kitay mba hirehitra...",
+    "explanation": "Ny afo (le feu) dia mitombo sy velona tsara rehefa omena kitay sy ahitra (mihinana), fa maty avy hatrany kosa raha vao tondrahana rano (misotro rano).",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale malgache — Ankamantatry ny Ntaolo",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Ilay fotsy mitondra lakana ?",
+    "riddleFr": "Ce personnage tout blanc qui conduit une pirogue ?",
+    "options": [
+      "Vorombazaha",
+      "Gana",
+      "Gisa",
+      "Voromahery"
+    ],
+    "correctAnswer": "Vorombazaha",
+    "acceptedAnswers": [
+      "ny vorombazaha",
+      "gana",
+      "ny gana",
+      "gisa",
+      "canard",
+      "oie"
+    ],
+    "clue": "Vorona fiompy tia milomano eny ambony rano...",
+    "explanation": "Ny gana na ny vorombazaha (le canard / l'oie) dia manana volo fotsy ary ny vatany mitsinkafona sy mivoy eny ambony rano dia tahaka ny lakana kely mandeha.",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale malgache — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Mivoaka ny trano mitafy lamba mena, miditra ny trano mitafy lamba mainty ?",
+    "riddleFr": "En sortant il porte un habit noir, mais après être passé au foyer il porte un habit rouge ?",
+    "options": [
+      "Orana sy patsa",
+      "Foza sy drakaka",
+      "Trondro sy makamba",
+      "Hena sy vary"
+    ],
+    "correctAnswer": "Orana sy patsa",
+    "acceptedAnswers": [
+      "ny orana",
+      "patsa",
+      "ny patsa",
+      "foza",
+      "ny foza",
+      "écrevisse",
+      "crevette",
+      "crabe"
+    ],
+    "clue": "Biby anaty rano izay miova loko rehefa masaka...",
+    "explanation": "Ny orana na ny foza sy patsa (l'écrevisse / le crabe / la crevette) dia matroka na mainty fony mbola velona any anaty rano, fa miova ho mena kosa ny hodiny rehefa andrahoina eo ambony afo.",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale malgache — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Tsy manan-tanana, tsy manan-tongotra, nefa mahavoa varavarana ?",
+    "riddleFr": "Il n'a ni mains ni pieds, pourtant il arrive à ouvrir et claquer la porte ?",
+    "options": [
+      "Rivotra",
+      "Orana",
+      "Tselatra",
+      "Ando"
+    ],
+    "correctAnswer": "Rivotra",
+    "acceptedAnswers": [
+      "ny rivotra",
+      "ilay rivotra",
+      "tsiotra",
+      "vent"
+    ],
+    "clue": "Tsy hita maso fa re ny fofony sy ny heriny...",
+    "explanation": "Ny rivotra (le vent) dia tsy manana rantsam-batana, saingy ny heriny mitsoka mafy dia mahavita manosika, mamoha na manakombona ny varavarana.",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale malgache — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Ilay kely mitondra entana mavesatra noho ny tenany ?",
+    "riddleFr": "Ce tout petit être qui porte un fardeau plus lourd que lui-même ?",
+    "options": [
+      "Vitsika",
+      "Sifotra",
+      "Voalavo",
+      "Lolo"
+    ],
+    "correctAnswer": "Vitsika",
+    "acceptedAnswers": [
+      "ny vitsika",
+      "ilay vitsika",
+      "sifotra",
+      "ny sifotra",
+      "fourmi"
+    ],
+    "clue": "Bibikely mpanao rodobe sy mpiasa mafy amin'ny tany...",
+    "explanation": "Ny vitsika (la fourmi) dia bibikely madinika dia madinika nefa malaza amin'ny tanjany sy ny fahazotoany mitondra voam-bary na hazo kely lehibe lavitra noho ny vatany.",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale malgache — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Raha kapohina vao miteny ?",
+    "riddleFr": "Ce n'est que lorsqu'on le frappe qu'il se met à parler ?",
+    "options": [
+      "Amponga",
+      "Valiha",
+      "Kabary",
+      "Lakolosy"
+    ],
+    "correctAnswer": "Amponga",
+    "acceptedAnswers": [
+      "ny amponga",
+      "ilay amponga",
+      "lakolosy",
+      "ny lakolosy",
+      "tambour",
+      "cloche"
+    ],
+    "clue": "Zavamaneno ampiasaina amin'ny lanonana...",
+    "explanation": "Ny amponga (le tambour) dia mangina raha mipetraka fotsiny, fa rehefa vekarina na kapohina amin'ny hazo na tanana vao mamoaka feo mafy.",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale malgache — Mozika sy Ntaolo",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Tsy nofy, tsy eritreritra, nefa mahatety tany aman-danitra ao anatin'ny indray mipi-maso ?",
+    "riddleFr": "Ce n'est ni un rêve ni une pensée, mais il parcourt ciel et terre en un clin d'œil ?",
+    "options": [
+      "Tselatra",
+      "Helatra",
+      "Masoandro",
+      "Kintana"
+    ],
+    "correctAnswer": "Tselatra",
+    "acceptedAnswers": [
+      "ny tselatra",
+      "helatra",
+      "ny helatra",
+      "varatra",
+      "éclair",
+      "foudre"
+    ],
+    "clue": "Hazavana manjelatra eny amin'ny lanitra rehefa avy ny oram-baratra...",
+    "explanation": "Ny tselatra na helatra (l'éclair) dia manazava ny habakabaka hatrany amin'ny faravodilanitra ka hatramin'ny tany ao anatin'ny fotoana fohy dia fohy.",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale des Ntaolo — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Zana-danalana tsy mahafoy ny reniny ?",
+    "riddleFr": "Un enfant chéri qui ne quitte jamais le dos de sa mère ?",
+    "options": [
+      "Fanoto sy laona",
+      "Sotro sy lovia",
+      "Vilany sy sarony",
+      "Kalesy sy soavaly"
+    ],
+    "correctAnswer": "Fanoto sy laona",
+    "acceptedAnswers": [
+      "ny fanoto sy ny laona",
+      "karan-daona",
+      "vato fikosohana",
+      "pilon et mortier"
+    ],
+    "clue": "Fitaovana miaraka mandrakariva ao an-trano...",
+    "explanation": "Ny fanoto sy ny laona (le pilon et le mortier) na ny vato fikosohana dia fitaovana tsy afa-misaraka satria tsy misy ilana ny iray raha tsy eo ny faharoa.",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale des Hautes Terres — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Loharano madio an-tampon-kavoana ?",
+    "riddleFr": "Une source d'eau pure tout en haut de la colline ?",
+    "options": [
+      "Voanio",
+      "Voasary",
+      "Manga",
+      "Paiso"
+    ],
+    "correctAnswer": "Voanio",
+    "acceptedAnswers": [
+      "ny voanio",
+      "rano voanio",
+      "coco",
+      "noix de coco"
+    ],
+    "clue": "Voankazo avy any amoron-tsiraka misy rano mamy ao anatiny...",
+    "explanation": "Ny voanio (la noix de coco) dia maniry eny an-tampon'ny hazo avo be (an-tampon-kavoana), ary mitahiry rano madio sy mamy ao anatin'ny akorany mafy.",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale côtière et des Hautes Terres",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Mihinana ny tsinainy vao mahazo ny ainy ?",
+    "riddleFr": "On lui fait avaler ses propres entrailles pour qu'il prenne vie ?",
+    "options": [
+      "Fanala",
+      "Jiro solika",
+      "Labozia",
+      "Fatana"
+    ],
+    "correctAnswer": "Fanala",
+    "acceptedAnswers": [
+      "ny fanala",
+      "jiro petrole",
+      "jiro lahin-jiro",
+      "labozia",
+      "lampe à pétrole",
+      "lampe à huile"
+    ],
+    "clue": "Fitaovana fanazavana misy lahin-jiro ao anatiny...",
+    "explanation": "Ny jiro misy lahin-jiro (la lampe à huile / pétrole) na ny labozia dia misy kofehy ao anatiny (ny tsinainy), ary rehefa mirehitra sy mihalevona iny vao manome hazavana (mahazo ny ainy).",
+    "level": 3,
+    "difficulty": "HARD",
+    "sourceReference": "Tradition orale malgache — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Folo lahy mitondra lakana, roa lahy mitondra familiana ?",
+    "riddleFr": "Dix hommes portent la pirogue, deux hommes tiennent le gouvernail ?",
+    "options": [
+      "Rantsan-tanana sy maso",
+      "Tongotra sy tanana",
+      "Sofina sy maso",
+      "Vava sy nify"
+    ],
+    "correctAnswer": "Rantsan-tanana sy maso",
+    "acceptedAnswers": [
+      "ny rantsan-tanana sy ny maso",
+      "tanana sy maso",
+      "tongotra sy maso",
+      "doigts et yeux"
+    ],
+    "clue": "Rantsam-batan'ny olombelona rehefa miasa sy mandeha...",
+    "explanation": "Ny rantsan-tanana folo (na rantsan-tongotra folo) no miasa sy mitondra ny vatana (ilay lakana), ary ny maso roa kosa no mijery sy mitari-dalana (mitondra familiana).",
+    "level": 3,
+    "difficulty": "HARD",
+    "sourceReference": "Tradition orale des Ntaolo — Fanoharana ny vatana",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Tokantrano tsy misy varavarana nefa feno mponina ?",
+    "riddleFr": "Un foyer sans aucune porte mais rempli d'habitants ?",
+    "options": [
+      "Voatavo",
+      "Papay",
+      "Voasary",
+      "Pikantely"
+    ],
+    "correctAnswer": "Voatavo",
+    "acceptedAnswers": [
+      "ny voatavo",
+      "voapaza",
+      "papay",
+      "ny papay",
+      "voasary",
+      "citrouille",
+      "courge",
+      "papaye"
+    ],
+    "clue": "Voankazo na legioma lehibe feno voa marobe ao anatiny...",
+    "explanation": "Ny voatavo na ny papay (la citrouille / la papaye) dia mihidy tanteraka ny hodiny (tsy misy varavarana), nefa rehefa sokafana dia feno voany madinika marobe (mponina) milahatra ao anatiny.",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale agraire — Ankamantatra",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Manidina tsy manana elatra, mipetraka tsy manana tongotra ?",
+    "riddleFr": "Il vole sans avoir d'ailes, il se pose sans avoir de pattes ?",
+    "options": [
+      "Vovoka",
+      "Ravinkazo",
+      "Rahona",
+      "Ando"
+    ],
+    "correctAnswer": "Vovoka",
+    "acceptedAnswers": [
+      "ny vovoka",
+      "rivotra",
+      "rahona",
+      "ravinkazo maina",
+      "poussière"
+    ],
+    "clue": "Miainga amin'ny tany rehefa mitsoka ny rivotra...",
+    "explanation": "Ny vovoka (la poussière) dia entin'ny rivotra manidina eny amin'ny habakabaka na dia tsy manana elatra aza, ary mipetraka eo ambonin'ny zavatra rehetra rehefa tony ny rivotra.",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale malgache — Ankamantatry ny Ntaolo",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Ilay kely miankanjo vy.",
+    "riddleFr": "Le tout petit qui porte une armure de fer.",
+    "options": [
+      "Fanjaitra",
+      "Voanjo",
+      "Sokatra",
+      "Vilany"
+    ],
+    "correctAnswer": "Fanjaitra",
+    "acceptedAnswers": [
+      "ny fanjaitra",
+      "aiguille",
+      "une aiguille"
+    ],
+    "explanation": "Ny fanjaitra (l'aiguille) dia vy kely ampiasaina amin'ny fanjairana.",
+    "clue": "Fitaovana kely fanjairana...",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale malgache",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Manan-tsofina fa tsy mandre.",
+    "riddleFr": "Il a des oreilles mais n'entend rien.",
+    "options": [
+      "Vilany",
+      "Sotro",
+      "Katsaka",
+      "Trano"
+    ],
+    "correctAnswer": "Vilany",
+    "acceptedAnswers": [
+      "ny vilany",
+      "marmite",
+      "une marmite"
+    ],
+    "explanation": "Ny vilany (la marmite) dia manana sofiny roa itazonana azy nefa tsy mandre.",
+    "clue": "Fitaovana fandrahoana sakafo...",
+    "level": 1,
+    "difficulty": "EASY",
+    "sourceReference": "Tradition orale malgache",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Antitra vao mianatra mandady.",
+    "riddleFr": "C'est vieux qu'il apprend à ramper.",
+    "options": [
+      "Voatavo",
+      "Vomanga",
+      "Akondro",
+      "Katsaka"
+    ],
+    "correctAnswer": "Voatavo",
+    "acceptedAnswers": [
+      "ny voatavo",
+      "citrouille",
+      "courge"
+    ],
+    "explanation": "Ny tahon'ny voatavo (la citrouille) dia mandady rehefa mihalehibe sy mitombo.",
+    "clue": "Zavamaniry mamoa eny an-tsaha...",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale agraire",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Mandeha tsy misy tongotra, manidina tsy misy elatra.",
+    "riddleFr": "Il avance sans pieds, il vole sans ailes.",
+    "options": [
+      "Rahona",
+      "Rivotra",
+      "Rano",
+      "Tsioka"
+    ],
+    "correctAnswer": "Rahona",
+    "acceptedAnswers": [
+      "ny rahona",
+      "nuage",
+      "les nuages"
+    ],
+    "explanation": "Ny rahona (les nuages) dia entin'ny rivotra eny amin'ny lanitra.",
+    "clue": "Eny amin'ny habakabaka ambony...",
+    "level": 2,
+    "difficulty": "MEDIUM",
+    "sourceReference": "Tradition orale des Ntaolo",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  },
+  {
+    "riddleMg": "Velona mitaona faty, faty mitaona velona.",
+    "riddleFr": "Le vivant transporte le mort, le mort transporte le vivant.",
+    "options": [
+      "Lakana sy mpivoy",
+      "Soavaly sy kalesy",
+      "Omby sy sarety",
+      "Lalana sy fiara"
+    ],
+    "correctAnswer": "Lakana sy mpivoy",
+    "acceptedAnswers": [
+      "ny lakana sy mpivoy",
+      "pirogue",
+      "pirogue et piroguier"
+    ],
+    "explanation": "Ny hazo maty (lakana) mitaona ny olona velona, ary ny olona velona mitondra ny lakana.",
+    "clue": "Eny an-dranomamy na an-dranomasina...",
+    "level": 3,
+    "difficulty": "HARD",
+    "sourceReference": "Tradition maritime et fluviale de Madagascar",
+    "contentSourceType": "MALAGASY_ITEM",
+    "status": "PUBLISHED"
+  }
+]

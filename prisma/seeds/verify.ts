@@ -69,6 +69,7 @@ checkFile('tf-geographie.data.json', validateTrueFalseBatch);
 checkFile('tf-histoire.data.json', validateTrueFalseBatch);
 checkFile('tf-litterature.data.json', validateTrueFalseBatch);
 checkFile('tf-proverbes.data.json', validateTrueFalseBatch);
+checkFile('riddles.data.json', validateRiddlesBatch);
 
 console.log('\n────────────────────────────────────────────────────────────────────────');
 if (totalErrors === 0) {

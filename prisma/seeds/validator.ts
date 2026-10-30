@@ -228,19 +228,25 @@ export function validateTrueFalseBatch(data: unknown): ValidationReport {
 /**
  * Valide un lot de devinettes (RiddleQuestion)
  */
-export function validateRiddlesBatch(items: unknown[]): ValidationReport {
+export function validateRiddlesBatch(data: unknown): ValidationReport {
   const issues: ValidationIssue[] = [];
 
-  if (!Array.isArray(items)) {
+  const items = Array.isArray(data)
+    ? data
+    : data && typeof data === 'object' && Array.isArray((data as any).riddles)
+      ? (data as any).riddles
+      : null;
+
+  if (!items) {
     return {
       isValid: false,
-      issues: [{ itemIndex: -1, message: 'Le contenu des devinettes doit être un tableau.' }],
+      issues: [{ itemIndex: -1, message: 'Le contenu des devinettes doit être un tableau JSON ou un objet avec la clé "riddles".' }],
     };
   }
 
-  items.forEach((item, index) => {
+  items.forEach((item: unknown, index: number) => {
     if (!item || typeof item !== 'object') {
-      issues.push({ itemIndex: index, message: "L'élément devinette doit être un objet." });
+      issues.push({ itemIndex: index, message: "L'élément devinette doit être un objet JSON." });
       return;
     }
 

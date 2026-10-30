@@ -78,6 +78,12 @@ export function createPrismaMock() {
     civicQuizQuestion: createModelMock(),
     civicQuizSession: createModelMock(),
     civicQuizAnswer: createModelMock(),
+    trueFalseQuestion: createModelMock(),
+    trueFalseSession: createModelMock(),
+    trueFalseAnswer: createModelMock(),
+    riddleQuestion: createModelMock(),
+    riddleSession: createModelMock(),
+    riddleAnswer: createModelMock(),
 
     // Interactions
     like: createModelMock(),
