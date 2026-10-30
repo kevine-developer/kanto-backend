@@ -1,10 +1,26 @@
 import 'dotenv/config';
 import pg from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient, DifficultyLevel, TrueFalseTheme, WordRarity } from '../../generated/prisma/client.js';
+import {
+  PrismaClient,
+  DifficultyLevel,
+  TrueFalseTheme,
+  WordRarity,
+  CivicSubCategory,
+} from '../../generated/prisma/client.js';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import {
+  DEFAULT_CIVIC_LESSONS,
+  DEFAULT_PRESIDENTS,
+  DEFAULT_BANKNOTES,
+  DEFAULT_PROVINCE_BLASONS,
+  DEFAULT_NATURE_EMBLEMS,
+  DEFAULT_HISTORY_DATES,
+  DEFAULT_NATIONAL_EMBLEMS,
+} from '../history/constants/history-defaults.constant.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,8 +47,8 @@ function slugify(text: string): string {
 }
 
 /**
- * Localise le dossier `prisma/seed-data` de manière robuste quel que soit l'environnement
- * (exécuté compilé depuis dist/src/scripts ou source depuis src/scripts ou à la racine)
+ * Localise le dossier `prisma/seed-data` quel que soit l'environnement
+ * (exécuté compilé depuis dist/src/scripts ou source depuis src/scripts)
  */
 function findSeedDataDir(): string {
   const candidates = [
@@ -58,6 +74,46 @@ interface SeedStats {
   skipped: number;
   errors: number;
 }
+
+const DEFAULT_THEMES = [
+  { nameMg: 'Fahendrena', nameFr: 'Sagesse', slug: 'sagesse', icon: 'bulb-outline', color: '#E0533C' },
+  { nameMg: 'Fihavanana', nameFr: 'Solidarité', slug: 'solidarite', icon: 'people-outline', color: '#2E7D32' },
+  { nameMg: 'Fitiavana', nameFr: 'Amour', slug: 'amour', icon: 'heart-outline', color: '#D81B60' },
+  { nameMg: 'Fianakaviana', nameFr: 'Famille', slug: 'famille', icon: 'home-outline', color: '#1565C0' },
+  { nameMg: 'Asa sy Faharisihana', nameFr: 'Travail & Effort', slug: 'travail', icon: 'hammer-outline', color: '#EF6C00' },
+  { nameMg: 'Fanabeazana', nameFr: 'Éducation', slug: 'education', icon: 'book-outline', color: '#6A1B9A' },
+  { nameMg: 'Faharetana', nameFr: 'Persévérance', slug: 'perseverance', icon: 'shield-checkmark-outline', color: '#00838F' },
+  { nameMg: 'Fitondran-tena', nameFr: 'Morale & Vertu', slug: 'morale', icon: 'leaf-outline', color: '#2E7D32' },
+  { nameMg: 'Zavaboary', nameFr: 'Nature & Environnement', slug: 'nature', icon: 'earth-outline', color: '#1B5E20' },
+  { nameMg: 'Fahafatesana sy Fisaonana', nameFr: 'Mort & Deuil', slug: 'mort-deuil', icon: 'moon-outline', color: '#37474F' },
+  { nameMg: 'Tantara sy Fomba', nameFr: 'Histoire & Coutumes', slug: 'histoire-coutumes', icon: 'library-outline', color: '#795548' },
+  { nameMg: 'Fitantanana sy Fanjakana', nameFr: 'Pouvoir & Justice', slug: 'pouvoir-justice', icon: 'scale-outline', color: '#455A64' },
+];
+
+const DEFAULT_REGIONS = [
+  'Analamanga',
+  'Vakinankaratra',
+  'Itasy',
+  'Bongolava',
+  'Haute Matsiatra',
+  'Amoron\'i Mania',
+  'Vatovavy-Fitovinany',
+  'Ihorombe',
+  'Atsimo-Atsinanana',
+  'Atsinanana',
+  'Analanjirofo',
+  'Alaotra-Mangoro',
+  'Boeny',
+  'Sofia',
+  'Betsiboka',
+  'Melaky',
+  'Atsimo-Andrefana',
+  'Androy',
+  'Anosy',
+  'Menabe',
+  'Diana',
+  'Sava',
+];
 
 const TF_THEME_CATEGORY_MAP: Record<string, TrueFalseTheme> = {
   monnaie_economie: TrueFalseTheme.HIST,
@@ -109,21 +165,32 @@ async function ensureSchemaColumns() {
 }
 
 async function seedProduction() {
-  console.log('🚀 [Kanto Backend] Démarrage du seed idempotent de production...');
+  console.log('🚀 [Kanto Backend] Démarrage du seed idempotent intégral de production...');
   await ensureSchemaColumns();
   const seedDataDir = findSeedDataDir();
-  console.log(`📁 [Kanto Backend] Répertoire de données : ${seedDataDir}`);
+  console.log(`📁 [Kanto Backend] Répertoire de données de référence : ${seedDataDir}`);
 
   const allStats: SeedStats[] = [];
 
-  // Initialisation du cache des thèmes
+  // ─── 0. Initialisation des Thèmes & Régions ─────────────────────────────────
   const themeMap = new Map<string, string>();
-  const existingThemes = await prisma.theme.findMany();
-  for (const t of existingThemes) {
-    themeMap.set(t.slug, t.id);
+  for (const t of DEFAULT_THEMES) {
+    const upserted = await prisma.theme.upsert({
+      where: { slug: t.slug },
+      update: { nameMg: t.nameMg, nameFr: t.nameFr, icon: t.icon, color: t.color },
+      create: { nameMg: t.nameMg, nameFr: t.nameFr, slug: t.slug, icon: t.icon, color: t.color },
+    });
+    themeMap.set(t.slug, upserted.id);
+  }
+  for (const rName of DEFAULT_REGIONS) {
+    await prisma.region.upsert({
+      where: { name: rName },
+      update: {},
+      create: { name: rName },
+    });
   }
 
-  // ─── 1. Proverbes, Dictons & Expressions de référence ────────────────────────
+  // ─── 1. Proverbes, Dictons & Expressions (Corpus complet de 4 fichiers) ─────
   const itemsStats: SeedStats = {
     category: 'Proverbes & Dictons (MalagasyItem)',
     totalInFile: 0,
@@ -134,21 +201,38 @@ async function seedProduction() {
     errors: 0,
   };
 
-  const malagasyItemsFile = path.join(seedDataDir, 'malagasy-items.data.json');
-  if (fs.existsSync(malagasyItemsFile)) {
-    const rawItems: any[] = JSON.parse(fs.readFileSync(malagasyItemsFile, 'utf-8'));
-    itemsStats.totalInFile = rawItems.length;
+  const ITEM_FILES = [
+    { file: 'malagasy-items.data.json', defaultCat: 'PROVERBE' },
+    { file: 'proverbes.data.json', defaultCat: 'PROVERBE' },
+    { file: 'dictons.data.json', defaultCat: 'DICTON' },
+    { file: 'expressions.data.json', defaultCat: 'EXPRESSION' },
+  ];
+  const processedMgTexts = new Set<string>();
 
-    for (let i = 0; i < rawItems.length; i++) {
-      const item = rawItems[i];
+  for (const src of ITEM_FILES) {
+    const fPath = path.join(seedDataDir, src.file);
+    if (!fs.existsSync(fPath)) continue;
+
+    const rawList: any[] = JSON.parse(fs.readFileSync(fPath, 'utf-8'));
+    itemsStats.totalInFile += rawList.length;
+
+    for (let i = 0; i < rawList.length; i++) {
+      const item = rawList[i];
       if (!item.malagasy || !item.french || !item.meaning) {
         itemsStats.skipped++;
         continue;
       }
 
       const cleanMalagasy = item.malagasy.trim();
+      const normKey = cleanMalagasy.toLowerCase();
+      if (processedMgTexts.has(normKey)) {
+        itemsStats.skipped++;
+        continue;
+      }
+      processedMgTexts.add(normKey);
+
       let category: 'PROVERBE' | 'EXPRESSION' | 'DICTON' = 'PROVERBE';
-      const rawCat = String(item.category || '').toUpperCase();
+      const rawCat = String(item.category || src.defaultCat).toUpperCase();
       if (rawCat.includes('DICTON')) category = 'DICTON';
       else if (rawCat.includes('EXPRESSION')) category = 'EXPRESSION';
 
@@ -221,16 +305,11 @@ async function seedProduction() {
               const dName = v.dialectName || v.dialect;
               if (dName && v.text) {
                 await prisma.dialectVariant.create({
-                  data: {
-                    dialectName: dName,
-                    text: v.text,
-                    itemId: targetId,
-                  },
+                  data: { dialectName: dName, text: v.text, itemId: targetId },
                 });
               }
             }
           }
-
           itemsStats.created++;
         }
 
@@ -242,11 +321,11 @@ async function seedProduction() {
             const tSlug = slugify(trimmedTheme);
             let tId = themeMap.get(tSlug);
             if (!tId) {
-              const existingTheme = await prisma.theme.findFirst({
+              const exTheme = await prisma.theme.findFirst({
                 where: { OR: [{ slug: tSlug }, { nameFr: trimmedTheme }, { nameMg: trimmedTheme }] },
               });
-              if (existingTheme) {
-                tId = existingTheme.id;
+              if (exTheme) {
+                tId = exTheme.id;
               } else {
                 const newT = await prisma.theme.create({
                   data: { nameFr: trimmedTheme, nameMg: trimmedTheme, slug: tSlug },
@@ -255,19 +334,10 @@ async function seedProduction() {
               }
               themeMap.set(tSlug, tId);
             }
-
             await prisma.malagasyItemTheme.upsert({
-              where: {
-                itemId_themeId: {
-                  itemId: targetId,
-                  themeId: tId,
-                },
-              },
+              where: { itemId_themeId: { itemId: targetId, themeId: tId } },
               update: {},
-              create: {
-                itemId: targetId,
-                themeId: tId,
-              },
+              create: { itemId: targetId, themeId: tId },
             });
           }
         }
@@ -279,7 +349,7 @@ async function seedProduction() {
   }
   allStats.push(itemsStats);
 
-  // ─── 2. Citations & Auteurs de référence ──────────────────────────────────────
+  // ─── 2. Citations & Auteurs (2 fichiers) ─────────────────────────────────────
   const citationsStats: SeedStats = {
     category: 'Citations & Auteurs (Citation)',
     totalInFile: 0,
@@ -290,21 +360,35 @@ async function seedProduction() {
     errors: 0,
   };
 
-  const citationsFile = path.join(seedDataDir, 'citations.data.json');
-  if (fs.existsSync(citationsFile)) {
-    const rawCitations: any[] = JSON.parse(fs.readFileSync(citationsFile, 'utf-8'));
-    citationsStats.totalInFile = rawCitations.length;
+  const CITATION_FILES = ['citations.data.json', 'citation.data.json'];
+  const processedCitations = new Set<string>();
 
-    for (const c of rawCitations) {
-      if (!c.citationMg || !c.citationFr) {
+  for (const cFileName of CITATION_FILES) {
+    const cPath = path.join(seedDataDir, cFileName);
+    if (!fs.existsSync(cPath)) continue;
+
+    const rawCitations: any[] = JSON.parse(fs.readFileSync(cPath, 'utf-8'));
+    citationsStats.totalInFile += rawCitations.length;
+
+    for (let i = 0; i < rawCitations.length; i++) {
+      const c = rawCitations[i];
+      const mgText = c.citationMg || c.textMg || c.citation;
+      const frText = c.citationFr || c.textFr || c.translation;
+      if (!mgText || !frText) {
         citationsStats.skipped++;
         continue;
       }
 
-      const cleanCitationMg = c.citationMg.trim();
-      const sourceName = (c.source || c.sourceName || 'Anonyme').trim();
+      const cleanCitationMg = String(mgText).trim();
+      const normKey = cleanCitationMg.toLowerCase();
+      if (processedCitations.has(normKey)) {
+        citationsStats.skipped++;
+        continue;
+      }
+      processedCitations.add(normKey);
 
       try {
+        const sourceName = (c.source || c.sourceName || c.author || 'Ntaolo Malagasy').trim();
         let authorId: string | null = null;
         if (sourceName && sourceName.toLowerCase() !== 'anonyme') {
           const author = await prisma.author.upsert({
@@ -325,24 +409,22 @@ async function seedProduction() {
         });
 
         let targetId: string;
-
         if (existing) {
           targetId = existing.id;
           const hasDiff =
-            existing.citationFr !== c.citationFr ||
+            existing.citationFr !== frText ||
             existing.sourceName !== sourceName ||
-            existing.contexte !== (c.contexte || null) ||
+            existing.contexte !== (c.contexte || c.context || null) ||
             existing.authorId !== authorId;
 
           if (hasDiff) {
             await prisma.citation.update({
               where: { id: existing.id },
               data: {
-                citationFr: c.citationFr,
+                citationFr: frText,
                 sourceName,
-                contexte: c.contexte || null,
+                contexte: c.contexte || c.context || null,
                 authorId,
-                isPremium: Boolean(c.isPremium),
               },
             });
             citationsStats.updated++;
@@ -354,12 +436,12 @@ async function seedProduction() {
             data: {
               ...(c.id ? { id: c.id } : {}),
               citationMg: cleanCitationMg,
-              citationFr: c.citationFr,
+              citationFr: frText,
               sourceName,
-              contexte: c.contexte || null,
+              contexte: c.contexte || c.context || null,
               authorId,
-              isPremium: Boolean(c.isPremium),
               status: 'PUBLISHED',
+              isPremium: Boolean(c.isPremium),
             },
           });
           targetId = created.id;
@@ -368,38 +450,15 @@ async function seedProduction() {
 
         if (Array.isArray(c.themes)) {
           for (const tName of c.themes) {
-            const trimmedTheme = String(tName).trim();
-            if (!trimmedTheme) continue;
-            const tSlug = slugify(trimmedTheme);
-            let tId = themeMap.get(tSlug);
-            if (!tId) {
-              const existingTheme = await prisma.theme.findFirst({
-                where: { OR: [{ slug: tSlug }, { nameFr: trimmedTheme }, { nameMg: trimmedTheme }] },
+            const tSlug = slugify(String(tName).trim());
+            const tId = themeMap.get(tSlug);
+            if (tId) {
+              await prisma.citationTheme.upsert({
+                where: { citationId_themeId: { citationId: targetId, themeId: tId } },
+                update: {},
+                create: { citationId: targetId, themeId: tId },
               });
-              if (existingTheme) {
-                tId = existingTheme.id;
-              } else {
-                const newT = await prisma.theme.create({
-                  data: { nameFr: trimmedTheme, nameMg: trimmedTheme, slug: tSlug },
-                });
-                tId = newT.id;
-              }
-              themeMap.set(tSlug, tId);
             }
-
-            await prisma.citationTheme.upsert({
-              where: {
-                citationId_themeId: {
-                  citationId: targetId,
-                  themeId: tId,
-                },
-              },
-              update: {},
-              create: {
-                citationId: targetId,
-                themeId: tId,
-              },
-            });
           }
         }
       } catch (err) {
@@ -462,9 +521,7 @@ async function seedProduction() {
             existing.meaningFr !== item.meaningFr ||
             existing.exampleMg !== item.exampleMg ||
             existing.exampleFr !== item.exampleFr ||
-            existing.phonetic !== (item.phonetic || null) ||
             existing.wordClassMg !== item.wordClassMg ||
-            existing.wordClassFr !== item.wordClassFr ||
             existing.rarity !== rarity;
 
           if (hasDiff) {
@@ -524,7 +581,7 @@ async function seedProduction() {
   }
   allStats.push(rakiStats);
 
-  // ─── 4. Quiz vérifiés (CivicQuizQuestion) ─────────────────────────────────────
+  // ─── 4. Quiz vérifiés & Civiques (2 fichiers) ────────────────────────────────
   const quizStats: SeedStats = {
     category: 'Quiz vérifiés (CivicQuizQuestion)',
     totalInFile: 0,
@@ -535,10 +592,15 @@ async function seedProduction() {
     errors: 0,
   };
 
-  const quizFile = path.join(seedDataDir, 'quiz-verified.data.json');
-  if (fs.existsSync(quizFile)) {
-    const rawQuiz: any[] = JSON.parse(fs.readFileSync(quizFile, 'utf-8'));
-    quizStats.totalInFile = rawQuiz.length;
+  const QUIZ_FILES = ['quiz-verified.data.json', 'civic-quiz.data.json'];
+  const processedQuizPrompts = new Set<string>();
+
+  for (const qFile of QUIZ_FILES) {
+    const qPath = path.join(seedDataDir, qFile);
+    if (!fs.existsSync(qPath)) continue;
+
+    const rawQuiz: any[] = JSON.parse(fs.readFileSync(qPath, 'utf-8'));
+    quizStats.totalInFile += rawQuiz.length;
 
     for (const q of rawQuiz) {
       const promptFr = q.promptFr || q.prompt;
@@ -548,6 +610,12 @@ async function seedProduction() {
         continue;
       }
       const mainPrompt = (promptFr || promptMg)!.trim();
+      const normKey = mainPrompt.toLowerCase();
+      if (processedQuizPrompts.has(normKey)) {
+        quizStats.skipped++;
+        continue;
+      }
+      processedQuizPrompts.add(normKey);
 
       const diff: DifficultyLevel =
         q.difficulty === 'HARD'
@@ -611,9 +679,9 @@ async function seedProduction() {
   }
   allStats.push(quizStats);
 
-  // ─── 5. Questions Vrai ou Faux vérifiées (TrueFalseQuestion) ──────────────────
+  // ─── 5. Questions Vrai ou Faux (7 fichiers : vérifiées + 6 packs thématiques) ─
   const tfStats: SeedStats = {
-    category: 'Vrai ou Faux vérifiés (TrueFalseQuestion)',
+    category: 'Vrai ou Faux (TrueFalseQuestion)',
     totalInFile: 0,
     created: 0,
     updated: 0,
@@ -622,10 +690,29 @@ async function seedProduction() {
     errors: 0,
   };
 
-  const tfFile = path.join(seedDataDir, 'true-false-verified.data.json');
-  if (fs.existsSync(tfFile)) {
-    const rawTf: any[] = JSON.parse(fs.readFileSync(tfFile, 'utf-8'));
-    tfStats.totalInFile = rawTf.length;
+  const TF_FILES = [
+    'true-false-verified.data.json',
+    'tf-culture.data.json',
+    'tf-general.data.json',
+    'tf-geographie.data.json',
+    'tf-histoire.data.json',
+    'tf-litterature.data.json',
+    'tf-proverbes.data.json',
+  ];
+  const processedTfQuestions = new Set<string>();
+
+  for (const tfFileName of TF_FILES) {
+    const tfPath = path.join(seedDataDir, tfFileName);
+    if (!fs.existsSync(tfPath)) continue;
+
+    const parsedContent = JSON.parse(fs.readFileSync(tfPath, 'utf-8'));
+    const rawTf: any[] = Array.isArray(parsedContent)
+      ? parsedContent
+      : Array.isArray(parsedContent?.questions)
+        ? parsedContent.questions
+        : [];
+
+    tfStats.totalInFile += rawTf.length;
 
     for (const vf of rawTf) {
       const questionMg = (vf.promptMg || vf.questionMg)?.trim();
@@ -635,6 +722,12 @@ async function seedProduction() {
         continue;
       }
       const mainQ = (questionMg || questionFr)!;
+      const normKey = mainQ.toLowerCase();
+      if (processedTfQuestions.has(normKey)) {
+        tfStats.skipped++;
+        continue;
+      }
+      processedTfQuestions.add(normKey);
 
       const diff: DifficultyLevel =
         vf.difficulty === 'HARD'
@@ -763,10 +856,7 @@ async function seedProduction() {
             existing.explanation !== riddleData.explanation ||
             existing.clue !== riddleData.clue ||
             existing.level !== riddleData.level ||
-            existing.difficulty !== riddleData.difficulty ||
-            existing.sourceReference !== riddleData.sourceReference ||
-            JSON.stringify(existing.options) !== JSON.stringify(riddleData.options) ||
-            JSON.stringify(existing.acceptedAnswers) !== JSON.stringify(riddleData.acceptedAnswers);
+            existing.difficulty !== riddleData.difficulty;
 
           if (hasDiff) {
             await prisma.riddleQuestion.update({
@@ -795,9 +885,979 @@ async function seedProduction() {
   }
   allStats.push(riddlesStats);
 
-  // ─── Synthèse & Observabilité ────────────────────────────────────────────────
+  // ─── 7. Remets dans l'ordre (Word Puzzle / Alamino) ──────────────────────────
+  const wordPuzzleStats: SeedStats = {
+    category: 'Word Puzzle (WordPuzzleLevel)',
+    totalInFile: 0,
+    created: 0,
+    updated: 0,
+    unchanged: 0,
+    skipped: 0,
+    errors: 0,
+  };
+
+  const wordPuzzleFile = path.join(seedDataDir, 'word-puzzle.data.json');
+  if (fs.existsSync(wordPuzzleFile)) {
+    const rawLevels: any[] = JSON.parse(fs.readFileSync(wordPuzzleFile, 'utf-8'));
+    wordPuzzleStats.totalInFile = rawLevels.length;
+
+    for (const lvl of rawLevels) {
+      try {
+        const level = await prisma.wordPuzzleLevel.upsert({
+          where: { levelNumber: lvl.levelNumber },
+          create: {
+            levelNumber: lvl.levelNumber,
+            titleMg: lvl.titleMg,
+            titleFr: lvl.titleFr || null,
+            description: lvl.description || null,
+            difficulty: lvl.difficulty || 'EASY',
+            passThreshold: lvl.passThreshold || 5,
+            totalSentences: Array.isArray(lvl.sentences) ? lvl.sentences.length : 10,
+            status: 'PUBLISHED',
+          },
+          update: {
+            titleMg: lvl.titleMg,
+            titleFr: lvl.titleFr || null,
+            description: lvl.description || null,
+          },
+        });
+
+        if (Array.isArray(lvl.sentences)) {
+          for (const s of lvl.sentences) {
+            const existingSentence = await prisma.wordPuzzleSentence.findFirst({
+              where: { levelId: level.id, orderIndex: s.orderIndex },
+            });
+            if (existingSentence) {
+              await prisma.wordPuzzleSentence.update({
+                where: { id: existingSentence.id },
+                data: {
+                  malagasy: s.malagasy,
+                  french: s.french,
+                  hint: s.hint || null,
+                  explanationMg: s.explanationMg || null,
+                  explanationFr: s.explanationFr || null,
+                },
+              });
+            } else {
+              await prisma.wordPuzzleSentence.create({
+                data: {
+                  levelId: level.id,
+                  orderIndex: s.orderIndex,
+                  malagasy: s.malagasy,
+                  french: s.french,
+                  hint: s.hint || null,
+                  explanationMg: s.explanationMg || null,
+                  explanationFr: s.explanationFr || null,
+                },
+              });
+            }
+          }
+        }
+        wordPuzzleStats.created++;
+      } catch (err) {
+        console.error(`⚠️ [Seed Prod WordPuzzle] Erreur sur niveau ${lvl.levelNumber}:`, err);
+        wordPuzzleStats.errors++;
+      }
+    }
+  }
+  allStats.push(wordPuzzleStats);
+
+  // ─── 8. Mot manquant (Missing Word / Fenoy ny banga) ─────────────────────────
+  const missingWordStats: SeedStats = {
+    category: 'Mot manquant (MissingWordLevel)',
+    totalInFile: 0,
+    created: 0,
+    updated: 0,
+    unchanged: 0,
+    skipped: 0,
+    errors: 0,
+  };
+
+  const missingWordFile = path.join(seedDataDir, 'missing-word.data.json');
+  if (fs.existsSync(missingWordFile)) {
+    const rawLevels: any[] = JSON.parse(fs.readFileSync(missingWordFile, 'utf-8'));
+    missingWordStats.totalInFile = rawLevels.length;
+
+    for (const lvl of rawLevels) {
+      try {
+        const level = await prisma.missingWordLevel.upsert({
+          where: { levelNumber: lvl.levelNumber },
+          create: {
+            levelNumber: lvl.levelNumber,
+            titleMg: lvl.titleMg,
+            titleFr: lvl.titleFr || null,
+            description: lvl.description || null,
+            difficulty: lvl.difficulty || 'EASY',
+            passThreshold: lvl.passThreshold || 5,
+            totalQuestions: Array.isArray(lvl.questions) ? lvl.questions.length : 10,
+            status: 'PUBLISHED',
+          },
+          update: {
+            titleMg: lvl.titleMg,
+            titleFr: lvl.titleFr || null,
+            description: lvl.description || null,
+          },
+        });
+
+        if (Array.isArray(lvl.questions)) {
+          for (let i = 0; i < lvl.questions.length; i++) {
+            const q = lvl.questions[i];
+            const existingQ = await prisma.missingWordQuestion.findFirst({
+              where: { levelId: level.id, orderIndex: i + 1 },
+            });
+            if (existingQ) {
+              await prisma.missingWordQuestion.update({
+                where: { id: existingQ.id },
+                data: {
+                  template: Array.isArray(q.template) ? q.template : [],
+                  correctWord: q.correctWord,
+                  choices: Array.isArray(q.choices) ? q.choices : [],
+                  french: q.french,
+                  explanation: q.explanation || null,
+                },
+              });
+            } else {
+              await prisma.missingWordQuestion.create({
+                data: {
+                  levelId: level.id,
+                  orderIndex: i + 1,
+                  template: Array.isArray(q.template) ? q.template : [],
+                  correctWord: q.correctWord,
+                  choices: Array.isArray(q.choices) ? q.choices : [],
+                  french: q.french,
+                  explanation: q.explanation || null,
+                  status: 'PUBLISHED',
+                },
+              });
+            }
+          }
+        }
+        missingWordStats.created++;
+      } catch (err) {
+        console.error(`⚠️ [Seed Prod MissingWord] Erreur sur niveau ${lvl.levelNumber}:`, err);
+        missingWordStats.errors++;
+      }
+    }
+  }
+  allStats.push(missingWordStats);
+
+  // ─── 9. Contes traditionnels (Angano) ───────────────────────────────────────
+  const conteStats: SeedStats = {
+    category: 'Contes (Angano / Conte)',
+    totalInFile: 0,
+    created: 0,
+    updated: 0,
+    unchanged: 0,
+    skipped: 0,
+    errors: 0,
+  };
+
+  const conteFile = path.join(seedDataDir, 'conte.data.json');
+  if (fs.existsSync(conteFile)) {
+    const rawContes: any[] = JSON.parse(fs.readFileSync(conteFile, 'utf-8'));
+    conteStats.totalInFile = rawContes.length;
+
+    for (let i = 0; i < rawContes.length; i++) {
+      const c = rawContes[i];
+      const baseSlug = slugify(c.title || `conte-${i + 1}`);
+
+      try {
+        const existing = await prisma.conte.findFirst({
+          where: { OR: [...(c.id ? [{ id: c.id }] : []), { title: c.title }] },
+        });
+
+        let conteId: string;
+        if (existing) {
+          conteId = existing.id;
+          await prisma.conte.update({
+            where: { id: existing.id },
+            data: {
+              titleFr: c.titleFr,
+              subtitle: c.subtitle || null,
+              subtitleFr: c.subtitleFr || null,
+              author: c.author || 'Angano Malagasy',
+              source: c.source || null,
+              moralMg: c.moral?.textMg || null,
+              moralFr: c.moral?.textFr || null,
+            },
+          });
+          conteStats.updated++;
+        } else {
+          let slug = baseSlug;
+          let cnt = 1;
+          while (await prisma.conte.findUnique({ where: { slug } })) {
+            slug = `${baseSlug}-${cnt++}`;
+          }
+
+          const created = await prisma.conte.create({
+            data: {
+              ...(c.id ? { id: c.id } : {}),
+              slug,
+              title: c.title,
+              titleFr: c.titleFr,
+              subtitle: c.subtitle || null,
+              subtitleFr: c.subtitleFr || null,
+              author: c.author || 'Angano Malagasy',
+              source: c.source || null,
+              illustration: c.illustration?.trim() || null,
+              moralMg: c.moral?.textMg || null,
+              moralFr: c.moral?.textFr || null,
+              variantIds: Array.isArray(c.variants || c.varient) ? c.variants || c.varient : [],
+              isFeatured: i < 3,
+              status: 'PUBLISHED',
+            },
+          });
+          conteId = created.id;
+          conteStats.created++;
+
+          if (Array.isArray(c.content)) {
+            for (let pIdx = 0; pIdx < c.content.length; pIdx++) {
+              const p = c.content[pIdx];
+              await prisma.conteParagraph.create({
+                data: {
+                  conteId,
+                  paragraphNumber: p.paragraph || pIdx + 1,
+                  textMg: p.textMg || '',
+                  textFr: p.textFr || '',
+                  illustration: p.illustration || null,
+                },
+              });
+            }
+          }
+
+          if (Array.isArray(c.themes)) {
+            for (const tName of c.themes) {
+              const tSlug = slugify(String(tName).trim());
+              const tId = themeMap.get(tSlug);
+              if (tId) {
+                await prisma.conteTheme.upsert({
+                  where: { conteId_themeId: { conteId, themeId: tId } },
+                  update: {},
+                  create: { conteId, themeId: tId },
+                });
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.error(`⚠️ [Seed Prod Conte] Erreur sur "${c.title}" :`, err);
+        conteStats.errors++;
+      }
+    }
+  }
+  allStats.push(conteStats);
+
+  // ─── 10. Discours traditionnels (Kabary) ────────────────────────────────────
+  const kabaryStats: SeedStats = {
+    category: 'Discours traditionnels (Kabary)',
+    totalInFile: 0,
+    created: 0,
+    updated: 0,
+    unchanged: 0,
+    skipped: 0,
+    errors: 0,
+  };
+
+  const kabaryFile = path.join(seedDataDir, 'kabary.data.json');
+  if (fs.existsSync(kabaryFile)) {
+    const rawKabaries: any[] = JSON.parse(fs.readFileSync(kabaryFile, 'utf-8'));
+    kabaryStats.totalInFile = rawKabaries.length;
+
+    for (let i = 0; i < rawKabaries.length; i++) {
+      const k = rawKabaries[i];
+      const baseSlug = slugify(k.title || `kabary-${i + 1}`);
+
+      try {
+        const existing = await prisma.kabary.findFirst({
+          where: { OR: [...(k.id ? [{ id: k.id }] : []), { title: k.title }] },
+        });
+
+        let kabaryId: string;
+        if (existing) {
+          kabaryId = existing.id;
+          await prisma.kabary.update({
+            where: { id: existing.id },
+            data: {
+              titleFr: k.titleFr,
+              subtitle: k.subtitle || null,
+              subtitleFr: k.subtitleFr || null,
+              occasion: k.occasion,
+              occasionFr: k.occasionFr || null,
+              speakerRoleMg: k.speakerRoleMg || null,
+              speakerRoleFr: k.speakerRoleFr || null,
+              recipientRoleMg: k.recipientRoleMg || null,
+              recipientRoleFr: k.recipientRoleFr || null,
+              region: k.region || null,
+            },
+          });
+          kabaryStats.updated++;
+        } else {
+          let slug = baseSlug;
+          let cnt = 1;
+          while (await prisma.kabary.findUnique({ where: { slug } })) {
+            slug = `${baseSlug}-${cnt++}`;
+          }
+
+          const created = await prisma.kabary.create({
+            data: {
+              ...(k.id ? { id: k.id } : {}),
+              slug,
+              title: k.title,
+              titleFr: k.titleFr,
+              subtitle: k.subtitle || null,
+              subtitleFr: k.subtitleFr || null,
+              occasion: k.occasion,
+              occasionFr: k.occasionFr || null,
+              speakerRoleMg: k.speakerRoleMg || null,
+              speakerRoleFr: k.speakerRoleFr || null,
+              recipientRoleMg: k.recipientRoleMg || null,
+              recipientRoleFr: k.recipientRoleFr || null,
+              region: k.region || null,
+              illustration: k.illustration?.trim() || null,
+              concludingProverbMg: k.concludingProverb?.mg || null,
+              concludingProverbFr: k.concludingProverb?.fr || null,
+              etiquetteNotesMg: k.etiquetteNotes?.mg || null,
+              etiquetteNotesFr: k.etiquetteNotes?.fr || null,
+              isFeatured: i < 3,
+              status: 'PUBLISHED',
+            },
+          });
+          kabaryId = created.id;
+          kabaryStats.created++;
+
+          if (Array.isArray(k.steps)) {
+            for (let sIdx = 0; sIdx < k.steps.length; sIdx++) {
+              const s = k.steps[sIdx];
+              await prisma.kabaryStep.create({
+                data: {
+                  kabaryId,
+                  stepNumber: s.stepNumber || sIdx + 1,
+                  stepNameMg: s.stepNameMg || `Dingana ${sIdx + 1}`,
+                  stepNameFr: s.stepNameFr || `Étape ${sIdx + 1}`,
+                  explanationMg: s.explanationMg || null,
+                  explanationFr: s.explanationFr || null,
+                  textMg: s.textMg || '',
+                  textFr: s.textFr || '',
+                },
+              });
+            }
+          }
+
+          if (Array.isArray(k.themes)) {
+            for (const tName of k.themes) {
+              const tSlug = slugify(String(tName).trim());
+              const tId = themeMap.get(tSlug);
+              if (tId) {
+                await prisma.kabaryTheme.upsert({
+                  where: { kabaryId_themeId: { kabaryId, themeId: tId } },
+                  update: {},
+                  create: { kabaryId, themeId: tId },
+                });
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.error(`⚠️ [Seed Prod Kabary] Erreur sur "${k.title}" :`, err);
+        kabaryStats.errors++;
+      }
+    }
+  }
+  allStats.push(kabaryStats);
+
+  // ─── 11. Poésies & Hainteny (Tononkalo) ──────────────────────────────────────
+  const poesieStats: SeedStats = {
+    category: 'Poésies (Tononkalo / Poesie)',
+    totalInFile: 0,
+    created: 0,
+    updated: 0,
+    unchanged: 0,
+    skipped: 0,
+    errors: 0,
+  };
+
+  const poesieFile = path.join(seedDataDir, 'poesie.data.json');
+  if (fs.existsSync(poesieFile)) {
+    const rawPoesies: any[] = JSON.parse(fs.readFileSync(poesieFile, 'utf-8'));
+    poesieStats.totalInFile = rawPoesies.length;
+
+    for (let i = 0; i < rawPoesies.length; i++) {
+      const p = rawPoesies[i];
+      const baseSlug = slugify(p.title || `poesie-${i + 1}`);
+
+      try {
+        const existing = await prisma.poesie.findFirst({
+          where: { OR: [...(p.id ? [{ id: p.id }] : []), { title: p.title }] },
+        });
+
+        if (existing) {
+          await prisma.poesie.update({
+            where: { id: existing.id },
+            data: {
+              titleFr: p.titleFr,
+              author: p.author || null,
+              period: p.period || null,
+              category: p.category || 'tononkalo',
+              explanationMg: p.explanationMg || null,
+              explanationFr: p.explanationFr || null,
+            },
+          });
+          poesieStats.updated++;
+        } else {
+          let slug = baseSlug;
+          let cnt = 1;
+          while (await prisma.poesie.findUnique({ where: { slug } })) {
+            slug = `${baseSlug}-${cnt++}`;
+          }
+
+          const created = await prisma.poesie.create({
+            data: {
+              ...(p.id ? { id: p.id } : {}),
+              slug,
+              title: p.title,
+              titleFr: p.titleFr,
+              author: p.author || 'Mpanoratra Malagasy',
+              period: p.period || null,
+              category: p.category || 'tononkalo',
+              explanationMg: p.explanationMg || null,
+              explanationFr: p.explanationFr || null,
+              isFeatured: i < 3,
+              status: 'PUBLISHED',
+            },
+          });
+
+          if (Array.isArray(p.stanzas)) {
+            for (let sIdx = 0; sIdx < p.stanzas.length; sIdx++) {
+              const st = p.stanzas[sIdx];
+              await prisma.poesieStanza.create({
+                data: {
+                  poesieId: created.id,
+                  stanzaNumber: sIdx + 1,
+                  versesMg: Array.isArray(st.versesMg) ? st.versesMg : [],
+                  versesFr: Array.isArray(st.versesFr) ? st.versesFr : [],
+                },
+              });
+            }
+          }
+          poesieStats.created++;
+        }
+      } catch (err) {
+        console.error(`⚠️ [Seed Prod Poesie] Erreur sur "${p.title}" :`, err);
+        poesieStats.errors++;
+      }
+    }
+  }
+  allStats.push(poesieStats);
+
+  // ─── 12. Récitations (Tsianjery) ────────────────────────────────────────────
+  const recitationStats: SeedStats = {
+    category: 'Récitations (Tsianjery)',
+    totalInFile: 0,
+    created: 0,
+    updated: 0,
+    unchanged: 0,
+    skipped: 0,
+    errors: 0,
+  };
+
+  const recitationFile = path.join(seedDataDir, 'recitation.data.json');
+  if (fs.existsSync(recitationFile)) {
+    const rawRecitations: any[] = JSON.parse(fs.readFileSync(recitationFile, 'utf-8'));
+    recitationStats.totalInFile = rawRecitations.length;
+
+    for (let i = 0; i < rawRecitations.length; i++) {
+      const r = rawRecitations[i];
+      const baseSlug = slugify(r.title || `recitation-${i + 1}`);
+
+      try {
+        const existing = await prisma.recitation.findFirst({
+          where: { OR: [...(r.id ? [{ id: r.id }] : []), { title: r.title }] },
+        });
+
+        if (existing) {
+          await prisma.recitation.update({
+            where: { id: existing.id },
+            data: {
+              titleFr: r.titleFr || existing.titleFr,
+              author: r.author || existing.author,
+              description: r.description || existing.description,
+              durationMinutes: r.durationMinutes || existing.durationMinutes,
+              contentLines: Array.isArray(r.content) ? r.content : existing.contentLines,
+              references: Array.isArray(r.references) ? r.references : existing.references,
+              tags: Array.isArray(r.tags) ? r.tags : existing.tags,
+            },
+          });
+          recitationStats.updated++;
+        } else {
+          let slug = baseSlug;
+          let cnt = 1;
+          while (await prisma.recitation.findUnique({ where: { slug } })) {
+            slug = `${baseSlug}-${cnt++}`;
+          }
+
+          await prisma.recitation.create({
+            data: {
+              ...(r.id ? { id: r.id } : {}),
+              slug,
+              title: r.title,
+              titleFr: r.titleFr || r.title,
+              author: r.author || 'Lovantsofina',
+              description: r.description || null,
+              durationMinutes: r.durationMinutes || null,
+              contentLines: Array.isArray(r.content) ? r.content : [],
+              references: Array.isArray(r.references) ? r.references : [],
+              tags: Array.isArray(r.tags) ? r.tags : [],
+              isFeatured: i < 3,
+              status: 'PUBLISHED',
+            },
+          });
+          recitationStats.created++;
+        }
+      } catch (err) {
+        console.error(`⚠️ [Seed Prod Recitation] Erreur sur "${r.title}" :`, err);
+        recitationStats.errors++;
+      }
+    }
+  }
+  allStats.push(recitationStats);
+
+  // ─── 13. Zodiaque Malgache (Vintana) ────────────────────────────────────────
+  const vintanaStats: SeedStats = {
+    category: 'Zodiaque Malgache (VintanaSign)',
+    totalInFile: 0,
+    created: 0,
+    updated: 0,
+    unchanged: 0,
+    skipped: 0,
+    errors: 0,
+  };
+
+  const vintanaFile = path.join(seedDataDir, 'vintana.data.json');
+  if (fs.existsSync(vintanaFile)) {
+    const rawVintana: any[] = JSON.parse(fs.readFileSync(vintanaFile, 'utf-8'));
+    vintanaStats.totalInFile = rawVintana.length;
+
+    for (const v of rawVintana) {
+      try {
+        await prisma.vintanaSign.upsert({
+          where: { nameMg: v.name },
+          create: {
+            nameMg: v.name,
+            nameFr: v.nameFr || v.name,
+            element: v.element || 'tany',
+            description: v.personalityMg || v.personalityFr || '',
+            luckyColor: v.cardinalFr || null,
+            luckyDay: v.luckyDayMg || v.luckyDayFr || null,
+          },
+          update: {
+            nameFr: v.nameFr || v.name,
+            element: v.element || 'tany',
+            description: v.personalityMg || v.personalityFr || '',
+            luckyColor: v.cardinalFr || null,
+            luckyDay: v.luckyDayMg || v.luckyDayFr || null,
+          },
+        });
+        vintanaStats.created++;
+      } catch (err) {
+        console.error(`⚠️ [Seed Prod Vintana] Erreur sur "${v.name}" :`, err);
+        vintanaStats.errors++;
+      }
+    }
+  }
+  allStats.push(vintanaStats);
+
+  // ─── 14. Contenus Civiques Institutionnels ──────────────────────────────────
+  const civicContentStats: SeedStats = {
+    category: 'Contenus Civiques (CivicContent)',
+    totalInFile: 0,
+    created: 0,
+    updated: 0,
+    unchanged: 0,
+    skipped: 0,
+    errors: 0,
+  };
+
+  const CIVIC_DOC_FILES = [
+    { file: 'droits-et-vote.data.json', subCategory: CivicSubCategory.DROITS_VOTE },
+    { file: 'civic-institution.data.json', subCategory: CivicSubCategory.INSTITUTION },
+    { file: 'symboles-histoire.data.json', subCategory: CivicSubCategory.SYMBOLES_HISTOIRE },
+    { file: 'vivre-ensemble.data.json', subCategory: CivicSubCategory.VIVRE_ENSEMBLE },
+    { file: 'ecologie-civisme.data.json', subCategory: CivicSubCategory.ECOLOGIE_CIVISME },
+  ];
+
+  for (const { file: fileName, subCategory } of CIVIC_DOC_FILES) {
+    const fPath = path.join(seedDataDir, 'civique', fileName);
+    if (!fs.existsSync(fPath)) continue;
+
+    const rawList: any[] = JSON.parse(fs.readFileSync(fPath, 'utf-8'));
+    civicContentStats.totalInFile += rawList.length;
+
+    for (const item of rawList) {
+      const slug = item.slug || slugify(item.titleFr || item.titleMg);
+      try {
+        const existing = await prisma.civicContent.findUnique({ where: { slug } });
+        if (!existing) {
+          await prisma.civicContent.create({
+            data: {
+              slug,
+              subCategory,
+              titleFr: item.titleFr,
+              titleMg: item.titleMg,
+              summaryFr: item.summaryFr || null,
+              summaryMg: item.summaryMg || null,
+              contentFr: Array.isArray(item.contentFr) ? item.contentFr : [],
+              contentMg: Array.isArray(item.contentMg) ? item.contentMg : [],
+              themes: Array.isArray(item.themes) ? item.themes : [],
+              sources: Array.isArray(item.sources) ? item.sources : [],
+              imageUrl: item.imageUrl || null,
+              status: 'PUBLISHED',
+            },
+          });
+          civicContentStats.created++;
+        } else {
+          civicContentStats.unchanged++;
+        }
+      } catch (err) {
+        console.error(`⚠️ [Seed Prod Civique] Erreur sur "${slug}" :`, err);
+        civicContentStats.errors++;
+      }
+    }
+  }
+  allStats.push(civicContentStats);
+
+  // ─── 15. Histoire, Mémoire & Patrimoine (Constantes vérifiées) ───────────────
+  const historyStats: SeedStats = {
+    category: 'Patrimoine, Mémoire & Histoire',
+    totalInFile:
+      DEFAULT_CIVIC_LESSONS.length +
+      DEFAULT_PRESIDENTS.length +
+      DEFAULT_BANKNOTES.length +
+      DEFAULT_PROVINCE_BLASONS.length +
+      DEFAULT_NATURE_EMBLEMS.length +
+      DEFAULT_HISTORY_DATES.length +
+      DEFAULT_NATIONAL_EMBLEMS.length,
+    created: 0,
+    updated: 0,
+    unchanged: 0,
+    skipped: 0,
+    errors: 0,
+  };
+
+  try {
+    for (const item of DEFAULT_CIVIC_LESSONS) {
+      const existing = await prisma.civicLesson.findUnique({ where: { id: item.id } });
+      const preservedImage = existing?.imageUrl || item.imageUrl || null;
+
+      await prisma.civicLesson.upsert({
+        where: { id: item.id },
+        create: {
+          id: item.id,
+          category: item.category,
+          titleFr: item.titleFr,
+          titleMg: item.titleMg,
+          descriptionFr: item.descriptionFr,
+          descriptionMg: item.descriptionMg,
+          imageUrl: preservedImage,
+          status: item.status,
+          orderIndex: item.orderIndex,
+        },
+        update: {
+          category: item.category,
+          titleFr: item.titleFr,
+          titleMg: item.titleMg,
+          descriptionFr: item.descriptionFr,
+          descriptionMg: item.descriptionMg,
+          imageUrl: preservedImage,
+        },
+      });
+      historyStats.created++;
+    }
+
+    for (const item of DEFAULT_PRESIDENTS) {
+      const existing = await prisma.president.findUnique({ where: { id: item.id } });
+      const preservedImage = existing?.imageUrl || item.imageUrl || null;
+
+      await prisma.president.upsert({
+        where: { id: item.id },
+        create: {
+          id: item.id,
+          name: item.name,
+          titleFr: item.titleFr,
+          titleMg: item.titleMg,
+          republic: item.republic,
+          republicMg: item.republicMg,
+          period: item.period,
+          quoteFr: item.quoteFr,
+          quoteMg: item.quoteMg,
+          bioFr: item.bioFr,
+          bioMg: item.bioMg,
+          achievementsFr: item.achievementsFr,
+          achievementsMg: item.achievementsMg,
+          badgeColor: item.badgeColor,
+          imageUrl: preservedImage,
+          orderIndex: item.orderIndex,
+          status: item.status,
+        },
+        update: {
+          name: item.name,
+          titleFr: item.titleFr,
+          titleMg: item.titleMg,
+          republic: item.republic,
+          republicMg: item.republicMg,
+          period: item.period,
+          quoteFr: item.quoteFr,
+          quoteMg: item.quoteMg,
+          bioFr: item.bioFr,
+          bioMg: item.bioMg,
+          achievementsFr: item.achievementsFr,
+          achievementsMg: item.achievementsMg,
+          badgeColor: item.badgeColor,
+          imageUrl: preservedImage,
+        },
+      });
+      historyStats.created++;
+    }
+
+    for (const item of DEFAULT_BANKNOTES) {
+      const existing = await prisma.banknote.findUnique({ where: { id: item.id } });
+      const preservedImage = existing?.imageUrl || item.imageUrl || null;
+      const preservedImageVerso = existing?.imageUrlVerso || item.imageUrlVerso || null;
+      const preservedComingSoon =
+        existing?.isComingSoon !== undefined ? existing.isComingSoon : Boolean(item.isComingSoon);
+
+      await prisma.banknote.upsert({
+        where: { id: item.id },
+        create: {
+          id: item.id,
+          valueAriary: item.valueAriary,
+          valueFmg: item.valueFmg,
+          titleFr: item.titleFr,
+          titleMg: item.titleMg,
+          series: item.series,
+          seriesLabelFr: item.seriesLabelFr,
+          seriesLabelMg: item.seriesLabelMg,
+          period: item.period,
+          colorLight: item.colorLight,
+          colorDark: item.colorDark,
+          obverseDescriptionFr: item.obverseDescriptionFr,
+          obverseDescriptionMg: item.obverseDescriptionMg,
+          reverseDescriptionFr: item.reverseDescriptionFr,
+          reverseDescriptionMg: item.reverseDescriptionMg,
+          symbolismFr: item.symbolismFr,
+          symbolismMg: item.symbolismMg,
+          securityFeaturesFr: item.securityFeaturesFr,
+          imageUrl: preservedImage,
+          imageUrlVerso: preservedImageVerso,
+          isComingSoon: preservedComingSoon,
+          orderIndex: item.orderIndex,
+          status: item.status,
+        },
+        update: {
+          valueAriary: item.valueAriary,
+          valueFmg: item.valueFmg,
+          titleFr: item.titleFr,
+          titleMg: item.titleMg,
+          series: item.series,
+          seriesLabelFr: item.seriesLabelFr,
+          seriesLabelMg: item.seriesLabelMg,
+          period: item.period,
+          colorLight: item.colorLight,
+          colorDark: item.colorDark,
+          obverseDescriptionFr: item.obverseDescriptionFr,
+          obverseDescriptionMg: item.obverseDescriptionMg,
+          reverseDescriptionFr: item.reverseDescriptionFr,
+          reverseDescriptionMg: item.reverseDescriptionMg,
+          symbolismFr: item.symbolismFr,
+          symbolismMg: item.symbolismMg,
+          securityFeaturesFr: item.securityFeaturesFr,
+          imageUrl: preservedImage,
+          imageUrlVerso: preservedImageVerso,
+          isComingSoon: preservedComingSoon,
+        },
+      });
+      historyStats.created++;
+    }
+
+    for (const item of DEFAULT_PROVINCE_BLASONS) {
+      const existing = await prisma.provinceBlason.findUnique({ where: { id: item.id } });
+      const preservedImage = existing?.imageUrl || item.imageUrl || null;
+
+      await prisma.provinceBlason.upsert({
+        where: { id: item.id },
+        create: {
+          id: item.id,
+          province: item.province,
+          chefLieu: item.chefLieu,
+          titleFr: item.titleFr,
+          titleMg: item.titleMg,
+          color: item.color,
+          bgLight: item.bgLight,
+          borderLight: item.borderLight,
+          descriptionFr: item.descriptionFr,
+          descriptionMg: item.descriptionMg,
+          symbols: item.symbols,
+          keyFactsFr: item.keyFactsFr,
+          keyFactsMg: item.keyFactsMg,
+          imageUrl: preservedImage,
+          orderIndex: item.orderIndex,
+          status: item.status,
+        },
+        update: {
+          province: item.province,
+          chefLieu: item.chefLieu,
+          titleFr: item.titleFr,
+          titleMg: item.titleMg,
+          color: item.color,
+          bgLight: item.bgLight,
+          borderLight: item.borderLight,
+          descriptionFr: item.descriptionFr,
+          descriptionMg: item.descriptionMg,
+          symbols: item.symbols,
+          keyFactsFr: item.keyFactsFr,
+          keyFactsMg: item.keyFactsMg,
+          imageUrl: preservedImage,
+        },
+      });
+      historyStats.created++;
+    }
+
+    for (const item of DEFAULT_NATURE_EMBLEMS) {
+      const existing = await prisma.natureEmblem.findUnique({ where: { id: item.id } });
+      const preservedImage = existing?.imageUrl || item.imageUrl || null;
+
+      await prisma.natureEmblem.upsert({
+        where: { id: item.id },
+        create: {
+          id: item.id,
+          nameFr: item.nameFr,
+          nameMg: item.nameMg,
+          scientificName: item.scientificName,
+          type: item.type,
+          statusFr: item.statusFr,
+          statusMg: item.statusMg,
+          descriptionFr: item.descriptionFr,
+          descriptionMg: item.descriptionMg,
+          culturalRoleFr: item.culturalRoleFr,
+          culturalRoleMg: item.culturalRoleMg,
+          proverbMg: item.proverbMg,
+          proverbFr: item.proverbFr,
+          accentColor: item.accentColor,
+          imageUrl: preservedImage,
+          orderIndex: item.orderIndex,
+          status: item.status,
+        },
+        update: {
+          nameFr: item.nameFr,
+          nameMg: item.nameMg,
+          scientificName: item.scientificName,
+          type: item.type,
+          statusFr: item.statusFr,
+          statusMg: item.statusMg,
+          descriptionFr: item.descriptionFr,
+          descriptionMg: item.descriptionMg,
+          culturalRoleFr: item.culturalRoleFr,
+          culturalRoleMg: item.culturalRoleMg,
+          proverbMg: item.proverbMg,
+          proverbFr: item.proverbFr,
+          accentColor: item.accentColor,
+          imageUrl: preservedImage,
+        },
+      });
+      historyStats.created++;
+    }
+
+    for (const item of DEFAULT_HISTORY_DATES) {
+      const existing = await prisma.historyDate.findUnique({ where: { id: item.id } });
+      const preservedImage = existing?.imageUrl || item.imageUrl || null;
+
+      await prisma.historyDate.upsert({
+        where: { id: item.id },
+        create: {
+          id: item.id,
+          year: item.year,
+          exactDate: item.exactDate,
+          titleFr: item.titleFr,
+          titleMg: item.titleMg,
+          era: item.era,
+          summaryFr: item.summaryFr,
+          summaryMg: item.summaryMg,
+          impactFr: item.impactFr,
+          impactMg: item.impactMg,
+          accentColor: item.accentColor,
+          imageUrl: preservedImage,
+          orderIndex: item.orderIndex,
+          status: item.status,
+        },
+        update: {
+          year: item.year,
+          exactDate: item.exactDate,
+          titleFr: item.titleFr,
+          titleMg: item.titleMg,
+          era: item.era,
+          summaryFr: item.summaryFr,
+          summaryMg: item.summaryMg,
+          impactFr: item.impactFr,
+          impactMg: item.impactMg,
+          accentColor: item.accentColor,
+          imageUrl: preservedImage,
+        },
+      });
+      historyStats.created++;
+    }
+
+    for (const item of DEFAULT_NATIONAL_EMBLEMS) {
+      await prisma.nationalEmblem.upsert({
+        where: { id: item.id },
+        create: {
+          id: item.id,
+          period: item.period,
+          imageUrl: item.imageUrl,
+          government: item.government,
+          descriptionFr: item.descriptionFr,
+          descriptionMg: item.descriptionMg,
+          notesFr: item.notesFr,
+          notesMg: item.notesMg,
+          orderIndex: item.orderIndex,
+          status: item.status,
+        },
+        update: {
+          period: item.period,
+          imageUrl: item.imageUrl,
+          government: item.government,
+          descriptionFr: item.descriptionFr,
+          descriptionMg: item.descriptionMg,
+          notesFr: item.notesFr,
+          notesMg: item.notesMg,
+        },
+      });
+      historyStats.created++;
+    }
+  } catch (err) {
+    console.error('⚠️ [Seed Prod Histoire/Patrimoine] Erreur lors de l\'upsert des constantes :', err);
+    historyStats.errors++;
+  }
+  allStats.push(historyStats);
+
+  // ─── 16. Proverbe du jour ───────────────────────────────────────────────────
+  const dailyProverbCount = await prisma.dailyProverb.count();
+  if (dailyProverbCount === 0) {
+    const firstP = await prisma.malagasyItem.findFirst({ where: { category: 'PROVERBE' } });
+    if (firstP) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      await prisma.dailyProverb.create({
+        data: {
+          date: today,
+          itemId: firstP.id,
+          editorial: 'Proverbe d\'ouverture de Kanto MG',
+        },
+      });
+    }
+  }
+
+  // ─── Synthèse & Observabilité Consolidée ────────────────────────────────────
   console.log('\n═══════════════════════════════════════════════════════════════════════════════════════');
-  console.log('🎉 COMPTE RENDU DU SEED DE PRODUCTION (KANTO MG)');
+  console.log('🎉 COMPTE RENDU DU SEED INTÉGRAL DE PRODUCTION (KANTO MG)');
   console.log('═══════════════════════════════════════════════════════════════════════════════════════');
   for (const s of allStats) {
     console.log(
@@ -810,7 +1870,7 @@ async function seedProduction() {
   if (totalErrors > 0) {
     console.warn(`⚠️ [Seed Prod] ${totalErrors} anomalie(s) rencontrée(s).`);
   } else {
-    console.log('✨ [Seed Prod] Synchronisation 100% réussie. Intégrité des données garantie.');
+    console.log('✨ [Seed Prod] Synchronisation intégrale 100% réussie. Tous les jeux et contenus sont prêts.');
   }
 }
 
