@@ -5,9 +5,15 @@
     "french": "Nul n’atteint son but sans effort.",
     "meaning": "La réussite, quel que soit le domaine, ne s'obtient que par des efforts constants et de la persévérance.",
     "example": "Na amin’ny fianarana aza, tsy misy zava-mora, 'tsy misy tonga amin’ny tanjona raha tsy miezaka'. (Même dans les études, rien n'est facile, 'nul n'atteint son but sans effort').",
-    "themes": ["Motivation", "Effort", "Persévérance"],
+    "themes": [
+      "Motivation",
+      "Effort",
+      "Persévérance"
+    ],
     "category": "dicton",
-    "origins": ["Hauts Plateaux"],
+    "origins": [
+      "Hauts Plateaux"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -18,9 +24,14 @@
     "french": "Parler pour ne rien dire",
     "meaning": "Expression ironique pour quelqu’un qui parle sans intérêt.",
     "example": "Aza miresaka amin’ny hirika ianao, tsy misy dikan’izany.",
-    "themes": ["Discours inutile", "Humour"],
+    "themes": [
+      "Discours inutile",
+      "Humour"
+    ],
     "category": "dicton",
-    "origins": ["Argot moderne"],
+    "origins": [
+      "Argot moderne"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -31,9 +42,15 @@
     "french": "Celui qui s’emporte montre qu’il a tort",
     "meaning": "La colère révèle une faiblesse ou une injustice dans la réaction de celui qui s’emporte.",
     "example": "Employé pour apaiser les conflits et rappeler que perdre son sang-froid dessert la cause.",
-    "themes": ["Émotion", "Conflit", "Sagesse"],
+    "themes": [
+      "Émotion",
+      "Conflit",
+      "Sagesse"
+    ],
     "category": "dicton",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -44,9 +61,14 @@
     "french": "L’envie mène au trou",
     "meaning": "La jalousie ou l’avidité conduisent aux ennuis.",
     "example": "Raha tsy mitandrina amin'ny fihevitra ratsy dia tena fanja mitondra tinady.",
-    "themes": ["Jalousie", "Modération"],
+    "themes": [
+      "Jalousie",
+      "Modération"
+    ],
     "category": "dicton",
-    "origins": ["Tradition orale"],
+    "origins": [
+      "Tradition orale"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -57,9 +79,14 @@
     "french": "Les absents parlent le plus",
     "meaning": "Ceux qui ne sont pas présents sont souvent ceux qu’on évoque le plus.",
     "example": "Toy izany ny olona tsy hita maso no be resaka ao an-tsehatra.",
-    "themes": ["Critique sociale", "Hypocrisie"],
+    "themes": [
+      "Critique sociale",
+      "Hypocrisie"
+    ],
     "category": "dicton",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -70,9 +97,14 @@
     "french": "Ne cherche pas du riz dans une soupe vide",
     "meaning": "Ne cherche pas quelque chose où il n’y a rien.",
     "example": "Tsy hahazo valiny ianao raha mitady vary amin’ny lasopy tsy misy olona.",
-    "themes": ["Logique", "Sagesse"],
+    "themes": [
+      "Logique",
+      "Sagesse"
+    ],
     "category": "dicton",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -83,9 +115,14 @@
     "french": "Petite braise, grande flamme",
     "meaning": "Un petit souci peut provoquer un gros problème.",
     "example": "Aza avela ho tavy kely mampitombo rentra ny mailaka tsy voafehy.",
-    "themes": ["Attention", "Conséquence"],
+    "themes": [
+      "Attention",
+      "Conséquence"
+    ],
     "category": "dicton",
-    "origins": ["Tradition orale"],
+    "origins": [
+      "Tradition orale"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -96,9 +133,14 @@
     "french": "Seul un fou parle sans raison",
     "meaning": "Parler sans argument ou but est folie.",
     "example": "Aza ho toy ny adala izay miteny tsy misy antony.",
-    "themes": ["Discours", "Sagesse"],
+    "themes": [
+      "Discours",
+      "Sagesse"
+    ],
     "category": "dicton",
-    "origins": ["Tradition orale"],
+    "origins": [
+      "Tradition orale"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -109,9 +151,14 @@
     "french": "Sans eau on ne peut pas se laver",
     "meaning": "Il faut les outils ou conditions nécessaires pour réussir.",
     "example": "Tsy handeha ny tetikasa raha tsy misy loharanon-karena: tsy misy rano tsy azo mandro.",
-    "themes": ["Ressources", "Préparation"],
+    "themes": [
+      "Ressources",
+      "Préparation"
+    ],
     "category": "dicton",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -122,11 +169,649 @@
     "french": "La honte n'est pas une charge à porter, quand on la ressent, on la dépose",
     "meaning": "Ce dicton suggère qu'il ne faut pas rester accablé par la honte. Une fois l'erreur reconnue et la leçon apprise, il faut savoir la surmonter et aller de l'avant sans porter ce fardeau indéfiniment.",
     "example": "Nanao hadisoana ianao, ekeo, fa 'ny henatra tsy mba loloha'.",
-    "themes": ["Honte", "Pardon", "Psychologie", "Sagesse"],
+    "themes": [
+      "Honte",
+      "Pardon",
+      "Psychologie",
+      "Sagesse"
+    ],
     "category": "dicton",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-101",
+    "malagasy": "Ny fanahy no maha olona.",
+    "french": "C'est l'esprit et la qualité morale qui font l'être humain.",
+    "meaning": "La dignité d'une personne ne se mesure ni à sa richesse matérielle ni à son rang social, mais à sa droiture morale, à sa bienveillance et à son respect d'autrui.",
+    "example": "Na manam-pahaizana sy manan-karena aza ny olona iray, tsarovy mandrakariva fa ny fanahy no maha olona.",
+    "themes": [
+      "Éthique",
+      "Humanité",
+      "Respect",
+      "Philosophie"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni fanahi nou maha oulouna",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-102",
+    "malagasy": "Ny hevitry ny maro mahataka-davitra.",
+    "french": "La réflexion du grand nombre porte loin.",
+    "meaning": "La concertation collective et l'écoute mutuelle permettent de trouver des solutions plus sages et plus durables qu'une décision prise isolément.",
+    "example": "Andao hikaon-doha alohan'ny hanapahana hevitra, satria ny hevitry ny maro mahataka-davitra.",
+    "themes": [
+      "Concertation",
+      "Sagesse",
+      "Communauté"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni hevitri ni marou mahataka-davitra",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-103",
+    "malagasy": "Ny vato menatra ny vato, ny hazo menatra ny hazo.",
+    "french": "La pierre a égard à la pierre, le bois a égard au bois.",
+    "meaning": "Formule traditionnelle d'exhortation morale rappelant que tout être humain doit éprouver de la retenue, de la pudeur morale et du respect envers ses semblables.",
+    "example": "Mifampitsimbina sy mifanaja hatrany eo amin'ny fiarahamonina, fa ny vato menatra ny vato ary ny hazo menatra ny hazo.",
+    "themes": [
+      "Respect",
+      "Pudeur",
+      "Vie sociale"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni vatou menatra ni vatou, ni hazou menatra ni hazou",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-104",
+    "malagasy": "Izay entim-belona no enti-maty.",
+    "french": "Ce que l'on porte de son vivant est ce que l'on emporte dans la mort.",
+    "meaning": "Les habitudes, le caractère profond et la réputation qu'une personne a cultivés tout au long de son existence lui restent attachés jusqu'à la fin de sa vie.",
+    "example": "Tsy niova mihitsy ny hatsaram-pony hatramin'ny fahanterany, satria izay entim-belona no enti-maty.",
+    "themes": [
+      "Caractère",
+      "Destin",
+      "Morale"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "izay entim-belouna nou enti-mati",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-105",
+    "malagasy": "Izay mahavangivangy tian-kavana.",
+    "french": "Celui qui rend souvent visite est aimé des siens.",
+    "meaning": "L'affection familiale et l'amitié s'entretiennent par la présence, l'attention régulière et les visites mutuelles, piliers de la vie sociale malgache.",
+    "example": "Andao mba hitsidika an'i Nenibe any ambanivohitra amin'ity faran'ny herinandro ity, fa izay mahavangivangy tian-kavana.",
+    "themes": [
+      "Fihavanana",
+      "Famille",
+      "Vie sociale"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "izay mahavangivangi tian-kavana",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-106",
+    "malagasy": "Tsy misy mafy tsy laitran'ny zoto.",
+    "french": "Il n'est rien de si difficile dont l'ardeur au travail ne vienne à bout.",
+    "meaning": "La persévérance, le courage et la bonne volonté permettent de surmonter tous les obstacles, même les tâches qui paraissent insurmontables au départ.",
+    "example": "Vita ihany ny fanamboarana ilay tetezana simba satria tsy misy mafy tsy laitran'ny zoto.",
+    "themes": [
+      "Travail",
+      "Persévérance",
+      "Courage"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "tsi misi mafi tsi laitran ni zoutou",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-107",
+    "malagasy": "Ny tao-trano tsy efan'ny irery.",
+    "french": "La construction d'une maison ne s'achève pas tout seul.",
+    "meaning": "Les grandes entreprises de la vie nécessitent l'entraide communautaire et la solidarité ; nul ne peut se suffire entièrement à lui-même.",
+    "example": "Mila ny fifanomezan-tanan'ny fokonolona isika amin'ity tetikasa ity, satria ny tao-trano tsy efan'ny irery.",
+    "themes": [
+      "Entraide",
+      "Solidarité",
+      "Communauté"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni taou-tranou tsi efan ni ireri",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-108",
+    "malagasy": "Izay mitambatra vato, izay misaraka fasika.",
+    "french": "Ceux qui s'unissent sont roc, ceux qui se divisent sont sable.",
+    "meaning": "L'union confère à un groupe la solidité inébranlable de la pierre, tandis que la discorde et l'individualisme le rendent vulnérable et dispersé comme le sable au vent.",
+    "example": "Aoka hiray hina hatrany ny mpianakavy fa izay mitambatra vato, izay misaraka fasika.",
+    "themes": [
+      "Unité",
+      "Solidarité",
+      "Force"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "izay mitambatra vatou, izay misaraka fasika",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-109",
+    "malagasy": "Ny teny imolotra mba mora, fa ny asa an-tanana no sarotra.",
+    "french": "La parole sur les lèvres est aisée, mais l'œuvre entre les mains est difficile.",
+    "meaning": "Il est facile de promettre ou de critiquer en paroles, mais la véritable valeur se révèle dans la réalisation concrète et l'effort.",
+    "example": "Aza malaky mampanantena zavatra tsy ho vita, fa ny teny imolotra mba mora fa ny asa an-tanana no sarotra.",
+    "themes": [
+      "Travail",
+      "Parole",
+      "Réalisme"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni teni imoulotra mba moura, fa ni asa an-tanana nou saroutra",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-110",
+    "malagasy": "Ny tody tsy misy, fa ny atao no miverina.",
+    "french": "La fatalité vengeresse n'existe pas, mais ce sont nos propres actes qui nous reviennent.",
+    "meaning": "Dicton philosophique central sur la justice immanente : ce qui nous arrive est la conséquence morale directe du bien ou du mal que nous avons semé.",
+    "example": "Manaova soa amin'ny mpiara-belona hatrany, satria ny tody tsy misy fa ny atao no miverina.",
+    "themes": [
+      "Justice",
+      "Responsabilité",
+      "Philosophie"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni toudi tsi misi, fa ni ataou nou miverina",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-111",
+    "malagasy": "Aleo very tsikalakalam-bola toy izay very tsikalakalam-pihavanana.",
+    "french": "Mieux vaut perdre un peu d'argent que de perdre un brin de fraternité.",
+    "meaning": "Dans l'échelle des valeurs malgaches, l'harmonie des relations humaines prime toujours sur l'intérêt financier ou matériel.",
+    "example": "Tsy nampaninona azy ny namoy ny tombony kely tamin'ilay varotra, fa aleo very tsikalakalam-bola toy izay very tsikalakalam-pihavanana.",
+    "themes": [
+      "Fihavanana",
+      "Valeurs",
+      "Générosité"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "aleou veri tsikalakalam-boula toui izay veri tsikalakalam-pihavanana",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-112",
+    "malagasy": "Ny mora hay raha jerena, fa ny sarotra hay raha ianarana.",
+    "french": "Ce qui est facile s'apprend d'un simple regard, mais ce qui est difficile s'acquiert par l'étude.",
+    "meaning": "Aucune compétence complexe ne s'improvise : l'apprentissage patient et l'application permettent de maîtriser les savoir-faire les plus exigeants.",
+    "example": "Aza kivy raha mbola sahirana manenona lamba, fa ny mora hay raha jerena ary ny sarotra hay raha ianarana.",
+    "themes": [
+      "Apprentissage",
+      "Éducation",
+      "Persévérance"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni moura hay raha jerena, fa ni saroutra hay raha ianarana",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-113",
+    "malagasy": "Ny tarehy ratsy tsy azo ovana, fa ny fanahy ratsy azo ajanona.",
+    "french": "Un vilain visage ne peut être changé, mais un mauvais caractère peut être corrigé.",
+    "meaning": "Nul n'est responsable de son apparence physique, mais chacun a le pouvoir et le devoir d'améliorer son comportement et sa conduite morale.",
+    "example": "Miezaha hanitsy ny fahazarana tsy mety, satria ny tarehy ratsy tsy azo ovana fa ny fanahy ratsy azo ajanona.",
+    "themes": [
+      "Morale",
+      "Caractère",
+      "Sagesse"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni tarehi ratsi tsi azou ouvana, fa ni fanahi ratsi azou ajanouna",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-114",
+    "malagasy": "Izay adala no toa an-drainy.",
+    "french": "Bien sot est celui qui se contente d'égaler son père.",
+    "meaning": "Ce dicton exprime le souhait des aînés de voir leurs enfants les dépasser en savoir, en sagesse et en réussite.",
+    "example": "Mianara mafy ianareo rankizy mba hihoatra anay ray aman-dreninareo, fa izay adala no toa an-drainy.",
+    "themes": [
+      "Progrès",
+      "Famille",
+      "Éducation"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "izay adala nou toua an-draini",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-115",
+    "malagasy": "Tsy ny fahamaroan'ny teny no fahamarinany.",
+    "french": "Ce n'est pas l'abondance des paroles qui en fait la vérité.",
+    "meaning": "Parler longuement ou fort ne prouve pas que l'on a raison ; la vérité s'exprime souvent avec sobriété et justesse.",
+    "example": "Tsy mila mikiakiaka na miteny lava be ianao raha marina ny anao, fa tsy ny fahamaroan'ny teny no fahamarinany.",
+    "themes": [
+      "Vérité",
+      "Parole",
+      "Sobriété"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "tsi ni fahamarouan ni teni nou fahamarinani",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-116",
+    "malagasy": "Ny soa atao levenam-bola, ny ratsy atao loza mihantona.",
+    "french": "Le bien que l'on fait est un trésor enfoui en réserve, le mal que l'on commet est un malheur suspendu au-dessus de la tête.",
+    "meaning": "Les bonnes actions constituent un capital de reconnaissance qui portera secours un jour, tandis que les mauvaises actions finissent par retomber sur leur auteur.",
+    "example": "Ampio amin'ny fo madio izay mila vonjy, fa ny soa atao levenam-bola.",
+    "themes": [
+      "Bienveillance",
+      "Justice",
+      "Morale"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni soua ataou levenam-boula, ni ratsi ataou louza mihantouna",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-117",
+    "malagasy": "Izay tia ny akoho dia tia ny fombany.",
+    "french": "Qui aime la poule accepte aussi ses manières.",
+    "meaning": "Aimer sincèrement une personne implique de l'accepter dans sa globalité, avec son caractère, ses habitudes et ses petites imperfections.",
+    "example": "Raha tena namanao izy dia zakao koa ny fahalemeny, fa izay tia ny akoho dia tia ny fombany.",
+    "themes": [
+      "Tolérance",
+      "Amour",
+      "Amitié"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "izay tia ni akouhou dia tia ni foumbani",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-118",
+    "malagasy": "Ny eritreritra no maha olona.",
+    "french": "C'est la réflexion et la conscience qui font l'être humain.",
+    "meaning": "La capacité de peser ses actes avant d'agir et d'écouter sa conscience morale distingue l'être humain responsable.",
+    "example": "Diniho tsara izay hatao alohan'ny hanapahana hevitra, satria ny eritreritra no maha olona.",
+    "themes": [
+      "Conscience",
+      "Sagesse",
+      "Philosophie"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni eritreritra nou maha oulouna",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-119",
+    "malagasy": "Ny firaisan-kina no hery.",
+    "french": "L'union et la solidarité font la force.",
+    "meaning": "Maxime populaire rappelant que la cohésion d'un groupe permet de triompher des épreuves qu'aucun individu ne pourrait affronter seul.",
+    "example": "Nahavita nanarina ny sekoly ravan'ny rivo-doza ny fokonolona satria ny firaisan-kina no hery.",
+    "themes": [
+      "Solidarité",
+      "Unité",
+      "Communauté"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni firaisan-kina nou heri",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-120",
+    "malagasy": "Ny mosary tsy mba namana.",
+    "french": "La faim n'est l'amie de personne.",
+    "meaning": "Le dénuement extrême et la faim constituent une épreuve redoutable ; d'où l'importance du partage alimentaire et du travail agricole.",
+    "example": "Miasà tany amin-joto dieny fotoam-pambolena, fa ny mosary tsy mba namana.",
+    "themes": [
+      "Travail",
+      "Prévoyance",
+      "Vie quotidienne"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni mousari tsi mba namana",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-121",
+    "malagasy": "Aza ny lohasaha mangina no jerena, fa Andriamanitra ao an-tampon'ny loha.",
+    "french": "Ne regarde pas le vallon désert où nul ne te voit, mais songe à Dieu qui est au-dessus de ta tête.",
+    "meaning": "L'honnêteté ne doit pas dépendre de la peur d'être surpris par les hommes, mais de la conscience morale.",
+    "example": "Naveriny tamin'ny tompony ilay poketra hitany tany an-tsaha, satria tsy ny lohasaha mangina no jerena fa Andriamanitra ao an-tampon'ny loha.",
+    "themes": [
+      "Intégrité",
+      "Conscience",
+      "Spiritualité"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "aza ni louhasaha mangina nou jerena, fa andriamanitra aou an-tampoun ni louha",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-122",
+    "malagasy": "Ny teny toy ny atody : raha foy manan'elatra.",
+    "french": "La parole est comme l'œuf : une fois éclose, elle a des ailes.",
+    "meaning": "Une fois prononcée, une parole s'envole, se propage rapidement et ne peut plus être rattrapée ; il faut donc réfléchir avant de parler.",
+    "example": "Lanjao tsara izay haloaky ny vava rehefa tezitra, fa ny teny toy ny atody ka raha foy manan'elatra.",
+    "themes": [
+      "Parole",
+      "Prudence",
+      "Sagesse"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni teni toui ni atoudi : raha foui manan elatra",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-123",
+    "malagasy": "Izay maika tsy mahavita zavatra.",
+    "french": "Qui se précipite à l'excès n'accomplit rien de bon.",
+    "meaning": "La précipitation nuit à la qualité du travail et conduit souvent à l'erreur ; la maîtrise de soi et la méthode sont gages de réussite.",
+    "example": "Ataovy amim-pilaminana ny fanadinana fa izay maika tsy mahavita zavatra.",
+    "themes": [
+      "Patience",
+      "Travail",
+      "Prudence"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "izay maika tsi mahavita zavatra",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-124",
+    "malagasy": "Ny kibo feno tsy mahatsiaro ny noana.",
+    "french": "Le ventre rassasié ne se souvient pas de celui qui a faim.",
+    "meaning": "Celui qui vit dans l'abondance oublie facilement la détresse des démunis ; ce dicton appelle à l'empathie et au partage.",
+    "example": "Tsarovy ireo sahirana manodidina antsika rehefa mifaly isika, fa matetika ny kibo feno tsy mahatsiaro ny noana.",
+    "themes": [
+      "Empathie",
+      "Partage",
+      "Justice sociale"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni kibou fenou tsi mahatsiarou ni nouana",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-125",
+    "malagasy": "Ny fahazazana tsy miverina indroa.",
+    "french": "La jeunesse ne revient pas deux fois.",
+    "meaning": "Le temps de la jeunesse est précieux et irréversible : il faut le mettre à profit pour s'instruire et bâtir son avenir.",
+    "example": "Hararaoty ny fianarana dieny mbola tanora, satria ny fahazazana tsy miverina indroa.",
+    "themes": [
+      "Temps",
+      "Jeunesse",
+      "Éducation"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni fahazazana tsi miverina indroua",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-126",
+    "malagasy": "Tsy misy manan-kavana tsy ho diso.",
+    "french": "Nul n'a de parents ou d'amis qui ne commettent jamais de faute.",
+    "meaning": "L'erreur étant humaine, l'amitié et les liens familiaux exigent l'indulgence et le pardon mutuel plutôt que l'intransigeance.",
+    "example": "Mamelà ny fahadisoany fa olombelona ihany izy, ary tsy misy manan-kavana tsy ho diso.",
+    "themes": [
+      "Pardon",
+      "Fihavanana",
+      "Tolérance"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "tsi misi manan-kavana tsi hou disou",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-127",
+    "malagasy": "Ny fahaizana tsy mba entana mavesatra.",
+    "french": "Le savoir n'est jamais un fardeau trop lourd à porter.",
+    "meaning": "Toute connaissance ou compétence apprise accompagne l'individu partout sans l'encombrer et lui servira tôt ou tard dans la vie.",
+    "example": "Mianara asa tanana sy fiteny samihafa, fa ny fahaizana tsy mba entana mavesatra.",
+    "themes": [
+      "Savoir",
+      "Éducation",
+      "Sagesse"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni fahaizana tsi mba entana mavesatra",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-128",
+    "malagasy": "Izay maharitra vadin'ny marimaritra.",
+    "french": "Celui qui fait preuve de patience est le compagnon de l'accord équitable.",
+    "meaning": "Dans une négociation ou un différend, la patience et le calme permettent d'aboutir à un compromis juste et durable.",
+    "example": "Aza mora sosotra eo am-pifampidinihana, fa izay maharitra vadin'ny marimaritra.",
+    "themes": [
+      "Patience",
+      "Conciliation",
+      "Sagesse"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "izay maharitra vadin ni marimaritra",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-129",
+    "malagasy": "Ny harena azo raha mirary, fa ny aina tsy mba manam-pasolo.",
+    "french": "Les biens matériels peuvent se retrouver si l'on s'y emploie, mais la vie n'a point de rechange.",
+    "meaning": "La vie humaine est sacrée et irremplaçable ; aucune perte matérielle ne doit être placée au-dessus de la préservation de la vie.",
+    "example": "Aoka hitandrina tsara eny an-dalana fa ny harena azo raha mirary, fa ny aina tsy mba manam-pasolo.",
+    "themes": [
+      "Vie",
+      "Prudence",
+      "Valeurs"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni harena azou raha mirari, fa ni aina tsi mba manam-pasoulou",
+    "viewCount": 0,
+    "likesCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "dictonID-130",
+    "malagasy": "Ny henatra no fefin'ny fihavanana.",
+    "french": "La pudeur morale et le respect sont le rempart de la fraternité.",
+    "meaning": "C'est la retenue morale et la crainte de blesser autrui qui protègent et maintiennent l'harmonie sociale entre proches.",
+    "example": "Aza manao teny mahery amin'ny ray aman-dreny sy ny havana, fa ny henatra no fefin'ny fihavanana.",
+    "themes": [
+      "Respect",
+      "Fihavanana",
+      "Pudeur"
+    ],
+    "category": "dicton",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "phonetic": "ni henatra nou fefin ni fihavanana",
+    "viewCount": 0,
+    "likesCount": 0,
     "reportCount": 0
   }
 ]
