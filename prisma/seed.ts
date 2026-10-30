@@ -163,8 +163,46 @@ const DEFAULT_REGIONS = [
   { name: 'Sava', code: '602' },
 ];
 
+async function ensureSchemaColumns() {
+  try {
+    await pool.query(`
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "explanationMg" TEXT;
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "imageUrl" TEXT;
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "imageAlt" TEXT;
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "sourceReference" TEXT;
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "sourceUrl" TEXT;
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "contentSourceType" TEXT;
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "contentSourceId" TEXT;
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "levelNumber" INTEGER DEFAULT 1;
+      ALTER TABLE IF EXISTS "civic_quiz_questions" ADD COLUMN IF NOT EXISTS "historicalPeriod" TEXT;
+
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "explanationTrueMg" TEXT;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "explanationTrueFr" TEXT;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "explanationFalseMg" TEXT;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "explanationFalseFr" TEXT;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "imageAlt" TEXT;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "sourceReference" TEXT;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "contentSourceType" TEXT;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "contentSourceId" TEXT;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "levelNumber" INTEGER DEFAULT 1;
+      ALTER TABLE IF EXISTS "true_false_questions" ADD COLUMN IF NOT EXISTS "historicalPeriod" TEXT;
+
+      ALTER TABLE IF EXISTS "riddle_questions" ADD COLUMN IF NOT EXISTS "acceptedAnswers" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[];
+      ALTER TABLE IF EXISTS "riddle_questions" ADD COLUMN IF NOT EXISTS "difficulty" "DifficultyLevel" NOT NULL DEFAULT 'EASY';
+      ALTER TABLE IF EXISTS "riddle_questions" ADD COLUMN IF NOT EXISTS "imageUrl" TEXT;
+      ALTER TABLE IF EXISTS "riddle_questions" ADD COLUMN IF NOT EXISTS "imageAlt" TEXT;
+      ALTER TABLE IF EXISTS "riddle_questions" ADD COLUMN IF NOT EXISTS "sourceReference" TEXT;
+      ALTER TABLE IF EXISTS "riddle_questions" ADD COLUMN IF NOT EXISTS "contentSourceType" TEXT;
+      ALTER TABLE IF EXISTS "riddle_questions" ADD COLUMN IF NOT EXISTS "contentSourceId" TEXT;
+    `);
+  } catch (err: any) {
+    console.warn('⚠️ [Preflight Schema] Contrôle de schéma non bloquant :', err.message);
+  }
+}
+
 async function main() {
   console.log('🚀 Démarrage du seed de la base de données Kanto MG...');
+  await ensureSchemaColumns();
   const seedDataDir = path.join(__dirname, 'seed-data');
 
   // 1. Initialisation idempotente des Thèmes
