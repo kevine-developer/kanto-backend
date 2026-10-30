@@ -97,3 +97,26 @@ model EmailSuppression {
   @@map("email_suppressions")
 }
 
+
+model AppVersion {
+  id             String    @id @default(cuid())
+  platform       String    // "android" | "ios" | "all"
+  version        String    // Format sémantique, ex: "0.1.0"
+  minVersion     String?   // Version minimale requise (force la mise à jour si version actuelle < minVersion)
+  buildNumber    Int?      // Ex: 30 pour Android versionCode ou iOS buildNumber
+  titleFr        String?
+  titleMg        String?
+  messageFr      String?   @db.Text
+  messageMg      String?   @db.Text
+  releaseNotesFr String[]  @default([])
+  releaseNotesMg String[]  @default([])
+  storeUrl       String?   // URL personnalisée du store ou lien de secours
+  isPublished    Boolean   @default(true) // Détermine si la version est officiellement disponible au téléchargement
+  publishedAt    DateTime  @default(now())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([platform, isPublished])
+  @@index([version])
+  @@map("app_versions")
+}
