@@ -18,20 +18,32 @@ export async function seedRiddles(
     errors: 0,
   };
 
-  // Chargement des devinettes depuis riddles.data.js ou riddles.data.ts
+  // Chargement des devinettes depuis riddles.data.json en priorité, sinon TS/JS
   let riddlesList: RawRiddle[] = [];
-  try {
-    const dataModule = await import('../seed-data/riddles.data.js');
-    riddlesList = dataModule.RIDDLES_DATA || [];
-  } catch {
-    // Si import TS direct sous tsx
+  const jsonPath = path.join(seedDataDir, 'riddles.data.json');
+
+  if (fs.existsSync(jsonPath)) {
     try {
-      const dataModule = await import('../seed-data/riddles.data.ts');
-      riddlesList = dataModule.RIDDLES_DATA || [];
+      riddlesList = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
     } catch (err) {
-      console.error('❌ [Seed Devinettes] Impossible de charger RIDDLES_DATA:', err);
-      stats.errors++;
-      return stats;
+      console.error('❌ [Seed Devinettes] Erreur de parsing JSON sur riddles.data.json:', err);
+    }
+  }
+
+  if (riddlesList.length === 0) {
+    try {
+      const dataModule = await import('../seed-data/riddles.data.js');
+      riddlesList = dataModule.RIDDLES_DATA || [];
+    } catch {
+      // Si import TS direct sous tsx
+      try {
+        const dataModule = await import('../seed-data/riddles.data.ts');
+        riddlesList = dataModule.RIDDLES_DATA || [];
+      } catch (err) {
+        console.error('❌ [Seed Devinettes] Impossible de charger RIDDLES_DATA:', err);
+        stats.errors++;
+        return stats;
+      }
     }
   }
 
@@ -81,11 +93,26 @@ export async function seedRiddles(
       });
 
       if (existing) {
-        await prisma.riddleQuestion.update({
-          where: { id: existing.id },
-          data: riddleData,
-        });
-        stats.updated++;
+        const hasDiff =
+          existing.riddleFr !== riddleData.riddleFr ||
+          existing.correctAnswer !== riddleData.correctAnswer ||
+          existing.explanation !== riddleData.explanation ||
+          existing.clue !== riddleData.clue ||
+          existing.level !== riddleData.level ||
+          existing.difficulty !== riddleData.difficulty ||
+          existing.sourceReference !== riddleData.sourceReference ||
+          JSON.stringify(existing.options) !== JSON.stringify(riddleData.options) ||
+          JSON.stringify(existing.acceptedAnswers) !== JSON.stringify(riddleData.acceptedAnswers);
+
+        if (hasDiff) {
+          await prisma.riddleQuestion.update({
+            where: { id: existing.id },
+            data: riddleData,
+          });
+          stats.updated++;
+        } else {
+          stats.unchanged++;
+        }
       } else {
         await prisma.riddleQuestion.create({
           data: {

@@ -12,6 +12,7 @@ import { seedCitations } from '../../prisma/seeds/seed-citations.js';
 import { seedRakiTeny } from '../../prisma/seeds/seed-raki-teny.js';
 import { seedQuiz } from '../../prisma/seeds/seed-quiz.js';
 import { seedTrueFalse } from '../../prisma/seeds/seed-true-false.js';
+import { seedRiddles } from '../../prisma/seeds/seed-riddles.js';
 import { createPrismaMock, type PrismaMock } from '../test-utils/mock-prisma.factory.js';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
@@ -73,6 +74,18 @@ describe('Kanto Seed System — Tests Unitaires & Idempotence', () => {
       expect(result.isValid).toBe(true);
       expect(result.issues).toHaveLength(0);
     });
+
+    it('doit valider avec succès un lot de devinettes (ankamantatra)', () => {
+      const validRiddles = [
+        {
+          riddleMg: 'Jereo aho hijereko anao ?',
+          correctAnswer: 'Fitaratra',
+        },
+      ];
+      const result = validateRiddlesBatch(validRiddles);
+      expect(result.isValid).toBe(true);
+      expect(result.issues).toHaveLength(0);
+    });
   });
 
   // ─── 2. Rejet de JSON invalide ─────────────────────────────────────────────
@@ -129,6 +142,19 @@ describe('Kanto Seed System — Tests Unitaires & Idempotence', () => {
       expect(result.isValid).toBe(false);
       expect(result.issues.some((i) => i.field === 'prompt')).toBe(true);
       expect(result.issues.some((i) => i.field === 'choices')).toBe(true);
+    });
+
+    it('doit rejeter une devinette sans énigme malgache ou sans bonne réponse', () => {
+      const invalidRiddles = [
+        {
+          riddleMg: '',
+          correctAnswer: '   ',
+        },
+      ];
+      const result = validateRiddlesBatch(invalidRiddles);
+      expect(result.isValid).toBe(false);
+      expect(result.issues.some((i) => i.field === 'riddleMg')).toBe(true);
+      expect(result.issues.some((i) => i.field === 'correctAnswer')).toBe(true);
     });
   });
 
@@ -365,6 +391,42 @@ describe('Kanto Seed System — Tests Unitaires & Idempotence', () => {
       expect(fs.existsSync(path.join(realSeedDataDir, 'raki-teny.data.json'))).toBe(true);
       expect(fs.existsSync(path.join(realSeedDataDir, 'quiz-verified.data.json'))).toBe(true);
       expect(fs.existsSync(path.join(realSeedDataDir, 'true-false-verified.data.json'))).toBe(true);
+      expect(fs.existsSync(path.join(realSeedDataDir, 'riddles.data.json'))).toBe(true);
+    });
+
+    it('doit insérer de nouvelles devinettes de manière idempotente via seedRiddles', async () => {
+      prismaMock.riddleQuestion.findFirst.mockResolvedValue(null);
+      prismaMock.riddleQuestion.create.mockResolvedValue({ id: 'riddle_1' });
+
+      const tempDir = path.resolve(__dirname, 'temp-test-riddles');
+      fs.mkdirSync(tempDir, { recursive: true });
+      const testRiddles = [
+        {
+          riddleMg: 'Jereo aho hijereko anao ?',
+          riddleFr: 'Regarde-moi pour que je te regarde ?',
+          options: ['Fitaratra', 'Rano'],
+          correctAnswer: 'Fitaratra',
+          acceptedAnswers: ['fitaratra', 'miroir'],
+          explanation: 'Ny fitaratra',
+        },
+      ];
+      fs.writeFileSync(path.join(tempDir, 'riddles.data.json'), JSON.stringify(testRiddles));
+
+      try {
+        const stats = await seedRiddles(prismaMock as any, tempDir);
+        expect(stats.created).toBe(1);
+        expect(stats.errors).toBe(0);
+        expect(prismaMock.riddleQuestion.create).toHaveBeenCalledWith(
+          expect.objectContaining({
+            data: expect.objectContaining({
+              riddleMg: 'Jereo aho hijereko anao ?',
+              correctAnswer: 'Fitaratra',
+            }),
+          }),
+        );
+      } finally {
+        fs.rmSync(tempDir, { recursive: true, force: true });
+      }
     });
   });
 });

@@ -702,6 +702,99 @@ async function seedProduction() {
   }
   allStats.push(tfStats);
 
+  // ─── 6. Devinettes Traditionnelles (RiddleQuestion - Ankamantatra) ───────────
+  const riddlesStats: SeedStats = {
+    category: 'Devinettes (RiddleQuestion)',
+    totalInFile: 0,
+    created: 0,
+    updated: 0,
+    unchanged: 0,
+    skipped: 0,
+    errors: 0,
+  };
+
+  const riddlesFile = path.join(seedDataDir, 'riddles.data.json');
+  if (fs.existsSync(riddlesFile)) {
+    const rawRiddles: any[] = JSON.parse(fs.readFileSync(riddlesFile, 'utf-8'));
+    riddlesStats.totalInFile = rawRiddles.length;
+
+    for (const r of rawRiddles) {
+      if (!r.riddleMg || !r.correctAnswer) {
+        riddlesStats.skipped++;
+        continue;
+      }
+
+      const diff: DifficultyLevel =
+        r.difficulty?.toUpperCase() === 'HARD'
+          ? DifficultyLevel.HARD
+          : r.difficulty?.toUpperCase() === 'MEDIUM'
+            ? DifficultyLevel.MEDIUM
+            : DifficultyLevel.EASY;
+
+      const riddleData = {
+        riddleFr: r.riddleFr || '',
+        options: Array.isArray(r.options) ? r.options : [],
+        correctAnswer: r.correctAnswer,
+        acceptedAnswers: Array.isArray(r.acceptedAnswers) ? r.acceptedAnswers : [],
+        explanation: r.explanation || '',
+        clue: r.clue || null,
+        level: typeof r.level === 'number' ? r.level : 1,
+        difficulty: diff,
+        sourceReference: r.sourceReference || null,
+        contentSourceType: r.contentSourceType || 'MALAGASY_ITEM',
+        contentSourceId: r.contentSourceId || null,
+        status: 'PUBLISHED' as const,
+      };
+
+      try {
+        const existing = await prisma.riddleQuestion.findFirst({
+          where: {
+            OR: [
+              ...(r.id ? [{ id: r.id }] : []),
+              { riddleMg: { equals: r.riddleMg.trim(), mode: 'insensitive' as const } },
+            ],
+          },
+        });
+
+        if (existing) {
+          const hasDiff =
+            existing.riddleFr !== riddleData.riddleFr ||
+            existing.correctAnswer !== riddleData.correctAnswer ||
+            existing.explanation !== riddleData.explanation ||
+            existing.clue !== riddleData.clue ||
+            existing.level !== riddleData.level ||
+            existing.difficulty !== riddleData.difficulty ||
+            existing.sourceReference !== riddleData.sourceReference ||
+            JSON.stringify(existing.options) !== JSON.stringify(riddleData.options) ||
+            JSON.stringify(existing.acceptedAnswers) !== JSON.stringify(riddleData.acceptedAnswers);
+
+          if (hasDiff) {
+            await prisma.riddleQuestion.update({
+              where: { id: existing.id },
+              data: riddleData,
+            });
+            riddlesStats.updated++;
+          } else {
+            riddlesStats.unchanged++;
+          }
+        } else {
+          await prisma.riddleQuestion.create({
+            data: {
+              ...(r.id ? { id: r.id } : {}),
+              riddleMg: r.riddleMg.trim(),
+              ...riddleData,
+            },
+          });
+          riddlesStats.created++;
+        }
+      } catch (err) {
+        console.error(`⚠️ [Seed Prod Devinettes] Erreur sur "${r.riddleMg.substring(0, 30)}..." :`, err);
+        riddlesStats.errors++;
+      }
+    }
+  }
+  allStats.push(riddlesStats);
+
   // ─── Synthèse & Observabilité ────────────────────────────────────────────────
   console.log('\n═══════════════════════════════════════════════════════════════════════════════════════');
   console.log('🎉 COMPTE RENDU DU SEED DE PRODUCTION (KANTO MG)');
