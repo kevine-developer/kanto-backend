@@ -35,7 +35,8 @@ const pool = new pg.Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
-function slugify(text: string): string {
+function slugify(text?: string | null): string {
+  if (!text || typeof text !== 'string') return '';
   return text
     .toLowerCase()
     .normalize('NFD')
@@ -1493,29 +1494,100 @@ async function seedProduction() {
     civicContentStats.totalInFile += rawList.length;
 
     for (const item of rawList) {
-      const slug = item.slug || slugify(item.titleFr || item.titleMg);
+      const titleFr = typeof item.title === 'object' && item.title !== null
+        ? (item.title.fr || item.title.mg || '')
+        : (item.titleFr || item.title || '');
+      const titleMg = typeof item.title === 'object' && item.title !== null
+        ? (item.title.mg || item.title.fr || '')
+        : (item.titleMg || item.title || '');
+
+      const summaryFr = typeof item.summary === 'object' && item.summary !== null
+        ? (item.summary.fr || null)
+        : (item.summaryFr || null);
+      const summaryMg = typeof item.summary === 'object' && item.summary !== null
+        ? (item.summary.mg || null)
+        : (item.summaryMg || null);
+
+      const contentFr = Array.isArray(item.contentFr)
+        ? item.contentFr
+        : (typeof item.content === 'object' && Array.isArray(item.content?.fr) ? item.content.fr : []);
+      const contentMg = Array.isArray(item.contentMg)
+        ? item.contentMg
+        : (typeof item.content === 'object' && Array.isArray(item.content?.mg) ? item.content.mg : []);
+
+      const themes = Array.isArray(item.themes)
+        ? item.themes
+        : (Array.isArray(item.theme) ? item.theme : []);
+      const sources = Array.isArray(item.sources) ? item.sources : [];
+
+      const rawSlug = item.slug || item.id || slugify(titleFr) || slugify(titleMg) || `civic-${subCategory.toLowerCase()}-${civicContentStats.totalInFile}`;
+      const slug = slugify(rawSlug) || `civic-${Date.now()}`;
+
       try {
         const existing = await prisma.civicContent.findUnique({ where: { slug } });
+        let contentId = existing?.id;
         if (!existing) {
-          await prisma.civicContent.create({
+          const created = await prisma.civicContent.create({
             data: {
               slug,
               subCategory,
-              titleFr: item.titleFr,
-              titleMg: item.titleMg,
-              summaryFr: item.summaryFr || null,
-              summaryMg: item.summaryMg || null,
-              contentFr: Array.isArray(item.contentFr) ? item.contentFr : [],
-              contentMg: Array.isArray(item.contentMg) ? item.contentMg : [],
-              themes: Array.isArray(item.themes) ? item.themes : [],
-              sources: Array.isArray(item.sources) ? item.sources : [],
+              titleFr: titleFr || 'Document civique',
+              titleMg: titleMg || 'Tahirin-kevitra ara-pirenena',
+              summaryFr,
+              summaryMg,
+              contentFr,
+              contentMg,
+              themes,
+              sources,
               imageUrl: item.imageUrl || null,
               status: 'PUBLISHED',
             },
           });
+          contentId = created.id;
           civicContentStats.created++;
         } else {
-          civicContentStats.unchanged++;
+          await prisma.civicContent.update({
+            where: { id: existing.id },
+            data: {
+              titleFr: titleFr || existing.titleFr,
+              titleMg: titleMg || existing.titleMg,
+              summaryFr: summaryFr || existing.summaryFr,
+              summaryMg: summaryMg || existing.summaryMg,
+              contentFr: contentFr.length > 0 ? contentFr : existing.contentFr,
+              contentMg: contentMg.length > 0 ? contentMg : existing.contentMg,
+              themes: themes.length > 0 ? themes : existing.themes,
+              sources: sources.length > 0 ? sources : existing.sources,
+            },
+          });
+          civicContentStats.updated++;
+        }
+
+        // Structure roles si présents
+        if (contentId && Array.isArray(item.structure) && item.structure.length > 0) {
+          for (let sIdx = 0; sIdx < item.structure.length; sIdx++) {
+            const s = item.structure[sIdx];
+            const sTitleFr = typeof s.title === 'object' ? (s.title?.fr || s.title?.mg || '') : (s.titleFr || s.title || '');
+            const sTitleMg = typeof s.title === 'object' ? (s.title?.mg || s.title?.fr || '') : (s.titleMg || s.title || '');
+            const sRoleFr = typeof s.role === 'object' ? (s.role?.fr || s.role?.mg || '') : (s.roleFr || s.role || '');
+            const sRoleMg = typeof s.role === 'object' ? (s.role?.mg || s.role?.fr || '') : (s.roleMg || s.role || '');
+
+            const existingRole = await prisma.civicStructureRole.findFirst({
+              where: { civicContentId: contentId, orderIndex: sIdx },
+            });
+
+            if (!existingRole) {
+              await prisma.civicStructureRole.create({
+                data: {
+                  civicContentId: contentId,
+                  orderIndex: sIdx,
+                  titleFr: sTitleFr,
+                  titleMg: sTitleMg,
+                  roleFr: sRoleFr,
+                  roleMg: sRoleMg,
+                },
+              });
+            }
+          }
         }
       } catch (err) {
         console.error(`⚠️ [Seed Prod Civique] Erreur sur "${slug}" :`, err);
