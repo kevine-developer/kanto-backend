@@ -56,8 +56,9 @@ export class UpdatePlatformsDto {
 }
 
 export class UnsubscribeBetaDto {
+  @IsOptional()
   @IsEmail({}, { message: 'Veuillez saisir une adresse email valide.' })
-  email: string;
+  email?: string;
 
   @IsOptional()
   @IsString()

@@ -108,14 +108,22 @@ export class BetaTestersService {
         ? Array.from(new Set(dto.platforms))
         : ['ANDROID'];
 
-    // 2. Vérification d'une inscription existante via hash HMAC-SHA-256 déterministe
+    // 2. Vérification d'une inscription existante via hash HMAC-SHA-256 déterministe (avec fallback résilient)
     const emailHashVal = hashEmail(email);
-    const existing = await this.prisma.betaTester.findFirst({
-      where: {
-        OR: [{ emailHash: emailHashVal }, { email }],
-      },
-      include: { group: true },
-    });
+    let existing: Awaited<ReturnType<typeof this.prisma.betaTester.findFirst<{ include: { group: true } }>>> = null;
+    try {
+      existing = await this.prisma.betaTester.findFirst({
+        where: {
+          OR: [{ emailHash: emailHashVal }, { email }],
+        },
+        include: { group: true },
+      });
+    } catch {
+      existing = await this.prisma.betaTester.findFirst({
+        where: { email },
+        include: { group: true },
+      });
+    }
 
     if (existing) {
       this.logger.log(
@@ -159,23 +167,44 @@ export class BetaTestersService {
     const encryptedEmail = encryptEmail(email);
 
     try {
-      const tester = await this.prisma.betaTester.create({
-        data: {
-          email: encryptedEmail,
-          emailHash: emailHashVal,
-          fullName: dto.fullName?.trim() || null,
-          platforms,
-          status: initialStatus,
-          androidStatus,
-          iosStatus,
-          termsAccepted: true,
-          termsAcceptedAt: new Date(),
-          unsubscribeToken,
-          groupId: defaultGroup?.id || null,
-          ipAddress: clientIp || null,
-          userAgent: userAgent || null,
-        },
-      });
+      let tester;
+      try {
+        tester = await this.prisma.betaTester.create({
+          data: {
+            email: encryptedEmail,
+            emailHash: emailHashVal,
+            fullName: dto.fullName?.trim() || null,
+            platforms,
+            status: initialStatus,
+            androidStatus,
+            iosStatus,
+            termsAccepted: true,
+            termsAcceptedAt: new Date(),
+            unsubscribeToken,
+            groupId: defaultGroup?.id || null,
+            ipAddress: clientIp || null,
+            userAgent: userAgent || null,
+          },
+        });
+      } catch (createErr: unknown) {
+        // Fallback transparent si la colonne emailHash n'a pas encore été migrée sur la base
+        tester = await this.prisma.betaTester.create({
+          data: {
+            email: encryptedEmail,
+            fullName: dto.fullName?.trim() || null,
+            platforms,
+            status: initialStatus,
+            androidStatus,
+            iosStatus,
+            termsAccepted: true,
+            termsAcceptedAt: new Date(),
+            unsubscribeToken,
+            groupId: defaultGroup?.id || null,
+            ipAddress: clientIp || null,
+            userAgent: userAgent || null,
+          },
+        });
+      }
 
       this.logger.log(
         `🎉 [BetaTesters] Nouveau testeur enregistré : ${maskEmail(email)} [${platforms.join(', ')}]`,
@@ -356,12 +385,20 @@ export class BetaTestersService {
   async verifyParticipation(emailInput: string) {
     const email = emailInput.trim().toLowerCase();
     const emailHashVal = hashEmail(email);
-    const tester = await this.prisma.betaTester.findFirst({
-      where: {
-        OR: [{ emailHash: emailHashVal }, { email }],
-      },
-      include: { group: true },
-    });
+    let tester: Awaited<ReturnType<typeof this.prisma.betaTester.findFirst<{ include: { group: true } }>>> = null;
+    try {
+      tester = await this.prisma.betaTester.findFirst({
+        where: {
+          OR: [{ emailHash: emailHashVal }, { email }],
+        },
+        include: { group: true },
+      });
+    } catch {
+      tester = await this.prisma.betaTester.findFirst({
+        where: { email },
+        include: { group: true },
+      });
+    }
 
     if (!tester) {
       return {
@@ -433,11 +470,18 @@ export class BetaTestersService {
   async resendInvitePublic(emailInput: string) {
     const email = emailInput.trim().toLowerCase();
     const emailHashVal = hashEmail(email);
-    const tester = await this.prisma.betaTester.findFirst({
-      where: {
-        OR: [{ emailHash: emailHashVal }, { email }],
-      },
-    });
+    let tester: Awaited<ReturnType<typeof this.prisma.betaTester.findFirst>> = null;
+    try {
+      tester = await this.prisma.betaTester.findFirst({
+        where: {
+          OR: [{ emailHash: emailHashVal }, { email }],
+        },
+      });
+    } catch {
+      tester = await this.prisma.betaTester.findFirst({
+        where: { email },
+      });
+    }
 
     if (!tester) {
       return {
@@ -450,25 +494,37 @@ export class BetaTestersService {
     const hasAndroid = tester.platforms.includes('ANDROID');
     const hasIos = tester.platforms.includes('IOS');
 
-    if (hasAndroid) {
-      await this.sendAndroidInvite(tester.id);
-      sent = true;
-    }
-    if (hasIos) {
-      await this.sendIosInvite(tester.id);
-      sent = true;
-    }
+    try {
+      if (hasAndroid) {
+        await this.sendAndroidInvite(tester.id);
+        sent = true;
+      }
+      if (hasIos) {
+        await this.sendIosInvite(tester.id);
+        sent = true;
+      }
 
-    const clearEmail = decryptEmail(tester.email);
-    if (!sent) {
-      await this.emailDispatcher.sendTemplateEmail({
-        to: clearEmail,
-        templateCode: 'CONFIRMATION',
-        variables: {
-          userName: tester.fullName || 'Bêta-testeur',
-          platform: tester.platforms.join(' & '),
-        },
-      });
+      if (!sent) {
+        const clearEmail = decryptEmail(tester.email);
+        await this.emailDispatcher.sendTemplateEmail({
+          to: clearEmail,
+          templateCode: 'CONFIRMATION',
+          variables: {
+            userName: tester.fullName || 'Bêta-testeur',
+            platform: tester.platforms.join(' & '),
+          },
+        });
+      }
+    } catch (mailErr: unknown) {
+      const msg = mailErr instanceof Error ? mailErr.message : String(mailErr);
+      this.logger.error(
+        `❌ [BetaTesters] Échec envoi lors du renvoi pour ${maskEmail(tester.email)} : ${msg}`,
+      );
+      return {
+        success: false,
+        message:
+          'Impossible d’expédier l’e-mail pour le moment. Veuillez vérifier votre connexion ou réessayer ultérieurement.',
+      };
     }
 
     const masked = maskEmail(tester.email);
@@ -809,8 +865,9 @@ export class BetaTestersService {
     let notifiedCount = 0;
     for (const tester of testers) {
       try {
+        const clearEmail = decryptEmail(tester.email);
         await this.emailDispatcher.sendTemplateEmail({
-          to: tester.email,
+          to: clearEmail,
           templateCode: 'NEW_VERSION',
           variables: {
             userName: tester.fullName || 'Bêta-testeur',
@@ -1223,8 +1280,9 @@ export class BetaTestersService {
       config?.testFlightPublicLink ||
       'https://testflight.apple.com/join/kantomg';
 
+    const clearEmail = decryptEmail(tester.email);
     await this.emailDispatcher.sendTemplateEmail({
-      to: tester.email,
+      to: clearEmail,
       templateCode: 'INVITE_IOS',
       variables: {
         userName: tester.fullName || 'Bêta-testeur',
