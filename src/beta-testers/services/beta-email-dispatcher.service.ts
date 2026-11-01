@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
 import { ResendService } from '../../integrations/resend/resend.service.js';
-import { maskEmail } from '../utils/beta-crypto.util.js';
+import { maskEmail, decryptEmail } from '../utils/beta-crypto.util.js';
 
 export interface EmailContextVariables {
   userName?: string;
@@ -37,13 +37,18 @@ export class BetaEmailDispatcherService {
     bypassSuppression?: boolean;
   }) {
     const {
-      to,
       templateCode,
       variables,
       customSubject,
       customContentHtml,
       bypassSuppression,
     } = options;
+
+    // Déchiffrement transparent systématique de l'adresse destinataire
+    const to = decryptEmail(options.to).trim().toLowerCase();
+    if (!to || !to.includes('@')) {
+      throw new Error(`Adresse e-mail destinataire invalide : ${maskEmail(options.to)}`);
+    }
 
     // 1. Récupération de la configuration globale pour liens par défaut
     const config = await this.prisma.betaAutomationConfig.findFirst();
