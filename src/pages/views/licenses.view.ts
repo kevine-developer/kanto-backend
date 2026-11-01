@@ -1,10 +1,17 @@
 import { pageShell } from '../page.helpers.js';
 
-export function renderLicensesPage(options?: { hideHeader?: boolean }): string {
+export function renderLicensesPage(options?: {
+  hideHeader?: boolean;
+  supportEmail?: string;
+}): string {
+  const supportEmail =
+    options?.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
+
   return pageShell({
     title: 'Kanto — Licences et crédits',
     pageTitle: 'Licences et crédits',
     hideHeader: options?.hideHeader,
+    supportEmail,
     description:
       "Licences des bibliothèques open source utilisées par l'application Kanto.",
     body: `

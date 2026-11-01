@@ -1,10 +1,17 @@
 import { pageShell } from '../page.helpers.js';
 
-export function renderHelpPage(options?: { hideHeader?: boolean }): string {
+export function renderHelpPage(options?: {
+  hideHeader?: boolean;
+  supportEmail?: string;
+}): string {
+  const supportEmail =
+    options?.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
+
   return pageShell({
     title: 'Kanto — Aide et support',
     pageTitle: 'Aide',
     hideHeader: options?.hideHeader,
+    supportEmail,
     description:
       "Trouvez des réponses à vos questions sur l'application Kanto.",
     body: `
@@ -12,7 +19,7 @@ export function renderHelpPage(options?: { hideHeader?: boolean }): string {
       <p class="page-meta">Centre d'aide Kanto</p>
 
       <div class="callout">
-        <p>Vous ne trouvez pas la réponse ? Contactez-nous à <a href="mailto:contact@kanto.mg">contact@kanto.mg</a> — nous répondons sous 48h.</p>
+        <p>Vous ne trouvez pas la réponse ? Contactez-nous à <a href="mailto:${supportEmail}">${supportEmail}</a> — nous répondons sous 48h.</p>
       </div>
 
       <h2>Premiers pas</h2>
