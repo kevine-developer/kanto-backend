@@ -1321,6 +1321,25 @@ export function renderBetaLandingPage(
 
       <!-- ─── ONGLET 3 : RETOURS & SIGNALEMENT DE BUGS ─── -->
       <div id="panel-feedback" style="display: ${initialTab === 'feedback' ? 'block' : 'none'};">
+        <!-- Conseil Deeplink App Mobile -->
+        <div style="background: rgba(107, 158, 97, 0.09); border: 1px solid var(--color-tanimbary); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 20px;">
+          <div style="font-size: 13px; font-weight: 700; color: var(--color-heading); margin-bottom: 5px; display: flex; align-items: center; gap: 7px;">
+            <span>📱</span>
+            <span>Conseil : utilisez le module de diagnostic de l'application</span>
+          </div>
+          <p style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.45; margin-bottom: 10px;">
+            Pour un traitement plus rapide et précis, signalez vos anomalies directement depuis l'application Kanto MG. Les logs techniques et la version exacte de build y sont joints automatiquement.
+          </p>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <a href="kantomg://feedback?type=bug" class="btn-store btn-store-android" style="display: inline-flex; align-items: center; justify-content: center; width: auto; padding: 7px 14px; margin: 0; font-size: 12px;">
+              <span>Ouvrir dans l'app Kanto (Deeplink) ↗</span>
+            </a>
+            <a href="/feedback" style="display: inline-flex; align-items: center; justify-content: center; font-size: 12px; color: var(--color-text-secondary); padding: 7px 10px; text-decoration: underline;">
+              Ouvrir l'interface dédiée plein écran ↗
+            </a>
+          </div>
+        </div>
+
         <form id="feedback-form">
           <div class="field">
             <label class="field-label" for="fb-email">

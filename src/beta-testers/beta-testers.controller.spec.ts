@@ -72,6 +72,56 @@ describe('BetaTestersController', () => {
     });
   });
 
+  describe('getBugReportScript', () => {
+    it('doit servir le script client dédié au signalement de bugs', () => {
+      const res = {
+        setHeader: jest.fn(),
+        send: jest.fn(),
+      } as unknown as Response;
+
+      controller.getBugReportScript(res);
+
+      expect(res.setHeader).toHaveBeenCalledWith(
+        'Content-Type',
+        'application/javascript; charset=utf-8',
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('selectedCategory'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('api/beta-testers/feedback'),
+      );
+    });
+  });
+
+  describe('getBugReportPage', () => {
+    it('doit générer la page dédiée avec le deeplink app mobile et le formulaire web', async () => {
+      const res = {
+        setHeader: jest.fn(),
+        send: jest.fn(),
+      } as unknown as Response;
+
+      await controller.getBugReportPage('BUG', 'ANDROID', 'test@kanto.mg', res);
+
+      expect(res.setHeader).toHaveBeenCalledWith(
+        'Content-Type',
+        'text/html; charset=utf-8',
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('kantomg://feedback?type=bug'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('Signaler une anomalie'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('bug-report-form'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('support@kanto.mg'),
+      );
+    });
+  });
+
   describe('getBetaLandingPage', () => {
     it('doit générer la page d’accueil avec la bannière, les modales CGU et cookies', async () => {
       const res = {
