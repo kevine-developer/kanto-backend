@@ -109,7 +109,7 @@ export class AppController {
               req?.socket?.remoteAddress;
             const userAgent = req?.headers?.['user-agent'] as string;
             await this.betaTestersService.register(
-              { email: queryEmail, fullName: queryFullName || undefined },
+              { email: queryEmail, fullName: queryFullName || undefined, platforms: ['ANDROID'], termsAccepted: true },
               ip,
               userAgent,
             );
