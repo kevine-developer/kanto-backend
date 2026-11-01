@@ -19,6 +19,7 @@ model BetaGroup {
 model BetaTester {
   id                 String       @id @default(cuid())
   email              String       @unique
+  emailHash          String?      @unique
   fullName           String?
   platforms          String[]     @default(["ANDROID"]) // ["ANDROID"], ["IOS"], ou ["ANDROID", "IOS"]
   status             TesterStatus @default(PENDING) // PENDING, APPROVED, INVITED, REJECTED
@@ -65,6 +66,7 @@ model BetaTester {
   updatedAt          DateTime     @updatedAt
 
   @@index([status])
+  @@index([emailHash])
   @@index([androidStatus])
   @@index([iosStatus])
   @@index([groupId])
@@ -97,6 +99,7 @@ model BetaFeedback {
   testerId      String?
   tester        BetaTester? @relation(fields: [testerId], references: [id], onDelete: SetNull)
   email         String
+  emailHash     String?
   category      String      // "BUG", "UI_UX", "PERFORMANCE", "NAVIGATION", "CONTENT", "SUGGESTION", "OTHER"
   title         String?
   description   String      @db.Text
@@ -115,6 +118,7 @@ model BetaFeedback {
   @@index([category])
   @@index([platform])
   @@index([status])
+  @@index([emailHash])
   @@index([priority])
   @@index([createdAt])
   @@map("beta_feedbacks")

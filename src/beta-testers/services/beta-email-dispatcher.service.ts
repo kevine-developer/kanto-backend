@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
 import { ResendService } from '../../integrations/resend/resend.service.js';
+import { maskEmail } from '../utils/beta-crypto.util.js';
 
 export interface EmailContextVariables {
   userName?: string;
@@ -151,13 +152,13 @@ export class BetaEmailDispatcherService {
       });
 
       this.logger.log(
-        `✉️ [BetaEmail] Modèle "${templateCode}" expédié à ${to}`,
+        `✉️ [BetaEmail] Modèle "${templateCode}" expédié à ${maskEmail(to)}`,
       );
       return { success: true, subject, to };
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       this.logger.error(
-        `❌ [BetaEmail] Échec envoi "${templateCode}" à ${to} : ${msg}`,
+        `❌ [BetaEmail] Échec envoi "${templateCode}" à ${maskEmail(to)} : ${msg}`,
       );
       throw err;
     }
