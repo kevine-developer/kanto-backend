@@ -39,6 +39,10 @@ import {
   renderBetaLandingPage,
   renderBetaWaitlistScript,
 } from './views/beta-landing.view.js';
+import {
+  renderBugReportPage,
+  renderBugReportScript,
+} from './views/bug-report.view.js';
 import { TesterStatus } from '../../generated/prisma/client.js';
 
 @Controller()
@@ -55,6 +59,45 @@ export class BetaTestersController {
     res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
     res.setHeader('Cache-Control', 'public, max-age=3600');
     res.send(renderBetaWaitlistScript());
+  }
+
+  /**
+   * Script client dédié au signalement de bugs servi sous /bug-report.js.
+   */
+  @Get(['bug-report.js', 'api/bug-report.js'])
+  getBugReportScript(@Res() res: Response): void {
+    res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.send(renderBugReportScript());
+  }
+
+  /**
+   * Page dédiée au signalement de bugs et retours bêta-testeurs.
+   * Conseille l'utilisation du Deeplink vers l'application mobile et propose un formulaire web complet.
+   */
+  @Get(['feedback', 'bug-report', 'signaler-bug', 'retours'])
+  async getBugReportPage(
+    @Query('type') type: string | undefined,
+    @Query('platform') platform: string | undefined,
+    @Query('email') email: string | undefined,
+    @Res() res: Response,
+  ): Promise<void> {
+    const config =
+      typeof this.betaTestersService.getAutomationConfig === 'function'
+        ? await this.betaTestersService.getAutomationConfig().catch(() => null)
+        : null;
+    const supportEmail =
+      config?.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
+
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(
+      renderBugReportPage({
+        initialType: type,
+        initialPlatform: platform,
+        initialEmail: email,
+        supportEmail,
+      }),
+    );
   }
 
   /**
