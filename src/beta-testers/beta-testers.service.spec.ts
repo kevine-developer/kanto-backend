@@ -223,6 +223,7 @@ describe('BetaTestersService', () => {
       expect(result.exists).toBe(true);
       expect(result.tester?.email).toBe('rak***@kanto.mg');
       expect(result.tester?.maskedEmail).toBe('rak***@kanto.mg');
+      expect(result.message).toContain('rak***@kanto.mg');
     });
   });
 

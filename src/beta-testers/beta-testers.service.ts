@@ -283,7 +283,11 @@ export class BetaTestersService {
     return {
       success: true,
       message: 'Vos plateformes de test ont été mises à jour avec succès.',
-      tester: updated,
+      tester: {
+        ...updated,
+        email: maskEmail(updated.email),
+        maskedEmail: maskEmail(updated.email),
+      },
     };
   }
 
@@ -419,7 +423,7 @@ export class BetaTestersService {
       },
       canDownloadAndroid,
       canDownloadIos,
-      message: `Votre participation avec l'adresse ${tester.email} est confirmée.`,
+      message: `Votre participation avec l'adresse ${masked} est confirmée.`,
     };
   }
 
@@ -428,8 +432,11 @@ export class BetaTestersService {
    */
   async resendInvitePublic(emailInput: string) {
     const email = emailInput.trim().toLowerCase();
-    const tester = await this.prisma.betaTester.findUnique({
-      where: { email },
+    const emailHashVal = hashEmail(email);
+    const tester = await this.prisma.betaTester.findFirst({
+      where: {
+        OR: [{ emailHash: emailHashVal }, { email }],
+      },
     });
 
     if (!tester) {
@@ -452,9 +459,10 @@ export class BetaTestersService {
       sent = true;
     }
 
+    const clearEmail = decryptEmail(tester.email);
     if (!sent) {
       await this.emailDispatcher.sendTemplateEmail({
-        to: tester.email,
+        to: clearEmail,
         templateCode: 'CONFIRMATION',
         variables: {
           userName: tester.fullName || 'Bêta-testeur',
@@ -463,9 +471,10 @@ export class BetaTestersService {
       });
     }
 
+    const masked = maskEmail(tester.email);
     return {
       success: true,
-      message: `Vos liens d’accès ont été renvoyés à ${tester.email}. Pensez à vérifier vos spams !`,
+      message: `Vos liens d’accès ont été renvoyés à ${masked}. Pensez à vérifier vos spams !`,
     };
   }
 

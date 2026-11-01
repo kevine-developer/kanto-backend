@@ -1212,6 +1212,17 @@ export function renderBetaWaitlistScript(): string {
     if (succBanner) succBanner.style.display = 'none';
   }
 
+  function maskEmailClient(em) {
+    if (!em || em.indexOf('@') === -1) return em || '—';
+    var parts = em.split('@');
+    var user = parts[0];
+    var domain = parts[1];
+    var masked = user.length <= 2 
+      ? user.charAt(0) + '***' 
+      : (user.length <= 4 ? user.substring(0, 2) + '***' : user.substring(0, 3) + '***');
+    return masked + '@' + domain;
+  }
+
   // ─── 1. SOUMISSION INSCRIPTION ───
   var regForm = document.getElementById('waitlist-form') || document.getElementById('register-form');
   var regBtn = document.getElementById('btn-submit-reg');
@@ -1262,7 +1273,12 @@ export function renderBetaWaitlistScript(): string {
           if (pnlReg) pnlReg.style.display = 'none';
           if (confView) confView.style.display = 'flex';
           var confEmail = document.getElementById('confirmed-email-display');
-          if (confEmail) confEmail.innerText = email;
+          if (confEmail) {
+            var displayEmail = (data.tester && (data.tester.maskedEmail || data.tester.email)) 
+              ? (data.tester.maskedEmail || data.tester.email) 
+              : maskEmailClient(email);
+            confEmail.innerText = displayEmail;
+          }
 
           var badge = document.getElementById('header-tester-count');
           if (badge) {
@@ -1312,7 +1328,12 @@ export function renderBetaWaitlistScript(): string {
       if (box) box.style.display = 'block';
 
       var lbl = document.getElementById('tester-email-lbl');
-      if (lbl) lbl.innerText = email;
+      if (lbl) {
+        var displayEmail = (data.tester && (data.tester.maskedEmail || data.tester.email)) 
+          ? (data.tester.maskedEmail || data.tester.email) 
+          : maskEmailClient(email);
+        lbl.innerText = displayEmail;
+      }
 
       var tester = data.tester;
       var hasAndroid = tester.platforms.indexOf('ANDROID') !== -1;
