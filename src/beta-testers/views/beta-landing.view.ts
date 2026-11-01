@@ -668,7 +668,7 @@ export function renderBetaLandingPage(
 
       <!-- ─── ONGLET 1 : FORMULAIRE D'INSCRIPTION BÊTA ─── -->
       <div id="panel-register" style="display: ${initialTab === 'register' && !isRegistered ? 'block' : 'none'};">
-        <form id="register-form">
+        <form id="waitlist-form">
           <div class="hp-trap">
             <input type="text" id="hp-website" name="website" tabindex="-1" autocomplete="off">
           </div>
@@ -1150,7 +1150,7 @@ export function renderBetaWaitlistScript(): string {
   }
 
   // ─── 1. SOUMISSION INSCRIPTION ───
-  var regForm = document.getElementById('register-form');
+  var regForm = document.getElementById('waitlist-form') || document.getElementById('register-form');
   var regBtn = document.getElementById('btn-submit-reg');
 
   if (regForm) {
