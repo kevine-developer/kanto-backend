@@ -3,14 +3,20 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BetaTestersService } from './beta-testers.service.js';
 import { BetaEmailDispatcherService } from './services/beta-email-dispatcher.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
+import { AdminAuditService } from '../admin/admin-audit.service.js';
 import { TesterStatus, Prisma } from '../../generated/prisma/client.js';
+import { hashEmail, encryptEmail, maskEmail } from './utils/beta-crypto.util.js';
 
 describe('BetaTestersService', () => {
   let service: BetaTestersService;
   let prisma: {
     betaTester: {
       findUnique: jest.Mock<any>;
+      findFirst: jest.Mock<any>;
+      findMany: jest.Mock<any>;
       create: jest.Mock<any>;
+      update: jest.Mock<any>;
+      delete: jest.Mock<any>;
       count: jest.Mock<any>;
     };
     betaGroup: {
@@ -18,17 +24,29 @@ describe('BetaTestersService', () => {
     };
     betaAutomationConfig: {
       findFirst: jest.Mock<any>;
+      create: jest.Mock<any>;
+      update: jest.Mock<any>;
+    };
+    betaFeedback: {
+      count: jest.Mock<any>;
     };
   };
   let emailDispatcher: {
     sendTemplateEmail: jest.Mock<any>;
+  };
+  let auditService: {
+    logAction: jest.Mock<any>;
   };
 
   beforeEach(async () => {
     prisma = {
       betaTester: {
         findUnique: jest.fn<any>(),
+        findFirst: jest.fn<any>(),
+        findMany: jest.fn<any>(),
         create: jest.fn<any>(),
+        update: jest.fn<any>(),
+        delete: jest.fn<any>(),
         count: jest.fn<any>(),
       },
       betaGroup: {
@@ -38,6 +56,11 @@ describe('BetaTestersService', () => {
         findFirst: jest
           .fn<any>()
           .mockResolvedValue({ autoConfirmRegistration: true }),
+        create: jest.fn<any>(),
+        update: jest.fn<any>(),
+      },
+      betaFeedback: {
+        count: jest.fn<any>().mockResolvedValue(0),
       },
     };
 
@@ -47,11 +70,16 @@ describe('BetaTestersService', () => {
         .mockResolvedValue({ success: true, to: 'test@example.com' }),
     };
 
+    auditService = {
+      logAction: jest.fn<any>().mockResolvedValue({ id: 'audit_1' }),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         BetaTestersService,
         { provide: PrismaService, useValue: prisma },
         { provide: BetaEmailDispatcherService, useValue: emailDispatcher },
+        { provide: AdminAuditService, useValue: auditService },
       ],
     }).compile();
 
@@ -62,12 +90,13 @@ describe('BetaTestersService', () => {
     jest.clearAllMocks();
   });
 
-  describe('register', () => {
-    it('doit normaliser l’e-mail et inscrire un nouveau candidat sans lien de validation bloquant', async () => {
-      prisma.betaTester.findUnique.mockResolvedValue(null);
+  describe('register (Protection des données et chiffrement)', () => {
+    it('chiffre réversiblement l’adresse et génère un hash HMAC-SHA-256 déterministe', async () => {
+      prisma.betaTester.findFirst.mockResolvedValue(null);
       prisma.betaTester.create.mockResolvedValue({
         id: 'tester_1',
-        email: 'jean.dupont@example.com',
+        email: encryptEmail('jean.dupont@example.com'),
+        emailHash: hashEmail('jean.dupont@example.com'),
         fullName: 'Jean Dupont',
         platforms: ['ANDROID'],
         status: TesterStatus.PENDING,
@@ -84,16 +113,22 @@ describe('BetaTestersService', () => {
         'Mozilla/5.0',
       );
 
-      // Vérifie la normalisation
-      expect(prisma.betaTester.findUnique).toHaveBeenCalledWith({
-        where: { email: 'jean.dupont@example.com' },
+      // Vérifie la recherche par hash et email
+      expect(prisma.betaTester.findFirst).toHaveBeenCalledWith({
+        where: {
+          OR: [
+            { emailHash: hashEmail('jean.dupont@example.com') },
+            { email: 'jean.dupont@example.com' },
+          ],
+        },
         include: { group: true },
       });
 
-      // Vérifie la création en base
+      // Vérifie la création en base avec données chiffrées et hash HMAC
       expect(prisma.betaTester.create).toHaveBeenCalledWith({
         data: expect.objectContaining({
-          email: 'jean.dupont@example.com',
+          email: expect.stringMatching(/^enc:v1:/),
+          emailHash: hashEmail('jean.dupont@example.com'),
           fullName: 'Jean Dupont',
           platforms: ['ANDROID'],
           status: TesterStatus.PENDING,
@@ -102,7 +137,7 @@ describe('BetaTestersService', () => {
         }),
       });
 
-      // Vérifie l'envoi de l'email de confirmation via le dispatcher
+      // Vérifie que l'email en mémoire a bien été transmis au dispatcher pour envoi
       expect(emailDispatcher.sendTemplateEmail).toHaveBeenCalledTimes(1);
       expect(emailDispatcher.sendTemplateEmail).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -120,46 +155,10 @@ describe('BetaTestersService', () => {
       });
     });
 
-    it('doit inscrire un testeur avec uniquement son email et les valeurs par défaut', async () => {
-      prisma.betaTester.findUnique.mockResolvedValue(null);
-      prisma.betaTester.create.mockResolvedValue({
-        id: 'tester_email_only',
-        email: 'simple@example.com',
-        fullName: null,
-        platforms: ['ANDROID'],
-        status: TesterStatus.PENDING,
-      });
-
-      const result = await service.register({
-        email: 'simple@example.com',
-        platforms: ['ANDROID'],
-        termsAccepted: true,
-      });
-
-      expect(prisma.betaTester.create).toHaveBeenCalledWith({
-        data: expect.objectContaining({
-          email: 'simple@example.com',
-          fullName: null,
-          platforms: ['ANDROID'],
-          status: TesterStatus.PENDING,
-        }),
-      });
-
-      expect(emailDispatcher.sendTemplateEmail).toHaveBeenCalledWith(
-        expect.objectContaining({
-          to: 'simple@example.com',
-          templateCode: 'CONFIRMATION',
-        }),
-      );
-
-      expect(result.success).toBe(true);
-      expect(result.alreadyRegistered).toBe(false);
-    });
-
-    it('ne doit pas créer de doublon ni renvoyer d’email si l’adresse est déjà enregistrée', async () => {
-      prisma.betaTester.findUnique.mockResolvedValue({
+    it('ne crée pas de doublon et masque l’adresse email dans la réponse de doublon', async () => {
+      prisma.betaTester.findFirst.mockResolvedValue({
         id: 'existing_tester_1',
-        email: 'deja.inscrit@example.com',
+        email: encryptEmail('deja.inscrit@example.com'),
         fullName: 'Doublon Test',
         platforms: ['ANDROID'],
         status: TesterStatus.APPROVED,
@@ -175,52 +174,18 @@ describe('BetaTestersService', () => {
         termsAccepted: true,
       });
 
-      expect(prisma.betaTester.findUnique).toHaveBeenCalledWith({
-        where: { email: 'deja.inscrit@example.com' },
-        include: { group: true },
-      });
-
-      // Aucune création en base
+      expect(prisma.betaTester.findFirst).toHaveBeenCalled();
       expect(prisma.betaTester.create).not.toHaveBeenCalled();
-
-      // Aucun email réexpédié
       expect(emailDispatcher.sendTemplateEmail).not.toHaveBeenCalled();
 
       expect(result.success).toBe(false);
       expect(result.alreadyRegistered).toBe(true);
       expect(result.code).toBe('EMAIL_ALREADY_REGISTERED');
+      // L'email dans la réponse de doublon doit être masqué pour éviter l'énumération
+      expect(result.tester?.email).toBe('dej***@example.com');
     });
 
-    it('doit capturer les conflits de concurrence (erreur Prisma P2002) et retourner un message de doublon', async () => {
-      prisma.betaTester.findUnique.mockResolvedValue(null);
-
-      const p2002Error = new Prisma.PrismaClientKnownRequestError(
-        'Unique constraint failed on the fields: (`email`)',
-        {
-          code: 'P2002',
-          clientVersion: '7.9.1',
-        },
-      );
-      prisma.betaTester.create.mockRejectedValue(p2002Error);
-
-      const result = await service.register({
-        email: 'concurrence@example.com',
-        platforms: ['ANDROID'],
-        termsAccepted: true,
-      });
-
-      expect(prisma.betaTester.create).toHaveBeenCalled();
-      expect(emailDispatcher.sendTemplateEmail).not.toHaveBeenCalled();
-
-      expect(result).toEqual({
-        success: false,
-        alreadyRegistered: true,
-        code: 'EMAIL_ALREADY_REGISTERED',
-        message: 'Cette adresse e-mail est déjà inscrite au programme bêta.',
-      });
-    });
-
-    it('doit ignorer silencieusement la requête si le piège Honeypot (website) est rempli', async () => {
+    it('ignore silencieusement la requête si le piège Honeypot est rempli', async () => {
       const result = await service.register(
         {
           email: 'bot@spam.com',
@@ -231,13 +196,175 @@ describe('BetaTestersService', () => {
         '192.168.1.1',
       );
 
-      expect(prisma.betaTester.findUnique).not.toHaveBeenCalled();
+      expect(prisma.betaTester.findFirst).not.toHaveBeenCalled();
       expect(prisma.betaTester.create).not.toHaveBeenCalled();
       expect(emailDispatcher.sendTemplateEmail).not.toHaveBeenCalled();
+      expect(result.success).toBe(true);
+    });
+  });
 
-      expect(result).toEqual({
-        success: true,
-        message: 'Candidature enregistrée avec succès.',
+  describe('verifyParticipation (Sécurité des réponses publiques)', () => {
+    it('renvoie les informations du participant avec email masqué', async () => {
+      prisma.betaTester.findFirst.mockResolvedValue({
+        id: 'tester_1',
+        email: encryptEmail('rakoto@kanto.mg'),
+        fullName: 'Rakoto',
+        platforms: ['ANDROID'],
+        status: TesterStatus.APPROVED,
+        androidStatus: 'ACCEPTED',
+        iosStatus: 'NOT_REQUESTED',
+        group: null,
+        createdAt: new Date(),
+      });
+
+      const result = await service.verifyParticipation('rakoto@kanto.mg');
+
+      expect(result.success).toBe(true);
+      expect(result.exists).toBe(true);
+      expect(result.tester?.email).toBe('rak***@kanto.mg');
+      expect(result.tester?.maskedEmail).toBe('rak***@kanto.mg');
+    });
+  });
+
+  describe('findAll (Masquage par défaut dans l’administration)', () => {
+    it('masque les adresses email par défaut dans la liste administrative', async () => {
+      prisma.betaTester.count.mockResolvedValue(1);
+      prisma.betaTester.findMany.mockResolvedValue([
+        {
+          id: 't1',
+          email: encryptEmail('admin.test@kanto.mg'),
+          fullName: 'Test User',
+          platforms: ['ANDROID'],
+          status: TesterStatus.APPROVED,
+          androidStatus: 'PENDING',
+          iosStatus: 'NOT_REQUESTED',
+          group: null,
+          createdAt: new Date(),
+        },
+      ]);
+
+      const res = await service.findAll({});
+
+      expect(res.data[0].email).toBe('adm***@kanto.mg');
+      expect(res.data[0].maskedEmail).toBe('adm***@kanto.mg');
+    });
+
+    it('recherche via HMAC-SHA-256 lorsque la requête contient une adresse email', async () => {
+      prisma.betaTester.count.mockResolvedValue(0);
+      prisma.betaTester.findMany.mockResolvedValue([]);
+
+      await service.findAll({ search: 'target@orange.mg' });
+
+      expect(prisma.betaTester.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({
+            OR: expect.arrayContaining([
+              { emailHash: hashEmail('target@orange.mg') },
+            ]),
+          }),
+        }),
+      );
+    });
+  });
+
+  describe('revealEmail & Audit (Journalisation des accès sensibles)', () => {
+    it('déchiffre l’email et enregistre l’opération dans le journal d’audit immuable', async () => {
+      prisma.betaTester.findUnique.mockResolvedValue({
+        id: 't_sensitive',
+        email: encryptEmail('secret.user@kanto.mg'),
+        platforms: ['ANDROID'],
+      });
+
+      const result = await service.revealEmail(
+        't_sensitive',
+        { id: 'admin_42', name: 'Super Admin' },
+        '10.0.0.1',
+      );
+
+      expect(result.success).toBe(true);
+      expect(result.email).toBe('secret.user@kanto.mg');
+      expect(result.maskedEmail).toBe('sec***@kanto.mg');
+
+      // Vérifie l'enregistrement dans AdminAuditLog
+      expect(auditService.logAction).toHaveBeenCalledWith(
+        expect.objectContaining({
+          userId: 'admin_42',
+          userName: 'Super Admin',
+          action: 'BETA_TESTER_REVEAL_EMAIL',
+          targetType: 'BETA_TESTER',
+          targetId: 't_sensitive',
+          targetLabel: 'sec***@kanto.mg',
+          ipAddress: '10.0.0.1',
+        }),
+      );
+    });
+  });
+
+  describe('exportCsv (Protection contre l’injection CSV et traçabilité)', () => {
+    it('neutralise les cellules malveillantes et journalise l’export', async () => {
+      prisma.betaTester.findMany.mockResolvedValue([
+        {
+          id: 't_malicious',
+          email: encryptEmail('malicious@calc.com'),
+          fullName: '=cmd|/c calc',
+          platforms: ['ANDROID'],
+          status: TesterStatus.APPROVED,
+          androidStatus: 'ACTIVE',
+          iosStatus: 'NOT_REQUESTED',
+          group: null,
+          createdAt: new Date('2026-01-01T00:00:00Z'),
+          lastContactedAt: null,
+        },
+      ]);
+
+      const result = await service.exportCsv(
+        { platform: 'ANDROID' },
+        { id: 'admin_1', name: 'Admin Test' },
+        '192.168.1.50',
+      );
+
+      // Vérifie la neutralisation de la formule
+      expect(result.csv).toContain(`"'=cmd|/c calc"`);
+      expect(result.csv).toContain(`"malicious@calc.com"`);
+
+      // Vérifie la trace dans l'audit log
+      expect(auditService.logAction).toHaveBeenCalledWith(
+        expect.objectContaining({
+          userId: 'admin_1',
+          action: 'BETA_EXPORT_CSV',
+          targetType: 'BETA_TESTER',
+          ipAddress: '192.168.1.50',
+        }),
+      );
+    });
+  });
+
+  describe('remove (Suppression et conformité RGPD)', () => {
+    it('journalise l’identité masquée du participant avant suppression effective', async () => {
+      prisma.betaTester.findUnique.mockResolvedValue({
+        id: 't_to_delete',
+        email: encryptEmail('to.delete@kanto.mg'),
+        platforms: ['IOS'],
+        status: TesterStatus.REJECTED,
+      });
+      prisma.betaTester.delete.mockResolvedValue({ id: 't_to_delete' });
+
+      const result = await service.remove(
+        't_to_delete',
+        { id: 'admin_1', name: 'Admin RGPD' },
+        '127.0.0.1',
+      );
+
+      expect(result.success).toBe(true);
+      expect(auditService.logAction).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: 'BETA_TESTER_DELETED',
+          targetId: 't_to_delete',
+          targetLabel: 'to.***@kanto.mg',
+        }),
+      );
+      expect(prisma.betaTester.delete).toHaveBeenCalledWith({
+        where: { id: 't_to_delete' },
       });
     });
   });

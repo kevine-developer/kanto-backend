@@ -208,8 +208,15 @@ export class BetaTestersController {
   @Get(['api/beta-testers/export', 'beta-testers/export'])
   @UseGuards(AuthGuard)
   @Roles(['ADMIN', 'admin'])
-  exportEmails(@Query('status') status?: TesterStatus) {
-    return this.betaTestersService.exportEmails(status);
+  exportEmails(
+    @Query('status') status?: TesterStatus,
+    @Req() req?: Request,
+  ) {
+    const ip =
+      (req?.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ||
+      req?.ip;
+    const adminUser = (req as any)?.user;
+    return this.betaTestersService.exportEmails(status, adminUser, ip);
   }
 
   @Get(['api/beta-testers/export-csv', 'beta-testers/export-csv'])
@@ -218,8 +225,13 @@ export class BetaTestersController {
   exportCsv(
     @Query('platform') platform?: string,
     @Query('status') status?: string,
+    @Req() req?: Request,
   ) {
-    return this.betaTestersService.exportCsv({ platform, status });
+    const ip =
+      (req?.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ||
+      req?.ip;
+    const adminUser = (req as any)?.user;
+    return this.betaTestersService.exportCsv({ platform, status }, adminUser, ip);
   }
 
   // --- ACTIONS GROUPÉES ---
@@ -437,8 +449,23 @@ export class BetaTestersController {
   @Get(['api/beta-testers/:id', 'beta-testers/:id'])
   @UseGuards(AuthGuard)
   @Roles(['ADMIN', 'admin'])
-  findOne(@Param('id') id: string) {
-    return this.betaTestersService.findOne(id);
+  findOne(@Param('id') id: string, @Req() req: Request) {
+    const ip =
+      (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ||
+      req.ip;
+    const adminUser = (req as any).user;
+    return this.betaTestersService.findOne(id, adminUser, ip);
+  }
+
+  @Get(['api/beta-testers/:id/reveal-email', 'beta-testers/:id/reveal-email'])
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  revealEmail(@Param('id') id: string, @Req() req: Request) {
+    const ip =
+      (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ||
+      req.ip;
+    const adminUser = (req as any).user;
+    return this.betaTestersService.revealEmail(id, adminUser, ip);
   }
 
   @Patch(['api/beta-testers/:id/status', 'beta-testers/:id/status'])
@@ -489,7 +516,11 @@ export class BetaTestersController {
   @Delete(['api/beta-testers/:id', 'beta-testers/:id'])
   @UseGuards(AuthGuard)
   @Roles(['ADMIN', 'admin'])
-  remove(@Param('id') id: string) {
-    return this.betaTestersService.remove(id);
+  remove(@Param('id') id: string, @Req() req: Request) {
+    const ip =
+      (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ||
+      req.ip;
+    const adminUser = (req as any).user;
+    return this.betaTestersService.remove(id, adminUser, ip);
   }
 }

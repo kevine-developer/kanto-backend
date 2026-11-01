@@ -3,6 +3,7 @@ import {
   Logger,
   NotFoundException,
   BadRequestException,
+  Optional,
 } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import { PrismaService } from '../prisma/prisma.service.js';
@@ -22,6 +23,15 @@ import {
   UpdateAutomationConfigDto,
 } from './dto/beta-tester.dto.js';
 import { TesterStatus, Prisma } from '../../generated/prisma/client.js';
+import {
+  hashEmail,
+  encryptEmail,
+  decryptEmail,
+  maskEmail,
+  sanitizeCsvCell,
+  generateSecureToken,
+} from './utils/beta-crypto.util.js';
+import { AdminAuditService } from '../admin/admin-audit.service.js';
 
 @Injectable()
 export class BetaTestersService {
@@ -30,7 +40,40 @@ export class BetaTestersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly emailDispatcher: BetaEmailDispatcherService,
+    @Optional() private readonly auditService?: AdminAuditService,
   ) {}
+
+  /**
+   * Enregistre une action sensible dans le journal d'audit immuable (AdminAuditLog).
+   */
+  private async audit(params: {
+    userId?: string;
+    userName?: string;
+    action: string;
+    targetType: string;
+    targetId: string;
+    targetLabel?: string;
+    reason?: string;
+    details?: Record<string, unknown>;
+    ipAddress?: string;
+  }) {
+    if (!this.auditService) return;
+    try {
+      await this.auditService.logAction({
+        userId: params.userId || 'admin',
+        userName: params.userName || 'Administrateur',
+        action: params.action,
+        targetType: params.targetType,
+        targetId: params.targetId,
+        targetLabel: params.targetLabel,
+        reason: params.reason,
+        details: params.details,
+        ipAddress: params.ipAddress,
+      });
+    } catch (err) {
+      this.logger.warn(`Échec audit log (${params.action}): ${err}`);
+    }
+  }
 
   // ─── CANDIDATURE & GESTION PUBLIQUE PARTICIPANT ──────────────────────────────
 
@@ -65,15 +108,18 @@ export class BetaTestersService {
         ? Array.from(new Set(dto.platforms))
         : ['ANDROID'];
 
-    // 2. Vérification d'une inscription existante
-    const existing = await this.prisma.betaTester.findUnique({
-      where: { email },
+    // 2. Vérification d'une inscription existante via hash HMAC-SHA-256 déterministe
+    const emailHashVal = hashEmail(email);
+    const existing = await this.prisma.betaTester.findFirst({
+      where: {
+        OR: [{ emailHash: emailHashVal }, { email }],
+      },
       include: { group: true },
     });
 
     if (existing) {
       this.logger.log(
-        `ℹ️ [BetaTesters] Inscription existante trouvée pour : ${email}`,
+        `ℹ️ [BetaTesters] Inscription existante trouvée pour : ${maskEmail(email)}`,
       );
       return {
         success: false,
@@ -82,7 +128,8 @@ export class BetaTestersService {
         message: 'Cette adresse e-mail est déjà inscrite au programme bêta.',
         tester: {
           id: existing.id,
-          email: existing.email,
+          email: maskEmail(existing.email),
+          maskedEmail: maskEmail(existing.email),
           fullName: existing.fullName,
           platforms: existing.platforms,
           status: existing.status,
@@ -108,12 +155,14 @@ export class BetaTestersService {
       ? TesterStatus.APPROVED
       : TesterStatus.PENDING;
 
-    const unsubscribeToken = randomUUID();
+    const unsubscribeToken = generateSecureToken(24);
+    const encryptedEmail = encryptEmail(email);
 
     try {
       const tester = await this.prisma.betaTester.create({
         data: {
-          email,
+          email: encryptedEmail,
+          emailHash: emailHashVal,
           fullName: dto.fullName?.trim() || null,
           platforms,
           status: initialStatus,
@@ -129,7 +178,7 @@ export class BetaTestersService {
       });
 
       this.logger.log(
-        `🎉 [BetaTesters] Nouveau testeur enregistré : ${email} [${platforms.join(', ')}]`,
+        `🎉 [BetaTesters] Nouveau testeur enregistré : ${maskEmail(email)} [${platforms.join(', ')}]`,
       );
 
       // 4. Envoi automatique de l'email de confirmation si activé
@@ -148,14 +197,14 @@ export class BetaTestersService {
             variables: {
               userName: tester.fullName || 'Bêta-testeur',
               platform: platformLabel,
-              unsubscribeLink: `https://app-kanto.gastsar.fr/beta?tab=unsubscribe&email=${encodeURIComponent(email)}&token=${unsubscribeToken}`,
+              unsubscribeLink: `https://app-kanto.gastsar.fr/beta?tab=unsubscribe&token=${unsubscribeToken}`,
             },
           });
         } catch (emailErr: unknown) {
           const msg =
             emailErr instanceof Error ? emailErr.message : String(emailErr);
           this.logger.error(
-            `❌ [BetaTesters] Échec envoi confirmation à ${email} : ${msg}`,
+            `❌ [BetaTesters] Échec envoi confirmation à ${maskEmail(email)} : ${msg}`,
           );
         }
       }
@@ -189,8 +238,11 @@ export class BetaTestersService {
    */
   async updatePlatforms(dto: UpdatePlatformsDto) {
     const email = dto.email.trim().toLowerCase();
-    const tester = await this.prisma.betaTester.findUnique({
-      where: { email },
+    const emailHashVal = hashEmail(email);
+    const tester = await this.prisma.betaTester.findFirst({
+      where: {
+        OR: [{ emailHash: emailHashVal }, { email }],
+      },
     });
 
     if (!tester) {
@@ -225,7 +277,7 @@ export class BetaTestersService {
     });
 
     this.logger.log(
-      `🔄 [BetaTesters] Plateformes mises à jour pour ${email} : [${newPlatforms.join(', ')}]`,
+      `🔄 [BetaTesters] Plateformes mises à jour pour ${maskEmail(email)} : [${newPlatforms.join(', ')}]`,
     );
 
     return {
@@ -239,10 +291,23 @@ export class BetaTestersService {
    * Désinscription du programme bêta (RGPD).
    */
   async unsubscribe(dto: UnsubscribeBetaDto) {
-    const email = dto.email.trim().toLowerCase();
-    const tester = await this.prisma.betaTester.findUnique({
-      where: { email },
-    });
+    let tester: Awaited<ReturnType<typeof this.prisma.betaTester.findFirst>> =
+      null;
+    if (dto.token && dto.token.trim()) {
+      tester = await this.prisma.betaTester.findFirst({
+        where: { unsubscribeToken: dto.token.trim() },
+      });
+    }
+
+    if (!tester && dto.email && dto.email.trim()) {
+      const email = dto.email.trim().toLowerCase();
+      const emailHashVal = hashEmail(email);
+      tester = await this.prisma.betaTester.findFirst({
+        where: {
+          OR: [{ emailHash: emailHashVal }, { email }],
+        },
+      });
+    }
 
     if (!tester) {
       return {
@@ -272,7 +337,7 @@ export class BetaTestersService {
       },
     });
 
-    this.logger.log(`👋 [BetaTesters] Désinscription effectuée pour ${email}`);
+    this.logger.log(`👋 [BetaTesters] Désinscription effectuée pour ${maskEmail(tester.email)}`);
 
     return {
       success: true,
@@ -286,8 +351,11 @@ export class BetaTestersService {
    */
   async verifyParticipation(emailInput: string) {
     const email = emailInput.trim().toLowerCase();
-    const tester = await this.prisma.betaTester.findUnique({
-      where: { email },
+    const emailHashVal = hashEmail(email);
+    const tester = await this.prisma.betaTester.findFirst({
+      where: {
+        OR: [{ emailHash: emailHashVal }, { email }],
+      },
       include: { group: true },
     });
 
@@ -319,12 +387,15 @@ export class BetaTestersService {
         tester.iosStatus === 'ACCEPTED' ||
         tester.iosStatus === 'ACTIVE');
 
+    const masked = maskEmail(tester.email);
+
     return {
       success: true,
       exists: true,
       tester: {
         id: tester.id,
-        email: tester.email,
+        email: masked,
+        maskedEmail: masked,
         fullName: tester.fullName,
         platforms: tester.platforms,
         status: tester.status,
@@ -427,13 +498,17 @@ export class BetaTestersService {
     _userAgent?: string,
   ) {
     const email = dto.email.trim().toLowerCase();
-    const tester = await this.prisma.betaTester.findUnique({
-      where: { email },
+    const emailHashVal = hashEmail(email);
+    const tester = await this.prisma.betaTester.findFirst({
+      where: {
+        OR: [{ emailHash: emailHashVal }, { email }],
+      },
     });
 
     const feedback = await this.prisma.betaFeedback.create({
       data: {
-        email,
+        email: encryptEmail(email),
+        emailHash: emailHashVal,
         testerId: tester?.id || null,
         category: dto.category,
         title: dto.title?.trim() || null,
@@ -448,7 +523,7 @@ export class BetaTestersService {
     });
 
     this.logger.log(
-      `💬 [BetaFeedback] Nouveau retour reçu de ${email} [${dto.category}]`,
+      `💬 [BetaFeedback] Nouveau retour reçu de ${maskEmail(email)} [${dto.category}]`,
     );
 
     return {
@@ -902,7 +977,9 @@ export class BetaTestersService {
 
     if (query.search?.trim()) {
       const term = query.search.trim();
+      const isEmail = term.includes('@');
       where.OR = [
+        ...(isEmail ? [{ emailHash: hashEmail(term) }] : []),
         { email: { contains: term, mode: 'insensitive' } },
         { fullName: { contains: term, mode: 'insensitive' } },
         { notes: { contains: term, mode: 'insensitive' } },
@@ -924,8 +1001,18 @@ export class BetaTestersService {
       this.getStats(),
     ]);
 
+    const sanitizedData = data.map((t) => {
+      const clear = decryptEmail(t.email);
+      const masked = maskEmail(clear);
+      return {
+        ...t,
+        email: masked, // Masquage par défaut dans les listes administratives
+        maskedEmail: masked,
+      };
+    });
+
     return {
-      data,
+      data: sanitizedData,
       total,
       page,
       limit,
@@ -1000,7 +1087,11 @@ export class BetaTestersService {
     };
   }
 
-  async findOne(id: string) {
+  async findOne(
+    id: string,
+    adminUser?: { id: string; name?: string },
+    clientIp?: string,
+  ) {
     const tester = await this.prisma.betaTester.findUnique({
       where: { id },
       include: {
@@ -1017,7 +1108,65 @@ export class BetaTestersService {
       );
     }
 
-    return tester;
+    const clearEmail = decryptEmail(tester.email);
+    const masked = maskEmail(clearEmail);
+
+    await this.audit({
+      userId: adminUser?.id,
+      userName: adminUser?.name,
+      action: 'BETA_TESTER_VIEW_DETAIL',
+      targetType: 'BETA_TESTER',
+      targetId: id,
+      targetLabel: masked,
+      ipAddress: clientIp,
+    });
+
+    return {
+      ...tester,
+      email: clearEmail,
+      maskedEmail: masked,
+    };
+  }
+
+  /**
+   * Révèle l'adresse e-mail complète d'un participant avec traçabilité d'audit stricte.
+   */
+  async revealEmail(
+    id: string,
+    adminUser?: { id: string; name?: string },
+    clientIp?: string,
+  ) {
+    const tester = await this.prisma.betaTester.findUnique({
+      where: { id },
+    });
+
+    if (!tester) {
+      throw new NotFoundException(`Testeur introuvable (${id})`);
+    }
+
+    const clearEmail = decryptEmail(tester.email);
+    const masked = maskEmail(clearEmail);
+
+    await this.audit({
+      userId: adminUser?.id,
+      userName: adminUser?.name,
+      action: 'BETA_TESTER_REVEAL_EMAIL',
+      targetType: 'BETA_TESTER',
+      targetId: id,
+      targetLabel: masked,
+      ipAddress: clientIp,
+      details: {
+        testerId: id,
+        platforms: tester.platforms,
+      },
+    });
+
+    return {
+      success: true,
+      id: tester.id,
+      email: clearEmail,
+      maskedEmail: masked,
+    };
   }
 
   async sendAndroidInvite(id: string) {
@@ -1032,8 +1181,9 @@ export class BetaTestersService {
       config?.playStoreAppLink ||
       'https://play.google.com/store/apps/details?id=com.devengalere.kantomg';
 
+    const clearEmail = decryptEmail(tester.email);
     await this.emailDispatcher.sendTemplateEmail({
-      to: tester.email,
+      to: clearEmail,
       templateCode: 'INVITE_ANDROID',
       variables: {
         userName: tester.fullName || 'Bêta-testeur',
@@ -1161,7 +1311,11 @@ export class BetaTestersService {
     };
   }
 
-  async exportCsv(query: { platform?: string; status?: string }) {
+  async exportCsv(
+    query: { platform?: string; status?: string },
+    adminUser?: { id: string; name?: string },
+    clientIp?: string,
+  ) {
     const where: Prisma.BetaTesterWhereInput = {};
     if (query.platform === 'ANDROID') where.platforms = { has: 'ANDROID' };
     if (query.platform === 'IOS') where.platforms = { has: 'IOS' };
@@ -1175,57 +1329,92 @@ export class BetaTestersService {
     });
 
     const headers = [
-      'ID',
-      'Email',
-      'Nom',
-      'Plateformes',
-      'Statut Général',
-      'Statut Android',
-      'Statut iOS',
-      'Groupe',
-      'Date Inscription',
-      'Dernier Contact',
+      sanitizeCsvCell('ID'),
+      sanitizeCsvCell('Email'),
+      sanitizeCsvCell('Nom'),
+      sanitizeCsvCell('Plateformes'),
+      sanitizeCsvCell('Statut Général'),
+      sanitizeCsvCell('Statut Android'),
+      sanitizeCsvCell('Statut iOS'),
+      sanitizeCsvCell('Groupe'),
+      sanitizeCsvCell('Date Inscription'),
+      sanitizeCsvCell('Dernier Contact'),
     ];
 
-    const rows = testers.map((t) => [
-      t.id,
-      t.email,
-      t.fullName ? `"${t.fullName.replace(/"/g, '""')}"` : '',
-      `"${t.platforms.join(', ')}"`,
-      t.status,
-      t.androidStatus,
-      t.iosStatus,
-      t.group?.name ? `"${t.group.name}"` : '',
-      t.createdAt.toISOString(),
-      t.lastContactedAt ? t.lastContactedAt.toISOString() : '',
-    ]);
+    const rows = testers.map((t) => {
+      const clear = decryptEmail(t.email);
+      return [
+        sanitizeCsvCell(t.id),
+        sanitizeCsvCell(clear),
+        sanitizeCsvCell(t.fullName || ''),
+        sanitizeCsvCell(t.platforms.join(', ')),
+        sanitizeCsvCell(t.status),
+        sanitizeCsvCell(t.androidStatus),
+        sanitizeCsvCell(t.iosStatus),
+        sanitizeCsvCell(t.group?.name || ''),
+        sanitizeCsvCell(t.createdAt.toISOString()),
+        sanitizeCsvCell(t.lastContactedAt ? t.lastContactedAt.toISOString() : ''),
+      ];
+    });
 
     const csvContent = [
       headers.join(','),
       ...rows.map((r) => r.join(',')),
     ].join('\n');
 
+    await this.audit({
+      userId: adminUser?.id,
+      userName: adminUser?.name,
+      action: 'BETA_EXPORT_CSV',
+      targetType: 'BETA_TESTER',
+      targetId: 'ALL',
+      targetLabel: `Export de ${testers.length} testeurs`,
+      ipAddress: clientIp,
+      details: {
+        count: testers.length,
+        filterPlatform: query.platform || 'ALL',
+        filterStatus: query.status || 'ALL',
+      },
+    });
+
     return {
       count: testers.length,
       csv: csvContent,
-      emailsOnly: testers.map((t) => t.email).join(', '),
+      emailsOnly: testers.map((t) => decryptEmail(t.email)).join(', '),
     };
   }
 
-  async exportEmails(status?: TesterStatus) {
+  async exportEmails(
+    status?: TesterStatus,
+    adminUser?: { id: string; name?: string },
+    clientIp?: string,
+  ) {
     const where: Prisma.BetaTesterWhereInput = { unsubscribedAt: null };
     if (status) where.status = status;
 
     const testers = await this.prisma.betaTester.findMany({
       where,
-      select: { email: true },
+      select: { id: true, email: true },
       orderBy: { createdAt: 'asc' },
+    });
+
+    const decrypted = testers.map((t) => decryptEmail(t.email));
+
+    await this.audit({
+      userId: adminUser?.id,
+      userName: adminUser?.name,
+      action: 'BETA_EXPORT_EMAILS',
+      targetType: 'BETA_TESTER',
+      targetId: 'ALL',
+      targetLabel: `Export de ${testers.length} emails`,
+      ipAddress: clientIp,
+      details: { count: testers.length, filterStatus: status || 'ALL' },
     });
 
     return {
       count: testers.length,
-      emails: testers.map((t) => t.email),
-      csvFormat: testers.map((t) => t.email).join(',\n'),
+      emails: decrypted,
+      csvFormat: decrypted.map((e) => sanitizeCsvCell(e)).join(',\n'),
     };
   }
 
@@ -1267,7 +1456,25 @@ export class BetaTestersService {
     });
   }
 
-  async remove(id: string) {
+  async remove(
+    id: string,
+    adminUser?: { id: string; name?: string },
+    clientIp?: string,
+  ) {
+    const tester = await this.prisma.betaTester.findUnique({ where: { id } });
+    if (!tester) throw new NotFoundException('Testeur introuvable.');
+
+    await this.audit({
+      userId: adminUser?.id,
+      userName: adminUser?.name,
+      action: 'BETA_TESTER_DELETED',
+      targetType: 'BETA_TESTER',
+      targetId: id,
+      targetLabel: maskEmail(tester.email),
+      ipAddress: clientIp,
+      details: { platforms: tester.platforms, status: tester.status },
+    });
+
     await this.prisma.betaTester.delete({ where: { id } });
     return { success: true, message: 'Testeur supprimé avec succès.' };
   }
