@@ -308,7 +308,10 @@ describe('UsersService — gestion du mot de passe', () => {
       const newPassword = 'BrandNewPass2@';
       const oldHash = await hashPassword(oldPassword);
 
-      const user = buildUser({ id: 'user-change-pw', email: 'change@kanto.mg' });
+      const user = buildUser({
+        id: 'user-change-pw',
+        email: 'change@kanto.mg',
+      });
       const credentialAccount = buildAccount({
         id: 'account-change',
         providerId: 'credential',
@@ -320,9 +323,17 @@ describe('UsersService — gestion du mot de passe', () => {
 
       prismaMock.user.findUnique.mockResolvedValue(user);
       prismaMock.account.findFirst.mockResolvedValue(credentialAccount);
-      prismaMock.account.update.mockResolvedValue({ ...credentialAccount, id: 'account-change' });
+      prismaMock.account.update.mockResolvedValue({
+        ...credentialAccount,
+        id: 'account-change',
+      });
 
-      const result = await service.changePassword(user.id, oldPassword, newPassword, false);
+      const result = await service.changePassword(
+        user.id,
+        oldPassword,
+        newPassword,
+        false,
+      );
 
       expect(result.success).toBe(true);
       expect(prismaMock.account.update).toHaveBeenCalledWith(
@@ -361,7 +372,12 @@ describe('UsersService — gestion du mot de passe', () => {
       prismaMock.account.findFirst.mockResolvedValue(credentialAccount);
 
       await expect(
-        service.changePassword(user.id, 'WrongPass123!', 'NewValidPass1@', false),
+        service.changePassword(
+          user.id,
+          'WrongPass123!',
+          'NewValidPass1@',
+          false,
+        ),
       ).rejects.toThrow();
 
       expect(prismaMock.account.update).not.toHaveBeenCalled();
@@ -383,7 +399,12 @@ describe('UsersService — gestion du mot de passe', () => {
       prismaMock.account.update.mockResolvedValue(credentialAccount);
       prismaMock.session.deleteMany.mockResolvedValue({ count: 2 });
 
-      const result = await service.changePassword(user.id, 'CurrentPass1!', 'NewPass1@', true);
+      const result = await service.changePassword(
+        user.id,
+        'CurrentPass1!',
+        'NewPass1@',
+        true,
+      );
 
       expect(result.success).toBe(true);
       expect(prismaMock.session.deleteMany).toHaveBeenCalledWith({

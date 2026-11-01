@@ -140,4 +140,3 @@ export interface AppVersionCheckResponse {
   storeUrl: string;
   publishedAt: Date;
 }
-

@@ -41,7 +41,10 @@ export class EventsService {
   /**
    * Masque l'identité pour respecter la vie privée (RGPD).
    */
-  private formatMaskedName(name?: string | null, username?: string | null): string {
+  private formatMaskedName(
+    name?: string | null,
+    username?: string | null,
+  ): string {
     if (username && username.trim()) {
       const u = username.trim().replace(/^@/, '');
       if (u.length <= 3) return `@${u}`;
@@ -150,10 +153,7 @@ export class EventsService {
               }
             : {}),
         },
-        orderBy: [
-          { isFeatured: 'desc' },
-          { startDate: 'asc' },
-        ],
+        orderBy: [{ isFeatured: 'desc' }, { startDate: 'asc' }],
         skip,
         take: limit,
       }),
@@ -250,10 +250,12 @@ export class EventsService {
     }
 
     // Incrément non-bloquant des vues
-    void this.prisma.event.update({
-      where: { id: event.id },
-      data: { viewsCount: { increment: 1 } },
-    }).catch(() => {});
+    void this.prisma.event
+      .update({
+        where: { id: event.id },
+        data: { viewsCount: { increment: 1 } },
+      })
+      .catch(() => {});
 
     const userParticipation =
       userId && (event as any).participations?.length > 0
@@ -270,7 +272,11 @@ export class EventsService {
   /**
    * Inscrit ou fait participer l'utilisateur à un événement (idempotent et sécurisé).
    */
-  async participateInEvent(eventId: string, userId: string, ipAddress?: string) {
+  async participateInEvent(
+    eventId: string,
+    userId: string,
+    ipAddress?: string,
+  ) {
     const event = await this.prisma.event.findUnique({
       where: { id: eventId },
     });
@@ -397,7 +403,9 @@ export class EventsService {
         isBroadcast: false,
       });
     } catch (notifErr) {
-      this.logger.warn(`Erreur notification inscription événement : ${notifErr}`);
+      this.logger.warn(
+        `Erreur notification inscription événement : ${notifErr}`,
+      );
     }
 
     return {
@@ -561,7 +569,9 @@ export class EventsService {
               awardedRewards.push(reward.titleFr);
             }
           } catch (rewardErr) {
-            this.logger.warn(`Échec attribution récompense directe : ${rewardErr}`);
+            this.logger.warn(
+              `Échec attribution récompense directe : ${rewardErr}`,
+            );
           }
         }
       }
@@ -783,7 +793,9 @@ export class EventsService {
    * Crée un nouvel événement avec traçabilité administrative.
    */
   async createEvent(dto: CreateEventDto, adminId: string) {
-    const slug = dto.slug ? dto.slug.trim().toLowerCase() : this.generateSlug(dto.titleFr);
+    const slug = dto.slug
+      ? dto.slug.trim().toLowerCase()
+      : this.generateSlug(dto.titleFr);
 
     const existingSlug = await this.prisma.event.findUnique({
       where: { slug },
@@ -820,20 +832,21 @@ export class EventsService {
         rulesFr: dto.rulesFr,
         metadata: dto.metadata,
         creatorId: adminId,
-        rewards: dto.rewards && dto.rewards.length > 0
-          ? {
-              create: dto.rewards.map((r) => ({
-                rewardType: r.rewardType,
-                titleMg: r.titleMg,
-                titleFr: r.titleFr,
-                amount: r.amount,
-                badgeId: r.badgeId,
-                lotDescription: r.lotDescription,
-                criteria: r.criteria || 'completion',
-                maxWinners: r.maxWinners,
-              })),
-            }
-          : undefined,
+        rewards:
+          dto.rewards && dto.rewards.length > 0
+            ? {
+                create: dto.rewards.map((r) => ({
+                  rewardType: r.rewardType,
+                  titleMg: r.titleMg,
+                  titleFr: r.titleFr,
+                  amount: r.amount,
+                  badgeId: r.badgeId,
+                  lotDescription: r.lotDescription,
+                  criteria: r.criteria || 'completion',
+                  maxWinners: r.maxWinners,
+                })),
+              }
+            : undefined,
       },
       include: { rewards: true },
     });
@@ -850,7 +863,9 @@ export class EventsService {
       },
     });
 
-    this.logger.log(`[Events] Événement créé : ${event.id} (${event.slug}) par admin ${adminId}`);
+    this.logger.log(
+      `[Events] Événement créé : ${event.id} (${event.slug}) par admin ${adminId}`,
+    );
     return event;
   }
 
@@ -875,7 +890,9 @@ export class EventsService {
         ...(dto.shortDescMg !== undefined && { shortDescMg: dto.shortDescMg }),
         ...(dto.shortDescFr !== undefined && { shortDescFr: dto.shortDescFr }),
         ...(dto.category && { category: dto.category }),
-        ...(dto.participationType && { participationType: dto.participationType }),
+        ...(dto.participationType && {
+          participationType: dto.participationType,
+        }),
         ...(dto.minTier && { minTier: dto.minTier }),
         ...(dto.imageUrl !== undefined && { imageUrl: dto.imageUrl }),
         ...(dto.bannerUrl !== undefined && { bannerUrl: dto.bannerUrl }),
@@ -941,7 +958,10 @@ export class EventsService {
     });
 
     // En cas d'annulation, notification préventive aux inscrits
-    if (newStatus === EventStatus.CANCELLED && event.participations.length > 0) {
+    if (
+      newStatus === EventStatus.CANCELLED &&
+      event.participations.length > 0
+    ) {
       for (const p of event.participations) {
         try {
           await this.notificationsService.createNotification({
@@ -970,7 +990,9 @@ export class EventsService {
       },
     });
 
-    this.logger.log(`[Events] Statut événement ${eventId} changé de ${previousStatus} à ${newStatus}`);
+    this.logger.log(
+      `[Events] Statut événement ${eventId} changé de ${previousStatus} à ${newStatus}`,
+    );
     return updated;
   }
 
@@ -1044,14 +1066,21 @@ export class EventsService {
       // Chercher les récompenses correspondant au rang
       for (const reward of event.rewards) {
         let isEligible = false;
-        if (rank === 1 && (reward.criteria === 'top_1' || reward.criteria === 'top_3')) {
+        if (
+          rank === 1 &&
+          (reward.criteria === 'top_1' || reward.criteria === 'top_3')
+        ) {
           isEligible = true;
         } else if (rank <= 3 && reward.criteria === 'top_3') {
           isEligible = true;
         }
 
         if (isEligible) {
-          const claim = await this.awardSingleReward(event, reward, entry.userId);
+          const claim = await this.awardSingleReward(
+            event,
+            reward,
+            entry.userId,
+          );
           if (claim) distributedCount++;
         }
       }

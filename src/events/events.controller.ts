@@ -213,10 +213,7 @@ export class EventsController {
   @Post(':id/cancel')
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
-  async cancel(
-    @Param('id') eventId: string,
-    @Session() session: UserSession,
-  ) {
+  async cancel(@Param('id') eventId: string, @Session() session: UserSession) {
     return this.eventsService.cancelParticipation(eventId, session.user.id);
   }
 

@@ -16,12 +16,7 @@ import {
   ClaimReferralDto,
   UpdateReferralConfigDto,
 } from './dto/referral.dto.js';
-import {
-  AuthGuard,
-  Roles,
-  Session,
-  type UserSession,
-} from '../auth/index.js';
+import { AuthGuard, Roles, Session, type UserSession } from '../auth/index.js';
 
 @Controller('referral')
 export class ReferralController {

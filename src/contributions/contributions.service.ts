@@ -1358,7 +1358,9 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
             feedbackReason: feedback,
           })
           .catch((err) => {
-            this.logger.warn(`Échec dispatch CONTRIBUTION_CHANGES_REQUESTED : ${err}`);
+            this.logger.warn(
+              `Échec dispatch CONTRIBUTION_CHANGES_REQUESTED : ${err}`,
+            );
           });
       }
 

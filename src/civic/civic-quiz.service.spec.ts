@@ -322,15 +322,24 @@ describe('CivicQuizService', () => {
           totalQuestions: 10,
         });
 
-        const result = await service.startSession('usr_1', 'HISTOIRE', undefined, 10, 2);
+        const result = await service.startSession(
+          'usr_1',
+          'HISTOIRE',
+          undefined,
+          10,
+          2,
+        );
 
-        expect(prismaMock.civicQuizQuestion.findMany).toHaveBeenNthCalledWith(1, {
-          where: { status: 'PUBLISHED', category: 'HISTOIRE' },
-          orderBy: { id: 'asc' },
-          skip: 10, // (2 - 1) * 10
-          take: 10,
-          select: { id: true },
-        });
+        expect(prismaMock.civicQuizQuestion.findMany).toHaveBeenNthCalledWith(
+          1,
+          {
+            where: { status: 'PUBLISHED', category: 'HISTOIRE' },
+            orderBy: { id: 'asc' },
+            skip: 10, // (2 - 1) * 10
+            take: 10,
+            select: { id: true },
+          },
+        );
         expect(result.session.id).toBe('sess_lvl_2');
         expect(result.questions).toHaveLength(10);
       });
@@ -365,7 +374,13 @@ describe('CivicQuizService', () => {
           totalQuestions: 1,
         });
 
-        const result = await service.startSession('usr_1', undefined, undefined, 1, 1);
+        const result = await service.startSession(
+          'usr_1',
+          undefined,
+          undefined,
+          1,
+          1,
+        );
 
         expect(result.questions).toHaveLength(1);
         const qResult = result.questions[0];
@@ -386,11 +401,15 @@ describe('CivicQuizService', () => {
 
     describe('Suppression du biais réponse A et validation session', () => {
       it('valide la réponse en utilisant le mapping mélangé issu de Redis', async () => {
-        (prismaMock.civicQuizSession.findUnique as jest.Mock).mockResolvedValue({
-          id: 'sess_test',
-          isCompleted: false,
-        });
-        (prismaMock.civicQuizQuestion.findUnique as jest.Mock).mockResolvedValue({
+        (prismaMock.civicQuizSession.findUnique as jest.Mock).mockResolvedValue(
+          {
+            id: 'sess_test',
+            isCompleted: false,
+          },
+        );
+        (
+          prismaMock.civicQuizQuestion.findUnique as jest.Mock
+        ).mockResolvedValue({
           id: 'q_1',
           choices: ['Original A', 'Original B', 'Original C', 'Original D'],
           answerIndex: 0, // En base, c'était index 0
@@ -403,23 +422,37 @@ describe('CivicQuizService', () => {
             correctChoice: 'Original A',
           },
         });
-        (prismaMock.civicQuizAnswer.findFirst as jest.Mock).mockResolvedValue(null);
-        (prismaMock.civicQuizAnswer.create as jest.Mock).mockResolvedValue({ id: 'ans_1' });
-        (prismaMock.civicQuizQuestion.update as jest.Mock).mockResolvedValue({});
+        (prismaMock.civicQuizAnswer.findFirst as jest.Mock).mockResolvedValue(
+          null,
+        );
+        (prismaMock.civicQuizAnswer.create as jest.Mock).mockResolvedValue({
+          id: 'ans_1',
+        });
+        (prismaMock.civicQuizQuestion.update as jest.Mock).mockResolvedValue(
+          {},
+        );
 
         // L'utilisateur choisit l'index 2 (la bonne réponse mélangée)
-        const result = await service.answerSessionQuestion('sess_test', 'q_1', 2);
+        const result = await service.answerSessionQuestion(
+          'sess_test',
+          'q_1',
+          2,
+        );
 
         expect(result.isCorrect).toBe(true);
         expect(result.correctIndex).toBe(2);
       });
 
       it('valide la réponse si la valeur textuelle exacte est fournie (userAnswerText)', async () => {
-        (prismaMock.civicQuizSession.findUnique as jest.Mock).mockResolvedValue({
-          id: 'sess_test',
-          isCompleted: false,
-        });
-        (prismaMock.civicQuizQuestion.findUnique as jest.Mock).mockResolvedValue({
+        (prismaMock.civicQuizSession.findUnique as jest.Mock).mockResolvedValue(
+          {
+            id: 'sess_test',
+            isCompleted: false,
+          },
+        );
+        (
+          prismaMock.civicQuizQuestion.findUnique as jest.Mock
+        ).mockResolvedValue({
           id: 'q_1',
           choices: ['Original A', 'Original B', 'Original C', 'Original D'],
           answerIndex: 0,
@@ -431,9 +464,15 @@ describe('CivicQuizService', () => {
             correctChoice: 'Original A',
           },
         });
-        (prismaMock.civicQuizAnswer.findFirst as jest.Mock).mockResolvedValue(null);
-        (prismaMock.civicQuizAnswer.create as jest.Mock).mockResolvedValue({ id: 'ans_2' });
-        (prismaMock.civicQuizQuestion.update as jest.Mock).mockResolvedValue({});
+        (prismaMock.civicQuizAnswer.findFirst as jest.Mock).mockResolvedValue(
+          null,
+        );
+        (prismaMock.civicQuizAnswer.create as jest.Mock).mockResolvedValue({
+          id: 'ans_2',
+        });
+        (prismaMock.civicQuizQuestion.update as jest.Mock).mockResolvedValue(
+          {},
+        );
 
         // L'utilisateur envoie le texte exact 'Original A'
         const result = await service.answerSessionQuestion(

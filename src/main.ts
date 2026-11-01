@@ -12,6 +12,7 @@ import {
 } from './common/filters/index.js';
 import { validateEnvironment } from './config/env.validation.js';
 import express from 'express';
+import fs from 'node:fs';
 import net from 'node:net';
 import path from 'node:path';
 
@@ -203,6 +204,22 @@ async function bootstrap() {
       crossOriginResourcePolicy: { policy: 'cross-origin' },
     }),
   );
+
+  // Servir les assets publics statiques (logo officiel, favicon, polices de marque)
+  const publicDir = path.resolve(process.cwd(), 'public');
+  if (fs.existsSync(publicDir)) {
+    app.use(
+      express.static(publicDir, {
+        dotfiles: 'ignore',
+        index: false,
+        maxAge: '7d',
+        setHeaders: (res) => {
+          res.setHeader('X-Content-Type-Options', 'nosniff');
+          res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+        },
+      }),
+    );
+  }
 
   // Servir les fichiers audio et médias téléchargeables de manière sécurisée
   app.use(

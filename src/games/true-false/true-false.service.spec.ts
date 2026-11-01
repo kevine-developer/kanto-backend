@@ -20,7 +20,9 @@ describe('TrueFalseService', () => {
       get: jest.fn<(...args: any[]) => Promise<any>>().mockResolvedValue(null),
       set: jest.fn<(...args: any[]) => Promise<any>>().mockResolvedValue('OK'),
       del: jest.fn<(...args: any[]) => Promise<any>>().mockResolvedValue(1),
-      delByPattern: jest.fn<(...args: any[]) => Promise<any>>().mockResolvedValue(undefined),
+      delByPattern: jest
+        .fn<(...args: any[]) => Promise<any>>()
+        .mockResolvedValue(undefined),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -127,15 +129,24 @@ describe('TrueFalseService', () => {
           totalQuestions: 10,
         });
 
-        const result = await service.startSession('usr_1', 'HIST', 'MEDIUM', 10, 2);
+        const result = await service.startSession(
+          'usr_1',
+          'HIST',
+          'MEDIUM',
+          10,
+          2,
+        );
 
-        expect(prismaMock.trueFalseQuestion.findMany).toHaveBeenNthCalledWith(1, {
-          where: { status: 'PUBLISHED', theme: 'HIST' },
-          orderBy: { id: 'asc' },
-          skip: 10, // (2 - 1) * 10
-          take: 10,
-          select: { id: true },
-        });
+        expect(prismaMock.trueFalseQuestion.findMany).toHaveBeenNthCalledWith(
+          1,
+          {
+            where: { status: 'PUBLISHED', theme: 'HIST' },
+            orderBy: { id: 'asc' },
+            skip: 10, // (2 - 1) * 10
+            take: 10,
+            select: { id: true },
+          },
+        );
         expect(result.sessionId).toBe('tf_sess_2');
         expect(result.questions).toHaveLength(10);
       });

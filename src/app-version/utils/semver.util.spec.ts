@@ -1,4 +1,9 @@
-import { compareSemVer, parseSemVer, isGreaterThan, isLessThan } from './semver.util.js';
+import {
+  compareSemVer,
+  parseSemVer,
+  isGreaterThan,
+  isLessThan,
+} from './semver.util.js';
 
 describe('semver.util', () => {
   describe('parseSemVer', () => {
@@ -89,4 +94,3 @@ describe('semver.util', () => {
     });
   });
 });
-

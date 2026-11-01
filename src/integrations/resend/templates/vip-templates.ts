@@ -1,6 +1,10 @@
 import { KANTO_COLORS, escapeHtml } from './common.js';
 import { renderEmailLayout } from './email-layout.js';
-import { renderButton, renderNotice, renderMetadataTable } from './components.js';
+import {
+  renderButton,
+  renderNotice,
+  renderMetadataTable,
+} from './components.js';
 import type { EmailRenderOutput } from './templates.js';
 
 function formatDateFr(date: Date): string {
@@ -27,17 +31,21 @@ export interface VipGrantedEmailData {
   expiresAt?: Date | null;
 }
 
-export function buildVipGrantedEmail(data: VipGrantedEmailData): EmailRenderOutput {
+export function buildVipGrantedEmail(
+  data: VipGrantedEmailData,
+): EmailRenderOutput {
   const safeName = escapeHtml(data.userName?.trim());
   const greetingHtml = safeName ? `Bonjour ${safeName},` : 'Bonjour,';
-  const greetingText = data.userName?.trim() ? `Bonjour ${data.userName.trim()},` : 'Bonjour,';
+  const greetingText = data.userName?.trim()
+    ? `Bonjour ${data.userName.trim()},`
+    : 'Bonjour,';
 
   const isPermanent = !data.expiresAt && !data.durationDays;
   const expiryLabel = isPermanent
     ? 'Accès permanent (à vie)'
     : data.expiresAt
-    ? formatDateFr(new Date(data.expiresAt))
-    : `${data.durationDays} jours`;
+      ? formatDateFr(new Date(data.expiresAt))
+      : `${data.durationDays} jours`;
 
   const subject = '👑 Votre statut VIP Kanto MG est désormais actif !';
 
@@ -57,7 +65,10 @@ https://app-kanto.gastsar.fr`.trim();
 
   const metadataRows = [
     { label: 'Statut du compte', value: '👑 Membre VIP Privilège' },
-    { label: 'Publicités AdMob', value: 'Désactivées (Expérience fluide sans pub)' },
+    {
+      label: 'Publicités AdMob',
+      value: 'Désactivées (Expérience fluide sans pub)',
+    },
     { label: 'Durée de validité', value: expiryLabel },
   ];
 
@@ -113,10 +124,14 @@ export interface VipExtendedEmailData {
   newExpiresAt: Date;
 }
 
-export function buildVipExtendedEmail(data: VipExtendedEmailData): EmailRenderOutput {
+export function buildVipExtendedEmail(
+  data: VipExtendedEmailData,
+): EmailRenderOutput {
   const safeName = escapeHtml(data.userName?.trim());
   const greetingHtml = safeName ? `Bonjour ${safeName},` : 'Bonjour,';
-  const greetingText = data.userName?.trim() ? `Bonjour ${data.userName.trim()},` : 'Bonjour,';
+  const greetingText = data.userName?.trim()
+    ? `Bonjour ${data.userName.trim()},`
+    : 'Bonjour,';
   const newDateLabel = formatDateFr(new Date(data.newExpiresAt));
 
   const subject = `🎉 Votre statut VIP Kanto MG a été prolongé jusqu'au ${newDateLabel}`;
@@ -182,10 +197,14 @@ export interface VipExpiringSoonEmailData {
   daysRemaining: number;
 }
 
-export function buildVipExpiringEmail(data: VipExpiringSoonEmailData): EmailRenderOutput {
+export function buildVipExpiringEmail(
+  data: VipExpiringSoonEmailData,
+): EmailRenderOutput {
   const safeName = escapeHtml(data.userName?.trim());
   const greetingHtml = safeName ? `Bonjour ${safeName},` : 'Bonjour,';
-  const greetingText = data.userName?.trim() ? `Bonjour ${data.userName.trim()},` : 'Bonjour,';
+  const greetingText = data.userName?.trim()
+    ? `Bonjour ${data.userName.trim()},`
+    : 'Bonjour,';
   const expiryDateLabel = formatDateFr(new Date(data.expiresAt));
 
   const subject = `⏳ Votre statut VIP Kanto MG expire dans ${data.daysRemaining} jours`;
@@ -249,10 +268,14 @@ export interface VipExpiredEmailData {
   userName?: string;
 }
 
-export function buildVipExpiredEmail(data: VipExpiredEmailData): EmailRenderOutput {
+export function buildVipExpiredEmail(
+  data: VipExpiredEmailData,
+): EmailRenderOutput {
   const safeName = escapeHtml(data.userName?.trim());
   const greetingHtml = safeName ? `Bonjour ${safeName},` : 'Bonjour,';
-  const greetingText = data.userName?.trim() ? `Bonjour ${data.userName.trim()},` : 'Bonjour,';
+  const greetingText = data.userName?.trim()
+    ? `Bonjour ${data.userName.trim()},`
+    : 'Bonjour,';
 
   const subject = 'Votre statut VIP Kanto MG est arrivé à expiration';
 
@@ -312,10 +335,14 @@ export interface UserBannedEmailData {
   banExpires?: Date | null;
 }
 
-export function buildUserBannedEmail(data: UserBannedEmailData): EmailRenderOutput {
+export function buildUserBannedEmail(
+  data: UserBannedEmailData,
+): EmailRenderOutput {
   const safeName = escapeHtml(data.userName?.trim());
   const greetingHtml = safeName ? `Bonjour ${safeName},` : 'Bonjour,';
-  const greetingText = data.userName?.trim() ? `Bonjour ${data.userName.trim()},` : 'Bonjour,';
+  const greetingText = data.userName?.trim()
+    ? `Bonjour ${data.userName.trim()},`
+    : 'Bonjour,';
   const safeReason = escapeHtml(data.reason);
 
   const expiryLabel = data.banExpires
@@ -380,10 +407,14 @@ export interface UserUnbannedEmailData {
   userName?: string;
 }
 
-export function buildUserUnbannedEmail(data: UserUnbannedEmailData): EmailRenderOutput {
+export function buildUserUnbannedEmail(
+  data: UserUnbannedEmailData,
+): EmailRenderOutput {
   const safeName = escapeHtml(data.userName?.trim());
   const greetingHtml = safeName ? `Bonjour ${safeName},` : 'Bonjour,';
-  const greetingText = data.userName?.trim() ? `Bonjour ${data.userName.trim()},` : 'Bonjour,';
+  const greetingText = data.userName?.trim()
+    ? `Bonjour ${data.userName.trim()},`
+    : 'Bonjour,';
 
   const subject = 'Votre compte Kanto MG a été réactivé';
 

@@ -1,9 +1,4 @@
-import {
-  IsBoolean,
-  IsEnum,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
 import { WordRarity, ContentStatus } from '../../../generated/prisma/client.js';
 
 export class UpdateRakiTenyDto {

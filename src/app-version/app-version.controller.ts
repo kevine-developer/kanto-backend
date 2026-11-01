@@ -80,4 +80,3 @@ export class AppVersionController {
     return this.appVersionService.remove(id);
   }
 }
-

@@ -31,7 +31,9 @@ export class VipExpirationScheduler {
     }
 
     try {
-      this.logger.log('🚀 [VipScheduler] Début de la vérification quotidienne des expirations VIP...');
+      this.logger.log(
+        '🚀 [VipScheduler] Début de la vérification quotidienne des expirations VIP...',
+      );
       const results = await this.runVipExpirationRoutine();
       this.logger.log(
         `✅ [VipScheduler] Vérification terminée : ${results.expiringSoonCount} rappel(s) envoyé(s), ${results.expiredCount} compte(s) expiré(s) rétrogradé(s).`,
@@ -93,7 +95,10 @@ export class VipExpirationScheduler {
       }
 
       const diffMs = user.tierExpiresAt.getTime() - now.getTime();
-      const daysRemaining = Math.max(1, Math.ceil(diffMs / (24 * 60 * 60 * 1000)));
+      const daysRemaining = Math.max(
+        1,
+        Math.ceil(diffMs / (24 * 60 * 60 * 1000)),
+      );
 
       await this.eventNotificationService.dispatchNotificationEvent({
         type: 'USER_VIP_EXPIRING_SOON',
@@ -153,7 +158,8 @@ export class VipExpirationScheduler {
             targetType: 'USER',
             targetId: user.id,
             targetLabel: user.name || user.email,
-            reason: 'Expiration automatique du statut VIP au terme de la période allouée.',
+            reason:
+              'Expiration automatique du statut VIP au terme de la période allouée.',
             details: {
               previousTier: 'VIP',
               newTier: 'FREE',

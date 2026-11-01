@@ -14,12 +14,15 @@ export interface ParsedSemVer {
 /**
  * Nettoie et extrait les composantes sémantiques d'une chaîne de version.
  */
-export function parseSemVer(version: string | null | undefined): ParsedSemVer | null {
+export function parseSemVer(
+  version: string | null | undefined,
+): ParsedSemVer | null {
   if (!version || typeof version !== 'string') return null;
 
   const trimmed = version.trim().replace(/^v/i, '');
   // Format attendu : MAJOR.MINOR.PATCH(-PRERELEASE)?(+BUILD)?
-  const semverRegex = /^(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:-([0-9A-Za-z.-]+))?(?:\+([0-9A-Za-z.-]+))?$/;
+  const semverRegex =
+    /^(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:-([0-9A-Za-z.-]+))?(?:\+([0-9A-Za-z.-]+))?$/;
   const match = trimmed.match(semverRegex);
 
   if (!match) return null;
@@ -40,7 +43,10 @@ export function parseSemVer(version: string | null | undefined): ParsedSemVer | 
  * -1 si v1 < v2
  *  0 si v1 === v2
  */
-export function compareSemVer(v1: string | null | undefined, v2: string | null | undefined): number {
+export function compareSemVer(
+  v1: string | null | undefined,
+  v2: string | null | undefined,
+): number {
   const p1 = parseSemVer(v1);
   const p2 = parseSemVer(v2);
 
@@ -75,4 +81,3 @@ export function isGreaterThan(v1: string, v2: string): boolean {
 export function isLessThan(v1: string, v2: string): boolean {
   return compareSemVer(v1, v2) < 0;
 }
-

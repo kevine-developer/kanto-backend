@@ -21,13 +21,19 @@ describe('ReferralController', () => {
     service = {
       getUserReferralStats: jest.fn().mockResolvedValue({ code: 'KANTO-TEST' }),
       claimReferral: jest.fn().mockResolvedValue({ success: true }),
-      trackClick: jest.fn().mockResolvedValue({ success: true, clicksCount: 1 }),
+      trackClick: jest
+        .fn()
+        .mockResolvedValue({ success: true, clicksCount: 1 }),
       completeReferral: jest.fn().mockResolvedValue({ completed: true }),
       getAdminOverview: jest.fn().mockResolvedValue({ metrics: {} }),
-      getAdminReferralsList: jest.fn().mockResolvedValue({ items: [], pagination: {} }),
+      getAdminReferralsList: jest
+        .fn()
+        .mockResolvedValue({ items: [], pagination: {} }),
       getOrCreateConfig: jest.fn().mockResolvedValue({ isEnabled: true }),
       updateAdminConfig: jest.fn().mockResolvedValue({ isEnabled: true }),
-      getAdminReferralNotifications: jest.fn().mockResolvedValue({ total: 1, items: [] }),
+      getAdminReferralNotifications: jest
+        .fn()
+        .mockResolvedValue({ total: 1, items: [] }),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -48,8 +54,18 @@ describe('ReferralController', () => {
   });
 
   it('claimReferral transmet le code et l’adresse IP', async () => {
-    await controller.claimReferral(mockSession, { code: 'KANTO-FRIEND' }, '192.168.1.50', 'TestAgent');
-    expect(service.claimReferral).toHaveBeenCalledWith('user_test', 'KANTO-FRIEND', '192.168.1.50', 'TestAgent');
+    await controller.claimReferral(
+      mockSession,
+      { code: 'KANTO-FRIEND' },
+      '192.168.1.50',
+      'TestAgent',
+    );
+    expect(service.claimReferral).toHaveBeenCalledWith(
+      'user_test',
+      'KANTO-FRIEND',
+      '192.168.1.50',
+      'TestAgent',
+    );
   });
 
   it('trackClick incrémente les clics pour un code', async () => {

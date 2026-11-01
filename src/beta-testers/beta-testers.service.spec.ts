@@ -35,12 +35,16 @@ describe('BetaTestersService', () => {
         findFirst: jest.fn<any>().mockResolvedValue(null),
       },
       betaAutomationConfig: {
-        findFirst: jest.fn<any>().mockResolvedValue({ autoConfirmRegistration: true }),
+        findFirst: jest
+          .fn<any>()
+          .mockResolvedValue({ autoConfirmRegistration: true }),
       },
     };
 
     emailDispatcher = {
-      sendTemplateEmail: jest.fn<any>().mockResolvedValue({ success: true, to: 'test@example.com' }),
+      sendTemplateEmail: jest
+        .fn<any>()
+        .mockResolvedValue({ success: true, to: 'test@example.com' }),
     };
 
     const module: TestingModule = await Test.createTestingModule({

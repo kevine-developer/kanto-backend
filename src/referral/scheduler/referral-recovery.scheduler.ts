@@ -33,7 +33,9 @@ export class ReferralRecoveryScheduler {
     }
 
     try {
-      this.logger.log('🚀 [ReferralRecovery] Début du scan des parrainages en attente...');
+      this.logger.log(
+        '🚀 [ReferralRecovery] Début du scan des parrainages en attente...',
+      );
       const results = await this.runRecoveryRoutine();
       if (results.processedCount > 0) {
         this.logger.log(

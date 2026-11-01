@@ -34,6 +34,13 @@ export function renderNativePasswordResetPage(
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    @font-face {
+      font-family: 'LazyDog';
+      src: url('/fonts/LazyDog.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
@@ -80,27 +87,39 @@ export function renderNativePasswordResetPage(
       margin-bottom: 24px;
     }
 
-    .brand-logo-box {
+    .brand-logo-wrap {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 56px;
-      height: 56px;
+      width: 58px;
+      height: 58px;
       border-radius: 16px;
-      background: linear-gradient(135deg, var(--kanto-green) 0%, var(--kanto-green-dark) 100%);
-      color: #FFFFFF;
-      font-weight: 800;
-      font-size: 24px;
-      letter-spacing: -0.5px;
-      box-shadow: 0 10px 24px rgba(22, 68, 42, 0.2);
+      overflow: hidden;
+      border: 1px solid var(--kanto-border);
+      box-shadow: 0 8px 20px rgba(22, 68, 42, 0.15);
       margin-bottom: 12px;
+      background: #FFFFFF;
+    }
+
+    .brand-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .brand-title {
-      font-size: 22px;
-      font-weight: 800;
+      font-family: 'LazyDog', 'Plus Jakarta Sans', sans-serif;
+      font-size: 34px;
+      line-height: 1;
+      font-weight: 400;
       color: var(--kanto-green-dark);
-      letter-spacing: -0.4px;
+      letter-spacing: 0.3px;
+    }
+
+    .brand-domain {
+      font-family: 'LazyDog', 'Plus Jakarta Sans', sans-serif;
+      color: var(--kanto-terracotta);
     }
 
     .brand-subtitle {
@@ -361,9 +380,18 @@ export function renderNativePasswordResetPage(
 <body>
   <div class="container">
     <div class="brand-header">
-      <div class="brand-logo-box">K</div>
-      <h1 class="brand-title">Kanto MG</h1>
-      <p class="brand-subtitle">Lova, Kolontsaina & Tantara Malagasy</p>
+      <div class="brand-logo-wrap">
+        <img
+          src="/logo.png"
+          alt="Logo officiel Kanto MG"
+          class="brand-logo"
+          width="58"
+          height="58"
+          onerror="this.onerror=null; this.src='/favicon.png';"
+        />
+      </div>
+      <h1 class="brand-title">kanto<span class="brand-domain">.mg</span></h1>
+      <p class="brand-subtitle">Lova, Kolontsaina &amp; Tantara Malagasy</p>
     </div>
 
     <div class="card">

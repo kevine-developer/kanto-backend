@@ -60,7 +60,7 @@ describe('RakiTenyService', () => {
         category: 'nature_temps',
         wordClassMg: 'Mpamari-toetra',
         wordClassFr: 'Adjectif',
-        rarity: 'POETIC' as any,
+        rarity: 'POETIC',
         rarityLabelMg: 'Haisoratra & Kanto',
         rarityLabelFr: 'Poétique & Évocateur',
         meaningMg: 'Fotoana manalasala...',

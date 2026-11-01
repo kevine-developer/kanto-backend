@@ -470,14 +470,12 @@ export class UserQuizService {
       }
     }
 
-    const quizCount = set.questions.filter(
-      (q) => q.gameType === 'QUIZ',
-    ).length;
+    const quizCount = set.questions.filter((q) => q.gameType === 'QUIZ').length;
     const trueFalseCount = set.questions.filter(
       (q) => q.gameType === 'TRUE_FALSE',
     ).length;
-    const hasBilingualQuestions = set.questions.some(
-      (q) => Boolean(q.questionMg && q.questionFr),
+    const hasBilingualQuestions = set.questions.some((q) =>
+      Boolean(q.questionMg && q.questionFr),
     );
     // 15 secondes par question (durée standard Kanto Quiz)
     const estimatedDurationMinutes = Math.max(

@@ -26,7 +26,9 @@ describe('ContributionsService - Deadlines & Permissions', () => {
     createNotification: (jest.fn as any)().mockResolvedValue({}),
   };
   const mockEventNotificationService = {
-    dispatchNotificationEvent: (jest.fn as any)().mockResolvedValue({ success: true }),
+    dispatchNotificationEvent: (jest.fn as any)().mockResolvedValue({
+      success: true,
+    }),
   };
   const mockRedisService = createAvailableRedisMock();
   const mockDuplicateDetectionService = {
@@ -51,7 +53,10 @@ describe('ContributionsService - Deadlines & Permissions', () => {
         ContributionsService,
         { provide: PrismaService, useValue: prismaMock },
         { provide: NotificationsService, useValue: mockNotificationsService },
-        { provide: EventNotificationService, useValue: mockEventNotificationService },
+        {
+          provide: EventNotificationService,
+          useValue: mockEventNotificationService,
+        },
         { provide: RedisService, useValue: mockRedisService },
         {
           provide: DuplicateDetectionService,

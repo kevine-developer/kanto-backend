@@ -82,7 +82,9 @@ async function main() {
     await client.connect();
     console.log('🔌 Connecté à PostgreSQL');
     await client.query(sql);
-    console.log('✅ DDL VIP, admin_audit_logs et raki_teny_words appliqués avec succès !');
+    console.log(
+      '✅ DDL VIP, admin_audit_logs et raki_teny_words appliqués avec succès !',
+    );
   } catch (err) {
     console.error("❌ Erreur d'application DDL:", err);
     process.exit(1);
