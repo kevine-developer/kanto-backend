@@ -112,6 +112,13 @@ export class BetaTestersController {
     @Query('email') email?: string,
     @Query('token') token?: string,
   ): Promise<void> {
+    if (tab === 'feedback') {
+      return res.redirect(
+        302,
+        '/feedback' + (email ? `?email=${encodeURIComponent(email)}` : ''),
+      );
+    }
+
     const [testerCount, config] = await Promise.all([
       this.betaTestersService.getPublicTesterCount(),
       typeof this.betaTestersService.getAutomationConfig === 'function'
@@ -131,7 +138,6 @@ export class BetaTestersController {
         initialTab:
           tab === 'already_registered' ||
           tab === 'download' ||
-          tab === 'feedback' ||
           tab === 'unsubscribe'
             ? tab
             : 'register',
