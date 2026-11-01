@@ -11,4 +11,3 @@ import { DailyChallengeService } from './daily-challenge.service.js';
   exports: [DailyChallengeService],
 })
 export class DailyChallengeModule {}
-

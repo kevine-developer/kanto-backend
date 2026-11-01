@@ -15,6 +15,9 @@ import {
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import type { Request, Response } from 'express';
+import fs from 'node:fs';
+import path from 'node:path';
+
 import { AppService } from './app.service.js';
 import { renderEmailVerificationPage } from './auth/views/email-verification.view.js';
 import { renderNativePasswordResetPage } from './auth/views/native-password-reset.view.js';
@@ -109,7 +112,12 @@ export class AppController {
               req?.socket?.remoteAddress;
             const userAgent = req?.headers?.['user-agent'] as string;
             await this.betaTestersService.register(
-              { email: queryEmail, fullName: queryFullName || undefined, platforms: ['ANDROID'], termsAccepted: true },
+              {
+                email: queryEmail,
+                fullName: queryFullName || undefined,
+                platforms: ['ANDROID'],
+                termsAccepted: true,
+              },
               ip,
               userAgent,
             );
@@ -141,13 +149,6 @@ export class AppController {
   }
 
   /**
-   * Réponse 204 No Content pour /favicon.ico (évite les avertissements 404 dans les logs)
-   */
-  @Get('favicon.ico')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  getFavicon(): void {}
-
-  /**
    * Fichier robots.txt interdisant l'indexation directe des routes API par les robots
    */
   @Get('robots.txt')
@@ -157,8 +158,68 @@ export class AppController {
   }
 
   /**
-   * Script client de la waitlist bêta servi en direct
+   * Logo officiel Kanto MG (PNG)
+   * Servi avec mise en cache optimisée pour le portail web app-kanto.gastsar.fr
    */
+  @Get('logo.png')
+  @Get('images/logo.png')
+  getLogo(@Res() res: Response): void {
+    const candidates = [
+      path.resolve(process.cwd(), 'public', 'logo.png'),
+      path.resolve(process.cwd(), 'public', 'images', 'logo.png'),
+      path.resolve(process.cwd(), 'uploads', 'logo.png'),
+    ];
+    for (const f of candidates) {
+      if (fs.existsSync(f)) {
+        res.setHeader('Content-Type', 'image/png');
+        res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
+        res.sendFile(f);
+        return;
+      }
+    }
+    res.status(HttpStatus.NOT_FOUND).send('Logo not found');
+  }
+
+  /**
+   * Favicon officiel Kanto MG
+   */
+  @Get('favicon.ico')
+  @Get('favicon.png')
+  getFavicon(@Res() res: Response): void {
+    const candidates = [
+      path.resolve(process.cwd(), 'public', 'favicon.ico'),
+      path.resolve(process.cwd(), 'public', 'favicon.png'),
+    ];
+    for (const f of candidates) {
+      if (fs.existsSync(f)) {
+        res.setHeader('Content-Type', 'image/x-icon');
+        res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
+        res.sendFile(f);
+        return;
+      }
+    }
+    res.status(HttpStatus.NOT_FOUND).send('Favicon not found');
+  }
+
+  /**
+   * Police officielle du logo Kanto MG (LazyDog TTF)
+   */
+  @Get('fonts/LazyDog.ttf')
+  getLogoFont(@Res() res: Response): void {
+    const candidates = [
+      path.resolve(process.cwd(), 'public', 'fonts', 'LazyDog.ttf'),
+    ];
+    for (const f of candidates) {
+      if (fs.existsSync(f)) {
+        res.setHeader('Content-Type', 'font/ttf');
+        res.setHeader('Cache-Control', 'public, max-age=2592000, immutable');
+        res.sendFile(f);
+        return;
+      }
+    }
+    res.status(HttpStatus.NOT_FOUND).send('Font not found');
+  }
+
   @Get('beta-waitlist.js')
   getBetaWaitlistScript(@Res() res: Response): void {
     res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
@@ -431,10 +492,7 @@ export class AppController {
         const timeoutPromise = new Promise((_, reject) =>
           setTimeout(() => reject(new Error('PostgreSQL check timeout')), 2000),
         );
-        await Promise.race([
-          this.prisma.$queryRaw`SELECT 1`,
-          timeoutPromise,
-        ]);
+        await Promise.race([this.prisma.$queryRaw`SELECT 1`, timeoutPromise]);
         dbStatus = 'up';
       } catch (err: any) {
         this.logger.error(

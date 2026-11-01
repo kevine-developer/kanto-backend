@@ -77,7 +77,10 @@ export class BetaTestersController {
         fromDeeplink: from === 'deeplink' || Boolean(target),
         targetPath: target,
         initialTab:
-          tab === 'already_registered' || tab === 'download' || tab === 'feedback' || tab === 'unsubscribe'
+          tab === 'already_registered' ||
+          tab === 'download' ||
+          tab === 'feedback' ||
+          tab === 'unsubscribe'
             ? tab
             : 'register',
         initialEmail: email,
@@ -182,10 +185,7 @@ export class BetaTestersController {
   @Post(['api/beta-testers/feedback', 'beta-testers/feedback'])
   @HttpCode(HttpStatus.OK)
   @Throttle({ default: { limit: 5, ttl: 60000 } })
-  async submitFeedback(
-    @Body() dto: SubmitFeedbackDto,
-    @Req() req: Request,
-  ) {
+  async submitFeedback(@Body() dto: SubmitFeedbackDto, @Req() req: Request) {
     const ip =
       (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ||
       req.ip ||
@@ -302,7 +302,10 @@ export class BetaTestersController {
     return this.betaTestersService.deleteVersion(id);
   }
 
-  @Post(['api/beta-testers/versions/:id/notify', 'beta-testers/versions/:id/notify'])
+  @Post([
+    'api/beta-testers/versions/:id/notify',
+    'beta-testers/versions/:id/notify',
+  ])
   @UseGuards(AuthGuard)
   @Roles(['ADMIN', 'admin'])
   notifyVersion(@Param('id') id: string) {
@@ -365,11 +368,17 @@ export class BetaTestersController {
   @Patch(['api/beta-testers/templates/:code', 'beta-testers/templates/:code'])
   @UseGuards(AuthGuard)
   @Roles(['ADMIN', 'admin'])
-  updateTemplate(@Param('code') code: string, @Body() dto: UpdateEmailTemplateDto) {
+  updateTemplate(
+    @Param('code') code: string,
+    @Body() dto: UpdateEmailTemplateDto,
+  ) {
     return this.betaTestersService.updateTemplate(code, dto);
   }
 
-  @Post(['api/beta-testers/templates/:code/test', 'beta-testers/templates/:code/test'])
+  @Post([
+    'api/beta-testers/templates/:code/test',
+    'beta-testers/templates/:code/test',
+  ])
   @UseGuards(AuthGuard)
   @Roles(['ADMIN', 'admin'])
   sendTestTemplateEmail(
@@ -388,7 +397,10 @@ export class BetaTestersController {
     return this.betaTestersService.getAutomationConfig();
   }
 
-  @Patch(['api/beta-testers/automation-config', 'beta-testers/automation-config'])
+  @Patch([
+    'api/beta-testers/automation-config',
+    'beta-testers/automation-config',
+  ])
   @UseGuards(AuthGuard)
   @Roles(['ADMIN', 'admin'])
   updateAutomationConfig(@Body() dto: UpdateAutomationConfigDto) {
@@ -446,14 +458,20 @@ export class BetaTestersController {
     return this.betaTestersService.update(id, body);
   }
 
-  @Post(['api/beta-testers/:id/send-android-invite', 'beta-testers/:id/send-android-invite'])
+  @Post([
+    'api/beta-testers/:id/send-android-invite',
+    'beta-testers/:id/send-android-invite',
+  ])
   @UseGuards(AuthGuard)
   @Roles(['ADMIN', 'admin'])
   sendAndroidInvite(@Param('id') id: string) {
     return this.betaTestersService.sendAndroidInvite(id);
   }
 
-  @Post(['api/beta-testers/:id/send-ios-invite', 'beta-testers/:id/send-ios-invite'])
+  @Post([
+    'api/beta-testers/:id/send-ios-invite',
+    'beta-testers/:id/send-ios-invite',
+  ])
   @UseGuards(AuthGuard)
   @Roles(['ADMIN', 'admin'])
   sendIosInvite(@Param('id') id: string) {

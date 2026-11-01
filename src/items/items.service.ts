@@ -362,7 +362,10 @@ export class ItemsService {
     });
 
     const normalize = (t: string) =>
-      t.toLowerCase().replace(/[\s\p{P}]+/gu, '').trim();
+      t
+        .toLowerCase()
+        .replace(/[\s\p{P}]+/gu, '')
+        .trim();
 
     const existingNormalizedSet = new Set(
       existingItems.map((i) => normalize(i.malagasy)),
@@ -400,7 +403,10 @@ export class ItemsService {
     });
 
     const normalize = (t: string) =>
-      t.toLowerCase().replace(/[\s\p{P}]+/gu, '').trim();
+      t
+        .toLowerCase()
+        .replace(/[\s\p{P}]+/gu, '')
+        .trim();
 
     const existingTexts = new Set(
       existingItems.map((i) => normalize(i.malagasy)),
@@ -470,7 +476,7 @@ export class ItemsService {
       let slug = baseSlug;
       let counter = 1;
       while (existingSlugs.has(slug)) {
-        slug = baseSlug + '-' + (counter++);
+        slug = baseSlug + '-' + counter++;
       }
 
       // Normalisation catégorie
@@ -494,12 +500,22 @@ export class ItemsService {
       if (Array.isArray(row.origins)) {
         origins = row.origins.map((o) => String(o).trim()).filter(Boolean);
       } else if (typeof row.origins === 'string' && row.origins.trim()) {
-        origins = row.origins.split(',').map((o) => o.trim()).filter(Boolean);
+        origins = row.origins
+          .split(',')
+          .map((o) => o.trim())
+          .filter(Boolean);
       }
 
       // Variantes dialectales
-      let dialectVariantsToCreate: Array<{ dialectName: string; text: string; notes?: string | null }> = [];
-      if (Array.isArray(row.dialectVariants) && row.dialectVariants.length > 0) {
+      let dialectVariantsToCreate: Array<{
+        dialectName: string;
+        text: string;
+        notes?: string | null;
+      }> = [];
+      if (
+        Array.isArray(row.dialectVariants) &&
+        row.dialectVariants.length > 0
+      ) {
         dialectVariantsToCreate = row.dialectVariants
           .filter((v) => v.dialectName && v.text)
           .map((v) => ({
@@ -523,7 +539,10 @@ export class ItemsService {
       if (Array.isArray(row.themes)) {
         inputThemes = row.themes.map((t) => String(t).trim()).filter(Boolean);
       } else if (typeof row.themes === 'string' && row.themes.trim()) {
-        inputThemes = row.themes.split(',').map((t) => t.trim()).filter(Boolean);
+        inputThemes = row.themes
+          .split(',')
+          .map((t) => t.trim())
+          .filter(Boolean);
       }
 
       for (const tName of inputThemes) {
@@ -532,7 +551,7 @@ export class ItemsService {
         if (!tId) {
           // Créer le thème s'il n'existe pas encore
           try {
-            const tSlug = slugify(tName) || ('theme-' + Date.now());
+            const tSlug = slugify(tName) || 'theme-' + Date.now();
             const createdTheme = await this.prisma.theme.create({
               data: {
                 nameMg: tName,

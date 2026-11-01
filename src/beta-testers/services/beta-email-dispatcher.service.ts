@@ -35,14 +35,27 @@ export class BetaEmailDispatcherService {
     customContentHtml?: string;
     bypassSuppression?: boolean;
   }) {
-    const { to, templateCode, variables, customSubject, customContentHtml, bypassSuppression } = options;
+    const {
+      to,
+      templateCode,
+      variables,
+      customSubject,
+      customContentHtml,
+      bypassSuppression,
+    } = options;
 
     // 1. Récupération de la configuration globale pour liens par défaut
     const config = await this.prisma.betaAutomationConfig.findFirst();
     const supportEmail = config?.supportEmail || 'contact@kanto.mg';
-    const playStoreWebLink = config?.playStoreWebLink || 'https://play.google.com/apps/testing/com.devengalere.kantomg';
-    const playStoreAppLink = config?.playStoreAppLink || 'https://play.google.com/store/apps/details?id=com.devengalere.kantomg';
-    const testFlightLink = config?.testFlightPublicLink || 'https://testflight.apple.com/join/kantomg';
+    const playStoreWebLink =
+      config?.playStoreWebLink ||
+      'https://play.google.com/apps/testing/com.devengalere.kantomg';
+    const playStoreAppLink =
+      config?.playStoreAppLink ||
+      'https://play.google.com/store/apps/details?id=com.devengalere.kantomg';
+    const testFlightLink =
+      config?.testFlightPublicLink ||
+      'https://testflight.apple.com/join/kantomg';
 
     // 2. Fusion des variables par défaut
     const mergedVars: Record<string, string> = {
@@ -54,9 +67,14 @@ export class BetaEmailDispatcherService {
       androidTestingLink: variables.androidTestingLink || playStoreWebLink,
       appVersion: variables.appVersion || '0.1.0',
       supportEmail: variables.supportEmail || supportEmail,
-      unsubscribeLink: variables.unsubscribeLink || `https://app-kanto.gastsar.fr/beta?tab=unsubscribe&email=${encodeURIComponent(to)}`,
+      unsubscribeLink:
+        variables.unsubscribeLink ||
+        `https://app-kanto.gastsar.fr/beta?tab=unsubscribe&email=${encodeURIComponent(to)}`,
       ...Object.fromEntries(
-        Object.entries(variables).filter(([, v]) => typeof v === 'string') as [string, string][]
+        Object.entries(variables).filter(([, v]) => typeof v === 'string') as [
+          string,
+          string,
+        ][],
       ),
     };
 
@@ -65,14 +83,19 @@ export class BetaEmailDispatcherService {
       where: { code: templateCode },
     });
 
-    const subjectRaw = customSubject || tpl?.subject || 'Information Kanto MG Bêta';
+    const subjectRaw =
+      customSubject || tpl?.subject || 'Information Kanto MG Bêta';
     const titleRaw = tpl?.title || 'Programme de Test Kanto MG';
-    const contentRaw = customContentHtml || tpl?.contentHtml || '<p>Merci pour votre participation au test de Kanto MG.</p>';
+    const contentRaw =
+      customContentHtml ||
+      tpl?.contentHtml ||
+      '<p>Merci pour votre participation au test de Kanto MG.</p>';
     const buttonTextRaw = tpl?.buttonText || '';
     const buttonUrlRaw = tpl?.buttonUrl || '';
     const secondaryButtonTextRaw = tpl?.secondaryButtonText || '';
     const secondaryButtonUrlRaw = tpl?.secondaryButtonUrl || '';
-    const footerTextRaw = tpl?.footerText || 'Kanto MG — Le sanctuaire de la culture malgache.';
+    const footerTextRaw =
+      tpl?.footerText || 'Kanto MG — Le sanctuaire de la culture malgache.';
     const accentColor = tpl?.accentColor || '#4A6741';
     const senderName = tpl?.senderName || 'Kanto MG • Bêta Test';
 
@@ -82,8 +105,14 @@ export class BetaEmailDispatcherService {
     const content = this.interpolate(contentRaw, mergedVars);
     const buttonText = this.interpolate(buttonTextRaw, mergedVars);
     const buttonUrl = this.interpolate(buttonUrlRaw, mergedVars);
-    const secondaryButtonText = this.interpolate(secondaryButtonTextRaw, mergedVars);
-    const secondaryButtonUrl = this.interpolate(secondaryButtonUrlRaw, mergedVars);
+    const secondaryButtonText = this.interpolate(
+      secondaryButtonTextRaw,
+      mergedVars,
+    );
+    const secondaryButtonUrl = this.interpolate(
+      secondaryButtonUrlRaw,
+      mergedVars,
+    );
     const footerText = this.interpolate(footerTextRaw, mergedVars);
 
     // 5. Construction du HTML officiel Kanto Terre & Encre
@@ -121,11 +150,15 @@ export class BetaEmailDispatcherService {
         },
       });
 
-      this.logger.log(`✉️ [BetaEmail] Modèle "${templateCode}" expédié à ${to}`);
+      this.logger.log(
+        `✉️ [BetaEmail] Modèle "${templateCode}" expédié à ${to}`,
+      );
       return { success: true, subject, to };
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
-      this.logger.error(`❌ [BetaEmail] Échec envoi "${templateCode}" à ${to} : ${msg}`);
+      this.logger.error(
+        `❌ [BetaEmail] Échec envoi "${templateCode}" à ${to} : ${msg}`,
+      );
       throw err;
     }
   }
@@ -224,4 +257,3 @@ export class BetaEmailDispatcherService {
     return html.replace(/<[^>]*>?/gm, '').trim();
   }
 }
-

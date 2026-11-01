@@ -91,6 +91,13 @@ export function renderDeeplinkGatewayPage(
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
+    @font-face {
+      font-family: 'LazyDog';
+      src: url('/fonts/LazyDog.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
     :root {
       --kanto-green: #16442A;
       --kanto-green-dark: #0D2B1A;
@@ -149,24 +156,32 @@ export function renderDeeplinkGatewayPage(
       width: 38px;
       height: 38px;
       border-radius: var(--radius-sm);
-      background-color: var(--kanto-green);
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #FFFFFF;
-      font-weight: 800;
-      font-size: 19px;
       box-shadow: 0 4px 10px rgba(22, 68, 42, 0.2);
+      background-color: #FFFFFF;
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .brand-title {
-      font-size: 22px;
-      font-weight: 800;
+      font-family: 'LazyDog', 'Plus Jakarta Sans', sans-serif;
+      font-size: 26px;
+      line-height: 1;
+      font-weight: 400;
       color: var(--kanto-green);
-      letter-spacing: -0.5px;
+      letter-spacing: 0.3px;
     }
 
     .brand-domain {
+      font-family: 'LazyDog', 'Plus Jakarta Sans', sans-serif;
       color: var(--kanto-terracotta);
     }
 
@@ -417,7 +432,15 @@ export function renderDeeplinkGatewayPage(
   <div class="main-wrapper">
     <!-- En-tête Marque -->
     <a href="https://app-kanto.gastsar.fr" class="brand-header">
-      <div class="brand-logo">K</div>
+      <div class="brand-logo">
+        <img
+          src="/logo.png"
+          alt="Logo Kanto MG"
+          width="38"
+          height="38"
+          onerror="this.onerror=null; this.src='/favicon.png';"
+        />
+      </div>
       <div class="brand-title">kanto<span class="brand-domain">.mg</span></div>
     </a>
 

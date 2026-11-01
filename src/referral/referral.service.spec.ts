@@ -1,6 +1,10 @@
 import { jest } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
-import { BadRequestException, ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { ReferralService } from './referral.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { ProgressionService } from '../progression/progression.service.js';
@@ -80,7 +84,9 @@ describe('ReferralService', () => {
     };
 
     progressionService = {
-      awardXp: jest.fn().mockResolvedValue({ totalXp: 500, level: 2, streakDays: 1 }),
+      awardXp: jest
+        .fn()
+        .mockResolvedValue({ totalXp: 500, level: 2, streakDays: 1 }),
     };
 
     notificationsService = {
@@ -141,7 +147,12 @@ describe('ReferralService', () => {
         userId: 'user_a',
         code: 'KANTO-USRA',
         isActive: true,
-        user: { id: 'user_a', name: 'User A', username: 'usera', banned: false },
+        user: {
+          id: 'user_a',
+          name: 'User A',
+          username: 'usera',
+          banned: false,
+        },
       });
 
       // B n'a aucun parrain existant
@@ -196,7 +207,12 @@ describe('ReferralService', () => {
         userId: 'user_b',
         code: 'KANTO-USRB',
         isActive: true,
-        user: { id: 'user_b', name: 'User B', username: 'userb', banned: false },
+        user: {
+          id: 'user_b',
+          name: 'User B',
+          username: 'userb',
+          banned: false,
+        },
       });
 
       // A n'a pas encore de parrain enregistré
@@ -323,7 +339,9 @@ describe('ReferralService', () => {
       prisma.referral.findUnique.mockResolvedValueOnce(null); // cycle check
 
       // La contrainte d'unicité de la base de données se déclenche lors de l'insertion simultanée
-      const prismaP2002Error: any = new Error('Unique constraint failed on the fields: (`refereeId`)');
+      const prismaP2002Error: any = new Error(
+        'Unique constraint failed on the fields: (`refereeId`)',
+      );
       prismaP2002Error.code = 'P2002';
       prisma.referral.create.mockRejectedValueOnce(prismaP2002Error);
 
@@ -390,7 +408,10 @@ describe('ReferralService', () => {
       });
 
       prisma.referral.count.mockResolvedValueOnce(5); // 5 parrainages complétés (sous le plafond de 20)
-      prisma.referral.update.mockResolvedValueOnce({ id: 'ref_pending', status: ReferralStatus.COMPLETED });
+      prisma.referral.update.mockResolvedValueOnce({
+        id: 'ref_pending',
+        status: ReferralStatus.COMPLETED,
+      });
 
       const result = await service.completeReferral('user_filleul');
 
@@ -467,7 +488,10 @@ describe('ReferralService', () => {
 
       // Le parrain a déjà atteint le plafond (20 récompenses)
       prisma.referral.count.mockResolvedValueOnce(20);
-      prisma.referral.update.mockResolvedValueOnce({ id: 'ref_limit', status: ReferralStatus.COMPLETED });
+      prisma.referral.update.mockResolvedValueOnce({
+        id: 'ref_limit',
+        status: ReferralStatus.COMPLETED,
+      });
 
       const result = await service.completeReferral('user_filleul_21');
 
@@ -542,7 +566,11 @@ describe('ReferralService', () => {
         userId: 'user_referrer_notif',
         code: 'KANTO-NOTIF',
         isActive: true,
-        user: { id: 'user_referrer_notif', name: 'Parrain Notif', banned: false },
+        user: {
+          id: 'user_referrer_notif',
+          name: 'Parrain Notif',
+          banned: false,
+        },
       });
 
       prisma.referral.findUnique.mockResolvedValueOnce(null); // Pas de parrain existant

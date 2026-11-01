@@ -29,6 +29,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY package.json package-lock.json tsconfig*.json nest-cli.json prisma.config.ts ./
 COPY prisma ./prisma
 COPY src ./src
+COPY public ./public
 
 # Génération du client Prisma pour l'architecture Linux du conteneur
 RUN npx prisma generate
@@ -58,6 +59,7 @@ COPY --chown=node:node --from=builder /app/node_modules ./node_modules
 COPY --chown=node:node --from=builder /app/dist ./dist
 COPY --chown=node:node --from=builder /app/generated ./generated
 COPY --chown=node:node --from=builder /app/prisma ./prisma
+COPY --chown=node:node --from=builder /app/public ./public
 COPY --chown=node:node --from=builder /app/prisma.config.ts ./prisma.config.ts
 COPY --chown=node:node docker-entrypoint.sh ./docker-entrypoint.sh
 

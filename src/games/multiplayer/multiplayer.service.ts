@@ -2433,10 +2433,7 @@ export class MultiplayerService {
               q.gameType === 'TRUE_FALSE'
                 ? ['true', 'false']
                 : roomCode && q.gameType === 'QUIZ'
-                  ? deterministicShuffle(
-                      q.choices || [],
-                      `${roomCode}:${q.id}`,
-                    )
+                  ? deterministicShuffle(q.choices || [], `${roomCode}:${q.id}`)
                   : q.choices || [],
           });
         }

@@ -13,6 +13,7 @@ function makeMockRes() {
     send: jest.fn().mockReturnThis(),
     redirect: jest.fn().mockReturnThis(),
     setHeader: jest.fn().mockReturnThis(),
+    sendFile: jest.fn().mockReturnThis(),
     _calls: calls,
   };
   return res;
@@ -231,6 +232,50 @@ describe('AppController', () => {
       const mockRes = makeMockRes();
       appController.handlePrivacyRedirect(mockRes as any);
       expect(mockRes.redirect).toHaveBeenCalledWith(301, '/pages/privacy');
+    });
+  });
+
+  describe('static assets routes', () => {
+    it('should serve official logo with cache headers on /logo.png', () => {
+      const mockRes = makeMockRes();
+      appController.getLogo(mockRes as any);
+      expect(mockRes.setHeader).toHaveBeenCalledWith(
+        'Content-Type',
+        'image/png',
+      );
+      expect(mockRes.setHeader).toHaveBeenCalledWith(
+        'Cache-Control',
+        expect.stringContaining('public'),
+      );
+      expect(mockRes.sendFile).toHaveBeenCalled();
+    });
+
+    it('should serve official favicon with cache headers on /favicon.ico', () => {
+      const mockRes = makeMockRes();
+      appController.getFavicon(mockRes as any);
+      expect(mockRes.setHeader).toHaveBeenCalledWith(
+        'Content-Type',
+        'image/x-icon',
+      );
+      expect(mockRes.setHeader).toHaveBeenCalledWith(
+        'Cache-Control',
+        expect.stringContaining('public'),
+      );
+      expect(mockRes.sendFile).toHaveBeenCalled();
+    });
+
+    it('should serve official logo font on /fonts/LazyDog.ttf', () => {
+      const mockRes = makeMockRes();
+      appController.getLogoFont(mockRes as any);
+      expect(mockRes.setHeader).toHaveBeenCalledWith(
+        'Content-Type',
+        'font/ttf',
+      );
+      expect(mockRes.setHeader).toHaveBeenCalledWith(
+        'Cache-Control',
+        expect.stringContaining('public'),
+      );
+      expect(mockRes.sendFile).toHaveBeenCalled();
     });
   });
 });

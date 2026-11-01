@@ -35,4 +35,3 @@ export interface DailyChallengeAnswerResultDto {
   clue?: string | null;
   xpAwarded: number;
 }
-

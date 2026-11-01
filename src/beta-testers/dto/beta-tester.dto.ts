@@ -20,14 +20,19 @@ export class RegisterBetaTesterDto {
   fullName?: string;
 
   @IsArray({ message: 'Veuillez sélectionner au moins une plateforme.' })
-  @ArrayMinSize(1, { message: 'Veuillez sélectionner au moins une plateforme (Android, iOS ou les deux).' })
+  @ArrayMinSize(1, {
+    message:
+      'Veuillez sélectionner au moins une plateforme (Android, iOS ou les deux).',
+  })
   @IsIn(['ANDROID', 'IOS'], {
     each: true,
     message: 'Les plateformes acceptées sont ANDROID et/ou IOS.',
   })
   platforms: ('ANDROID' | 'IOS')[];
 
-  @IsBoolean({ message: 'Vous devez accepter les conditions de participation.' })
+  @IsBoolean({
+    message: 'Vous devez accepter les conditions de participation.',
+  })
   termsAccepted: boolean;
 
   /**
@@ -43,7 +48,9 @@ export class UpdatePlatformsDto {
   email: string;
 
   @IsArray({ message: 'Veuillez sélectionner au moins une plateforme.' })
-  @ArrayMinSize(1, { message: 'Veuillez sélectionner au moins une plateforme.' })
+  @ArrayMinSize(1, {
+    message: 'Veuillez sélectionner au moins une plateforme.',
+  })
   @IsIn(['ANDROID', 'IOS'], { each: true })
   platforms: ('ANDROID' | 'IOS')[];
 }
@@ -71,15 +78,18 @@ export class SubmitFeedbackDto {
   email: string;
 
   @IsString()
-  @IsIn([
-    'BUG',
-    'UI_UX',
-    'PERFORMANCE',
-    'NAVIGATION',
-    'CONTENT',
-    'SUGGESTION',
-    'OTHER',
-  ], { message: 'Catégorie de retour non reconnue.' })
+  @IsIn(
+    [
+      'BUG',
+      'UI_UX',
+      'PERFORMANCE',
+      'NAVIGATION',
+      'CONTENT',
+      'SUGGESTION',
+      'OTHER',
+    ],
+    { message: 'Catégorie de retour non reconnue.' },
+  )
   category: string;
 
   @IsOptional()
@@ -87,7 +97,9 @@ export class SubmitFeedbackDto {
   title?: string;
 
   @IsString()
-  @MinLength(10, { message: 'La description doit comporter au moins 10 caractères.' })
+  @MinLength(10, {
+    message: 'La description doit comporter au moins 10 caractères.',
+  })
   description: string;
 
   @IsString()
@@ -415,4 +427,3 @@ export class BulkInviteDto {
   @IsArray()
   testerIds: string[];
 }
-

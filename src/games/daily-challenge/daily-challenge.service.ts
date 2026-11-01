@@ -165,7 +165,9 @@ export class DailyChallengeService {
           question.explanation ||
           'Valiny marina sy fanazavana ara-kolontsaina.',
         explanationFr: question.explanation,
-        clue: question.explanation ? question.explanation.slice(0, 80) + '...' : null,
+        clue: question.explanation
+          ? question.explanation.slice(0, 80) + '...'
+          : null,
       };
     } else if (selectedMode === DailyChallengeType.TRUE_FALSE) {
       const total = counts[DailyChallengeType.TRUE_FALSE];
@@ -313,9 +315,18 @@ export class DailyChallengeService {
 
     if (secretMeta.type === DailyChallengeType.TRUE_FALSE) {
       // Supporte "Marina" / "Diso", "Vrai" / "Faux", "true" / "false"
-      const isExpectedTrue = cleanExpected === 'marina' || cleanExpected === 'true' || cleanExpected === 'vrai';
-      const isUserTrue = cleanUserAnswer === 'marina' || cleanUserAnswer === 'true' || cleanUserAnswer === 'vrai';
-      const isUserFalse = cleanUserAnswer === 'diso' || cleanUserAnswer === 'false' || cleanUserAnswer === 'faux';
+      const isExpectedTrue =
+        cleanExpected === 'marina' ||
+        cleanExpected === 'true' ||
+        cleanExpected === 'vrai';
+      const isUserTrue =
+        cleanUserAnswer === 'marina' ||
+        cleanUserAnswer === 'true' ||
+        cleanUserAnswer === 'vrai';
+      const isUserFalse =
+        cleanUserAnswer === 'diso' ||
+        cleanUserAnswer === 'false' ||
+        cleanUserAnswer === 'faux';
 
       if (isExpectedTrue && isUserTrue) isCorrect = true;
       else if (!isExpectedTrue && isUserFalse) isCorrect = true;
@@ -358,7 +369,9 @@ export class DailyChallengeService {
             },
           });
         } catch (err: unknown) {
-          this.logger.warn(`Erreur lors de l'attribution d'XP au défi : ${String(err)}`);
+          this.logger.warn(
+            `Erreur lors de l'attribution d'XP au défi : ${String(err)}`,
+          );
         }
       }
     }
@@ -374,4 +387,3 @@ export class DailyChallengeService {
     };
   }
 }
-

@@ -70,7 +70,7 @@ describe('DailyChallengeService', () => {
         questionMg: 'Misy lapa ve ao Antananarivo ?',
         questionFr: 'Y a-t-il un palais à Antananarivo ?',
         isTrue: true,
-        explanationMg: 'Eny, ny Rovan\'i Manjakamiadana.',
+        explanationMg: "Eny, ny Rovan'i Manjakamiadana.",
       });
 
       (prismaMock.riddleQuestion.findFirst as jest.Mock).mockResolvedValue({
@@ -113,7 +113,11 @@ describe('DailyChallengeService', () => {
       let quizDay = '2026-01-01';
       for (let d = 1; d <= 3; d++) {
         const testDate = `2026-01-0${d}`;
-        const dayOfYear = Math.floor((new Date(testDate).getTime() - new Date('2026-01-01').getTime()) / 86400000) + 1;
+        const dayOfYear =
+          Math.floor(
+            (new Date(testDate).getTime() - new Date('2026-01-01').getTime()) /
+              86400000,
+          ) + 1;
         if (dayOfYear % 3 === 0) {
           quizDay = testDate;
           break;
@@ -175,4 +179,3 @@ describe('DailyChallengeService', () => {
     });
   });
 });
-

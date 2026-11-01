@@ -53,7 +53,8 @@ describe('AppVersionService', () => {
         messageMg: 'Fanatsarana maro',
         releaseNotesFr: ['Correction de bugs', 'Nouvelles quêtes'],
         releaseNotesMg: ['Fanitsiana', 'Lalao vaovao'],
-        storeUrl: 'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
+        storeUrl:
+          'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
         isPublished: true,
         publishedAt: new Date(),
       });

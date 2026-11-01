@@ -34,7 +34,7 @@ async function seedAppVersions() {
         'Optimisations de performances et corrections de bugs mineurs',
       ],
       releaseNotesMg: [
-        'Fanatsarana ny fandehanan-javatra amin\'ny fomba amam-panao isan\'andro',
+        "Fanatsarana ny fandehanan-javatra amin'ny fomba amam-panao isan'andro",
         'Angano sy ohabolana vaovao nampiana',
         'Fanafainganana ny fampiharana sy fanitsiana lesoka madinika',
       ],
@@ -64,7 +64,7 @@ async function seedAppVersions() {
         'Optimisations de performances et corrections de bugs mineurs',
       ],
       releaseNotesMg: [
-        'Fanatsarana ny fandehanan-javatra amin\'ny fomba amam-panao isan\'andro',
+        "Fanatsarana ny fandehanan-javatra amin'ny fomba amam-panao isan'andro",
         'Angano sy ohabolana vaovao nampiana',
         'Fanafainganana ny fampiharana sy fanitsiana lesoka madinika',
       ],
@@ -87,4 +87,3 @@ seedAppVersions().catch((err) => {
   console.error('❌ Erreur seed App Versions:', err);
   process.exit(1);
 });
-

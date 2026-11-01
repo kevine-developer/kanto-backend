@@ -44,7 +44,9 @@ export class BetaTestersService {
   ) {
     // 1. Protection Honeypot anti-bot
     if (dto.website && dto.website.trim() !== '') {
-      this.logger.warn(`🤖 [BetaTesters] Honeypot déclenché par IP ${clientIp}`);
+      this.logger.warn(
+        `🤖 [BetaTesters] Honeypot déclenché par IP ${clientIp}`,
+      );
       return {
         success: true,
         message: 'Candidature enregistrée avec succès.',
@@ -52,13 +54,16 @@ export class BetaTestersService {
     }
 
     if (dto.termsAccepted === false) {
-      throw new BadRequestException('Vous devez accepter les conditions de participation.');
+      throw new BadRequestException(
+        'Vous devez accepter les conditions de participation.',
+      );
     }
 
     const email = dto.email.trim().toLowerCase();
-    const platforms = Array.isArray(dto.platforms) && dto.platforms.length > 0
-      ? Array.from(new Set(dto.platforms))
-      : ['ANDROID'];
+    const platforms =
+      Array.isArray(dto.platforms) && dto.platforms.length > 0
+        ? Array.from(new Set(dto.platforms))
+        : ['ANDROID'];
 
     // 2. Vérification d'une inscription existante
     const existing = await this.prisma.betaTester.findUnique({
@@ -67,7 +72,9 @@ export class BetaTestersService {
     });
 
     if (existing) {
-      this.logger.log(`ℹ️ [BetaTesters] Inscription existante trouvée pour : ${email}`);
+      this.logger.log(
+        `ℹ️ [BetaTesters] Inscription existante trouvée pour : ${email}`,
+      );
       return {
         success: false,
         alreadyRegistered: true,
@@ -97,7 +104,9 @@ export class BetaTestersService {
 
     const androidStatus = hasAndroid ? 'PENDING' : 'NOT_REQUESTED';
     const iosStatus = hasIos ? 'PENDING' : 'NOT_REQUESTED';
-    const initialStatus = config?.autoInviteOnApproval ? TesterStatus.APPROVED : TesterStatus.PENDING;
+    const initialStatus = config?.autoInviteOnApproval
+      ? TesterStatus.APPROVED
+      : TesterStatus.PENDING;
 
     const unsubscribeToken = randomUUID();
 
@@ -143,8 +152,11 @@ export class BetaTestersService {
             },
           });
         } catch (emailErr: unknown) {
-          const msg = emailErr instanceof Error ? emailErr.message : String(emailErr);
-          this.logger.error(`❌ [BetaTesters] Échec envoi confirmation à ${email} : ${msg}`);
+          const msg =
+            emailErr instanceof Error ? emailErr.message : String(emailErr);
+          this.logger.error(
+            `❌ [BetaTesters] Échec envoi confirmation à ${email} : ${msg}`,
+          );
         }
       }
 
@@ -182,7 +194,9 @@ export class BetaTestersService {
     });
 
     if (!tester) {
-      throw new NotFoundException('Aucune inscription trouvée avec cette adresse email.');
+      throw new NotFoundException(
+        'Aucune inscription trouvée avec cette adresse email.',
+      );
     }
 
     const newPlatforms = Array.from(new Set(dto.platforms));
@@ -238,7 +252,11 @@ export class BetaTestersService {
     }
 
     // Si un token est passé, vérifier qu'il concorde
-    if (dto.token && tester.unsubscribeToken && tester.unsubscribeToken !== dto.token) {
+    if (
+      dto.token &&
+      tester.unsubscribeToken &&
+      tester.unsubscribeToken !== dto.token
+    ) {
       throw new BadRequestException('Jeton de désinscription invalide.');
     }
 
@@ -249,7 +267,8 @@ export class BetaTestersService {
         androidStatus: 'REJECTED',
         iosStatus: 'REJECTED',
         unsubscribedAt: new Date(),
-        unsubscribeReason: dto.reason?.trim() || 'Demande directe de l’utilisateur',
+        unsubscribeReason:
+          dto.reason?.trim() || 'Demande directe de l’utilisateur',
       },
     });
 
@@ -257,7 +276,8 @@ export class BetaTestersService {
 
     return {
       success: true,
-      message: 'Vous avez été désinscrit avec succès du programme de bêta-test Kanto MG.',
+      message:
+        'Vous avez été désinscrit avec succès du programme de bêta-test Kanto MG.',
     };
   }
 
@@ -316,9 +336,15 @@ export class BetaTestersService {
         iosInvitedAt: tester.iosInvitedAt,
       },
       links: {
-        androidWeb: config?.playStoreWebLink || 'https://play.google.com/apps/testing/com.devengalere.kantomg',
-        androidStore: config?.playStoreAppLink || 'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
-        testFlight: config?.testFlightPublicLink || 'https://testflight.apple.com/join/kantomg',
+        androidWeb:
+          config?.playStoreWebLink ||
+          'https://play.google.com/apps/testing/com.devengalere.kantomg',
+        androidStore:
+          config?.playStoreAppLink ||
+          'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
+        testFlight:
+          config?.testFlightPublicLink ||
+          'https://testflight.apple.com/join/kantomg',
       },
       canDownloadAndroid,
       canDownloadIos,
@@ -421,11 +447,14 @@ export class BetaTestersService {
       },
     });
 
-    this.logger.log(`💬 [BetaFeedback] Nouveau retour reçu de ${email} [${dto.category}]`);
+    this.logger.log(
+      `💬 [BetaFeedback] Nouveau retour reçu de ${email} [${dto.category}]`,
+    );
 
     return {
       success: true,
-      message: 'Misaotra betsaka ! Votre retour a bien été transmis à l’équipe Kanto MG.',
+      message:
+        'Misaotra betsaka ! Votre retour a bien été transmis à l’équipe Kanto MG.',
       feedbackId: feedback.id,
     };
   }
@@ -446,10 +475,13 @@ export class BetaTestersService {
     const skip = (page - 1) * limit;
 
     const where: Prisma.BetaFeedbackWhereInput = {};
-    if (query.category && query.category !== 'ALL') where.category = query.category;
+    if (query.category && query.category !== 'ALL')
+      where.category = query.category;
     if (query.status && query.status !== 'ALL') where.status = query.status;
-    if (query.platform && query.platform !== 'ALL') where.platform = query.platform;
-    if (query.priority && query.priority !== 'ALL') where.priority = query.priority;
+    if (query.platform && query.platform !== 'ALL')
+      where.platform = query.platform;
+    if (query.priority && query.priority !== 'ALL')
+      where.priority = query.priority;
 
     const [total, data, statusCounts] = await Promise.all([
       this.prisma.betaFeedback.count({ where }),
@@ -476,7 +508,9 @@ export class BetaTestersService {
       page,
       limit,
       totalPages: Math.ceil(total / limit),
-      counts: Object.fromEntries(statusCounts.map((sc) => [sc.status, sc._count.status])),
+      counts: Object.fromEntries(
+        statusCounts.map((sc) => [sc.status, sc._count.status]),
+      ),
     };
   }
 
@@ -484,7 +518,9 @@ export class BetaTestersService {
    * Mise à jour du statut ou des notes d'un retour.
    */
   async updateFeedback(id: string, dto: UpdateFeedbackDto) {
-    const feedback = await this.prisma.betaFeedback.findUnique({ where: { id } });
+    const feedback = await this.prisma.betaFeedback.findUnique({
+      where: { id },
+    });
     if (!feedback) throw new NotFoundException('Retour introuvable.');
 
     const updateData: Prisma.BetaFeedbackUpdateInput = {};
@@ -495,7 +531,8 @@ export class BetaTestersService {
       }
     }
     if (dto.priority !== undefined) updateData.priority = dto.priority;
-    if (dto.internalNotes !== undefined) updateData.internalNotes = dto.internalNotes;
+    if (dto.internalNotes !== undefined)
+      updateData.internalNotes = dto.internalNotes;
     if (dto.assignedTo !== undefined) updateData.assignedTo = dto.assignedTo;
 
     return this.prisma.betaFeedback.update({
@@ -556,9 +593,13 @@ export class BetaTestersService {
       where: { id },
       data: {
         ...(dto.name !== undefined ? { name: dto.name.trim() } : {}),
-        ...(dto.description !== undefined ? { description: dto.description.trim() } : {}),
+        ...(dto.description !== undefined
+          ? { description: dto.description.trim() }
+          : {}),
         ...(dto.color !== undefined ? { color: dto.color } : {}),
-        ...(dto.targetPlatforms !== undefined ? { targetPlatforms: dto.targetPlatforms } : {}),
+        ...(dto.targetPlatforms !== undefined
+          ? { targetPlatforms: dto.targetPlatforms }
+          : {}),
         ...(dto.isDefault !== undefined ? { isDefault: dto.isDefault } : {}),
       },
     });
@@ -573,7 +614,9 @@ export class BetaTestersService {
     if (!group) throw new NotFoundException('Groupe introuvable.');
 
     if (group.isDefault) {
-      throw new BadRequestException('Impossible de supprimer le groupe par défaut.');
+      throw new BadRequestException(
+        'Impossible de supprimer le groupe par défaut.',
+      );
     }
 
     const defaultGroup = await this.prisma.betaGroup.findFirst({
@@ -616,7 +659,9 @@ export class BetaTestersService {
 
     if (dto.notifyTesters) {
       this.notifyVersion(version.id).catch((err) => {
-        this.logger.error(`Erreur notification auto version ${version.version}: ${err}`);
+        this.logger.error(
+          `Erreur notification auto version ${version.version}: ${err}`,
+        );
       });
     }
 
@@ -628,12 +673,22 @@ export class BetaTestersService {
       where: { id },
       data: {
         ...(dto.version !== undefined ? { version: dto.version.trim() } : {}),
-        ...(dto.buildNumber !== undefined ? { buildNumber: dto.buildNumber } : {}),
+        ...(dto.buildNumber !== undefined
+          ? { buildNumber: dto.buildNumber }
+          : {}),
         ...(dto.platform !== undefined ? { platform: dto.platform } : {}),
-        ...(dto.title !== undefined ? { title: dto.title?.trim() || null } : {}),
-        ...(dto.releaseNotes !== undefined ? { releaseNotes: dto.releaseNotes?.trim() || null } : {}),
-        ...(dto.knownIssues !== undefined ? { knownIssues: dto.knownIssues?.trim() || null } : {}),
-        ...(dto.downloadUrl !== undefined ? { downloadUrl: dto.downloadUrl?.trim() || null } : {}),
+        ...(dto.title !== undefined
+          ? { title: dto.title?.trim() || null }
+          : {}),
+        ...(dto.releaseNotes !== undefined
+          ? { releaseNotes: dto.releaseNotes?.trim() || null }
+          : {}),
+        ...(dto.knownIssues !== undefined
+          ? { knownIssues: dto.knownIssues?.trim() || null }
+          : {}),
+        ...(dto.downloadUrl !== undefined
+          ? { downloadUrl: dto.downloadUrl?.trim() || null }
+          : {}),
         ...(dto.status !== undefined ? { status: dto.status } : {}),
       },
     });
@@ -677,12 +732,16 @@ export class BetaTestersService {
             userName: tester.fullName || 'Bêta-testeur',
             appVersion: `${version.version} (build ${version.buildNumber})`,
             platform: version.platform,
-            releaseNotes: version.releaseNotes || 'Corrections de bugs et optimisations de performance.',
+            releaseNotes:
+              version.releaseNotes ||
+              'Corrections de bugs et optimisations de performance.',
           },
         });
         notifiedCount++;
       } catch (e) {
-        this.logger.error(`Erreur notification version à ${tester.email}: ${e}`);
+        this.logger.error(
+          `Erreur notification version à ${tester.email}: ${e}`,
+        );
       }
     }
 
@@ -727,14 +786,24 @@ export class BetaTestersService {
         ...(dto.subject !== undefined ? { subject: dto.subject } : {}),
         ...(dto.title !== undefined ? { title: dto.title } : {}),
         ...(dto.senderName !== undefined ? { senderName: dto.senderName } : {}),
-        ...(dto.contentHtml !== undefined ? { contentHtml: dto.contentHtml } : {}),
-        ...(dto.contentText !== undefined ? { contentText: dto.contentText } : {}),
+        ...(dto.contentHtml !== undefined
+          ? { contentHtml: dto.contentHtml }
+          : {}),
+        ...(dto.contentText !== undefined
+          ? { contentText: dto.contentText }
+          : {}),
         ...(dto.buttonText !== undefined ? { buttonText: dto.buttonText } : {}),
         ...(dto.buttonUrl !== undefined ? { buttonUrl: dto.buttonUrl } : {}),
-        ...(dto.secondaryButtonText !== undefined ? { secondaryButtonText: dto.secondaryButtonText } : {}),
-        ...(dto.secondaryButtonUrl !== undefined ? { secondaryButtonUrl: dto.secondaryButtonUrl } : {}),
+        ...(dto.secondaryButtonText !== undefined
+          ? { secondaryButtonText: dto.secondaryButtonText }
+          : {}),
+        ...(dto.secondaryButtonUrl !== undefined
+          ? { secondaryButtonUrl: dto.secondaryButtonUrl }
+          : {}),
         ...(dto.footerText !== undefined ? { footerText: dto.footerText } : {}),
-        ...(dto.accentColor !== undefined ? { accentColor: dto.accentColor } : {}),
+        ...(dto.accentColor !== undefined
+          ? { accentColor: dto.accentColor }
+          : {}),
         ...(dto.isActive !== undefined ? { isActive: dto.isActive } : {}),
       },
     });
@@ -748,9 +817,11 @@ export class BetaTestersService {
         userName: 'Aperçu Testeur',
         platform: 'Android & iOS',
         appVersion: '0.1.0 (build 31)',
-        downloadLink: 'https://play.google.com/apps/testing/com.devengalere.kantomg',
+        downloadLink:
+          'https://play.google.com/apps/testing/com.devengalere.kantomg',
         testFlightLink: 'https://testflight.apple.com/join/kantomg',
-        androidTestingLink: 'https://play.google.com/apps/testing/com.devengalere.kantomg',
+        androidTestingLink:
+          'https://play.google.com/apps/testing/com.devengalere.kantomg',
         unsubscribeLink: 'https://app-kanto.gastsar.fr/beta?tab=unsubscribe',
       },
       bypassSuppression: true,
@@ -769,8 +840,10 @@ export class BetaTestersService {
           autoNotifyNewVersions: true,
           reminderIntervalDays: 7,
           feedbackRequestDays: 5,
-          playStoreWebLink: 'https://play.google.com/apps/testing/com.devengalere.kantomg',
-          playStoreAppLink: 'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
+          playStoreWebLink:
+            'https://play.google.com/apps/testing/com.devengalere.kantomg',
+          playStoreAppLink:
+            'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
           testFlightPublicLink: 'https://testflight.apple.com/join/kantomg',
           supportEmail: 'contact@kanto.mg',
         },
@@ -904,10 +977,7 @@ export class BetaTestersService {
       }),
       this.prisma.betaTester.count({
         where: {
-          OR: [
-            { androidStatus: 'ACTIVE' },
-            { iosStatus: 'ACTIVE' },
-          ],
+          OR: [{ androidStatus: 'ACTIVE' }, { iosStatus: 'ACTIVE' }],
           unsubscribedAt: null,
         },
       }),
@@ -942,7 +1012,9 @@ export class BetaTestersService {
     });
 
     if (!tester) {
-      throw new NotFoundException(`Testeur introuvable avec l'identifiant ${id}`);
+      throw new NotFoundException(
+        `Testeur introuvable avec l'identifiant ${id}`,
+      );
     }
 
     return tester;
@@ -953,8 +1025,12 @@ export class BetaTestersService {
     if (!tester) throw new NotFoundException('Testeur introuvable.');
 
     const config = await this.prisma.betaAutomationConfig.findFirst();
-    const playStoreWebLink = config?.playStoreWebLink || 'https://play.google.com/apps/testing/com.devengalere.kantomg';
-    const playStoreAppLink = config?.playStoreAppLink || 'https://play.google.com/store/apps/details?id=com.devengalere.kantomg';
+    const playStoreWebLink =
+      config?.playStoreWebLink ||
+      'https://play.google.com/apps/testing/com.devengalere.kantomg';
+    const playStoreAppLink =
+      config?.playStoreAppLink ||
+      'https://play.google.com/store/apps/details?id=com.devengalere.kantomg';
 
     await this.emailDispatcher.sendTemplateEmail({
       to: tester.email,
@@ -984,7 +1060,9 @@ export class BetaTestersService {
     if (!tester) throw new NotFoundException('Testeur introuvable.');
 
     const config = await this.prisma.betaAutomationConfig.findFirst();
-    const testFlightLink = config?.testFlightPublicLink || 'https://testflight.apple.com/join/kantomg';
+    const testFlightLink =
+      config?.testFlightPublicLink ||
+      'https://testflight.apple.com/join/kantomg';
 
     await this.emailDispatcher.sendTemplateEmail({
       to: tester.email,
@@ -1087,7 +1165,8 @@ export class BetaTestersService {
     const where: Prisma.BetaTesterWhereInput = {};
     if (query.platform === 'ANDROID') where.platforms = { has: 'ANDROID' };
     if (query.platform === 'IOS') where.platforms = { has: 'IOS' };
-    if (query.status && query.status !== 'ALL') where.status = query.status as TesterStatus;
+    if (query.status && query.status !== 'ALL')
+      where.status = query.status as TesterStatus;
 
     const testers = await this.prisma.betaTester.findMany({
       where,
@@ -1121,7 +1200,10 @@ export class BetaTestersService {
       t.lastContactedAt ? t.lastContactedAt.toISOString() : '',
     ]);
 
-    const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const csvContent = [
+      headers.join(','),
+      ...rows.map((r) => r.join(',')),
+    ].join('\n');
 
     return {
       count: testers.length,
@@ -1154,7 +1236,10 @@ export class BetaTestersService {
     });
   }
 
-  async updateStatus(id: string, dto: { status: TesterStatus; notes?: string }) {
+  async updateStatus(
+    id: string,
+    dto: { status: TesterStatus; notes?: string },
+  ) {
     const updateData: Prisma.BetaTesterUpdateInput = {
       status: dto.status,
       ...(dto.notes ? { notes: dto.notes } : {}),
@@ -1164,7 +1249,9 @@ export class BetaTestersService {
       const config = await this.prisma.betaAutomationConfig.findFirst();
       if (config?.autoInviteOnApproval) {
         // Envoi auto d'invitation selon plateformes
-        const tester = await this.prisma.betaTester.findUnique({ where: { id } });
+        const tester = await this.prisma.betaTester.findUnique({
+          where: { id },
+        });
         if (tester?.platforms.includes('ANDROID')) {
           await this.sendAndroidInvite(id);
         }

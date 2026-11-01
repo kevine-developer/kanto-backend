@@ -13,7 +13,10 @@ import { seedRakiTeny } from '../../prisma/seeds/seed-raki-teny.js';
 import { seedQuiz } from '../../prisma/seeds/seed-quiz.js';
 import { seedTrueFalse } from '../../prisma/seeds/seed-true-false.js';
 import { seedRiddles } from '../../prisma/seeds/seed-riddles.js';
-import { createPrismaMock, type PrismaMock } from '../test-utils/mock-prisma.factory.js';
+import {
+  createPrismaMock,
+  type PrismaMock,
+} from '../test-utils/mock-prisma.factory.js';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -164,20 +167,38 @@ describe('Kanto Seed System — Tests Unitaires & Idempotence', () => {
       // Mock findFirst qui retourne null pour le premier et pour les autres
       prismaMock.malagasyItem.findFirst.mockResolvedValue(null);
       prismaMock.malagasyItem.findUnique.mockResolvedValue(null);
-      prismaMock.malagasyItem.create.mockResolvedValue({ id: 'item_1', slug: 'item-1' });
+      prismaMock.malagasyItem.create.mockResolvedValue({
+        id: 'item_1',
+        slug: 'item-1',
+      });
 
       // Dossier temporaire contenant des doublons
       const tempDir = path.resolve(__dirname, 'temp-test-data');
       fs.mkdirSync(tempDir, { recursive: true });
       const duplicateData = [
-        { malagasy: 'Teny mitovy', french: 'Texte identique', meaning: 'Sens 1' },
-        { malagasy: 'Teny mitovy', french: 'Texte identique', meaning: 'Sens 1 doublon' },
+        {
+          malagasy: 'Teny mitovy',
+          french: 'Texte identique',
+          meaning: 'Sens 1',
+        },
+        {
+          malagasy: 'Teny mitovy',
+          french: 'Texte identique',
+          meaning: 'Sens 1 doublon',
+        },
       ];
-      fs.writeFileSync(path.join(tempDir, 'malagasy-items.data.json'), JSON.stringify(duplicateData));
+      fs.writeFileSync(
+        path.join(tempDir, 'malagasy-items.data.json'),
+        JSON.stringify(duplicateData),
+      );
 
       try {
         const themeMap = new Map<string, string>();
-        const stats = await seedMalagasyItems(prismaMock as any, tempDir, themeMap);
+        const stats = await seedMalagasyItems(
+          prismaMock as any,
+          tempDir,
+          themeMap,
+        );
 
         expect(stats.created).toBe(1);
         expect(stats.skipped).toBe(1);
@@ -193,17 +214,32 @@ describe('Kanto Seed System — Tests Unitaires & Idempotence', () => {
     it('doit créer un nouveau MalagasyItem quand il n existe pas', async () => {
       prismaMock.malagasyItem.findFirst.mockResolvedValue(null);
       prismaMock.malagasyItem.findUnique.mockResolvedValue(null);
-      prismaMock.malagasyItem.create.mockResolvedValue({ id: 'new_id', slug: 'slug-test' });
+      prismaMock.malagasyItem.create.mockResolvedValue({
+        id: 'new_id',
+        slug: 'slug-test',
+      });
 
       const tempDir = path.resolve(__dirname, 'temp-test-insert');
       fs.mkdirSync(tempDir, { recursive: true });
       const itemData = [
-        { id: 'p_101', malagasy: 'Ny ketsa tsy mba maniry an-tany efitra', french: 'Le riz ne pousse pas au désert', meaning: 'Chaque chose a son milieu' },
+        {
+          id: 'p_101',
+          malagasy: 'Ny ketsa tsy mba maniry an-tany efitra',
+          french: 'Le riz ne pousse pas au désert',
+          meaning: 'Chaque chose a son milieu',
+        },
       ];
-      fs.writeFileSync(path.join(tempDir, 'malagasy-items.data.json'), JSON.stringify(itemData));
+      fs.writeFileSync(
+        path.join(tempDir, 'malagasy-items.data.json'),
+        JSON.stringify(itemData),
+      );
 
       try {
-        const stats = await seedMalagasyItems(prismaMock as any, tempDir, new Map());
+        const stats = await seedMalagasyItems(
+          prismaMock as any,
+          tempDir,
+          new Map(),
+        );
         expect(stats.created).toBe(1);
         expect(prismaMock.malagasyItem.create).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -241,12 +277,25 @@ describe('Kanto Seed System — Tests Unitaires & Idempotence', () => {
       const tempDir = path.resolve(__dirname, 'temp-test-idempotent');
       fs.mkdirSync(tempDir, { recursive: true });
       const itemData = [
-        { id: 'p_101', malagasy: 'Ny ketsa tsy mba maniry an-tany efitra', french: 'Le riz ne pousse pas au désert', meaning: 'Chaque chose a son milieu', category: 'PROVERBE' },
+        {
+          id: 'p_101',
+          malagasy: 'Ny ketsa tsy mba maniry an-tany efitra',
+          french: 'Le riz ne pousse pas au désert',
+          meaning: 'Chaque chose a son milieu',
+          category: 'PROVERBE',
+        },
       ];
-      fs.writeFileSync(path.join(tempDir, 'malagasy-items.data.json'), JSON.stringify(itemData));
+      fs.writeFileSync(
+        path.join(tempDir, 'malagasy-items.data.json'),
+        JSON.stringify(itemData),
+      );
 
       try {
-        const stats = await seedMalagasyItems(prismaMock as any, tempDir, new Map());
+        const stats = await seedMalagasyItems(
+          prismaMock as any,
+          tempDir,
+          new Map(),
+        );
         expect(stats.created).toBe(0);
         expect(stats.updated).toBe(0);
         expect(stats.unchanged).toBe(1);
@@ -275,17 +324,33 @@ describe('Kanto Seed System — Tests Unitaires & Idempotence', () => {
       };
 
       prismaMock.malagasyItem.findFirst.mockResolvedValue(existingItem);
-      prismaMock.malagasyItem.update.mockResolvedValue({ ...existingItem, french: 'Traduction enrichie et soignée' });
+      prismaMock.malagasyItem.update.mockResolvedValue({
+        ...existingItem,
+        french: 'Traduction enrichie et soignée',
+      });
 
       const tempDir = path.resolve(__dirname, 'temp-test-update');
       fs.mkdirSync(tempDir, { recursive: true });
       const itemData = [
-        { id: 'p_101', malagasy: 'Ny ketsa tsy mba maniry an-tany efitra', french: 'Traduction enrichie et soignée', meaning: 'Chaque chose a son milieu', category: 'PROVERBE' },
+        {
+          id: 'p_101',
+          malagasy: 'Ny ketsa tsy mba maniry an-tany efitra',
+          french: 'Traduction enrichie et soignée',
+          meaning: 'Chaque chose a son milieu',
+          category: 'PROVERBE',
+        },
       ];
-      fs.writeFileSync(path.join(tempDir, 'malagasy-items.data.json'), JSON.stringify(itemData));
+      fs.writeFileSync(
+        path.join(tempDir, 'malagasy-items.data.json'),
+        JSON.stringify(itemData),
+      );
 
       try {
-        const stats = await seedMalagasyItems(prismaMock as any, tempDir, new Map());
+        const stats = await seedMalagasyItems(
+          prismaMock as any,
+          tempDir,
+          new Map(),
+        );
         expect(stats.created).toBe(0);
         expect(stats.updated).toBe(1);
         expect(prismaMock.malagasyItem.update).toHaveBeenCalledWith(
@@ -317,14 +382,25 @@ describe('Kanto Seed System — Tests Unitaires & Idempotence', () => {
       };
 
       prismaMock.malagasyItem.findFirst.mockResolvedValue(existingItem);
-      prismaMock.malagasyItem.update.mockResolvedValue({ ...existingItem, french: 'Nouveau texte' });
+      prismaMock.malagasyItem.update.mockResolvedValue({
+        ...existingItem,
+        french: 'Nouveau texte',
+      });
 
       const tempDir = path.resolve(__dirname, 'temp-test-counters');
       fs.mkdirSync(tempDir, { recursive: true });
       const itemData = [
-        { id: 'p_101', malagasy: 'Proverbe populaire', french: 'Nouveau texte', meaning: 'Sens' },
+        {
+          id: 'p_101',
+          malagasy: 'Proverbe populaire',
+          french: 'Nouveau texte',
+          meaning: 'Sens',
+        },
       ];
-      fs.writeFileSync(path.join(tempDir, 'malagasy-items.data.json'), JSON.stringify(itemData));
+      fs.writeFileSync(
+        path.join(tempDir, 'malagasy-items.data.json'),
+        JSON.stringify(itemData),
+      );
 
       try {
         await seedMalagasyItems(prismaMock as any, tempDir, new Map());
@@ -348,7 +424,10 @@ describe('Kanto Seed System — Tests Unitaires & Idempotence', () => {
     it('ne doit appeler ni delete ni deleteMany sur les tables de données', async () => {
       const tempDir = path.resolve(__dirname, 'temp-test-nodelete');
       fs.mkdirSync(tempDir, { recursive: true });
-      fs.writeFileSync(path.join(tempDir, 'malagasy-items.data.json'), JSON.stringify([]));
+      fs.writeFileSync(
+        path.join(tempDir, 'malagasy-items.data.json'),
+        JSON.stringify([]),
+      );
 
       try {
         await seedMalagasyItems(prismaMock as any, tempDir, new Map());
@@ -365,17 +444,31 @@ describe('Kanto Seed System — Tests Unitaires & Idempotence', () => {
   // ─── 10. Gestion d une indisponibilité PostgreSQL ─────────────────────────
   describe('10. Gestion des erreurs de connexion', () => {
     it('doit comptabiliser l erreur proprement sans crasher silencieusement', async () => {
-      prismaMock.malagasyItem.findFirst.mockRejectedValue(new Error('Connection lost to PostgreSQL'));
+      prismaMock.malagasyItem.findFirst.mockRejectedValue(
+        new Error('Connection lost to PostgreSQL'),
+      );
 
       const tempDir = path.resolve(__dirname, 'temp-test-error');
       fs.mkdirSync(tempDir, { recursive: true });
       const itemData = [
-        { id: 'err_1', malagasy: 'Teny fitsapana', french: 'Texte test', meaning: 'Sens' },
+        {
+          id: 'err_1',
+          malagasy: 'Teny fitsapana',
+          french: 'Texte test',
+          meaning: 'Sens',
+        },
       ];
-      fs.writeFileSync(path.join(tempDir, 'malagasy-items.data.json'), JSON.stringify(itemData));
+      fs.writeFileSync(
+        path.join(tempDir, 'malagasy-items.data.json'),
+        JSON.stringify(itemData),
+      );
 
       try {
-        const stats = await seedMalagasyItems(prismaMock as any, tempDir, new Map());
+        const stats = await seedMalagasyItems(
+          prismaMock as any,
+          tempDir,
+          new Map(),
+        );
         expect(stats.errors).toBe(1);
       } finally {
         fs.rmSync(tempDir, { recursive: true, force: true });
@@ -386,12 +479,26 @@ describe('Kanto Seed System — Tests Unitaires & Idempotence', () => {
   // ─── 11. Vérification des fichiers réels du corpus ─────────────────────────
   describe('11. Intégrité du corpus réel Kanto MG', () => {
     it('doit trouver et valider le corpus réel de proverbes et citations', () => {
-      expect(fs.existsSync(path.join(realSeedDataDir, 'malagasy-items.data.json'))).toBe(true);
-      expect(fs.existsSync(path.join(realSeedDataDir, 'citations.data.json'))).toBe(true);
-      expect(fs.existsSync(path.join(realSeedDataDir, 'raki-teny.data.json'))).toBe(true);
-      expect(fs.existsSync(path.join(realSeedDataDir, 'quiz-verified.data.json'))).toBe(true);
-      expect(fs.existsSync(path.join(realSeedDataDir, 'true-false-verified.data.json'))).toBe(true);
-      expect(fs.existsSync(path.join(realSeedDataDir, 'riddles.data.json'))).toBe(true);
+      expect(
+        fs.existsSync(path.join(realSeedDataDir, 'malagasy-items.data.json')),
+      ).toBe(true);
+      expect(
+        fs.existsSync(path.join(realSeedDataDir, 'citations.data.json')),
+      ).toBe(true);
+      expect(
+        fs.existsSync(path.join(realSeedDataDir, 'raki-teny.data.json')),
+      ).toBe(true);
+      expect(
+        fs.existsSync(path.join(realSeedDataDir, 'quiz-verified.data.json')),
+      ).toBe(true);
+      expect(
+        fs.existsSync(
+          path.join(realSeedDataDir, 'true-false-verified.data.json'),
+        ),
+      ).toBe(true);
+      expect(
+        fs.existsSync(path.join(realSeedDataDir, 'riddles.data.json')),
+      ).toBe(true);
     });
 
     it('doit insérer de nouvelles devinettes de manière idempotente via seedRiddles', async () => {
@@ -410,7 +517,10 @@ describe('Kanto Seed System — Tests Unitaires & Idempotence', () => {
           explanation: 'Ny fitaratra',
         },
       ];
-      fs.writeFileSync(path.join(tempDir, 'riddles.data.json'), JSON.stringify(testRiddles));
+      fs.writeFileSync(
+        path.join(tempDir, 'riddles.data.json'),
+        JSON.stringify(testRiddles),
+      );
 
       try {
         const stats = await seedRiddles(prismaMock as any, tempDir);
@@ -430,4 +540,3 @@ describe('Kanto Seed System — Tests Unitaires & Idempotence', () => {
     });
   });
 });
-

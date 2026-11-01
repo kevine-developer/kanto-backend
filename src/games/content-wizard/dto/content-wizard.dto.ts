@@ -11,7 +11,10 @@ import {
   ArrayMinSize,
   ArrayMaxSize,
 } from 'class-validator';
-import { DifficultyLevel, ContentStatus } from '../../../../generated/prisma/client.js';
+import {
+  DifficultyLevel,
+  ContentStatus,
+} from '../../../../generated/prisma/client.js';
 
 export enum ContentSourceType {
   PRESIDENT = 'PRESIDENT',
@@ -27,9 +30,9 @@ export enum ContentSourceType {
 }
 
 export enum GameQuestionFormat {
-  SINGLE_CHOICE = 'SINGLE_CHOICE',       // QCM 4 choix
-  TRUE_FALSE = 'TRUE_FALSE',             // Marina sa Diso
-  RIDDLE = 'RIDDLE',                     // Ankamantatra
+  SINGLE_CHOICE = 'SINGLE_CHOICE', // QCM 4 choix
+  TRUE_FALSE = 'TRUE_FALSE', // Marina sa Diso
+  RIDDLE = 'RIDDLE', // Ankamantatra
   IMAGE_IDENTIFICATION = 'IMAGE_IDENTIFICATION', // Reconnaissance d'image
 }
 

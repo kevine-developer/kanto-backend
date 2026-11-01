@@ -25,7 +25,8 @@ export class UsersService {
     private readonly prisma: PrismaService,
     private readonly cloudinaryService: CloudinaryService,
     private readonly resendService: ResendService,
-    @Optional() private readonly eventNotificationService?: EventNotificationService,
+    @Optional()
+    private readonly eventNotificationService?: EventNotificationService,
   ) {}
 
   async getMyStats(userId: string) {

@@ -437,7 +437,9 @@ export class AdminUsersService implements OnApplicationBootstrap {
 
     const now = new Date();
     let newExpiresAt: Date | null = null;
-    let eventType: 'USER_VIP_GRANTED' | 'USER_VIP_EXTENDED' | 'USER_VIP_REVOKED' | null = null;
+    let eventType:
+      'USER_VIP_GRANTED' | 'USER_VIP_EXTENDED' | 'USER_VIP_REVOKED' | null =
+      null;
     let isExtension = false;
 
     if (normalizedTier === 'VIP' || normalizedTier === 'PREMIUM') {
@@ -516,8 +518,8 @@ export class AdminUsersService implements OnApplicationBootstrap {
         (isExtension
           ? `Prolongation VIP de ${durationDays} jours`
           : isNoAds
-          ? `Attribution statut ${normalizedTier} (${durationDays ? `${durationDays} jours` : 'Permanent'})`
-          : 'Rétablissement du compte standard FREE'),
+            ? `Attribution statut ${normalizedTier} (${durationDays ? `${durationDays} jours` : 'Permanent'})`
+            : 'Rétablissement du compte standard FREE'),
       details: {
         previousTier: user.tier,
         newTier: normalizedTier,

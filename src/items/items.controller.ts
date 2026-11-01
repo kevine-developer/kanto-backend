@@ -14,7 +14,10 @@ import type { Response } from 'express';
 import { FindItemsQueryDto } from './dto/find-items.dto.js';
 import { CreateItemDto } from './dto/create-item.dto.js';
 import { UpdateItemDto } from './dto/update-item.dto.js';
-import { ImportItemsBatchDto, CheckDuplicatesDto } from './dto/import-items.dto.js';
+import {
+  ImportItemsBatchDto,
+  CheckDuplicatesDto,
+} from './dto/import-items.dto.js';
 import { ReportItemDto } from './dto/report-item.dto.js';
 import { ItemsService } from './items.service.js';
 import { DailyItemsService } from './daily-items.service.js';
@@ -73,7 +76,9 @@ export class ItemsController {
   @UseGuards(AuthGuard)
   @Roles(['ADMIN', 'admin'])
   async checkDuplicates(@Body() body: CheckDuplicatesDto) {
-    const duplicates = await this.itemsService.checkDuplicates(body.texts || []);
+    const duplicates = await this.itemsService.checkDuplicates(
+      body.texts || [],
+    );
     return { duplicates };
   }
 

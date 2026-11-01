@@ -24,7 +24,8 @@ const DEFAULT_TEMPLATES = [
 <p>Notre équipe valide les accès par vagues successives afin d'assurer un suivi qualitatif de chaque testeur. Vous recevrez une notification par email dès que votre accès sera prêt à être activé.</p>
 <p>Merci pour votre engagement à faire rayonner la culture, la langue et le patrimoine malgaches !</p>`,
     contentText: `Manao ahoana {{userName}}, nous avons bien reçu votre inscription au programme bêta Kanto MG pour la plateforme {{platform}}. Vous recevrez vos accès dès validation.`,
-    footerText: 'Kanto MG — Ny harena ara-kolontsaina malagasy eo am-pelatananao.',
+    footerText:
+      'Kanto MG — Ny harena ara-kolontsaina malagasy eo am-pelatananao.',
   },
   {
     code: 'PENDING',
@@ -132,7 +133,7 @@ const DEFAULT_TEMPLATES = [
 <p>Nous tenons à partager avec vous une mise au point essentielle sur l'avancement du projet Kanto MG et sur les prochaines étapes majeures de nos tests.</p>
 <p>Votre fidélité et vos remarques précises nous aident à bâtir chaque jour l'expérience culturelle la plus fidèle et immersive possible.</p>`,
     contentText: `Chers testeurs, découvrez les dernières avancées du projet Kanto MG sur https://app-kanto.gastsar.fr/beta`,
-    footerText: 'Misaotra betsaka amin\'ny fiaraha-miasa.',
+    footerText: "Misaotra betsaka amin'ny fiaraha-miasa.",
   },
   {
     code: 'FEEDBACK_REQUEST',
@@ -148,7 +149,7 @@ const DEFAULT_TEMPLATES = [
 <p>Avez-vous rencontré des bugs ? Quels jeux ou contes vous ont le plus marqué ? Quelles améliorations souhaiteriez-vous voir dans la version finale ?</p>
 <p>Prenez 2 minutes pour nous faire part de vos ressentis via notre formulaire dédié.</p>`,
     contentText: `Manao ahoana {{userName}}, partagez vos impressions et remarques sur Kanto MG sur https://app-kanto.gastsar.fr/beta?tab=feedback`,
-    footerText: 'Votre retour façonne l\'avenir de Kanto MG.',
+    footerText: "Votre retour façonne l'avenir de Kanto MG.",
   },
   {
     code: 'THANK_YOU',
@@ -179,32 +180,37 @@ const DEFAULT_TEMPLATES = [
 <p>Cette étape franchie marque la fin de la période de bêta-test fermé. Nous vous invitons à installer dès maintenant la version publique définitive.</p>
 <p>Encore merci pour votre rôle fondamental dans cette belle aventure !</p>`,
     contentText: `Kanto MG est officiellement publié sur les stores ! Téléchargez la version finale : https://app-kanto.gastsar.fr/download`,
-    footerText: 'Kanto MG — Ravan\'ny fitiavana, velon\'ny fihavanana.',
+    footerText: "Kanto MG — Ravan'ny fitiavana, velon'ny fihavanana.",
   },
 ];
 
 async function seedBetaPlatform() {
-  console.log('🚀 Initialisation des données de la plateforme Bêta Kanto MG...');
+  console.log(
+    '🚀 Initialisation des données de la plateforme Bêta Kanto MG...',
+  );
 
   // 1. Groupes par défaut
   const defaultGroups = [
     {
       name: 'Early Access',
-      description: 'Pionniers du programme bêta ayant accès en avant-première absolue aux nouveautés.',
+      description:
+        'Pionniers du programme bêta ayant accès en avant-première absolue aux nouveautés.',
       color: '#4A6741',
       targetPlatforms: ['ANDROID', 'IOS'],
       isDefault: true,
     },
     {
       name: 'Beta 1 - Testeurs Généraux',
-      description: 'Groupe principal de testeurs pour validation des parcours nominaux.',
+      description:
+        'Groupe principal de testeurs pour validation des parcours nominaux.',
       color: '#C58B38',
       targetPlatforms: ['ANDROID', 'IOS'],
       isDefault: false,
     },
     {
       name: 'Testeurs VIP & Partenaires',
-      description: 'Enseignants, linguistes et partenaires culturels de Madagascar.',
+      description:
+        'Enseignants, linguistes et partenaires culturels de Madagascar.',
       color: '#C0392B',
       targetPlatforms: ['ANDROID', 'IOS'],
       isDefault: false,
@@ -240,8 +246,10 @@ async function seedBetaPlatform() {
         autoNotifyNewVersions: true,
         reminderIntervalDays: 7,
         feedbackRequestDays: 14,
-        playStoreWebLink: 'https://play.google.com/apps/testing/com.devengalere.kantomg',
-        playStoreAppLink: 'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
+        playStoreWebLink:
+          'https://play.google.com/apps/testing/com.devengalere.kantomg',
+        playStoreAppLink:
+          'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
         testFlightPublicLink: 'https://testflight.apple.com/join/kantomg',
         supportEmail: 'contact@kanto.mg',
       },
@@ -251,7 +259,9 @@ async function seedBetaPlatform() {
     console.log('ℹ️ Configuration d’automatisation déjà existante.');
   }
 
-  console.log('🎉 Initialisation de la plateforme de bêta-test terminée avec succès !');
+  console.log(
+    '🎉 Initialisation de la plateforme de bêta-test terminée avec succès !',
+  );
   await prisma.$disconnect();
   await pool.end();
 }
@@ -260,4 +270,3 @@ seedBetaPlatform().catch((err) => {
   console.error('❌ Erreur lors du seed bêta-test:', err);
   process.exit(1);
 });
-

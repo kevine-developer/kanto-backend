@@ -18,7 +18,8 @@ export interface BetaLandingPageOptions {
   errorMessage?: string;
   fromDeeplink?: boolean;
   targetPath?: string;
-  initialTab?: 'register' | 'already_registered' | 'download' | 'feedback' | 'unsubscribe';
+  initialTab?:
+    'register' | 'already_registered' | 'download' | 'feedback' | 'unsubscribe';
   initialEmail?: string;
   unsubscribeToken?: string;
 }
@@ -30,11 +31,13 @@ export function renderBetaLandingPage(
   const count =
     typeof options?.testerCount === 'number' ? options.testerCount : 0;
   const isRegistered = Boolean(options?.initialRegistered);
-  const fromDeeplink = Boolean(options?.fromDeeplink);
+
   const initialTab =
     options?.initialTab || (isRegistered ? 'already_registered' : 'register');
   const emailVal = options?.registeredEmail || options?.initialEmail || '';
-  const errorVal = options?.errorMessage ? escapeHtml(options.errorMessage) : '';
+  const errorVal = options?.errorMessage
+    ? escapeHtml(options.errorMessage)
+    : '';
   const tokenVal = options?.unsubscribeToken || '';
 
   const countBadgeText =
@@ -84,6 +87,13 @@ export function renderBetaLandingPage(
   </script>
 
   <style>
+    @font-face {
+      font-family: 'LazyDog';
+      src: url('/fonts/LazyDog.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
     :root, [data-theme="dark"] {
       --color-bg: #0D0D0B;
       --color-surface: #141412;
@@ -172,32 +182,73 @@ export function renderBetaLandingPage(
     }
 
     .brand {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 11px;
       text-decoration: none;
       color: inherit;
+      transition: opacity 0.15s ease;
     }
 
-    .brand-mark {
-      width: 34px;
-      height: 34px;
+    .brand:hover {
+      opacity: 0.9;
+    }
+
+    .brand-logo-wrap {
+      width: 38px;
+      height: 38px;
       border-radius: var(--radius-md);
-      background: var(--color-tanimbary-dark);
-      color: #FFFFFF;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      font-size: 15px;
-      border: 1px solid var(--color-tanimbary);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+      flex-shrink: 0;
+    }
+
+    .brand-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: inherit;
+    }
+
+    .brand-text-wrap {
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: center;
+      line-height: 1;
     }
 
     .brand-name {
-      font-weight: 700;
-      font-size: 16px;
+      font-family: 'LazyDog', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 27px;
+      line-height: 0.95;
       color: var(--color-brand-title);
-      letter-spacing: -0.2px;
+      letter-spacing: 0.3px;
+      font-weight: 400;
+      display: inline-flex;
+      align-items: baseline;
+    }
+
+    .brand-domain {
+      font-family: 'LazyDog', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--color-tanimbary);
+      font-size: 27px;
+      line-height: 0.95;
+    }
+
+    .brand-tag {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 9.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--color-text-muted);
+      margin-top: 2px;
     }
 
     .header-actions {
@@ -619,9 +670,21 @@ export function renderBetaLandingPage(
 
   <!-- En-tête officiel Kanto MG -->
   <header>
-    <a href="/" class="brand">
-      <div class="brand-mark">K</div>
-      <span class="brand-name">Kanto MG</span>
+    <a href="/" class="brand" aria-label="kanto.mg - Bêta-test">
+      <div class="brand-logo-wrap">
+        <img
+          src="/logo.png"
+          alt="Logo officiel Kanto MG"
+          class="brand-logo"
+          width="38"
+          height="38"
+          onerror="this.onerror=null; this.src='/favicon.png';"
+        />
+      </div>
+      <div class="brand-text-wrap">
+        <span class="brand-name">kanto<span class="brand-domain">.mg</span></span>
+        <span class="brand-tag">Bêta • Android &amp; iOS</span>
+      </div>
     </a>
     <div class="header-actions">
       <button type="button" class="theme-toggle-btn" id="theme-toggle" aria-label="Changer de thème">
@@ -1013,7 +1076,7 @@ export function renderBetaLandingPage(
       <a href="mailto:contact@kanto.mg">Contact support</a>
     </div>
     <div style="font-size: 11px;">
-      © ${currentYear} Kanto MG • Lova, Kolontsaina &amp; Tantara Malagasy
+      © ${currentYear} kanto.mg • Lova, Kolontsaina &amp; Tantara Malagasy
     </div>
   </footer>
 

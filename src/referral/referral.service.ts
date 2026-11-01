@@ -73,7 +73,10 @@ export class ReferralService {
    * Masque l'identité du filleul pour respecter la vie privée (RGPD).
    * Ex: "Jean Dupont" -> "Jean D.", "@jeandupont" -> "@jean***"
    */
-  private formatMaskedName(name?: string | null, username?: string | null): string {
+  private formatMaskedName(
+    name?: string | null,
+    username?: string | null,
+  ): string {
     if (username && username.trim()) {
       const u = username.trim().replace(/^@/, '');
       if (u.length <= 3) return `@${u}`;
@@ -227,7 +230,10 @@ export class ReferralService {
       ]);
 
     // Déclencheur B : Si le parrainage reçu est en attente, tenter une activation automatique dès consultation
-    if (myReferralRecord && myReferralRecord.status === ReferralStatus.PENDING) {
+    if (
+      myReferralRecord &&
+      myReferralRecord.status === ReferralStatus.PENDING
+    ) {
       try {
         const userProgress = await this.prisma.userProgress.findUnique({
           where: { userId },
@@ -274,7 +280,8 @@ export class ReferralService {
     const maxRewards = config.maxRewardsPerReferrer || 20;
     const rewardsRemaining = Math.max(0, maxRewards - totalCompleted);
 
-    const baseUrl = process.env.PUBLIC_APP_URL || 'https://app-kanto.gastsar.fr';
+    const baseUrl =
+      process.env.PUBLIC_APP_URL || 'https://app-kanto.gastsar.fr';
     const shareUrl = `${baseUrl}/invite/${userCode}`;
 
     return {
@@ -331,7 +338,9 @@ export class ReferralService {
   /**
    * Enregistre un clic sur un lien de parrainage (anonyme et idempotent).
    */
-  async trackClick(code: string): Promise<{ success: boolean; clicksCount: number }> {
+  async trackClick(
+    code: string,
+  ): Promise<{ success: boolean; clicksCount: number }> {
     if (!code) return { success: false, clicksCount: 0 };
     const normalized = code.trim().toUpperCase();
 
@@ -545,7 +554,11 @@ export class ReferralService {
           },
         });
 
-        if (!referralCode || !referralCode.isActive || referralCode.user?.banned) {
+        if (
+          !referralCode ||
+          !referralCode.isActive ||
+          referralCode.user?.banned
+        ) {
           throw new NotFoundException(
             'Code de parrainage invalide, inactif ou inexistant.',
           );
@@ -576,7 +589,10 @@ export class ReferralService {
 
         if (existingReferral) {
           // Idempotence & Résilience : Si le même code est soumis à nouveau (ex: retry réseau ou post-inscription)
-          if (existingReferral.code === normalizedCode && existingReferral.referrerId === referrerId) {
+          if (
+            existingReferral.code === normalizedCode &&
+            existingReferral.referrerId === referrerId
+          ) {
             const refereeXp = Number(config.refereeXp) || 0;
             const refereeCoins = Number(config.refereeCoins) || 0;
 
@@ -590,7 +606,10 @@ export class ReferralService {
               );
             }
 
-            if (existingReferral.refereeCoinsAwarded === 0 && refereeCoins > 0) {
+            if (
+              existingReferral.refereeCoinsAwarded === 0 &&
+              refereeCoins > 0
+            ) {
               await tx.userProgress.upsert({
                 where: { userId: refereeId },
                 create: {
@@ -619,8 +638,10 @@ export class ReferralService {
                   existingReferral.referrer?.name,
                   existingReferral.referrer?.username,
                 ),
-                refereeXpAwarded: existingReferral.refereeXpAwarded || refereeXp,
-                refereeCoinsAwarded: existingReferral.refereeCoinsAwarded || refereeCoins,
+                refereeXpAwarded:
+                  existingReferral.refereeXpAwarded || refereeXp,
+                refereeCoinsAwarded:
+                  existingReferral.refereeCoinsAwarded || refereeCoins,
                 message: 'Votre parrainage est déjà validé et actif.',
                 referralId: existingReferral.id,
                 referrerId,
@@ -663,8 +684,10 @@ export class ReferralService {
                 existingReferral.referrer?.username,
               ),
               refereeXpAwarded: existingReferral.refereeXpAwarded || refereeXp,
-              refereeCoinsAwarded: existingReferral.refereeCoinsAwarded || refereeCoins,
-              message: 'Votre code de parrainage est déjà associé à votre compte.',
+              refereeCoinsAwarded:
+                existingReferral.refereeCoinsAwarded || refereeCoins,
+              message:
+                'Votre code de parrainage est déjà associé à votre compte.',
               referralId: existingReferral.id,
               referrerId,
               refereeId,
@@ -1150,8 +1173,12 @@ export class ReferralService {
       this.prisma.referralCode.count(),
       this.prisma.referral.count(),
       this.prisma.referral.count({ where: { status: ReferralStatus.PENDING } }),
-      this.prisma.referral.count({ where: { status: ReferralStatus.COMPLETED } }),
-      this.prisma.referral.count({ where: { status: ReferralStatus.REJECTED } }),
+      this.prisma.referral.count({
+        where: { status: ReferralStatus.COMPLETED },
+      }),
+      this.prisma.referral.count({
+        where: { status: ReferralStatus.REJECTED },
+      }),
       this.prisma.referral.aggregate({
         where: { status: ReferralStatus.COMPLETED },
         _sum: {
@@ -1206,7 +1233,10 @@ export class ReferralService {
     const skip = (page - 1) * limit;
 
     const where: any = {};
-    if (query.status && Object.values(ReferralStatus).includes(query.status as any)) {
+    if (
+      query.status &&
+      Object.values(ReferralStatus).includes(query.status as any)
+    ) {
       where.status = query.status as ReferralStatus;
     }
 
@@ -1282,7 +1312,8 @@ export class ReferralService {
           targetType: 'SYSTEM',
           targetId: 'referral_config',
           targetLabel: 'Configuration du Programme de Parrainage',
-          reason: 'Mise à jour des paramètres du parrainage par un administrateur',
+          reason:
+            'Mise à jour des paramètres du parrainage par un administrateur',
           details: JSON.parse(
             JSON.stringify({
               previous: current,

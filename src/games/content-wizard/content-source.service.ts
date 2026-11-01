@@ -13,8 +13,14 @@ import {
   BatchGenerateSuggestionsDto,
   PublishUniversalQuestionDto,
 } from './dto/content-wizard.dto.js';
-import { DifficultyLevel, TrueFalseTheme } from '../../../generated/prisma/client.js';
-import { normalizeRiddleText, stripMalagasyArticle } from '../riddle/riddle-validator.util.js';
+import {
+  DifficultyLevel,
+  TrueFalseTheme,
+} from '../../../generated/prisma/client.js';
+import {
+  normalizeRiddleText,
+  stripMalagasyArticle,
+} from '../riddle/riddle-validator.util.js';
 
 export interface ContentSourceItem {
   id: string;
@@ -80,7 +86,9 @@ export class ContentSourceService {
       const presidents = await this.prisma.president.findMany({
         where: {
           status: 'PUBLISHED',
-          ...(search ? { name: { contains: search, mode: 'insensitive' } } : {}),
+          ...(search
+            ? { name: { contains: search, mode: 'insensitive' } }
+            : {}),
         },
         orderBy: { orderIndex: 'asc' },
         take: 30,
@@ -111,7 +119,9 @@ export class ContentSourceService {
       const banknotes = await this.prisma.banknote.findMany({
         where: {
           status: 'PUBLISHED',
-          ...(search ? { titleFr: { contains: search, mode: 'insensitive' } } : {}),
+          ...(search
+            ? { titleFr: { contains: search, mode: 'insensitive' } }
+            : {}),
         },
         orderBy: { orderIndex: 'asc' },
         take: 30,
@@ -144,7 +154,9 @@ export class ContentSourceService {
       const provinces = await this.prisma.provinceBlason.findMany({
         where: {
           status: 'PUBLISHED',
-          ...(search ? { province: { contains: search, mode: 'insensitive' } } : {}),
+          ...(search
+            ? { province: { contains: search, mode: 'insensitive' } }
+            : {}),
         },
         orderBy: { orderIndex: 'asc' },
       });
@@ -173,7 +185,9 @@ export class ContentSourceService {
       const emblems = await this.prisma.natureEmblem.findMany({
         where: {
           status: 'PUBLISHED',
-          ...(search ? { nameFr: { contains: search, mode: 'insensitive' } } : {}),
+          ...(search
+            ? { nameFr: { contains: search, mode: 'insensitive' } }
+            : {}),
         },
         orderBy: { orderIndex: 'asc' },
         take: 30,
@@ -203,7 +217,9 @@ export class ContentSourceService {
       const dates = await this.prisma.historyDate.findMany({
         where: {
           status: 'PUBLISHED',
-          ...(search ? { titleFr: { contains: search, mode: 'insensitive' } } : {}),
+          ...(search
+            ? { titleFr: { contains: search, mode: 'insensitive' } }
+            : {}),
         },
         orderBy: { orderIndex: 'asc' },
         take: 30,
@@ -233,7 +249,9 @@ export class ContentSourceService {
       const items = await this.prisma.malagasyItem.findMany({
         where: {
           status: 'PUBLISHED',
-          ...(search ? { malagasy: { contains: search, mode: 'insensitive' } } : {}),
+          ...(search
+            ? { malagasy: { contains: search, mode: 'insensitive' } }
+            : {}),
         },
         orderBy: { createdAt: 'desc' },
         take: 30,
@@ -258,12 +276,48 @@ export class ContentSourceService {
 
     // Statistiques par type
     const types = [
-      { type: ContentSourceType.PRESIDENT, label: 'Présidents & Dirigeants', count: results.filter(r => r.sourceType === ContentSourceType.PRESIDENT).length },
-      { type: ContentSourceType.BANKNOTE, label: 'Billets & Monnaies', count: results.filter(r => r.sourceType === ContentSourceType.BANKNOTE).length },
-      { type: ContentSourceType.PROVINCE, label: 'Provinces & Blasons', count: results.filter(r => r.sourceType === ContentSourceType.PROVINCE).length },
-      { type: ContentSourceType.NATURE_EMBLEM, label: 'Faune, Flore & Emblèmes', count: results.filter(r => r.sourceType === ContentSourceType.NATURE_EMBLEM).length },
-      { type: ContentSourceType.HISTORY_DATE, label: 'Repères Historiques', count: results.filter(r => r.sourceType === ContentSourceType.HISTORY_DATE).length },
-      { type: ContentSourceType.MALAGASY_ITEM, label: 'Ohabolana & Proverbes', count: results.filter(r => r.sourceType === ContentSourceType.MALAGASY_ITEM).length },
+      {
+        type: ContentSourceType.PRESIDENT,
+        label: 'Présidents & Dirigeants',
+        count: results.filter(
+          (r) => r.sourceType === ContentSourceType.PRESIDENT,
+        ).length,
+      },
+      {
+        type: ContentSourceType.BANKNOTE,
+        label: 'Billets & Monnaies',
+        count: results.filter(
+          (r) => r.sourceType === ContentSourceType.BANKNOTE,
+        ).length,
+      },
+      {
+        type: ContentSourceType.PROVINCE,
+        label: 'Provinces & Blasons',
+        count: results.filter(
+          (r) => r.sourceType === ContentSourceType.PROVINCE,
+        ).length,
+      },
+      {
+        type: ContentSourceType.NATURE_EMBLEM,
+        label: 'Faune, Flore & Emblèmes',
+        count: results.filter(
+          (r) => r.sourceType === ContentSourceType.NATURE_EMBLEM,
+        ).length,
+      },
+      {
+        type: ContentSourceType.HISTORY_DATE,
+        label: 'Repères Historiques',
+        count: results.filter(
+          (r) => r.sourceType === ContentSourceType.HISTORY_DATE,
+        ).length,
+      },
+      {
+        type: ContentSourceType.MALAGASY_ITEM,
+        label: 'Ohabolana & Proverbes',
+        count: results.filter(
+          (r) => r.sourceType === ContentSourceType.MALAGASY_ITEM,
+        ).length,
+      },
     ];
 
     return {
@@ -276,11 +330,20 @@ export class ContentSourceService {
   /**
    * Génère des suggestions de questions calibrées et rigoureuses à partir d'un contenu réel
    */
-  async generateSuggestions(dto: GenerateSuggestionsDto): Promise<QuestionSuggestion[]> {
-    const { sourceType, sourceId, format, difficulty = DifficultyLevel.EASY } = dto;
+  async generateSuggestions(
+    dto: GenerateSuggestionsDto,
+  ): Promise<QuestionSuggestion[]> {
+    const {
+      sourceType,
+      sourceId,
+      format,
+      difficulty = DifficultyLevel.EASY,
+    } = dto;
 
     if (!sourceId) {
-      throw new BadRequestException("L'identifiant du contenu source (sourceId) est requis pour générer des suggestions");
+      throw new BadRequestException(
+        "L'identifiant du contenu source (sourceId) est requis pour générer des suggestions",
+      );
     }
 
     switch (sourceType) {
@@ -297,7 +360,9 @@ export class ContentSourceService {
       case ContentSourceType.MALAGASY_ITEM:
         return this.suggestForMalagasyItem(sourceId, format, difficulty);
       default:
-        throw new BadRequestException(`Type de source non pris en charge: ${sourceType}`);
+        throw new BadRequestException(
+          `Type de source non pris en charge: ${sourceType}`,
+        );
     }
   }
 
@@ -345,7 +410,9 @@ export class ContentSourceService {
       });
 
       if (p.quoteFr) {
-        const quoteChoices = [p.name, ...distNames].sort(() => 0.5 - Math.random());
+        const quoteChoices = [p.name, ...distNames].sort(
+          () => 0.5 - Math.random(),
+        );
         suggestions.push({
           format: GameQuestionFormat.SINGLE_CHOICE,
           prompt: `À quelle personnalité historique attribue-t-on la célèbre parole : « ${p.quoteFr} » ?`,
@@ -415,7 +482,9 @@ export class ContentSourceService {
       where: { id: { not: b.id }, status: 'PUBLISHED' },
       take: 6,
     });
-    const distValues = otherBanknotes.map((ob) => `${ob.valueAriary.toLocaleString()} Ariary`).slice(0, 3);
+    const distValues = otherBanknotes
+      .map((ob) => `${ob.valueAriary.toLocaleString()} Ariary`)
+      .slice(0, 3);
 
     const suggestions: QuestionSuggestion[] = [];
 
@@ -438,7 +507,8 @@ export class ContentSourceService {
         explanation: `À Madagascar, 1 Ariary correspond à 5 Francs Malagasy (FMG). Ainsi, ${b.valueAriary.toLocaleString()} Ariary équivaut exactement à ${b.valueFmg.toLocaleString()} FMG.`,
         difficulty: DifficultyLevel.EASY,
         category: 'citoyennete_fihavanana',
-        sourceReference: 'Banque Centrale de Madagascar — Système Monétaire National',
+        sourceReference:
+          'Banque Centrale de Madagascar — Système Monétaire National',
         contentSourceType: ContentSourceType.BANKNOTE,
         contentSourceId: b.id,
       });
@@ -478,13 +548,18 @@ export class ContentSourceService {
         contentSourceId: b.id,
       });
     } else if (format === GameQuestionFormat.IMAGE_IDENTIFICATION) {
-      const choices = [`${b.valueAriary.toLocaleString()} Ariary`, ...distValues].sort(() => 0.5 - Math.random());
+      const choices = [
+        `${b.valueAriary.toLocaleString()} Ariary`,
+        ...distValues,
+      ].sort(() => 0.5 - Math.random());
       suggestions.push({
         format: GameQuestionFormat.IMAGE_IDENTIFICATION,
         prompt: `Observez les motifs graphiques et le thème de ce billet de banque malgache : quelle est sa valeur faciale en Ariary ?`,
         promptMg: `Diniho tsara ny sary sy ny endrik'ity volavita malagasy ity : ohatrinona ny sandany amin'ny Ariary ?`,
         choices,
-        answerIndex: choices.indexOf(`${b.valueAriary.toLocaleString()} Ariary`),
+        answerIndex: choices.indexOf(
+          `${b.valueAriary.toLocaleString()} Ariary`,
+        ),
         explanation: `Ce billet représente « ${b.titleFr} » (${b.seriesLabelFr}) et correspond à une coupure de ${b.valueAriary.toLocaleString()} Ariary.`,
         imageUrl: b.imageUrlVerso || b.imageUrl || undefined,
         imageAlt: `Reproduction graphique d'un billet de banque de Madagascar`,
@@ -519,7 +594,9 @@ export class ContentSourceService {
     const suggestions: QuestionSuggestion[] = [];
 
     if (format === GameQuestionFormat.SINGLE_CHOICE) {
-      const choices = [pv.chefLieu, ...distChefsLieux].sort(() => 0.5 - Math.random());
+      const choices = [pv.chefLieu, ...distChefsLieux].sort(
+        () => 0.5 - Math.random(),
+      );
       suggestions.push({
         format: GameQuestionFormat.SINGLE_CHOICE,
         prompt: `Quel est le chef-lieu historique de la province de ${pv.province} ?`,
@@ -535,7 +612,9 @@ export class ContentSourceService {
         contentSourceId: pv.id,
       });
     } else if (format === GameQuestionFormat.IMAGE_IDENTIFICATION) {
-      const choices = [pv.province, ...distProvinceNames].sort(() => 0.5 - Math.random());
+      const choices = [pv.province, ...distProvinceNames].sort(
+        () => 0.5 - Math.random(),
+      );
       suggestions.push({
         format: GameQuestionFormat.IMAGE_IDENTIFICATION,
         prompt: `À quelle province de Madagascar appartient ce blason historique et ses symboles territoriaux ?`,
@@ -589,7 +668,12 @@ export class ContentSourceService {
     const suggestions: QuestionSuggestion[] = [];
 
     if (format === GameQuestionFormat.SINGLE_CHOICE) {
-      const choices = [e.scientificName, 'Adansonia digitata', 'Lemur variegatus', 'Vanilla planifolia'].sort(() => 0.5 - Math.random());
+      const choices = [
+        e.scientificName,
+        'Adansonia digitata',
+        'Lemur variegatus',
+        'Vanilla planifolia',
+      ].sort(() => 0.5 - Math.random());
       suggestions.push({
         format: GameQuestionFormat.SINGLE_CHOICE,
         prompt: `Quel est le nom scientifique exact de l'espèce emblématique « ${e.nameFr} » (${e.nameMg}) ?`,
@@ -694,13 +778,17 @@ export class ContentSourceService {
       where: { id: { not: item.id }, status: 'PUBLISHED' },
       take: 6,
     });
-    const distMeanings = others.map((o) => o.meaning.slice(0, 90) + '...').slice(0, 3);
+    const distMeanings = others
+      .map((o) => o.meaning.slice(0, 90) + '...')
+      .slice(0, 3);
 
     const suggestions: QuestionSuggestion[] = [];
 
     if (format === GameQuestionFormat.SINGLE_CHOICE) {
       const correctMeaning = item.meaning.slice(0, 90) + '...';
-      const choices = [correctMeaning, ...distMeanings].sort(() => 0.5 - Math.random());
+      const choices = [correctMeaning, ...distMeanings].sort(
+        () => 0.5 - Math.random(),
+      );
       suggestions.push({
         format: GameQuestionFormat.SINGLE_CHOICE,
         prompt: `Quel est le sens profond véhiculé par le proverbe malgache : « ${item.malagasy} » ?`,
@@ -716,14 +804,22 @@ export class ContentSourceService {
       });
     } else if (format === GameQuestionFormat.RIDDLE) {
       // Transformer le sens ou l'expression en devinette d'esprit
-      const canonical = stripMalagasyArticle(normalizeRiddleText(item.french.split(' ')[0] || item.malagasy.split(' ')[0]));
+      const canonical = stripMalagasyArticle(
+        normalizeRiddleText(
+          item.french.split(' ')[0] || item.malagasy.split(' ')[0],
+        ),
+      );
       suggestions.push({
         format: GameQuestionFormat.RIDDLE,
         prompt: `Diniho ity Ohabolana ity : « ${item.malagasy} » — Inona no foto-kevitra lehibe iorenany ?`,
         promptMg: item.malagasy,
         promptFr: item.french,
         correctAnswer: item.category.toLowerCase(),
-        acceptedAnswers: [item.category.toLowerCase(), 'fihavanana', 'fahendrena'],
+        acceptedAnswers: [
+          item.category.toLowerCase(),
+          'fihavanana',
+          'fahendrena',
+        ],
         clue: `Mifandray amin'ny ${item.category}`,
         explanation: `Ny ohabolana hoe « ${item.malagasy} » dia mampianatra antsika : ${item.meaning}`,
         difficulty,
@@ -740,14 +836,25 @@ export class ContentSourceService {
   /**
    * Création en série / Batch suggestions pour alimenter un niveau complet
    */
-  async batchSuggest(dto: BatchGenerateSuggestionsDto): Promise<QuestionSuggestion[]> {
-    const { sourceType, formats, count = 10, difficulty = DifficultyLevel.EASY } = dto;
+  async batchSuggest(
+    dto: BatchGenerateSuggestionsDto,
+  ): Promise<QuestionSuggestion[]> {
+    const {
+      sourceType,
+      formats,
+      count = 10,
+      difficulty = DifficultyLevel.EASY,
+    } = dto;
 
-    const sources = await this.searchSources({ type: sourceType, limit: count });
+    const sources = await this.searchSources({
+      type: sourceType,
+      limit: count,
+    });
     const allSuggestions: QuestionSuggestion[] = [];
 
     for (const src of sources.items) {
-      const selectedFormat = formats[Math.floor(Math.random() * formats.length)];
+      const selectedFormat =
+        formats[Math.floor(Math.random() * formats.length)];
       try {
         const suggs = await this.generateSuggestions({
           sourceType,
@@ -759,7 +866,9 @@ export class ContentSourceService {
           allSuggestions.push(suggs[0]);
         }
       } catch (err) {
-        this.logger.warn(`Échec de suggestion pour ${src.id}: ${(err as Error).message}`);
+        this.logger.warn(
+          `Échec de suggestion pour ${src.id}: ${(err as Error).message}`,
+        );
       }
 
       if (allSuggestions.length >= count) break;
@@ -772,20 +881,35 @@ export class ContentSourceService {
    * Publication universelle d'une question après validation humaine
    */
   async publishQuestion(dto: PublishUniversalQuestionDto) {
-    this.logger.log(`Publication de question (${dto.format}) pour catégorie: ${dto.category}`);
+    this.logger.log(
+      `Publication de question (${dto.format}) pour catégorie: ${dto.category}`,
+    );
 
     // Contrôles qualité stricts
-    if (dto.format === GameQuestionFormat.SINGLE_CHOICE || dto.format === GameQuestionFormat.IMAGE_IDENTIFICATION) {
+    if (
+      dto.format === GameQuestionFormat.SINGLE_CHOICE ||
+      dto.format === GameQuestionFormat.IMAGE_IDENTIFICATION
+    ) {
       if (!dto.choices || dto.choices.length < 2) {
-        throw new BadRequestException('Un QCM requiert au moins 2 propositions de réponse');
+        throw new BadRequestException(
+          'Un QCM requiert au moins 2 propositions de réponse',
+        );
       }
-      if (dto.answerIndex === undefined || dto.answerIndex < 0 || dto.answerIndex >= dto.choices.length) {
+      if (
+        dto.answerIndex === undefined ||
+        dto.answerIndex < 0 ||
+        dto.answerIndex >= dto.choices.length
+      ) {
         throw new BadRequestException('Un index de réponse valide est requis');
       }
       // Vérifier les doublons dans les choix
-      const uniqueChoices = new Set(dto.choices.map((c) => c.trim().toLowerCase()));
+      const uniqueChoices = new Set(
+        dto.choices.map((c) => c.trim().toLowerCase()),
+      );
       if (uniqueChoices.size !== dto.choices.length) {
-        throw new BadRequestException('Toutes les propositions de réponse doivent être distinctes (doublon détecté)');
+        throw new BadRequestException(
+          'Toutes les propositions de réponse doivent être distinctes (doublon détecté)',
+        );
       }
 
       // Persistance dans CivicQuizQuestion (base QCM et identification d'images)
@@ -814,11 +938,14 @@ export class ContentSourceService {
         success: true,
         type: 'QUIZ',
         id: question.id,
-        message: 'Question QCM publiée avec succès dans le Conservatoire de Kanto',
+        message:
+          'Question QCM publiée avec succès dans le Conservatoire de Kanto',
       };
     } else if (dto.format === GameQuestionFormat.TRUE_FALSE) {
       if (dto.isTrue === undefined) {
-        throw new BadRequestException('La valeur de vérité (Vrai ou Faux) doit être explicitement définie');
+        throw new BadRequestException(
+          'La valeur de vérité (Vrai ou Faux) doit être explicitement définie',
+        );
       }
 
       const tf = await this.prisma.trueFalseQuestion.create({
@@ -854,7 +981,9 @@ export class ContentSourceService {
       };
     } else if (dto.format === GameQuestionFormat.RIDDLE) {
       if (!dto.correctAnswer) {
-        throw new BadRequestException('Une devinette requiert une réponse correcte canonique');
+        throw new BadRequestException(
+          'Une devinette requiert une réponse correcte canonique',
+        );
       }
 
       const riddle = await this.prisma.riddleQuestion.create({

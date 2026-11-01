@@ -35,8 +35,7 @@ export class EventNotificationService {
 
     // 1. Déterminer une clé d'idempotence pour déduplication
     const idempotencyKey =
-      event.idempotencyKey ||
-      this.generateIdempotencyKey(event);
+      event.idempotencyKey || this.generateIdempotencyKey(event);
 
     const lockKey = `event_lock:${idempotencyKey}`;
     const alreadyProcessed = await this.redisService.get<string>(lockKey);
@@ -75,13 +74,12 @@ export class EventNotificationService {
       }
 
       // 3. Charger les préférences de notification
-      const prefs = await this.notificationsService.getUserPreferences(
-        recipientUserId,
-      );
+      const prefs =
+        await this.notificationsService.getUserPreferences(recipientUserId);
 
       let inAppCreated = false;
       let emailSent = false;
-      let pushSent = false;
+      const pushSent = false;
 
       // 4. Traitement selon le type d'événement
       switch (event.type) {
@@ -252,8 +250,10 @@ export class EventNotificationService {
             userId: user.id,
             titleMg: 'Fanitsiana ny satan’ny kaonty',
             titleFr: 'Mise à jour du statut de votre compte',
-            messageMg: `Namboarina ho amin'ny sata Standard ny kaontinao. ${event.reason || ''}`.trim(),
-            messageFr: `Votre compte a été rétabli en statut Standard par l'administration. ${event.reason || ''}`.trim(),
+            messageMg:
+              `Namboarina ho amin'ny sata Standard ny kaontinao. ${event.reason || ''}`.trim(),
+            messageFr:
+              `Votre compte a été rétabli en statut Standard par l'administration. ${event.reason || ''}`.trim(),
             category: 'system',
             badgeText: 'Compte',
             badgeType: 'info',
