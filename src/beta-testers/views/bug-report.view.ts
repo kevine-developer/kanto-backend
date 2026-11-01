@@ -3,11 +3,13 @@
  * Accessible publiquement via /feedback, /bug-report, /signaler-bug ou /retours.
  *
  * Design System officiel Kanto MG (Terre & Encre) :
- * - Vert Tanimbary (#6B9E61 / #16442A), Ocre (#C58B38), Terracotta (#C0392B)
- * - Typographie Plus Jakarta Sans
- * - Recommandation forte du DeepLink kantomg://feedback vers l'application mobile
- * - Formulaire web complet alternatif en cas d'impossibilité d'utiliser l'application
- * - Chiffrement AES-256-GCM des adresses e-mail au repos et respect strict du RGPD
+ * - Vert Tanimbary (#6B9E61 / #4A6741), Ocre Doré (#C58B38), Terracotta (#C0392B)
+ * - Typographie Plus Jakarta Sans et identité LazyDog
+ * - ZÉRO emoji : icônes vectorielles SVG épurées et sémantiques
+ * - ZÉRO référence IA (pas de Sparkles, pas de néon ni de glassmorphism artificiel)
+ * - Recommandation claire d'utiliser l'application mobile avec le DeepLink kantomg://feedback?type=bug
+ * - Formulaire web sobre et complet de repli
+ * - Protection RGPD et chiffrement AES-256-GCM
  */
 
 export interface BugReportPageOptions {
@@ -36,13 +38,13 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Signaler une anomalie ou un bug • Kanto MG</title>
-  <meta name="description" content="Espace officiel de signalement de bugs et de retours d'expérience pour l'application Kanto MG. Aidez-nous à perfectionner le sanctuaire culturel malgache.">
+  <title>Signaler une anomalie • Kanto MG</title>
+  <meta name="description" content="Espace officiel de signalement technique et de retours pour l'application Kanto MG. Partagez vos observations pour perfectionner le sanctuaire culturel malgache.">
   <meta name="theme-color" content="#0D0D0B">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Signaler une anomalie • Kanto MG">
-  <meta property="og:description" content="Partagez vos retours et anomalies techniques pour améliorer l'application Kanto MG.">
+  <meta property="og:description" content="Transmettez vos observations techniques et suggestions pour l'application Kanto MG.">
   <meta property="og:type" content="website">
 
   <!-- Favicon & Typographie -->
@@ -74,12 +76,15 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       font-style: normal;
       font-display: swap;
     }
+
     :root, [data-theme="dark"] {
       --color-bg: #0D0D0B;
       --color-surface: #141412;
+      --color-surface-subtle: #191917;
       --color-surface-input: #1C1C1A;
-      --color-surface-hover: #1E1E1B;
+      --color-surface-hover: #22221F;
       --color-border: #242420;
+      --color-border-strong: #33332D;
       --color-divider: #282824;
       --color-tanimbary: #6B9E61;
       --color-tanimbary-dark: #16442A;
@@ -90,7 +95,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       --color-text-muted: #707070;
       --color-heading: #FFFFFF;
       --color-brand-title: #FFFFFF;
-      --color-card-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+      --color-card-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
       --color-error: #E75A4D;
       --color-error-bg: #2C1715;
       --color-error-text: #FFAAA0;
@@ -105,9 +110,11 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
     [data-theme="light"] {
       --color-bg: #F5F4F0;
       --color-surface: #FEFEFC;
+      --color-surface-subtle: #F7F6F1;
       --color-surface-input: #FFFFFF;
-      --color-surface-hover: #F2F1EC;
+      --color-surface-hover: #F0EFEA;
       --color-border: #E2E0D8;
+      --color-border-strong: #CECAC0;
       --color-divider: #ECEAE3;
       --color-tanimbary: #4A6741;
       --color-tanimbary-dark: #16442A;
@@ -118,7 +125,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       --color-text-muted: #8C8C88;
       --color-heading: #111110;
       --color-brand-title: #16442A;
-      --color-card-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      --color-card-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
       --color-error: #C0392B;
       --color-error-bg: #FDF2F0;
       --color-error-text: #C0392B;
@@ -173,7 +180,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       justify-content: center;
       background: var(--color-surface);
       border: 1px solid var(--color-border);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
       flex-shrink: 0;
     }
 
@@ -232,12 +239,12 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 14px;
-      transition: background-color 0.2s;
+      transition: background-color 0.2s, border-color 0.2s;
     }
 
     .theme-toggle-btn:hover {
       background: var(--color-surface-hover);
+      border-color: var(--color-border-strong);
     }
 
     .btn-header-back {
@@ -249,12 +256,15 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       border-radius: var(--radius-sm);
       border: 1px solid var(--color-border);
       background: var(--color-surface);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       transition: all 0.15s ease;
     }
 
     .btn-header-back:hover {
       color: var(--color-text);
-      border-color: var(--color-text-muted);
+      border-color: var(--color-border-strong);
     }
 
     main {
@@ -279,7 +289,8 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       text-transform: uppercase;
       letter-spacing: 1.2px;
       color: var(--color-ochre);
-      background: rgba(197, 139, 56, 0.12);
+      background: rgba(197, 139, 56, 0.1);
+      border: 1px solid rgba(197, 139, 56, 0.25);
       padding: 4px 10px;
       border-radius: 20px;
       margin-bottom: 12px;
@@ -301,22 +312,14 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       line-height: 1.5;
     }
 
-    /* ─── CARTE RECOMMANDATION DEEPLINK (PRIORITAIRE) ─── */
+    /* ─── CARTE RECOMMANDATION DEEPLINK (SOBRE ET DIRECTE) ─── */
     .app-rec-card {
-      background: linear-gradient(135deg, rgba(22, 68, 42, 0.25) 0%, rgba(20, 20, 18, 0.8) 100%);
-      border: 1px solid var(--color-tanimbary);
+      background: var(--color-surface);
+      border: 1.5px solid var(--color-tanimbary);
       border-radius: var(--radius-lg);
       padding: 24px;
       margin-bottom: 28px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
-    }
-
-    [data-theme="light"] .app-rec-card {
-      background: linear-gradient(135deg, rgba(238, 243, 237, 0.95) 0%, rgba(254, 254, 252, 0.95) 100%);
-      border-color: #6B9E61;
-      box-shadow: 0 8px 24px rgba(74, 103, 65, 0.08);
+      box-shadow: var(--color-card-shadow);
     }
 
     .app-rec-badge {
@@ -327,8 +330,9 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      color: #FFFFFF;
-      background: var(--color-tanimbary);
+      color: var(--color-tanimbary);
+      background: rgba(107, 158, 97, 0.12);
+      border: 1px solid rgba(107, 158, 97, 0.25);
       padding: 3px 10px;
       border-radius: 20px;
       margin-bottom: 12px;
@@ -341,7 +345,12 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       margin-bottom: 8px;
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 10px;
+    }
+
+    .app-rec-title svg {
+      color: var(--color-tanimbary);
+      flex-shrink: 0;
     }
 
     .app-rec-desc {
@@ -370,19 +379,18 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       background: var(--color-tanimbary-dark);
       color: #FFFFFF;
       border: 1px solid var(--color-tanimbary);
-      padding: 13px 22px;
+      padding: 12px 20px;
       border-radius: var(--radius-md);
       font-size: 14px;
       font-weight: 700;
       text-decoration: none;
-      transition: all 0.2s ease;
+      transition: background-color 0.2s, transform 0.15s;
       cursor: pointer;
     }
 
     .btn-deeplink:hover {
       background: #1f5c39;
       transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(107, 158, 97, 0.3);
     }
 
     .deeplink-hint {
@@ -392,14 +400,14 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       flex: 1 1 240px;
     }
 
-    /* Séparateur élégant */
+    /* Séparateur sobre */
     .or-divider {
       display: flex;
       align-items: center;
       text-align: center;
       margin: 28px 0;
       color: var(--color-text-muted);
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.8px;
@@ -488,29 +496,52 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       background: var(--color-surface-input);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
-      padding: 10px 12px;
-      text-align: center;
+      padding: 11px 12px;
+      text-align: left;
       cursor: pointer;
       user-select: none;
       transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .platform-chip.selected {
-      background: rgba(107, 158, 97, 0.12);
+      background: rgba(107, 158, 97, 0.1);
       border-color: var(--color-tanimbary);
       color: var(--color-heading);
-      font-weight: 700;
+    }
+
+    .platform-chip-icon {
+      color: var(--color-text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .platform-chip.selected .platform-chip-icon {
+      color: var(--color-tanimbary);
+    }
+
+    .chip-content {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
     }
 
     .platform-chip .chip-name {
       font-size: 12.5px;
-      display: block;
+      font-weight: 600;
     }
 
     .platform-chip .chip-desc {
       font-size: 10.5px;
       color: var(--color-text-muted);
       margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* Grille catégories */
@@ -524,7 +555,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       background: var(--color-surface-input);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
-      padding: 10px 12px;
+      padding: 11px 12px;
       cursor: pointer;
       user-select: none;
       transition: all 0.15s ease;
@@ -534,7 +565,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
     }
 
     .category-card.selected {
-      background: rgba(107, 158, 97, 0.12);
+      background: rgba(107, 158, 97, 0.1);
       border-color: var(--color-tanimbary);
       color: var(--color-heading);
     }
@@ -543,7 +574,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       width: 16px;
       height: 16px;
       border-radius: 50%;
-      border: 1px solid var(--color-border);
+      border: 1.5px solid var(--color-border-strong);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -561,6 +592,18 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       height: 6px;
       border-radius: 50%;
       background: #FFFFFF;
+    }
+
+    .cat-icon-wrap {
+      color: var(--color-text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .category-card.selected .cat-icon-wrap {
+      color: var(--color-tanimbary);
     }
 
     .category-card-text {
@@ -635,15 +678,15 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
     }
 
     .conf-icon {
-      width: 56px;
-      height: 56px;
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
       background: rgba(107, 158, 97, 0.15);
+      border: 1px solid rgba(107, 158, 97, 0.3);
       color: var(--color-tanimbary);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
     }
 
     .conf-title {
@@ -677,6 +720,14 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       color: var(--color-text);
       background: var(--color-surface-input);
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-conf-secondary:hover {
+      border-color: var(--color-border-strong);
     }
 
     .hp-trap {
@@ -744,9 +795,15 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       </div>
     </a>
     <div class="header-actions">
-      <a href="/beta" class="btn-header-back">← Espace Bêta</a>
+      <a href="/beta" class="btn-header-back">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Espace Bêta</span>
+      </a>
       <button type="button" class="theme-toggle-btn" id="theme-toggle" aria-label="Changer de thème">
-        <span id="theme-toggle-icon">☀</span>
+        <span id="theme-toggle-icon"></span>
       </button>
     </div>
   </header>
@@ -754,38 +811,48 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
   <main>
     <div class="intro-header">
       <span class="section-eyebrow">Assistance &amp; Qualité Kanto MG</span>
-      <h1 class="page-title">Signaler une anomalie ou un bug</h1>
+      <h1 class="page-title">Signaler une anomalie ou un retour</h1>
       <p class="page-subtitle">
-        Votre contribution en tant que testeur est essentielle pour garantir une expérience noble, fluide et authentique à toute la communauté malgache.
+        Votre contribution en tant que testeur est essentielle pour garantir une expérience noble, fluide et fidèle à la langue et à la culture malgaches.
       </p>
     </div>
 
-    <!-- ─── RECOMMANDATION DEEPLINK APPLICATION MOBILE ─── -->
+    <!-- ─── RECOMMANDATION DEEPLINK APPLICATION MOBILE (SANS EMOJI, VECTORIEL) ─── -->
     <div class="app-rec-card">
-      <div class="app-rec-badge">⭐ Méthode Recommandée • Plus rapide</div>
+      <div class="app-rec-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>Méthode recommandée</span>
+      </div>
       <h2 class="app-rec-title">
-        <span>📱</span>
-        <span>Vous avez l'application Kanto MG installée sur votre smartphone ?</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+          <line x1="12" y1="18" x2="12.01" y2="18"></line>
+        </svg>
+        <span>Vous testez déjà l'application mobile Kanto MG ?</span>
       </h2>
       <p class="app-rec-desc">
-        Nous vous conseillons d'ouvrir directement le module de retour de l'application. Vos <strong>logs d'erreurs récents</strong>, votre <strong>modèle exact d'appareil</strong> et votre <strong>numéro de build</strong> y seront automatiquement joints pour une reproduction immédiate par notre équipe.
+        Nous vous conseillons d'ouvrir le module de retour directement dans l'application. Vos <strong>logs techniques récents</strong>, votre <strong>modèle exact d'appareil</strong> et votre <strong>numéro de build</strong> y seront automatiquement joints pour permettre une résolution rapide.
       </p>
       <div class="deeplink-btn-wrap">
         <a href="kantomg://feedback?type=bug" class="btn-deeplink" id="btn-open-app">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
             <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
             <line x1="12" y1="18" x2="12.01" y2="18"></line>
           </svg>
           <span>Ouvrir dans l'application Kanto MG</span>
         </a>
         <div class="deeplink-hint">
-          Touchez ce bouton depuis votre smartphone pour basculer directement dans l'application.
+          Sur smartphone, cette commande bascule directement dans le formulaire intégré de l'application.
         </div>
       </div>
     </div>
 
     <div class="or-divider">
-      <span>Ou remplissez le formulaire web ci-dessous</span>
+      <span>Ou utilisez le formulaire web de repli</span>
     </div>
 
     <!-- Alertes visuelles -->
@@ -800,7 +867,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
     <div class="form-card" id="form-card">
       <div class="form-card-title">Formulaire de rapport technique</div>
       <div class="form-card-sub">
-        Transmettez les détails de l'anomalie rencontrée. Vous recevrez un suivi par e-mail dès sa prise en charge.
+        Renseignez les détails de l'anomalie rencontrée. Vous recevrez un suivi à l'adresse e-mail indiquée.
       </div>
 
       <form id="bug-report-form">
@@ -818,17 +885,17 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
             type="email"
             id="report-email"
             class="field-input"
-            placeholder="votre.email@gmail.com ou icloud.com"
+            placeholder="votre.email@domaine.com"
             value="${initialEmail}"
             required
             autocomplete="email"
           >
           <p class="field-note">
-            Adresse liée à votre compte Google Play ou Apple TestFlight. Donnée chiffrée (AES-256-GCM).
+            Adresse liée à votre compte Google Play ou Apple TestFlight. Donnée confidentielle chiffrée (AES-256-GCM).
           </p>
         </div>
 
-        <!-- Plateforme -->
+        <!-- Plateforme avec SVG épurés -->
         <div class="field">
           <label class="field-label">
             <span>Plateforme concernée</span>
@@ -836,21 +903,50 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
           </label>
           <div class="platform-chips">
             <div class="platform-chip ${initialPlatform === 'ANDROID' ? 'selected' : ''}" data-platform="ANDROID" id="chip-android">
-              <span class="chip-name">🤖 Android</span>
-              <span class="chip-desc">Google Play Closed Testing</span>
+              <div class="platform-chip-icon">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="8" width="16" height="12" rx="2"></rect>
+                  <circle cx="9" cy="13" r="1" fill="currentColor"></circle>
+                  <circle cx="15" cy="13" r="1" fill="currentColor"></circle>
+                  <line x1="8" y1="4" x2="10" y2="8"></line>
+                  <line x1="16" y1="4" x2="14" y2="8"></line>
+                </svg>
+              </div>
+              <div class="chip-content">
+                <span class="chip-name">Android</span>
+                <span class="chip-desc">Google Play Closed Testing</span>
+              </div>
             </div>
+
             <div class="platform-chip ${initialPlatform === 'IOS' ? 'selected' : ''}" data-platform="IOS" id="chip-ios">
-              <span class="chip-name">🍏 iOS</span>
-              <span class="chip-desc">Apple TestFlight (iPhone/iPad)</span>
+              <div class="platform-chip-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.93-2.85-.9.04-1.99.6-2.63 1.35-.57.65-.98 1.72-.85 2.74 1.01.08 2.03-.51 2.55-1.24z"/>
+                </svg>
+              </div>
+              <div class="chip-content">
+                <span class="chip-name">iOS</span>
+                <span class="chip-desc">Apple TestFlight</span>
+              </div>
             </div>
+
             <div class="platform-chip ${initialPlatform === 'ALL' ? 'selected' : ''}" data-platform="ALL" id="chip-web">
-              <span class="chip-name">🌐 Web / Général</span>
-              <span class="chip-desc">Portail web ou les deux</span>
+              <div class="platform-chip-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+              </div>
+              <div class="chip-content">
+                <span class="chip-name">Web &amp; Général</span>
+                <span class="chip-desc">Portail ou commun</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Catégorie -->
+        <!-- Nature du retour avec SVG vectoriels stricts -->
         <div class="field">
           <label class="field-label">
             <span>Nature du retour</span>
@@ -858,41 +954,90 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
           <div class="category-grid">
             <div class="category-card ${initialType === 'BUG' ? 'selected' : ''}" data-cat="BUG">
               <div class="cat-radio"></div>
-              <div class="category-card-text">🚨 Bug bloquant / Crash</div>
+              <div class="cat-icon-wrap">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="8" y="9" width="8" height="10" rx="4"></rect>
+                  <path d="M6 13H2"></path>
+                  <path d="M22 13h-4"></path>
+                  <path d="M6 17H3"></path>
+                  <path d="M21 17h-3"></path>
+                  <path d="M6 9H3"></path>
+                  <path d="M21 9h-3"></path>
+                  <path d="M9 5l-2-2"></path>
+                  <path d="M15 5l2-2"></path>
+                </svg>
+              </div>
+              <div class="category-card-text">Bug bloquant ou crash</div>
             </div>
+
             <div class="category-card ${initialType === 'UI_UX' ? 'selected' : ''}" data-cat="UI_UX">
               <div class="cat-radio"></div>
-              <div class="category-card-text">🎨 Affichage / Interface</div>
+              <div class="cat-icon-wrap">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="3" y1="9" x2="21" y2="9"></line>
+                  <line x1="9" y1="21" x2="9" y2="9"></line>
+                </svg>
+              </div>
+              <div class="category-card-text">Affichage ou ergonomie</div>
             </div>
+
             <div class="category-card ${initialType === 'PERFORMANCE' ? 'selected' : ''}" data-cat="PERFORMANCE">
               <div class="cat-radio"></div>
-              <div class="category-card-text">⚡ Lenteur / Performance</div>
+              <div class="cat-icon-wrap">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <div class="category-card-text">Lenteur ou fluidité</div>
             </div>
+
             <div class="category-card ${initialType === 'CONTENT' ? 'selected' : ''}" data-cat="CONTENT">
               <div class="cat-radio"></div>
-              <div class="category-card-text">📚 Contenu culturel / Traduction</div>
+              <div class="cat-icon-wrap">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+              </div>
+              <div class="category-card-text">Contenu culturel &amp; Traduction</div>
             </div>
+
             <div class="category-card ${initialType === 'SUGGESTION' ? 'selected' : ''}" data-cat="SUGGESTION">
               <div class="cat-radio"></div>
-              <div class="category-card-text">💡 Suggestion d'amélioration</div>
+              <div class="cat-icon-wrap">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </div>
+              <div class="category-card-text">Suggestion d'amélioration</div>
             </div>
+
             <div class="category-card ${initialType === 'OTHER' ? 'selected' : ''}" data-cat="OTHER">
               <div class="cat-radio"></div>
-              <div class="category-card-text">💬 Autre retour</div>
+              <div class="cat-icon-wrap">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+              </div>
+              <div class="category-card-text">Autre retour technique</div>
             </div>
           </div>
         </div>
 
         <div class="field">
           <label class="field-label" for="report-title">
-            <span>Titre concis du problème</span>
+            <span>Objet ou titre résumé</span>
             <span style="color: var(--color-tanimbary);">Requis</span>
           </label>
           <input
             type="text"
             id="report-title"
             class="field-input"
-            placeholder="Ex: L'écran se fige à la validation du quiz ohabolana"
+            placeholder="Ex : L'écran se fige à la fin du quiz sur les proverbes"
             required
           >
         </div>
@@ -907,7 +1052,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
               type="text"
               id="report-app-version"
               class="field-input"
-              placeholder="Ex: 0.0.20 (build 3)"
+              placeholder="Ex : 0.0.20 (build 3)"
             >
           </div>
           <div class="field">
@@ -919,7 +1064,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
               type="text"
               id="report-device"
               class="field-input"
-              placeholder="Ex: Samsung Galaxy S22 (Android 14)"
+              placeholder="Ex : Samsung Galaxy S22 (Android 14)"
             >
           </div>
         </div>
@@ -927,20 +1072,20 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
         <div class="field">
           <label class="field-label" for="report-desc">
             <span>Description détaillée &amp; Étapes de reproduction</span>
-            <span style="color: var(--color-tanimbary);">Requis (min 10 car.)</span>
+            <span style="color: var(--color-tanimbary);">Requis (min. 10 caractères)</span>
           </label>
           <textarea
             id="report-desc"
             rows="5"
             class="field-textarea"
-            placeholder="1. Où étiez-vous dans l'application ?&#10;2. Quelle action avez-vous effectuée ?&#10;3. Quel était le comportement inattendu ?"
+            placeholder="1. Dans quelle section de l'application étiez-vous ?&#10;2. Quelle action avez-vous effectuée ?&#10;3. Quel a été le résultat ou message affiché ?"
             required
           ></textarea>
         </div>
 
         <button type="submit" class="btn-submit-report" id="btn-submit">
-          <span>Transmettre le rapport à l'équipe technique</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <span>Transmettre le rapport technique</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="22" y1="2" x2="11" y2="13"></line>
             <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
           </svg>
@@ -949,23 +1094,31 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
 
       <!-- Écran de confirmation après envoi -->
       <div class="confirmation-view" id="conf-view">
-        <div class="conf-icon">✓</div>
+        <div class="conf-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
         <div class="conf-title">Misaotra betsaka !</div>
         <p class="conf-desc">
-          Votre signalement a bien été transmis à l'équipe de développement de Kanto MG sous la référence :
+          Votre signalement a bien été transmis à l'équipe technique de Kanto MG sous la référence :
         </p>
-        <span style="font-family: monospace; font-weight: 700; color: var(--color-tanimbary); font-size: 14px;" id="conf-ref-id">
+        <span style="font-family: monospace; font-weight: 700; color: var(--color-tanimbary); font-size: 15px;" id="conf-ref-id">
           #BUG-XXXX
         </span>
         <p class="conf-desc">
-          Notre équipe examine attentivement chaque anomalie pour préparer les prochains correctifs. Un message de confirmation a été consigné pour votre adresse.
+          Notre équipe examine chaque retour pour préparer les prochains correctifs. Un accusé de réception a été consigné pour votre compte de testeur.
         </p>
         <div class="conf-actions">
           <button type="button" class="btn-conf-secondary" id="btn-new-report">
-            Nouveau signalement
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Nouveau signalement</span>
           </button>
           <a href="/beta" class="btn-conf-secondary" style="background: var(--color-tanimbary-dark); color: #FFF; border-color: var(--color-tanimbary);">
-            Retour à l'Espace Bêta
+            <span>Retour à l'Espace Bêta</span>
           </a>
         </div>
       </div>
@@ -1043,13 +1196,15 @@ export function renderBugReportScript(): string {
     if (errBanner) errBanner.style.display = 'none';
   }
 
-  // Thème sombre/clair
+  // Thème sombre/clair sans emoji (SVG vectoriel)
   var themeBtn = document.getElementById('theme-toggle');
   var themeIcon = document.getElementById('theme-toggle-icon');
+  var SUN_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>';
+  var MOON_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
 
   function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
-    if (themeIcon) themeIcon.innerText = theme === 'light' ? '🌙' : '☀';
+    if (themeIcon) themeIcon.innerHTML = theme === 'light' ? MOON_SVG : SUN_SVG;
     var meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute('content', theme === 'light' ? '#F5F4F0' : '#0D0D0B');
   }
@@ -1077,10 +1232,9 @@ export function renderBugReportScript(): string {
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
 
-      // Vérification honeypot
+      // Honeypot
       var hp = document.getElementById('hp-check');
       if (hp && hp.value) {
-        // Robot détecté silencieusement
         return;
       }
 
@@ -1158,7 +1312,7 @@ export function renderBugReportScript(): string {
       if (confView) confView.style.display = 'none';
       if (btnSubmit) {
         btnSubmit.disabled = false;
-        btnSubmit.innerHTML = '<span>Transmettre le rapport à l\\'équipe technique</span>';
+        btnSubmit.innerHTML = '<span>Transmettre le rapport technique</span>';
       }
       if (errBanner) errBanner.style.display = 'none';
       if (succBanner) succBanner.style.display = 'none';
@@ -1167,4 +1321,3 @@ export function renderBugReportScript(): string {
 })();
   `.trim();
 }
-

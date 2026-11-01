@@ -157,6 +157,30 @@ describe('BetaTestersController', () => {
       expect(res.send).toHaveBeenCalledWith(
         expect.stringContaining('support@kanto.mg'),
       );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('/feedback'),
+      );
+    });
+
+    it('doit rediriger vers /feedback si le paramètre tab=feedback est passé', async () => {
+      const res = {
+        setHeader: jest.fn(),
+        redirect: jest.fn(),
+        send: jest.fn(),
+      } as unknown as Response;
+
+      await controller.getBetaLandingPage(
+        undefined,
+        undefined,
+        'feedback',
+        res,
+        'test@kanto.mg',
+      );
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        302,
+        '/feedback?email=test%40kanto.mg',
+      );
     });
   });
 

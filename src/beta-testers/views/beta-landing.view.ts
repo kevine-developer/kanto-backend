@@ -18,12 +18,7 @@ export interface BetaLandingPageOptions {
   errorMessage?: string;
   fromDeeplink?: boolean;
   targetPath?: string;
-  initialTab?:
-    | 'register'
-    | 'already_registered'
-    | 'download'
-    | 'feedback'
-    | 'unsubscribe';
+  initialTab?: 'register' | 'already_registered' | 'download' | 'unsubscribe';
   initialEmail?: string;
   unsubscribeToken?: string;
   supportEmail?: string;
@@ -353,7 +348,7 @@ export function renderBetaLandingPage(
 
     .tabs-nav {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 6px;
       padding: 4px;
       background: var(--color-bg);
@@ -657,6 +652,21 @@ export function renderBetaLandingPage(
       font-family: inherit;
       font-size: 12px;
       cursor: pointer;
+    }
+
+    .footer-link-feedback {
+      color: var(--color-tanimbary);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: opacity 0.15s ease;
+    }
+
+    .footer-link-feedback:hover {
+      text-decoration: underline;
+      opacity: 0.9;
     }
 
     .hp-trap {
@@ -1071,7 +1081,7 @@ export function renderBetaLandingPage(
     </a>
     <div class="header-actions">
       <button type="button" class="theme-toggle-btn" id="theme-toggle" aria-label="Changer de thème">
-        <span id="theme-toggle-icon">☀</span>
+        <span id="theme-toggle-icon"></span>
       </button>
       <div class="status-pill">
         <span class="status-indicator"></span>
@@ -1091,16 +1101,13 @@ export function renderBetaLandingPage(
     </div>
 
     <div class="card">
-      <!-- Navigation par Onglets -->
+      <!-- Navigation par Onglets (Inscription & Statut) -->
       <div class="tabs-nav">
         <button type="button" class="tab-btn ${initialTab === 'register' ? 'active' : ''}" id="tab-btn-register">
           <span>Inscription</span>
         </button>
         <button type="button" class="tab-btn ${initialTab === 'already_registered' || initialTab === 'download' ? 'active' : ''}" id="tab-btn-already">
           <span>Mon Accès &amp; Statut</span>
-        </button>
-        <button type="button" class="tab-btn ${initialTab === 'feedback' ? 'active' : ''}" id="tab-btn-feedback">
-          <span>Retours &amp; Bugs</span>
         </button>
       </div>
 
@@ -1159,14 +1166,18 @@ export function renderBetaLandingPage(
             </label>
             <div class="platform-cards">
               <div class="platform-card checked" id="card-android">
-                <div class="platform-checkbox">✓</div>
+                <div class="platform-checkbox">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
                 <div>
                   <div class="platform-title">Android</div>
                   <div class="platform-sub">Google Play Closed Testing</div>
                 </div>
               </div>
               <div class="platform-card" id="card-ios">
-                <div class="platform-checkbox">✓</div>
+                <div class="platform-checkbox">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
                 <div>
                   <div class="platform-title">iOS (iPhone &amp; iPad)</div>
                   <div class="platform-sub">Apple TestFlight</div>
@@ -1183,7 +1194,7 @@ export function renderBetaLandingPage(
               </span>
             </label>
             <div class="terms-micro-info">
-              <span>🔒</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="flex-shrink:0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
               <span>Chiffrement AES-256-GCM. Zéro publicité, zéro revente. Désinscription en 1 clic.</span>
             </div>
           </div>
@@ -1200,7 +1211,9 @@ export function renderBetaLandingPage(
 
       <!-- ─── ÉCRAN DE SUCCÈS INSCRIPTION ─── -->
       <div class="confirmation" id="confirmation-view" style="display: ${isRegistered ? 'flex' : 'none'};">
-        <div class="confirmation-icon">✓</div>
+        <div class="confirmation-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
         <h2 style="font-size: 18px; font-weight: 700; color: var(--color-heading);">
           Candidature enregistrée avec succès !
         </h2>
@@ -1319,102 +1332,6 @@ export function renderBetaLandingPage(
         </div>
       </div>
 
-      <!-- ─── ONGLET 3 : RETOURS & SIGNALEMENT DE BUGS ─── -->
-      <div id="panel-feedback" style="display: ${initialTab === 'feedback' ? 'block' : 'none'};">
-        <!-- Conseil Deeplink App Mobile -->
-        <div style="background: rgba(107, 158, 97, 0.09); border: 1px solid var(--color-tanimbary); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 20px;">
-          <div style="font-size: 13px; font-weight: 700; color: var(--color-heading); margin-bottom: 5px; display: flex; align-items: center; gap: 7px;">
-            <span>📱</span>
-            <span>Conseil : utilisez le module de diagnostic de l'application</span>
-          </div>
-          <p style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.45; margin-bottom: 10px;">
-            Pour un traitement plus rapide et précis, signalez vos anomalies directement depuis l'application Kanto MG. Les logs techniques et la version exacte de build y sont joints automatiquement.
-          </p>
-          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <a href="kantomg://feedback?type=bug" class="btn-store btn-store-android" style="display: inline-flex; align-items: center; justify-content: center; width: auto; padding: 7px 14px; margin: 0; font-size: 12px;">
-              <span>Ouvrir dans l'app Kanto (Deeplink) ↗</span>
-            </a>
-            <a href="/feedback" style="display: inline-flex; align-items: center; justify-content: center; font-size: 12px; color: var(--color-text-secondary); padding: 7px 10px; text-decoration: underline;">
-              Ouvrir l'interface dédiée plein écran ↗
-            </a>
-          </div>
-        </div>
-
-        <form id="feedback-form">
-          <div class="field">
-            <label class="field-label" for="fb-email">
-              <span>Votre adresse e-mail de testeur</span>
-              <span style="color: var(--color-tanimbary);">Requis</span>
-            </label>
-            <input 
-              type="email" 
-              id="fb-email" 
-              class="field-input" 
-              placeholder="votre.email@gmail.com" 
-              required
-              value="${emailVal}"
-            >
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <div class="field">
-              <label class="field-label" for="fb-category">
-                <span>Catégorie</span>
-              </label>
-              <select id="fb-category" class="field-select">
-                <option value="BUG">Signalement de bug</option>
-                <option value="UI_UX">Interface &amp; Ergonomie</option>
-                <option value="PERFORMANCE">Performance &amp; Lenteur</option>
-                <option value="CONTENT">Contenu ou Traduction</option>
-                <option value="SUGGESTION">Idée ou Suggestion</option>
-                <option value="OTHER">Autre remarque</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label class="field-label" for="fb-platform">
-                <span>Plateforme concernée</span>
-              </label>
-              <select id="fb-platform" class="field-select">
-                <option value="ANDROID">Android</option>
-                <option value="IOS">Apple iOS</option>
-                <option value="ALL">Les deux plateformes</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="field-label" for="fb-title">
-              <span>Titre ou résumé court</span>
-            </label>
-            <input 
-              type="text" 
-              id="fb-title" 
-              class="field-input" 
-              placeholder="Ex: Problème d'affichage sur les quiz..."
-            >
-          </div>
-
-          <div class="field">
-            <label class="field-label" for="fb-desc">
-              <span>Description détaillée</span>
-              <span style="color: var(--color-tanimbary);">Requis</span>
-            </label>
-            <textarea 
-              id="fb-desc" 
-              rows="4" 
-              class="field-textarea" 
-              placeholder="Expliquez ce qui s'est passé, les étapes pour reproduire le problème ou votre suggestion..."
-              required
-            ></textarea>
-          </div>
-
-          <button type="submit" class="btn-submit" id="btn-submit-fb">
-            <span>Transmettre mon retour à l'équipe Kanto</span>
-          </button>
-        </form>
-      </div>
-
       <!-- ─── VUE DÉSINCRIPTION RGPD ─── -->
       <div id="panel-unsubscribe" style="display: ${initialTab === 'unsubscribe' ? 'block' : 'none'};">
         <h3 style="font-size: 16px; font-weight: 700; color: var(--color-heading); margin-bottom: 8px;">
@@ -1447,10 +1364,12 @@ export function renderBetaLandingPage(
     <div class="kanto-modal-card">
       <div class="kanto-modal-head">
         <h2 id="cgu-modal-title" class="kanto-modal-title">
-          <span>📜</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-tanimbary);"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
           <span>Conditions Générales d'Utilisation • Bêta Kanto MG</span>
         </h2>
-        <button type="button" id="cgu-modal-close" class="kanto-modal-close" aria-label="Fermer la modale CGU">✕</button>
+        <button type="button" id="cgu-modal-close" class="kanto-modal-close" aria-label="Fermer la modale CGU">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
       </div>
       <div class="kanto-modal-scroll">
         <div class="cgu-highlight-box">
@@ -1465,7 +1384,7 @@ export function renderBetaLandingPage(
         <p>Les versions de test contiennent des fonctionnalités inédites, des voix et des visuels originaux en cours d'affinage. Vous vous engagez à ne pas extraire ni rediffuser publiquement les fichiers d'installation (.apk, .aab ou profils TestFlight) en dehors de votre usage de testeur.</p>
 
         <h3>3. Retours &amp; Signalement de Bugs</h3>
-        <p>Vos retours et rapports d'anomalies peuvent être soumis via l'onglet « Retours &amp; Bugs » ou directement dans TestFlight / Google Play. Vous autorisez l'équipe Kanto à exploiter ces retours techniques pour l'amélioration continue de l'application.</p>
+        <p>Vos retours et signalements de bugs peuvent être formulés directement depuis l'application mobile ou via la page dédiée de retours. Vous autorisez l'équipe Kanto à exploiter ces retours techniques pour l'amélioration continue de l'application.</p>
 
         <h3>4. Protection des Données Personnelles (RGPD)</h3>
         <p>Votre adresse e-mail est strictement confidentielle. Elle est chiffrée au repos avec l'algorithme <strong>AES-256-GCM</strong> et indexée via une empreinte <strong>HMAC-SHA-256</strong>. Elle n'est jamais vendue, cédée ni partagée avec des tiers publicitaires. Elle est utilisée exclusivement pour vos invitations consoles et le suivi de vos accès.</p>
@@ -1492,7 +1411,7 @@ export function renderBetaLandingPage(
     <div class="cookie-banner-wrap">
       <div class="cookie-banner-text-wrap">
         <div class="cookie-banner-title">
-          <span>🌿</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-tanimbary);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
           <span>Respect de votre vie privée &amp; Cookies</span>
         </div>
         <p class="cookie-banner-desc">
@@ -1512,10 +1431,12 @@ export function renderBetaLandingPage(
     <div class="kanto-modal-card">
       <div class="kanto-modal-head">
         <h2 id="cookie-modal-title" class="kanto-modal-title">
-          <span>🛡️</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-tanimbary);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
           <span>Préférences de confidentialité &amp; Cookies</span>
         </h2>
-        <button type="button" id="cookie-modal-close" class="kanto-modal-close" aria-label="Fermer la gestion des cookies">✕</button>
+        <button type="button" id="cookie-modal-close" class="kanto-modal-close" aria-label="Fermer la gestion des cookies">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
       </div>
       <div class="kanto-modal-scroll">
         <p style="font-size: 12.5px; color: var(--color-text-secondary); margin-bottom: 16px;">
@@ -1587,6 +1508,13 @@ export function renderBetaLandingPage(
     <div class="footer-nav">
       <a href="${legalBaseUrl}/pages/terms">Conditions d'utilisation (CGU)</a>
       <a href="${legalBaseUrl}/pages/privacy">Confidentialité &amp; RGPD</a>
+      <a href="/feedback" class="footer-link-feedback">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -1px; margin-right: 4px;">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+        </svg>
+        <span>Signaler une anomalie / Retour</span>
+      </a>
       <button type="button" class="footer-cookie-btn" id="btn-cookie-settings">Gestion des cookies</button>
       <a href="mailto:${supportEmail}">Support officiel (${supportEmail})</a>
     </div>
@@ -1609,11 +1537,9 @@ export function renderBetaWaitlistScript(): string {
   // Onglets & Panneaux
   var tabReg = document.getElementById('tab-btn-register');
   var tabAlr = document.getElementById('tab-btn-already');
-  var tabFb = document.getElementById('tab-btn-feedback');
 
   var pnlReg = document.getElementById('panel-register');
   var pnlAlr = document.getElementById('panel-already');
-  var pnlFb = document.getElementById('panel-feedback');
   var pnlUnsub = document.getElementById('panel-unsubscribe');
   var confView = document.getElementById('confirmation-view');
 
@@ -1672,13 +1598,11 @@ export function renderBetaWaitlistScript(): string {
     hideBanners();
     if (pnlReg) pnlReg.style.display = 'none';
     if (pnlAlr) pnlAlr.style.display = 'none';
-    if (pnlFb) pnlFb.style.display = 'none';
     if (pnlUnsub) pnlUnsub.style.display = 'none';
     if (confView) confView.style.display = 'none';
 
     if (tabReg) tabReg.classList.remove('active');
     if (tabAlr) tabAlr.classList.remove('active');
-    if (tabFb) tabFb.classList.remove('active');
 
     if (target === 'register') {
       if (tabReg) tabReg.classList.add('active');
@@ -1686,9 +1610,6 @@ export function renderBetaWaitlistScript(): string {
     } else if (target === 'already') {
       if (tabAlr) tabAlr.classList.add('active');
       if (pnlAlr) pnlAlr.style.display = 'block';
-    } else if (target === 'feedback') {
-      if (tabFb) tabFb.classList.add('active');
-      if (pnlFb) pnlFb.style.display = 'block';
     } else if (target === 'unsubscribe') {
       if (pnlUnsub) pnlUnsub.style.display = 'block';
     }
@@ -1696,7 +1617,6 @@ export function renderBetaWaitlistScript(): string {
 
   if (tabReg) tabReg.addEventListener('click', function() { switchTab('register'); });
   if (tabAlr) tabAlr.addEventListener('click', function() { switchTab('already'); });
-  if (tabFb) tabFb.addEventListener('click', function() { switchTab('feedback'); });
 
   var gotoStatusBtn = document.getElementById('btn-goto-status');
   if (gotoStatusBtn) {
@@ -2085,10 +2005,12 @@ export function renderBetaWaitlistScript(): string {
   // ─── 5. GESTION DU THÈME SOMBRE / CLAIR ───
   var themeBtn = document.getElementById('theme-toggle');
   var themeIcon = document.getElementById('theme-toggle-icon');
+  var SUN_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>';
+  var MOON_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
 
   function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
-    if (themeIcon) themeIcon.innerText = theme === 'light' ? '🌙' : '☀';
+    if (themeIcon) themeIcon.innerHTML = theme === 'light' ? MOON_SVG : SUN_SVG;
     var meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute('content', theme === 'light' ? '#F5F4F0' : '#0D0D0B');
   }
@@ -2111,7 +2033,7 @@ export function renderBetaWaitlistScript(): string {
       var sp = new URLSearchParams(window.location.search);
       var t = sp.get('tab');
       if (t === 'already_registered' || t === 'download') switchTab('already');
-      if (t === 'feedback') switchTab('feedback');
+      if (t === 'feedback') { window.location.href = '/feedback'; }
       if (t === 'unsubscribe') switchTab('unsubscribe');
       var em = sp.get('email');
       if (em) {
