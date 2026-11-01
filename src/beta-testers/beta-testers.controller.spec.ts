@@ -13,6 +13,7 @@ describe('BetaTestersController', () => {
     getPublicTesterCount: jest.Mock<any>;
     verifyParticipation: jest.Mock<any>;
     resendInvitePublic: jest.Mock<any>;
+    getAutomationConfig: jest.Mock<any>;
   };
 
   beforeEach(async () => {
@@ -21,6 +22,9 @@ describe('BetaTestersController', () => {
       getPublicTesterCount: jest.fn<any>().mockResolvedValue(42),
       verifyParticipation: jest.fn<any>(),
       resendInvitePublic: jest.fn<any>(),
+      getAutomationConfig: jest.fn<any>().mockResolvedValue({
+        supportEmail: 'support@kanto.mg',
+      }),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -69,7 +73,7 @@ describe('BetaTestersController', () => {
   });
 
   describe('getBetaLandingPage', () => {
-    it('doit générer la page d’accueil avec la bannière et le modal de consentement', async () => {
+    it('doit générer la page d’accueil avec la bannière, les modales CGU et cookies', async () => {
       const res = {
         setHeader: jest.fn(),
         send: jest.fn(),
@@ -89,6 +93,9 @@ describe('BetaTestersController', () => {
         expect.stringContaining('kanto-cookie-modal'),
       );
       expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('kanto-cgu-modal'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
         expect.stringContaining('btn-cookie-settings'),
       );
       expect(res.send).toHaveBeenCalledWith(
@@ -96,6 +103,9 @@ describe('BetaTestersController', () => {
       );
       expect(res.send).toHaveBeenCalledWith(
         expect.stringContaining('[data-theme="light"]'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('support@kanto.mg'),
       );
     });
   });

@@ -71,7 +71,9 @@ export class BetaTestersController {
   ): Promise<void> {
     const [testerCount, config] = await Promise.all([
       this.betaTestersService.getPublicTesterCount(),
-      this.betaTestersService.getAutomationConfig().catch(() => null),
+      typeof this.betaTestersService.getAutomationConfig === 'function'
+        ? this.betaTestersService.getAutomationConfig().catch(() => null)
+        : Promise.resolve(null),
     ]);
     const supportEmail =
       config?.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
@@ -123,7 +125,9 @@ export class BetaTestersController {
     if (acceptsHtml && !isJson) {
       const [testerCount, config] = await Promise.all([
         this.betaTestersService.getPublicTesterCount(),
-        this.betaTestersService.getAutomationConfig().catch(() => null),
+        typeof this.betaTestersService.getAutomationConfig === 'function'
+          ? this.betaTestersService.getAutomationConfig().catch(() => null)
+          : Promise.resolve(null),
       ]);
       const supportEmail =
         config?.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
