@@ -1,10 +1,17 @@
 import { pageShell } from '../page.helpers.js';
 
-export function renderAboutPage(options?: { hideHeader?: boolean }): string {
+export function renderAboutPage(options?: {
+  hideHeader?: boolean;
+  supportEmail?: string;
+}): string {
+  const supportEmail =
+    options?.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
+
   return pageShell({
     title: 'Kanto — À propos',
     pageTitle: 'À propos de Kanto',
     hideHeader: options?.hideHeader,
+    supportEmail,
     description:
       "Découvrez la mission, les valeurs et l'équipe derrière l'application Kanto.",
     body: `
@@ -60,8 +67,8 @@ export function renderAboutPage(options?: { hideHeader?: boolean }): string {
           <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         </div>
         <div class="body">
-          <div class="label">Équipe Kanto</div>
-          <div class="value"><a href="mailto:contact@kanto.mg">contact@kanto.mg</a></div>
+          <div class="label">Équipe &amp; Support Kanto</div>
+          <div class="value"><a href="mailto:${supportEmail}">${supportEmail}</a></div>
         </div>
       </div>
     `,

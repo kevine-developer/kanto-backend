@@ -69,11 +69,20 @@ export class BetaTestersController {
     @Query('email') email?: string,
     @Query('token') token?: string,
   ): Promise<void> {
-    const testerCount = await this.betaTestersService.getPublicTesterCount();
+    const [testerCount, config] = await Promise.all([
+      this.betaTestersService.getPublicTesterCount(),
+      typeof this.betaTestersService.getAutomationConfig === 'function'
+        ? this.betaTestersService.getAutomationConfig().catch(() => null)
+        : Promise.resolve(null),
+    ]);
+    const supportEmail =
+      config?.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
+
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.send(
       renderBetaLandingPage({
         testerCount,
+        supportEmail,
         fromDeeplink: from === 'deeplink' || Boolean(target),
         targetPath: target,
         initialTab:
@@ -114,11 +123,20 @@ export class BetaTestersController {
       req.headers['content-type']?.includes('application/json');
 
     if (acceptsHtml && !isJson) {
-      const testerCount = await this.betaTestersService.getPublicTesterCount();
+      const [testerCount, config] = await Promise.all([
+        this.betaTestersService.getPublicTesterCount(),
+        typeof this.betaTestersService.getAutomationConfig === 'function'
+          ? this.betaTestersService.getAutomationConfig().catch(() => null)
+          : Promise.resolve(null),
+      ]);
+      const supportEmail =
+        config?.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
+
       res.setHeader('Content-Type', 'text/html; charset=utf-8');
       res.send(
         renderBetaLandingPage({
           testerCount,
+          supportEmail,
           initialRegistered: result.success && !result.alreadyRegistered,
           registeredEmail: dto.email,
           errorMessage: result.success ? undefined : result.message,

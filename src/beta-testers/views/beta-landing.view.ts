@@ -19,15 +19,22 @@ export interface BetaLandingPageOptions {
   fromDeeplink?: boolean;
   targetPath?: string;
   initialTab?:
-    'register' | 'already_registered' | 'download' | 'feedback' | 'unsubscribe';
+    | 'register'
+    | 'already_registered'
+    | 'download'
+    | 'feedback'
+    | 'unsubscribe';
   initialEmail?: string;
   unsubscribeToken?: string;
+  supportEmail?: string;
 }
 
 export function renderBetaLandingPage(
   options?: BetaLandingPageOptions,
 ): string {
   const currentYear = new Date().getFullYear();
+  const supportEmail =
+    options?.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
   const count =
     typeof options?.testerCount === 'number' ? options.testerCount : 0;
   const isRegistered = Boolean(options?.initialRegistered);
@@ -656,12 +663,388 @@ export function renderBetaLandingPage(
       display: none !important;
     }
 
+    /* ─── MODALES PARTAGÉES (CGU & COOKIES) ─── */
+    .kanto-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 16px;
+    }
+
+    .kanto-modal-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      max-width: 640px;
+      width: 100%;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+      animation: kantoModalFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes kantoModalFadeIn {
+      from { opacity: 0; transform: scale(0.96) translateY(8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .kanto-modal-head {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--color-divider);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--color-surface);
+    }
+
+    .kanto-modal-title {
+      font-size: 15.5px;
+      font-weight: 700;
+      color: var(--color-heading);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .kanto-modal-close {
+      background: transparent;
+      border: 1px solid var(--color-border);
+      color: var(--color-text-secondary);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .kanto-modal-close:hover {
+      background: var(--color-surface-hover);
+      color: var(--color-text);
+      border-color: var(--color-text-muted);
+    }
+
+    .kanto-modal-scroll {
+      padding: 22px;
+      overflow-y: auto;
+      color: var(--color-text);
+      font-size: 13.5px;
+      line-height: 1.6;
+    }
+
+    .kanto-modal-scroll h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-heading);
+      margin: 18px 0 8px 0;
+    }
+
+    .kanto-modal-scroll h3:first-child {
+      margin-top: 0;
+    }
+
+    .kanto-modal-scroll p {
+      margin-bottom: 12px;
+      color: var(--color-text-secondary);
+    }
+
+    .kanto-modal-scroll ul {
+      margin: 0 0 14px 20px;
+      color: var(--color-text-secondary);
+    }
+
+    .kanto-modal-scroll li {
+      margin-bottom: 6px;
+    }
+
+    .cgu-highlight-box {
+      background: rgba(107, 158, 97, 0.08);
+      border: 1px solid var(--color-tanimbary);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      font-size: 12.5px;
+      color: var(--color-text);
+      line-height: 1.5;
+    }
+
+    .kanto-modal-foot {
+      padding: 14px 22px;
+      border-top: 1px solid var(--color-divider);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--color-surface-input);
+      flex-wrap: wrap;
+    }
+
+    /* ─── COMPOSANT CASE CONDITIONS & CGU DANS FORMULAIRE ─── */
+    .terms-card {
+      background: var(--color-surface-input);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 13px 15px;
+      margin-bottom: 22px;
+    }
+
+    .terms-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12.5px;
+      color: var(--color-text);
+      cursor: pointer;
+      user-select: none;
+      margin-bottom: 0;
+    }
+
+    .terms-box input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      margin-top: 2px;
+      accent-color: var(--color-tanimbary);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .btn-terms-link {
+      background: none;
+      border: none;
+      color: var(--color-tanimbary);
+      font-weight: 600;
+      text-decoration: underline;
+      cursor: pointer;
+      padding: 0 2px;
+      font-size: inherit;
+      font-family: inherit;
+      display: inline;
+    }
+
+    .btn-terms-link:hover {
+      opacity: 0.85;
+    }
+
+    .terms-micro-info {
+      margin-top: 9px;
+      padding-top: 9px;
+      border-top: 1px dashed var(--color-border);
+      font-size: 11px;
+      color: var(--color-text-muted);
+      line-height: 1.45;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    /* ─── BANNIÈRE DE CONSENTEMENT COOKIES RGPD ─── */
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      padding: 16px 24px;
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.28);
+      z-index: 9990;
+      animation: kantoBannerSlideUp 0.25s ease-out;
+    }
+
+    @keyframes kantoBannerSlideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .cookie-banner-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .cookie-banner-text-wrap {
+      flex: 1 1 450px;
+    }
+
+    .cookie-banner-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--color-heading);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .cookie-banner-desc {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    .cookie-banner-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .cookie-btn {
+      padding: 8px 15px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .cookie-btn-primary {
+      background: var(--color-tanimbary-dark);
+      color: #FFFFFF;
+      border: 1px solid var(--color-tanimbary);
+    }
+
+    .cookie-btn-primary:hover {
+      background: #1f5c39;
+    }
+
+    .cookie-btn-secondary {
+      background: var(--color-surface-input);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+    }
+
+    .cookie-btn-secondary:hover {
+      background: var(--color-surface-hover);
+    }
+
+    .cookie-btn-outline {
+      background: transparent;
+      color: var(--color-text-secondary);
+      border: 1px dashed var(--color-border);
+    }
+
+    .cookie-btn-outline:hover {
+      color: var(--color-text);
+      border-color: var(--color-text-muted);
+    }
+
+    /* ─── SWITCH TOGGLES COOKIES ─── */
+    .cookie-category-item {
+      padding: 14px 16px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      background: var(--color-surface-input);
+    }
+
+    .cookie-category-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .cookie-category-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-heading);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cookie-badge-req {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--color-tanimbary);
+      background: rgba(107, 158, 97, 0.15);
+      padding: 2px 7px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .kanto-switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .kanto-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .kanto-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: var(--color-border);
+      transition: .25s ease;
+      border-radius: 24px;
+    }
+
+    .kanto-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .25s ease;
+      border-radius: 50%;
+    }
+
+    .kanto-switch input:checked + .kanto-slider {
+      background-color: var(--color-tanimbary);
+    }
+
+    .kanto-switch input:checked + .kanto-slider:before {
+      transform: translateX(20px);
+    }
+
+    .kanto-switch input:disabled + .kanto-slider {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
     @media (max-width: 600px) {
       .platform-cards, .platform-status-grid {
         grid-template-columns: 1fr;
       }
       .tabs-nav {
         font-size: 11px;
+      }
+      .cookie-banner-wrap {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .cookie-banner-actions {
+        justify-content: flex-end;
       }
     }
   </style>
@@ -792,12 +1175,18 @@ export function renderBetaLandingPage(
             </div>
           </div>
 
-          <label class="terms-box">
-            <input type="checkbox" id="reg-terms" required checked>
-            <span>
-              J'accepte de participer au programme bêta de Kanto MG, de recevoir les invitations par e-mail et de tester les versions en avant-première.
-            </span>
-          </label>
+          <div class="terms-card">
+            <label class="terms-box" for="reg-terms">
+              <input type="checkbox" id="reg-terms" required checked>
+              <span>
+                J'accepte les <button type="button" class="btn-terms-link" id="btn-open-cgu-modal">Conditions Générales d'Utilisation (CGU)</button> et le règlement du programme bêta de Kanto MG.
+              </span>
+            </label>
+            <div class="terms-micro-info">
+              <span>🔒</span>
+              <span>Chiffrement AES-256-GCM. Zéro publicité, zéro revente. Désinscription en 1 clic.</span>
+            </div>
+          </div>
 
           <button type="submit" class="btn-submit" id="btn-submit-reg">
             <span>Rejoindre le programme bêta</span>
@@ -1034,46 +1423,153 @@ export function renderBetaLandingPage(
     </div>
   </main>
 
-  <!-- Bannière de consentement aux cookies Kanto -->
+  <!-- Modale CGU Intégrée Kanto MG -->
+  <div id="kanto-cgu-modal" class="kanto-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="cgu-modal-title" style="display: none;">
+    <div class="kanto-modal-card">
+      <div class="kanto-modal-head">
+        <h2 id="cgu-modal-title" class="kanto-modal-title">
+          <span>📜</span>
+          <span>Conditions Générales d'Utilisation • Bêta Kanto MG</span>
+        </h2>
+        <button type="button" id="cgu-modal-close" class="kanto-modal-close" aria-label="Fermer la modale CGU">✕</button>
+      </div>
+      <div class="kanto-modal-scroll">
+        <div class="cgu-highlight-box">
+          <strong>Esprit Kanto MG : Fihavanana &amp; Haja</strong><br>
+          En rejoignant le programme bêta, vous devenez pionnier d'un sanctuaire numérique dédié au patrimoine, aux contes (<em>Angano</em>), proverbes (<em>Ohabolana</em>) et traditions de Madagascar.
+        </div>
+
+        <h3>1. Objet du Programme Bêta</h3>
+        <p>Le programme permet de tester en avant-première les versions préliminaires de Kanto MG sur Google Play Closed Testing (Android) et Apple TestFlight (iOS), d'identifier les bugs et d'émettre des retours avant la publication grand public.</p>
+
+        <h3>2. Confidentialité &amp; Respect des Préversions</h3>
+        <p>Les versions de test contiennent des fonctionnalités inédites, des voix et des visuels originaux en cours d'affinage. Vous vous engagez à ne pas extraire ni rediffuser publiquement les fichiers d'installation (.apk, .aab ou profils TestFlight) en dehors de votre usage de testeur.</p>
+
+        <h3>3. Retours &amp; Signalement de Bugs</h3>
+        <p>Vos retours et rapports d'anomalies peuvent être soumis via l'onglet « Retours &amp; Bugs » ou directement dans TestFlight / Google Play. Vous autorisez l'équipe Kanto à exploiter ces retours techniques pour l'amélioration continue de l'application.</p>
+
+        <h3>4. Protection des Données Personnelles (RGPD)</h3>
+        <p>Votre adresse e-mail est strictement confidentielle. Elle est chiffrée au repos avec l'algorithme <strong>AES-256-GCM</strong> et indexée via une empreinte <strong>HMAC-SHA-256</strong>. Elle n'est jamais vendue, cédée ni partagée avec des tiers publicitaires. Elle est utilisée exclusivement pour vos invitations consoles et le suivi de vos accès.</p>
+
+        <h3>5. Disponibilité des Versions</h3>
+        <p>Les versions de test peuvent comporter des instabilités temporaires. Kanto MG met tout en œuvre pour offrir une expérience fluide tout en maintenant la sécurité de vos appareils.</p>
+
+        <h3>6. Désinscription Libre &amp; Support Officiel</h3>
+        <p>Vous conservez la liberté totale de vous retirer du programme à tout instant en 1 clic via l'onglet de désinscription ou le lien présent au bas de chaque e-mail d'invitation. Contact du support : <a href="mailto:${supportEmail}" style="color: var(--color-tanimbary); font-weight: 600;">${supportEmail}</a>.</p>
+      </div>
+      <div class="kanto-modal-foot">
+        <a href="${legalBaseUrl}/pages/terms" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: var(--color-text-secondary); text-decoration: underline;">
+          Ouvrir les CGU complètes en pleine page ↗
+        </a>
+        <button type="button" id="cgu-modal-btn-accept" class="cookie-btn cookie-btn-primary">
+          J'ai compris et j'accepte les conditions
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bannière de consentement aux cookies Kanto (RGPD & ePrivacy) -->
   <aside id="kanto-cookie-banner" class="cookie-banner" role="region" aria-label="Gestion des cookies et de la confidentialité" style="display: none;">
-    <div class="cookie-banner-container">
-      <div class="cookie-banner-header">
-        <h2 class="cookie-banner-title">Respect de votre vie privée &amp; Confidentialité</h2>
-        <p class="cookie-banner-text">
-          Nous utilisons des cookies strictement nécessaires au fonctionnement de la plateforme. Avec votre accord, nous pouvons également activer des cookies pour mémoriser vos préférences et mesurer l'audience.
+    <div class="cookie-banner-wrap">
+      <div class="cookie-banner-text-wrap">
+        <div class="cookie-banner-title">
+          <span>🌿</span>
+          <span>Respect de votre vie privée &amp; Cookies</span>
+        </div>
+        <p class="cookie-banner-desc">
+          Nous utilisons des traceurs strictement nécessaires au fonctionnement et, avec votre accord, des cookies pour mémoriser vos préférences et mesurer l'audience de la bêta. Vous pouvez modifier votre choix à tout moment.
         </p>
       </div>
       <div class="cookie-banner-actions">
         <button type="button" id="cookie-btn-accept-all" class="cookie-btn cookie-btn-primary">Tout accepter</button>
-        <button type="button" id="cookie-btn-reject-all" class="cookie-btn cookie-btn-secondary">Tout refuser</button>
+        <button type="button" id="cookie-btn-reject-all" class="cookie-btn cookie-btn-secondary">Continuer sans accepter</button>
         <button type="button" id="cookie-btn-customize" class="cookie-btn cookie-btn-outline">Personnaliser</button>
       </div>
     </div>
   </aside>
 
-  <!-- Modal de personnalisation détaillée des cookies -->
-  <div id="kanto-cookie-modal" class="cookie-modal-backdrop" role="dialog" aria-modal="true" style="display: none;">
-    <div class="cookie-modal-box">
-      <div class="cookie-modal-header">
-        <h2 id="cookie-modal-title">Préférences de confidentialité</h2>
-        <button type="button" id="cookie-modal-close">✕</button>
+  <!-- Modale de personnalisation détaillée des cookies -->
+  <div id="kanto-cookie-modal" class="kanto-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title" style="display: none;">
+    <div class="kanto-modal-card">
+      <div class="kanto-modal-head">
+        <h2 id="cookie-modal-title" class="kanto-modal-title">
+          <span>🛡️</span>
+          <span>Préférences de confidentialité &amp; Cookies</span>
+        </h2>
+        <button type="button" id="cookie-modal-close" class="kanto-modal-close" aria-label="Fermer la gestion des cookies">✕</button>
       </div>
-      <div class="cookie-modal-body">
-        <p>Gérez vos préférences de traceurs pour Kanto MG.</p>
+      <div class="kanto-modal-scroll">
+        <p style="font-size: 12.5px; color: var(--color-text-secondary); margin-bottom: 16px;">
+          Kanto MG respecte scrupuleusement la réglementation RGPD et la directive ePrivacy. Personnalisez ci-dessous les catégories de traceurs autorisées lors de votre navigation.
+        </p>
+
+        <!-- Catégorie 1 : Nécessaires -->
+        <div class="cookie-category-item">
+          <div class="cookie-category-header">
+            <div>
+              <span class="cookie-category-label">1. Traceurs strictement nécessaires</span>
+              <span class="cookie-badge-req">Obligatoire</span>
+            </div>
+            <label class="kanto-switch" aria-label="Traceurs nécessaires obligatoires">
+              <input type="checkbox" id="cookie-opt-necessary" checked disabled>
+              <span class="kanto-slider"></span>
+            </label>
+          </div>
+          <p style="font-size: 11.5px; color: var(--color-text-muted); margin: 0;">
+            Indispensables au fonctionnement technique, à la protection anti-spam (honeypot), à la sécurité des sessions et à la mémorisation de votre choix de consentement. Ne peuvent être désactivés.
+          </p>
+        </div>
+
+        <!-- Catégorie 2 : Préférences -->
+        <div class="cookie-category-item">
+          <div class="cookie-category-header">
+            <div>
+              <span class="cookie-category-label">2. Préférences d'affichage</span>
+            </div>
+            <label class="kanto-switch" aria-label="Traceurs de préférences">
+              <input type="checkbox" id="cookie-opt-preferences" checked>
+              <span class="kanto-slider"></span>
+            </label>
+          </div>
+          <p style="font-size: 11.5px; color: var(--color-text-muted); margin: 0;">
+            Permet de conserver votre thème d'affichage préféré (sombre ou clair) et vos préférences de consultation entre vos visites.
+          </p>
+        </div>
+
+        <!-- Catégorie 3 : Statistiques -->
+        <div class="cookie-category-item">
+          <div class="cookie-category-header">
+            <div>
+              <span class="cookie-category-label">3. Mesures d'audience anonymisées</span>
+            </div>
+            <label class="kanto-switch" aria-label="Traceurs de statistiques anonymisées">
+              <input type="checkbox" id="cookie-opt-analytics" checked>
+              <span class="kanto-slider"></span>
+            </label>
+          </div>
+          <p style="font-size: 11.5px; color: var(--color-text-muted); margin: 0;">
+            Mesure agrégée et strictement anonyme de la fréquentation pour dimensionner les quotas de testeurs bêta. Aucun profilage publicitaire ni revente commerciale.
+          </p>
+        </div>
       </div>
-      <div class="cookie-modal-footer">
-        <button type="button" id="cookie-modal-btn-save">Enregistrer mes préférences</button>
+      <div class="kanto-modal-foot">
+        <button type="button" id="cookie-modal-btn-reject" class="cookie-btn cookie-btn-secondary">
+          Tout refuser (sauf nécessaires)
+        </button>
+        <button type="button" id="cookie-modal-btn-save" class="cookie-btn cookie-btn-primary">
+          Enregistrer mes préférences
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- Pied de page officiel -->
+  <!-- Pied de page officiel Kanto MG -->
   <footer>
     <div class="footer-nav">
       <a href="${legalBaseUrl}/pages/terms">Conditions d'utilisation (CGU)</a>
       <a href="${legalBaseUrl}/pages/privacy">Confidentialité &amp; RGPD</a>
-      <button type="button" class="footer-cookie-btn" id="btn-cookie-settings">Cookies</button>
-      <a href="mailto:contact@kanto.mg">Contact support</a>
+      <button type="button" class="footer-cookie-btn" id="btn-cookie-settings">Gestion des cookies</button>
+      <a href="mailto:${supportEmail}">Support officiel (${supportEmail})</a>
     </div>
     <div style="font-size: 11px;">
       © ${currentYear} kanto.mg • Lova, Kolontsaina &amp; Tantara Malagasy
@@ -1604,27 +2100,151 @@ export function renderBetaWaitlistScript(): string {
       }
     } catch (e) {}
   }
-  // ─── GESTION DES COOKIES (KantoConsent) ───
+  // ─── GESTION DE LA MODALE CGU INTÉGRÉE ───
+  var cguModal = document.getElementById('kanto-cgu-modal');
+  var btnOpenCguModal = document.getElementById('btn-open-cgu-modal');
+  var cguModalClose = document.getElementById('cgu-modal-close');
+  var cguModalBtnAccept = document.getElementById('cgu-modal-btn-accept');
+  var regTermsCheckbox = document.getElementById('reg-terms');
+
+  function openCguModal() {
+    if (cguModal) cguModal.style.display = 'flex';
+  }
+  function closeCguModal() {
+    if (cguModal) cguModal.style.display = 'none';
+  }
+
+  if (btnOpenCguModal) {
+    btnOpenCguModal.addEventListener('click', function(e) {
+      e.preventDefault();
+      openCguModal();
+    });
+  }
+  if (cguModalClose) {
+    cguModalClose.addEventListener('click', closeCguModal);
+  }
+  if (cguModalBtnAccept) {
+    cguModalBtnAccept.addEventListener('click', function() {
+      if (regTermsCheckbox) regTermsCheckbox.checked = true;
+      closeCguModal();
+    });
+  }
+  if (cguModal) {
+    cguModal.addEventListener('click', function(e) {
+      if (e.target === cguModal) closeCguModal();
+    });
+  }
+
+  // ─── GESTION DES COOKIES RGPD (KantoConsent) ───
   var cookieBanner = document.getElementById('kanto-cookie-banner');
   var cookieModal = document.getElementById('kanto-cookie-modal');
   var btnCookieSettings = document.getElementById('btn-cookie-settings');
+  var btnAcceptAll = document.getElementById('cookie-btn-accept-all');
+  var btnRejectAll = document.getElementById('cookie-btn-reject-all');
+  var btnCustomize = document.getElementById('cookie-btn-customize');
+  var cookieModalClose = document.getElementById('cookie-modal-close');
+  var cookieModalBtnSave = document.getElementById('cookie-modal-btn-save');
+  var cookieModalBtnReject = document.getElementById('cookie-modal-btn-reject');
+  var optPreferences = document.getElementById('cookie-opt-preferences');
+  var optAnalytics = document.getElementById('cookie-opt-analytics');
 
+  var CONSENT_STORAGE_KEY = 'kanto_consent_v1';
+  var CONSENT_MAX_AGE_DAYS = 180;
+
+  function getSavedConsent() {
+    try {
+      var raw = localStorage.getItem(CONSENT_STORAGE_KEY);
+      if (!raw) return null;
+      var parsed = JSON.parse(raw);
+      if (!parsed || !parsed.timestamp) return null;
+      var ageDays = (Date.now() - parsed.timestamp) / (1000 * 60 * 60 * 24);
+      if (ageDays > CONSENT_MAX_AGE_DAYS) return null;
+      return parsed;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function saveConsent(preferences, analytics) {
+    var data = {
+      necessary: true,
+      preferences: Boolean(preferences),
+      analytics: Boolean(analytics),
+      timestamp: Date.now()
+    };
+    try {
+      localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(data));
+      var maxAgeSec = CONSENT_MAX_AGE_DAYS * 24 * 3600;
+      document.cookie = 'kanto_consent=' + encodeURIComponent(JSON.stringify(data)) + '; max-age=' + maxAgeSec + '; path=/; SameSite=Lax';
+    } catch (e) {}
+
+    if (cookieBanner) cookieBanner.style.display = 'none';
+    if (cookieModal) cookieModal.style.display = 'none';
+  }
+
+  function openCookieSettings() {
+    var current = getSavedConsent();
+    if (optPreferences) optPreferences.checked = current ? current.preferences : true;
+    if (optAnalytics) optAnalytics.checked = current ? current.analytics : true;
+    if (cookieModal) cookieModal.style.display = 'flex';
+  }
+
+  function closeCookieSettings() {
+    if (cookieModal) cookieModal.style.display = 'none';
+  }
+
+  // Vérification de l'état de consentement au chargement
+  var existingConsent = getSavedConsent();
+  if (!existingConsent && cookieBanner) {
+    cookieBanner.style.display = 'block';
+  }
+
+  if (btnAcceptAll) {
+    btnAcceptAll.addEventListener('click', function() {
+      saveConsent(true, true);
+    });
+  }
+  if (btnRejectAll) {
+    btnRejectAll.addEventListener('click', function() {
+      saveConsent(false, false);
+    });
+  }
+  if (btnCustomize) {
+    btnCustomize.addEventListener('click', function() {
+      openCookieSettings();
+    });
+  }
   if (btnCookieSettings) {
-    btnCookieSettings.addEventListener('click', function() {
-      if (cookieModal) cookieModal.style.display = 'flex';
+    btnCookieSettings.addEventListener('click', function(e) {
+      e.preventDefault();
+      openCookieSettings();
+    });
+  }
+  if (cookieModalClose) {
+    cookieModalClose.addEventListener('click', closeCookieSettings);
+  }
+  if (cookieModalBtnReject) {
+    cookieModalBtnReject.addEventListener('click', function() {
+      saveConsent(false, false);
+    });
+  }
+  if (cookieModalBtnSave) {
+    cookieModalBtnSave.addEventListener('click', function() {
+      var pref = optPreferences ? optPreferences.checked : false;
+      var ana = optAnalytics ? optAnalytics.checked : false;
+      saveConsent(pref, ana);
+    });
+  }
+  if (cookieModal) {
+    cookieModal.addEventListener('click', function(e) {
+      if (e.target === cookieModal) closeCookieSettings();
     });
   }
 
   window.KantoConsent = {
-    openSettings: function() {
-      if (cookieModal) cookieModal.style.display = 'flex';
-    },
-    acceptAll: function() {
-      if (cookieBanner) cookieBanner.style.display = 'none';
-    },
-    rejectAll: function() {
-      if (cookieBanner) cookieBanner.style.display = 'none';
-    }
+    openSettings: openCookieSettings,
+    acceptAll: function() { saveConsent(true, true); },
+    rejectAll: function() { saveConsent(false, false); }
   };
 })();
   `.trim();
