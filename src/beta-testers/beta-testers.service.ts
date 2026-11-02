@@ -1086,34 +1086,106 @@ export class BetaTestersService {
 
   // ─── CONFIGURATION DE L'AUTOMATISATION ─────────────────────────────────────
 
+  private readonly defaultAutomationConfig = {
+    id: 'default',
+    autoConfirmRegistration: true,
+    autoInviteOnApproval: false,
+    autoNotifyNewVersions: true,
+    reminderIntervalDays: 7,
+    feedbackRequestDays: 14,
+    playStoreWebLink:
+      'https://play.google.com/apps/testing/com.devengalere.kantomg',
+    playStoreAppLink:
+      'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
+    testFlightPublicLink: 'https://testflight.apple.com/join/kantomg',
+    supportEmail: 'contact@kanto.mg',
+    updatedAt: new Date(),
+  };
+
   async getAutomationConfig() {
-    let config = await this.prisma.betaAutomationConfig.findFirst();
-    if (!config) {
-      config = await this.prisma.betaAutomationConfig.create({
-        data: {
-          autoConfirmRegistration: true,
-          autoInviteOnApproval: false,
-          autoNotifyNewVersions: true,
-          reminderIntervalDays: 7,
-          feedbackRequestDays: 5,
-          playStoreWebLink:
-            'https://play.google.com/apps/testing/com.devengalere.kantomg',
-          playStoreAppLink:
-            'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
-          testFlightPublicLink: 'https://testflight.apple.com/join/kantomg',
-          supportEmail: 'contact@kanto.mg',
-        },
-      });
+    try {
+      if (!this.prisma?.betaAutomationConfig) {
+        this.logger.warn(
+          'Modèle betaAutomationConfig non disponible sur le client Prisma, utilisation des paramètres par défaut.',
+        );
+        return { ...this.defaultAutomationConfig };
+      }
+
+      let config = await this.prisma.betaAutomationConfig.findFirst();
+      if (!config) {
+        try {
+          config = await this.prisma.betaAutomationConfig.create({
+            data: {
+              autoConfirmRegistration: true,
+              autoInviteOnApproval: false,
+              autoNotifyNewVersions: true,
+              reminderIntervalDays: 7,
+              feedbackRequestDays: 14,
+              playStoreWebLink:
+                'https://play.google.com/apps/testing/com.devengalere.kantomg',
+              playStoreAppLink:
+                'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
+              testFlightPublicLink: 'https://testflight.apple.com/join/kantomg',
+              supportEmail: 'contact@kanto.mg',
+            },
+          });
+        } catch (createErr) {
+          this.logger.warn(
+            `Impossible d'initialiser la table betaAutomationConfig : ${createErr instanceof Error ? createErr.message : String(createErr)}`,
+          );
+          return { ...this.defaultAutomationConfig };
+        }
+      }
+      return config;
+    } catch (err) {
+      this.logger.warn(
+        `Erreur lecture betaAutomationConfig : ${err instanceof Error ? err.message : String(err)}, repli sur configuration standard.`,
+      );
+      return { ...this.defaultAutomationConfig };
     }
-    return config;
   }
 
   async updateAutomationConfig(dto: UpdateAutomationConfigDto) {
-    const config = await this.getAutomationConfig();
-    return this.prisma.betaAutomationConfig.update({
-      where: { id: config.id },
-      data: dto,
-    });
+    if (!this.prisma?.betaAutomationConfig) {
+      throw new BadRequestException(
+        "Le modèle d'automatisation n'est pas encore accessible en base de données.",
+      );
+    }
+
+    try {
+      const config = await this.getAutomationConfig();
+      if (!config || config.id === 'default') {
+        return await this.prisma.betaAutomationConfig.create({
+          data: {
+            autoConfirmRegistration: dto.autoConfirmRegistration ?? true,
+            autoInviteOnApproval: dto.autoInviteOnApproval ?? false,
+            autoNotifyNewVersions: dto.autoNotifyNewVersions ?? true,
+            reminderIntervalDays: dto.reminderIntervalDays ?? 7,
+            feedbackRequestDays: dto.feedbackRequestDays ?? 14,
+            playStoreWebLink:
+              dto.playStoreWebLink ??
+              'https://play.google.com/apps/testing/com.devengalere.kantomg',
+            playStoreAppLink:
+              dto.playStoreAppLink ??
+              'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
+            testFlightPublicLink: dto.testFlightPublicLink ?? null,
+            supportEmail: dto.supportEmail ?? 'contact@kanto.mg',
+          },
+        });
+      }
+
+      return await this.prisma.betaAutomationConfig.update({
+        where: { id: config.id },
+        data: dto,
+      });
+    } catch (err) {
+      this.logger.error(
+        `Échec de mise à jour de la configuration d'automatisation : ${err instanceof Error ? err.message : String(err)}`,
+      );
+      throw new BadRequestException(
+        "Impossible de sauvegarder la configuration d'automatisation.",
+      );
+    }
   }
 
   // ─── GESTION DES PARTICIPANTS (ADMINISTRATION) ─────────────────────────────

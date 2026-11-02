@@ -483,4 +483,70 @@ describe('BetaTestersService', () => {
       );
     });
   });
+
+  describe('getAutomationConfig & updateAutomationConfig', () => {
+    it('retourne la configuration existante si présente en base', async () => {
+      const mockConfig = {
+        id: 'cfg_123',
+        autoConfirmRegistration: true,
+        autoInviteOnApproval: true,
+        autoNotifyNewVersions: true,
+        reminderIntervalDays: 7,
+        feedbackRequestDays: 14,
+        playStoreWebLink: 'https://play.google.com/test',
+        playStoreAppLink: 'https://play.google.com/store',
+        testFlightPublicLink: 'https://testflight.apple.com/join/kanto',
+        supportEmail: 'support@kanto.mg',
+      };
+      prisma.betaAutomationConfig.findFirst.mockResolvedValue(mockConfig);
+
+      const result = await service.getAutomationConfig();
+      expect(result).toEqual(mockConfig);
+      expect(prisma.betaAutomationConfig.findFirst).toHaveBeenCalled();
+    });
+
+    it('initialise la configuration par défaut si aucune ligne n’existe', async () => {
+      prisma.betaAutomationConfig.findFirst.mockResolvedValue(null);
+      prisma.betaAutomationConfig.create.mockResolvedValue({
+        id: 'new_cfg',
+        autoConfirmRegistration: true,
+        feedbackRequestDays: 14,
+      });
+
+      const result = await service.getAutomationConfig();
+      expect(result.id).toBe('new_cfg');
+      expect(prisma.betaAutomationConfig.create).toHaveBeenCalled();
+    });
+
+    it('retourne le fallback par défaut résilient si Prisma lève une exception (table manquante)', async () => {
+      prisma.betaAutomationConfig.findFirst.mockRejectedValue(
+        new Error('relation "beta_automation_configs" does not exist'),
+      );
+
+      const result = await service.getAutomationConfig();
+      expect(result).toBeDefined();
+      expect(result.id).toBe('default');
+      expect(result.autoConfirmRegistration).toBe(true);
+      expect(result.supportEmail).toBe('contact@kanto.mg');
+    });
+
+    it('met à jour la configuration existante proprement', async () => {
+      prisma.betaAutomationConfig.findFirst.mockResolvedValue({
+        id: 'cfg_123',
+      });
+      prisma.betaAutomationConfig.update.mockResolvedValue({
+        id: 'cfg_123',
+        feedbackRequestDays: 10,
+      });
+
+      const result = await service.updateAutomationConfig({
+        feedbackRequestDays: 10,
+      });
+      expect(result.feedbackRequestDays).toBe(10);
+      expect(prisma.betaAutomationConfig.update).toHaveBeenCalledWith({
+        where: { id: 'cfg_123' },
+        data: { feedbackRequestDays: 10 },
+      });
+    });
+  });
 });
