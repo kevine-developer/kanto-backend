@@ -557,6 +557,49 @@ export function renderBetaLandingPage(
       border-top: 1px solid var(--color-divider);
     }
 
+    .unsub-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 10px;
+    }
+
+    .unsub-chip {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-secondary);
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .unsub-chip:hover {
+      border-color: var(--color-tanimbary);
+      color: var(--color-tanimbary);
+      background: rgba(107, 158, 97, 0.08);
+    }
+
+    .unsub-chip.active {
+      background: var(--color-tanimbary);
+      color: #FFFFFF;
+      border-color: var(--color-tanimbary);
+      font-weight: 600;
+    }
+
+    .unsub-confirm-card {
+      display: none;
+      padding: 22px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      text-align: center;
+      margin-top: 10px;
+    }
+
     .platform-status-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1337,23 +1380,67 @@ export function renderBetaLandingPage(
         <h3 style="font-size: 16px; font-weight: 700; color: var(--color-heading); margin-bottom: 8px;">
           Désinscription du programme bêta
         </h3>
-        <p style="font-size: 13px; color: var(--color-text-secondary); margin-bottom: 16px;">
-          Conformément au RGPD, vous pouvez vous retirer à tout moment du programme de test. Vous ne recevrez plus d'e-mails d'invitation.
+        <p style="font-size: 13px; color: var(--color-text-secondary); margin-bottom: 16px; line-height: 1.5;">
+          Conformément au RGPD, vous êtes libre de vous retirer à tout moment. Vos accès de test fermé seront révoqués et vous ne recevrez plus aucune sollicitation.
         </p>
+
+        <!-- Formulaire de désinscription -->
         <form id="unsub-form">
           <input type="hidden" id="unsub-token" value="${tokenVal}">
           <div class="field">
-            <label class="field-label" for="unsub-email">Votre adresse e-mail</label>
-            <input type="email" id="unsub-email" class="field-input" value="${emailVal}" required>
+            <label class="field-label" for="unsub-email">Votre adresse e-mail de testeur</label>
+            <input type="email" id="unsub-email" class="field-input" value="${emailVal}" required placeholder="ex: testeur@gmail.com">
           </div>
-          <div class="field">
-            <label class="field-label" for="unsub-reason">Motif (optionnel)</label>
-            <input type="text" id="unsub-reason" class="field-input" placeholder="Ex: Changement d'appareil, manque de temps...">
+
+          <div class="field" style="margin-bottom: 14px;">
+            <label class="field-label" style="margin-bottom: 6px;">Motif de votre retrait (optionnel) :</label>
+            <div class="unsub-chips">
+              <button type="button" class="unsub-chip" data-reason="Incompatibilité avec mon appareil">📱 Appareil non compatible</button>
+              <button type="button" class="unsub-chip" data-reason="Manque de temps pour tester">⏳ Manque de temps</button>
+              <button type="button" class="unsub-chip" data-reason="Trop de notifications">🔔 Trop de notifications</button>
+              <button type="button" class="unsub-chip" data-reason="Simple curiosité">🎯 Simple curiosité</button>
+              <button type="button" class="unsub-chip" data-reason="Autre motif">Autre motif</button>
+            </div>
+            <input type="text" id="unsub-reason" class="field-input" placeholder="Précisez votre motif ou laissez vide..." style="font-size: 12.5px;">
           </div>
-          <button type="submit" class="btn-submit" style="background: var(--color-error); border-color: var(--color-error);">
-            Confirmer ma désinscription
-          </button>
+
+          <p style="font-size: 11.5px; color: var(--color-text-muted); margin-bottom: 14px; line-height: 1.4;">
+            ℹ️ Un accusé de réception officiel de désinscription vous sera immédiatement envoyé par e-mail.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <button type="submit" id="btn-unsub-submit" class="btn-submit" style="background: var(--color-error); border-color: var(--color-error);">
+              Confirmer ma désinscription
+            </button>
+            <button type="button" id="btn-unsub-cancel" class="btn-secondary" style="margin-top: 0;">
+              Conserver mon inscription (Annuler)
+            </button>
+          </div>
         </form>
+
+        <!-- Écran de confirmation post-désinscription chaleureux -->
+        <div id="unsub-success-box" class="unsub-confirm-card">
+          <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(107, 158, 97, 0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; color: var(--color-tanimbary);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <h4 style="font-size: 15px; font-weight: 700; color: var(--color-heading); margin-bottom: 6px;">
+            Désinscription confirmée
+          </h4>
+          <p id="unsub-success-msg" style="font-size: 12.5px; color: var(--color-text-secondary); line-height: 1.5; margin-bottom: 14px;">
+            Votre adresse a été retirée de nos listes de diffusion. Un e-mail récapitulatif vous a été envoyé.
+          </p>
+          <div style="font-size: 12px; font-style: italic; color: var(--color-text-muted); margin-bottom: 18px;">
+            Misaotra betsaka amin&apos;ny fotoana natokanao ho an&apos;ny Kanto MG.
+          </div>
+          <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+            <button type="button" id="btn-unsub-home" class="btn-submit" style="width: auto; padding: 9px 18px; font-size: 12.5px;">
+              Retour à l&apos;accueil
+            </button>
+            <button type="button" id="btn-unsub-resubscribe" class="btn-secondary" style="width: auto; padding: 9px 18px; margin-top: 0; font-size: 12.5px; color: var(--color-tanimbary); border-color: var(--color-tanimbary);">
+              Changer d&apos;avis et se réinscrire
+            </button>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -1974,6 +2061,50 @@ export function renderBetaWaitlistScript(): string {
 
   // ─── 4. DÉSINCRIPTION RGPD ───
   var unsubForm = document.getElementById('unsub-form');
+  var unsubBtn = document.getElementById('btn-unsub-submit');
+  var unsubSuccessBox = document.getElementById('unsub-success-box');
+  var unsubSuccessMsg = document.getElementById('unsub-success-msg');
+  var cancelUnsubBtn = document.getElementById('btn-unsub-cancel');
+  var unsubChips = document.querySelectorAll('.unsub-chip');
+  var unsubReasonInput = document.getElementById('unsub-reason');
+
+  if (unsubChips && unsubReasonInput) {
+    unsubChips.forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        unsubChips.forEach(function(c) { c.classList.remove('active'); });
+        chip.classList.add('active');
+        unsubReasonInput.value = chip.getAttribute('data-reason') || '';
+        unsubReasonInput.focus();
+      });
+    });
+  }
+
+  if (cancelUnsubBtn) {
+    cancelUnsubBtn.addEventListener('click', function() {
+      switchTab('register');
+    });
+  }
+
+  var btnUnsubHome = document.getElementById('btn-unsub-home');
+  if (btnUnsubHome) {
+    btnUnsubHome.addEventListener('click', function() {
+      switchTab('register');
+    });
+  }
+
+  var btnUnsubResub = document.getElementById('btn-unsub-resubscribe');
+  if (btnUnsubResub) {
+    btnUnsubResub.addEventListener('click', function() {
+      var emailEl = document.getElementById('unsub-email');
+      var regEmailEl = document.getElementById('reg-email');
+      if (emailEl && regEmailEl) {
+        regEmailEl.value = emailEl.value;
+      }
+      switchTab('register');
+      if (regEmailEl) regEmailEl.focus();
+    });
+  }
+
   if (unsubForm) {
     unsubForm.addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -1981,7 +2112,17 @@ export function renderBetaWaitlistScript(): string {
 
       var email = document.getElementById('unsub-email').value.trim();
       var token = document.getElementById('unsub-token').value.trim();
-      var reason = document.getElementById('unsub-reason').value.trim();
+      var reason = unsubReasonInput ? unsubReasonInput.value.trim() : '';
+
+      if (!email) {
+        showError('Veuillez renseigner votre adresse e-mail de testeur.');
+        return;
+      }
+
+      if (unsubBtn) {
+        unsubBtn.disabled = true;
+        unsubBtn.innerText = 'Désinscription en cours...';
+      }
 
       try {
         var res = await fetch('/api/beta-testers/unsubscribe', {
@@ -1991,13 +2132,24 @@ export function renderBetaWaitlistScript(): string {
         });
         var data = await res.json();
         if (data.success) {
+          unsubForm.style.display = 'none';
+          if (unsubSuccessBox) {
+            unsubSuccessBox.style.display = 'block';
+            if (unsubSuccessMsg && data.message) {
+              unsubSuccessMsg.innerText = data.message;
+            }
+          }
           showSuccess(data.message);
-          setTimeout(function() { switchTab('register'); }, 2000);
         } else {
-          showError(data.message);
+          showError(data.message || 'Erreur lors de la désinscription.');
         }
-      } catch (e) {
-        showError('Erreur lors de la désinscription.');
+      } catch (err) {
+        showError('Impossible de joindre le serveur. Vérifiez votre connexion.');
+      } finally {
+        if (unsubBtn) {
+          unsubBtn.disabled = false;
+          unsubBtn.innerText = 'Confirmer ma désinscription';
+        }
       }
     });
   }

@@ -16,6 +16,45 @@ export interface EmailContextVariables {
   [key: string]: string | undefined;
 }
 
+const BUILTIN_FALLBACK_TEMPLATES: Record<
+  string,
+  {
+    subject: string;
+    title: string;
+    contentHtml: string;
+    buttonText?: string;
+    buttonUrl?: string;
+    secondaryButtonText?: string;
+    secondaryButtonUrl?: string;
+    accentColor?: string;
+    footerText?: string;
+  }
+> = {
+  UNSUBSCRIBE_CONFIRMATION: {
+    subject: 'Confirmation de votre désinscription du programme Bêta Kanto MG',
+    title: 'Votre désinscription a bien été prise en compte',
+    contentHtml: `<p>Manao ahoana {{userName}},</p>
+<p>Nous vous confirmons que votre demande de retrait du programme de bêta-test de <strong>Kanto MG</strong> a bien été enregistrée et traitée.</p>
+<div style="background-color: #FDF7F7; border-left: 4px solid #C0392B; padding: 14px 18px; margin: 18px 0; border-radius: 6px;">
+  <strong style="color: #922B21;">Protection de vos données &amp; Accès :</strong>
+  <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #5B2C27; line-height: 1.5;">
+    <li>Vos accès aux versions fermées de test (Google Play et/ou TestFlight) ont été révoqués.</li>
+    <li>Votre adresse e-mail a été immédiatement retirée de nos listes de diffusion.</li>
+    <li>Conformément au RGPD, aucune sollicitation ultérieure ne vous sera adressée.</li>
+  </ul>
+</div>
+<p><em>Misaotra betsaka</em> pour l'intérêt et le temps que vous avez accordés à Kanto MG et au rayonnement de la culture malgache.</p>
+<p>Si cette action était involontaire ou si vous souhaitez nous rejoindre à l'avenir, la porte de Kanto MG vous reste toujours ouverte.</p>`,
+    buttonText: 'Rejoindre à nouveau le programme',
+    buttonUrl: 'https://app-kanto.gastsar.fr/beta',
+    secondaryButtonText: 'Partager une suggestion',
+    secondaryButtonUrl: 'https://app-kanto.gastsar.fr/beta?tab=feedback',
+    accentColor: '#C0392B',
+    footerText:
+      'Kanto MG — Le sanctuaire de la culture malgache. Une question ? Écrivez à {{supportEmail}}.',
+  },
+};
+
 @Injectable()
 export class BetaEmailDispatcherService {
   private readonly logger = new Logger(BetaEmailDispatcherService.name);
@@ -89,20 +128,31 @@ export class BetaEmailDispatcherService {
       where: { code: templateCode },
     });
 
+    const fallback = BUILTIN_FALLBACK_TEMPLATES[templateCode];
+
     const subjectRaw =
-      customSubject || tpl?.subject || 'Information Kanto MG Bêta';
-    const titleRaw = tpl?.title || 'Programme de Test Kanto MG';
+      customSubject ||
+      tpl?.subject ||
+      fallback?.subject ||
+      'Information Kanto MG Bêta';
+    const titleRaw =
+      tpl?.title || fallback?.title || 'Programme de Test Kanto MG';
     const contentRaw =
       customContentHtml ||
       tpl?.contentHtml ||
+      fallback?.contentHtml ||
       '<p>Merci pour votre participation au test de Kanto MG.</p>';
-    const buttonTextRaw = tpl?.buttonText || '';
-    const buttonUrlRaw = tpl?.buttonUrl || '';
-    const secondaryButtonTextRaw = tpl?.secondaryButtonText || '';
-    const secondaryButtonUrlRaw = tpl?.secondaryButtonUrl || '';
+    const buttonTextRaw = tpl?.buttonText ?? fallback?.buttonText ?? '';
+    const buttonUrlRaw = tpl?.buttonUrl ?? fallback?.buttonUrl ?? '';
+    const secondaryButtonTextRaw =
+      tpl?.secondaryButtonText ?? fallback?.secondaryButtonText ?? '';
+    const secondaryButtonUrlRaw =
+      tpl?.secondaryButtonUrl ?? fallback?.secondaryButtonUrl ?? '';
     const footerTextRaw =
-      tpl?.footerText || 'Kanto MG — Le sanctuaire de la culture malgache.';
-    const accentColor = tpl?.accentColor || '#4A6741';
+      tpl?.footerText ||
+      fallback?.footerText ||
+      'Kanto MG — Le sanctuaire de la culture malgache.';
+    const accentColor = tpl?.accentColor || fallback?.accentColor || '#4A6741';
     const senderName = tpl?.senderName || 'Kanto MG • Bêta Test';
 
     // 4. Remplacement des variables dynamiques {{key}}

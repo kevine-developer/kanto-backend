@@ -182,6 +182,33 @@ const DEFAULT_TEMPLATES = [
     contentText: `Kanto MG est officiellement publié sur les stores ! Téléchargez la version finale : https://app-kanto.gastsar.fr/download`,
     footerText: "Kanto MG — Ravan'ny fitiavana, velon'ny fihavanana.",
   },
+  {
+    code: 'UNSUBSCRIBE_CONFIRMATION',
+    name: '11. Confirmation de désinscription (RGPD)',
+    subject: 'Confirmation de votre désinscription du programme Bêta Kanto MG',
+    title: 'Votre désinscription a bien été prise en compte',
+    senderName: 'Kanto MG • Bêta Test',
+    buttonText: 'Rejoindre à nouveau le programme',
+    buttonUrl: 'https://app-kanto.gastsar.fr/beta',
+    secondaryButtonText: 'Partager une suggestion',
+    secondaryButtonUrl: 'https://app-kanto.gastsar.fr/beta?tab=feedback',
+    accentColor: '#C0392B',
+    contentHtml: `<p>Manao ahoana {{userName}},</p>
+<p>Nous vous confirmons que votre demande de retrait du programme de bêta-test de <strong>Kanto MG</strong> a bien été enregistrée et traitée.</p>
+<div style="background-color: #FDF7F7; border-left: 4px solid #C0392B; padding: 14px 18px; margin: 18px 0; border-radius: 6px;">
+  <strong style="color: #922B21;">Protection de vos données &amp; Accès :</strong>
+  <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #5B2C27; line-height: 1.5;">
+    <li>Vos accès aux versions de test fermé (Google Play / TestFlight) ont été révoqués.</li>
+    <li>Votre adresse e-mail a été immédiatement retirée de nos listes de diffusion.</li>
+    <li>Conformément au RGPD, aucune sollicitation ultérieure ne vous sera adressée.</li>
+  </ul>
+</div>
+<p><em>Misaotra betsaka</em> pour l'intérêt et le temps que vous avez accordés à Kanto MG et au rayonnement de la culture malgache.</p>
+<p>Si cette démarche résulte d'une fausse manipulation ou si vous souhaitez nous rejoindre à l'avenir, la porte de Kanto MG vous reste toujours ouverte.</p>`,
+    contentText: `Manao ahoana {{userName}}, votre désinscription du programme bêta Kanto MG est confirmée. Vos accès aux tests et listes de diffusion ont été révoqués conformément au RGPD. Misaotra betsaka pour votre participation. Vous pouvez vous réinscrire à tout moment : https://app-kanto.gastsar.fr/beta`,
+    footerText:
+      'Kanto MG — Ny harena ara-kolontsaina malagasy eo am-pelatananao.',
+  },
 ];
 
 async function seedBetaPlatform() {
