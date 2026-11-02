@@ -369,4 +369,118 @@ describe('BetaTestersService', () => {
       });
     });
   });
+
+  describe('unsubscribe (Désinscription et e-mail de confirmation RGPD)', () => {
+    it('met à jour le statut du testeur et expédie un e-mail officiel de confirmation', async () => {
+      const emailClair = 'candidat.retrait@example.com';
+      prisma.betaTester.findFirst.mockResolvedValue({
+        id: 'tester_unsub',
+        email: encryptEmail(emailClair),
+        emailHash: hashEmail(emailClair),
+        fullName: 'Testeur Retrait',
+        status: TesterStatus.APPROVED,
+        androidStatus: 'INVITED',
+        iosStatus: 'NOT_REQUESTED',
+        unsubscribedAt: null,
+        unsubscribeToken: 'valid_unsub_token',
+      });
+      prisma.betaTester.update.mockResolvedValue({
+        id: 'tester_unsub',
+        status: TesterStatus.REJECTED,
+      });
+
+      const result = await service.unsubscribe({
+        email: emailClair,
+        reason: 'Manque de temps',
+      });
+
+      expect(result.success).toBe(true);
+      expect(prisma.betaTester.update).toHaveBeenCalledWith({
+        where: { id: 'tester_unsub' },
+        data: expect.objectContaining({
+          status: TesterStatus.REJECTED,
+          androidStatus: 'REJECTED',
+          iosStatus: 'REJECTED',
+          unsubscribeReason: 'Manque de temps',
+        }),
+      });
+
+      // Vérifie l'envoi de l'email de confirmation de désinscription
+      expect(emailDispatcher.sendTemplateEmail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: emailClair,
+          templateCode: 'UNSUBSCRIBE_CONFIRMATION',
+          bypassSuppression: true,
+          variables: expect.objectContaining({
+            userName: 'Testeur Retrait',
+            reason: 'Manque de temps',
+          }),
+        }),
+      );
+    });
+
+    it('gère l’idempotence si le testeur était déjà désinscrit sans relancer d’e-mail parasite', async () => {
+      const emailClair = 'deja.parti@example.com';
+      prisma.betaTester.findFirst.mockResolvedValue({
+        id: 'tester_deja_unsub',
+        email: encryptEmail(emailClair),
+        status: TesterStatus.REJECTED,
+        unsubscribedAt: new Date('2026-10-01'),
+      });
+      prisma.betaTester.update.mockResolvedValue({ id: 'tester_deja_unsub' });
+
+      const result = await service.unsubscribe({ email: emailClair });
+
+      expect(result.success).toBe(true);
+      expect(result.alreadyUnsubscribed).toBe(true);
+      expect(emailDispatcher.sendTemplateEmail).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('register (Réactivation après désinscription)', () => {
+    it('permet à un ancien testeur désinscrit de se réinscrire avec succès', async () => {
+      prisma.betaAutomationConfig.findFirst.mockResolvedValue({
+        autoInviteOnApproval: true,
+        autoConfirmRegistration: true,
+      });
+      const emailClair = 'revenant@example.com';
+      prisma.betaTester.findFirst.mockResolvedValue({
+        id: 'tester_reactivated',
+        email: encryptEmail(emailClair),
+        fullName: 'Ancien Partant',
+        status: TesterStatus.REJECTED,
+        unsubscribedAt: new Date('2026-10-15'),
+        unsubscribeToken: 'tok_123',
+      });
+      prisma.betaTester.update.mockResolvedValue({
+        id: 'tester_reactivated',
+        fullName: 'Ancien Partant',
+        platforms: ['ANDROID', 'IOS'],
+        status: TesterStatus.APPROVED,
+      });
+
+      const result = await service.register({
+        email: emailClair,
+        platforms: ['ANDROID', 'IOS'],
+        termsAccepted: true,
+      });
+
+      expect(result.success).toBe(true);
+      expect(result.isReactivated).toBe(true);
+      expect(prisma.betaTester.update).toHaveBeenCalledWith({
+        where: { id: 'tester_reactivated' },
+        data: expect.objectContaining({
+          unsubscribedAt: null,
+          unsubscribeReason: null,
+          status: TesterStatus.APPROVED,
+        }),
+      });
+      expect(emailDispatcher.sendTemplateEmail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: emailClair,
+          templateCode: 'CONFIRMATION',
+        }),
+      );
+    });
+  });
 });

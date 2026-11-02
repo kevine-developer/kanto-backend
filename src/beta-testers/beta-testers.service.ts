@@ -126,6 +126,78 @@ export class BetaTestersService {
     }
 
     if (existing) {
+      // Cas UX utile : si l'utilisateur s'était précédemment désinscrit, lui permettre de se réinscrire proprement
+      const wasUnsubscribed = Boolean(existing.unsubscribedAt);
+
+      if (wasUnsubscribed) {
+        this.logger.log(
+          `🔄 [BetaTesters] Réactivation d'une candidature précédemment désinscrite : ${maskEmail(email)}`,
+        );
+
+        const config = await this.prisma.betaAutomationConfig.findFirst();
+        const hasAndroid = platforms.includes('ANDROID');
+        const hasIos = platforms.includes('IOS');
+        const androidStatus = hasAndroid ? 'PENDING' : 'NOT_REQUESTED';
+        const iosStatus = hasIos ? 'PENDING' : 'NOT_REQUESTED';
+        const initialStatus = config?.autoInviteOnApproval
+          ? TesterStatus.APPROVED
+          : TesterStatus.PENDING;
+
+        const updated = await this.prisma.betaTester.update({
+          where: { id: existing.id },
+          data: {
+            platforms,
+            status: initialStatus,
+            androidStatus,
+            iosStatus,
+            unsubscribedAt: null,
+            unsubscribeReason: null,
+            fullName: dto.fullName?.trim() || existing.fullName,
+            termsAccepted: true,
+            termsAcceptedAt: new Date(),
+            ipAddress: clientIp || existing.ipAddress,
+            userAgent: userAgent || existing.userAgent,
+          },
+        });
+
+        if (config?.autoConfirmRegistration !== false) {
+          try {
+            const platformLabel =
+              hasAndroid && hasIos
+                ? 'Android & iOS'
+                : hasAndroid
+                  ? 'Android'
+                  : 'iOS';
+
+            await this.emailDispatcher.sendTemplateEmail({
+              to: email,
+              templateCode: 'CONFIRMATION',
+              variables: {
+                userName: updated.fullName || 'Bêta-testeur',
+                platform: platformLabel,
+                unsubscribeLink: `https://app-kanto.gastsar.fr/beta?tab=unsubscribe&token=${existing.unsubscribeToken || ''}`,
+              },
+            });
+          } catch (emailErr: unknown) {
+            const msg =
+              emailErr instanceof Error ? emailErr.message : String(emailErr);
+            this.logger.warn(
+              `⚠️ [BetaTesters] Échec envoi email réinscription pour ${maskEmail(email)} : ${msg}`,
+            );
+          }
+        }
+
+        return {
+          success: true,
+          alreadyRegistered: false,
+          isReactivated: true,
+          testerId: updated.id,
+          platforms: updated.platforms,
+          message:
+            'Bon retour parmi nous ! Votre réinscription au programme bêta a été confirmée avec succès. Un e-mail récapitulatif vous a été envoyé.',
+        };
+      }
+
       this.logger.log(
         `ℹ️ [BetaTesters] Inscription existante trouvée pour : ${maskEmail(email)}`,
       );
@@ -358,24 +430,59 @@ export class BetaTestersService {
       throw new BadRequestException('Jeton de désinscription invalide.');
     }
 
+    const alreadyUnsubscribed =
+      tester.unsubscribedAt !== null || tester.status === TesterStatus.REJECTED;
+    const reason = dto.reason?.trim() || 'Demande directe de l’utilisateur';
+
     await this.prisma.betaTester.update({
       where: { id: tester.id },
       data: {
         status: TesterStatus.REJECTED,
         androidStatus: 'REJECTED',
         iosStatus: 'REJECTED',
-        unsubscribedAt: new Date(),
-        unsubscribeReason:
-          dto.reason?.trim() || 'Demande directe de l’utilisateur',
+        unsubscribedAt: tester.unsubscribedAt || new Date(),
+        unsubscribeReason: reason,
       },
     });
 
-    this.logger.log(`👋 [BetaTesters] Désinscription effectuée pour ${maskEmail(tester.email)}`);
+    const realEmail =
+      decryptEmail(tester.email) || dto.email?.trim()?.toLowerCase();
+    this.logger.log(
+      `👋 [BetaTesters] Désinscription effectuée pour ${maskEmail(realEmail || tester.email)} (Motif: ${reason})`,
+    );
+
+    // Envoi de l'accusé de réception officiel de désinscription (obligation RGPD et courtoisie UX)
+    if (realEmail && realEmail.includes('@') && !alreadyUnsubscribed) {
+      try {
+        await this.emailDispatcher.sendTemplateEmail({
+          to: realEmail,
+          templateCode: 'UNSUBSCRIBE_CONFIRMATION',
+          variables: {
+            userName: tester.fullName || 'Bêta-testeur',
+            reason,
+            supportEmail: 'contact@kanto.mg',
+            resubscribeLink: 'https://app-kanto.gastsar.fr/beta',
+          },
+          bypassSuppression: true,
+        });
+        this.logger.log(
+          `✉️ [BetaTesters] E-mail de confirmation de désinscription délivré à ${maskEmail(realEmail)}`,
+        );
+      } catch (emailErr: unknown) {
+        const msg =
+          emailErr instanceof Error ? emailErr.message : String(emailErr);
+        this.logger.warn(
+          `⚠️ [BetaTesters] Échec envoi email de désinscription à ${maskEmail(realEmail)} : ${msg}`,
+        );
+      }
+    }
 
     return {
       success: true,
-      message:
-        'Vous avez été désinscrit avec succès du programme de bêta-test Kanto MG.',
+      alreadyUnsubscribed,
+      message: alreadyUnsubscribed
+        ? 'Votre adresse était déjà désinscrite du programme bêta Kanto MG.'
+        : 'Votre désinscription a été effectuée avec succès. Un e-mail de confirmation vous a été envoyé.',
     };
   }
 
@@ -429,10 +536,14 @@ export class BetaTestersService {
         tester.iosStatus === 'ACTIVE');
 
     const masked = maskEmail(tester.email);
+    const isUnsubscribed = Boolean(
+      tester.unsubscribedAt || tester.status === TesterStatus.REJECTED,
+    );
 
     return {
       success: true,
       exists: true,
+      isUnsubscribed,
       tester: {
         id: tester.id,
         email: masked,
@@ -446,6 +557,8 @@ export class BetaTestersService {
         createdAt: tester.createdAt,
         androidInvitedAt: tester.androidInvitedAt || tester.invitedAt,
         iosInvitedAt: tester.iosInvitedAt,
+        unsubscribedAt: tester.unsubscribedAt,
+        isUnsubscribed,
       },
       links: {
         androidWeb:
@@ -458,9 +571,11 @@ export class BetaTestersService {
           config?.testFlightPublicLink ||
           'https://testflight.apple.com/join/kantomg',
       },
-      canDownloadAndroid,
-      canDownloadIos,
-      message: `Votre participation avec l'adresse ${masked} est confirmée.`,
+      canDownloadAndroid: !isUnsubscribed && canDownloadAndroid,
+      canDownloadIos: !isUnsubscribed && canDownloadIos,
+      message: isUnsubscribed
+        ? `Votre adresse ${masked} est actuellement désinscrite du programme bêta. Vous pouvez vous réinscrire à tout moment pour réactiver vos accès.`
+        : `Votre participation avec l'adresse ${masked} est confirmée.`,
     };
   }
 
