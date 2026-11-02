@@ -201,24 +201,36 @@ export class BetaTestersController {
   }
 
   /**
-   * Consultation publique du statut de participation.
-   * Accepte POST (body JSON) ou GET (?email=...) pour un accès direct.
+   * Consultation publique du statut de participation via requête POST (AJAX JSON).
    */
-  @Get([
-    'api/beta-testers/verify-participation',
-    'beta-testers/verify-participation',
-  ])
   @Post([
     'api/beta-testers/verify-participation',
     'beta-testers/verify-participation',
   ])
   @HttpCode(HttpStatus.OK)
   @Throttle({ default: { limit: 10, ttl: 60000 } })
-  async verifyParticipation(
-    @Body() dto?: VerifyBetaTesterDto,
-    @Query('email') queryEmail?: string,
-  ) {
-    const email = dto?.email || queryEmail;
+  async verifyParticipation(@Body() dto: VerifyBetaTesterDto) {
+    if (!dto?.email || !dto.email.trim()) {
+      return {
+        success: false,
+        exists: false,
+        message:
+          'Veuillez renseigner votre adresse e-mail pour consulter votre statut de participation.',
+      };
+    }
+    return this.betaTestersService.verifyParticipation(dto.email.trim());
+  }
+
+  /**
+   * Consultation publique du statut de participation via requête GET directe (?email=...).
+   */
+  @Get([
+    'api/beta-testers/verify-participation',
+    'beta-testers/verify-participation',
+  ])
+  @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
+  async verifyParticipationByQuery(@Query('email') email?: string) {
     if (!email || !email.trim()) {
       return {
         success: false,
@@ -241,46 +253,64 @@ export class BetaTestersController {
   }
 
   /**
-   * Désinscription publique du programme bêta (RGPD).
-   * Accepte POST ou GET (avec ?token= ou ?email=) pour les liens directs dans les e-mails.
+   * Désinscription publique du programme bêta via requête POST.
    */
-  @Get(['api/beta-testers/unsubscribe', 'beta-testers/unsubscribe'])
   @Post(['api/beta-testers/unsubscribe', 'beta-testers/unsubscribe'])
   @HttpCode(HttpStatus.OK)
   @Throttle({ default: { limit: 5, ttl: 60000 } })
-  async unsubscribe(
-    @Body() dto?: UnsubscribeBetaDto,
+  async unsubscribe(@Body() dto: UnsubscribeBetaDto) {
+    return this.betaTestersService.unsubscribe(dto);
+  }
+
+  /**
+   * Désinscription publique du programme bêta via lien GET dans un email (?token=... ou ?email=...).
+   */
+  @Get(['api/beta-testers/unsubscribe', 'beta-testers/unsubscribe'])
+  @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
+  async unsubscribeByQuery(
     @Query('token') queryToken?: string,
     @Query('email') queryEmail?: string,
     @Query('reason') queryReason?: string,
   ) {
     const finalDto: UnsubscribeBetaDto = {
-      token: dto?.token || queryToken,
-      email: dto?.email || queryEmail,
-      reason: dto?.reason || queryReason,
+      token: queryToken,
+      email: queryEmail,
+      reason: queryReason,
     };
     return this.betaTestersService.unsubscribe(finalDto);
   }
 
   /**
-   * Renvoi public des liens d'accès (Google Play / TestFlight).
-   * Accepte POST ou GET pour éviter toute collision de routage avec les routes administratives.
+   * Renvoi public des liens d'accès (Google Play / TestFlight) via requête POST.
    */
-  @Get([
-    'api/beta-testers/resend-invite-public',
-    'beta-testers/resend-invite-public',
-  ])
   @Post([
     'api/beta-testers/resend-invite-public',
     'beta-testers/resend-invite-public',
   ])
   @HttpCode(HttpStatus.OK)
   @Throttle({ default: { limit: 5, ttl: 60000 } })
-  async resendInvitePublic(
-    @Body() dto?: VerifyBetaTesterDto,
-    @Query('email') queryEmail?: string,
-  ) {
-    const email = dto?.email || queryEmail;
+  async resendInvitePublic(@Body() dto: VerifyBetaTesterDto) {
+    if (!dto?.email || !dto.email.trim()) {
+      return {
+        success: false,
+        message:
+          'Veuillez renseigner votre adresse e-mail pour recevoir vos liens d’accès.',
+      };
+    }
+    return this.betaTestersService.resendInvitePublic(dto.email.trim());
+  }
+
+  /**
+   * Renvoi public des liens d'accès via requête GET (?email=...).
+   */
+  @Get([
+    'api/beta-testers/resend-invite-public',
+    'beta-testers/resend-invite-public',
+  ])
+  @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
+  async resendInvitePublicByQuery(@Query('email') email?: string) {
     if (!email || !email.trim()) {
       return {
         success: false,

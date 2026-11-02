@@ -246,4 +246,62 @@ describe('BetaTestersController', () => {
       expect(res.json).toHaveBeenCalledWith(duplicateResult);
     });
   });
+
+  describe('verifyParticipation', () => {
+    it('doit vérifier le statut via requête POST (Body JSON)', async () => {
+      const mockResult = {
+        success: true,
+        exists: true,
+        tester: {
+          id: 't-123',
+          maskedEmail: 't***@kanto.mg',
+          platforms: ['ANDROID'],
+          androidStatus: 'APPROVED',
+        },
+      };
+      service.verifyParticipation.mockResolvedValue(mockResult);
+
+      const res = await controller.verifyParticipation({
+        email: 'test@kanto.mg',
+      });
+
+      expect(service.verifyParticipation).toHaveBeenCalledWith('test@kanto.mg');
+      expect(res).toEqual(mockResult);
+    });
+
+    it('doit renvoyer un message d’erreur si l’e-mail POST est vide', async () => {
+      const res = await controller.verifyParticipation({ email: '' });
+
+      expect(res.success).toBe(false);
+      expect(res.exists).toBe(false);
+      expect(service.verifyParticipation).not.toHaveBeenCalled();
+    });
+
+    it('doit vérifier le statut via requête GET (Query string)', async () => {
+      const mockResult = {
+        success: true,
+        exists: true,
+        tester: {
+          id: 't-123',
+          maskedEmail: 't***@kanto.mg',
+          platforms: ['ANDROID'],
+          androidStatus: 'APPROVED',
+        },
+      };
+      service.verifyParticipation.mockResolvedValue(mockResult);
+
+      const res = await controller.verifyParticipationByQuery('test@kanto.mg');
+
+      expect(service.verifyParticipation).toHaveBeenCalledWith('test@kanto.mg');
+      expect(res).toEqual(mockResult);
+    });
+
+    it('doit renvoyer un message d’erreur si l’e-mail GET est absent', async () => {
+      const res = await controller.verifyParticipationByQuery(undefined);
+
+      expect(res.success).toBe(false);
+      expect(res.exists).toBe(false);
+      expect(service.verifyParticipation).not.toHaveBeenCalled();
+    });
+  });
 });
