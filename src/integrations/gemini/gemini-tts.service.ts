@@ -24,7 +24,7 @@ export class GeminiTtsService {
   private readonly defaultModel =
     process.env.GEMINI_CONTENT_MODEL_TTS ||
     process.env.GEMINI_TTS_MODEL ||
-    'gemini-3.8-flash-tts';
+    'gemini-2.5-flash-preview-tts';
 
   private readonly defaultVoice = process.env.GEMINI_TTS_VOICE || 'Charon';
 
@@ -179,7 +179,7 @@ export class GeminiTtsService {
 
     const candidateModels = [
       this.defaultModel,
-      'gemini-3.8-flash-lite-tts',
+      'gemini-2.0-flash',
       'gemini-2.5-flash-preview-tts',
     ].filter((m, i, arr) => arr.indexOf(m) === i);
 
