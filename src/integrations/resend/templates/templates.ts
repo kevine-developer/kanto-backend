@@ -924,6 +924,95 @@ export interface ContributionStatusUpdateEmailData {
   feedbackReason?: string;
 }
 
+
+/**
+ * 9b. Email envoyé à l'utilisateur lors de la soumission d'une contribution (Accusé de réception).
+ */
+export interface ContributionSubmittedEmailData {
+  to: string;
+  userName?: string;
+  contributionTitle: string;
+  category: string;
+}
+
+export function buildContributionSubmittedEmail(
+  data: ContributionSubmittedEmailData,
+): EmailRenderOutput {
+  const safeName = escapeHtml(data.userName?.trim());
+  const greetingHtml = safeName ? `Manao ahoana ${safeName},` : 'Manao ahoana,';
+  const greetingText = data.userName?.trim()
+    ? `Manao ahoana ${data.userName.trim()},`
+    : 'Manao ahoana,';
+  const subject = "Votre proposition a bien été transmise à l'équipe — Kanto";
+
+  const categoryLabels: Record<string, string> = {
+    PROVERBE: 'Ohabolana (Proverbe)',
+    EXPRESSION: 'Oha-pitenenana (Expression)',
+    DICTON: 'Fomba fiteny (Dicton)',
+    CITATION: 'Fitenenana malaza (Citation)',
+    CONTE: 'Angano (Conte traditionnel)',
+    KABARY: 'Kabary (Art oratoire)',
+  };
+  const categoryLabel = categoryLabels[data.category] || data.category;
+  const safeTitle = escapeHtml(data.contributionTitle);
+
+  const text = `${greetingText}
+
+Misaotra betsaka ! Votre proposition (« ${data.contributionTitle} ») dans la catégorie ${categoryLabel} a bien été reçue par notre équipe éditoriale.
+
+Nos modérateurs l'examineront avec bienveillance afin de vérifier son authenticité, sa conformité culturelle et son orthographe. Vous recevrez une notification dès que la revue sera terminée.
+
+Vous pouvez suivre l'état de vos propositions à tout moment dans la section « Mes contributions » de votre profil.
+
+Kanto — Lova, Kolontsaina & Tantara Malagasy`.trim();
+
+  const metadataItems = [
+    { label: 'Titre / Extrait', value: data.contributionTitle },
+    { label: 'Catégorie', value: categoryLabel },
+    { label: 'Statut', value: "En cours d'examen" },
+  ];
+
+  const contentHtml = `
+    <h1 style="font-size: 19px; font-weight: 700; color: ${KANTO_COLORS.textPrimary}; margin: 0 0 16px 0; line-height: 26px;">
+      Proposition bien reçue !
+    </h1>
+
+    <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 16px 0;">
+      ${greetingHtml}
+    </p>
+
+    <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 20px 0;">
+      Misaotra betsaka ! Votre contribution (« <strong>${safeTitle}</strong> ») a bien été transmise. Nos modérateurs l'examinent actuellement avec attention afin de valoriser au mieux notre patrimoine culturel partagé.
+    </p>
+
+    ${renderMetadataTable(metadataItems)}
+
+    <div style="margin-top: 24px;">
+      ${renderButton({
+        text: 'Suivre mes contributions',
+        url: 'https://kanto.mg/profil',
+        variant: 'terracotta',
+      })}
+    </div>
+
+    <div style="margin-top: 20px;">
+      ${renderNotice({
+        content: 'Délai indicatif de modération : notre équipe traite généralement les propositions sous 24 à 48 heures. Vous recevrez une notification dès validation.',
+        variant: 'info',
+      })}
+    </div>
+  `;
+
+  const html = renderEmailLayout({
+    title: subject,
+    preheader: `Votre proposition « ${safeTitle} » a bien été reçue par l'équipe Kanto.`,
+    headerBadge: { label: 'Proposition enregistrée', variant: 'tanimbary' },
+    contentHtml,
+  });
+
+  return { subject, html, text };
+}
+
 export function buildContributionStatusUpdateEmail(
   data: ContributionStatusUpdateEmailData,
 ): EmailRenderOutput {
@@ -1171,6 +1260,161 @@ https://kanto.mg`.trim();
     preheader:
       'Confirmation de la suppression définitive de votre compte Kanto',
     headerBadge: { label: 'Compte supprimé', variant: 'terracotta' },
+    contentHtml,
+  });
+
+  return { subject, html, text };
+}
+
+
+// ============================================================
+// 17. Notification de mise en attente de suppression (Rétractation 30 jours)
+// ============================================================
+
+export interface AccountPendingDeletionEmailData {
+  userName?: string;
+  to: string;
+  deletionScheduledAt: Date;
+}
+
+export function buildAccountPendingDeletionEmail(
+  data: AccountPendingDeletionEmailData,
+): EmailRenderOutput {
+  const safeName = escapeHtml(data.userName?.trim());
+  const greetingHtml = safeName ? `Bonjour ${safeName},` : 'Bonjour,';
+  const greetingText = data.userName?.trim()
+    ? `Bonjour ${data.userName.trim()},`
+    : 'Bonjour,';
+
+  const subject = 'Votre compte Kanto sera supprimé dans 30 jours';
+
+  const dateStr = data.deletionScheduledAt.toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
+  const text = `${greetingText}
+
+Nous avons bien pris en compte votre demande de suppression de compte Kanto.
+
+Conformément à notre politique de confidentialité, votre compte est désormais désactivé et placé dans une période de rétractation de 30 jours.
+
+La suppression définitive de l'ensemble de vos données personnelles interviendra automatiquement le ${dateStr}.
+
+Vous avez changé d'avis ?
+Vous pouvez annuler cette suppression à tout moment avant le ${dateStr} simplement en vous reconnectant à l'application Kanto avec cette adresse email et en choisissant « Réactiver mon compte ».
+
+Sans action de votre part d'ici cette date, vos données personnelles seront définitivement effacées et anonymisées.
+
+Kanto — Lova, Kolontsaina & Tantara Malagasy
+https://kanto.mg`.trim();
+
+  const contentHtml = `
+    <h1 style="font-size: 18px; font-weight: 700; color: ${KANTO_COLORS.textPrimary}; margin: 0 0 16px 0; line-height: 24px; letter-spacing: -0.2px;">
+      Demande de suppression de compte enregistrée
+    </h1>
+
+    <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 14px 0;">
+      ${greetingHtml}
+    </p>
+
+    <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 16px 0;">
+      Votre demande de suppression de compte a bien été enregistrée. Votre compte est actuellement <strong>désactivé</strong> et vous bénéficiez d'un délai de rétractation de 30 jours.
+    </p>
+
+    ${renderNotice({
+      title: 'Période de rétractation jusqu\'au ' + dateStr,
+      content:
+        'Votre compte sera définitivement supprimé le <strong>' + dateStr + '</strong>.<br>' +
+        'D\'ici cette date, vos sessions ont été déconnectées et votre profil est masqué aux autres utilisateurs.',
+      variant: 'security',
+    })}
+
+    <div style="margin: 24px 0; padding: 16px; background-color: #F8F9FA; border-radius: 8px; border-left: 4px solid ${KANTO_COLORS.tanimbary};">
+      <h3 style="font-size: 14px; font-weight: 600; color: ${KANTO_COLORS.textPrimary}; margin: 0 0 8px 0;">
+        Vous souhaitez annuler la suppression ?
+      </h3>
+      <p style="font-size: 13px; line-height: 20px; color: ${KANTO_COLORS.textSecondary}; margin: 0;">
+        Reconnectez-vous simplement à l'application Kanto avec votre adresse email avant le ${dateStr}. Il vous suffira de sélectionner <strong>« Réactiver mon compte »</strong> pour reprendre votre progression là où vous l'avez laissée.
+      </p>
+    </div>
+
+    <p style="font-size: 12px; line-height: 18px; color: ${KANTO_COLORS.textFootnote}; margin: 24px 0 0 0;">
+      Si vous êtes à l'origine de cette demande et souhaitez que la suppression aille à son terme, vous n'avez rien d'autre à faire.
+    </p>
+  `;
+
+  const html = renderEmailLayout({
+    title: subject,
+    preheader: 'Votre compte Kanto sera définitivement supprimé dans 30 jours',
+    headerBadge: { label: 'Délai de rétractation', variant: 'ambre' },
+    contentHtml,
+  });
+
+  return { subject, html, text };
+}
+
+// ============================================================
+// 18. Notification de réactivation de compte
+// ============================================================
+
+export interface AccountReactivatedEmailData {
+  userName?: string;
+  to: string;
+}
+
+export function buildAccountReactivatedEmail(
+  data: AccountReactivatedEmailData,
+): EmailRenderOutput {
+  const safeName = escapeHtml(data.userName?.trim());
+  const greetingHtml = safeName ? `Bonjour ${safeName},` : 'Bonjour,';
+  const greetingText = data.userName?.trim()
+    ? `Bonjour ${data.userName.trim()},`
+    : 'Bonjour,';
+
+  const subject = 'Votre compte Kanto est à nouveau actif';
+
+  const text = `${greetingText}
+
+Bonne nouvelle ! Votre compte Kanto a été réactivé avec succès.
+
+La demande de suppression en cours a été immédiatement annulée. Vos favoris, votre progression de jeu et vos points sont intacts.
+
+Nous sommes ravis de vous retrouver parmi nous sur Kanto !
+
+Kanto — Lova, Kolontsaina & Tantara Malagasy
+https://kanto.mg`.trim();
+
+  const contentHtml = `
+    <h1 style="font-size: 18px; font-weight: 700; color: ${KANTO_COLORS.textPrimary}; margin: 0 0 16px 0; line-height: 24px; letter-spacing: -0.2px;">
+      Heureux de vous revoir sur Kanto !
+    </h1>
+
+    <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 14px 0;">
+      ${greetingHtml}
+    </p>
+
+    <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 16px 0;">
+      Votre demande de suppression a bien été <strong>annulée</strong>. Votre compte est à nouveau pleinement actif et sécurisé.
+    </p>
+
+    ${renderNotice({
+      title: 'Compte réactivé avec succès',
+      content:
+        'Toutes vos données (progression culturelle, badges, favoris et amitiés) ont été conservées.',
+      variant: 'success',
+    })}
+
+    <p style="font-size: 13px; line-height: 20px; color: ${KANTO_COLORS.textSecondary}; margin: 20px 0 0 0;">
+      Si vous n'êtes pas à l'origine de cette réactivation, nous vous invitons à modifier immédiatement votre mot de passe depuis les paramètres de l'application.
+    </p>
+  `;
+
+  const html = renderEmailLayout({
+    title: subject,
+    preheader: 'Votre compte Kanto est à nouveau pleinement actif',
+    headerBadge: { label: 'Compte réactivé', variant: 'tanimbary' },
     contentHtml,
   });
 

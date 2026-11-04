@@ -5,6 +5,7 @@ import { NotificationsModule } from '../../notifications/notifications.module.js
 import { UserQuizModule } from '../../user-quiz/user-quiz.module.js';
 import { MultiplayerController } from './multiplayer.controller.js';
 import { MultiplayerService } from './multiplayer.service.js';
+import { MultiplayerExpirationScheduler } from './multiplayer-expiration.scheduler.js';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { MultiplayerService } from './multiplayer.service.js';
     forwardRef(() => UserQuizModule),
   ],
   controllers: [MultiplayerController],
-  providers: [MultiplayerService],
-  exports: [MultiplayerService],
+  providers: [MultiplayerService, MultiplayerExpirationScheduler],
+  exports: [MultiplayerService, MultiplayerExpirationScheduler],
 })
 export class MultiplayerModule {}

@@ -5,6 +5,7 @@ export const REALTIME_CHANNELS = {
   NOTIFICATIONS: 'kanto:events:notifications',
   COMMENTS: 'kanto:events:comments',
   LEADERBOARD: 'kanto:events:leaderboard',
+  DUEL: 'kanto:events:duel',
 } as const;
 
 /**
@@ -41,6 +42,7 @@ export const SOCKET_EVENTS = {
   DUEL_ROUND_END: 'duel:round_end',
   DUEL_GAME_FINISH: 'duel:game_finish',
   DUEL_SESSION_CANCELLED: 'duel:session_cancelled',
+  DUEL_SESSION_EXPIRED: 'duel:session_expired',
   DUEL_TOGGLE_SPECTATOR: 'duel:toggle_spectator',
   DUEL_HOST_DETAILS: 'duel:host_details',
   DUEL_KICK_PLAYER: 'duel:kick_player',
@@ -128,4 +130,11 @@ export interface LeaderboardRealtimePayload {
   xpDelta?: number;
   source?: string;
   timestamp?: number;
+}
+
+export interface DuelRealtimeBroadcastPayload {
+  event: string;
+  code: string;
+  data: Record<string, unknown>;
+  closeRoom?: boolean;
 }

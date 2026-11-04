@@ -355,7 +355,49 @@ export class EventNotificationService {
         }
 
         // ─── MODÉRATION DES CONTRIBUTIONS ────────────────────────────────────
-        case 'CONTRIBUTION_APPROVED': {
+
+        case 'CONTRIBUTION_SUBMITTED': {
+          const preview = event.contributionTitle.slice(0, 45);
+          await this.notificationsService.createNotification({
+            userId: user.id,
+            titleMg: 'Fandraisana anjara : Voaray ny tolotrao 📜',
+            titleFr: 'Contribution : Proposition bien reçue 📜',
+            messageMg: `Voaray soa aman-tsara ny fandraisana anjaranao (« ${preview}... »). Andalam-pandinihana ataon'ny ekipa izany ankehitriny.`,
+            messageFr: `Votre contribution (« ${preview}... ») a bien été enregistrée et est en attente de modération par l'équipe Kanto.`,
+            category: 'community',
+            badgeText: 'Fandraisana anjara',
+            badgeType: 'info',
+            iconName: 'document-text-outline',
+            iconColor: '#3B82F6',
+            targetRoute: '/(tabs)/profil',
+            isBroadcast: false,
+            idempotencyKey: `notif_${idempotencyKey}`,
+          });
+          inAppCreated = true;
+
+          if (this.resendService && user.email) {
+            void this.resendService
+              .sendContributionSubmittedEmail({
+                to: user.email,
+                userName: user.name || undefined,
+                contributionTitle: preview,
+                category: event.category,
+                contributionId: event.contributionId,
+                idempotencyKey: `email_${idempotencyKey}`,
+              })
+              .then(() => {
+                emailSent = true;
+              })
+              .catch((err) => {
+                this.logger.warn(
+                  `[EventNotification] Échec email accusé de réception contribution : ${err}`,
+                );
+              });
+          }
+          break;
+        }
+
+      case 'CONTRIBUTION_APPROVED': {
           const preview = event.contributionTitle.slice(0, 45);
           await this.notificationsService.createNotification({
             userId: user.id,

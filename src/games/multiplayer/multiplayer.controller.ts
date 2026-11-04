@@ -29,6 +29,12 @@ export class MultiplayerController {
     return this.multiplayerService.joinGame(session.user.id, dto);
   }
 
+  @Get('metrics/summary')
+  @UseGuards(AuthGuard)
+  async getMetrics() {
+    return this.multiplayerService.getMultiplayerMetrics();
+  }
+
   @Get(':code')
   async getGameState(@Param('code') code: string) {
     return this.multiplayerService.getGameState(code);

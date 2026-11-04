@@ -45,6 +45,9 @@ export function createPrismaMock() {
   const mock = {
     // Auth / Users
     user: createModelMock(),
+    userBlock: createModelMock(),
+    friendship: createModelMock(),
+    encouragement: createModelMock(),
     session: createModelMock(),
     account: createModelMock(),
 

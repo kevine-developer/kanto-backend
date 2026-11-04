@@ -320,6 +320,20 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       });
     }
 
+    // 5. Notification centralisée et accusé de réception par e-mail
+    void this.eventNotificationService
+      .dispatchNotificationEvent({
+        type: 'CONTRIBUTION_SUBMITTED',
+        recipientUserId: params.userId,
+        contributionId: params.contributionId,
+        contributionTitle: params.titlePreview,
+        category: updated.category,
+      })
+      .catch((err) => {
+        this.logger.warn(
+          `Échec dispatch CONTRIBUTION_SUBMITTED à ${params.userId}: ${err}`,
+        );
+      });
     // 5. Notification in-app neutre à l'utilisateur
     void this.notificationsService
       .createNotification({
@@ -709,6 +723,7 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       where: { id },
     });
     if (!contribution) throw new NotFoundException('Contribution introuvable');
+
 
     if (contribution.userId !== userId) {
       throw new ForbiddenException(
@@ -1317,6 +1332,13 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       where: { id },
     });
     if (!contribution) throw new NotFoundException('Contribution introuvable');
+
+    // Sécurité éditoriale : interdiction stricte de l'auto-validation par l'administrateur
+    if (approve && adminUserId && contribution.userId === adminUserId) {
+      throw new ForbiddenException(
+        'Un administrateur ne peut pas auto-valider sa propre contribution. La revue par un pair est requise.',
+      );
+    }
 
     // ── Cas 1 : Demande de modifications au contributeur ─────────────────────
     if (!approve && requestChanges) {

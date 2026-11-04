@@ -16,10 +16,12 @@ import {
 import { buildUser } from '../test-utils/builders/user.builder.js';
 import { hashPassword } from '@better-auth/utils/password';
 
-describe('UsersService — suppression de compte (RGPD & Sécurité)', () => {
+describe('UsersService — cycle de vie et suppression de compte (RGPD & Rétractation 30 jours)', () => {
   let service: UsersService;
   let prismaMock: PrismaMock;
   let resendMock: {
+    sendAccountPendingDeletionEmail: jest.Mock<any>;
+    sendAccountReactivatedEmail: jest.Mock<any>;
     sendAccountDeletionEmail: jest.Mock<any>;
     sendSecurityChangeEmail: jest.Mock<any>;
     isConfigured: jest.Mock<any>;
@@ -50,9 +52,15 @@ describe('UsersService — suppression de compte (RGPD & Sécurité)', () => {
     };
 
     resendMock = {
+      sendAccountPendingDeletionEmail: jest
+        .fn<any>()
+        .mockResolvedValue({ id: 'resend-retract' }),
+      sendAccountReactivatedEmail: jest
+        .fn<any>()
+        .mockResolvedValue({ id: 'resend-reactivate' }),
       sendAccountDeletionEmail: jest
         .fn<any>()
-        .mockResolvedValue({ id: 'resend-123' }),
+        .mockResolvedValue({ id: 'resend-final' }),
       sendSecurityChangeEmail: jest
         .fn<any>()
         .mockResolvedValue({ id: 'sec-1' }),
@@ -143,7 +151,7 @@ describe('UsersService — suppression de compte (RGPD & Sécurité)', () => {
       ).rejects.toThrow(UnauthorizedException);
     });
 
-    it('supprime avec succès le compte lorsque le mot de passe et la phrase sont corrects', async () => {
+    it('enclenche avec succès la rétractation de 30 jours et révoque les sessions', async () => {
       const user = buildUser({
         id: 'user-1',
         email: 'user1@example.com',
@@ -163,31 +171,36 @@ describe('UsersService — suppression de compte (RGPD & Sécurité)', () => {
         ],
       });
 
-      prismaMock.contribution.count.mockResolvedValue(0);
-      prismaMock.user.delete.mockResolvedValue(user);
-
       const result = await service.deleteAccount('user-1', {
         confirmationPhrase: VALID_PHRASE,
         password: PLAIN_PASSWORD,
       });
 
       expect(result.success).toBe(true);
+      expect(result.deletionScheduledAt).toBeDefined();
       expect(prismaMock.$transaction).toHaveBeenCalled();
-      expect(prismaMock.user.delete).toHaveBeenCalledWith({
-        where: { id: 'user-1' },
-      });
-      expect(cloudinaryMock.deleteMediaFromUrl).toHaveBeenCalledWith(
-        user.image,
+      expect(prismaMock.user.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: 'user-1' },
+          data: expect.objectContaining({
+            status: 'PENDING_DELETION',
+          }),
+        }),
       );
-      expect(resendMock.sendAccountDeletionEmail).toHaveBeenCalledWith({
-        to: 'user1@example.com',
-        userName: 'Soa Malagasy',
+      expect(prismaMock.session.deleteMany).toHaveBeenCalledWith({
+        where: { userId: 'user-1' },
       });
+      expect(resendMock.sendAccountPendingDeletionEmail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: 'user1@example.com',
+          userName: 'Soa Malagasy',
+        }),
+      );
     });
   });
 
   describe('Compte OAuth exclusif (Google, etc.)', () => {
-    it('supprime avec succès le compte sans exiger de mot de passe', async () => {
+    it('enclenche avec succès la rétractation sans exiger de mot de passe', async () => {
       const user = buildUser({
         id: 'user-google',
         email: 'google.user@gmail.com',
@@ -207,113 +220,82 @@ describe('UsersService — suppression de compte (RGPD & Sécurité)', () => {
         ],
       });
 
-      prismaMock.contribution.count.mockResolvedValue(0);
-      prismaMock.user.delete.mockResolvedValue(user);
-
       const result = await service.deleteAccount('user-google', {
         confirmationPhrase: VALID_PHRASE,
       });
 
       expect(result.success).toBe(true);
-      expect(prismaMock.user.delete).toHaveBeenCalledWith({
-        where: { id: 'user-google' },
-      });
-      // Pas d'image personnalisée -> deleteMediaFromUrl non appelé
-      expect(cloudinaryMock.deleteMediaFromUrl).not.toHaveBeenCalled();
-      expect(resendMock.sendAccountDeletionEmail).toHaveBeenCalledWith({
-        to: 'google.user@gmail.com',
-        userName: 'Andry Google',
+      expect(prismaMock.user.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: 'user-google' },
+          data: expect.objectContaining({
+            status: 'PENDING_DELETION',
+          }),
+        }),
+      );
+      expect(prismaMock.session.deleteMany).toHaveBeenCalledWith({
+        where: { userId: 'user-google' },
       });
     });
   });
 
-  describe('Préservation des contributions culturelles & UGC', () => {
-    it('anonymise les contributions approuvées en les réassignant au compte archive', async () => {
-      const user = buildUser({ id: 'user-contrib', email: 'contrib@kanto.mg' });
-
+  describe('reactivateAccount', () => {
+    it('réactive avec succès un compte en cours de suppression et notifie l’utilisateur', async () => {
       prismaMock.user.findUnique.mockResolvedValue({
-        ...user,
-        accounts: [
-          {
-            id: 'acc-g',
-            providerId: 'google',
-            userId: 'user-contrib',
-            password: null,
-          },
-        ],
+        id: 'user-react',
+        email: 'react@kanto.mg',
+        name: 'Faly React',
+        status: 'PENDING_DELETION',
       });
 
-      // 3 contributions approuvées
-      prismaMock.contribution.count.mockResolvedValue(3);
-      const archiveUser = { id: 'archive-id-99', email: 'archive@kanto.mg' };
-      prismaMock.user.upsert.mockResolvedValue(archiveUser);
-      prismaMock.user.delete.mockResolvedValue(user);
+      const result = await service.reactivateAccount('user-react');
 
-      await service.deleteAccount('user-contrib', {
-        confirmationPhrase: VALID_PHRASE,
-      });
-
-      // Vérifie que les contributions non approuvées sont supprimées
-      expect(prismaMock.contribution.deleteMany).toHaveBeenCalledWith({
-        where: {
-          userId: 'user-contrib',
-          status: { not: 'APPROVED' },
-        },
-      });
-
-      // Vérifie que l'utilisateur d'archive est créé/récupéré
-      expect(prismaMock.user.upsert).toHaveBeenCalledWith(
-        expect.objectContaining({
-          where: { email: 'archive@kanto.mg' },
-        }),
-      );
-
-      // Vérifie que les contributions approuvées sont réassignées au compte archive
-      expect(prismaMock.contribution.updateMany).toHaveBeenCalledWith({
-        where: {
-          userId: 'user-contrib',
-          status: 'APPROVED',
-        },
+      expect(result.success).toBe(true);
+      expect(prismaMock.user.update).toHaveBeenCalledWith({
+        where: { id: 'user-react' },
         data: {
-          userId: 'archive-id-99',
+          status: 'ACTIVE',
+          deactivatedAt: null,
+          deletionScheduledAt: null,
         },
+      });
+      expect(resendMock.sendAccountReactivatedEmail).toHaveBeenCalledWith({
+        to: 'react@kanto.mg',
+        userName: 'Faly React',
       });
     });
+  });
 
-    it('nettoie les quiz sets UGC et détache les sessions de duel', async () => {
-      const user = buildUser({ id: 'user-ugc' });
-      prismaMock.user.findUnique.mockResolvedValue({
-        ...user,
-        accounts: [],
-      });
+  describe('purgeScheduledDeletions', () => {
+    it('purge définitivement les comptes expirés et préserve les quiz UGC en les archivant', async () => {
+      const expUser = {
+        id: 'user-expired',
+        email: 'exp@kanto.mg',
+        name: 'Ancien Joueur',
+        image: 'https://res.cloudinary.com/kanto/avatar.jpg',
+      };
+
+      prismaMock.user.findMany.mockResolvedValue([expUser]);
+      prismaMock.user.upsert.mockResolvedValue({ id: 'archive-id' });
       prismaMock.contribution.count.mockResolvedValue(0);
-      prismaMock.user.delete.mockResolvedValue(user);
 
-      await service.deleteAccount('user-ugc', {
-        confirmationPhrase: VALID_PHRASE,
+      const results = await service.purgeScheduledDeletions();
+
+      expect(results).toHaveLength(1);
+      expect(results[0].success).toBe(true);
+      expect(prismaMock.$transaction).toHaveBeenCalled();
+      // Préservation des UGC via réassignation à l'archive
+      expect(prismaMock.userQuizSet.updateMany).toHaveBeenCalledWith({
+        where: { authorId: 'user-expired' },
+        data: { authorId: 'archive-id' },
       });
-
-      expect(prismaMock.duelSession.updateMany).toHaveBeenCalledWith(
-        expect.objectContaining({
-          where: {
-            customQuizSet: { authorId: 'user-ugc' },
-          },
-          data: {
-            customQuizSetId: null,
-          },
-        }),
-      );
-
-      expect(prismaMock.userQuestion.deleteMany).toHaveBeenCalledWith({
-        where: {
-          quizSet: { authorId: 'user-ugc' },
-        },
+      // Suppression effective
+      expect(prismaMock.user.delete).toHaveBeenCalledWith({
+        where: { id: 'user-expired' },
       });
-
-      expect(prismaMock.userQuizSet.deleteMany).toHaveBeenCalledWith({
-        where: {
-          authorId: 'user-ugc',
-        },
+      expect(resendMock.sendAccountDeletionEmail).toHaveBeenCalledWith({
+        to: 'exp@kanto.mg',
+        userName: 'Ancien Joueur',
       });
     });
   });
