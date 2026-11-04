@@ -21,7 +21,7 @@ import {
   Session,
   type UserSession,
 } from '../../auth/index.js';
-import { ReportReason } from '../../../generated/prisma/client.js';
+import { ReportReason, ReportStatus } from '../../../generated/prisma/client.js';
 
 @Controller('moderation')
 export class ModerationController {
@@ -43,14 +43,16 @@ export class ModerationController {
   }
 
   /**
-   * GET /moderation/admin/reports — File des signalements en attente (Admin)
+   * GET /moderation/admin/reports — File des signalements (Admin)
    */
   @Get('admin/reports')
   @UseGuards(AuthGuard)
   @Roles(['ADMIN', 'admin'])
   getAdminReports(
     @Query('resolved') resolved?: string,
+    @Query('status') status?: ReportStatus,
     @Query('reason') reason?: ReportReason,
+    @Query('reportedUserId') reportedUserId?: string,
     @Query('take') take?: string,
     @Query('skip') skip?: string,
   ) {
@@ -59,7 +61,9 @@ export class ModerationController {
 
     return this.moderationService.getReports({
       resolved: isResolved,
+      status,
       reason,
+      reportedUserId,
       take: take ? parseInt(take, 10) : 50,
       skip: skip ? parseInt(skip, 10) : 0,
     });
@@ -76,7 +80,7 @@ export class ModerationController {
   }
 
   /**
-   * PATCH /moderation/admin/reports/:id/resolve — Résoudre un signalement (Admin)
+   * PATCH /moderation/admin/reports/:id/resolve — Traiter un signalement (Admin)
    */
   @Patch('admin/reports/:id/resolve')
   @UseGuards(AuthGuard)

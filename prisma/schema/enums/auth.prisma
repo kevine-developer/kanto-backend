@@ -15,3 +15,10 @@ enum SubscriptionTier {
   VIP
 }
 
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  BANNED
+  DEACTIVATED
+  PENDING_DELETION
+}

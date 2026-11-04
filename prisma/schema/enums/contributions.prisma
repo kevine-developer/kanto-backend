@@ -18,13 +18,31 @@ enum DisputeStatus {
   REJECTED
 }
 
+enum ReportStatus {
+  PENDING
+  UNDER_REVIEW
+  RESOLVED
+  REJECTED
+}
+
 enum ReportReason {
-  TRANSLATION_ERROR  // Erreur de traduction
-  TYPO               // Faute d'orthographe
-  INCORRECT_MEANING  // Sens inexact
-  INAPPROPRIATE      // Contenu inapproprié
-  SPAM               // Spam ou abus
-  MISLEADING         // Contenu trompeur ou mensonger
-  ILLEGAL            // Contenu illégal
-  OTHER              // Autre
+  TRANSLATION_ERROR      // Erreur de traduction
+  TYPO                   // Faute d'orthographe
+  INCORRECT_MEANING      // Sens inexact
+  INAPPROPRIATE          // Contenu inapproprié
+  SPAM                   // Spam ou abus
+  MISLEADING             // Contenu trompeur ou mensonger
+  ILLEGAL                // Contenu illégal
+  OTHER                  // Autre
+  // Utilisateurs
+  HARASSMENT             // Harcèlement
+  IMPERSONATION          // Usurpation d'identité
+  SPAM_SCAM              // Spam ou tentative d'arnaque
+  INAPPROPRIATE_BEHAVIOR // Comportement toxique ou offensant
+  OFFENSIVE_CONTENT      // Contenu injurieux ou haineux
+  // UGC (Quiz Sets & Questions)
+  WRONG_ANSWER           // Mauvaise réponse / Erreur factuelle
+  INAPPROPRIATE_CONTENT  // Contenu offensant ou inadapté
+  PLAGIARISM             // Plagiat ou copie non autorisée
+  SPELLING_GRAMMAR       // Faute d'orthographe ou formulation incompréhensible
 }

@@ -27,6 +27,7 @@ import {
   NotificationRealtimePayload,
   CommentRealtimePayload,
   LeaderboardRealtimePayload,
+  DuelRealtimeBroadcastPayload,
 } from './realtime.constants.js';
 
 // Rétro-compatibilité pour les imports existants
@@ -146,6 +147,7 @@ export class RealtimeGateway
   private unsubscribeNotifs: (() => void) | null = null;
   private unsubscribeComments: (() => void) | null = null;
   private unsubscribeLeaderboard: (() => void) | null = null;
+  private unsubscribeDuel: (() => void) | null = null;
   private readonly disconnectTimers = new Map<string, NodeJS.Timeout>();
   private readonly reactionRateLimits = new Map<string, number>();
 
@@ -183,6 +185,13 @@ export class RealtimeGateway
         },
       );
 
+      this.unsubscribeDuel = await this.redisService.subscribe(
+        REALTIME_CHANNELS.DUEL,
+        (payload: DuelRealtimeBroadcastPayload) => {
+          this.handleRedisDuelBroadcast(payload);
+        },
+      );
+
       this.logger.log(
         '📡 [RealtimeGateway] Écoute active sur les canaux Redis Pub/Sub.',
       );
@@ -198,6 +207,7 @@ export class RealtimeGateway
     this.unsubscribeNotifs?.();
     this.unsubscribeComments?.();
     this.unsubscribeLeaderboard?.();
+    this.unsubscribeDuel?.();
     this.disconnectTimers.forEach((timer) => clearTimeout(timer));
     this.disconnectTimers.clear();
     this.reactionRateLimits.clear();
@@ -534,14 +544,17 @@ export class RealtimeGateway
         players: result.players,
       };
     } catch (err: unknown) {
-      const msg =
+      const rawMsg =
         err instanceof Error
           ? err.message
           : 'Erreur lors de la création du salon';
-      this.logger.error(`Erreur création salon : ${msg}`);
+      this.logger.error(`Erreur création salon : ${rawMsg}`, err instanceof Error ? err.stack : undefined);
       return {
         success: false,
-        message: msg,
+        message: this.sanitizePublicErrorMessage(
+          rawMsg,
+          'Une erreur est survenue lors de la création du salon. Veuillez réessayer.',
+        ),
       };
     }
   }
@@ -659,12 +672,15 @@ export class RealtimeGateway
         isHost: result.isHost,
       };
     } catch (err: unknown) {
-      const msg =
+      const rawMsg =
         err instanceof Error ? err.message : 'Impossible de rejoindre ce salon';
-      this.logger.warn(`Erreur adhésion salon : ${msg}`);
+      this.logger.warn(`Erreur adhésion salon : ${rawMsg}`);
       return {
         success: false,
-        message: msg,
+        message: this.sanitizePublicErrorMessage(
+          rawMsg,
+          'Impossible de rejoindre ce salon pour le moment.',
+        ),
       };
     }
   }
@@ -950,10 +966,16 @@ export class RealtimeGateway
 
       return { success: true, ...result };
     } catch (err: unknown) {
-      const msg =
+      const rawMsg =
         err instanceof Error ? err.message : 'Erreur lors du démarrage';
-      this.logger.warn(`Erreur démarrage partie : ${msg}`);
-      return { success: false, message: msg };
+      this.logger.warn(`Erreur démarrage partie : ${rawMsg}`);
+      return {
+        success: false,
+        message: this.sanitizePublicErrorMessage(
+          rawMsg,
+          'Impossible de lancer la partie pour le moment.',
+        ),
+      };
     }
   }
 
@@ -1432,6 +1454,41 @@ export class RealtimeGateway
   /**
    * Valide et assainit un identifiant pour éviter les injections de rooms.
    */
+  /**
+   * Traitement des diffusions Redis Pub/Sub pour les salons (expiration, alertes multi-instances).
+   */
+  private handleRedisDuelBroadcast(payload: DuelRealtimeBroadcastPayload) {
+    if (!this.server || !payload?.code || !payload?.event) return;
+
+    const room = RealtimeRooms.duel(payload.code);
+    this.server.to(room).emit(payload.event, payload.data);
+
+    if (payload.closeRoom) {
+      this.server.in(room).socketsLeave(room);
+      this.logger.log(
+        `🚪 [RealtimeGateway] Room ${room} clôturée suite à l'événement ${payload.event}`,
+      );
+    }
+  }
+
+  /**
+   * Méthode publique pour émettre un événement vers la room d'un salon multijoueur.
+   */
+  public broadcastToDuelRoom(
+    code: string,
+    event: string,
+    data: Record<string, unknown>,
+    closeRoom = false,
+  ) {
+    if (!this.server || !code) return;
+    const room = RealtimeRooms.duel(code);
+    this.server.to(room).emit(event, data);
+
+    if (closeRoom) {
+      this.server.in(room).socketsLeave(room);
+    }
+  }
+
   private sanitizeId(id: unknown): string | null {
     if (typeof id !== 'string') return null;
     const trimmed = id.trim();
@@ -1504,4 +1561,26 @@ export class RealtimeGateway
 
     return null;
   }
+  /**
+   * Assainit les messages d'erreur retournés au client pour éviter d'exposer
+   * des traces internes (Prisma, SQL, chemins de fichiers, etc.).
+   */
+  private sanitizePublicErrorMessage(
+    rawMessage: string,
+    fallback: string,
+  ): string {
+    if (!rawMessage || typeof rawMessage !== 'string') return fallback;
+
+    const isTechnical =
+      /prisma|invocation|column|database|postgres|select|insert|update|delete|table|relation|connection|eacces|econn|syntaxerror|typeerror|null|undefined|\.ts|\.js|\\|\/|@|object Object/i.test(
+        rawMessage,
+      ) || rawMessage.includes('\n');
+
+    if (isTechnical) {
+      return fallback;
+    }
+
+    return rawMessage;
+  }
+
 }

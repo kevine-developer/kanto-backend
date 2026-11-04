@@ -1,17 +1,28 @@
 // ============================================================
 // MODÈLES — MODÉRATION
-// Signalements de contenu
+// Signalements de contenu & d'utilisateurs
 // ============================================================
 
 model ContentReport {
-  id          String       @id @default(cuid())
-  reason      ReportReason
-  description String?      @db.Text
-  resolved    Boolean      @default(false)
+  id             String       @id @default(cuid())
+  reason         ReportReason
+  description    String?      @db.Text
+  resolved       Boolean      @default(false)
+  status         ReportStatus @default(PENDING)
+  moderatorNotes String?      @db.Text
+  actionTaken    String?
+  resolvedAt     DateTime?
+  resolvedById   String?
 
+  // Utilisateur auteur du signalement (anonymisé pour la cible)
   userId String?
   user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
+  // Utilisateur signalé (dans le cas d'un signalement de profil / comportement)
+  reportedUserId String?
+  reportedUser   User?   @relation("ReportedUser", fields: [reportedUserId], references: [id], onDelete: Cascade)
+
+  // Cible de contenu culturel / UGC
   contributionId String?
   contribution   Contribution? @relation(fields: [contributionId], references: [id], onDelete: Cascade)
 
@@ -39,11 +50,17 @@ model ContentReport {
   quizSetId String?
   quizSet   UserQuizSet? @relation(fields: [quizSetId], references: [id], onDelete: Cascade)
 
+  questionId String?
+  question   UserQuestion? @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
   createdAt DateTime @default(now())
 
   @@index([resolved])
+  @@index([status])
+  @@index([reportedUserId])
   @@index([contributionId])
   @@index([commentId])
   @@index([quizSetId])
+  @@index([questionId])
   @@map("content_reports")
 }

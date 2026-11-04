@@ -21,7 +21,28 @@ export class CreateContentReportDto {
   })
   description?: string;
 
-  // Cibles polymorphiques optionnelles
+  // Signalement direct d'un utilisateur (harcèlement, usurpation, comportement)
+  @IsOptional()
+  @IsString()
+  reportedUserId?: string;
+
+  // Cibles polymorphiques de contenu
+  @IsOptional()
+  @IsString()
+  quizSetId?: string;
+
+  @IsOptional()
+  @IsString()
+  questionId?: string;
+
+  @IsOptional()
+  @IsString()
+  contributionId?: string;
+
+  @IsOptional()
+  @IsString()
+  commentId?: string;
+
   @IsOptional()
   @IsString()
   itemId?: string;
@@ -45,12 +66,4 @@ export class CreateContentReportDto {
   @IsOptional()
   @IsString()
   recitationId?: string;
-
-  @IsOptional()
-  @IsString()
-  quizSetId?: string;
-
-  @IsOptional()
-  @IsString()
-  contributionId?: string;
 }

@@ -868,11 +868,17 @@ export class UsersService {
    *    - Suppression atomique en cascade de toutes les données personnelles (profil, sessions, jetons, favoris, historique, amitiés).
    * 5. Nettoyage des actifs externes (Cloudinary / disques) et envoi d'un email de confirmation formel.
    */
+  /**
+   * Refonte de la suppression de compte avec période de rétractation de 30 jours (RGPD).
+   * 1. Vérification de la phrase et du mot de passe.
+   * 2. Passage du statut à PENDING_DELETION avec date limite deletionScheduledAt (now + 30j).
+   * 3. Révocation immédiate de toutes les sessions actives en base.
+   * 4. Envoi d'un email de rétractation expliquant comment annuler la démarche.
+   */
   async deleteAccount(
     userId: string,
     dto: DeleteAccountDto,
-  ): Promise<{ success: boolean; message: string }> {
-    // 1. Récupération de l'utilisateur avec ses comptes liés
+  ): Promise<{ success: boolean; message: string; deletionScheduledAt?: Date }> {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
       include: {
@@ -884,14 +890,12 @@ export class UsersService {
       throw new NotFoundException('Utilisateur introuvable');
     }
 
-    // 2. Vérification stricte de la phrase de confirmation
     if (dto.confirmationPhrase?.trim() !== 'SUPPRIMER MON COMPTE') {
       throw new BadRequestException(
         'Veuillez saisir exactement « SUPPRIMER MON COMPTE » pour confirmer la suppression.',
       );
     }
 
-    // 3. Vérification de l'identité selon le mode d'authentification
     const credentialAccount = user.accounts.find(
       (acc) => acc.providerId === 'credential',
     );
@@ -943,162 +947,41 @@ export class UsersService {
       }
     }
 
-    // Conserver en mémoire les données nécessaires aux opérations post-suppression
     const userEmail = user.email;
     const userName = user.name;
-    const userImage = user.image;
+    const deletionScheduledAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
-    // 4. Transaction de suppression atomique en base de données
+    // Transaction atomique : désactivation du compte et révocation immédiate de toutes les sessions
     await this.prisma.$transaction(async (tx) => {
-      // A. Détacher les duels référençant un jeu de quiz créé par l'utilisateur
-      await tx.duelSession.updateMany({
-        where: {
-          customQuizSet: {
-            authorId: userId,
-          },
-        },
-        data: {
-          customQuizSetId: null,
-        },
-      });
-
-      // B. Supprimer les questions UGC créées par l'utilisateur
-      await tx.userQuestion.deleteMany({
-        where: {
-          quizSet: {
-            authorId: userId,
-          },
-        },
-      });
-
-      // C. Supprimer les quiz sets UGC de l'utilisateur
-      await tx.userQuizSet.deleteMany({
-        where: {
-          authorId: userId,
-        },
-      });
-
-      // D. Anonymiser les participations multijoueurs (DuelPlayer)
-      await tx.duelPlayer.updateMany({
-        where: { userId },
-        data: {
-          name: 'Joueur supprimé',
-          avatar: null,
-        },
-      });
-
-      // E. Anonymiser les duels 1v1 où l'utilisateur était joueur ou vainqueur
-      await tx.duelSession.updateMany({
-        where: { player1Id: userId },
-        data: {
-          player1Name: 'Joueur supprimé',
-          player1Avatar: null,
-        },
-      });
-
-      await tx.duelSession.updateMany({
-        where: { player2Id: userId },
-        data: {
-          player2Name: 'Joueur supprimé',
-          player2Avatar: null,
-        },
-      });
-
-      await tx.duelSession.updateMany({
-        where: { winnerId: userId },
-        data: {
-          winnerId: null,
-        },
-      });
-
-      // F. Anonymiser les logs d'audit des contributions
-      await tx.contributionAuditLog.updateMany({
-        where: { userId },
-        data: {
-          userId: null,
-        },
-      });
-
-      // G. Traitement des contributions culturelles (CGU Kanto & RGPD)
-      // 1. Supprimer les contributions non approuvées (brouillons, en attente, rejetées)
-      await tx.contribution.deleteMany({
-        where: {
-          userId,
-          status: {
-            not: 'APPROVED',
-          },
-        },
-      });
-
-      // 2. Anonymiser les contributions approuvées en les réassignant au compte d'archive
-      const approvedCount = await tx.contribution.count({
-        where: {
-          userId,
-          status: 'APPROVED',
-        },
-      });
-
-      if (approvedCount > 0) {
-        const archiveUser = await tx.user.upsert({
-          where: { email: 'archive@kanto.mg' },
-          update: {},
-          create: {
-            name: 'Contributeur Kanto',
-            email: 'archive@kanto.mg',
-            username: 'kanto_archive',
-            emailVerified: true,
-            role: 'USER',
-            termsAcceptedAt: new Date(),
-            termsVersion: '1.0',
-          },
-        });
-
-        await tx.contribution.updateMany({
-          where: {
-            userId,
-            status: 'APPROVED',
-          },
-          data: {
-            userId: archiveUser.id,
-          },
-        });
-      }
-
-      // H. Suppression définitive du compte utilisateur (Cascade automatique pour les sessions, favoris, etc.)
-      await tx.user.delete({
+      await tx.user.update({
         where: { id: userId },
+        data: {
+          status: 'PENDING_DELETION',
+          deactivatedAt: new Date(),
+          deletionScheduledAt,
+        },
+      });
+
+      // Révocation de toutes les sessions actives (déconnexion immédiate)
+      await tx.session.deleteMany({
+        where: { userId },
       });
     });
 
     this.logger.log(
-      `[deleteAccount] Compte et données personnelles supprimés avec succès pour l'utilisateur ${userId}`,
+      `[deleteAccount] Compte désactivé et placé en période de rétractation de 30 jours pour l'utilisateur ${userId} (Suppression prévue le: ${deletionScheduledAt.toISOString()})`,
     );
 
-    // 5. Opérations post-transactionnelles (non-bloquantes)
-    // A. Suppression de l'avatar personnalisé
-    if (
-      userImage &&
-      userImage !== '/uploads/avatars/default-avatar.png' &&
-      !userImage.includes('default-avatar') &&
-      !userImage.includes('default_avatar')
-    ) {
-      this.cloudinaryService.deleteMediaFromUrl(userImage).catch((err) => {
-        this.logger.warn(
-          `[deleteAccount] Échec suppression média avatar pour ${userId} :`,
-          err,
-        );
-      });
-    }
-
-    // B. Envoi de l'email de confirmation formelle
+    // Envoi de l'email transactionnel d'information avec délai de rétractation
     this.resendService
-      .sendAccountDeletionEmail({
+      .sendAccountPendingDeletionEmail({
         to: userEmail,
         userName,
+        deletionScheduledAt,
       })
       .catch((err) => {
         this.logger.warn(
-          `[deleteAccount] Échec envoi email confirmation suppression pour ${userEmail} :`,
+          `[deleteAccount] Échec envoi email rétractation pour ${userEmail} :`,
           err,
         );
       });
@@ -1106,7 +989,381 @@ export class UsersService {
     return {
       success: true,
       message:
-        'Votre compte et l’ensemble de vos données personnelles ont été supprimés avec succès.',
+        'Votre compte a été désactivé et entrera en suppression définitive dans 30 jours. Vous pouvez annuler cette démarche à tout moment en vous reconnectant.',
+      deletionScheduledAt,
+    };
+  }
+
+  /**
+   * Récupère le statut de suppression / rétractation du compte connecté
+   */
+  async getAccountDeletionStatus(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        status: true,
+        deactivatedAt: true,
+        deletionScheduledAt: true,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Utilisateur introuvable');
+    }
+
+    const isPendingDeletion = user.status === 'PENDING_DELETION';
+    let daysRemaining = 0;
+
+    if (isPendingDeletion && user.deletionScheduledAt) {
+      const diffMs = new Date(user.deletionScheduledAt).getTime() - Date.now();
+      daysRemaining = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+    }
+
+    return {
+      isPendingDeletion,
+      status: user.status,
+      deactivatedAt: user.deactivatedAt,
+      deletionScheduledAt: user.deletionScheduledAt,
+      daysRemaining,
+    };
+  }
+
+  /**
+   * Réactive un compte en cours de suppression (annulation de la demande)
+   */
+  async reactivateAccount(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        status: true,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Utilisateur introuvable');
+    }
+
+    if (user.status !== 'PENDING_DELETION' && user.status !== 'DEACTIVATED') {
+      return {
+        success: true,
+        message: 'Votre compte est déjà actif.',
+      };
+    }
+
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        status: 'ACTIVE',
+        deactivatedAt: null,
+        deletionScheduledAt: null,
+      },
+    });
+
+    this.logger.log(`[reactivateAccount] Compte réactivé avec succès pour l'utilisateur ${userId}`);
+
+    this.resendService
+      .sendAccountReactivatedEmail({
+        to: user.email,
+        userName: user.name,
+      })
+      .catch((err) => {
+        this.logger.warn(`Échec envoi email réactivation pour ${user.email}:`, err);
+      });
+
+    return {
+      success: true,
+      message: 'Votre compte Kanto a été réactivé avec succès. Bon retour !',
+    };
+  }
+
+  /**
+   * Maintient la suppression programmée et révoque les sessions
+   */
+  async cancelReactivation(userId: string) {
+    await this.prisma.session.deleteMany({
+      where: { userId },
+    });
+
+    return {
+      success: true,
+      message: 'La suppression de votre compte reste programmée. Vous avez été déconnecté.',
+    };
+  }
+
+  /**
+   * Purge définitive atomique des comptes ayant dépassé le délai de rétractation de 30 jours.
+   * Conforme à la règle permanente de préservation des données Kanto MG (data-preservation.md).
+   */
+  async purgeScheduledDeletions(targetUserId?: string) {
+    const whereClause: any = {
+      status: 'PENDING_DELETION',
+    };
+
+    if (targetUserId) {
+      whereClause.id = targetUserId;
+    } else {
+      whereClause.deletionScheduledAt = {
+        lte: new Date(),
+      };
+    }
+
+    const expiredUsers = await this.prisma.user.findMany({
+      where: whereClause,
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        image: true,
+      },
+    });
+
+    this.logger.log(`[purgeScheduledDeletions] ${expiredUsers.length} compte(s) à purger définitivement.`);
+
+    const results: { id: string; success: boolean; error?: string }[] = [];
+
+    for (const expUser of expiredUsers) {
+      try {
+        await this.prisma.$transaction(async (tx) => {
+          // 1. Détacher les duels référençant un jeu de quiz créé par l'utilisateur
+          await tx.duelSession.updateMany({
+            where: { customQuizSet: { authorId: expUser.id } },
+            data: { customQuizSetId: null },
+          });
+
+          // 2. Préserver les quiz UGC publics créés en les réassignant au compte archive pour ne jamais perdre les données communautaires
+          const archiveUser = await tx.user.upsert({
+            where: { email: 'archive@kanto.mg' },
+            update: {},
+            create: {
+              name: 'Contributeur Kanto',
+              email: 'archive@kanto.mg',
+              username: 'kanto_archive',
+              emailVerified: true,
+              role: 'USER',
+              termsAcceptedAt: new Date(),
+              termsVersion: '1.0',
+            },
+          });
+
+          await tx.userQuizSet.updateMany({
+            where: { authorId: expUser.id },
+            data: { authorId: archiveUser.id },
+          });
+
+          // 3. Anonymiser les participations multijoueurs
+          await tx.duelPlayer.updateMany({
+            where: { userId: expUser.id },
+            data: { name: 'Joueur supprimé', avatar: null },
+          });
+
+          await tx.duelSession.updateMany({
+            where: { player1Id: expUser.id },
+            data: { player1Name: 'Joueur supprimé', player1Avatar: null },
+          });
+
+          await tx.duelSession.updateMany({
+            where: { player2Id: expUser.id },
+            data: { player2Name: 'Joueur supprimé', player2Avatar: null },
+          });
+
+          await tx.duelSession.updateMany({
+            where: { winnerId: expUser.id },
+            data: { winnerId: null },
+          });
+
+          // 4. Anonymiser les logs d'audit des contributions
+          await tx.contributionAuditLog.updateMany({
+            where: { userId: expUser.id },
+            data: { userId: null },
+          });
+
+          // 5. Supprimer les contributions non approuvées et réassigner les approuvées
+          await tx.contribution.deleteMany({
+            where: {
+              userId: expUser.id,
+              status: { not: 'APPROVED' },
+            },
+          });
+
+          await tx.contribution.updateMany({
+            where: {
+              userId: expUser.id,
+              status: 'APPROVED',
+            },
+            data: { userId: archiveUser.id },
+          });
+
+          // 6. Suppression définitive du User (Cascade sur sessions, progression personnelle, etc.)
+          await tx.user.delete({
+            where: { id: expUser.id },
+          });
+        });
+
+        // Suppression avatar Cloudinary
+        if (
+          expUser.image &&
+          expUser.image !== '/uploads/avatars/default-avatar.png' &&
+          !expUser.image.includes('default-avatar') &&
+          !expUser.image.includes('default_avatar')
+        ) {
+          this.cloudinaryService.deleteMediaFromUrl(expUser.image).catch(() => {});
+        }
+
+        // Envoi email final
+        this.resendService
+          .sendAccountDeletionEmail({
+            to: expUser.email,
+            userName: expUser.name,
+          })
+          .catch(() => {});
+
+        results.push({ id: expUser.id, success: true });
+      } catch (err) {
+        this.logger.error(`Échec purge définitive pour ${expUser.id}:`, err);
+        results.push({ id: expUser.id, success: false, error: String(err) });
+      }
+    }
+
+    return results;
+  }
+
+  // ============================================================
+  // GESTION DU BLOCAGE COMMUNAUTAIRE (UserBlock)
+  // ============================================================
+
+  /**
+   * Bloquer un utilisateur.
+   * - Vérifie l'interdiction d'auto-blocage.
+   * - Rompt immédiatement toute relation d'amitié existante.
+   * - Crée ou met à jour le blocage de façon idempotente.
+   */
+  async blockUser(currentUserId: string, targetUserId: string) {
+    if (currentUserId === targetUserId) {
+      throw new BadRequestException('Vous ne pouvez pas vous bloquer vous-même.');
+    }
+
+    const targetUser = await this.prisma.user.findUnique({
+      where: { id: targetUserId },
+      select: { id: true, name: true },
+    });
+
+    if (!targetUser) {
+      throw new NotFoundException('Utilisateur introuvable.');
+    }
+
+    await this.prisma.$transaction(async (tx) => {
+      // 1. Rompre les relations d'amitié éventuelles
+      await tx.friendship.deleteMany({
+        where: {
+          OR: [
+            { senderId: currentUserId, receiverId: targetUserId },
+            { senderId: targetUserId, receiverId: currentUserId },
+          ],
+        },
+      });
+
+      // 2. Enregistrer le blocage de manière idempotente
+      await tx.userBlock.upsert({
+        where: {
+          blockerId_blockedId: {
+            blockerId: currentUserId,
+            blockedId: targetUserId,
+          },
+        },
+        create: {
+          blockerId: currentUserId,
+          blockedId: targetUserId,
+        },
+        update: {},
+      });
+    });
+
+    this.logger.log(`🛡️ [UserBlock] Utilisateur ${currentUserId} a bloqué ${targetUserId}`);
+
+    return {
+      success: true,
+      message: 'Utilisateur bloqué avec succès.',
+    };
+  }
+
+  /**
+   * Débloquer un utilisateur.
+   * Ne restaure pas automatiquement d'anciennes relations.
+   */
+  async unblockUser(currentUserId: string, targetUserId: string) {
+    await this.prisma.userBlock.deleteMany({
+      where: {
+        blockerId: currentUserId,
+        blockedId: targetUserId,
+      },
+    });
+
+    this.logger.log(`🛡️ [UserBlock] Utilisateur ${currentUserId} a débloqué ${targetUserId}`);
+
+    return {
+      success: true,
+      message: 'Utilisateur débloqué avec succès.',
+    };
+  }
+
+  /**
+   * Liste paginée des utilisateurs bloqués par l'utilisateur connecté
+   */
+  async getBlockedUsers(currentUserId: string) {
+    const blocks = await this.prisma.userBlock.findMany({
+      where: { blockerId: currentUserId },
+      include: {
+        blocked: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            image: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return blocks.map((b) => ({
+      id: b.blocked.id,
+      name: b.blocked.name,
+      username: b.blocked.username,
+      image: b.blocked.image,
+      blockedAt: b.createdAt,
+    }));
+  }
+
+  /**
+   * Vérifie le statut de blocage mutuel entre deux utilisateurs
+   */
+  async getBlockStatus(currentUserId: string, targetUserId: string) {
+    const [sent, received] = await Promise.all([
+      this.prisma.userBlock.findUnique({
+        where: {
+          blockerId_blockedId: {
+            blockerId: currentUserId,
+            blockedId: targetUserId,
+          },
+        },
+      }),
+      this.prisma.userBlock.findUnique({
+        where: {
+          blockerId_blockedId: {
+            blockerId: targetUserId,
+            blockedId: currentUserId,
+          },
+        },
+      }),
+    ]);
+
+    return {
+      isBlockedByMe: !!sent,
+      isBlockingMe: !!received,
     };
   }
 }
