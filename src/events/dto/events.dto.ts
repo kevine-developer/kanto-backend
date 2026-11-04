@@ -19,13 +19,13 @@ export class CreateEventRewardDto {
   @IsEnum(EventRewardType, { message: 'Type de récompense invalide' })
   rewardType: EventRewardType;
 
-  @IsNotEmpty({ message: 'Titre malgache de la récompense obligatoire' })
+  @IsOptional()
   @IsString()
-  titleMg: string;
+  titleMg?: string;
 
-  @IsNotEmpty({ message: 'Titre français de la récompense obligatoire' })
+  @IsOptional()
   @IsString()
-  titleFr: string;
+  titleFr?: string;
 
   @IsOptional()
   @IsNumber()
@@ -55,21 +55,21 @@ export class CreateEventDto {
   @IsString()
   slug?: string;
 
-  @IsNotEmpty({ message: 'Titre en malgache obligatoire' })
+  @IsOptional()
   @IsString()
-  titleMg: string;
+  titleMg?: string;
 
-  @IsNotEmpty({ message: 'Titre en français obligatoire' })
+  @IsOptional()
   @IsString()
-  titleFr: string;
+  titleFr?: string;
 
-  @IsNotEmpty({ message: 'Description en malgache obligatoire' })
+  @IsOptional()
   @IsString()
-  descriptionMg: string;
+  descriptionMg?: string;
 
-  @IsNotEmpty({ message: 'Description en français obligatoire' })
+  @IsOptional()
   @IsString()
-  descriptionFr: string;
+  descriptionFr?: string;
 
   @IsOptional()
   @IsString()

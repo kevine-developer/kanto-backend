@@ -793,9 +793,116 @@ export class EventsService {
    * Crée un nouvel événement avec traçabilité administrative.
    */
   async createEvent(dto: CreateEventDto, adminId: string) {
+    // ── Détermination et validation flexible des langues et contenus ──
+    const contentConfig = dto.metadata?.contentConfig;
+    const requestedLanguages: ('mg' | 'fr')[] =
+      Array.isArray(contentConfig?.languages) && contentConfig.languages.length > 0
+        ? contentConfig.languages
+        : contentConfig?.languageMode === 'mg'
+        ? ['mg']
+        : contentConfig?.languageMode === 'fr'
+        ? ['fr']
+        : dto.titleMg && dto.titleFr
+        ? ['mg', 'fr']
+        : dto.titleMg
+        ? ['mg']
+        : ['fr'];
+
+    const isMgEnabled = requestedLanguages.includes('mg');
+    const isFrEnabled = requestedLanguages.includes('fr');
+
+    if (!isMgEnabled && !isFrEnabled) {
+      throw new BadRequestException(
+        'Au moins une langue (malgache ou français) doit être sélectionnée.',
+      );
+    }
+
+    const titleMgClean = dto.titleMg?.trim() || '';
+    const titleFrClean = dto.titleFr?.trim() || '';
+    const descMgClean = dto.descriptionMg?.trim() || '';
+    const descFrClean = dto.descriptionFr?.trim() || '';
+
+    if (isMgEnabled && (!titleMgClean || !descMgClean)) {
+      throw new BadRequestException(
+        'Le titre et la description en malgache sont obligatoires lorsque la langue malgache est activée.',
+      );
+    }
+    if (isFrEnabled && (!titleFrClean || !descFrClean)) {
+      throw new BadRequestException(
+        'Le titre et la description en français sont obligatoires lorsque la langue française est activée.',
+      );
+    }
+
+    // Préservation de la rétrocompatibilité du schéma DB (colonnes NOT NULL) sans casser l\'existant
+    const finalTitleMg = titleMgClean || titleFrClean;
+    const finalTitleFr = titleFrClean || titleMgClean;
+    const finalDescMg = descMgClean || descFrClean;
+    const finalDescFr = descFrClean || descMgClean;
+
+    // Sections activées / désactivées
+    const sections = contentConfig?.sections || {
+      shortDescription: Boolean(dto.shortDescMg || dto.shortDescFr),
+      rules: Boolean(dto.rulesMg || dto.rulesFr),
+      participationConditions: Boolean(
+        dto.participationType ||
+          dto.maxParticipants ||
+          dto.registrationDeadline ||
+          (dto.minTier && dto.minTier !== 'FREE'),
+      ),
+      practicalInfo: Boolean(dto.location || dto.externalUrl),
+      rewards: Boolean(dto.rewards && dto.rewards.length > 0),
+      gameModule: Boolean(dto.metadata?.gameModuleId),
+    };
+
+    const finalShortDescMg = sections.shortDescription
+      ? dto.shortDescMg?.trim() || null
+      : null;
+    const finalShortDescFr = sections.shortDescription
+      ? dto.shortDescFr?.trim() || null
+      : null;
+    const finalRulesMg = sections.rules ? dto.rulesMg?.trim() || null : null;
+    const finalRulesFr = sections.rules ? dto.rulesFr?.trim() || null : null;
+    const finalLocation = sections.practicalInfo
+      ? dto.location?.trim() || null
+      : null;
+    const finalExternalUrl = sections.practicalInfo
+      ? dto.externalUrl?.trim() || null
+      : null;
+    const finalParticipationType = sections.participationConditions
+      ? dto.participationType || EventParticipationType.OPEN
+      : EventParticipationType.OPEN;
+    const finalMinTier = sections.participationConditions
+      ? dto.minTier || 'FREE'
+      : 'FREE';
+    const finalMaxParticipants = sections.participationConditions
+      ? dto.maxParticipants || null
+      : null;
+    const finalRegistrationDeadline =
+      sections.participationConditions && dto.registrationDeadline
+        ? new Date(dto.registrationDeadline)
+        : null;
+
+    // Métadonnées enrichies avec configuration des langues et sections
+    const finalMetadata = {
+      ...(dto.metadata || {}),
+      contentConfig: {
+        languageMode:
+          isMgEnabled && isFrEnabled ? 'both' : isMgEnabled ? 'mg' : 'fr',
+        languages: requestedLanguages,
+        sections,
+      },
+      ...(sections.gameModule && dto.metadata?.gameModuleId
+        ? { gameModuleId: dto.metadata.gameModuleId }
+        : {}),
+    };
+    if (!sections.gameModule && (finalMetadata as any).gameModuleId) {
+      delete (finalMetadata as any).gameModuleId;
+    }
+
+    const slugSource = finalTitleFr || finalTitleMg || 'evenement';
     const slug = dto.slug
       ? dto.slug.trim().toLowerCase()
-      : this.generateSlug(dto.titleFr);
+      : this.generateSlug(slugSource);
 
     const existingSlug = await this.prisma.event.findUnique({
       where: { slug },
@@ -807,44 +914,48 @@ export class EventsService {
     const event = await this.prisma.event.create({
       data: {
         slug,
-        titleMg: dto.titleMg,
-        titleFr: dto.titleFr,
-        descriptionMg: dto.descriptionMg,
-        descriptionFr: dto.descriptionFr,
-        shortDescMg: dto.shortDescMg,
-        shortDescFr: dto.shortDescFr,
+        titleMg: finalTitleMg,
+        titleFr: finalTitleFr,
+        descriptionMg: finalDescMg,
+        descriptionFr: finalDescFr,
+        shortDescMg: finalShortDescMg,
+        shortDescFr: finalShortDescFr,
         category: dto.category || EventCategory.CULTURE,
         status: EventStatus.DRAFT,
-        participationType: dto.participationType || EventParticipationType.OPEN,
-        minTier: dto.minTier || 'FREE',
+        participationType: finalParticipationType,
+        minTier: finalMinTier,
         imageUrl: dto.imageUrl,
         bannerUrl: dto.bannerUrl,
-        location: dto.location,
-        externalUrl: dto.externalUrl,
+        location: finalLocation,
+        externalUrl: finalExternalUrl,
         startDate: new Date(dto.startDate),
         endDate: new Date(dto.endDate),
-        registrationDeadline: dto.registrationDeadline
-          ? new Date(dto.registrationDeadline)
-          : null,
-        maxParticipants: dto.maxParticipants,
+        registrationDeadline: finalRegistrationDeadline,
+        maxParticipants: finalMaxParticipants,
         isFeatured: Boolean(dto.isFeatured),
-        rulesMg: dto.rulesMg,
-        rulesFr: dto.rulesFr,
-        metadata: dto.metadata,
+        rulesMg: finalRulesMg,
+        rulesFr: finalRulesFr,
+        metadata: finalMetadata,
         creatorId: adminId,
         rewards:
-          dto.rewards && dto.rewards.length > 0
+          sections.rewards && dto.rewards && dto.rewards.length > 0
             ? {
-                create: dto.rewards.map((r) => ({
-                  rewardType: r.rewardType,
-                  titleMg: r.titleMg,
-                  titleFr: r.titleFr,
-                  amount: r.amount,
-                  badgeId: r.badgeId,
-                  lotDescription: r.lotDescription,
-                  criteria: r.criteria || 'completion',
-                  maxWinners: r.maxWinners,
-                })),
+                create: dto.rewards.map((r) => {
+                  const rTitleMg =
+                    r.titleMg?.trim() || r.titleFr?.trim() || 'Loka';
+                  const rTitleFr =
+                    r.titleFr?.trim() || r.titleMg?.trim() || 'Récompense';
+                  return {
+                    rewardType: r.rewardType,
+                    titleMg: rTitleMg,
+                    titleFr: rTitleFr,
+                    amount: r.amount,
+                    badgeId: r.badgeId,
+                    lotDescription: r.lotDescription,
+                    criteria: r.criteria || 'completion',
+                    maxWinners: r.maxWinners,
+                  };
+                }),
               }
             : undefined,
       },
@@ -880,15 +991,36 @@ export class EventsService {
       throw new NotFoundException('Événement introuvable.');
     }
 
+    const contentConfig = dto.metadata?.contentConfig;
+    const sections = contentConfig?.sections;
+
+    const nextTitleMg = dto.titleMg !== undefined ? dto.titleMg.trim() : event.titleMg;
+    const nextTitleFr = dto.titleFr !== undefined ? dto.titleFr.trim() : event.titleFr;
+    const nextDescMg = dto.descriptionMg !== undefined ? dto.descriptionMg.trim() : event.descriptionMg;
+    const nextDescFr = dto.descriptionFr !== undefined ? dto.descriptionFr.trim() : event.descriptionFr;
+
+    const finalTitleMg = nextTitleMg || nextTitleFr;
+    const finalTitleFr = nextTitleFr || nextTitleMg;
+    const finalDescMg = nextDescMg || nextDescFr;
+    const finalDescFr = nextDescFr || nextDescMg;
+
+    const updatedMetadata = dto.metadata !== undefined
+      ? {
+          ...((event.metadata as any) || {}),
+          ...dto.metadata,
+          ...(contentConfig ? { contentConfig } : {}),
+        }
+      : event.metadata;
+
     const updated = await this.prisma.event.update({
       where: { id: eventId },
       data: {
-        ...(dto.titleMg && { titleMg: dto.titleMg }),
-        ...(dto.titleFr && { titleFr: dto.titleFr }),
-        ...(dto.descriptionMg && { descriptionMg: dto.descriptionMg }),
-        ...(dto.descriptionFr && { descriptionFr: dto.descriptionFr }),
-        ...(dto.shortDescMg !== undefined && { shortDescMg: dto.shortDescMg }),
-        ...(dto.shortDescFr !== undefined && { shortDescFr: dto.shortDescFr }),
+        titleMg: finalTitleMg,
+        titleFr: finalTitleFr,
+        descriptionMg: finalDescMg,
+        descriptionFr: finalDescFr,
+        shortDescMg: sections?.shortDescription === false ? null : (dto.shortDescMg !== undefined ? dto.shortDescMg : event.shortDescMg),
+        shortDescFr: sections?.shortDescription === false ? null : (dto.shortDescFr !== undefined ? dto.shortDescFr : event.shortDescFr),
         ...(dto.category && { category: dto.category }),
         ...(dto.participationType && {
           participationType: dto.participationType,
@@ -896,22 +1028,22 @@ export class EventsService {
         ...(dto.minTier && { minTier: dto.minTier }),
         ...(dto.imageUrl !== undefined && { imageUrl: dto.imageUrl }),
         ...(dto.bannerUrl !== undefined && { bannerUrl: dto.bannerUrl }),
-        ...(dto.location !== undefined && { location: dto.location }),
-        ...(dto.externalUrl !== undefined && { externalUrl: dto.externalUrl }),
+        location: sections?.practicalInfo === false ? null : (dto.location !== undefined ? dto.location : event.location),
+        externalUrl: sections?.practicalInfo === false ? null : (dto.externalUrl !== undefined ? dto.externalUrl : event.externalUrl),
         ...(dto.startDate && { startDate: new Date(dto.startDate) }),
         ...(dto.endDate && { endDate: new Date(dto.endDate) }),
-        ...(dto.registrationDeadline !== undefined && {
-          registrationDeadline: dto.registrationDeadline
-            ? new Date(dto.registrationDeadline)
-            : null,
-        }),
-        ...(dto.maxParticipants !== undefined && {
-          maxParticipants: dto.maxParticipants,
-        }),
+        registrationDeadline: sections?.participationConditions === false ? null : (
+          dto.registrationDeadline !== undefined
+            ? (dto.registrationDeadline ? new Date(dto.registrationDeadline) : null)
+            : event.registrationDeadline
+        ),
+        maxParticipants: sections?.participationConditions === false ? null : (
+          dto.maxParticipants !== undefined ? dto.maxParticipants : event.maxParticipants
+        ),
         ...(dto.isFeatured !== undefined && { isFeatured: dto.isFeatured }),
-        ...(dto.rulesMg !== undefined && { rulesMg: dto.rulesMg }),
-        ...(dto.rulesFr !== undefined && { rulesFr: dto.rulesFr }),
-        ...(dto.metadata !== undefined && { metadata: dto.metadata }),
+        rulesMg: sections?.rules === false ? null : (dto.rulesMg !== undefined ? dto.rulesMg : event.rulesMg),
+        rulesFr: sections?.rules === false ? null : (dto.rulesFr !== undefined ? dto.rulesFr : event.rulesFr),
+        metadata: updatedMetadata,
       },
       include: { rewards: true },
     });
@@ -1005,12 +1137,15 @@ export class EventsService {
     });
     if (!event) throw new NotFoundException('Événement introuvable.');
 
+    const titleMg = dto.titleMg?.trim() || dto.titleFr?.trim() || 'Loka';
+    const titleFr = dto.titleFr?.trim() || dto.titleMg?.trim() || 'Récompense';
+
     const reward = await this.prisma.eventReward.create({
       data: {
         eventId,
         rewardType: dto.rewardType,
-        titleMg: dto.titleMg,
-        titleFr: dto.titleFr,
+        titleMg,
+        titleFr,
         amount: dto.amount,
         badgeId: dto.badgeId,
         lotDescription: dto.lotDescription,

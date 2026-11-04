@@ -432,4 +432,153 @@ describe('EventsService', () => {
       });
     });
   });
+  describe('Création flexible des langues et sections', () => {
+    it('permet de créer un événement UNIQUEMENT en malgache', async () => {
+      prisma.event.findUnique.mockResolvedValueOnce(null);
+      prisma.event.create.mockImplementationOnce(({ data }: any) =>
+        Promise.resolve({ id: 'evt_mg_only', ...data }),
+      );
+
+      const res = await service.createEvent(
+        {
+          titleMg: 'Hetsika Kolontsaina 2026',
+          descriptionMg: 'Fankalazana ny vakoka sy ny fomba amam-panao.',
+          startDate: mockFutureStart,
+          endDate: mockFutureEnd,
+          metadata: {
+            contentConfig: {
+              languageMode: 'mg',
+              languages: ['mg'],
+              sections: {
+                shortDescription: false,
+                rules: false,
+                participationConditions: false,
+                practicalInfo: false,
+                rewards: false,
+                gameModule: false,
+              },
+            },
+          },
+        },
+        'admin_1',
+      );
+
+      expect(res.id).toBe('evt_mg_only');
+      expect(res.titleMg).toBe('Hetsika Kolontsaina 2026');
+      expect(res.titleFr).toBe('Hetsika Kolontsaina 2026'); // Rétrocompatibilité schéma DB sans casser
+      expect(res.metadata.contentConfig.languageMode).toBe('mg');
+      expect(res.metadata.contentConfig.languages).toEqual(['mg']);
+      expect(prisma.event.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            titleMg: 'Hetsika Kolontsaina 2026',
+            status: EventStatus.DRAFT,
+          }),
+        }),
+      );
+    });
+
+    it('permet de créer un événement UNIQUEMENT en français', async () => {
+      prisma.event.findUnique.mockResolvedValueOnce(null);
+      prisma.event.create.mockImplementationOnce(({ data }: any) =>
+        Promise.resolve({ id: 'evt_fr_only', ...data }),
+      );
+
+      const res = await service.createEvent(
+        {
+          titleFr: 'Festival du Patrimoine 2026',
+          descriptionFr: 'Grande célébration culturelle des traditions.',
+          startDate: mockFutureStart,
+          endDate: mockFutureEnd,
+          metadata: {
+            contentConfig: {
+              languageMode: 'fr',
+              languages: ['fr'],
+              sections: {
+                shortDescription: true,
+                rules: false,
+                participationConditions: true,
+                practicalInfo: true,
+                rewards: false,
+                gameModule: false,
+              },
+            },
+          },
+          shortDescFr: 'Un voyage au cœur de la culture',
+          location: 'Antananarivo',
+        },
+        'admin_1',
+      );
+
+      expect(res.id).toBe('evt_fr_only');
+      expect(res.titleFr).toBe('Festival du Patrimoine 2026');
+      expect(res.titleMg).toBe('Festival du Patrimoine 2026');
+      expect(res.shortDescFr).toBe('Un voyage au cœur de la culture');
+      expect(res.location).toBe('Antananarivo');
+      expect(res.metadata.contentConfig.languageMode).toBe('fr');
+    });
+
+    it('rejette la création si la langue activée manque de titre ou description', async () => {
+      await expect(
+        service.createEvent(
+          {
+            titleFr: 'Titre seul sans description',
+            startDate: mockFutureStart,
+            endDate: mockFutureEnd,
+            metadata: {
+              contentConfig: {
+                languageMode: 'fr',
+                languages: ['fr'],
+              },
+            },
+          } as any,
+          'admin_1',
+        ),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('désactive proprement les sections désactivées en base (nullification)', async () => {
+      prisma.event.findUnique.mockResolvedValueOnce(null);
+      prisma.event.create.mockImplementationOnce(({ data }: any) =>
+        Promise.resolve({ id: 'evt_sections_off', ...data }),
+      );
+
+      const res = await service.createEvent(
+        {
+          titleFr: 'Atelier de Poésie',
+          titleMg: 'Atrikasa Tononkalo',
+          descriptionFr: 'Découverte des poèmes d’hier et d’aujourd’hui.',
+          descriptionMg: 'Fahalalana ny tononkalo malagasy.',
+          shortDescFr: 'Texte ignoré car section désactivée',
+          rulesFr: 'Règles ignorées car section désactivée',
+          location: 'Lieu ignoré car section désactivée',
+          startDate: mockFutureStart,
+          endDate: mockFutureEnd,
+          metadata: {
+            contentConfig: {
+              languageMode: 'both',
+              languages: ['mg', 'fr'],
+              sections: {
+                shortDescription: false,
+                rules: false,
+                participationConditions: false,
+                practicalInfo: false,
+                rewards: false,
+                gameModule: false,
+              },
+            },
+          },
+        },
+        'admin_1',
+      );
+
+      expect(res.shortDescFr).toBeNull();
+      expect(res.shortDescMg).toBeNull();
+      expect(res.rulesFr).toBeNull();
+      expect(res.rulesMg).toBeNull();
+      expect(res.location).toBeNull();
+      expect(res.metadata.contentConfig.sections.shortDescription).toBe(false);
+    });
+  });
 });
+
