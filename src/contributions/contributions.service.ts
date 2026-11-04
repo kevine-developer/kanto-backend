@@ -61,6 +61,7 @@ export const CONTRIBUTION_PUBLIC_SELECT = {
   duplicateTargetTitle: true,
   isDuplicateConfirmed: true,
   markedForDeletionAt: true,
+  isAnonymous: true,
 } as const;
 
 export const CONTRIBUTION_BASE_SELECT = {
@@ -392,6 +393,7 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
         duplicateOfId: dupCheck.targetId,
         duplicateTypeOf: dupCheck.targetType,
         duplicateTargetTitle: dupCheck.targetTitle,
+        isAnonymous: Boolean(dto.isAnonymous),
       },
       select: CONTRIBUTION_BASE_SELECT,
     });
@@ -794,7 +796,10 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
 
       const userVote =
         (votes as Array<{ value: number }> | undefined)?.[0]?.value ?? 0;
-      return { ...rest, userVote };
+      const isAnonymous = Boolean((rest as any).isAnonymous);
+      const isAuthor = Boolean(userId && (rest as any).userId === userId);
+      const user = isAnonymous && !isAuthor ? null : (rest as any).user;
+      return { ...rest, userVote, user, isAnonymous };
     });
   }
 
@@ -1733,6 +1738,7 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
         ...(dto.textFr !== undefined ? { textFr: dto.textFr } : {}),
         ...(dto.meaning !== undefined ? { meaning: dto.meaning } : {}),
         ...(dto.region !== undefined ? { region: dto.region } : {}),
+        ...(dto.isAnonymous !== undefined ? { isAnonymous: Boolean(dto.isAnonymous) } : {}),
       },
       select: CONTRIBUTION_BASE_SELECT,
     });
