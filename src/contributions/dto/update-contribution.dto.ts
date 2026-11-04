@@ -25,4 +25,8 @@ export class UpdateContributionDto {
   @IsBoolean()
   @IsOptional()
   submit?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  isAnonymous?: boolean;
 }
