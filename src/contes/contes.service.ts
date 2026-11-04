@@ -220,6 +220,11 @@ export class ContesService {
               theme: true,
             },
           },
+          _count: {
+            select: {
+              paragraphs: true,
+            },
+          },
         },
       }),
       this.prisma.conte.count({ where }),
