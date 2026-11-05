@@ -74,6 +74,18 @@ export interface MultiplayerPlayerPublic {
   earnedXp: number;
 }
 
+function parseBooleanUserAnswer(answer: string | boolean | undefined | null): boolean | null {
+  if (typeof answer === 'boolean') return answer;
+  const norm = String(answer || '').trim().toLowerCase();
+  if (norm === 'true' || norm === 'vrai' || norm === 'marina' || norm === '1') {
+    return true;
+  }
+  if (norm === 'false' || norm === 'faux' || norm === 'diso' || norm === '0') {
+    return false;
+  }
+  return null;
+}
+
 @Injectable()
 export class MultiplayerService {
   private readonly logger = new Logger(MultiplayerService.name);
@@ -1504,8 +1516,8 @@ export class MultiplayerService {
         );
         if (q) {
           if (q.gameType === 'TRUE_FALSE') {
-            const boolAnswer = dto.userAnswer.toLowerCase() === 'true';
-            isCorrect = boolAnswer === q.isTrue;
+            const parsedAnswer = parseBooleanUserAnswer(dto.userAnswer);
+            isCorrect = parsedAnswer !== null && parsedAnswer === Boolean(q.isTrue);
             explanationMg = q.explanationMg;
             explanationFr = q.explanationFr;
             correctAnswer = q.isTrue ? 'true' : 'false';
@@ -1531,8 +1543,8 @@ export class MultiplayerService {
           where: { id: dto.questionId },
         });
         if (q) {
-          const boolAnswer = dto.userAnswer.toLowerCase() === 'true';
-          isCorrect = boolAnswer === q.isTrue;
+          const parsedAnswer = parseBooleanUserAnswer(dto.userAnswer);
+          isCorrect = parsedAnswer !== null && parsedAnswer === Boolean(q.isTrue);
           explanationMg = q.explanationMg;
           explanationFr = q.explanationFr;
           correctAnswer = q.isTrue ? 'true' : 'false';

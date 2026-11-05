@@ -856,6 +856,11 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       }
     }
 
+    const isAnonymous = Boolean((rest as any).isAnonymous);
+    if (isAnonymous && !isAuthor && !isAdmin) {
+      (rest as any).user = null;
+    }
+
     const userVote =
       (votes as Array<{ value: number }> | undefined)?.[0]?.value ?? 0;
     return { ...rest, userVote };
