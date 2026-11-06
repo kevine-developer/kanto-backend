@@ -123,6 +123,28 @@ export class CreateEventDto {
 
   @IsOptional()
   @IsBoolean()
+  enableWaitlist?: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  waitlistCapacity?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  isPaid?: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  ticketPrice?: number;
+
+  @IsOptional()
+  @IsString()
+  currency?: string;
+
+  @IsOptional()
+  @IsBoolean()
   isFeatured?: boolean;
 
   @IsOptional()
@@ -209,6 +231,28 @@ export class UpdateEventDto {
 
   @IsOptional()
   @IsBoolean()
+  enableWaitlist?: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  waitlistCapacity?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  isPaid?: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  ticketPrice?: number;
+
+  @IsOptional()
+  @IsString()
+  currency?: string;
+
+  @IsOptional()
+  @IsBoolean()
   isFeatured?: boolean;
 
   @IsOptional()
@@ -291,4 +335,28 @@ export class DistributeRewardsDto {
   @IsNumber()
   @Min(1)
   topN?: number;
+}
+
+export class AdminCancelParticipationDto {
+  @IsNotEmpty({ message: 'Le motif d’annulation est obligatoire' })
+  @IsString()
+  reason: string;
+
+  @IsOptional()
+  @IsString()
+  internalNotes?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  notifyUser?: boolean;
+}
+
+export class UploadEventCoverDto {
+  @IsNotEmpty({ message: 'Données image base64 obligatoires' })
+  @IsString()
+  base64Data: string;
+
+  @IsOptional()
+  @IsString()
+  originalName?: string;
 }

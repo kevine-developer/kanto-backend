@@ -6,11 +6,16 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import fs from 'node:fs';
+import path from 'node:path';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { ProgressionService } from '../progression/progression.service.js';
 import { NotificationsService } from '../notifications/notifications.service.js';
 import { BadgesService } from '../badges/badges.service.js';
+import { CloudinaryService } from '../integrations/cloudinary/cloudinary.service.js';
+import { CloudinarySyncService } from '../integrations/cloudinary/cloudinary-sync.service.js';
 import {
+  AdminCancelParticipationDto,
   CreateEventDto,
   CreateEventRewardDto,
   DistributeRewardsDto,
@@ -18,6 +23,7 @@ import {
   SubmitEventProgressDto,
   UpdateEventDto,
   UpdateEventStatusDto,
+  UploadEventCoverDto,
 } from './dto/events.dto.js';
 import {
   EventCategory,
@@ -36,6 +42,8 @@ export class EventsService {
     private readonly progressionService: ProgressionService,
     private readonly notificationsService: NotificationsService,
     private readonly badgesService: BadgesService,
+    private readonly cloudinaryService: CloudinaryService,
+    private readonly cloudinarySyncService: CloudinarySyncService,
   ) {}
 
   /**
@@ -330,40 +338,169 @@ export class EventsService {
 
     if (existing) {
       if (existing.status === EventParticipationStatus.CANCELLED) {
-        // Réactivation de l'inscription
-        const updated = await this.prisma.eventParticipation.update({
-          where: { id: existing.id },
-          data: { status: EventParticipationStatus.REGISTERED },
-        });
-        await this.prisma.event.update({
-          where: { id: eventId },
-          data: { currentParticipantsCount: { increment: 1 } },
-        });
+        // Tentative de réactivation de l'inscription
+        const isFull =
+          event.maxParticipants &&
+          event.currentParticipantsCount >= event.maxParticipants;
+
+        if (!isFull) {
+          const updated = await this.prisma.$transaction(async (tx) => {
+            const p = await tx.eventParticipation.update({
+              where: { id: existing.id },
+              data: {
+                status: EventParticipationStatus.REGISTERED,
+                cancellationReason: null,
+                cancelledByRole: null,
+                cancelledById: null,
+                cancelledAt: null,
+                adminNotes: null,
+                waitlistPosition: null,
+              },
+            });
+            await tx.event.update({
+              where: { id: eventId },
+              data: { currentParticipantsCount: { increment: 1 } },
+            });
+            return p;
+          });
+          return {
+            success: true,
+            isWaitlist: false,
+            participation: updated,
+            message: 'Votre inscription a été réactivée avec succès.',
+          };
+        } else if (event.enableWaitlist) {
+          // Si l'événement est complet mais que la liste d'attente est activée
+          const waitlistCount = await this.prisma.eventParticipation.count({
+            where: { eventId, status: EventParticipationStatus.WAITLIST },
+          });
+
+          if (event.waitlistCapacity && waitlistCount >= event.waitlistCapacity) {
+            throw new ConflictException(
+              'Cet événement et sa liste d’attente sont actuellement complets.',
+            );
+          }
+
+          const waitlistPosition = waitlistCount + 1;
+          const updated = await this.prisma.eventParticipation.update({
+            where: { id: existing.id },
+            data: {
+              status: EventParticipationStatus.WAITLIST,
+              waitlistPosition,
+              cancellationReason: null,
+              cancelledByRole: null,
+              cancelledById: null,
+              cancelledAt: null,
+              adminNotes: null,
+            },
+          });
+
+          return {
+            success: true,
+            isWaitlist: true,
+            waitlistPosition,
+            participation: updated,
+            message: `Vous avez été réinscrit sur la liste d'attente (position #${waitlistPosition}).`,
+          };
+        } else {
+          throw new ConflictException(
+            'Cet événement a atteint sa capacité maximale de participants.',
+          );
+        }
+      }
+
+      if (existing.status === EventParticipationStatus.WAITLIST) {
         return {
           success: true,
-          participation: updated,
-          message: 'Votre inscription a été réactivée avec succès.',
+          isWaitlist: true,
+          waitlistPosition: existing.waitlistPosition,
+          participation: existing,
+          message: `Vous êtes déjà inscrit sur la liste d’attente (position #${existing.waitlistPosition ?? 1}).`,
         };
       }
 
       return {
         success: true,
+        isWaitlist: false,
         participation: existing,
         message: 'Vous participez déjà à cet événement.',
       };
     }
 
     // Contrôle capacité maximale
-    if (
+    const isEventFull =
       event.maxParticipants &&
-      event.currentParticipantsCount >= event.maxParticipants
-    ) {
-      throw new ConflictException(
-        'Cet événement a atteint sa capacité maximale de participants.',
+      event.currentParticipantsCount >= event.maxParticipants;
+
+    if (isEventFull) {
+      if (!event.enableWaitlist) {
+        throw new ConflictException(
+          'Cet événement a atteint sa capacité maximale de participants.',
+        );
+      }
+
+      // Inscription en liste d'attente atomique
+      const waitlistResult = await this.prisma.$transaction(async (tx) => {
+        const waitlistCount = await tx.eventParticipation.count({
+          where: { eventId, status: EventParticipationStatus.WAITLIST },
+        });
+
+        if (event.waitlistCapacity && waitlistCount >= event.waitlistCapacity) {
+          throw new ConflictException(
+            'La liste d’attente de cet événement a atteint sa capacité maximale.',
+          );
+        }
+
+        const waitlistPosition = waitlistCount + 1;
+        const p = await tx.eventParticipation.create({
+          data: {
+            eventId,
+            userId,
+            status: EventParticipationStatus.WAITLIST,
+            waitlistPosition,
+            metadata: ipAddress ? { ipAddress } : undefined,
+          },
+        });
+
+        return { participation: p, waitlistPosition };
+      });
+
+      this.logger.log(
+        `[Events] Utilisateur ${userId} placé sur la liste d'attente #${waitlistResult.waitlistPosition} pour l'événement ${eventId}`,
       );
+
+      // Notification liste d'attente
+      try {
+        await this.notificationsService.createNotification({
+          userId,
+          titleMg: 'Lisitra fiandrasana !',
+          titleFr: 'Liste d’attente rejointe !',
+          messageMg: `Voasoratra ao amin'ny lisitra fiandrasana (laharana #${waitlistResult.waitlistPosition}) ianao ho an'ny hetsika "${event.titleMg}".`,
+          messageFr: `Vous êtes placé(e) sur la liste d'attente (position #${waitlistResult.waitlistPosition}) pour l'événement "${event.titleFr}". Nous vous préviendrons dès qu'une place se libère.`,
+          category: 'community',
+          badgeText: 'Fiandrasana',
+          badgeType: 'info',
+          iconName: 'time-outline',
+          iconColor: '#C58B38',
+          targetRoute: `/(screens)/events/${event.id}`,
+          isBroadcast: false,
+        });
+      } catch (notifErr) {
+        this.logger.warn(
+          `Erreur notification liste d'attente événement : ${notifErr}`,
+        );
+      }
+
+      return {
+        success: true,
+        isWaitlist: true,
+        waitlistPosition: waitlistResult.waitlistPosition,
+        participation: waitlistResult.participation,
+        message: `Vous avez rejoint la liste d’attente avec succès (position #${waitlistResult.waitlistPosition}).`,
+      };
     }
 
-    // Création atomique de la participation
+    // Création atomique de la participation confirmée
     const participation = await this.prisma.$transaction(async (tx) => {
       const p = await tx.eventParticipation.create({
         data: {
@@ -410,13 +547,15 @@ export class EventsService {
 
     return {
       success: true,
+      isWaitlist: false,
       participation,
       message: 'Inscription enregistrée avec succès !',
     };
   }
 
   /**
-   * Annule une inscription avant le début de l'événement.
+   * Annule une inscription (désistement volontaire de l'utilisateur).
+   * Si la place libérée était confirmée, promeut automatiquement le premier participant de la liste d'attente.
    */
   async cancelParticipation(eventId: string, userId: string) {
     const participation = await this.prisma.eventParticipation.findUnique({
@@ -436,25 +575,103 @@ export class EventsService {
       );
     }
 
-    await this.prisma.$transaction(async (tx) => {
-      await tx.eventParticipation.update({
-        where: { id: participation.id },
-        data: { status: EventParticipationStatus.CANCELLED },
-      });
+    const wasActive =
+      participation.status === EventParticipationStatus.REGISTERED ||
+      participation.status === EventParticipationStatus.IN_PROGRESS;
 
-      await tx.event.update({
-        where: { id: eventId },
+    const result = await this.prisma.$transaction(async (tx) => {
+      // 1. Annulation de la participation actuelle
+      const cancelled = await tx.eventParticipation.update({
+        where: { id: participation.id },
         data: {
-          currentParticipantsCount: {
-            decrement: participation.event.currentParticipantsCount > 0 ? 1 : 0,
-          },
+          status: EventParticipationStatus.CANCELLED,
+          cancelledByRole: 'USER',
+          cancelledById: userId,
+          cancelledAt: new Date(),
+          cancellationReason: 'Désistement volontaire de l’utilisateur',
+          waitlistPosition: null,
         },
       });
+
+      let promotedUser: { id: string; userId: string; event: any } | null = null;
+
+      // 2. Si la place était occupée parmi les places confirmées
+      if (wasActive) {
+        // Vérifier s'il y a un participant en liste d'attente à promouvoir
+        const nextInWaitlist = await tx.eventParticipation.findFirst({
+          where: {
+            eventId,
+            status: EventParticipationStatus.WAITLIST,
+          },
+          orderBy: [
+            { waitlistPosition: 'asc' },
+            { createdAt: 'asc' },
+          ],
+        });
+
+        if (nextInWaitlist) {
+          // Promotion automatique
+          await tx.eventParticipation.update({
+            where: { id: nextInWaitlist.id },
+            data: {
+              status: EventParticipationStatus.REGISTERED,
+              waitlistPosition: null,
+              promotedFromWaitlistAt: new Date(),
+            },
+          });
+
+          promotedUser = {
+            id: nextInWaitlist.id,
+            userId: nextInWaitlist.userId,
+            event: participation.event,
+          };
+          // Le compteur reste inchangé car une place se libère et une autre est attribuée immédiatement
+        } else {
+          // Aucune liste d'attente : décrémenter le compteur de participants
+          await tx.event.update({
+            where: { id: eventId },
+            data: {
+              currentParticipantsCount: {
+                decrement: participation.event.currentParticipantsCount > 0 ? 1 : 0,
+              },
+            },
+          });
+        }
+      }
+
+      return { cancelled, promotedUser };
     });
+
+    // 3. Notification asynchrone au participant promu depuis la liste d'attente
+    if (result.promotedUser) {
+      try {
+        await this.notificationsService.createNotification({
+          userId: result.promotedUser.userId,
+          titleMg: 'Toerana afaka ! Voamarina ny fisoratanao',
+          titleFr: 'Une place s’est libérée ! Inscription confirmée',
+          messageMg: `Nisy toerana nanjary afaka ho an'ny hetsika "${participation.event.titleMg}". Voamarina ho mpandray anjara ianao izao !`,
+          messageFr: `Une place s'est libérée pour l'événement "${participation.event.titleFr}". Votre participation est désormais officiellement confirmée !`,
+          category: 'community',
+          badgeText: 'Voamarina',
+          badgeType: 'new',
+          iconName: 'checkmark-circle-outline',
+          iconColor: '#4A6741',
+          targetRoute: `/(screens)/events/${participation.event.id}`,
+          isBroadcast: false,
+        });
+      } catch (promotedNotifErr) {
+        this.logger.warn(
+          `Erreur notification promotion liste d'attente : ${promotedNotifErr}`,
+        );
+      }
+    }
 
     return {
       success: true,
-      message: 'Inscription annulée avec succès.',
+      message:
+        participation.status === EventParticipationStatus.WAITLIST
+          ? 'Vous vous êtes retiré(e) de la liste d’attente avec succès.'
+          : 'Votre inscription a été annulée avec succès.',
     };
   }
 
@@ -932,6 +1149,11 @@ export class EventsService {
         endDate: new Date(dto.endDate),
         registrationDeadline: finalRegistrationDeadline,
         maxParticipants: finalMaxParticipants,
+        enableWaitlist: Boolean(dto.enableWaitlist),
+        waitlistCapacity: dto.waitlistCapacity || null,
+        isPaid: Boolean(dto.isPaid),
+        ticketPrice: dto.isPaid && dto.ticketPrice ? dto.ticketPrice : null,
+        currency: dto.currency || 'MGA',
         isFeatured: Boolean(dto.isFeatured),
         rulesMg: finalRulesMg,
         rulesFr: finalRulesFr,
@@ -1040,6 +1262,11 @@ export class EventsService {
         maxParticipants: sections?.participationConditions === false ? null : (
           dto.maxParticipants !== undefined ? dto.maxParticipants : event.maxParticipants
         ),
+        ...(dto.enableWaitlist !== undefined && { enableWaitlist: dto.enableWaitlist }),
+        ...(dto.waitlistCapacity !== undefined && { waitlistCapacity: dto.waitlistCapacity }),
+        ...(dto.isPaid !== undefined && { isPaid: dto.isPaid }),
+        ...(dto.ticketPrice !== undefined && { ticketPrice: dto.isPaid ? dto.ticketPrice : null }),
+        ...(dto.currency !== undefined && { currency: dto.currency }),
         ...(dto.isFeatured !== undefined && { isFeatured: dto.isFeatured }),
         rulesMg: sections?.rules === false ? null : (dto.rulesMg !== undefined ? dto.rulesMg : event.rulesMg),
         rulesFr: sections?.rules === false ? null : (dto.rulesFr !== undefined ? dto.rulesFr : event.rulesFr),
@@ -1396,7 +1623,21 @@ export class EventsService {
     const where: any = { eventId };
 
     if (query.status && query.status !== 'ALL') {
-      where.status = query.status as EventParticipationStatus;
+      if (query.status === 'CONFIRMED') {
+        where.status = {
+          in: [
+            EventParticipationStatus.REGISTERED,
+            EventParticipationStatus.IN_PROGRESS,
+            EventParticipationStatus.COMPLETED,
+          ],
+        };
+      } else if (query.status === 'WAITLIST') {
+        where.status = EventParticipationStatus.WAITLIST;
+      } else if (query.status === 'CANCELLED') {
+        where.status = EventParticipationStatus.CANCELLED;
+      } else {
+        where.status = query.status as EventParticipationStatus;
+      }
     }
 
     if (query.search && query.search.trim()) {
@@ -1425,7 +1666,10 @@ export class EventsService {
             },
           },
         },
-        orderBy: { createdAt: 'desc' },
+        orderBy: [
+          ...(query.status === 'WAITLIST' ? [{ waitlistPosition: 'asc' as const }] : []),
+          { createdAt: 'desc' as const },
+        ],
         skip,
         take: limit,
       }),
@@ -1443,6 +1687,12 @@ export class EventsService {
         progressPercent: p.progressPercent,
         registeredAt: p.createdAt,
         completedAt: p.completedAt,
+        waitlistPosition: p.waitlistPosition,
+        cancelledByRole: p.cancelledByRole,
+        cancellationReason: p.cancellationReason,
+        cancelledAt: p.cancelledAt,
+        adminNotes: p.adminNotes,
+        promotedFromWaitlistAt: p.promotedFromWaitlistAt,
       })),
       pagination: {
         total,
@@ -1514,6 +1764,235 @@ export class EventsService {
       success: true,
       action: 'DELETED',
       message: `L'événement "${event.titleFr}" a été définitivement supprimé.`,
+    };
+  }
+
+  /**
+   * Sauvegarde et valide une photo de présentation d'événement (ratio 16:9 recommandé).
+   * Contrôle type MIME, taille maximale (5 Mo), et enregistre sur Cloudinary CDN ou en local fallback.
+   */
+  async uploadEventCover(
+    dto: UploadEventCoverDto,
+    adminId: string,
+  ): Promise<{ success: boolean; url: string; provider: 'cloudinary' | 'local' }> {
+    const { buffer, mimeType } =
+      this.cloudinaryService.validateAndDecodeBase64Image(dto.base64Data);
+
+    const allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowedMimes.includes(mimeType)) {
+      throw new BadRequestException(
+        'Format d’image non supporté. Veuillez importer un fichier JPEG, PNG ou WebP.',
+      );
+    }
+
+    const MAX_SIZE = 5 * 1024 * 1024; // 5 Mo
+    if (buffer.length > MAX_SIZE) {
+      throw new BadRequestException(
+        'L’image dépasse la taille maximale autorisée de 5 Mo.',
+      );
+    }
+
+    const mimeToExt: Record<string, string> = {
+      'image/jpeg': 'jpg',
+      'image/jpg': 'jpg',
+      'image/png': 'png',
+      'image/webp': 'webp',
+    };
+    const ext = mimeToExt[mimeType] || 'jpg';
+    const subfolder = 'events/covers';
+
+    if (this.cloudinaryService.isConfigured()) {
+      try {
+        const cloudinaryUrl = await this.cloudinaryService.uploadImageBase64(
+          dto.base64Data,
+          dto.originalName || `event-cover-${Date.now()}.${ext}`,
+          'kanto/events/covers',
+        );
+        this.logger.log(`[Events] Image de couverture hébergée sur Cloudinary : ${cloudinaryUrl}`);
+        this.cloudinarySyncService.syncLocalUploadsToCloudinary().catch(() => {});
+        return { success: true, url: cloudinaryUrl, provider: 'cloudinary' };
+      } catch (err: unknown) {
+        this.logger.error(
+          `[Events] Erreur upload Cloudinary, fallback local : ${
+            err instanceof Error ? err.message : String(err)
+          }`,
+        );
+      }
+    }
+
+    const uploadDir = path.resolve(process.cwd(), 'uploads', subfolder);
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    const filename = `event-cover-${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${ext}`;
+    const filePath = path.join(uploadDir, filename);
+    fs.writeFileSync(filePath, buffer);
+
+    const localUrl = `/uploads/${subfolder}/${filename}`;
+    this.logger.log(`[Events] Image de couverture enregistrée en local : ${localUrl}`);
+
+    return { success: true, url: localUrl, provider: 'local' };
+  }
+
+  /**
+   * Annulation administrative d'un participant par un administrateur.
+   * Conserve l'historique en base (statut CANCELLED, rôle ADMIN, motif interne et notifié).
+   * Si la place libérée était confirmée, promeut automatiquement le premier de la liste d'attente.
+   */
+  async adminCancelParticipant(
+    eventId: string,
+    userId: string,
+    dto: AdminCancelParticipationDto,
+    adminId: string,
+  ) {
+    const event = await this.prisma.event.findUnique({
+      where: { id: eventId },
+    });
+    if (!event) throw new NotFoundException('Événement introuvable.');
+
+    const participation = await this.prisma.eventParticipation.findUnique({
+      where: {
+        eventId_userId: { eventId, userId },
+      },
+      include: { user: true },
+    });
+    if (!participation) {
+      throw new NotFoundException('Ce participant n’est pas inscrit à cet événement.');
+    }
+
+    if (participation.status === EventParticipationStatus.CANCELLED) {
+      throw new BadRequestException('Cette inscription est déjà annulée.');
+    }
+
+    const wasActive =
+      participation.status === EventParticipationStatus.REGISTERED ||
+      participation.status === EventParticipationStatus.IN_PROGRESS;
+
+    const result = await this.prisma.$transaction(async (tx) => {
+      const cancelled = await tx.eventParticipation.update({
+        where: { id: participation.id },
+        data: {
+          status: EventParticipationStatus.CANCELLED,
+          cancelledByRole: 'ADMIN',
+          cancelledById: adminId,
+          cancelledAt: new Date(),
+          cancellationReason: dto.reason,
+          adminNotes: dto.internalNotes || null,
+          waitlistPosition: null,
+        },
+      });
+
+      let promotedUser: { id: string; userId: string } | null = null;
+
+      if (wasActive) {
+        const nextInWaitlist = await tx.eventParticipation.findFirst({
+          where: {
+            eventId,
+            status: EventParticipationStatus.WAITLIST,
+          },
+          orderBy: [
+            { waitlistPosition: 'asc' },
+            { createdAt: 'asc' },
+          ],
+        });
+
+        if (nextInWaitlist) {
+          await tx.eventParticipation.update({
+            where: { id: nextInWaitlist.id },
+            data: {
+              status: EventParticipationStatus.REGISTERED,
+              waitlistPosition: null,
+              promotedFromWaitlistAt: new Date(),
+            },
+          });
+          promotedUser = {
+            id: nextInWaitlist.id,
+            userId: nextInWaitlist.userId,
+          };
+        } else {
+          await tx.event.update({
+            where: { id: eventId },
+            data: {
+              currentParticipantsCount: {
+                decrement: event.currentParticipantsCount > 0 ? 1 : 0,
+              },
+            },
+          });
+        }
+      }
+
+      await tx.adminAuditLog.create({
+        data: {
+          userId: adminId,
+          action: 'EVENT_PARTICIPANT_CANCELLED',
+          targetType: 'EVENT',
+          targetId: eventId,
+          targetLabel: event.titleFr,
+          details: {
+            participantId: userId,
+            participantEmail: participation.user.email,
+            reason: dto.reason,
+            internalNotes: dto.internalNotes,
+            previousStatus: participation.status,
+            promotedUserId: promotedUser?.userId || null,
+          },
+        },
+      });
+
+      return { cancelled, promotedUser };
+    });
+
+    // Envoi de notification au participant annulé (si notifyUser !== false)
+    if (dto.notifyUser !== false) {
+      try {
+        await this.notificationsService.createNotification({
+          userId,
+          titleMg: 'Fanafoanana fisoratana anarana',
+          titleFr: 'Inscription annulée',
+          messageMg: `Nofoanan'ny mpitantana ny fisoratanao amin'ny hetsika "${event.titleMg}". Antony : ${dto.reason}`,
+          messageFr: `Votre inscription à l'événement "${event.titleFr}" a été annulée par l'administration. Motif : ${dto.reason}`,
+          category: 'system',
+          badgeText: 'Fampahafantarana',
+          badgeType: 'info',
+          iconName: 'alert-circle-outline',
+          iconColor: '#C0392B',
+          isBroadcast: false,
+        });
+      } catch (notifErr) {
+        this.logger.warn(`Erreur notification annulation participant : ${notifErr}`);
+      }
+    }
+
+    // Envoi de notification au participant promu s'il existe
+    if (result.promotedUser) {
+      try {
+        await this.notificationsService.createNotification({
+          userId: result.promotedUser.userId,
+          titleMg: 'Toerana afaka ! Voamarina ny fisoratanao',
+          titleFr: 'Une place s’est libérée ! Inscription confirmée',
+          messageMg: `Nisy toerana nanjary afaka ho an'ny hetsika "${event.titleMg}". Voamarina ho mpandray anjara ianao izao !`,
+          messageFr: `Une place s'est libérée pour l'événement "${event.titleFr}". Votre inscription est désormais officiellement confirmée !`,
+          category: 'community',
+          badgeText: 'Voamarina',
+          badgeType: 'new',
+          iconName: 'checkmark-circle-outline',
+          iconColor: '#4A6741',
+          targetRoute: `/(screens)/events/${event.id}`,
+          isBroadcast: false,
+        });
+      } catch (promotedNotifErr) {
+        this.logger.warn(`Erreur notification promotion liste d'attente : ${promotedNotifErr}`);
+      }
+    }
+
+    return {
+      success: true,
+      message: `L'inscription de ${participation.user.name || participation.user.email || 'l’utilisateur'} a été annulée.${
+        result.promotedUser ? ' Un participant de la liste d’attente a été promu automatiquement.' : ''
+      }`,
+      cancelledParticipation: result.cancelled,
+      promotedUserId: result.promotedUser?.userId || null,
     };
   }
 }

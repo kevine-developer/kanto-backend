@@ -30,6 +30,7 @@ enum EventParticipationType {
 
 enum EventParticipationStatus {
   REGISTERED    // Inscrit
+  WAITLIST      // En liste d'attente
   IN_PROGRESS   // Participation en cours
   COMPLETED     // Participation terminée avec succès
   FAILED        // Échec des critères minimaux
@@ -45,3 +46,4 @@ enum EventRewardType {
   PHYSICAL_LOT    // Lot physique expédié
   CUSTOM          // Récompense personnalisée
 }
+
