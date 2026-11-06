@@ -10,6 +10,8 @@ import { PrismaService } from '../prisma/prisma.service.js';
 import { ProgressionService } from '../progression/progression.service.js';
 import { NotificationsService } from '../notifications/notifications.service.js';
 import { BadgesService } from '../badges/badges.service.js';
+import { CloudinaryService } from '../integrations/cloudinary/cloudinary.service.js';
+import { CloudinarySyncService } from '../integrations/cloudinary/cloudinary-sync.service.js';
 import {
   EventCategory,
   EventParticipationStatus,
@@ -24,6 +26,8 @@ describe('EventsService', () => {
   let progressionService: any;
   let notificationsService: any;
   let badgesService: any;
+  let cloudinaryService: any;
+  let cloudinarySyncService: any;
 
   const mockFutureStart = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   const mockFutureEnd = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
@@ -124,6 +128,30 @@ describe('EventsService', () => {
       getUserBadges: jest.fn<any>().mockResolvedValue([]),
     };
 
+    cloudinaryService = {
+      isConfigured: jest.fn<any>().mockReturnValue(true),
+      validateAndDecodeBase64Image: jest.fn<any>().mockReturnValue({
+        buffer: Buffer.from('fake-image-bytes'),
+        mimeType: 'image/png',
+      }),
+      uploadImageBase64: jest
+        .fn<any>()
+        .mockResolvedValue(
+          'https://res.cloudinary.com/kanto/events/covers/sample.png',
+        ),
+      deleteMediaFromUrl: jest.fn<any>().mockResolvedValue(true),
+    };
+
+    cloudinarySyncService = {
+      syncLocalUploadsToCloudinary: jest.fn<any>().mockResolvedValue({
+        migratedCount: 0,
+        errorsCount: 0,
+        totalFound: 0,
+        skipped: false,
+        message: 'OK',
+      }),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         EventsService,
@@ -131,6 +159,8 @@ describe('EventsService', () => {
         { provide: ProgressionService, useValue: progressionService },
         { provide: NotificationsService, useValue: notificationsService },
         { provide: BadgesService, useValue: badgesService },
+        { provide: CloudinaryService, useValue: cloudinaryService },
+        { provide: CloudinarySyncService, useValue: cloudinarySyncService },
       ],
     }).compile();
 
@@ -258,7 +288,9 @@ describe('EventsService', () => {
       expect(prisma.eventParticipation.update).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { id: 'part_1' },
-          data: { status: EventParticipationStatus.CANCELLED },
+          data: expect.objectContaining({
+            status: EventParticipationStatus.CANCELLED,
+          }),
         }),
       );
     });
@@ -578,6 +610,64 @@ describe('EventsService', () => {
       expect(res.rulesMg).toBeNull();
       expect(res.location).toBeNull();
       expect(res.metadata.contentConfig.sections.shortDescription).toBe(false);
+    });
+  });
+
+  describe('Upload de couverture', () => {
+    it('enregistre l’image sur Cloudinary si le service est configuré', async () => {
+      const res = await service.uploadEventCover(
+        {
+          base64Data: 'data:image/png;base64,ZmFrZQ==',
+          originalName: 'couverture.png',
+        },
+        'admin_1',
+      );
+
+      expect(cloudinaryService.validateAndDecodeBase64Image).toHaveBeenCalledWith(
+        'data:image/png;base64,ZmFrZQ==',
+      );
+      expect(cloudinaryService.uploadImageBase64).toHaveBeenCalledWith(
+        'data:image/png;base64,ZmFrZQ==',
+        'couverture.png',
+        'kanto/events/covers',
+      );
+      expect(res).toEqual({
+        success: true,
+        url: 'https://res.cloudinary.com/kanto/events/covers/sample.png',
+        provider: 'cloudinary',
+      });
+    });
+
+    it('rejette l’upload si le format MIME n’est pas supporté', async () => {
+      cloudinaryService.validateAndDecodeBase64Image.mockReturnValueOnce({
+        buffer: Buffer.from('fake-gif'),
+        mimeType: 'image/gif',
+      });
+
+      await expect(
+        service.uploadEventCover(
+          {
+            base64Data: 'data:image/gif;base64,ZmFrZQ==',
+          },
+          'admin_1',
+        ),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('rejette l’upload si la taille dépasse 5 Mo', async () => {
+      cloudinaryService.validateAndDecodeBase64Image.mockReturnValueOnce({
+        buffer: Buffer.alloc(6 * 1024 * 1024), // 6 Mo
+        mimeType: 'image/png',
+      });
+
+      await expect(
+        service.uploadEventCover(
+          {
+            base64Data: 'data:image/png;base64,gros-fichier',
+          },
+          'admin_1',
+        ),
+      ).rejects.toThrow(BadRequestException);
     });
   });
 });
