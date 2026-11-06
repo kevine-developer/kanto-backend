@@ -288,6 +288,10 @@ export class EventQueryDto {
 
   @IsOptional()
   @IsString()
+  timeFilter?: string; // 'upcoming' | 'ongoing' | 'past' | 'completed' | 'all'
+
+  @IsOptional()
+  @IsString()
   search?: string;
 
   @IsOptional()

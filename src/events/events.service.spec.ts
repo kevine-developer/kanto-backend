@@ -175,6 +175,39 @@ describe('EventsService', () => {
       expect(prisma.event.findMany).toHaveBeenCalled();
     });
 
+    it('filtre correctement les événements à venir (upcoming) sans inclure les événements expirés', async () => {
+      await service.getPublicEvents({ timeFilter: 'upcoming', limit: 6 });
+      expect(prisma.event.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({
+            status: { in: [EventStatus.PUBLISHED, EventStatus.ACTIVE] },
+            AND: expect.arrayContaining([
+              expect.objectContaining({ endDate: expect.objectContaining({ gte: expect.any(Date) }) }),
+            ]),
+          }),
+        }),
+      );
+    });
+
+    it('filtre correctement les événements passés (past)', async () => {
+      await service.getPublicEvents({ timeFilter: 'past', limit: 10 });
+      expect(prisma.event.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({
+            AND: expect.arrayContaining([
+              expect.objectContaining({
+                OR: expect.arrayContaining([
+                  { status: EventStatus.COMPLETED },
+                  { endDate: expect.objectContaining({ lt: expect.any(Date) }) },
+                ]),
+              }),
+            ]),
+          }),
+          orderBy: [{ endDate: 'desc' }],
+        }),
+      );
+    });
+
     it('renvoie l’événement vedette pour l’accueil', async () => {
       const res = await service.getFeaturedEvent('user_1');
       expect(res).toBeDefined();

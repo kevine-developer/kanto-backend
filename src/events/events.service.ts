@@ -93,11 +93,32 @@ export class EventsService {
     const limit = Math.min(50, Math.max(1, Number(query.limit) || 15));
     const skip = (page - 1) * limit;
 
+    const now = new Date();
+    const andConditions: any[] = [];
+
     const where: any = {
       status: {
         in: [EventStatus.PUBLISHED, EventStatus.ACTIVE, EventStatus.COMPLETED],
       },
     };
+
+    if (query.timeFilter === 'past' || query.timeFilter === 'completed') {
+      where.status = {
+        in: [EventStatus.PUBLISHED, EventStatus.ACTIVE, EventStatus.COMPLETED],
+      };
+      andConditions.push({
+        OR: [
+          { status: EventStatus.COMPLETED },
+          { endDate: { lt: now } },
+        ],
+      });
+    } else if (query.timeFilter === 'upcoming') {
+      where.status = { in: [EventStatus.PUBLISHED, EventStatus.ACTIVE] };
+      andConditions.push({ endDate: { gte: now } });
+    } else if (query.timeFilter === 'ongoing') {
+      where.status = { in: [EventStatus.PUBLISHED, EventStatus.ACTIVE] };
+      andConditions.push({ startDate: { lte: now } }, { endDate: { gte: now } });
+    }
 
     if (query.category) {
       where.category = query.category as EventCategory;
@@ -113,12 +134,18 @@ export class EventsService {
 
     if (query.search && query.search.trim()) {
       const term = query.search.trim();
-      where.OR = [
-        { titleMg: { contains: term, mode: 'insensitive' } },
-        { titleFr: { contains: term, mode: 'insensitive' } },
-        { descriptionMg: { contains: term, mode: 'insensitive' } },
-        { descriptionFr: { contains: term, mode: 'insensitive' } },
-      ];
+      andConditions.push({
+        OR: [
+          { titleMg: { contains: term, mode: 'insensitive' } },
+          { titleFr: { contains: term, mode: 'insensitive' } },
+          { descriptionMg: { contains: term, mode: 'insensitive' } },
+          { descriptionFr: { contains: term, mode: 'insensitive' } },
+        ],
+      });
+    }
+
+    if (andConditions.length > 0) {
+      where.AND = andConditions;
     }
 
     if (query.myEvents && userId) {
@@ -129,6 +156,11 @@ export class EventsService {
         },
       };
     }
+
+    const orderBy =
+      query.timeFilter === 'past' || query.timeFilter === 'completed'
+        ? [{ endDate: 'desc' as const }]
+        : [{ isFeatured: 'desc' as const }, { startDate: 'asc' as const }];
 
     const [total, events] = await Promise.all([
       this.prisma.event.count({ where }),
@@ -161,7 +193,7 @@ export class EventsService {
               }
             : {}),
         },
-        orderBy: [{ isFeatured: 'desc' }, { startDate: 'asc' }],
+        orderBy,
         skip,
         take: limit,
       }),
@@ -192,10 +224,12 @@ export class EventsService {
    * Récupère l'événement vedette actif ou à venir pour la page d'accueil.
    */
   async getFeaturedEvent(userId?: string) {
+    const now = new Date();
     const event = await this.prisma.event.findFirst({
       where: {
         status: { in: [EventStatus.PUBLISHED, EventStatus.ACTIVE] },
         isFeatured: true,
+        endDate: { gte: now },
       },
       include: {
         rewards: true,
