@@ -62,6 +62,9 @@ model User {
   sentReferrals          Referral[]      @relation("ReferrerReferrals")
   receivedReferral       Referral?       @relation("RefereeReferral")
 
+  // Relations Partenaires & Organisateurs
+  partners               Partner[]
+
   // Relations Événements & Fanamby
   eventParticipations    EventParticipation[]
   eventRewardClaims      EventRewardClaim[]

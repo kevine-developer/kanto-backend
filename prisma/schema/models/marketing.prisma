@@ -1,0 +1,73 @@
+// ============================================================
+// MODÈLES — MARKETING & PRESTATIONS PARTENAIRES
+// ============================================================
+
+model MarketingPlacement {
+  id                   String   @id @default(cuid())
+  code                 String   @unique // ex: "HERO_BANNER", "FEATURED_SPOTLIGHT", "RECOMMENDED_SECTION", "PUSH_NOTIFICATION", "CULTURAL_CAMPAIGN", "SOCIAL_MEDIA"
+  nameFr               String
+  nameMg               String
+  descriptionFr        String   @db.Text
+  descriptionMg        String   @db.Text
+  specifications       Json?    // Dimensions recommandées, poids, formats acceptés
+  basePrice            Float?   // Prix indicatif en Ariary
+  currency             String?  @default("MGA")
+  allowedDurationsDays Int[]    // ex: [7, 14, 30]
+  isActive             Boolean  @default(true)
+  orderIndex           Int      @default(0)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  requests             MarketingRequestPlacement[]
+
+  @@index([isActive])
+  @@index([orderIndex])
+  @@map("marketing_placements")
+}
+
+model MarketingRequest {
+  id                 String                 @id @default(cuid())
+  partnerId          String
+  partner            Partner                @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  eventId            String
+  event              Event                  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  status             MarketingRequestStatus @default(SUBMITTED)
+  requestedStartDate DateTime
+  requestedEndDate   DateTime
+  actualStartDate    DateTime?
+  actualEndDate      DateTime?
+  campaignGoals      String?                @db.Text // Objectif (ex: "Maximiser les inscriptions", "Faire connaître un atelier")
+  targetAudience     String?                // Cible (ex: "Jeunes, Passionnés d'histoire")
+  proposedBudget     Float?
+  currency           String?                @default("MGA")
+  creatives          Json?                  // Affiches, bannières, accroches validées
+  adminFeedback      String?                @db.Text // Retour ou consignes de l'équipe Kanto
+  messages           Json?                  // Historique des échanges [{ senderRole: "PARTNER"|"ADMIN", senderName: string, text: string, sentAt: string }]
+  impressionsCount   Int                    @default(0) // Vues réelles
+  clicksCount        Int                    @default(0) // Clics réels
+  conversionsCount   Int                    @default(0) // Inscriptions attribuées
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+
+  placements         MarketingRequestPlacement[]
+
+  @@index([partnerId])
+  @@index([eventId])
+  @@index([status])
+  @@map("marketing_requests")
+}
+
+model MarketingRequestPlacement {
+  id          String             @id @default(cuid())
+  requestId   String
+  request     MarketingRequest   @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  placementId String
+  placement   MarketingPlacement @relation(fields: [placementId], references: [id], onDelete: Cascade)
+  createdAt   DateTime           @default(now())
+
+  @@unique([requestId, placementId])
+  @@index([requestId])
+  @@index([placementId])
+  @@map("marketing_request_placements")
+}
+

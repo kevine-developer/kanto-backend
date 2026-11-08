@@ -37,14 +37,23 @@ model Event {
   metadata                 Json?                  // Configuration spÃ©cifique (ex: { associatedQuizId: "...", targetScore: 80 })
   creatorId                String?                // ID de l'administrateur crÃ©ateur
   cancelledReason          String?
+  partnerId                String?
+  partner                  Partner?               @relation(fields: [partnerId], references: [id], onDelete: SetNull)
+  moderationStatus         EventModerationStatus? @default(APPROVED)
+  moderationRejectionReason String?               @db.Text
+  moderatedAt              DateTime?
+  moderatedById            String?
   createdAt                DateTime               @default(now())
   updatedAt                DateTime               @updatedAt
 
   participations           EventParticipation[]
   rewards                  EventReward[]
   leaderboardEntries       EventLeaderboardEntry[]
+  marketingRequests        MarketingRequest[]
 
   @@index([status])
+  @@index([partnerId])
+  @@index([moderationStatus])
   @@index([category])
   @@index([startDate])
   @@index([endDate])
