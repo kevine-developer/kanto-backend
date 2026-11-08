@@ -35,7 +35,7 @@ export function renderBetaLandingPage(
   const isRegistered = Boolean(options?.initialRegistered);
 
   const initialTab =
-    options?.initialTab || (isRegistered ? 'already_registered' : 'download');
+    options?.initialTab || (isRegistered ? 'already_registered' : 'register');
   const emailVal = options?.registeredEmail || options?.initialEmail || '';
   const errorVal = options?.errorMessage
     ? escapeHtml(options.errorMessage)
@@ -354,34 +354,50 @@ export function renderBetaLandingPage(
       margin-bottom: 24px;
     }
 
-    /* ─── NAVIGATION À 3 ONGLETS MODERNE ─── */
+    /* ─── NOUVEAU DESIGN SEGMENTED CONTROL KANTO (2 OPTIONS) ─── */
     .tabs-nav {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       background: var(--color-surface-input);
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      padding: 4px;
-      gap: 4px;
-      margin-bottom: 22px;
+      border-radius: 14px;
+      padding: 5px;
+      gap: 6px;
+      margin-bottom: 24px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    [data-theme="dark"] .tabs-nav {
+      background: #11110F;
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.45);
     }
 
     .tab-btn {
-      flex: 1;
-      padding: 10px 12px;
-      border: none;
+      position: relative;
+      padding: 12px 14px;
+      border: 1px solid transparent;
       background: transparent;
       color: var(--color-text-secondary);
-      font-family: inherit;
-      font-size: 12.5px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13.5px;
       font-weight: 600;
-      border-radius: var(--radius-sm);
+      letter-spacing: -0.15px;
+      border-radius: 10px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 7px;
-      transition: all 0.18s ease;
+      gap: 8px;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
       white-space: nowrap;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .tab-btn svg {
+      flex-shrink: 0;
+      transition: transform 0.2s ease, stroke 0.2s ease;
     }
 
     .tab-btn:hover {
@@ -389,10 +405,89 @@ export function renderBetaLandingPage(
       background: var(--color-surface-hover);
     }
 
-    .tab-btn.active {
-      background: var(--color-tab-active-bg);
-      color: var(--color-tab-active-text);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+    .tab-btn:hover svg {
+      transform: translateY(-1px);
+    }
+
+    .tab-btn:active {
+      transform: scale(0.985);
+    }
+
+    /* Onglet actif — Mode Sombre */
+    [data-theme="dark"] .tab-btn.active {
+      background: linear-gradient(180deg, #22221E 0%, #181815 100%);
+      color: #F5F5F0;
+      border-color: rgba(224, 162, 74, 0.35);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+
+    [data-theme="dark"] .tab-btn.active svg {
+      stroke: var(--color-tanimbary, #6B9E61);
+    }
+
+    /* Onglet actif — Mode Clair */
+    [data-theme="light"] .tab-btn.active {
+      background: #FFFFFF;
+      color: #16442A;
+      border-color: rgba(74, 103, 65, 0.22);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    [data-theme="light"] .tab-btn.active svg {
+      stroke: #16442A;
+    }
+
+    /* Lien discret vers l'espace testeur pour ceux déjà inscrits */
+    .already-registered-hint {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 12.5px;
+      color: var(--color-text-secondary);
+      flex-wrap: wrap;
+    }
+
+    .link-already-trigger {
+      background: none;
+      border: none;
+      color: var(--color-tanimbary);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: opacity 0.15s ease;
+    }
+
+    .link-already-trigger:hover {
+      opacity: 0.8;
+    }
+
+    .btn-back-to-reg {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .btn-back-to-reg:hover {
+      color: var(--color-text);
+      background: var(--color-surface-hover);
+      border-color: var(--color-tanimbary);
     }
 
     /* ─── FORMULAIRES & CHAMPS ─── */
@@ -1530,19 +1625,15 @@ export function renderBetaLandingPage(
     </div>
 
     <div class="card">
-      <!-- Navigation principale à 3 onglets -->
+      <!-- Navigation principale à 2 options : Inscription Bêta en premier, puis Téléchargement -->
       <div class="tabs-nav">
-        <button type="button" class="tab-btn ${initialTab === 'download' ? 'active' : ''}" id="tab-btn-download">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-          <span>Téléchargement</span>
-        </button>
         <button type="button" class="tab-btn ${initialTab === 'register' && !isRegistered ? 'active' : ''}" id="tab-btn-register">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
           <span>Inscription Bêta</span>
         </button>
-        <button type="button" class="tab-btn ${initialTab === 'already_registered' || isRegistered ? 'active' : ''}" id="tab-btn-already">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-          <span>Mon Espace Testeur</span>
+        <button type="button" class="tab-btn ${initialTab === 'download' ? 'active' : ''}" id="tab-btn-download">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span>Téléchargement</span>
         </button>
       </div>
 
@@ -1555,7 +1646,106 @@ export function renderBetaLandingPage(
       </div>
 
       <!-- ═══════════════════════════════════════════════════════════════════════ -->
-      <!-- VOLET 1 : ESPACE DE TÉLÉCHARGEMENT KANTO MG                            -->
+      <!-- VOLET 1 : FORMULAIRE D'INSCRIPTION BÊTA (PRIORITAIRE)                                -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <div id="panel-register" style="display: ${initialTab === 'register' && !isRegistered ? 'block' : 'none'};">
+        <form id="waitlist-form">
+          <div class="hp-trap">
+            <input type="text" id="hp-website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="reg-email">
+              <span>Votre adresse e-mail</span>
+              <span style="color: var(--color-tanimbary);">Requis</span>
+            </label>
+            <input 
+              type="email" 
+              id="reg-email" 
+              class="field-input" 
+              placeholder="votre.email@gmail.com ou icloud.com" 
+              required 
+              value="${emailVal}"
+              autocomplete="email"
+            >
+            <p class="field-note">
+              Utilisez l'adresse associée à votre compte Google Play ou votre identifiant Apple.
+            </p>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="reg-name">
+              <span>Votre prénom ou nom</span>
+              <span style="color: var(--color-text-muted);">Optionnel</span>
+            </label>
+            <input 
+              type="text" 
+              id="reg-name" 
+              class="field-input" 
+              placeholder="Ex: Rado, Bakoly, Andry..." 
+              autocomplete="name"
+            >
+          </div>
+
+          <div class="field">
+            <label class="field-label">
+              <span>Plateforme(s) de test souhaitée(s)</span>
+              <span style="color: var(--color-tanimbary);">Sélectionnez au moins une</span>
+            </label>
+            <div class="platform-cards">
+              <div class="platform-card checked" id="card-android">
+                <div class="platform-checkbox">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div>
+                  <div class="platform-title">Android</div>
+                  <div class="platform-sub">Google Play Closed Testing</div>
+                </div>
+              </div>
+              <div class="platform-card" id="card-ios">
+                <div class="platform-checkbox">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div>
+                  <div class="platform-title">iOS (iPhone &amp; iPad)</div>
+                  <div class="platform-sub">Apple TestFlight</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="terms-card">
+            <label class="terms-box" for="reg-terms">
+              <input type="checkbox" id="reg-terms" required checked>
+              <span>
+                J'accepte les <button type="button" class="btn-terms-link" id="btn-open-cgu-modal">Conditions Générales d'Utilisation (CGU)</button> et j'ai pris connaissance de la <button type="button" class="btn-terms-link" id="btn-open-privacy-modal">Politique de Confidentialité</button>.
+              </span>
+            </label>
+            <div class="terms-micro-info">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="flex-shrink:0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <span>Chiffrement AES-256-GCM. Zéro mot de passe stocké. Zéro publicité, zéro revente. Désinscription en 1 clic.</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit" id="btn-submit-reg">
+            <span>Rejoindre le programme bêta</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+
+          <div class="already-registered-hint">
+            <span>Déjà inscrit au programme ?</span>
+            <button type="button" class="link-already-trigger" id="link-open-already">
+              Consulter mon espace testeur &rarr;
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!-- VOLET 2 : ESPACE DE TÉLÉCHARGEMENT KANTO MG                            -->
       <!-- ═══════════════════════════════════════════════════════════════════════ -->
       <div id="panel-download" style="display: ${initialTab === 'download' ? 'block' : 'none'};">
         <div style="margin-bottom: 20px;">
@@ -1668,101 +1858,14 @@ export function renderBetaLandingPage(
       </div>
 
       <!-- ═══════════════════════════════════════════════════════════════════════ -->
-      <!-- VOLET 2 : FORMULAIRE D'INSCRIPTION BÊTA                                -->
-      <!-- ═══════════════════════════════════════════════════════════════════════ -->
-      <div id="panel-register" style="display: ${initialTab === 'register' && !isRegistered ? 'block' : 'none'};">
-        <form id="waitlist-form">
-          <div class="hp-trap">
-            <input type="text" id="hp-website" name="website" tabindex="-1" autocomplete="off">
-          </div>
-
-          <div class="field">
-            <label class="field-label" for="reg-email">
-              <span>Votre adresse e-mail</span>
-              <span style="color: var(--color-tanimbary);">Requis</span>
-            </label>
-            <input 
-              type="email" 
-              id="reg-email" 
-              class="field-input" 
-              placeholder="votre.email@gmail.com ou icloud.com" 
-              required 
-              value="${emailVal}"
-              autocomplete="email"
-            >
-            <p class="field-note">
-              Utilisez l'adresse associée à votre compte Google Play ou votre identifiant Apple.
-            </p>
-          </div>
-
-          <div class="field">
-            <label class="field-label" for="reg-name">
-              <span>Votre prénom ou nom</span>
-              <span style="color: var(--color-text-muted);">Optionnel</span>
-            </label>
-            <input 
-              type="text" 
-              id="reg-name" 
-              class="field-input" 
-              placeholder="Ex: Rado, Bakoly, Andry..." 
-              autocomplete="name"
-            >
-          </div>
-
-          <div class="field">
-            <label class="field-label">
-              <span>Plateforme(s) de test souhaitée(s)</span>
-              <span style="color: var(--color-tanimbary);">Sélectionnez au moins une</span>
-            </label>
-            <div class="platform-cards">
-              <div class="platform-card checked" id="card-android">
-                <div class="platform-checkbox">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </div>
-                <div>
-                  <div class="platform-title">Android</div>
-                  <div class="platform-sub">Google Play Closed Testing</div>
-                </div>
-              </div>
-              <div class="platform-card" id="card-ios">
-                <div class="platform-checkbox">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </div>
-                <div>
-                  <div class="platform-title">iOS (iPhone &amp; iPad)</div>
-                  <div class="platform-sub">Apple TestFlight</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="terms-card">
-            <label class="terms-box" for="reg-terms">
-              <input type="checkbox" id="reg-terms" required checked>
-              <span>
-                J'accepte les <button type="button" class="btn-terms-link" id="btn-open-cgu-modal">Conditions Générales d'Utilisation (CGU)</button> et j'ai pris connaissance de la <button type="button" class="btn-terms-link" id="btn-open-privacy-modal">Politique de Confidentialité</button>.
-              </span>
-            </label>
-            <div class="terms-micro-info">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="flex-shrink:0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-              <span>Chiffrement AES-256-GCM. Zéro mot de passe stocké. Zéro publicité, zéro revente. Désinscription en 1 clic.</span>
-            </div>
-          </div>
-
-          <button type="submit" class="btn-submit" id="btn-submit-reg">
-            <span>Rejoindre le programme bêta</span>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </button>
-        </form>
-      </div>
-
-      <!-- ═══════════════════════════════════════════════════════════════════════ -->
       <!-- VOLET 3 : MON ESPACE TESTEUR, PROGRESSION & CONFIRMATION               -->
       <!-- ═══════════════════════════════════════════════════════════════════════ -->
       <div id="panel-already" style="display: ${initialTab === 'already_registered' || isRegistered ? 'block' : 'none'};">
+        <div style="margin-bottom: 16px;">
+          <button type="button" class="btn-back-to-reg" id="btn-back-to-register">
+            &larr; Retour à l'inscription bêta
+          </button>
+        </div>
         <!-- Formulaire de recherche par email si non encore chargé -->
         <form id="status-check-form" style="margin-bottom: 20px;">
           <div class="field">
@@ -2380,9 +2483,34 @@ export function renderBetaWaitlistScript(): string {
     } catch(e) {}
   }
 
-  if (tabDl) tabDl.addEventListener('click', function() { switchTab('download'); });
   if (tabReg) tabReg.addEventListener('click', function() { switchTab('register'); });
+  if (tabDl) tabDl.addEventListener('click', function() { switchTab('download'); });
   if (tabAlr) tabAlr.addEventListener('click', function() { switchTab('already'); });
+
+  var linkOpenAlready = document.getElementById('link-open-already');
+  if (linkOpenAlready) {
+    linkOpenAlready.addEventListener('click', function(e) {
+      if (e) e.preventDefault();
+      switchTab('already');
+      var container = document.getElementById('panel-already') || document.querySelector('.card');
+      if (container) {
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      var checkEmailInput = document.getElementById('check-email');
+      if (checkEmailInput) {
+        setTimeout(function() {
+          checkEmailInput.focus();
+        }, 150);
+      }
+    });
+  }
+
+  var btnBackToRegister = document.getElementById('btn-back-to-register');
+  if (btnBackToRegister) {
+    btnBackToRegister.addEventListener('click', function() {
+      switchTab('register');
+    });
+  }
 
   var btnSwitchToReg = document.getElementById('btn-switch-to-register');
   if (btnSwitchToReg) {
@@ -2984,7 +3112,7 @@ export function renderBetaWaitlistScript(): string {
 
   var btnUnsubHome = document.getElementById('btn-unsub-home');
   if (btnUnsubHome) {
-    btnUnsubHome.addEventListener('click', function() { switchTab('download'); });
+    btnUnsubHome.addEventListener('click', function() { switchTab('register'); });
   }
 
   var btnUnsubResub = document.getElementById('btn-unsub-resubscribe');
