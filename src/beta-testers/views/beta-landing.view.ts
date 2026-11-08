@@ -1,5 +1,5 @@
 /**
- * Kanto MG — Page web d'accès anticipé et d'inscription au programme bêta (Android & iOS).
+ * Kanto MG — Page web d'accès anticipé, de téléchargement et de gestion du programme bêta (Android & iOS).
  * Accessible sur app-kanto.gastsar.fr, kanto.mg/beta ou via redirection deeplink.
  *
  * Design System Kanto officiel (Terre & Encre) :
@@ -8,7 +8,7 @@
  * - Fond parchemin chaud (#F5F4F0) en mode clair
  * - Typographie Plus Jakarta Sans
  * - Zéro référence ou icône d'IA / Sparkles.
- * - Gestion indépendante et complète Android (Google Play) & iOS (Apple TestFlight).
+ * - Gestion indépendante et complète Android (Google Play) & iOS (Apple TestFlight & App Store).
  */
 
 export interface BetaLandingPageOptions {
@@ -18,7 +18,7 @@ export interface BetaLandingPageOptions {
   errorMessage?: string;
   fromDeeplink?: boolean;
   targetPath?: string;
-  initialTab?: 'register' | 'already_registered' | 'download' | 'unsubscribe';
+  initialTab?: 'download' | 'register' | 'already_registered' | 'unsubscribe';
   initialEmail?: string;
   unsubscribeToken?: string;
   supportEmail?: string;
@@ -29,13 +29,13 @@ export function renderBetaLandingPage(
 ): string {
   const currentYear = new Date().getFullYear();
   const supportEmail =
-    options?.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
+    options?.supportEmail || process.env.SUPPORT_EMAIL || 'contact@kanto.mg';
   const count =
     typeof options?.testerCount === 'number' ? options.testerCount : 0;
   const isRegistered = Boolean(options?.initialRegistered);
 
   const initialTab =
-    options?.initialTab || (isRegistered ? 'already_registered' : 'register');
+    options?.initialTab || (isRegistered ? 'already_registered' : 'download');
   const emailVal = options?.registeredEmail || options?.initialEmail || '';
   const errorVal = options?.errorMessage
     ? escapeHtml(options.errorMessage)
@@ -58,13 +58,13 @@ export function renderBetaLandingPage(
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Bêta-Testeur Kanto MG • Accès Anticipé Android &amp; iOS</title>
-  <meta name="description" content="Programme de test bêta officiel de l'application Kanto MG sur Google Play et Apple TestFlight. Explorez la langue, la culture, les contes et traditions malgaches en avant-première.">
+  <title>Kanto MG • Téléchargement &amp; Programme Bêta (Android &amp; iOS)</title>
+  <meta name="description" content="Téléchargez l'application officielle Kanto MG sur Google Play et Apple TestFlight. Explorez la langue, la culture, les contes (Angano) et les proverbes malgaches (Ohabolana).">
   <meta name="theme-color" content="#0D0D0B">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Bêta-Testeur Kanto MG • Android &amp; iOS">
-  <meta property="og:description" content="Rejoignez la communauté des bêta-testeurs Kanto MG sur Google Play et TestFlight.">
+  <meta property="og:title" content="Kanto MG • Téléchargement &amp; Bêta-Test">
+  <meta property="og:description" content="Rejoignez la communauté des testeurs Kanto MG sur Google Play et TestFlight.">
   <meta property="og:type" content="website">
 
   <!-- Favicon & Typographie -->
@@ -290,21 +290,27 @@ export function renderBetaLandingPage(
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       color: var(--color-text-secondary);
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--color-surface-hover);
+      color: var(--color-text);
     }
 
     main {
       flex: 1;
-      max-width: 680px;
+      max-width: 900px;
       margin: 0 auto;
+      padding: 32px 20px 48px;
       width: 100%;
-      padding: 32px 20px 60px;
     }
 
     .intro {
@@ -317,8 +323,8 @@ export function renderBetaLandingPage(
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--color-ochre);
+      letter-spacing: 1.2px;
+      color: var(--color-tanimbary);
       margin-bottom: 8px;
     }
 
@@ -328,57 +334,68 @@ export function renderBetaLandingPage(
       color: var(--color-heading);
       letter-spacing: -0.5px;
       margin-bottom: 10px;
+      line-height: 1.25;
     }
 
     .intro-description {
-      font-size: 14px;
+      font-size: 14.5px;
       color: var(--color-text-secondary);
-      max-width: 520px;
+      max-width: 620px;
       margin: 0 auto;
+      line-height: 1.55;
     }
 
     .card {
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
-      box-shadow: var(--color-card-shadow);
       padding: 24px;
+      box-shadow: var(--color-card-shadow);
       margin-bottom: 24px;
     }
 
+    /* ─── NAVIGATION À 3 ONGLETS MODERNE ─── */
     .tabs-nav {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      padding: 4px;
-      background: var(--color-bg);
-      border-radius: var(--radius-md);
-      margin-bottom: 24px;
+      display: flex;
+      background: var(--color-surface-input);
       border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 4px;
+      gap: 4px;
+      margin-bottom: 22px;
     }
 
     .tab-btn {
-      padding: 9px 8px;
-      font-size: 12px;
-      font-weight: 600;
+      flex: 1;
+      padding: 10px 12px;
       border: none;
       background: transparent;
       color: var(--color-text-secondary);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 600;
       border-radius: var(--radius-sm);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      transition: all 0.2s;
+      gap: 7px;
+      transition: all 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--color-text);
+      background: var(--color-surface-hover);
     }
 
     .tab-btn.active {
-      background: var(--color-surface);
-      color: var(--color-text);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      background: var(--color-tab-active-bg);
+      color: var(--color-tab-active-text);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
     }
 
+    /* ─── FORMULAIRES & CHAMPS ─── */
     .field {
       margin-bottom: 18px;
     }
@@ -388,13 +405,13 @@ export function renderBetaLandingPage(
       justify-content: space-between;
       font-size: 12.5px;
       font-weight: 600;
-      margin-bottom: 6px;
+      margin-bottom: 7px;
       color: var(--color-text);
     }
 
-    .field-input, .field-select, .field-textarea {
+    .field-input {
       width: 100%;
-      padding: 11px 14px;
+      padding: 12px 14px;
       background: var(--color-surface-input);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
@@ -402,38 +419,44 @@ export function renderBetaLandingPage(
       font-family: inherit;
       font-size: 13.5px;
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .field-input:focus, .field-select:focus, .field-textarea:focus {
+    .field-input:focus {
       border-color: var(--color-tanimbary);
+      box-shadow: 0 0 0 3px rgba(107, 158, 97, 0.15);
     }
 
     .field-note {
       font-size: 11.5px;
       color: var(--color-text-muted);
-      margin-top: 5px;
+      margin-top: 6px;
+      line-height: 1.4;
     }
 
-    /* Sélecteur de plateformes */
+    /* Plateformes de test */
     .platform-cards {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 18px;
+      gap: 12px;
+      margin-top: 4px;
     }
 
     .platform-card {
       border: 1px solid var(--color-border);
-      background: var(--color-surface-input);
       border-radius: var(--radius-md);
-      padding: 12px;
+      padding: 13px 14px;
+      background: var(--color-surface-input);
+      cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 10px;
-      cursor: pointer;
+      gap: 12px;
+      transition: all 0.18s ease;
       user-select: none;
-      transition: all 0.2s;
+    }
+
+    .platform-card:hover {
+      border-color: var(--color-tanimbary);
     }
 
     .platform-card.checked {
@@ -442,14 +465,15 @@ export function renderBetaLandingPage(
     }
 
     .platform-checkbox {
-      width: 18px;
-      height: 18px;
-      border-radius: 4px;
+      width: 20px;
+      height: 20px;
+      border-radius: 5px;
       border: 1.5px solid var(--color-border);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      transition: all 0.15s ease;
     }
 
     .platform-card.checked .platform-checkbox {
@@ -460,29 +484,13 @@ export function renderBetaLandingPage(
 
     .platform-title {
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--color-text);
     }
 
     .platform-sub {
       font-size: 11px;
       color: var(--color-text-muted);
-    }
-
-    /* Conditions générales */
-    .terms-box {
-      display: flex;
-      align-items: flex-start;
-      gap: 9px;
-      margin-bottom: 22px;
-      font-size: 12px;
-      color: var(--color-text-secondary);
-      cursor: pointer;
-    }
-
-    .terms-box input {
-      margin-top: 2px;
-      accent-color: var(--color-tanimbary);
     }
 
     .btn-submit {
@@ -494,17 +502,22 @@ export function renderBetaLandingPage(
       border-radius: var(--radius-md);
       font-family: inherit;
       font-size: 13.5px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: background-color 0.2s;
+      transition: background-color 0.18s ease, transform 0.1s ease;
+      min-height: 46px;
     }
 
     .btn-submit:hover {
       background: #1f5c39;
+    }
+
+    .btn-submit:active {
+      transform: scale(0.99);
     }
 
     .btn-submit:disabled {
@@ -524,9 +537,20 @@ export function renderBetaLandingPage(
       font-weight: 600;
       cursor: pointer;
       margin-top: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.15s ease;
+      min-height: 42px;
     }
 
-    /* Bannière de notification */
+    .btn-secondary:hover {
+      background: var(--color-surface-hover);
+      border-color: var(--color-text-muted);
+    }
+
+    /* Bannières de notification */
     .banner {
       display: none;
       padding: 12px 16px;
@@ -535,6 +559,7 @@ export function renderBetaLandingPage(
       margin-bottom: 18px;
       align-items: center;
       gap: 10px;
+      line-height: 1.45;
     }
 
     .banner.error {
@@ -549,12 +574,362 @@ export function renderBetaLandingPage(
       color: var(--color-success-text);
     }
 
-    /* Carte de statut après recherche */
-    .status-result {
-      display: none;
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid var(--color-divider);
+    /* ─── VOLET TÉLÉCHARGEMENT (GRILLE ANDROID & IOS) ─── */
+    .download-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .download-card {
+      background: var(--color-surface-input);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.18s ease;
+    }
+
+    .download-card:hover {
+      border-color: var(--color-tanimbary);
+    }
+
+    .download-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .download-platform-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .download-platform-icon-android {
+      background: rgba(61, 220, 132, 0.12);
+      color: #3DDC84;
+      border: 1px solid rgba(61, 220, 132, 0.25);
+    }
+
+    .download-platform-icon-ios {
+      background: rgba(0, 122, 255, 0.12);
+      color: #007AFF;
+      border: 1px solid rgba(0, 122, 255, 0.25);
+    }
+
+    .download-avail-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .download-avail-public { background: rgba(46, 125, 50, 0.15); color: #4CAF50; border: 1px solid rgba(76, 175, 80, 0.35); }
+    .download-avail-beta { background: rgba(107, 158, 97, 0.15); color: var(--color-tanimbary); border: 1px solid rgba(107, 158, 97, 0.35); }
+    .download-avail-closed { background: rgba(197, 139, 56, 0.15); color: var(--color-ochre); border: 1px solid rgba(197, 139, 56, 0.35); }
+    .download-avail-pending { background: rgba(0, 122, 255, 0.15); color: #007AFF; border: 1px solid rgba(0, 122, 255, 0.35); }
+    .download-avail-unavailable { background: rgba(120, 120, 120, 0.15); color: var(--color-text-muted); border: 1px solid rgba(120, 120, 120, 0.35); }
+
+    .download-card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--color-heading);
+      margin-bottom: 4px;
+    }
+
+    .download-card-desc {
+      font-size: 12.5px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+      margin-bottom: 14px;
+      flex: 1;
+    }
+
+    .download-version-box {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 9px 12px;
+      margin-bottom: 14px;
+      font-size: 11.5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--color-text-secondary);
+    }
+
+    .download-card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn-download-primary {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      min-height: 44px;
+    }
+
+    .btn-download-android {
+      background: #16442A;
+      color: #FFFFFF;
+      border: 1px solid var(--color-tanimbary);
+    }
+
+    .btn-download-android:hover {
+      background: #1f5c39;
+    }
+
+    .btn-download-ios {
+      background: #004F9F;
+      color: #FFFFFF;
+      border: 1px solid #007AFF;
+    }
+
+    .btn-download-ios:hover {
+      background: #0066CC;
+    }
+
+    .download-quick-steps {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--color-border);
+      font-size: 11.5px;
+      color: var(--color-text-muted);
+      line-height: 1.45;
+    }
+
+    .download-quick-steps ol {
+      margin: 6px 0 0 16px;
+      padding: 0;
+    }
+
+    .download-quick-steps li {
+      margin-bottom: 4px;
+    }
+
+    /* ─── VOLET ESPACE TESTEUR & SUIVI DE PROGRESSION ─── */
+    .tester-header-card {
+      background: var(--color-surface-input);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .tester-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .badge-inscrit { background: rgba(120, 120, 120, 0.15); color: var(--color-text-muted); border: 1px solid rgba(120, 120, 120, 0.3); }
+    .badge-en_attente { background: rgba(197, 139, 56, 0.15); color: var(--color-ochre); border: 1px solid rgba(197, 139, 56, 0.35); }
+    .badge-confirme { background: rgba(107, 158, 97, 0.18); color: var(--color-tanimbary); border: 1px solid rgba(107, 158, 97, 0.4); }
+    .badge-verifie { background: #16442A; color: #FFFFFF; border: 1px solid var(--color-tanimbary); }
+    .badge-installe { background: #004F9F; color: #FFFFFF; border: 1px solid #007AFF; }
+    .badge-inactif { background: rgba(231, 90, 77, 0.15); color: var(--color-error); border: 1px solid rgba(231, 90, 77, 0.3); }
+
+    /* Barre de progression en 5 étapes */
+    .progress-stepper {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      position: relative;
+      margin: 24px 0 28px 0;
+      padding: 0 4px;
+    }
+
+    .progress-stepper::before {
+      content: "";
+      position: absolute;
+      top: 15px;
+      left: 24px;
+      right: 24px;
+      height: 2px;
+      background: var(--color-border);
+      z-index: 1;
+    }
+
+    .progress-step-item {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+    }
+
+    .step-bullet {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--color-surface);
+      border: 2px solid var(--color-border);
+      color: var(--color-text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .progress-step-item.completed .step-bullet {
+      background: var(--color-tanimbary);
+      border-color: var(--color-tanimbary);
+      color: #FFFFFF;
+    }
+
+    .progress-step-item.current .step-bullet {
+      background: var(--color-surface);
+      border-color: var(--color-ochre);
+      color: var(--color-ochre);
+      box-shadow: 0 0 0 4px rgba(197, 139, 56, 0.2);
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      line-height: 1.3;
+      max-width: 90px;
+    }
+
+    .progress-step-item.completed .step-label {
+      color: var(--color-text);
+    }
+
+    .progress-step-item.current .step-label {
+      color: var(--color-ochre);
+      font-weight: 700;
+    }
+
+    /* Boîte d'action principale de confirmation */
+    .tester-action-box {
+      background: rgba(107, 158, 97, 0.08);
+      border: 1px solid var(--color-tanimbary);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin: 18px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn-confirm-action {
+      width: 100%;
+      padding: 13px 18px;
+      background: var(--color-tanimbary-dark);
+      color: #FFFFFF;
+      border: 1px solid var(--color-tanimbary);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-family: inherit;
+      transition: all 0.18s ease;
+      box-shadow: 0 4px 14px rgba(22, 68, 42, 0.35);
+      min-height: 48px;
+    }
+
+    .btn-confirm-action:hover {
+      background: #1f5c39;
+    }
+
+    .btn-installed-action {
+      width: 100%;
+      padding: 12px 18px;
+      background: rgba(107, 158, 97, 0.2);
+      color: var(--color-tanimbary);
+      border: 1px solid var(--color-tanimbary);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      min-height: 44px;
+    }
+
+    .btn-installed-action:hover {
+      background: rgba(107, 158, 97, 0.3);
+    }
+
+    .guide-accordion {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-top: 14px;
+      background: var(--color-surface-input);
+    }
+
+    .guide-accordion-header {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      background: var(--color-surface);
+      user-select: none;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .guide-accordion-content {
+      padding: 14px 18px;
+      border-top: 1px solid var(--color-border);
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--color-text-secondary);
     }
 
     .unsub-chips {
@@ -600,6 +975,7 @@ export function renderBetaLandingPage(
       margin-top: 10px;
     }
 
+    /* Grille de statut plateforme testeur */
     .platform-status-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -620,19 +996,6 @@ export function renderBetaLandingPage(
       align-items: center;
       margin-bottom: 8px;
     }
-
-    .badge-status {
-      display: inline-block;
-      padding: 2px 7px;
-      border-radius: 4px;
-      font-size: 10.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    .badge-invited { background: rgba(107, 158, 97, 0.15); color: var(--color-tanimbary); }
-    .badge-pending { background: rgba(197, 139, 56, 0.15); color: var(--color-ochre); }
-    .badge-none { background: rgba(120, 120, 120, 0.15); color: var(--color-text-muted); }
 
     .btn-store {
       display: inline-block;
@@ -697,6 +1060,10 @@ export function renderBetaLandingPage(
       cursor: pointer;
     }
 
+    .footer-nav a:hover, .footer-cookie-btn:hover {
+      color: var(--color-tanimbary);
+    }
+
     .footer-link-feedback {
       color: var(--color-tanimbary);
       font-weight: 600;
@@ -716,7 +1083,7 @@ export function renderBetaLandingPage(
       display: none !important;
     }
 
-    /* ─── MODALES PARTAGÉES (CGU & COOKIES) ─── */
+    /* ─── MODALES PARTAGÉES (CGU, RGPD & COOKIES) ─── */
     .kanto-modal-backdrop {
       position: fixed;
       inset: 0;
@@ -734,7 +1101,7 @@ export function renderBetaLandingPage(
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
-      max-width: 640px;
+      max-width: 660px;
       width: 100%;
       max-height: 88vh;
       display: flex;
@@ -844,7 +1211,7 @@ export function renderBetaLandingPage(
       flex-wrap: wrap;
     }
 
-    /* ─── COMPOSANT CASE CONDITIONS & CGU DANS FORMULAIRE ─── */
+    /* ─── COMPOSANT CASE CONDITIONS & CGU ─── */
     .terms-card {
       background: var(--color-surface-input);
       border: 1px solid var(--color-border);
@@ -902,7 +1269,7 @@ export function renderBetaLandingPage(
       gap: 7px;
     }
 
-    /* ─── BANNIÈRE DE CONSENTEMENT COOKIES RGPD ─── */
+    /* ─── BANNIÈRE COOKIES RGPD ─── */
     .cookie-banner {
       position: fixed;
       bottom: 0;
@@ -996,12 +1363,6 @@ export function renderBetaLandingPage(
       border: 1px dashed var(--color-border);
     }
 
-    .cookie-btn-outline:hover {
-      color: var(--color-text);
-      border-color: var(--color-text-muted);
-    }
-
-    /* ─── SWITCH TOGGLES COOKIES ─── */
     .cookie-category-item {
       padding: 14px 16px;
       border: 1px solid var(--color-border);
@@ -1080,24 +1441,27 @@ export function renderBetaLandingPage(
       transform: translateX(20px);
     }
 
-    .kanto-switch input:disabled + .kanto-slider {
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
-
-    @media (max-width: 600px) {
-      .platform-cards, .platform-status-grid {
+    @media (max-width: 680px) {
+      .download-grid, .platform-cards, .platform-status-grid {
         grid-template-columns: 1fr;
       }
       .tabs-nav {
-        font-size: 11px;
+        font-size: 11.5px;
+      }
+      .tab-btn {
+        padding: 9px 6px;
+        font-size: 11.5px;
+      }
+      .progress-stepper {
+        overflow-x: auto;
+        padding-bottom: 8px;
+      }
+      .progress-step-item {
+        min-width: 72px;
       }
       .cookie-banner-wrap {
         flex-direction: column;
         align-items: stretch;
-      }
-      .cookie-banner-actions {
-        justify-content: flex-end;
       }
     }
   </style>
@@ -1124,7 +1488,8 @@ export function renderBetaLandingPage(
     </a>
     <div class="header-actions">
       <button type="button" class="theme-toggle-btn" id="theme-toggle" aria-label="Changer de thème">
-        <span id="theme-toggle-icon"></span>
+        <svg id="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg id="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
       </button>
       <div class="status-pill">
         <span class="status-indicator"></span>
@@ -1136,21 +1501,27 @@ export function renderBetaLandingPage(
   <!-- Contenu Principal -->
   <main>
     <div class="intro">
-      <span class="section-eyebrow">Programme de Test Bêta Officiel</span>
-      <h1>Rejoignez les Bêta-Testeurs Kanto MG</h1>
+      <span class="section-eyebrow">Patrimoine, Langue &amp; Culture Malgache</span>
+      <h1>Portail Officiel Kanto MG</h1>
       <p class="intro-description">
-        Participez en avant-première au déploiement de Kanto MG sur Android (Google Play) et iOS (TestFlight) et contribuez à valoriser le patrimoine culturel malgache.
+        Téléchargez Kanto MG, participez aux tests en avant-première sur Android et iOS, et contribuez à faire rayonner la sagesse des contes et proverbes de Madagascar.
       </p>
     </div>
 
     <div class="card">
-      <!-- Navigation par Onglets (Inscription & Statut) -->
+      <!-- Navigation principale à 3 onglets -->
       <div class="tabs-nav">
-        <button type="button" class="tab-btn ${initialTab === 'register' ? 'active' : ''}" id="tab-btn-register">
-          <span>Inscription</span>
+        <button type="button" class="tab-btn ${initialTab === 'download' ? 'active' : ''}" id="tab-btn-download">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span>Téléchargement</span>
         </button>
-        <button type="button" class="tab-btn ${initialTab === 'already_registered' || initialTab === 'download' ? 'active' : ''}" id="tab-btn-already">
-          <span>Mon Accès &amp; Statut</span>
+        <button type="button" class="tab-btn ${initialTab === 'register' && !isRegistered ? 'active' : ''}" id="tab-btn-register">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+          <span>Inscription Bêta</span>
+        </button>
+        <button type="button" class="tab-btn ${initialTab === 'already_registered' || isRegistered ? 'active' : ''}" id="tab-btn-already">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span>Mon Espace Testeur</span>
         </button>
       </div>
 
@@ -1162,7 +1533,122 @@ export function renderBetaLandingPage(
         <span id="success-text"></span>
       </div>
 
-      <!-- ─── ONGLET 1 : FORMULAIRE D'INSCRIPTION BÊTA ─── -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!-- VOLET 1 : ESPACE DE TÉLÉCHARGEMENT KANTO MG                            -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <div id="panel-download" style="display: ${initialTab === 'download' ? 'block' : 'none'};">
+        <div style="margin-bottom: 20px;">
+          <h2 style="font-size: 17px; font-weight: 700; color: var(--color-heading); margin-bottom: 4px;">
+            Accéder à l'application Kanto MG
+          </h2>
+          <p style="font-size: 13px; color: var(--color-text-secondary);">
+            Installez Kanto MG selon votre appareil. Consultez ci-dessous les statuts de disponibilité en direct.
+          </p>
+        </div>
+
+        <div class="download-grid">
+          <!-- Carte Android -->
+          <div class="download-card">
+            <div class="download-card-header">
+              <div class="download-platform-icon-wrap download-platform-icon-android">
+                <!-- SVG Android officiel -->
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8533 8.081 12 8.081s-3.5902.33-5.1367.8697L4.841 5.4477a.416.416 0 00-.5676-.1521.416.416 0 00-.1521.5676l1.9973 3.4592C2.6889 10.9315.3432 14.5262 0 18.7997h24c-.3432-4.2735-2.6889-7.8682-6.1185-9.4783"/>
+                </svg>
+              </div>
+              <span id="dl-android-badge" class="download-avail-pill download-avail-beta">
+                Programme Bêta
+              </span>
+            </div>
+
+            <div class="download-card-title">Kanto MG pour Android</div>
+            <div class="download-card-desc" id="dl-android-desc">
+              Participez au Closed Testing officiel Google Play. Recommandé pour Android 8.0 et supérieur.
+            </div>
+
+            <div class="download-version-box" id="dl-android-version-box">
+              <span>Version actuelle : <strong id="dl-android-version-label">v0.1.0</strong></span>
+              <span id="dl-android-build-label">Build 31</span>
+            </div>
+
+            <div class="download-card-actions">
+              <a href="https://play.google.com/apps/testing/com.devengalere.kantomg" target="_blank" rel="noopener noreferrer" class="btn-download-primary btn-download-android" id="dl-btn-android-main">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 3l14 9-14 9V3z"></path></svg>
+                <span id="dl-btn-android-main-text">Rejoindre le test Google Play</span>
+              </a>
+              <a href="https://play.google.com/store/apps/details?id=com.devengalere.kantomg" target="_blank" rel="noopener noreferrer" class="btn-download-secondary" id="dl-btn-android-store">
+                <span>Fiche Google Play Store</span>
+              </a>
+            </div>
+
+            <div class="download-quick-steps">
+              <strong>Marche à suivre Android :</strong>
+              <ol>
+                <li>Inscrivez votre e-mail de compte Google.</li>
+                <li>Cliquez sur « Rejoindre le test Google Play ».</li>
+                <li>Téléchargez Kanto MG sur le Store.</li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- Carte iOS -->
+          <div class="download-card">
+            <div class="download-card-header">
+              <div class="download-platform-icon-wrap download-platform-icon-ios">
+                <!-- SVG Apple officiel -->
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.88c.67-.82 1.13-1.96 1-3.11-.98.04-2.15.65-2.85 1.47-.62.72-1.16 1.88-1.01 3 .01 0 .02 0 .03 0 1.07 0 2.16-.54 2.83-1.36z"/>
+                </svg>
+              </div>
+              <span id="dl-ios-badge" class="download-avail-pill download-avail-beta">
+                Apple TestFlight
+              </span>
+            </div>
+
+            <div class="download-card-title">Kanto MG pour Apple iOS</div>
+            <div class="download-card-desc" id="dl-ios-desc">
+              Accès anticipé via l'application Apple TestFlight pour iPhone et iPad sous iOS 16 ou ultérieur.
+            </div>
+
+            <div class="download-version-box" id="dl-ios-version-box">
+              <span>Version actuelle : <strong id="dl-ios-version-label">v0.1.0</strong></span>
+              <span id="dl-ios-build-label">Build 31</span>
+            </div>
+
+            <div class="download-card-actions">
+              <a href="https://testflight.apple.com/join/kantomg" target="_blank" rel="noopener noreferrer" class="btn-download-primary btn-download-ios" id="dl-btn-ios-main">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+                <span id="dl-btn-ios-main-text">Rejoindre le test TestFlight</span>
+              </a>
+              <a href="#" target="_blank" rel="noopener noreferrer" class="btn-download-secondary" id="dl-btn-ios-store" style="display: none;">
+                <span>Télécharger sur l'App Store</span>
+              </a>
+            </div>
+
+            <div class="download-quick-steps">
+              <strong>Marche à suivre iOS :</strong>
+              <ol>
+                <li>Installez l'application <em>Apple TestFlight</em> sur l'App Store.</li>
+                <li>Cliquez sur « Rejoindre le test TestFlight ».</li>
+                <li>Acceptez l'invitation et installez Kanto MG.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--color-divider);">
+          <span style="font-size: 13px; color: var(--color-text-secondary);">
+            Vous souhaitez suivre votre statut ou recevoir vos invitations ?
+          </span>
+          <button type="button" class="btn-terms-link" id="btn-switch-to-register" style="margin-left: 6px; font-size: 13px;">
+            Rejoindre le programme bêta →
+          </button>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!-- VOLET 2 : FORMULAIRE D'INSCRIPTION BÊTA                                -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
       <div id="panel-register" style="display: ${initialTab === 'register' && !isRegistered ? 'block' : 'none'};">
         <form id="waitlist-form">
           <div class="hp-trap">
@@ -1197,7 +1683,7 @@ export function renderBetaLandingPage(
               type="text" 
               id="reg-name" 
               class="field-input" 
-              placeholder="Ex: Rado, Bakoly..." 
+              placeholder="Ex: Rado, Bakoly, Andry..." 
               autocomplete="name"
             >
           </div>
@@ -1233,12 +1719,12 @@ export function renderBetaLandingPage(
             <label class="terms-box" for="reg-terms">
               <input type="checkbox" id="reg-terms" required checked>
               <span>
-                J'accepte les <button type="button" class="btn-terms-link" id="btn-open-cgu-modal">Conditions Générales d'Utilisation (CGU)</button> et le règlement du programme bêta de Kanto MG.
+                J'accepte les <button type="button" class="btn-terms-link" id="btn-open-cgu-modal">Conditions Générales d'Utilisation (CGU)</button> et j'ai pris connaissance de la <button type="button" class="btn-terms-link" id="btn-open-privacy-modal">Politique de Confidentialité</button>.
               </span>
             </label>
             <div class="terms-micro-info">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="flex-shrink:0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-              <span>Chiffrement AES-256-GCM. Zéro publicité, zéro revente. Désinscription en 1 clic.</span>
+              <span>Chiffrement AES-256-GCM. Zéro mot de passe stocké. Zéro publicité, zéro revente. Désinscription en 1 clic.</span>
             </div>
           </div>
 
@@ -1252,34 +1738,15 @@ export function renderBetaLandingPage(
         </form>
       </div>
 
-      <!-- ─── ÉCRAN DE SUCCÈS INSCRIPTION ─── -->
-      <div class="confirmation" id="confirmation-view" style="display: ${isRegistered ? 'flex' : 'none'};">
-        <div class="confirmation-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-        </div>
-        <h2 style="font-size: 18px; font-weight: 700; color: var(--color-heading);">
-          Candidature enregistrée avec succès !
-        </h2>
-        <p style="font-size: 13.5px; color: var(--color-text-secondary); line-height: 1.5;">
-          Un e-mail de confirmation vous a été envoyé à l'adresse :
-        </p>
-        <span style="font-weight: 700; color: var(--color-tanimbary); font-size: 14px;" id="confirmed-email-display">
-          ${emailVal || 'votre.adresse@email.com'}
-        </span>
-        <p style="font-size: 12px; color: var(--color-text-muted); line-height: 1.5;">
-          Dès que votre accès sera ouvert, vous recevrez vos liens d'invitation pour installer l'application sur vos appareils.
-        </p>
-        <button type="button" class="btn-secondary" id="btn-goto-status">
-          Consulter mon statut &amp; liens de téléchargement →
-        </button>
-      </div>
-
-      <!-- ─── ONGLET 2 : MON ACCÈS, STATUT & TÉLÉCHARGEMENT ─── -->
-      <div id="panel-already" style="display: ${initialTab === 'already_registered' || initialTab === 'download' ? 'block' : 'none'};">
-        <form id="status-check-form">
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!-- VOLET 3 : MON ESPACE TESTEUR, PROGRESSION & CONFIRMATION               -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <div id="panel-already" style="display: ${initialTab === 'already_registered' || isRegistered ? 'block' : 'none'};">
+        <!-- Formulaire de recherche par email si non encore chargé -->
+        <form id="status-check-form" style="margin-bottom: 20px;">
           <div class="field">
             <label class="field-label" for="check-email">
-              <span>Vérifier mon statut de testeur</span>
+              <span>Accéder à mon espace personnel</span>
             </label>
             <div style="display: flex; gap: 8px;">
               <input 
@@ -1290,8 +1757,8 @@ export function renderBetaLandingPage(
                 value="${emailVal}" 
                 required
               >
-              <button type="submit" class="btn-submit" id="btn-check-status" style="width: auto; padding: 0 18px; white-space: nowrap;">
-                Vérifier
+              <button type="submit" class="btn-submit" id="btn-check-status" style="width: auto; padding: 0 20px; white-space: nowrap;">
+                Consulter
               </button>
             </div>
             <p class="field-note">
@@ -1300,19 +1767,93 @@ export function renderBetaLandingPage(
           </div>
         </form>
 
-        <div class="status-result" id="status-result-box">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <span style="font-size: 13px; font-weight: 600; color: var(--color-text);" id="tester-display-name">
-              Participant : <strong id="tester-email-lbl"></strong>
-            </span>
+        <!-- Espace Personnel du Testeur -->
+        <div class="status-result" id="status-result-box" style="display: none;">
+          <!-- En-tête Espace Testeur -->
+          <div class="tester-header-card">
+            <div>
+              <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--color-text-muted); margin-bottom: 2px;">
+                Participant Bêta Kanto
+              </div>
+              <div style="font-size: 16px; font-weight: 700; color: var(--color-heading);" id="tester-email-lbl">
+                —
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="tester-status-badge badge-inscrit" id="tester-status-badge">
+                INSCRIT
+              </span>
+            </div>
           </div>
 
-          <!-- Grille des deux plateformes indépendantes -->
+          <!-- Barre de progression visuelle en 5 étapes -->
+          <div style="margin-bottom: 6px;">
+            <div style="font-size: 12px; font-weight: 700; color: var(--color-heading); margin-bottom: 4px;">
+              Parcours du Bêta-Testeur Kanto MG
+            </div>
+            <p style="font-size: 11.5px; color: var(--color-text-secondary); margin: 0;">
+              Suivez vos étapes d'accès et validez votre participation.
+            </p>
+          </div>
+
+          <div class="progress-stepper" id="tester-progress-stepper">
+            <div class="progress-step-item completed" id="step-node-1">
+              <div class="step-bullet">✓</div>
+              <div class="step-label">1. Inscription</div>
+            </div>
+            <div class="progress-step-item current" id="step-node-2">
+              <div class="step-bullet">2</div>
+              <div class="step-label">2. Accès</div>
+            </div>
+            <div class="progress-step-item" id="step-node-3">
+              <div class="step-bullet">3</div>
+              <div class="step-label">3. Rejoindre</div>
+            </div>
+            <div class="progress-step-item" id="step-node-4">
+              <div class="step-bullet">4</div>
+              <div class="step-label">4. Installation</div>
+            </div>
+            <div class="progress-step-item" id="step-node-5">
+              <div class="step-bullet">5</div>
+              <div class="step-label">5. Retours</div>
+            </div>
+          </div>
+
+          <!-- BOÎTE D'ACTION PRINCIPALE : CONFIRMATION DE PARTICIPATION -->
+          <div class="tester-action-box" id="tester-action-box">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--color-tanimbary-dark); color: #FFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <div>
+                <div style="font-size: 13.5px; font-weight: 700; color: var(--color-heading);" id="action-box-title">
+                  Valider votre participation au programme
+                </div>
+                <div style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.45;" id="action-box-desc">
+                  Une fois que vous avez rejoint le groupe sur Google Play ou accepté TestFlight, confirmez votre accès ci-dessous.
+                </div>
+              </div>
+            </div>
+
+            <!-- Bouton interactif : J'ai rejoint le programme -->
+            <button type="button" class="btn-confirm-action" id="btn-confirm-joined">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <span>J'ai rejoint le programme bêta</span>
+            </button>
+
+            <!-- Bouton interactif secondaire : J'ai installé Kanto MG -->
+            <button type="button" class="btn-installed-action" id="btn-confirm-installed" style="display: none;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              <span>J'ai installé Kanto MG sur mon appareil</span>
+            </button>
+          </div>
+
+          <!-- Grille des statuts par plateforme pour le testeur -->
           <div class="platform-status-grid">
             <!-- Statut Android -->
-            <div class="platform-status-card">
+            <div class="platform-status-card" id="card-status-android">
               <div class="platform-status-header">
-                <span style="font-weight: 700; font-size: 13px;">Android</span>
+                <span style="font-weight: 700; font-size: 13px;">Google Play (Android)</span>
                 <span class="badge-status badge-pending" id="badge-status-android">En attente</span>
               </div>
               <p style="font-size: 11.5px; color: var(--color-text-muted); min-height: 34px;" id="desc-status-android">
@@ -1326,9 +1867,9 @@ export function renderBetaLandingPage(
             </div>
 
             <!-- Statut iOS -->
-            <div class="platform-status-card">
+            <div class="platform-status-card" id="card-status-ios">
               <div class="platform-status-header">
-                <span style="font-weight: 700; font-size: 13px;">Apple iOS</span>
+                <span style="font-weight: 700; font-size: 13px;">Apple TestFlight (iOS)</span>
                 <span class="badge-status badge-pending" id="badge-status-ios">En attente</span>
               </div>
               <p style="font-size: 11.5px; color: var(--color-text-muted); min-height: 34px;" id="desc-status-ios">
@@ -1342,14 +1883,64 @@ export function renderBetaLandingPage(
             </div>
           </div>
 
-          <!-- Actions supplémentaires : mise à jour plateformes, renvoi liens, désinscription -->
-          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px;">
+          <!-- Bloc Version Actuelle & Nouveautés -->
+          <div id="tester-version-card" style="display: none; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 14px; margin: 14px 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 12.5px; font-weight: 700; color: var(--color-heading);" id="tvc-title">
+                Version bêta active
+              </span>
+              <span style="font-size: 11px; color: var(--color-tanimbary); font-weight: 600;" id="tvc-version-badge">
+                v0.1.0 (build 31)
+              </span>
+            </div>
+            <div style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.5;" id="tvc-notes">
+              Améliorations de performance, nouveaux contes malgaches et navigation optimisée.
+            </div>
+          </div>
+
+          <!-- Guides dépliables -->
+          <div class="guide-accordion">
+            <div class="guide-accordion-header" id="guide-toggle-btn">
+              <span>Instructions détaillées pas-à-pas (Android &amp; iOS)</span>
+              <span id="guide-chevron">▼</span>
+            </div>
+            <div class="guide-accordion-content" id="guide-content" style="display: none;">
+              <div style="margin-bottom: 12px;">
+                <strong style="color: var(--color-heading); display: block; margin-bottom: 4px;">Android (Google Play) :</strong>
+                <p id="guide-text-android" style="margin-bottom: 8px;">
+                  1. Connectez-vous sur votre navigateur avec l'adresse e-mail inscrite.<br>
+                  2. Cliquez sur « Rejoindre le test Google Play » et validez « Devenir testeur ».<br>
+                  3. Téléchargez ensuite Kanto MG depuis le Play Store.<br>
+                  4. Revenez ici et cliquez sur « J'ai rejoint le programme bêta ».
+                </p>
+              </div>
+              <div>
+                <strong style="color: var(--color-heading); display: block; margin-bottom: 4px;">Apple iOS :</strong>
+                <p id="guide-text-ios">
+                  1. Installez gratuitement l'application <em>Apple TestFlight</em> sur l'App Store.<br>
+                  2. Cliquez sur « Ouvrir dans TestFlight » sur votre iPhone ou iPad.<br>
+                  3. Acceptez l'invitation et installez Kanto MG.<br>
+                  4. Revenez ici et cliquez sur « J'ai rejoint le programme bêta ».
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions supplémentaires : renvoi liens, mise à jour, retour bug, désinscription -->
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px;">
             <button type="button" class="btn-secondary" id="btn-resend-links">
-              Renvoyer mes liens d'accès par e-mail
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              <span>Renvoyer mes liens d'accès par e-mail</span>
             </button>
+
+            <a href="/feedback" class="btn-secondary" style="text-decoration: none;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+              <span>Partager une suggestion ou signaler une anomalie</span>
+            </a>
+
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 11.5px;">
               <button type="button" id="btn-toggle-update-plat" style="background: none; border: none; color: var(--color-tanimbary); cursor: pointer; text-decoration: underline;">
-                Modifier mes plateformes de test (Android / iOS)
+                Modifier mes plateformes de test
               </button>
               <button type="button" id="btn-open-unsubscribe" style="background: none; border: none; color: var(--color-error); cursor: pointer;">
                 Me désinscrire
@@ -1357,17 +1948,17 @@ export function renderBetaLandingPage(
             </div>
 
             <!-- Formulaire inline de mise à jour des plateformes -->
-            <div id="box-update-platforms" style="display: none; padding: 12px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); margin-top: 8px; background: var(--color-surface);">
-              <span style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 8px;">
-                Mettre à jour mes plateformes :
+            <div id="box-update-platforms" style="display: none; padding: 14px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); margin-top: 8px; background: var(--color-surface);">
+              <span style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 8px;">
+                Mettre à jour mes plateformes de test :
               </span>
-              <label style="display: block; font-size: 12px; margin-bottom: 4px;">
+              <label style="display: block; font-size: 12px; margin-bottom: 6px; cursor: pointer;">
                 <input type="checkbox" id="chk-update-android"> Participer au test Android (Google Play)
               </label>
-              <label style="display: block; font-size: 12px; margin-bottom: 10px;">
-                <input type="checkbox" id="chk-update-ios"> Participer au test iOS (TestFlight)
+              <label style="display: block; font-size: 12px; margin-bottom: 12px; cursor: pointer;">
+                <input type="checkbox" id="chk-update-ios"> Participer au test iOS (Apple TestFlight)
               </label>
-              <button type="button" id="btn-submit-update-plat" class="btn-submit" style="padding: 8px 12px; font-size: 12px;">
+              <button type="button" id="btn-submit-update-plat" class="btn-submit" style="padding: 8px 14px; font-size: 12px; min-height: 38px;">
                 Enregistrer mes modifications
               </button>
             </div>
@@ -1375,7 +1966,9 @@ export function renderBetaLandingPage(
         </div>
       </div>
 
-      <!-- ─── VUE DÉSINCRIPTION RGPD ─── -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!-- VOLET 4 : DÉSINCRIPTION RGPD                                           -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
       <div id="panel-unsubscribe" style="display: ${initialTab === 'unsubscribe' ? 'block' : 'none'};">
         <h3 style="font-size: 16px; font-weight: 700; color: var(--color-heading); margin-bottom: 8px;">
           Désinscription du programme bêta
@@ -1395,17 +1988,17 @@ export function renderBetaLandingPage(
           <div class="field" style="margin-bottom: 14px;">
             <label class="field-label" style="margin-bottom: 6px;">Motif de votre retrait (optionnel) :</label>
             <div class="unsub-chips">
-              <button type="button" class="unsub-chip" data-reason="Incompatibilité avec mon appareil">📱 Appareil non compatible</button>
-              <button type="button" class="unsub-chip" data-reason="Manque de temps pour tester">⏳ Manque de temps</button>
-              <button type="button" class="unsub-chip" data-reason="Trop de notifications">🔔 Trop de notifications</button>
-              <button type="button" class="unsub-chip" data-reason="Simple curiosité">🎯 Simple curiosité</button>
+              <button type="button" class="unsub-chip" data-reason="Incompatibilité avec mon appareil">Appareil non compatible</button>
+              <button type="button" class="unsub-chip" data-reason="Manque de temps pour tester">Manque de temps</button>
+              <button type="button" class="unsub-chip" data-reason="Trop de notifications">Trop de notifications</button>
+              <button type="button" class="unsub-chip" data-reason="Simple curiosité">Simple curiosité</button>
               <button type="button" class="unsub-chip" data-reason="Autre motif">Autre motif</button>
             </div>
             <input type="text" id="unsub-reason" class="field-input" placeholder="Précisez votre motif ou laissez vide..." style="font-size: 12.5px;">
           </div>
 
           <p style="font-size: 11.5px; color: var(--color-text-muted); margin-bottom: 14px; line-height: 1.4;">
-            ℹ️ Un accusé de réception officiel de désinscription vous sera immédiatement envoyé par e-mail.
+            Un accusé de réception officiel de désinscription vous sera immédiatement envoyé par e-mail.
           </p>
 
           <div style="display: flex; flex-direction: column; gap: 8px;">
@@ -1430,14 +2023,14 @@ export function renderBetaLandingPage(
             Votre adresse a été retirée de nos listes de diffusion. Un e-mail récapitulatif vous a été envoyé.
           </p>
           <div style="font-size: 12px; font-style: italic; color: var(--color-text-muted); margin-bottom: 18px;">
-            Misaotra betsaka amin&apos;ny fotoana natokanao ho an&apos;ny Kanto MG.
+            Misaotra betsaka amin'ny fotoana natokanao ho an'ny Kanto MG.
           </div>
           <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
             <button type="button" id="btn-unsub-home" class="btn-submit" style="width: auto; padding: 9px 18px; font-size: 12.5px;">
-              Retour à l&apos;accueil
+              Retour à l'accueil
             </button>
             <button type="button" id="btn-unsub-resubscribe" class="btn-secondary" style="width: auto; padding: 9px 18px; margin-top: 0; font-size: 12.5px; color: var(--color-tanimbary); border-color: var(--color-tanimbary);">
-              Changer d&apos;avis et se réinscrire
+              Changer d'avis et se réinscrire
             </button>
           </div>
         </div>
@@ -1446,13 +2039,15 @@ export function renderBetaLandingPage(
     </div>
   </main>
 
-  <!-- Modale CGU Intégrée Kanto MG -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- MODALE 1 : CONDITIONS GÉNÉRALES D'UTILISATION (CGU) BÊTA               -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
   <div id="kanto-cgu-modal" class="kanto-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="cgu-modal-title" style="display: none;">
     <div class="kanto-modal-card">
       <div class="kanto-modal-head">
         <h2 id="cgu-modal-title" class="kanto-modal-title">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-tanimbary);"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-          <span>Conditions Générales d'Utilisation • Bêta Kanto MG</span>
+          <span>Conditions Générales d'Utilisation • Programme Bêta</span>
         </h2>
         <button type="button" id="cgu-modal-close" class="kanto-modal-close" aria-label="Fermer la modale CGU">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -1465,36 +2060,89 @@ export function renderBetaLandingPage(
         </div>
 
         <h3>1. Objet du Programme Bêta</h3>
-        <p>Le programme permet de tester en avant-première les versions préliminaires de Kanto MG sur Google Play Closed Testing (Android) et Apple TestFlight (iOS), d'identifier les bugs et d'émettre des retours avant la publication grand public.</p>
+        <p>Le programme permet de tester en avant-première les versions préliminaires de Kanto MG sur Google Play Closed Testing (Android) et Apple TestFlight (iOS), d'identifier les anomalies et d'émettre des retours avant la publication grand public.</p>
 
         <h3>2. Confidentialité &amp; Respect des Préversions</h3>
         <p>Les versions de test contiennent des fonctionnalités inédites, des voix et des visuels originaux en cours d'affinage. Vous vous engagez à ne pas extraire ni rediffuser publiquement les fichiers d'installation (.apk, .aab ou profils TestFlight) en dehors de votre usage de testeur.</p>
 
-        <h3>3. Retours &amp; Signalement de Bugs</h3>
-        <p>Vos retours et signalements de bugs peuvent être formulés directement depuis l'application mobile ou via la page dédiée de retours. Vous autorisez l'équipe Kanto à exploiter ces retours techniques pour l'amélioration continue de l'application.</p>
+        <h3>3. Retours &amp; Signalement d'Anomalies</h3>
+        <p>Vos retours et signalements de bugs peuvent être formulés directement depuis l'application mobile ou via la page de retours du portail. Vous autorisez l'équipe Kanto à exploiter ces retours techniques pour l'amélioration continue de l'application.</p>
 
-        <h3>4. Protection des Données Personnelles (RGPD)</h3>
-        <p>Votre adresse e-mail est strictement confidentielle. Elle est chiffrée au repos avec l'algorithme <strong>AES-256-GCM</strong> et indexée via une empreinte <strong>HMAC-SHA-256</strong>. Elle n'est jamais vendue, cédée ni partagée avec des tiers publicitaires. Elle est utilisée exclusivement pour vos invitations consoles et le suivi de vos accès.</p>
-
-        <h3>5. Disponibilité des Versions</h3>
+        <h3>4. Disponibilité des Versions de Test</h3>
         <p>Les versions de test peuvent comporter des instabilités temporaires. Kanto MG met tout en œuvre pour offrir une expérience fluide tout en maintenant la sécurité de vos appareils.</p>
 
-        <h3>6. Désinscription Libre &amp; Support Officiel</h3>
-        <p>Vous conservez la liberté totale de vous retirer du programme à tout instant en 1 clic via l'onglet de désinscription ou le lien présent au bas de chaque e-mail d'invitation. Contact du support : <a href="mailto:${supportEmail}" style="color: var(--color-tanimbary); font-weight: 600;">${supportEmail}</a>.</p>
+        <h3>5. Propriété Intellectuelle</h3>
+        <p>L'ensemble des contenus culturels, graphismes, textes, proverbes et contes demeurent protégés par les droits de propriété intellectuelle applicables. Toute reproduction non autorisée est prohibée.</p>
+
+        <h3>6. Résiliation &amp; Support</h3>
+        <p>Vous conservez la liberté totale de vous retirer du programme à tout instant en 1 clic. Contact officiel : <a href="mailto:${supportEmail}" style="color: var(--color-tanimbary); font-weight: 600;">${supportEmail}</a>.</p>
       </div>
       <div class="kanto-modal-foot">
         <a href="${legalBaseUrl}/pages/terms" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: var(--color-text-secondary); text-decoration: underline;">
           Ouvrir les CGU complètes en pleine page ↗
         </a>
         <button type="button" id="cgu-modal-btn-accept" class="cookie-btn cookie-btn-primary">
-          J'ai compris et j'accepte les conditions
+          J'ai compris et j'accepte
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Bannière de consentement aux cookies Kanto (RGPD & ePrivacy) -->
-  <aside id="kanto-cookie-banner" class="cookie-banner" role="region" aria-label="Gestion des cookies et de la confidentialité" style="display: none;">
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- MODALE 2 : POLITIQUE DE CONFIDENTIALITÉ (RGPD)                         -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="kanto-privacy-modal" class="kanto-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="privacy-modal-title" style="display: none;">
+    <div class="kanto-modal-card">
+      <div class="kanto-modal-head">
+        <h2 id="privacy-modal-title" class="kanto-modal-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-tanimbary);"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <span>Politique de Confidentialité • RGPD &amp; Protection des Données</span>
+        </h2>
+        <button type="button" id="privacy-modal-close" class="kanto-modal-close" aria-label="Fermer la politique de confidentialité">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="kanto-modal-scroll">
+        <div class="cgu-highlight-box">
+          <strong>Transparence &amp; Minimisation des données</strong><br>
+          Kanto MG applique le principe de minimisation stricte du RGPD. Nous ne collectons aucun mot de passe, aucune donnée bancaire et ne procédons à aucun traçage commercial.
+        </div>
+
+        <h3>1. Responsable de Traitement</h3>
+        <p>Le traitement des données personnelles dans le cadre du programme bêta est opéré par l'équipe Kanto MG. Délégué à la protection des données : <a href="mailto:${supportEmail}" style="color: var(--color-tanimbary); font-weight: 600;">${supportEmail}</a>.</p>
+
+        <h3>2. Données Collectées</h3>
+        <ul>
+          <li><strong>Adresse e-mail :</strong> Nécessaire pour autoriser votre compte sur Google Play Console ou Apple TestFlight.</li>
+          <li><strong>Nom / Prénom (optionnel) :</strong> Utilisé uniquement pour personnaliser nos correspondances.</li>
+          <li><strong>Plateforme sélectionnée :</strong> Android et/ou iOS.</li>
+          <li><strong>Métadonnées techniques :</strong> Version d'OS ou modèle d'appareil fournis lors d'un signalement de bug volontaire.</li>
+        </ul>
+
+        <h3>3. Finalités &amp; Base Légale</h3>
+        <p>Vos données sont traitées sur la base de votre <strong>consentement explicite</strong> (Article 6.1.a du RGPD) dans le but exclusif de gérer les accès au test fermé, d'envoyer les invitations et de traiter vos signalements de bugs.</p>
+
+        <h3>4. Mesures de Sécurité Rigoureuses</h3>
+        <p>Votre adresse e-mail est chiffrée au repos à l'aide de l'algorithme cryptographique <strong>AES-256-GCM</strong>. Pour les recherches sans déchiffrement, une empreinte indexée irréversible <strong>HMAC-SHA-256</strong> est utilisée. Aucun tiers non autorisé ne peut accéder à vos identifiants.</p>
+
+        <h3>5. Durée de Conservation &amp; Droit à l'Effacement</h3>
+        <p>Vos données sont conservées pendant la durée active du programme de test. Vous disposez d'un <strong>droit d'accès, de rectification et d'effacement immédiat</strong>. Vous pouvez exercer ce droit à tout moment via le lien de désinscription en 1 clic présent dans chaque e-mail ou sur ce portail.</p>
+      </div>
+      <div class="kanto-modal-foot">
+        <a href="${legalBaseUrl}/pages/privacy" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: var(--color-text-secondary); text-decoration: underline;">
+          Ouvrir la politique complète en pleine page ↗
+        </a>
+        <button type="button" id="privacy-modal-btn-accept" class="cookie-btn cookie-btn-primary">
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- MODALE 3 : GESTION DES COOKIES & CONSENTEMENT                          -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <aside id="kanto-cookie-banner" class="cookie-banner" role="region" aria-label="Gestion des cookies" style="display: none;">
     <div class="cookie-banner-wrap">
       <div class="cookie-banner-text-wrap">
         <div class="cookie-banner-title">
@@ -1502,7 +2150,7 @@ export function renderBetaLandingPage(
           <span>Respect de votre vie privée &amp; Cookies</span>
         </div>
         <p class="cookie-banner-desc">
-          Nous utilisons des traceurs strictement nécessaires au fonctionnement et, avec votre accord, des cookies pour mémoriser vos préférences et mesurer l'audience de la bêta. Vous pouvez modifier votre choix à tout moment.
+          Nous utilisons des cookies strictement nécessaires au fonctionnement technique et, avec votre accord, des cookies pour mémoriser vos préférences d'affichage. Zéro profilage publicitaire.
         </p>
       </div>
       <div class="cookie-banner-actions">
@@ -1513,7 +2161,6 @@ export function renderBetaLandingPage(
     </div>
   </aside>
 
-  <!-- Modale de personnalisation détaillée des cookies -->
   <div id="kanto-cookie-modal" class="kanto-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title" style="display: none;">
     <div class="kanto-modal-card">
       <div class="kanto-modal-head">
@@ -1527,10 +2174,8 @@ export function renderBetaLandingPage(
       </div>
       <div class="kanto-modal-scroll">
         <p style="font-size: 12.5px; color: var(--color-text-secondary); margin-bottom: 16px;">
-          Kanto MG respecte scrupuleusement la réglementation RGPD et la directive ePrivacy. Personnalisez ci-dessous les catégories de traceurs autorisées lors de votre navigation.
+          Kanto MG respecte la réglementation RGPD et la directive ePrivacy. Personnalisez vos catégories de traceurs.
         </p>
-
-        <!-- Catégorie 1 : Nécessaires -->
         <div class="cookie-category-item">
           <div class="cookie-category-header">
             <div>
@@ -1543,15 +2188,14 @@ export function renderBetaLandingPage(
             </label>
           </div>
           <p style="font-size: 11.5px; color: var(--color-text-muted); margin: 0;">
-            Indispensables au fonctionnement technique, à la protection anti-spam (honeypot), à la sécurité des sessions et à la mémorisation de votre choix de consentement. Ne peuvent être désactivés.
+            Indispensables au fonctionnement technique, à la protection anti-spam et à la mémorisation de vos préférences.
           </p>
         </div>
 
-        <!-- Catégorie 2 : Préférences -->
         <div class="cookie-category-item">
           <div class="cookie-category-header">
             <div>
-              <span class="cookie-category-label">2. Préférences d'affichage</span>
+              <span class="cookie-category-label">2. Préférences d'affichage (Thème)</span>
             </div>
             <label class="kanto-switch" aria-label="Traceurs de préférences">
               <input type="checkbox" id="cookie-opt-preferences" checked>
@@ -1559,23 +2203,7 @@ export function renderBetaLandingPage(
             </label>
           </div>
           <p style="font-size: 11.5px; color: var(--color-text-muted); margin: 0;">
-            Permet de conserver votre thème d'affichage préféré (sombre ou clair) et vos préférences de consultation entre vos visites.
-          </p>
-        </div>
-
-        <!-- Catégorie 3 : Statistiques -->
-        <div class="cookie-category-item">
-          <div class="cookie-category-header">
-            <div>
-              <span class="cookie-category-label">3. Mesures d'audience anonymisées</span>
-            </div>
-            <label class="kanto-switch" aria-label="Traceurs de statistiques anonymisées">
-              <input type="checkbox" id="cookie-opt-analytics" checked>
-              <span class="kanto-slider"></span>
-            </label>
-          </div>
-          <p style="font-size: 11.5px; color: var(--color-text-muted); margin: 0;">
-            Mesure agrégée et strictement anonyme de la fréquentation pour dimensionner les quotas de testeurs bêta. Aucun profilage publicitaire ni revente commerciale.
+            Permet de conserver votre thème d'affichage préféré (sombre ou clair).
           </p>
         </div>
       </div>
@@ -1593,8 +2221,8 @@ export function renderBetaLandingPage(
   <!-- Pied de page officiel Kanto MG -->
   <footer>
     <div class="footer-nav">
-      <a href="${legalBaseUrl}/pages/terms">Conditions d'utilisation (CGU)</a>
-      <a href="${legalBaseUrl}/pages/privacy">Confidentialité &amp; RGPD</a>
+      <a href="${legalBaseUrl}/pages/terms" id="footer-link-cgu">Conditions d'utilisation (CGU)</a>
+      <a href="${legalBaseUrl}/pages/privacy" id="footer-link-privacy">Confidentialité &amp; RGPD</a>
       <a href="/feedback" class="footer-link-feedback">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -1px; margin-right: 4px;">
           <path d="M12 20h9"></path>
@@ -1622,18 +2250,22 @@ export function renderBetaWaitlistScript(): string {
   return `
 (function() {
   // Onglets & Panneaux
+  var tabDl = document.getElementById('tab-btn-download');
   var tabReg = document.getElementById('tab-btn-register');
   var tabAlr = document.getElementById('tab-btn-already');
 
+  var pnlDl = document.getElementById('panel-download');
   var pnlReg = document.getElementById('panel-register');
   var pnlAlr = document.getElementById('panel-already');
   var pnlUnsub = document.getElementById('panel-unsubscribe');
-  var confView = document.getElementById('confirmation-view');
 
   var errBanner = document.getElementById('error-banner');
   var errText = document.getElementById('error-text');
   var succBanner = document.getElementById('success-banner');
   var succText = document.getElementById('success-text');
+
+  var currentTesterEmail = '';
+  var downloadData = null;
 
   // Sélecteur de plateformes dans l'inscription
   var cardAndroid = document.getElementById('card-android');
@@ -1681,44 +2313,16 @@ export function renderBetaWaitlistScript(): string {
     });
   }
 
-  function switchTab(target) {
-    hideBanners();
-    if (pnlReg) pnlReg.style.display = 'none';
-    if (pnlAlr) pnlAlr.style.display = 'none';
-    if (pnlUnsub) pnlUnsub.style.display = 'none';
-    if (confView) confView.style.display = 'none';
-
-    if (tabReg) tabReg.classList.remove('active');
-    if (tabAlr) tabAlr.classList.remove('active');
-
-    if (target === 'register') {
-      if (tabReg) tabReg.classList.add('active');
-      if (pnlReg) pnlReg.style.display = 'block';
-    } else if (target === 'already') {
-      if (tabAlr) tabAlr.classList.add('active');
-      if (pnlAlr) pnlAlr.style.display = 'block';
-    } else if (target === 'unsubscribe') {
-      if (pnlUnsub) pnlUnsub.style.display = 'block';
-    }
-  }
-
-  if (tabReg) tabReg.addEventListener('click', function() { switchTab('register'); });
-  if (tabAlr) tabAlr.addEventListener('click', function() { switchTab('already'); });
-
-  var gotoStatusBtn = document.getElementById('btn-goto-status');
-  if (gotoStatusBtn) {
-    gotoStatusBtn.addEventListener('click', function() { switchTab('already'); });
-  }
-
-  var openUnsubBtn = document.getElementById('btn-open-unsubscribe');
-  if (openUnsubBtn) {
-    openUnsubBtn.addEventListener('click', function() { switchTab('unsubscribe'); });
+  function hideBanners() {
+    if (errBanner) errBanner.style.display = 'none';
+    if (succBanner) succBanner.style.display = 'none';
   }
 
   function showError(msg) {
     if (errBanner && errText) {
       errText.innerText = msg;
       errBanner.style.display = 'flex';
+      errBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   }
 
@@ -1726,12 +2330,40 @@ export function renderBetaWaitlistScript(): string {
     if (succBanner && succText) {
       succText.innerText = msg;
       succBanner.style.display = 'flex';
+      succBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   }
 
-  function hideBanners() {
-    if (errBanner) errBanner.style.display = 'none';
-    if (succBanner) succBanner.style.display = 'none';
+  function switchTab(target) {
+    hideBanners();
+    if (tabDl) tabDl.classList.toggle('active', target === 'download');
+    if (tabReg) tabReg.classList.toggle('active', target === 'register');
+    if (tabAlr) tabAlr.classList.toggle('active', target === 'already');
+
+    if (pnlDl) pnlDl.style.display = target === 'download' ? 'block' : 'none';
+    if (pnlReg) pnlReg.style.display = target === 'register' ? 'block' : 'none';
+    if (pnlAlr) pnlAlr.style.display = target === 'already' ? 'block' : 'none';
+    if (pnlUnsub) pnlUnsub.style.display = target === 'unsubscribe' ? 'block' : 'none';
+
+    try {
+      var url = new URL(window.location);
+      url.searchParams.set('tab', target);
+      window.history.replaceState({}, '', url);
+    } catch(e) {}
+  }
+
+  if (tabDl) tabDl.addEventListener('click', function() { switchTab('download'); });
+  if (tabReg) tabReg.addEventListener('click', function() { switchTab('register'); });
+  if (tabAlr) tabAlr.addEventListener('click', function() { switchTab('already'); });
+
+  var btnSwitchToReg = document.getElementById('btn-switch-to-register');
+  if (btnSwitchToReg) {
+    btnSwitchToReg.addEventListener('click', function() { switchTab('register'); });
+  }
+
+  var openUnsubBtn = document.getElementById('btn-open-unsubscribe');
+  if (openUnsubBtn) {
+    openUnsubBtn.addEventListener('click', function() { switchTab('unsubscribe'); });
   }
 
   function maskEmailClient(em) {
@@ -1745,8 +2377,115 @@ export function renderBetaWaitlistScript(): string {
     return masked + '@' + domain;
   }
 
-  // ─── 1. SOUMISSION INSCRIPTION ───
-  var regForm = document.getElementById('waitlist-form') || document.getElementById('register-form');
+  // ─── CHARGEMENT DES INFOS DE TÉLÉCHARGEMENT EN TEMPS RÉEL ───
+  async function loadDownloadInfo() {
+    try {
+      var res = await fetch('/api/beta-testers/download-info');
+      if (!res.ok) return;
+      var data = await res.json();
+      downloadData = data;
+
+      // Android
+      var aBadge = document.getElementById('dl-android-badge');
+      var aDesc = document.getElementById('dl-android-desc');
+      var aBtnMain = document.getElementById('dl-btn-android-main');
+      var aBtnMainText = document.getElementById('dl-btn-android-main-text');
+      var aBtnStore = document.getElementById('dl-btn-android-store');
+      var aVerLabel = document.getElementById('dl-android-version-label');
+      var aBuildLabel = document.getElementById('dl-android-build-label');
+
+      if (data.android) {
+        var aAvail = data.android.availability || 'BETA_OPEN';
+        if (aBadge) {
+          aBadge.className = 'download-avail-pill ' + (
+            aAvail === 'PUBLIC' ? 'download-avail-public' :
+            aAvail === 'BETA_OPEN' ? 'download-avail-beta' :
+            aAvail === 'BETA_CLOSED' ? 'download-avail-closed' :
+            aAvail === 'PENDING' ? 'download-avail-pending' : 'download-avail-unavailable'
+          );
+          aBadge.innerText = (
+            aAvail === 'PUBLIC' ? 'Version publique' :
+            aAvail === 'BETA_OPEN' ? 'Programme Bêta ouvert' :
+            aAvail === 'BETA_CLOSED' ? 'Bêta fermée' :
+            aAvail === 'PENDING' ? 'Accès en attente' : 'Indisponible'
+          );
+        }
+
+        if (aBtnMain) {
+          if (aAvail === 'PUBLIC') {
+            aBtnMain.href = data.android.playStoreAppLink || '#';
+            if (aBtnMainText) aBtnMainText.innerText = 'Télécharger sur Google Play';
+            if (aBtnStore) aBtnStore.style.display = 'none';
+          } else if (aAvail === 'BETA_OPEN') {
+            aBtnMain.href = data.android.playStoreWebLink || 'https://play.google.com/apps/testing/com.devengalere.kantomg';
+            if (aBtnMainText) aBtnMainText.innerText = 'Rejoindre le test Google Play';
+            if (aBtnStore) {
+              aBtnStore.style.display = 'inline-flex';
+              aBtnStore.href = data.android.playStoreAppLink || '#';
+            }
+          } else {
+            aBtnMain.style.display = 'none';
+          }
+        }
+
+        if (data.android.latestVersion) {
+          if (aVerLabel) aVerLabel.innerText = 'v' + data.android.latestVersion.version;
+          if (aBuildLabel) aBuildLabel.innerText = 'Build ' + data.android.latestVersion.buildNumber;
+        }
+      }
+
+      // iOS
+      var iBadge = document.getElementById('dl-ios-badge');
+      var iDesc = document.getElementById('dl-ios-desc');
+      var iBtnMain = document.getElementById('dl-btn-ios-main');
+      var iBtnMainText = document.getElementById('dl-btn-ios-main-text');
+      var iBtnStore = document.getElementById('dl-btn-ios-store');
+      var iVerLabel = document.getElementById('dl-ios-version-label');
+      var iBuildLabel = document.getElementById('dl-ios-build-label');
+
+      if (data.ios) {
+        var iAvail = data.ios.availability || 'BETA_OPEN';
+        if (iBadge) {
+          iBadge.className = 'download-avail-pill ' + (
+            iAvail === 'PUBLIC' ? 'download-avail-public' :
+            iAvail === 'BETA_OPEN' ? 'download-avail-beta' :
+            iAvail === 'BETA_CLOSED' ? 'download-avail-closed' :
+            iAvail === 'PENDING' ? 'download-avail-pending' : 'download-avail-unavailable'
+          );
+          iBadge.innerText = (
+            iAvail === 'PUBLIC' ? 'Version publique' :
+            iAvail === 'BETA_OPEN' ? 'Apple TestFlight' :
+            iAvail === 'BETA_CLOSED' ? 'Bêta fermée' :
+            iAvail === 'PENDING' ? 'Accès en attente' : 'Indisponible'
+          );
+        }
+
+        if (iBtnMain) {
+          if (iAvail === 'PUBLIC' && data.ios.appStoreLink) {
+            iBtnMain.href = data.ios.appStoreLink;
+            if (iBtnMainText) iBtnMainText.innerText = "Télécharger sur l'App Store";
+          } else if (data.ios.testFlightLink) {
+            iBtnMain.href = data.ios.testFlightLink;
+            if (iBtnMainText) iBtnMainText.innerText = 'Rejoindre le test sur TestFlight';
+          } else {
+            iBtnMain.style.display = 'none';
+          }
+        }
+
+        if (data.ios.latestVersion) {
+          if (iVerLabel) iVerLabel.innerText = 'v' + data.ios.latestVersion.version;
+          if (iBuildLabel) iBuildLabel.innerText = 'Build ' + data.ios.latestVersion.buildNumber;
+        }
+      }
+    } catch(err) {
+      console.warn('Impossible de charger download-info', err);
+    }
+  }
+
+  loadDownloadInfo();
+
+  // ─── 1. SOUMISSION INSCRIPTION BÊTA ───
+  var regForm = document.getElementById('waitlist-form');
   var regBtn = document.getElementById('btn-submit-reg');
 
   if (regForm) {
@@ -1774,7 +2513,7 @@ export function renderBetaWaitlistScript(): string {
 
       if (regBtn) {
         regBtn.disabled = true;
-        regBtn.innerText = 'Enregistrement...';
+        regBtn.innerText = 'Enregistrement en cours...';
       }
 
       try {
@@ -1792,31 +2531,28 @@ export function renderBetaWaitlistScript(): string {
 
         var data = await res.json();
         if (res.ok && data.success && !data.alreadyRegistered) {
-          if (pnlReg) pnlReg.style.display = 'none';
-          if (confView) confView.style.display = 'flex';
-          var confEmail = document.getElementById('confirmed-email-display');
-          if (confEmail) {
-            var displayEmail = (data.tester && (data.tester.maskedEmail || data.tester.email)) 
-              ? (data.tester.maskedEmail || data.tester.email) 
-              : maskEmailClient(email);
-            confEmail.innerText = displayEmail;
+          showSuccess('Candidature enregistrée avec succès ! Bienvenue dans l’espace testeur Kanto.');
+          var countBadge = document.getElementById('header-tester-count');
+          if (countBadge) {
+            var m = countBadge.innerText.match(/[0-9]+/);
+            if (m) countBadge.innerText = (parseInt(m[0], 10) + 1) + ' testeurs inscrits';
           }
-
-          var badge = document.getElementById('header-tester-count');
-          if (badge) {
-            var m = badge.innerText.match(/[0-9]+/);
-            if (m) badge.innerText = (parseInt(m[0], 10) + 1) + ' testeurs inscrits';
-          }
-        } else if (data.alreadyRegistered) {
-          showError('Cette adresse est déjà inscrite. Consultez votre statut dans l’onglet « Mon Accès » !');
+          // Bascule automatique vers l'espace testeur
+          switchTab('already');
           var checkInput = document.getElementById('check-email');
           if (checkInput) checkInput.value = email;
-          setTimeout(function() { switchTab('already'); verifyEmail(email); }, 1200);
+          verifyEmail(email);
+        } else if (data.alreadyRegistered) {
+          showError('Cette adresse e-mail est déjà inscrite. Consultation de votre statut en cours...');
+          switchTab('already');
+          var chkInput = document.getElementById('check-email');
+          if (chkInput) chkInput.value = email;
+          verifyEmail(email);
         } else {
-          showError(data.message || 'Une erreur est survenue.');
+          showError(data.message || 'Une erreur est survenue lors de l’inscription.');
         }
       } catch (err) {
-        showError('Impossible de joindre le serveur. Vérifiez votre connexion.');
+        showError('Impossible de joindre le serveur. Veuillez vérifier votre connexion.');
       } finally {
         if (regBtn) {
           regBtn.disabled = false;
@@ -1826,9 +2562,8 @@ export function renderBetaWaitlistScript(): string {
     });
   }
 
-  // ─── 2. VÉRIFICATION STATUT & TÉLÉCHARGEMENT ───
+  // ─── 2. VÉRIFICATION STATUT, ESPACE TESTEUR & PROGRESSION ───
   var statusForm = document.getElementById('status-check-form');
-  var currentTesterEmail = '';
 
   async function verifyEmail(email) {
     hideBanners();
@@ -1858,73 +2593,141 @@ export function renderBetaWaitlistScript(): string {
       }
 
       var tester = data.tester;
+      var cStatus = tester.confirmationStatus || 'INSCRIT';
+
+      // Badge de statut général
+      var sBadge = document.getElementById('tester-status-badge');
+      if (sBadge) {
+        sBadge.className = 'tester-status-badge badge-' + cStatus.toLowerCase();
+        sBadge.innerText = (
+          cStatus === 'INSCRIT' ? 'INSCRIT' :
+          cStatus === 'EN_ATTENTE' ? 'EN ATTENTE' :
+          cStatus === 'CONFIRME' ? 'PARTICIPATION CONFIRMÉE' :
+          cStatus === 'VERIFIE' ? 'ACCÈS VALIDÉ' :
+          cStatus === 'INSTALLE' ? 'APPLICATION INSTALLÉE' : 'DÉSINCRIT'
+        );
+      }
+
+      // Mise à jour de la barre de progression en 5 étapes
+      var stepIndex = data.currentStepIndex || 2;
+      for (var s = 1; s <= 5; s++) {
+        var sNode = document.getElementById('step-node-' + s);
+        if (sNode) {
+          sNode.className = 'progress-step-item';
+          var sBullet = sNode.querySelector('.step-bullet');
+          if (s < stepIndex) {
+            sNode.classList.add('completed');
+            if (sBullet) sBullet.innerText = '✓';
+          } else if (s === stepIndex) {
+            sNode.classList.add('current');
+            if (sBullet) sBullet.innerText = String(s);
+          } else {
+            if (sBullet) sBullet.innerText = String(s);
+          }
+        }
+      }
+
+      // Gestion de la boîte d'action
+      var btnJoined = document.getElementById('btn-confirm-joined');
+      var btnInstalled = document.getElementById('btn-confirm-installed');
+      var actionTitle = document.getElementById('action-box-title');
+      var actionDesc = document.getElementById('action-box-desc');
+
+      if (cStatus === 'INSTALLE') {
+        if (actionTitle) actionTitle.innerText = 'Application Kanto MG installée !';
+        if (actionDesc) actionDesc.innerText = 'Merci pour votre précieuse contribution ! Explorez l’application et partagez vos remarques avec l’équipe.';
+        if (btnJoined) btnJoined.style.display = 'none';
+        if (btnInstalled) btnInstalled.style.display = 'none';
+      } else if (cStatus === 'CONFIRME' || cStatus === 'VERIFIE') {
+        if (actionTitle) actionTitle.innerText = 'Participation confirmée au programme !';
+        if (actionDesc) actionDesc.innerText = 'Votre accès est validé. Une fois l’application téléchargée sur votre téléphone, confirmez l’installation.';
+        if (btnJoined) btnJoined.style.display = 'none';
+        if (btnInstalled) btnInstalled.style.display = 'flex';
+      } else {
+        if (actionTitle) actionTitle.innerText = 'Valider votre participation au programme';
+        if (actionDesc) actionDesc.innerText = 'Une fois que vous avez rejoint le groupe sur Google Play ou accepté TestFlight, confirmez votre accès ci-dessous.';
+        if (btnJoined) btnJoined.style.display = 'flex';
+        if (btnInstalled) btnInstalled.style.display = 'none';
+      }
+
+      // Plateformes de test
       var hasAndroid = tester.platforms.indexOf('ANDROID') !== -1;
       var hasIos = tester.platforms.indexOf('IOS') !== -1;
 
-      // Badges Android
+      // Carte Android
+      var cAndroid = document.getElementById('card-status-android');
       var bAndroid = document.getElementById('badge-status-android');
       var descAndroid = document.getElementById('desc-status-android');
       var linkPlay = document.getElementById('link-play-web');
 
-      if (hasAndroid) {
-        if (bAndroid) {
-          bAndroid.innerText = tester.androidStatus;
-          bAndroid.className = 'badge-status ' + (tester.androidStatus === 'INVITED' ? 'badge-invited' : 'badge-pending');
+      if (cAndroid) {
+        cAndroid.style.display = hasAndroid ? 'block' : 'none';
+        if (hasAndroid) {
+          if (bAndroid) {
+            bAndroid.innerText = tester.androidStatus;
+            bAndroid.className = 'badge-status ' + (
+              tester.androidStatus === 'ACCEPTED' || tester.androidStatus === 'ACTIVE' || tester.androidStatus === 'INVITED'
+                ? 'badge-invited' : 'badge-pending'
+            );
+          }
+          if (descAndroid) {
+            descAndroid.innerText = data.canDownloadAndroid
+              ? 'Votre compte Google est autorisé pour le test fermé Google Play.'
+              : 'En attente d’autorisation sur la Google Play Console.';
+          }
+          if (linkPlay && data.canDownloadAndroid) {
+            linkPlay.style.display = 'block';
+            linkPlay.href = data.links.androidWeb;
+          }
         }
-        if (descAndroid) {
-          descAndroid.innerText = data.canDownloadAndroid
-            ? 'Votre compte est autorisé pour le test Google Play.'
-            : 'En attente de validation sur la Google Play Console.';
-        }
-        if (linkPlay && data.canDownloadAndroid) {
-          linkPlay.style.display = 'block';
-          linkPlay.href = data.links.androidWeb;
-        }
-      } else {
-        if (bAndroid) {
-          bAndroid.innerText = 'Non demandé';
-          bAndroid.className = 'badge-status badge-none';
-        }
-        if (descAndroid) descAndroid.innerText = 'Vous n’avez pas demandé à tester sur Android.';
-        if (linkPlay) linkPlay.style.display = 'none';
       }
 
-      // Badges iOS
+      // Carte iOS
+      var cIos = document.getElementById('card-status-ios');
       var bIos = document.getElementById('badge-status-ios');
       var descIos = document.getElementById('desc-status-ios');
       var linkTf = document.getElementById('link-testflight');
 
-      if (hasIos) {
-        if (bIos) {
-          bIos.innerText = tester.iosStatus;
-          bIos.className = 'badge-status ' + (tester.iosStatus === 'INVITED' ? 'badge-invited' : 'badge-pending');
+      if (cIos) {
+        cIos.style.display = hasIos ? 'block' : 'none';
+        if (hasIos) {
+          if (bIos) {
+            bIos.innerText = tester.iosStatus;
+            bIos.className = 'badge-status ' + (
+              tester.iosStatus === 'ACCEPTED' || tester.iosStatus === 'ACTIVE' || tester.iosStatus === 'INVITED'
+                ? 'badge-invited' : 'badge-pending'
+            );
+          }
+          if (descIos) {
+            descIos.innerText = data.canDownloadIos
+              ? 'Votre invitation TestFlight est active pour votre appareil Apple.'
+              : 'En attente d’invitation sur Apple TestFlight.';
+          }
+          if (linkTf && data.canDownloadIos) {
+            linkTf.style.display = 'block';
+            linkTf.href = data.links.testFlight;
+          }
         }
-        if (descIos) {
-          descIos.innerText = data.canDownloadIos
-            ? 'Votre invitation TestFlight est active ! Installez TestFlight sur l’App Store puis cliquez ci-dessous.'
-            : 'En attente d’invitation sur App Store Connect / TestFlight.';
-        }
-        if (linkTf && data.canDownloadIos) {
-          linkTf.style.display = 'block';
-          linkTf.href = data.links.testFlight;
-        }
-      } else {
-        if (bIos) {
-          bIos.innerText = 'Non demandé';
-          bIos.className = 'badge-status badge-none';
-        }
-        if (descIos) descIos.innerText = 'Vous n’avez pas demandé à tester sur iOS.';
-        if (linkTf) linkTf.style.display = 'none';
       }
 
-      // Checkboxes mise à jour
+      // Version actuelle
+      var vCard = document.getElementById('tester-version-card');
+      var vBadge = document.getElementById('tvc-version-badge');
+      var vNotes = document.getElementById('tvc-notes');
+      if (data.latestVersion && vCard) {
+        vCard.style.display = 'block';
+        if (vBadge) vBadge.innerText = 'v' + data.latestVersion.version + ' (build ' + data.latestVersion.buildNumber + ')';
+        if (vNotes) vNotes.innerText = data.latestVersion.releaseNotes || 'Améliorations de performance et enrichissement des contenus culturels malgaches.';
+      }
+
+      // Checkboxes mise à jour des plateformes
       var chkAndroid = document.getElementById('chk-update-android');
       var chkIos = document.getElementById('chk-update-ios');
       if (chkAndroid) chkAndroid.checked = hasAndroid;
       if (chkIos) chkIos.checked = hasIos;
 
     } catch (err) {
-      showError('Erreur lors de la vérification du statut.');
+      showError('Erreur lors de la vérification de votre espace personnel.');
     }
   }
 
@@ -1933,6 +2736,84 @@ export function renderBetaWaitlistScript(): string {
       e.preventDefault();
       var email = document.getElementById('check-email').value.trim();
       if (email) verifyEmail(email);
+    });
+  }
+
+  // ─── 3. CONFIRMATION INTERACTIVE DU TESTEUR (« J'AI REJOINT » / « J'AI INSTALLÉ ») ───
+  var btnConfirmJoined = document.getElementById('btn-confirm-joined');
+  if (btnConfirmJoined) {
+    btnConfirmJoined.addEventListener('click', async function() {
+      if (!currentTesterEmail) {
+        showError('Veuillez d’abord renseigner votre adresse e-mail.');
+        return;
+      }
+      btnConfirmJoined.disabled = true;
+      btnConfirmJoined.innerText = 'Confirmation en cours...';
+      try {
+        var res = await fetch('/api/beta-testers/confirm-participation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: currentTesterEmail,
+            action: 'JOINED'
+          })
+        });
+        var data = await res.json();
+        if (res.ok && data.success) {
+          showSuccess('Félicitations ! Votre participation est confirmée. Vous pouvez maintenant installer Kanto MG.');
+          verifyEmail(currentTesterEmail);
+        } else {
+          showError(data.message || 'Impossible de confirmer votre participation.');
+        }
+      } catch (err) {
+        showError('Erreur lors de la confirmation. Vérifiez votre connexion.');
+      } finally {
+        btnConfirmJoined.disabled = false;
+        btnConfirmJoined.innerText = "J'ai rejoint le programme bêta";
+      }
+    });
+  }
+
+  var btnConfirmInstalled = document.getElementById('btn-confirm-installed');
+  if (btnConfirmInstalled) {
+    btnConfirmInstalled.addEventListener('click', async function() {
+      if (!currentTesterEmail) return;
+      btnConfirmInstalled.disabled = true;
+      btnConfirmInstalled.innerText = 'Enregistrement...';
+      try {
+        var res = await fetch('/api/beta-testers/confirm-participation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: currentTesterEmail,
+            action: 'INSTALLED'
+          })
+        });
+        var data = await res.json();
+        if (res.ok && data.success) {
+          showSuccess('Bravo ! Installation confirmée. Bonne exploration de la culture malgache dans Kanto MG.');
+          verifyEmail(currentTesterEmail);
+        } else {
+          showError(data.message || 'Impossible d’enregistrer l’installation.');
+        }
+      } catch (err) {
+        showError('Erreur lors de la confirmation de l’installation.');
+      } finally {
+        btnConfirmInstalled.disabled = false;
+        btnConfirmInstalled.innerText = "J'ai installé Kanto MG sur mon appareil";
+      }
+    });
+  }
+
+  // Accordéon guide pas-à-pas
+  var guideBtn = document.getElementById('guide-toggle-btn');
+  var guideContent = document.getElementById('guide-content');
+  var guideChevron = document.getElementById('guide-chevron');
+  if (guideBtn && guideContent) {
+    guideBtn.addEventListener('click', function() {
+      var isOpen = guideContent.style.display !== 'none';
+      guideContent.style.display = isOpen ? 'none' : 'block';
+      if (guideChevron) guideChevron.innerText = isOpen ? '▼' : '▲';
     });
   }
 
@@ -1968,7 +2849,7 @@ export function renderBetaWaitlistScript(): string {
     });
   }
 
-  // Sauvegarde des modifications de plateformes
+  // Sauvegarde mise à jour plateformes
   var savePlatBtn = document.getElementById('btn-submit-update-plat');
   if (savePlatBtn) {
     savePlatBtn.addEventListener('click', async function() {
@@ -1992,7 +2873,7 @@ export function renderBetaWaitlistScript(): string {
         });
         var data = await res.json();
         if (data.success) {
-          showSuccess('Plateformes mises à jour !');
+          showSuccess('Vos plateformes de test ont été mises à jour !');
           if (boxPlat) boxPlat.style.display = 'none';
           verifyEmail(currentTesterEmail);
         } else {
@@ -2004,104 +2885,23 @@ export function renderBetaWaitlistScript(): string {
     });
   }
 
-  // ─── 3. SOUMISSION FEEDBACK ───
-  var fbForm = document.getElementById('feedback-form');
-  var fbBtn = document.getElementById('btn-submit-fb');
-
-  if (fbForm) {
-    fbForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      hideBanners();
-
-      var email = document.getElementById('fb-email').value.trim();
-      var category = document.getElementById('fb-category').value;
-      var platform = document.getElementById('fb-platform').value;
-      var title = document.getElementById('fb-title').value.trim();
-      var description = document.getElementById('fb-desc').value.trim();
-
-      if (description.length < 10) {
-        showError('Veuillez fournir une description plus détaillée (au moins 10 caractères).');
-        return;
-      }
-
-      if (fbBtn) {
-        fbBtn.disabled = true;
-        fbBtn.innerText = 'Transmission...';
-      }
-
-      try {
-        var res = await fetch('/api/beta-testers/feedback', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: email,
-            category: category,
-            platform: platform,
-            title: title || undefined,
-            description: description
-          })
-        });
-        var data = await res.json();
-        if (data.success) {
-          showSuccess(data.message);
-          fbForm.reset();
-        } else {
-          showError(data.message || 'Erreur lors de la transmission du retour.');
-        }
-      } catch (e) {
-        showError('Impossible de joindre le serveur.');
-      } finally {
-        if (fbBtn) {
-          fbBtn.disabled = false;
-          fbBtn.innerText = 'Transmettre mon retour à l’équipe Kanto';
-        }
-      }
-    });
-  }
-
   // ─── 4. DÉSINCRIPTION RGPD ───
   var unsubForm = document.getElementById('unsub-form');
-  var unsubBtn = document.getElementById('btn-unsub-submit');
-  var unsubSuccessBox = document.getElementById('unsub-success-box');
-  var unsubSuccessMsg = document.getElementById('unsub-success-msg');
-  var cancelUnsubBtn = document.getElementById('btn-unsub-cancel');
   var unsubChips = document.querySelectorAll('.unsub-chip');
   var unsubReasonInput = document.getElementById('unsub-reason');
+  var unsubCancelBtn = document.getElementById('btn-unsub-cancel');
 
-  if (unsubChips && unsubReasonInput) {
-    unsubChips.forEach(function(chip) {
-      chip.addEventListener('click', function() {
-        unsubChips.forEach(function(c) { c.classList.remove('active'); });
-        chip.classList.add('active');
-        unsubReasonInput.value = chip.getAttribute('data-reason') || '';
-        unsubReasonInput.focus();
-      });
+  unsubChips.forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      unsubChips.forEach(function(c) { c.classList.remove('active'); });
+      chip.classList.add('active');
+      if (unsubReasonInput) unsubReasonInput.value = chip.getAttribute('data-reason');
     });
-  }
+  });
 
-  if (cancelUnsubBtn) {
-    cancelUnsubBtn.addEventListener('click', function() {
-      switchTab('register');
-    });
-  }
-
-  var btnUnsubHome = document.getElementById('btn-unsub-home');
-  if (btnUnsubHome) {
-    btnUnsubHome.addEventListener('click', function() {
-      switchTab('register');
-    });
-  }
-
-  var btnUnsubResub = document.getElementById('btn-unsub-resubscribe');
-  if (btnUnsubResub) {
-    btnUnsubResub.addEventListener('click', function() {
-      var emailEl = document.getElementById('unsub-email');
-      var regEmailEl = document.getElementById('reg-email');
-      if (emailEl && regEmailEl) {
-        regEmailEl.value = emailEl.value;
-      }
-      switchTab('register');
-      if (regEmailEl) regEmailEl.focus();
+  if (unsubCancelBtn) {
+    unsubCancelBtn.addEventListener('click', function() {
+      switchTab('already');
     });
   }
 
@@ -2114,231 +2914,177 @@ export function renderBetaWaitlistScript(): string {
       var token = document.getElementById('unsub-token').value.trim();
       var reason = unsubReasonInput ? unsubReasonInput.value.trim() : '';
 
-      if (!email) {
-        showError('Veuillez renseigner votre adresse e-mail de testeur.');
-        return;
-      }
-
-      if (unsubBtn) {
-        unsubBtn.disabled = true;
-        unsubBtn.innerText = 'Désinscription en cours...';
-      }
-
       try {
         var res = await fetch('/api/beta-testers/unsubscribe', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: email, token: token || undefined, reason: reason || undefined })
+          body: JSON.stringify({ email: email, token: token || undefined, reason: reason })
         });
         var data = await res.json();
         if (data.success) {
           unsubForm.style.display = 'none';
-          if (unsubSuccessBox) {
-            unsubSuccessBox.style.display = 'block';
-            if (unsubSuccessMsg && data.message) {
-              unsubSuccessMsg.innerText = data.message;
-            }
-          }
-          showSuccess(data.message);
+          var sBox = document.getElementById('unsub-success-box');
+          if (sBox) sBox.style.display = 'block';
+          var sMsg = document.getElementById('unsub-success-msg');
+          if (sMsg) sMsg.innerText = data.message;
         } else {
           showError(data.message || 'Erreur lors de la désinscription.');
         }
       } catch (err) {
-        showError('Impossible de joindre le serveur. Vérifiez votre connexion.');
-      } finally {
-        if (unsubBtn) {
-          unsubBtn.disabled = false;
-          unsubBtn.innerText = 'Confirmer ma désinscription';
-        }
+        showError('Impossible de joindre le serveur.');
       }
     });
   }
 
-  // ─── 5. GESTION DU THÈME SOMBRE / CLAIR ───
-  var themeBtn = document.getElementById('theme-toggle');
-  var themeIcon = document.getElementById('theme-toggle-icon');
-  var SUN_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>';
-  var MOON_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
-
-  function applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    if (themeIcon) themeIcon.innerHTML = theme === 'light' ? MOON_SVG : SUN_SVG;
-    var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'light' ? '#F5F4F0' : '#0D0D0B');
+  var btnUnsubHome = document.getElementById('btn-unsub-home');
+  if (btnUnsubHome) {
+    btnUnsubHome.addEventListener('click', function() { switchTab('download'); });
   }
 
-  if (themeBtn) {
-    themeBtn.addEventListener('click', function() {
-      var current = document.documentElement.getAttribute('data-theme') || 'dark';
-      var next = current === 'light' ? 'dark' : 'light';
-      try { localStorage.setItem('kanto_theme', next); } catch (e) {}
-      applyTheme(next);
+  var btnUnsubResub = document.getElementById('btn-unsub-resubscribe');
+  if (btnUnsubResub) {
+    btnUnsubResub.addEventListener('click', function() {
+      if (unsubForm) unsubForm.style.display = 'block';
+      var sBox = document.getElementById('unsub-success-box');
+      if (sBox) sBox.style.display = 'none';
+      switchTab('register');
     });
   }
 
-  var activeTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-  applyTheme(activeTheme);
+  // ─── 5. GESTION DU THÈME CLAIR / SOMBRE ───
+  var themeToggle = document.getElementById('theme-toggle');
+  var iconSun = document.getElementById('theme-icon-sun');
+  var iconMoon = document.getElementById('theme-icon-moon');
 
-  // Traitement des query params au chargement (?tab=..., ?email=...)
-  if (window.location.search) {
-    try {
-      var sp = new URLSearchParams(window.location.search);
-      var t = sp.get('tab');
-      if (t === 'already_registered' || t === 'download') switchTab('already');
-      if (t === 'feedback') { window.location.href = '/feedback'; }
-      if (t === 'unsubscribe') switchTab('unsubscribe');
-      var em = sp.get('email');
-      if (em) {
-        if (t === 'already_registered' || t === 'download') verifyEmail(em);
-      }
-    } catch (e) {}
-  }
-  // ─── GESTION DE LA MODALE CGU INTÉGRÉE ───
-  var cguModal = document.getElementById('kanto-cgu-modal');
-  var btnOpenCguModal = document.getElementById('btn-open-cgu-modal');
-  var cguModalClose = document.getElementById('cgu-modal-close');
-  var cguModalBtnAccept = document.getElementById('cgu-modal-btn-accept');
-  var regTermsCheckbox = document.getElementById('reg-terms');
-
-  function openCguModal() {
-    if (cguModal) cguModal.style.display = 'flex';
-  }
-  function closeCguModal() {
-    if (cguModal) cguModal.style.display = 'none';
-  }
-
-  if (btnOpenCguModal) {
-    btnOpenCguModal.addEventListener('click', function(e) {
-      e.preventDefault();
-      openCguModal();
-    });
-  }
-  if (cguModalClose) {
-    cguModalClose.addEventListener('click', closeCguModal);
-  }
-  if (cguModalBtnAccept) {
-    cguModalBtnAccept.addEventListener('click', function() {
-      if (regTermsCheckbox) regTermsCheckbox.checked = true;
-      closeCguModal();
-    });
-  }
-  if (cguModal) {
-    cguModal.addEventListener('click', function(e) {
-      if (e.target === cguModal) closeCguModal();
-    });
-  }
-
-  // ─── GESTION DES COOKIES RGPD (KantoConsent) ───
-  var cookieBanner = document.getElementById('kanto-cookie-banner');
-  var cookieModal = document.getElementById('kanto-cookie-modal');
-  var btnCookieSettings = document.getElementById('btn-cookie-settings');
-  var btnAcceptAll = document.getElementById('cookie-btn-accept-all');
-  var btnRejectAll = document.getElementById('cookie-btn-reject-all');
-  var btnCustomize = document.getElementById('cookie-btn-customize');
-  var cookieModalClose = document.getElementById('cookie-modal-close');
-  var cookieModalBtnSave = document.getElementById('cookie-modal-btn-save');
-  var cookieModalBtnReject = document.getElementById('cookie-modal-btn-reject');
-  var optPreferences = document.getElementById('cookie-opt-preferences');
-  var optAnalytics = document.getElementById('cookie-opt-analytics');
-
-  var CONSENT_STORAGE_KEY = 'kanto_consent_v1';
-  var CONSENT_MAX_AGE_DAYS = 180;
-
-  function getSavedConsent() {
-    try {
-      var raw = localStorage.getItem(CONSENT_STORAGE_KEY);
-      if (!raw) return null;
-      var parsed = JSON.parse(raw);
-      if (!parsed || !parsed.timestamp) return null;
-      var ageDays = (Date.now() - parsed.timestamp) / (1000 * 60 * 60 * 24);
-      if (ageDays > CONSENT_MAX_AGE_DAYS) return null;
-      return parsed;
-    } catch (e) {
-      return null;
+  function updateThemeIcons(theme) {
+    if (iconSun && iconMoon) {
+      iconSun.style.display = theme === 'dark' ? 'none' : 'block';
+      iconMoon.style.display = theme === 'dark' ? 'block' : 'none';
     }
   }
 
-  function saveConsent(preferences, analytics) {
-    var data = {
-      necessary: true,
-      preferences: Boolean(preferences),
-      analytics: Boolean(analytics),
-      timestamp: Date.now()
-    };
-    try {
-      localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(data));
-      var maxAgeSec = CONSENT_MAX_AGE_DAYS * 24 * 3600;
-      document.cookie = 'kanto_consent=' + encodeURIComponent(JSON.stringify(data)) + '; max-age=' + maxAgeSec + '; path=/; SameSite=Lax';
-    } catch (e) {}
+  var curTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  updateThemeIcons(curTheme);
 
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      var now = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', now);
+      localStorage.setItem('kanto_theme', now);
+      updateThemeIcons(now);
+      var metaTheme = document.querySelector('meta[name="theme-color"]');
+      if (metaTheme) metaTheme.setAttribute('content', now === 'light' ? '#F5F4F0' : '#0D0D0B');
+    });
+  }
+
+  // ─── 6. MODALES CGU & POLITIQUE DE CONFIDENTIALITÉ ───
+  var cguModal = document.getElementById('kanto-cgu-modal');
+  var openCguBtn = document.getElementById('btn-open-cgu-modal');
+  var closeCguBtn = document.getElementById('cgu-modal-close');
+  var acceptCguBtn = document.getElementById('cgu-modal-btn-accept');
+  var footerCguBtn = document.getElementById('footer-link-cgu');
+
+  function openCgu(e) {
+    if (e) e.preventDefault();
+    if (cguModal) cguModal.style.display = 'flex';
+  }
+  function closeCgu() {
+    if (cguModal) cguModal.style.display = 'none';
+  }
+
+  if (openCguBtn) openCguBtn.addEventListener('click', openCgu);
+  if (closeCguBtn) closeCguBtn.addEventListener('click', closeCgu);
+  if (acceptCguBtn) acceptCguBtn.addEventListener('click', closeCgu);
+  if (footerCguBtn) footerCguBtn.addEventListener('click', openCgu);
+  if (cguModal) {
+    cguModal.addEventListener('click', function(e) {
+      if (e.target === cguModal) closeCgu();
+    });
+  }
+
+  // Modale Confidentialité
+  var privacyModal = document.getElementById('kanto-privacy-modal');
+  var openPrivBtn = document.getElementById('btn-open-privacy-modal');
+  var closePrivBtn = document.getElementById('privacy-modal-close');
+  var acceptPrivBtn = document.getElementById('privacy-modal-btn-accept');
+  var footerPrivBtn = document.getElementById('footer-link-privacy');
+
+  function openPrivacy(e) {
+    if (e) e.preventDefault();
+    if (privacyModal) privacyModal.style.display = 'flex';
+  }
+  function closePrivacy() {
+    if (privacyModal) privacyModal.style.display = 'none';
+  }
+
+  if (openPrivBtn) openPrivBtn.addEventListener('click', openPrivacy);
+  if (closePrivBtn) closePrivBtn.addEventListener('click', closePrivacy);
+  if (acceptPrivBtn) acceptPrivBtn.addEventListener('click', closePrivacy);
+  if (footerPrivBtn) footerPrivBtn.addEventListener('click', openPrivacy);
+  if (privacyModal) {
+    privacyModal.addEventListener('click', function(e) {
+      if (e.target === privacyModal) closePrivacy();
+    });
+  }
+
+  // ─── 7. GESTION DES COOKIES (Moteur KantoConsent) ───
+  var cookieBanner = document.getElementById('kanto-cookie-banner');
+  var cookieModal = document.getElementById('kanto-cookie-modal');
+  var btnAcceptAll = document.getElementById('cookie-btn-accept-all');
+  var btnRejectAll = document.getElementById('cookie-btn-reject-all');
+  var btnCustomize = document.getElementById('cookie-btn-customize');
+  var btnCookieSettings = document.getElementById('btn-cookie-settings');
+  var cookieModalClose = document.getElementById('cookie-modal-close');
+  var cookieModalBtnReject = document.getElementById('cookie-modal-btn-reject');
+  var cookieModalBtnSave = document.getElementById('cookie-modal-btn-save');
+  var optPreferences = document.getElementById('cookie-opt-preferences');
+
+  function checkConsent() {
+    try {
+      var c = localStorage.getItem('kanto_cookie_consent');
+      if (!c && cookieBanner) cookieBanner.style.display = 'block';
+    } catch(e) {}
+  }
+
+  function saveConsent(pref) {
+    try {
+      localStorage.setItem('kanto_cookie_consent', JSON.stringify({
+        necessary: true,
+        preferences: Boolean(pref),
+        date: new Date().toISOString()
+      }));
+    } catch(e) {}
     if (cookieBanner) cookieBanner.style.display = 'none';
     if (cookieModal) cookieModal.style.display = 'none';
   }
 
-  function openCookieSettings() {
-    var current = getSavedConsent();
-    if (optPreferences) optPreferences.checked = current ? current.preferences : true;
-    if (optAnalytics) optAnalytics.checked = current ? current.analytics : true;
-    if (cookieModal) cookieModal.style.display = 'flex';
-  }
-
-  function closeCookieSettings() {
-    if (cookieModal) cookieModal.style.display = 'none';
-  }
-
-  // Vérification de l'état de consentement au chargement
-  var existingConsent = getSavedConsent();
-  if (!existingConsent && cookieBanner) {
-    cookieBanner.style.display = 'block';
-  }
-
-  if (btnAcceptAll) {
-    btnAcceptAll.addEventListener('click', function() {
-      saveConsent(true, true);
-    });
-  }
-  if (btnRejectAll) {
-    btnRejectAll.addEventListener('click', function() {
-      saveConsent(false, false);
-    });
-  }
-  if (btnCustomize) {
-    btnCustomize.addEventListener('click', function() {
-      openCookieSettings();
-    });
-  }
-  if (btnCookieSettings) {
-    btnCookieSettings.addEventListener('click', function(e) {
-      e.preventDefault();
-      openCookieSettings();
-    });
-  }
-  if (cookieModalClose) {
-    cookieModalClose.addEventListener('click', closeCookieSettings);
-  }
-  if (cookieModalBtnReject) {
-    cookieModalBtnReject.addEventListener('click', function() {
-      saveConsent(false, false);
-    });
-  }
-  if (cookieModalBtnSave) {
-    cookieModalBtnSave.addEventListener('click', function() {
-      var pref = optPreferences ? optPreferences.checked : false;
-      var ana = optAnalytics ? optAnalytics.checked : false;
-      saveConsent(pref, ana);
-    });
-  }
-  if (cookieModal) {
-    cookieModal.addEventListener('click', function(e) {
-      if (e.target === cookieModal) closeCookieSettings();
-    });
-  }
-
   window.KantoConsent = {
-    openSettings: openCookieSettings,
-    acceptAll: function() { saveConsent(true, true); },
-    rejectAll: function() { saveConsent(false, false); }
+    checkConsent: checkConsent,
+    saveConsent: saveConsent
   };
+
+  if (btnAcceptAll) btnAcceptAll.addEventListener('click', function() { saveConsent(true); });
+  if (btnRejectAll) btnRejectAll.addEventListener('click', function() { saveConsent(false); });
+  if (btnCustomize) btnCustomize.addEventListener('click', function() { if (cookieModal) cookieModal.style.display = 'flex'; });
+  if (btnCookieSettings) btnCookieSettings.addEventListener('click', function(e) { e.preventDefault(); if (cookieModal) cookieModal.style.display = 'flex'; });
+  if (cookieModalClose) cookieModalClose.addEventListener('click', function() { if (cookieModal) cookieModal.style.display = 'none'; });
+  if (cookieModalBtnReject) cookieModalBtnReject.addEventListener('click', function() { saveConsent(false); });
+  if (cookieModalBtnSave) cookieModalBtnSave.addEventListener('click', function() { saveConsent(optPreferences ? optPreferences.checked : false); });
+
+  checkConsent();
+
+  // Si un email est déjà présent à l'affichage initial (champ ou query param)
+  var qEmail = '';
+  try {
+    qEmail = new URLSearchParams(window.location.search).get('email') || '';
+  } catch(e) {}
+  var chkInput = document.getElementById('check-email');
+  var regInput = document.getElementById('reg-email');
+  var initEmail = qEmail || (chkInput ? chkInput.value : '') || (regInput ? regInput.value : '');
+  if (initEmail && initEmail.indexOf('@') !== -1) {
+    if (chkInput) chkInput.value = initEmail;
+    verifyEmail(initEmail);
+  }
 })();
   `.trim();
 }

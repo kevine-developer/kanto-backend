@@ -369,6 +369,21 @@ export class BulkActionDto {
   targetStatus?: string;
 }
 
+export class ConfirmParticipationDto {
+  @IsEmail({}, { message: 'Veuillez saisir une adresse email valide.' })
+  email: string;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['ANDROID', 'IOS', 'ALL'])
+  platform?: 'ANDROID' | 'IOS' | 'ALL';
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['JOINED', 'INSTALLED'])
+  action?: 'JOINED' | 'INSTALLED';
+}
+
 export class UpdateAutomationConfigDto {
   @IsOptional()
   @IsBoolean()
@@ -402,16 +417,43 @@ export class UpdateAutomationConfigDto {
 
   @IsOptional()
   @IsString()
+  appStorePublicLink?: string;
+
+  @IsOptional()
+  @IsString()
   testFlightPublicLink?: string;
 
   @IsOptional()
   @IsEmail()
   supportEmail?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['PUBLIC', 'BETA_OPEN', 'BETA_CLOSED', 'PENDING', 'UNAVAILABLE'])
+  androidAvailability?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['PUBLIC', 'BETA_OPEN', 'BETA_CLOSED', 'PENDING', 'UNAVAILABLE'])
+  iosAvailability?: string;
+
+  @IsOptional()
+  @IsString()
+  instructionsAndroid?: string;
+
+  @IsOptional()
+  @IsString()
+  instructionsIos?: string;
 }
 
 export class UpdateTesterStatusDto {
+  @IsOptional()
   @IsString()
-  status: string;
+  status?: string;
+
+  @IsOptional()
+  @IsString()
+  confirmationStatus?: string;
 
   @IsOptional()
   @IsString()

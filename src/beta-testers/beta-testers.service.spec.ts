@@ -30,6 +30,10 @@ describe('BetaTestersService', () => {
     betaFeedback: {
       count: jest.Mock<any>;
     };
+    betaVersion: {
+      findMany: jest.Mock<any>;
+      findFirst: jest.Mock<any>;
+    };
   };
   let emailDispatcher: {
     sendTemplateEmail: jest.Mock<any>;
@@ -61,6 +65,10 @@ describe('BetaTestersService', () => {
       },
       betaFeedback: {
         count: jest.fn<any>().mockResolvedValue(0),
+      },
+      betaVersion: {
+        findMany: jest.fn<any>().mockResolvedValue([]),
+        findFirst: jest.fn<any>().mockResolvedValue(null),
       },
     };
 
@@ -547,6 +555,87 @@ describe('BetaTestersService', () => {
         where: { id: 'cfg_123' },
         data: { feedbackRequestDays: 10 },
       });
+    });
+  });
+
+  describe('confirmParticipation & getDownloadInfo (Parcours Bêta)', () => {
+    it('enregistre l’action déclarative JOINED avec confirmationStatus CONFIRME', async () => {
+      const mockTester = {
+        id: 'tester_abc',
+        email: 'tester@kanto.mg',
+        status: 'PENDING',
+        confirmationStatus: 'INSCRIT',
+        confirmedAt: null,
+        installedAt: null,
+        platforms: ['ANDROID'],
+      };
+      const updatedTester = {
+        ...mockTester,
+        status: 'ACCEPTED',
+        confirmationStatus: 'CONFIRME',
+        confirmedAt: new Date(),
+      };
+      prisma.betaTester.findFirst
+        .mockResolvedValueOnce(mockTester)
+        .mockResolvedValueOnce(updatedTester);
+      prisma.betaTester.update.mockResolvedValue(updatedTester);
+
+      const res = await service.confirmParticipation({
+        email: 'tester@kanto.mg',
+        platform: 'ANDROID',
+        action: 'JOINED',
+      });
+
+      expect(res.success).toBe(true);
+      expect(res.tester.confirmationStatus).toBe('CONFIRME');
+      expect(prisma.betaTester.update).toHaveBeenCalled();
+    });
+
+    it('enregistre l’action déclarative INSTALLED avec confirmationStatus INSTALLE', async () => {
+      const mockTester = {
+        id: 'tester_abc',
+        email: 'tester@kanto.mg',
+        status: 'ACCEPTED',
+        confirmationStatus: 'CONFIRME',
+        confirmedAt: new Date(),
+        installedAt: null,
+        platforms: ['IOS'],
+      };
+      const updatedTester = {
+        ...mockTester,
+        confirmationStatus: 'INSTALLE',
+        installedAt: new Date(),
+      };
+      prisma.betaTester.findFirst
+        .mockResolvedValueOnce(mockTester)
+        .mockResolvedValueOnce(updatedTester);
+      prisma.betaTester.update.mockResolvedValue(updatedTester);
+
+      const res = await service.confirmParticipation({
+        email: 'tester@kanto.mg',
+        platform: 'IOS',
+        action: 'INSTALLED',
+      });
+
+      expect(res.success).toBe(true);
+      expect(res.tester.confirmationStatus).toBe('INSTALLE');
+    });
+
+    it('fournit les disponibilités et liens publics via getDownloadInfo', async () => {
+      prisma.betaAutomationConfig.findFirst.mockResolvedValue({
+        androidAvailability: 'BETA_OPEN',
+        iosAvailability: 'BETA_OPEN',
+        playStoreWebLink: 'https://play.google.com/apps/testing/com.kantomg.app',
+        playStoreAppLink: 'https://play.google.com/store/apps/details?id=com.kantomg.app',
+        testFlightPublicLink: 'https://testflight.apple.com/join/kanto',
+        appStorePublicLink: null,
+      });
+
+      const info = await service.getDownloadInfo();
+      expect(info.android.availability).toBe('BETA_OPEN');
+      expect(info.ios.availability).toBe('BETA_OPEN');
+      expect(info.android.playStoreWebLink).toBe('https://play.google.com/apps/testing/com.kantomg.app');
+      expect(info.ios.testFlightLink).toBe('https://testflight.apple.com/join/kanto');
     });
   });
 });
