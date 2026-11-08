@@ -46,17 +46,19 @@ describe('PartnerApiKeysService', () => {
         name: 'Association Gasikara',
       });
 
-      prismaMock.partnerApiKey.create.mockImplementationOnce(async ({ data }: any) => ({
-        id: 'key_1',
-        partnerId: data.partnerId,
-        name: data.name,
-        keyPrefix: data.keyPrefix,
-        scopes: data.scopes,
-        environment: data.environment,
-        rateLimit: data.rateLimit,
-        expiresAt: data.expiresAt,
-        createdAt: new Date(),
-      }));
+      prismaMock.partnerApiKey.create.mockImplementationOnce(({ data }: any) =>
+        Promise.resolve({
+          id: 'key_1',
+          partnerId: data.partnerId,
+          name: data.name,
+          keyPrefix: data.keyPrefix,
+          scopes: data.scopes,
+          environment: data.environment,
+          rateLimit: data.rateLimit,
+          expiresAt: data.expiresAt,
+          createdAt: new Date(),
+        }),
+      );
 
       const result = await service.createApiKey('partner_1', {
         name: 'Serveur Billetterie',
@@ -85,10 +87,12 @@ describe('PartnerApiKeysService', () => {
         name: 'Développeur Sandbox',
       });
 
-      prismaMock.partnerApiKey.create.mockImplementationOnce(async ({ data }: any) => ({
-        id: 'key_test_1',
-        ...data,
-      }));
+      prismaMock.partnerApiKey.create.mockImplementationOnce(({ data }: any) =>
+        Promise.resolve({
+          id: 'key_test_1',
+          ...data,
+        }),
+      );
 
       const result = await service.createApiKey('partner_1', {
         name: 'Clé Sandbox Locale',
@@ -116,9 +120,9 @@ describe('PartnerApiKeysService', () => {
         revokedAt: new Date(),
       });
 
-      await expect(
-        service.revokeApiKey('partner_1', 'key_1'),
-      ).rejects.toThrow(BadRequestException);
+      await expect(service.revokeApiKey('partner_1', 'key_1')).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it('doit révoquer avec succès et enregistrer le motif de révocation', async () => {
@@ -145,4 +149,3 @@ describe('PartnerApiKeysService', () => {
     });
   });
 });
-

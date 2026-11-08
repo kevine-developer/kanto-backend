@@ -70,7 +70,12 @@ export class PartnerMediaV1Controller {
       if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
       }
-      const ext = mimeType === 'image/png' ? 'png' : mimeType === 'image/webp' ? 'webp' : 'jpg';
+      const ext =
+        mimeType === 'image/png'
+          ? 'png'
+          : mimeType === 'image/webp'
+            ? 'webp'
+            : 'jpg';
       const localFilePath = path.join(uploadDir, `${filename}.${ext}`);
       fs.writeFileSync(localFilePath, buffer);
       finalUrl = `/uploads/partners/${filename}.${ext}`;

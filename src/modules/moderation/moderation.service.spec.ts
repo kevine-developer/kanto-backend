@@ -8,7 +8,10 @@ import {
   createPrismaMock,
   type PrismaMock,
 } from '../../test-utils/mock-prisma.factory.js';
-import { ReportReason, ReportStatus } from '../../../generated/prisma/client.js';
+import {
+  ReportReason,
+  ReportStatus,
+} from '../../../generated/prisma/client.js';
 
 describe('ModerationService', () => {
   let service: ModerationService;

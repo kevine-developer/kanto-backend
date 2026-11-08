@@ -18,7 +18,10 @@ export interface FallbackBannerThemeContent {
  * Respecte scrupuleusement l'identité de marque, la dignité patrimoniale (Haja)
  * et le vocabulaire traditionnel de Madagascar.
  */
-export const FALLBACK_BANNER_THEMES: Record<string, FallbackBannerThemeContent> = {
+export const FALLBACK_BANNER_THEMES: Record<
+  string,
+  FallbackBannerThemeContent
+> = {
   'culture et patrimoine malgache (musique, danse, fady)': {
     badgeFr: 'PATRIMOINE VIVANT',
     badgeMg: 'HAREN-TSAIN-DRAZANA',
@@ -180,4 +183,3 @@ export const FALLBACK_BANNER_THEMES: Record<string, FallbackBannerThemeContent> 
       'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80',
   },
 };
-

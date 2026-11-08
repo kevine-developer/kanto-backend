@@ -41,4 +41,3 @@ export class PartnerScopesGuard implements CanActivate {
     return true;
   }
 }
-

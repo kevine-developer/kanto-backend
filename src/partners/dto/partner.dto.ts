@@ -8,7 +8,10 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { PartnerType, PartnerStatus } from '../../../generated/prisma/client.js';
+import {
+  PartnerType,
+  PartnerStatus,
+} from '../../../generated/prisma/client.js';
 
 export class RegisterPartnerDto {
   @IsString()
@@ -103,4 +106,3 @@ export class VerifyPartnerDto {
   @IsOptional()
   rejectionReason?: string;
 }
-

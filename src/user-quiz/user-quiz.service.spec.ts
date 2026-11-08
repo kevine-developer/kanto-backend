@@ -85,7 +85,9 @@ describe('UserQuizService', () => {
     const redisSets = new Map<string, Set<string>>();
 
     redisMock = {
-      get: jest.fn((key: string) => Promise.resolve(memoryCache.get(key) ?? null)),
+      get: jest.fn((key: string) =>
+        Promise.resolve(memoryCache.get(key) ?? null),
+      ),
       set: jest.fn((key: string, val: any) => {
         memoryCache.set(key, val);
         return Promise.resolve(true);
@@ -264,7 +266,9 @@ describe('UserQuizService', () => {
       });
 
       await expect(
-        service.updateQuizSet(mockUser2, 'deck-1', { title: 'Piratage de titre' }),
+        service.updateQuizSet(mockUser2, 'deck-1', {
+          title: 'Piratage de titre',
+        }),
       ).rejects.toThrow(UnauthorizedException);
     });
 
@@ -274,9 +278,9 @@ describe('UserQuizService', () => {
         authorId: mockUser1,
       });
 
-      await expect(
-        service.deleteQuizSet(mockUser2, 'deck-1'),
-      ).rejects.toThrow(UnauthorizedException);
+      await expect(service.deleteQuizSet(mockUser2, 'deck-1')).rejects.toThrow(
+        UnauthorizedException,
+      );
     });
   });
 
@@ -343,9 +347,9 @@ describe('UserQuizService', () => {
         authorId: mockUser1,
       });
 
-      await expect(
-        service.recordPlay('deck-1', mockUser1),
-      ).rejects.toThrow(ForbiddenException);
+      await expect(service.recordPlay('deck-1', mockUser1)).rejects.toThrow(
+        ForbiddenException,
+      );
     });
 
     it('devrait enregistrer un joueur unique dans Redis et comptabiliser la partie', async () => {
@@ -360,16 +364,24 @@ describe('UserQuizService', () => {
         playsCount: 1,
       });
 
-      (prismaMock.$transaction as jest.Mock).mockImplementation(async (cb: any) => {
-        return cb(prismaMock);
+      (prismaMock.$transaction as jest.Mock).mockImplementation(
+        async (cb: any) => {
+          return cb(prismaMock);
+        },
+      );
+
+      const res = await service.recordPlay('deck-1', mockUser2, {
+        completed: true,
       });
 
-      const res = await service.recordPlay('deck-1', mockUser2, { completed: true });
-
       expect(res.playsCount).toBe(1);
-      expect(redisMock.sAdd).toHaveBeenCalledWith('ugc:deck_unique_players:deck-1', mockUser2);
-      expect(redisMock.incr).toHaveBeenCalledWith('ugc:deck_completed_count:deck-1');
+      expect(redisMock.sAdd).toHaveBeenCalledWith(
+        'ugc:deck_unique_players:deck-1',
+        mockUser2,
+      );
+      expect(redisMock.incr).toHaveBeenCalledWith(
+        'ugc:deck_completed_count:deck-1',
+      );
     });
   });
 });
-

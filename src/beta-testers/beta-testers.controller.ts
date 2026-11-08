@@ -256,7 +256,8 @@ export class BetaTestersController {
     if (!dto?.email || !dto.email.trim()) {
       return {
         success: false,
-        message: 'Veuillez renseigner votre adresse e-mail pour confirmer votre participation.',
+        message:
+          'Veuillez renseigner votre adresse e-mail pour confirmer votre participation.',
       };
     }
     return this.betaTestersService.confirmParticipation(dto);
@@ -379,10 +380,7 @@ export class BetaTestersController {
   @Get(['api/beta-testers/export', 'beta-testers/export'])
   @UseGuards(AuthGuard)
   @Roles(['ADMIN', 'admin'])
-  exportEmails(
-    @Query('status') status?: TesterStatus,
-    @Req() req?: Request,
-  ) {
+  exportEmails(@Query('status') status?: TesterStatus, @Req() req?: Request) {
     const ip =
       (req?.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ||
       req?.ip;
@@ -402,7 +400,11 @@ export class BetaTestersController {
       (req?.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ||
       req?.ip;
     const adminUser = (req as any)?.user;
-    return this.betaTestersService.exportCsv({ platform, status }, adminUser, ip);
+    return this.betaTestersService.exportCsv(
+      { platform, status },
+      adminUser,
+      ip,
+    );
   }
 
   // --- ACTIONS GROUPÉES ---

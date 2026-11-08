@@ -1,16 +1,11 @@
-import {
-  Injectable,
-  NotFoundException,
-  ConflictException,
-  Logger,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import {
   RegisterPartnerDto,
   UpdatePartnerProfileDto,
   VerifyPartnerDto,
 } from '../dto/partner.dto.js';
-import { PartnerStatus, UserRole } from '../../../generated/prisma/client.js';
+import { PartnerStatus } from '../../../generated/prisma/client.js';
 
 @Injectable()
 export class PartnersService {
@@ -35,7 +30,9 @@ export class PartnersService {
     let finalSlug = baseSlug;
     let counter = 1;
 
-    while (await this.prisma.partner.findUnique({ where: { slug: finalSlug } })) {
+    while (
+      await this.prisma.partner.findUnique({ where: { slug: finalSlug } })
+    ) {
       finalSlug = `${baseSlug}-${counter}`;
       counter++;
     }
@@ -126,13 +123,19 @@ export class PartnersService {
       data: {
         ...(dto.name && { name: dto.name.trim() }),
         ...(dto.type && { type: dto.type }),
-        ...(dto.description !== undefined && { description: dto.description?.trim() || null }),
+        ...(dto.description !== undefined && {
+          description: dto.description?.trim() || null,
+        }),
         ...(dto.logoUrl !== undefined && { logoUrl: dto.logoUrl || null }),
         ...(dto.coverUrl !== undefined && { coverUrl: dto.coverUrl || null }),
-        ...(dto.websiteUrl !== undefined && { websiteUrl: dto.websiteUrl || null }),
+        ...(dto.websiteUrl !== undefined && {
+          websiteUrl: dto.websiteUrl || null,
+        }),
         ...(dto.email && { email: dto.email.trim().toLowerCase() }),
         ...(dto.phone !== undefined && { phone: dto.phone?.trim() || null }),
-        ...(dto.address !== undefined && { address: dto.address?.trim() || null }),
+        ...(dto.address !== undefined && {
+          address: dto.address?.trim() || null,
+        }),
         ...(dto.socialLinks !== undefined && { socialLinks: dto.socialLinks }),
       },
     });
@@ -260,7 +263,11 @@ export class PartnersService {
   /**
    * Modère un partenaire (validation, suspension ou rejet avec motif).
    */
-  async verifyPartner(partnerId: string, dto: VerifyPartnerDto, adminId: string) {
+  async verifyPartner(
+    partnerId: string,
+    dto: VerifyPartnerDto,
+    adminId: string,
+  ) {
     const partner = await this.prisma.partner.findUnique({
       where: { id: partnerId },
     });
@@ -301,4 +308,3 @@ export class PartnersService {
     return updated;
   }
 }
-

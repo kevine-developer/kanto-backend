@@ -96,7 +96,9 @@ export class UserQuizService {
     }
 
     const cleanDesc = dto.description ? sanitizeText(dto.description) : null;
-    const cleanCategory = dto.category ? sanitizeText(dto.category) : 'culture_generale';
+    const cleanCategory = dto.category
+      ? sanitizeText(dto.category)
+      : 'culture_generale';
 
     // Validation des questions fournies
     const rawQuestions = Array.isArray(dto.questions) ? dto.questions : [];
@@ -109,7 +111,9 @@ export class UserQuizService {
       };
     });
 
-    const validQuestionsCount = validatedQuestions.filter((q) => q.isValid).length;
+    const validQuestionsCount = validatedQuestions.filter(
+      (q) => q.isValid,
+    ).length;
 
     // Règle des 5 questions minimales : la visibilité publique exige au moins 5 questions valides
     const requestedPublic =
@@ -118,7 +122,10 @@ export class UserQuizService {
     let visibility = dto.visibility || DeckVisibility.PUBLIC;
     let isPublic = requestedPublic;
 
-    if (requestedPublic && validQuestionsCount < MIN_QUESTIONS_FOR_PUBLICATION) {
+    if (
+      requestedPublic &&
+      validQuestionsCount < MIN_QUESTIONS_FOR_PUBLICATION
+    ) {
       // Sauvegarde sécurisée comme brouillon au lieu d'un échec bloquant
       visibility = DeckVisibility.LINK_ONLY;
       isPublic = false;
@@ -143,8 +150,12 @@ export class UserQuizService {
               ? q.choices.map((c) => sanitizeText(c)).filter(Boolean)
               : [],
             answerIndex: q.answerIndex,
-            explanationMg: q.explanationMg ? sanitizeText(q.explanationMg) : null,
-            explanationFr: q.explanationFr ? sanitizeText(q.explanationFr) : null,
+            explanationMg: q.explanationMg
+              ? sanitizeText(q.explanationMg)
+              : null,
+            explanationFr: q.explanationFr
+              ? sanitizeText(q.explanationFr)
+              : null,
           })),
         },
       },
@@ -158,7 +169,10 @@ export class UserQuizService {
       validQuestionsCount,
       requiredQuestionsCount: MIN_QUESTIONS_FOR_PUBLICATION,
       isPublishable: validQuestionsCount >= MIN_QUESTIONS_FOR_PUBLICATION,
-      missingQuestionsCount: Math.max(0, MIN_QUESTIONS_FOR_PUBLICATION - validQuestionsCount),
+      missingQuestionsCount: Math.max(
+        0,
+        MIN_QUESTIONS_FOR_PUBLICATION - validQuestionsCount,
+      ),
       statusNotice:
         requestedPublic && validQuestionsCount < MIN_QUESTIONS_FOR_PUBLICATION
           ? `Votre deck a été sauvegardé comme brouillon. Ajoutez encore ${MIN_QUESTIONS_FOR_PUBLICATION - validQuestionsCount} question(s) valide(s) pour le publier.`
@@ -191,13 +205,18 @@ export class UserQuizService {
     });
 
     return sets.map((set) => {
-      const validQuestionsCount = set.questions.filter((q) => validateUserQuestion(q).isValid).length;
+      const validQuestionsCount = set.questions.filter(
+        (q) => validateUserQuestion(q).isValid,
+      ).length;
       return {
         ...set,
         validQuestionsCount,
         requiredQuestionsCount: MIN_QUESTIONS_FOR_PUBLICATION,
         isPublishable: validQuestionsCount >= MIN_QUESTIONS_FOR_PUBLICATION,
-        missingQuestionsCount: Math.max(0, MIN_QUESTIONS_FOR_PUBLICATION - validQuestionsCount),
+        missingQuestionsCount: Math.max(
+          0,
+          MIN_QUESTIONS_FOR_PUBLICATION - validQuestionsCount,
+        ),
       };
     });
   }
@@ -323,7 +342,9 @@ export class UserQuizService {
       const completedStr = await this.redisService.get<string>(
         `ugc:deck_completed_count:${setId}`,
       );
-      completedPlaysCount = completedStr ? parseInt(String(completedStr), 10) : 0;
+      completedPlaysCount = completedStr
+        ? parseInt(String(completedStr), 10)
+        : 0;
     } catch {
       uniquePlayersCount = 0;
       completedPlaysCount = 0;
@@ -356,22 +377,35 @@ export class UserQuizService {
       };
     });
 
-    const validQuestionsCount = questionsValidation.filter((v) => v.isValid).length;
+    const validQuestionsCount = questionsValidation.filter(
+      (v) => v.isValid,
+    ).length;
     const isPublishable = validQuestionsCount >= MIN_QUESTIONS_FOR_PUBLICATION;
-    const missingQuestionsCount = Math.max(0, MIN_QUESTIONS_FOR_PUBLICATION - validQuestionsCount);
+    const missingQuestionsCount = Math.max(
+      0,
+      MIN_QUESTIONS_FOR_PUBLICATION - validQuestionsCount,
+    );
 
     const quizCount = set.questions.filter((q) => q.gameType === 'QUIZ').length;
-    const trueFalseCount = set.questions.filter((q) => q.gameType === 'TRUE_FALSE').length;
-    const hasBilingualQuestions = set.questions.some((q) => Boolean(q.questionMg && q.questionFr));
-    const estimatedDurationMinutes = Math.max(1, Math.ceil((set.questions.length * 15) / 60));
+    const trueFalseCount = set.questions.filter(
+      (q) => q.gameType === 'TRUE_FALSE',
+    ).length;
+    const hasBilingualQuestions = set.questions.some((q) =>
+      Boolean(q.questionMg && q.questionFr),
+    );
+    const estimatedDurationMinutes = Math.max(
+      1,
+      Math.ceil((set.questions.length * 15) / 60),
+    );
 
     // ==========================================
     // 1. VUE PROPRIÉTAIRE (Dashboard de gestion)
     // ==========================================
     if (isOwner) {
-      const completionRate = set.playsCount > 0
-        ? Math.round((completedPlaysCount / set.playsCount) * 100)
-        : 0;
+      const completionRate =
+        set.playsCount > 0
+          ? Math.round((completedPlaysCount / set.playsCount) * 100)
+          : 0;
 
       return {
         ...set,
@@ -471,7 +505,9 @@ export class UserQuizService {
     }
 
     if (set.authorId !== userId) {
-      throw new ForbiddenException('Seul le créateur du deck peut consulter ses statistiques de gestion');
+      throw new ForbiddenException(
+        'Seul le créateur du deck peut consulter ses statistiques de gestion',
+      );
     }
 
     let uniquePlayersCount = 0;
@@ -479,12 +515,20 @@ export class UserQuizService {
     let averageScorePercent = 0;
 
     try {
-      uniquePlayersCount = await this.redisService.sCard(`ugc:deck_unique_players:${setId}`);
-      const comp = await this.redisService.get<string>(`ugc:deck_completed_count:${setId}`);
+      uniquePlayersCount = await this.redisService.sCard(
+        `ugc:deck_unique_players:${setId}`,
+      );
+      const comp = await this.redisService.get<string>(
+        `ugc:deck_completed_count:${setId}`,
+      );
       completedPlaysCount = comp ? parseInt(String(comp), 10) : 0;
 
-      const totalScore = await this.redisService.get<number>(`ugc:deck_score_sum:${setId}`);
-      const countScore = await this.redisService.get<number>(`ugc:deck_score_count:${setId}`);
+      const totalScore = await this.redisService.get<number>(
+        `ugc:deck_score_sum:${setId}`,
+      );
+      const countScore = await this.redisService.get<number>(
+        `ugc:deck_score_count:${setId}`,
+      );
       if (totalScore && countScore && countScore > 0) {
         averageScorePercent = Math.round((totalScore / countScore) * 100);
       }
@@ -492,16 +536,20 @@ export class UserQuizService {
       // Ignorer
     }
 
-    const completionRate = set.playsCount > 0
-      ? Math.round((completedPlaysCount / set.playsCount) * 100)
-      : 0;
+    const completionRate =
+      set.playsCount > 0
+        ? Math.round((completedPlaysCount / set.playsCount) * 100)
+        : 0;
 
     return {
       deckId: set.id,
       title: set.title,
       totalQuestions: set._count.questions,
       playsCount: set.playsCount,
-      uniquePlayersCount: Math.max(uniquePlayersCount, set.playsCount > 0 ? 1 : 0),
+      uniquePlayersCount: Math.max(
+        uniquePlayersCount,
+        set.playsCount > 0 ? 1 : 0,
+      ),
       completedPlaysCount,
       completionRate,
       averageScorePercent,
@@ -529,14 +577,18 @@ export class UserQuizService {
     }
 
     if (set.authorId !== userId) {
-      throw new UnauthorizedException('Vous ne pouvez modifier que vos propres decks');
+      throw new UnauthorizedException(
+        'Vous ne pouvez modifier que vos propres decks',
+      );
     }
 
     const willBePublic =
       dto.visibility === DeckVisibility.PUBLIC || dto.isPublic === true;
 
     if (willBePublic) {
-      const validQuestionsCount = set.questions.filter((q) => validateUserQuestion(q).isValid).length;
+      const validQuestionsCount = set.questions.filter(
+        (q) => validateUserQuestion(q).isValid,
+      ).length;
       if (validQuestionsCount < MIN_QUESTIONS_FOR_PUBLICATION) {
         throw new BadRequestException(
           `Un deck doit comporter au moins ${MIN_QUESTIONS_FOR_PUBLICATION} questions valides pour être publié (${validQuestionsCount}/${MIN_QUESTIONS_FOR_PUBLICATION} valides. Ajoutez encore ${MIN_QUESTIONS_FOR_PUBLICATION - validQuestionsCount} question(s)).`,
@@ -564,7 +616,11 @@ export class UserQuizService {
       data: {
         ...(dto.title !== undefined ? { title: sanitizeText(dto.title) } : {}),
         ...(dto.description !== undefined
-          ? { description: dto.description ? sanitizeText(dto.description) : null }
+          ? {
+              description: dto.description
+                ? sanitizeText(dto.description)
+                : null,
+            }
           : {}),
         ...(dto.imageUrl !== undefined
           ? { imageUrl: dto.imageUrl?.trim() || null }
@@ -618,8 +674,12 @@ export class UserQuizService {
           ? dto.choices.map((c) => sanitizeText(c)).filter(Boolean)
           : [],
         answerIndex: dto.answerIndex,
-        explanationMg: dto.explanationMg ? sanitizeText(dto.explanationMg) : null,
-        explanationFr: dto.explanationFr ? sanitizeText(dto.explanationFr) : null,
+        explanationMg: dto.explanationMg
+          ? sanitizeText(dto.explanationMg)
+          : null,
+        explanationFr: dto.explanationFr
+          ? sanitizeText(dto.explanationFr)
+          : null,
       },
     });
 
@@ -678,12 +738,22 @@ export class UserQuizService {
                 : [],
             }
           : {}),
-        ...(dto.answerIndex !== undefined ? { answerIndex: dto.answerIndex } : {}),
+        ...(dto.answerIndex !== undefined
+          ? { answerIndex: dto.answerIndex }
+          : {}),
         ...(dto.explanationMg !== undefined
-          ? { explanationMg: dto.explanationMg ? sanitizeText(dto.explanationMg) : null }
+          ? {
+              explanationMg: dto.explanationMg
+                ? sanitizeText(dto.explanationMg)
+                : null,
+            }
           : {}),
         ...(dto.explanationFr !== undefined
-          ? { explanationFr: dto.explanationFr ? sanitizeText(dto.explanationFr) : null }
+          ? {
+              explanationFr: dto.explanationFr
+                ? sanitizeText(dto.explanationFr)
+                : null,
+            }
           : {}),
         updatedAt: new Date(),
       },
@@ -718,7 +788,9 @@ export class UserQuizService {
     }
 
     if (question.quizSet.authorId !== userId) {
-      throw new UnauthorizedException('Vous ne pouvez supprimer que vos propres questions');
+      throw new UnauthorizedException(
+        'Vous ne pouvez supprimer que vos propres questions',
+      );
     }
 
     await this.prisma.userQuestion.delete({
@@ -726,11 +798,18 @@ export class UserQuizService {
     });
 
     // Vérifier si le deck passe sous la limite de publication
-    const remainingQuestions = question.quizSet.questions.filter((q) => q.id !== questionId);
-    const validCount = remainingQuestions.filter((q) => validateUserQuestion(q).isValid).length;
+    const remainingQuestions = question.quizSet.questions.filter(
+      (q) => q.id !== questionId,
+    );
+    const validCount = remainingQuestions.filter(
+      (q) => validateUserQuestion(q).isValid,
+    ).length;
 
     let autoUnpublished = false;
-    if (question.quizSet.isPublic && validCount < MIN_QUESTIONS_FOR_PUBLICATION) {
+    if (
+      question.quizSet.isPublic &&
+      validCount < MIN_QUESTIONS_FOR_PUBLICATION
+    ) {
       await this.prisma.userQuizSet.update({
         where: { id: question.quizSetId },
         data: {
@@ -771,7 +850,9 @@ export class UserQuizService {
     }
 
     if (set.authorId !== userId) {
-      throw new UnauthorizedException('Vous ne pouvez supprimer que vos propres decks');
+      throw new UnauthorizedException(
+        'Vous ne pouvez supprimer que vos propres decks',
+      );
     }
 
     await this.prisma.userQuizSet.delete({
@@ -817,15 +898,28 @@ export class UserQuizService {
     // Enregistrement des statistiques avancées dans Redis
     try {
       if (currentUserId) {
-        await this.redisService.sAdd(`ugc:deck_unique_players:${setId}`, currentUserId);
+        await this.redisService.sAdd(
+          `ugc:deck_unique_players:${setId}`,
+          currentUserId,
+        );
       }
       if (stats?.completed) {
         await this.redisService.incr(`ugc:deck_completed_count:${setId}`);
       }
-      if (stats?.correctCount !== undefined && stats?.totalQuestions && stats.totalQuestions > 0) {
+      if (
+        stats?.correctCount !== undefined &&
+        stats?.totalQuestions &&
+        stats.totalQuestions > 0
+      ) {
         const ratio = stats.correctCount / stats.totalQuestions;
-        const currentSum = (await this.redisService.get<number>(`ugc:deck_score_sum:${setId}`)) || 0;
-        await this.redisService.set(`ugc:deck_score_sum:${setId}`, currentSum + ratio);
+        const currentSum =
+          (await this.redisService.get<number>(
+            `ugc:deck_score_sum:${setId}`,
+          )) || 0;
+        await this.redisService.set(
+          `ugc:deck_score_sum:${setId}`,
+          currentSum + ratio,
+        );
         await this.redisService.incr(`ugc:deck_score_count:${setId}`);
       }
     } catch {
@@ -866,7 +960,7 @@ export class UserQuizService {
     const todayStr = new Date().toISOString().slice(0, 10);
     const dailyAuthorCoinsKey = `ugc:coins_earned:${set.authorId}:${todayStr}`;
     const currentDailyCoins =
-      ((await this.redisService.get<number>(dailyAuthorCoinsKey)) || 0);
+      (await this.redisService.get<number>(dailyAuthorCoinsKey)) || 0;
     const canEarnCoinToday = currentDailyCoins < (config.ugcDailyCoinsCap || 3);
 
     const qualifiedPlaysKey = `ugc:qualified_plays:${setId}`;
@@ -984,7 +1078,9 @@ export class UserQuizService {
       );
     }
 
-    const validQuestions = set.questions.filter((q) => validateUserQuestion(q).isValid);
+    const validQuestions = set.questions.filter(
+      (q) => validateUserQuestion(q).isValid,
+    );
     if (validQuestions.length < MIN_QUESTIONS_FOR_PUBLICATION) {
       throw new BadRequestException(
         'Ce deck est incomplet (moins de 5 questions valides) et ne peut pas être joué pour le moment.',

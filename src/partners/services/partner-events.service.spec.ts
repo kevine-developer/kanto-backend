@@ -14,7 +14,10 @@ describe('PartnerEventsService', () => {
   beforeEach(() => {
     prismaMock = {
       partner: {
-        findUnique: jest.fn<any>().mockResolvedValue({ id: 'partner_gasikara', name: 'Association Gasikara' }),
+        findUnique: jest.fn<any>().mockResolvedValue({
+          id: 'partner_gasikara',
+          name: 'Association Gasikara',
+        }),
       },
       event: {
         create: jest.fn(),
@@ -40,10 +43,12 @@ describe('PartnerEventsService', () => {
   describe('createEvent', () => {
     it('doit créer un événement avec le statut PENDING_REVIEW pour modération', async () => {
       prismaMock.event.findUnique.mockResolvedValue(null);
-      prismaMock.event.create.mockImplementationOnce(async ({ data }: any) => ({
-        id: 'event_part_1',
-        ...data,
-      }));
+      prismaMock.event.create.mockImplementationOnce(({ data }: any) =>
+        Promise.resolve({
+          id: 'event_part_1',
+          ...data,
+        }),
+      );
 
       const result = await service.createEvent('partner_gasikara', {
         titleFr: 'Festival Hiragasy Analamanga',
@@ -59,7 +64,9 @@ describe('PartnerEventsService', () => {
       });
 
       expect(result.partnerId).toBe('partner_gasikara');
-      expect(result.moderationStatus).toBe(EventModerationStatus.PENDING_REVIEW);
+      expect(result.moderationStatus).toBe(
+        EventModerationStatus.PENDING_REVIEW,
+      );
       expect(result.status).toBe(EventStatus.DRAFT);
     });
   });
@@ -93,7 +100,11 @@ describe('PartnerEventsService', () => {
         },
       ]);
 
-      const result = await service.getEventRegistrations('partner_gasikara', 'event_1', {});
+      const result = await service.getEventRegistrations(
+        'partner_gasikara',
+        'event_1',
+        {},
+      );
 
       expect(result.registrations).toHaveLength(1);
       const first = result.registrations[0];
@@ -110,7 +121,11 @@ describe('PartnerEventsService', () => {
       prismaMock.event.findFirst.mockResolvedValueOnce(null);
 
       await expect(
-        service.getEventRegistrations('partner_hacker', 'event_other_partner', {}),
+        service.getEventRegistrations(
+          'partner_hacker',
+          'event_other_partner',
+          {},
+        ),
       ).rejects.toThrow(NotFoundException);
     });
   });

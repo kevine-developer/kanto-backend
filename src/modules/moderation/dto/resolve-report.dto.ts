@@ -30,7 +30,8 @@ export class ResolveReportDto {
 
   @IsOptional()
   @IsString()
-  actionTaken?: 'NONE' | 'WARNING' | 'SUSPENSION' | 'BAN' | 'CONTENT_REMOVED' | 'DISMISSED';
+  actionTaken?:
+    'NONE' | 'WARNING' | 'SUSPENSION' | 'BAN' | 'CONTENT_REMOVED' | 'DISMISSED';
 
   @IsOptional()
   @IsInt()

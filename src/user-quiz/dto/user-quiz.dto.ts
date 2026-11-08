@@ -24,30 +24,38 @@ export interface QuestionValidationIssue {
 }
 
 export function validateUserQuestion(
-  q: Partial<CreateUserQuestionDto> | {
-    gameType?: string | null;
-    questionMg?: string | null;
-    questionFr?: string | null;
-    choices?: string[] | null;
-    answerIndex?: number | null;
-    isTrue?: boolean | null;
-  },
+  q:
+    | Partial<CreateUserQuestionDto>
+    | {
+        gameType?: string | null;
+        questionMg?: string | null;
+        questionFr?: string | null;
+        choices?: string[] | null;
+        answerIndex?: number | null;
+        isTrue?: boolean | null;
+      },
 ): QuestionValidationIssue {
   const errors: string[] = [];
 
   if (!q.questionMg || !q.questionMg.trim()) {
-    errors.push('Fanontaniana amin’ny teny malagasy tsy maintsy fenoina (Énoncé malgache requis)');
+    errors.push(
+      'Fanontaniana amin’ny teny malagasy tsy maintsy fenoina (Énoncé malgache requis)',
+    );
   }
 
   const type = q.gameType || UgcGameType.QUIZ;
 
   if (type === UgcGameType.QUIZ) {
     const validChoices = Array.isArray(q.choices)
-      ? q.choices.map((c) => (typeof c === 'string' ? c.trim() : '')).filter(Boolean)
+      ? q.choices
+          .map((c) => (typeof c === 'string' ? c.trim() : ''))
+          .filter(Boolean)
       : [];
 
     if (validChoices.length < 2) {
-      errors.push('Farafahakeliny safidy 2 no ilaina (Au moins 2 choix de réponses sont requis)');
+      errors.push(
+        'Farafahakeliny safidy 2 no ilaina (Au moins 2 choix de réponses sont requis)',
+      );
     }
 
     if (
@@ -57,11 +65,15 @@ export function validateUserQuestion(
       q.answerIndex < 0 ||
       (Array.isArray(q.choices) && q.answerIndex >= q.choices.length)
     ) {
-      errors.push('Safidio ny valiny marina (Veuillez sélectionner la bonne réponse)');
+      errors.push(
+        'Safidio ny valiny marina (Veuillez sélectionner la bonne réponse)',
+      );
     }
   } else if (type === UgcGameType.TRUE_FALSE) {
     if (typeof q.isTrue !== 'boolean') {
-      errors.push('Farito raha Marina na Diso (Précisez si la réponse est Vrai ou Faux)');
+      errors.push(
+        'Farito raha Marina na Diso (Précisez si la réponse est Vrai ou Faux)',
+      );
     }
   }
 

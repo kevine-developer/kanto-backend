@@ -28,9 +28,15 @@ describe('UsersService — Blocage communautaire (UserBlock)', () => {
         {
           provide: ResendService,
           useValue: {
-            sendAccountPendingDeletionEmail: jest.fn<any>().mockResolvedValue({ id: '1' }),
-            sendAccountReactivatedEmail: jest.fn<any>().mockResolvedValue({ id: '2' }),
-            sendAccountDeletionEmail: jest.fn<any>().mockResolvedValue({ id: '3' }),
+            sendAccountPendingDeletionEmail: jest
+              .fn<any>()
+              .mockResolvedValue({ id: '1' }),
+            sendAccountReactivatedEmail: jest
+              .fn<any>()
+              .mockResolvedValue({ id: '2' }),
+            sendAccountDeletionEmail: jest
+              .fn<any>()
+              .mockResolvedValue({ id: '3' }),
           },
         },
       ],
@@ -152,4 +158,3 @@ describe('UsersService — Blocage communautaire (UserBlock)', () => {
     });
   });
 });
-

@@ -541,10 +541,13 @@ describe('MultiplayerService', () => {
         }),
       );
 
-      const createdExpiresAt = (prismaMock.duelSession.create as any).mock.calls[0][0].data.expiresAt as Date;
+      const createdExpiresAt = (prismaMock.duelSession.create as any).mock
+        .calls[0][0].data.expiresAt as Date;
       expect(createdExpiresAt.getTime()).toBeGreaterThan(beforeCreation);
       // Durée par défaut multijoueur = 15 minutes (900s)
-      expect(createdExpiresAt.getTime()).toBeGreaterThanOrEqual(beforeCreation + 890 * 1000);
+      expect(createdExpiresAt.getTime()).toBeGreaterThanOrEqual(
+        beforeCreation + 890 * 1000,
+      );
     });
 
     it('devrait refuser la création si l’utilisateur dépasse la limite de création horaire', async () => {
@@ -622,11 +625,15 @@ describe('MultiplayerService', () => {
       (redisMock.get as any).mockResolvedValue(null);
 
       // Simulation : lockTransition renvoie count = 0 (une autre requête a déjà basculé le statut en STARTING)
-      (prismaMock.duelSession.updateMany as any).mockResolvedValue({ count: 0 });
+      (prismaMock.duelSession.updateMany as any).mockResolvedValue({
+        count: 0,
+      });
 
       await expect(
         service.startGame('host_id', { code: 'ATOM01' }),
-      ).rejects.toThrow('La partie a déjà été lancée ou est en cours de démarrage');
+      ).rejects.toThrow(
+        'La partie a déjà été lancée ou est en cours de démarrage',
+      );
     });
 
     it('expirePendingSessions : devrait fermer les salons expirés et notifier via Redis sans toucher aux parties en cours', async () => {
@@ -640,8 +647,12 @@ describe('MultiplayerService', () => {
         players: [{ userId: 'u1' }],
       };
 
-      (prismaMock.duelSession.findMany as any).mockResolvedValue([expiredSession]);
-      (prismaMock.duelSession.updateMany as any).mockResolvedValue({ count: 1 });
+      (prismaMock.duelSession.findMany as any).mockResolvedValue([
+        expiredSession,
+      ]);
+      (prismaMock.duelSession.updateMany as any).mockResolvedValue({
+        count: 1,
+      });
 
       const closedCount = await service.expirePendingSessions();
 

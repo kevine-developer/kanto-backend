@@ -107,4 +107,3 @@ export class PartnerEventsV1Controller {
     );
   }
 }
-

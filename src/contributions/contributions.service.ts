@@ -726,7 +726,6 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
     });
     if (!contribution) throw new NotFoundException('Contribution introuvable');
 
-
     if (contribution.userId !== userId) {
       throw new ForbiddenException(
         'Vous ne pouvez soumettre que vos propres contributions.',
@@ -1743,7 +1742,9 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
         ...(dto.textFr !== undefined ? { textFr: dto.textFr } : {}),
         ...(dto.meaning !== undefined ? { meaning: dto.meaning } : {}),
         ...(dto.region !== undefined ? { region: dto.region } : {}),
-        ...(dto.isAnonymous !== undefined ? { isAnonymous: Boolean(dto.isAnonymous) } : {}),
+        ...(dto.isAnonymous !== undefined
+          ? { isAnonymous: Boolean(dto.isAnonymous) }
+          : {}),
       },
       select: CONTRIBUTION_BASE_SELECT,
     });

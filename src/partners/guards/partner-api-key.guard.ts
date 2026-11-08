@@ -18,12 +18,14 @@ export class PartnerApiKeyGuard implements CanActivate {
   constructor(private readonly prisma: PrismaService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest<Request & {
-      partner?: any;
-      apiKey?: any;
-      partnerScopes?: string[];
-      startTime?: number;
-    }>();
+    const request = context.switchToHttp().getRequest<
+      Request & {
+        partner?: any;
+        apiKey?: any;
+        partnerScopes?: string[];
+        startTime?: number;
+      }
+    >();
 
     request.startTime = Date.now();
 
@@ -47,10 +49,7 @@ export class PartnerApiKeyGuard implements CanActivate {
     }
 
     // Calcul du hash SHA-256 de la clé reçue
-    const keyHash = crypto
-      .createHash('sha256')
-      .update(keyString)
-      .digest('hex');
+    const keyHash = crypto.createHash('sha256').update(keyString).digest('hex');
 
     // Recherche de la clé en base
     const apiKey = await this.prisma.partnerApiKey.findUnique({
@@ -122,4 +121,3 @@ export class PartnerApiKeyGuard implements CanActivate {
     return true;
   }
 }
-

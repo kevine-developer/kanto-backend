@@ -10,7 +10,10 @@ import { CreateContentReportDto } from './dto/create-report.dto.js';
 import { ResolveReportDto } from './dto/resolve-report.dto.js';
 import { ContentModerationService } from './content-moderation.service.js';
 import { ResendService } from '../../integrations/resend/resend.service.js';
-import { ReportReason, ReportStatus } from '../../../generated/prisma/client.js';
+import {
+  ReportReason,
+  ReportStatus,
+} from '../../../generated/prisma/client.js';
 
 @Injectable()
 export class ModerationService {
@@ -140,10 +143,18 @@ export class ModerationService {
             select: { id: true, name: true, email: true, image: true },
           },
           reportedUser: {
-            select: { id: true, name: true, email: true, image: true, status: true },
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              image: true,
+              status: true,
+            },
           },
           quizSet: { select: { id: true, title: true, isPublic: true } },
-          question: { select: { id: true, questionMg: true, questionFr: true } },
+          question: {
+            select: { id: true, questionMg: true, questionFr: true },
+          },
           item: {
             select: { id: true, malagasy: true, french: true, category: true },
           },
@@ -193,10 +204,13 @@ export class ModerationService {
       throw new NotFoundException(`Signalement #${reportId} introuvable.`);
     }
 
-    const resolvedStatus = dto?.status || (dto?.resolved === false ? ReportStatus.REJECTED : ReportStatus.RESOLVED);
+    const resolvedStatus =
+      dto?.status ||
+      (dto?.resolved === false ? ReportStatus.REJECTED : ReportStatus.RESOLVED);
     const isResolved = resolvedStatus === ReportStatus.RESOLVED;
     const moderatorNotes = dto?.moderatorNotes || dto?.adminNote || null;
-    const actionTaken = dto?.actionTaken || (isResolved ? 'RESOLVED' : 'DISMISSED');
+    const actionTaken =
+      dto?.actionTaken || (isResolved ? 'RESOLVED' : 'DISMISSED');
 
     const updated = await this.prisma.contentReport.update({
       where: { id: reportId },
@@ -216,7 +230,9 @@ export class ModerationService {
 
       if (actionTaken === 'SUSPENSION') {
         const suspensionDays = dto?.suspensionDays || 7;
-        const suspendedUntil = new Date(Date.now() + suspensionDays * 24 * 60 * 60 * 1000);
+        const suspendedUntil = new Date(
+          Date.now() + suspensionDays * 24 * 60 * 60 * 1000,
+        );
 
         await this.prisma.$transaction(async (tx) => {
           await tx.user.update({
@@ -225,7 +241,9 @@ export class ModerationService {
               status: 'SUSPENDED',
               suspendedUntil,
               banExpires: suspendedUntil,
-              banReason: moderatorNotes || `Compte suspendu pour ${suspensionDays} jours suite à modération.`,
+              banReason:
+                moderatorNotes ||
+                `Compte suspendu pour ${suspensionDays} jours suite à modération.`,
             },
           });
           // Révocation immédiate des sessions actives
@@ -237,11 +255,16 @@ export class ModerationService {
             .sendUserBannedEmail({
               to: existing.reportedUser.email,
               userName: existing.reportedUser.name,
-              reason: moderatorNotes || `Suspension temporaire pour ${suspensionDays} jours`,
+              reason:
+                moderatorNotes ||
+                `Suspension temporaire pour ${suspensionDays} jours`,
               banExpires: suspendedUntil,
             })
             .catch((err) =>
-              this.logger.warn(`Échec envoi email suspension pour ${existing.reportedUser?.email}:`, err),
+              this.logger.warn(
+                `Échec envoi email suspension pour ${existing.reportedUser?.email}:`,
+                err,
+              ),
             );
         }
       } else if (actionTaken === 'BAN') {
@@ -252,7 +275,9 @@ export class ModerationService {
               status: 'BANNED',
               banned: true,
               banExpires: null,
-              banReason: moderatorNotes || 'Bannissement définitif suite à des signalements répétés.',
+              banReason:
+                moderatorNotes ||
+                'Bannissement définitif suite à des signalements répétés.',
             },
           });
           // Révocation immédiate des sessions
@@ -267,7 +292,10 @@ export class ModerationService {
               reason: moderatorNotes || 'Bannissement définitif du compte',
             })
             .catch((err) =>
-              this.logger.warn(`Échec envoi email ban pour ${existing.reportedUser?.email}:`, err),
+              this.logger.warn(
+                `Échec envoi email ban pour ${existing.reportedUser?.email}:`,
+                err,
+              ),
             );
         }
       }
@@ -299,12 +327,19 @@ export class ModerationService {
    * Statistiques consolidées de modération
    */
   async getModerationStats() {
-    const [pendingCount, underReviewCount, resolvedCount, totalCount] = await Promise.all([
-      this.prisma.contentReport.count({ where: { status: ReportStatus.PENDING } }),
-      this.prisma.contentReport.count({ where: { status: ReportStatus.UNDER_REVIEW } }),
-      this.prisma.contentReport.count({ where: { status: ReportStatus.RESOLVED } }),
-      this.prisma.contentReport.count(),
-    ]);
+    const [pendingCount, underReviewCount, resolvedCount, totalCount] =
+      await Promise.all([
+        this.prisma.contentReport.count({
+          where: { status: ReportStatus.PENDING },
+        }),
+        this.prisma.contentReport.count({
+          where: { status: ReportStatus.UNDER_REVIEW },
+        }),
+        this.prisma.contentReport.count({
+          where: { status: ReportStatus.RESOLVED },
+        }),
+        this.prisma.contentReport.count(),
+      ]);
 
     return {
       pendingReports: pendingCount,

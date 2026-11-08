@@ -53,4 +53,3 @@ export class RevokeApiKeyDto {
   @IsOptional()
   reason?: string;
 }
-

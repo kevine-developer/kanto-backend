@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { PartnerApiKeyGuard } from '../../guards/partner-api-key.guard.js';
 import { PartnerScopesGuard } from '../../guards/partner-scopes.guard.js';
 import { RequirePartnerScopes } from '../../decorators/partner-scopes.decorator.js';
@@ -50,4 +44,3 @@ export class PartnerRegistrationsV1Controller {
     return this.partnerEventsService.getEventStatistics(partnerId, eventId);
   }
 }
-
