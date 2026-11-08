@@ -1079,6 +1079,27 @@ export function renderBetaLandingPage(
       opacity: 0.9;
     }
 
+    .footer-link-my-space {
+      color: var(--color-tanimbary);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: opacity 0.15s ease;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: inherit;
+      font-size: 12px;
+    }
+
+    .footer-link-my-space:hover {
+      text-decoration: underline;
+      opacity: 0.9;
+    }
+
     .hp-trap {
       display: none !important;
     }
@@ -2221,6 +2242,13 @@ export function renderBetaLandingPage(
   <!-- Pied de page officiel Kanto MG -->
   <footer>
     <div class="footer-nav">
+      <button type="button" class="footer-link-my-space" id="footer-link-my-space">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -1px; margin-right: 4px;">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <span>Vérifier mon espace testeur</span>
+      </button>
       <a href="${legalBaseUrl}/pages/terms" id="footer-link-cgu">Conditions d'utilisation (CGU)</a>
       <a href="${legalBaseUrl}/pages/privacy" id="footer-link-privacy">Confidentialité &amp; RGPD</a>
       <a href="/feedback" class="footer-link-feedback">
@@ -2359,6 +2387,24 @@ export function renderBetaWaitlistScript(): string {
   var btnSwitchToReg = document.getElementById('btn-switch-to-register');
   if (btnSwitchToReg) {
     btnSwitchToReg.addEventListener('click', function() { switchTab('register'); });
+  }
+
+  var footerMySpaceBtn = document.getElementById('footer-link-my-space');
+  if (footerMySpaceBtn) {
+    footerMySpaceBtn.addEventListener('click', function(e) {
+      if (e) e.preventDefault();
+      switchTab('already');
+      var container = document.getElementById('panel-already') || document.querySelector('.main-card');
+      if (container) {
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      var checkEmailInput = document.getElementById('check-email');
+      if (checkEmailInput) {
+        setTimeout(function() {
+          checkEmailInput.focus();
+        }, 150);
+      }
+    });
   }
 
   var openUnsubBtn = document.getElementById('btn-open-unsubscribe');
