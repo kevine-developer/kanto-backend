@@ -118,12 +118,21 @@ export class ContesAudioService {
     const updatedConte = await this.prisma.conte.update({
       where: { id: conte.id },
       data:
-        language === 'mg' ? { audioUrlMg: audioUrl } : { audioUrlFr: audioUrl },
-      select: { id: true, slug: true, audioUrlMg: true, audioUrlFr: true },
+        language === 'mg'
+          ? { audioUrlMg: audioUrl, isHumanVoiceMg: false }
+          : { audioUrlFr: audioUrl, isHumanVoiceFr: false },
+      select: {
+        id: true,
+        slug: true,
+        audioUrlMg: true,
+        audioUrlFr: true,
+        isHumanVoiceMg: true,
+        isHumanVoiceFr: true,
+      },
     });
 
     this.logger.log(
-      `✅ [GenerateAudio] Audio (${language}) généré et enregistré : ${audioUrl}`,
+      `✅ [GenerateAudio] Audio IA (${language}) généré et enregistré : ${audioUrl}`,
     );
 
     return {
@@ -133,6 +142,103 @@ export class ContesAudioService {
       language,
       audioUrlMg: updatedConte.audioUrlMg,
       audioUrlFr: updatedConte.audioUrlFr,
+      isHumanVoiceMg: updatedConte.isHumanVoiceMg,
+      isHumanVoiceFr: updatedConte.isHumanVoiceFr,
+      status: 'SUCCESS',
+    };
+  }
+
+  /**
+   * Téléverse un fichier audio fourni (humain ou pré-enregistré) vers Cloudinary CDN.
+   */
+  async uploadAudio(
+    idOrSlug: string,
+    language: 'mg' | 'fr',
+    base64Data: string,
+    isHumanVoice = true,
+  ) {
+    const conte = await this.prisma.conte.findFirst({
+      where: { OR: [{ id: idOrSlug }, { slug: idOrSlug }] },
+    });
+
+    if (!conte) {
+      throw new NotFoundException(`Conte "${idOrSlug}" introuvable`);
+    }
+
+    if (!base64Data || typeof base64Data !== 'string') {
+      throw new BadRequestException('Fichier audio invalide ou manquant');
+    }
+
+    // Décodage du buffer base64
+    let buffer: Buffer;
+    const matches = base64Data.match(/^data:([A-Za-z0-9-+/]+);base64,(.+)$/);
+    if (matches && matches.length === 3) {
+      buffer = Buffer.from(matches[2], 'base64');
+    } else {
+      buffer = Buffer.from(base64Data, 'base64');
+    }
+
+    // Limite de taille : 25 Mo max pour les enregistrements de contes
+    const MAX_AUDIO_SIZE = 25 * 1024 * 1024;
+    if (buffer.length > MAX_AUDIO_SIZE) {
+      throw new BadRequestException(
+        `Fichier audio trop volumineux (${(buffer.length / 1024 / 1024).toFixed(1)} Mo). Limite : 25 Mo.`,
+      );
+    }
+
+    if (!this.cloudinaryService.isConfigured()) {
+      throw new BadRequestException(
+        'Cloudinary n’est pas configuré. Impossible d’héberger l’audio sur le CDN.',
+      );
+    }
+
+    const publicId = `${conte.slug || conte.id}-${language}-human-${Date.now()}`;
+    let audioUrl: string;
+
+    try {
+      audioUrl = await this.cloudinaryService.uploadAudioBuffer(
+        buffer,
+        publicId,
+        'kanto/audio/contes/human',
+      );
+    } catch (cloudinaryError: any) {
+      this.logger.error(
+        `[Cloudinary] Échec de l’upload audio humain : ${cloudinaryError?.message}`,
+      );
+      throw new BadRequestException(
+        `Échec de l'hébergement Cloudinary : ${cloudinaryError?.message || 'Erreur inconnue'}`,
+      );
+    }
+
+    const updated = await this.prisma.conte.update({
+      where: { id: conte.id },
+      data:
+        language === 'mg'
+          ? { audioUrlMg: audioUrl, isHumanVoiceMg: isHumanVoice }
+          : { audioUrlFr: audioUrl, isHumanVoiceFr: isHumanVoice },
+      select: {
+        id: true,
+        slug: true,
+        audioUrlMg: true,
+        audioUrlFr: true,
+        isHumanVoiceMg: true,
+        isHumanVoiceFr: true,
+      },
+    });
+
+    this.logger.log(
+      `🎙️ [UploadAudio] Audio ${isHumanVoice ? 'humain' : 'personnalisé'} (${language}) enregistré pour "${conte.slug}" : ${audioUrl}`,
+    );
+
+    return {
+      id: updated.id,
+      slug: updated.slug,
+      audioUrl,
+      language,
+      audioUrlMg: updated.audioUrlMg,
+      audioUrlFr: updated.audioUrlFr,
+      isHumanVoiceMg: updated.isHumanVoiceMg,
+      isHumanVoiceFr: updated.isHumanVoiceFr,
       status: 'SUCCESS',
     };
   }

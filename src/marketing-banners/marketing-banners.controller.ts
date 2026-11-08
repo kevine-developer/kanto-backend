@@ -6,6 +6,7 @@ import {
   Delete,
   Body,
   Param,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { MarketingBannersService } from './marketing-banners.service.js';
@@ -25,11 +26,14 @@ export class MarketingBannersController {
   ) {}
 
   /**
-   * Route publique pour l'application mobile (bannières actives ordonnées)
+   * Route publique pour l'application mobile (bannières actives ordonnées, filtrables par emplacement et catégorie)
    */
   @Get()
-  findActive() {
-    return this.marketingBannersService.findAllActive();
+  findActive(
+    @Query('location') location?: string,
+    @Query('category') category?: string,
+  ) {
+    return this.marketingBannersService.findAllActive({ location, category });
   }
 
   /**

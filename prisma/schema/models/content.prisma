@@ -180,9 +180,13 @@ model Conte {
   moralMg String? @db.Text
   moralFr String? @db.Text
 
-  // Audio haute définition généré par Google Gemini TTS
+  // Audio haute définition généré par Google Gemini TTS ou enregistré par un conteur
   audioUrlMg String?
   audioUrlFr String?
+
+  // Indique si la voix est humaine (conteur authentique) ou voix IA
+  isHumanVoiceMg Boolean @default(false)
+  isHumanVoiceFr Boolean @default(false)
 
   // Identifiants de contes variantes
   variantIds String[] @default([])

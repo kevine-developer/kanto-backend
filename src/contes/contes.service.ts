@@ -51,6 +51,10 @@ export class ContesService {
         moralMg: data.moralMg || null,
         moralFr: data.moralFr || null,
         illustration: data.illustration || null,
+        audioUrlMg: data.audioUrlMg || null,
+        audioUrlFr: data.audioUrlFr || null,
+        isHumanVoiceMg: data.isHumanVoiceMg ?? false,
+        isHumanVoiceFr: data.isHumanVoiceFr ?? false,
         status: 'PUBLISHED',
         paragraphs:
           data.paragraphs && data.paragraphs.length > 0
@@ -110,6 +114,14 @@ export class ContesService {
         moralFr: data.moralFr !== undefined ? data.moralFr : undefined,
         illustration:
           data.illustration !== undefined ? data.illustration : undefined,
+        audioUrlMg:
+          data.audioUrlMg !== undefined ? data.audioUrlMg : undefined,
+        audioUrlFr:
+          data.audioUrlFr !== undefined ? data.audioUrlFr : undefined,
+        isHumanVoiceMg:
+          data.isHumanVoiceMg !== undefined ? data.isHumanVoiceMg : undefined,
+        isHumanVoiceFr:
+          data.isHumanVoiceFr !== undefined ? data.isHumanVoiceFr : undefined,
         status: data.status !== undefined ? data.status : undefined,
         paragraphs:
           data.paragraphs && data.paragraphs.length > 0

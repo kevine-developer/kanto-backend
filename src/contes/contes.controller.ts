@@ -113,6 +113,21 @@ export class ContesController {
     );
   }
 
+  @Post(':id/upload-audio')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  uploadAudio(
+    @Param('id') id: string,
+    @Body() body: { language: 'mg' | 'fr'; base64Data: string; isHumanVoice?: boolean },
+  ) {
+    return this.contesAudioService.uploadAudio(
+      id,
+      body.language,
+      body.base64Data,
+      body.isHumanVoice ?? true,
+    );
+  }
+
   @Post(':id/report')
   @UseGuards(AuthGuard)
   report(
