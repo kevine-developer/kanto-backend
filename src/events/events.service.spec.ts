@@ -180,7 +180,14 @@ describe('EventsService', () => {
       expect(prisma.event.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           where: expect.objectContaining({
-            status: { in: [EventStatus.PUBLISHED, EventStatus.ACTIVE] },
+            status: {
+              in: [
+                EventStatus.PUBLISHED,
+                EventStatus.ACTIVE,
+                EventStatus.SCHEDULED,
+                EventStatus.CANCELLED,
+              ],
+            },
             AND: expect.arrayContaining([
               expect.objectContaining({ endDate: expect.objectContaining({ gte: expect.any(Date) }) }),
             ]),
@@ -198,6 +205,7 @@ describe('EventsService', () => {
               expect.objectContaining({
                 OR: expect.arrayContaining([
                   { status: EventStatus.COMPLETED },
+                  { status: EventStatus.CANCELLED },
                   { endDate: expect.objectContaining({ lt: expect.any(Date) }) },
                 ]),
               }),
