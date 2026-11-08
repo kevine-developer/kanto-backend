@@ -66,10 +66,16 @@ model MarketingBanner {
   modalCtaLabelMg String?
   modalCtaLink    String?
 
+  // Ciblage & Emplacement d'affichage
+  targetLocation  String   @default("HOME") // "HOME", "CATEGORY", "ALL"
+  categoryKey     String?  // Ex: "conte", "proverbe", "expression", "dicton", "citation", "raki-teny", "discours", "poesie", "recitation", "ALL"
+
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
   @@index([isActive])
   @@index([orderIndex])
+  @@index([targetLocation])
+  @@index([categoryKey])
   @@map("marketing_banners")
 }

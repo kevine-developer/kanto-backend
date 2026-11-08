@@ -86,6 +86,14 @@ export class CreateMarketingBannerDto {
   @IsString()
   @IsOptional()
   modalCtaLink?: string;
+
+  @IsString()
+  @IsOptional()
+  targetLocation?: string; // "HOME", "CATEGORY", "ALL"
+
+  @IsString()
+  @IsOptional()
+  categoryKey?: string; // "conte", "proverbe", "ALL", etc.
 }
 
 export class UpdateMarketingBannerDto {
@@ -168,6 +176,14 @@ export class UpdateMarketingBannerDto {
   @IsString()
   @IsOptional()
   modalCtaLink?: string;
+
+  @IsString()
+  @IsOptional()
+  targetLocation?: string;
+
+  @IsString()
+  @IsOptional()
+  categoryKey?: string;
 }
 
 export class ReorderMarketingBannersDto {

@@ -64,11 +64,35 @@ export class MarketingBannersService implements OnModuleInit {
   }
 
   /**
-   * Liste des bannières actives pour l'application mobile
+   * Liste des bannières actives pour l'application mobile (Accueil ou Catégories)
    */
-  async findAllActive() {
+  async findAllActive(query?: { location?: string; category?: string }) {
+    const where: any = { isActive: true };
+
+    if (query?.location) {
+      const loc = query.location.toUpperCase();
+      if (loc === 'CATEGORY') {
+        where.targetLocation = { in: ['CATEGORY', 'ALL'] };
+        if (query.category) {
+          where.OR = [
+            { categoryKey: query.category.toLowerCase() },
+            { categoryKey: 'ALL' },
+            { categoryKey: 'all' },
+            { categoryKey: null },
+          ];
+        }
+      } else if (loc === 'HOME') {
+        where.targetLocation = { in: ['HOME', 'ALL'] };
+      } else {
+        where.targetLocation = loc;
+      }
+    } else {
+      // Par défaut pour l'accueil ou rétrocompatibilité
+      where.targetLocation = { in: ['HOME', 'ALL'] };
+    }
+
     return await this.prisma.marketingBanner.findMany({
-      where: { isActive: true },
+      where,
       orderBy: { orderIndex: 'asc' },
     });
   }
@@ -130,6 +154,8 @@ export class MarketingBannersService implements OnModuleInit {
         modalCtaLabelFr: dto.modalCtaLabelFr,
         modalCtaLabelMg: dto.modalCtaLabelMg,
         modalCtaLink: dto.modalCtaLink,
+        targetLocation: dto.targetLocation || 'HOME',
+        categoryKey: dto.categoryKey ? dto.categoryKey.toLowerCase() : null,
       },
     });
   }
