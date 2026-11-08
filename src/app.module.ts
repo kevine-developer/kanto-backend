@@ -49,6 +49,7 @@ import { EventsModule } from './events/events.module.js';
 import { ContentWizardModule } from './games/content-wizard/content-wizard.module.js';
 import { DailyChallengeModule } from './games/daily-challenge/daily-challenge.module.js';
 import { AppVersionModule } from './app-version/app-version.module.js';
+import { PartnersModule } from './partners/partners.module.js';
 
 @Module({
   imports: [
@@ -122,6 +123,7 @@ import { AppVersionModule } from './app-version/app-version.module.js';
     ContentWizardModule,
     DailyChallengeModule,
     AppVersionModule,
+    PartnersModule,
   ],
   controllers: [AppController],
   providers: [

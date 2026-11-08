@@ -1,0 +1,47 @@
+// ============================================================
+// ENUMS — PARTENAIRES & PLATEFORME ORGANISATEURS
+// ============================================================
+
+enum PartnerType {
+  ASSOCIATION
+  COMPANY
+  INSTITUTION
+  INDEPENDENT_ORGANIZER
+  DEVELOPER
+  OTHER
+}
+
+enum PartnerStatus {
+  PENDING_VERIFICATION
+  VERIFIED
+  SUSPENDED
+  REJECTED
+}
+
+enum ApiKeyEnvironment {
+  TEST
+  LIVE
+}
+
+enum EventModerationStatus {
+  DRAFT
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum MarketingRequestStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  INFO_REQUESTED
+  ACCEPTED
+  REJECTED
+  PENDING_PAYMENT
+  SCHEDULED
+  RUNNING
+  COMPLETED
+  CANCELLED
+}
+

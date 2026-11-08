@@ -1,0 +1,84 @@
+// ============================================================
+// MODÈLES — PARTENAIRES & PLATEFORME ORGANISATEURS
+// ============================================================
+
+model Partner {
+  id              String        @id @default(cuid())
+  slug            String        @unique // ex: "association-madajazzcar", "star-evenements"
+  name            String        // Nom officiel de l'organisation ou du partenaire
+  type            PartnerType   @default(ASSOCIATION)
+  description     String?       @db.Text
+  logoUrl         String?
+  coverUrl        String?
+  websiteUrl      String?
+  email           String        // Email professionnel de contact
+  phone           String?
+  address         String?
+  socialLinks     Json?         // { facebook?: string, instagram?: string, linkedin?: string, x?: string, youtube?: string }
+  status          PartnerStatus @default(PENDING_VERIFICATION)
+  rejectionReason String?       @db.Text
+  verifiedAt      DateTime?
+  verifiedById    String?       // ID administrateur Kanto ayant validé le compte
+  userId          String?       // Compte utilisateur Kanto administrateur du partenaire
+  metadata        Json?         // Données étendues d'intégration
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  user              User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+  events            Event[]
+  apiKeys           PartnerApiKey[]
+  apiLogs           PartnerApiLog[]
+  marketingRequests MarketingRequest[]
+
+  @@index([status])
+  @@index([type])
+  @@index([userId])
+  @@map("partners")
+}
+
+model PartnerApiKey {
+  id               String            @id @default(cuid())
+  partnerId        String
+  partner          Partner           @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  name             String            // Nom descriptif (ex: "Clé Billetterie Prod", "Test Local")
+  keyPrefix        String            // 12 premiers caractères pour affichage (ex: "kanto_live_ab")
+  keyHash          String            @unique // Hash SHA-256 de la clé secrète complète
+  scopes           String[]          // ["events:read", "events:write", "registrations:read", "marketing:read", etc.]
+  environment      ApiKeyEnvironment @default(LIVE)
+  rateLimit        Int               @default(120) // Requêtes par minute autorisées
+  lastUsedAt       DateTime?
+  lastUsedIp       String?
+  expiresAt        DateTime?
+  revokedAt        DateTime?
+  revocationReason String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  apiLogs          PartnerApiLog[]
+
+  @@index([partnerId])
+  @@index([environment])
+  @@index([expiresAt])
+  @@map("partner_api_keys")
+}
+
+model PartnerApiLog {
+  id             String         @id @default(cuid())
+  partnerId      String
+  partner        Partner        @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  apiKeyId       String?
+  apiKey         PartnerApiKey? @relation(fields: [apiKeyId], references: [id], onDelete: SetNull)
+  endpoint       String         // ex: "/v1/events"
+  method         String         // "GET", "POST", "PATCH", etc.
+  statusCode     Int
+  ipAddress      String?
+  userAgent      String?
+  responseTimeMs Int?
+  createdAt      DateTime       @default(now())
+
+  @@index([partnerId, createdAt])
+  @@index([apiKeyId])
+  @@index([statusCode])
+  @@map("partner_api_logs")
+}
+
