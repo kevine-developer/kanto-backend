@@ -98,22 +98,40 @@ export class EventsService {
 
     const where: any = {
       status: {
-        in: [EventStatus.PUBLISHED, EventStatus.ACTIVE, EventStatus.COMPLETED],
+        in: [
+          EventStatus.PUBLISHED,
+          EventStatus.ACTIVE,
+          EventStatus.SCHEDULED,
+          EventStatus.COMPLETED,
+        ],
       },
     };
 
     if (query.timeFilter === 'past' || query.timeFilter === 'completed') {
       where.status = {
-        in: [EventStatus.PUBLISHED, EventStatus.ACTIVE, EventStatus.COMPLETED],
+        in: [
+          EventStatus.PUBLISHED,
+          EventStatus.ACTIVE,
+          EventStatus.COMPLETED,
+          EventStatus.CANCELLED,
+        ],
       };
       andConditions.push({
         OR: [
           { status: EventStatus.COMPLETED },
+          { status: EventStatus.CANCELLED },
           { endDate: { lt: now } },
         ],
       });
     } else if (query.timeFilter === 'upcoming') {
-      where.status = { in: [EventStatus.PUBLISHED, EventStatus.ACTIVE] };
+      where.status = {
+        in: [
+          EventStatus.PUBLISHED,
+          EventStatus.ACTIVE,
+          EventStatus.SCHEDULED,
+          EventStatus.CANCELLED,
+        ],
+      };
       andConditions.push({ endDate: { gte: now } });
     } else if (query.timeFilter === 'ongoing') {
       where.status = { in: [EventStatus.PUBLISHED, EventStatus.ACTIVE] };
@@ -178,6 +196,13 @@ export class EventsService {
               criteria: true,
             },
           },
+          _count: {
+            select: {
+              participations: {
+                where: { status: EventParticipationStatus.WAITLIST },
+              },
+            },
+          },
           ...(userId
             ? {
                 participations: {
@@ -206,9 +231,11 @@ export class EventsService {
           userId && (event as any).participations?.length > 0
             ? (event as any).participations[0]
             : null;
-        const { participations, ...rest } = event as any;
+        const waitlistCount = (event as any)._count?.participations ?? 0;
+        const { participations, _count, ...rest } = event as any;
         return {
           ...rest,
+          waitlistCount,
           userParticipation,
         };
       }),
@@ -228,12 +255,21 @@ export class EventsService {
     const now = new Date();
     const event = await this.prisma.event.findFirst({
       where: {
-        status: { in: [EventStatus.PUBLISHED, EventStatus.ACTIVE] },
+        status: {
+          in: [EventStatus.PUBLISHED, EventStatus.ACTIVE, EventStatus.SCHEDULED],
+        },
         isFeatured: true,
         endDate: { gte: now },
       },
       include: {
         rewards: true,
+        _count: {
+          select: {
+            participations: {
+              where: { status: EventParticipationStatus.WAITLIST },
+            },
+          },
+        },
         ...(userId
           ? {
               participations: {
@@ -259,9 +295,11 @@ export class EventsService {
         ? (event as any).participations[0]
         : null;
 
-    const { participations, ...rest } = event as any;
+    const waitlistCount = (event as any)._count?.participations ?? 0;
+    const { participations, _count, ...rest } = event as any;
     return {
       ...rest,
+      waitlistCount,
       userParticipation,
     };
   }
@@ -276,6 +314,13 @@ export class EventsService {
       where: isId ? { id: idOrSlug } : { slug: idOrSlug },
       include: {
         rewards: true,
+        _count: {
+          select: {
+            participations: {
+              where: { status: EventParticipationStatus.WAITLIST },
+            },
+          },
+        },
         ...(userId
           ? {
               participations: {
@@ -306,9 +351,11 @@ export class EventsService {
         ? (event as any).participations[0]
         : null;
 
-    const { participations, ...rest } = event as any;
+    const waitlistCount = (event as any)._count?.participations ?? 0;
+    const { participations, _count, ...rest } = event as any;
     return {
       ...rest,
+      waitlistCount,
       userParticipation,
     };
   }
@@ -657,7 +704,10 @@ export class EventsService {
       throw new NotFoundException('Aucune inscription trouvée.');
     }
 
-    if (new Date() >= new Date(participation.event.startDate)) {
+    if (
+      participation.status !== EventParticipationStatus.WAITLIST &&
+      new Date() >= new Date(participation.event.startDate)
+    ) {
       throw new BadRequestException(
         'Impossible d’annuler une inscription pour un événement déjà commencé.',
       );
@@ -1074,7 +1124,12 @@ export class EventsService {
         include: {
           rewards: true,
           _count: {
-            select: { participations: true, leaderboardEntries: true },
+            select: {
+              participations: {
+                where: { status: EventParticipationStatus.WAITLIST },
+              },
+              leaderboardEntries: true,
+            },
           },
         },
         orderBy: { createdAt: 'desc' },
@@ -1084,7 +1139,10 @@ export class EventsService {
     ]);
 
     return {
-      items,
+      items: items.map((item) => ({
+        ...item,
+        waitlistCount: (item as any)._count?.participations ?? 0,
+      })),
       pagination: {
         total,
         page,
