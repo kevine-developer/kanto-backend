@@ -6,7 +6,9 @@ import {
   Param,
   Query,
   UseGuards,
+  Req,
 } from '@nestjs/common';
+import type { Request } from 'express';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import {
   AuthGuard,
