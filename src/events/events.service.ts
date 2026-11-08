@@ -135,7 +135,10 @@ export class EventsService {
       andConditions.push({ endDate: { gte: now } });
     } else if (query.timeFilter === 'ongoing') {
       where.status = { in: [EventStatus.PUBLISHED, EventStatus.ACTIVE] };
-      andConditions.push({ startDate: { lte: now } }, { endDate: { gte: now } });
+      andConditions.push(
+        { startDate: { lte: now } },
+        { endDate: { gte: now } },
+      );
     }
 
     if (query.category) {
@@ -256,7 +259,11 @@ export class EventsService {
     const event = await this.prisma.event.findFirst({
       where: {
         status: {
-          in: [EventStatus.PUBLISHED, EventStatus.ACTIVE, EventStatus.SCHEDULED],
+          in: [
+            EventStatus.PUBLISHED,
+            EventStatus.ACTIVE,
+            EventStatus.SCHEDULED,
+          ],
         },
         isFeatured: true,
         endDate: { gte: now },
@@ -459,7 +466,10 @@ export class EventsService {
             where: { eventId, status: EventParticipationStatus.WAITLIST },
           });
 
-          if (event.waitlistCapacity && waitlistCount >= event.waitlistCapacity) {
+          if (
+            event.waitlistCapacity &&
+            waitlistCount >= event.waitlistCapacity
+          ) {
             throw new ConflictException(
               'Cet événement et sa liste d’attente sont actuellement complets.',
             );
@@ -534,7 +544,10 @@ export class EventsService {
             where: { eventId, status: EventParticipationStatus.WAITLIST },
           });
 
-          if (event.waitlistCapacity && waitlistCount >= event.waitlistCapacity) {
+          if (
+            event.waitlistCapacity &&
+            waitlistCount >= event.waitlistCapacity
+          ) {
             throw new ConflictException(
               'La liste d’attente de cet événement a atteint sa capacité maximale.',
             );
@@ -731,7 +744,8 @@ export class EventsService {
         },
       });
 
-      let promotedUser: { id: string; userId: string; event: any } | null = null;
+      let promotedUser: { id: string; userId: string; event: any } | null =
+        null;
 
       // 2. Si la place était occupée parmi les places confirmées
       if (wasActive) {
@@ -741,10 +755,7 @@ export class EventsService {
             eventId,
             status: EventParticipationStatus.WAITLIST,
           },
-          orderBy: [
-            { waitlistPosition: 'asc' },
-            { createdAt: 'asc' },
-          ],
+          orderBy: [{ waitlistPosition: 'asc' }, { createdAt: 'asc' }],
         });
 
         if (nextInWaitlist) {
@@ -770,7 +781,8 @@ export class EventsService {
             where: { id: eventId },
             data: {
               currentParticipantsCount: {
-                decrement: participation.event.currentParticipantsCount > 0 ? 1 : 0,
+                decrement:
+                  participation.event.currentParticipantsCount > 0 ? 1 : 0,
               },
             },
           });
@@ -1159,17 +1171,18 @@ export class EventsService {
     // ── Détermination et validation flexible des langues et contenus ──
     const contentConfig = dto.metadata?.contentConfig;
     const requestedLanguages: ('mg' | 'fr')[] =
-      Array.isArray(contentConfig?.languages) && contentConfig.languages.length > 0
+      Array.isArray(contentConfig?.languages) &&
+      contentConfig.languages.length > 0
         ? contentConfig.languages
         : contentConfig?.languageMode === 'mg'
-        ? ['mg']
-        : contentConfig?.languageMode === 'fr'
-        ? ['fr']
-        : dto.titleMg && dto.titleFr
-        ? ['mg', 'fr']
-        : dto.titleMg
-        ? ['mg']
-        : ['fr'];
+          ? ['mg']
+          : contentConfig?.languageMode === 'fr'
+            ? ['fr']
+            : dto.titleMg && dto.titleFr
+              ? ['mg', 'fr']
+              : dto.titleMg
+                ? ['mg']
+                : ['fr'];
 
     const isMgEnabled = requestedLanguages.includes('mg');
     const isFrEnabled = requestedLanguages.includes('fr');
@@ -1208,9 +1221,9 @@ export class EventsService {
       rules: Boolean(dto.rulesMg || dto.rulesFr),
       participationConditions: Boolean(
         dto.participationType ||
-          dto.maxParticipants ||
-          dto.registrationDeadline ||
-          (dto.minTier && dto.minTier !== 'FREE'),
+        dto.maxParticipants ||
+        dto.registrationDeadline ||
+        (dto.minTier && dto.minTier !== 'FREE'),
       ),
       practicalInfo: Boolean(dto.location || dto.externalUrl),
       rewards: Boolean(dto.rewards && dto.rewards.length > 0),
@@ -1258,8 +1271,8 @@ export class EventsService {
         ? { gameModuleId: dto.metadata.gameModuleId }
         : {}),
     };
-    if (!sections.gameModule && (finalMetadata as any).gameModuleId) {
-      delete (finalMetadata as any).gameModuleId;
+    if (!sections.gameModule && finalMetadata.gameModuleId) {
+      delete finalMetadata.gameModuleId;
     }
 
     const slugSource = finalTitleFr || finalTitleMg || 'evenement';
@@ -1362,23 +1375,32 @@ export class EventsService {
     const contentConfig = dto.metadata?.contentConfig;
     const sections = contentConfig?.sections;
 
-    const nextTitleMg = dto.titleMg !== undefined ? dto.titleMg.trim() : event.titleMg;
-    const nextTitleFr = dto.titleFr !== undefined ? dto.titleFr.trim() : event.titleFr;
-    const nextDescMg = dto.descriptionMg !== undefined ? dto.descriptionMg.trim() : event.descriptionMg;
-    const nextDescFr = dto.descriptionFr !== undefined ? dto.descriptionFr.trim() : event.descriptionFr;
+    const nextTitleMg =
+      dto.titleMg !== undefined ? dto.titleMg.trim() : event.titleMg;
+    const nextTitleFr =
+      dto.titleFr !== undefined ? dto.titleFr.trim() : event.titleFr;
+    const nextDescMg =
+      dto.descriptionMg !== undefined
+        ? dto.descriptionMg.trim()
+        : event.descriptionMg;
+    const nextDescFr =
+      dto.descriptionFr !== undefined
+        ? dto.descriptionFr.trim()
+        : event.descriptionFr;
 
     const finalTitleMg = nextTitleMg || nextTitleFr;
     const finalTitleFr = nextTitleFr || nextTitleMg;
     const finalDescMg = nextDescMg || nextDescFr;
     const finalDescFr = nextDescFr || nextDescMg;
 
-    const updatedMetadata = dto.metadata !== undefined
-      ? {
-          ...((event.metadata as any) || {}),
-          ...dto.metadata,
-          ...(contentConfig ? { contentConfig } : {}),
-        }
-      : event.metadata;
+    const updatedMetadata =
+      dto.metadata !== undefined
+        ? {
+            ...((event.metadata as any) || {}),
+            ...dto.metadata,
+            ...(contentConfig ? { contentConfig } : {}),
+          }
+        : event.metadata;
 
     const updated = await this.prisma.event.update({
       where: { id: eventId },
@@ -1387,8 +1409,18 @@ export class EventsService {
         titleFr: finalTitleFr,
         descriptionMg: finalDescMg,
         descriptionFr: finalDescFr,
-        shortDescMg: sections?.shortDescription === false ? null : (dto.shortDescMg !== undefined ? dto.shortDescMg : event.shortDescMg),
-        shortDescFr: sections?.shortDescription === false ? null : (dto.shortDescFr !== undefined ? dto.shortDescFr : event.shortDescFr),
+        shortDescMg:
+          sections?.shortDescription === false
+            ? null
+            : dto.shortDescMg !== undefined
+              ? dto.shortDescMg
+              : event.shortDescMg,
+        shortDescFr:
+          sections?.shortDescription === false
+            ? null
+            : dto.shortDescFr !== undefined
+              ? dto.shortDescFr
+              : event.shortDescFr,
         ...(dto.category && { category: dto.category }),
         ...(dto.participationType && {
           participationType: dto.participationType,
@@ -1396,26 +1428,58 @@ export class EventsService {
         ...(dto.minTier && { minTier: dto.minTier }),
         ...(dto.imageUrl !== undefined && { imageUrl: dto.imageUrl }),
         ...(dto.bannerUrl !== undefined && { bannerUrl: dto.bannerUrl }),
-        location: sections?.practicalInfo === false ? null : (dto.location !== undefined ? dto.location : event.location),
-        externalUrl: sections?.practicalInfo === false ? null : (dto.externalUrl !== undefined ? dto.externalUrl : event.externalUrl),
+        location:
+          sections?.practicalInfo === false
+            ? null
+            : dto.location !== undefined
+              ? dto.location
+              : event.location,
+        externalUrl:
+          sections?.practicalInfo === false
+            ? null
+            : dto.externalUrl !== undefined
+              ? dto.externalUrl
+              : event.externalUrl,
         ...(dto.startDate && { startDate: new Date(dto.startDate) }),
         ...(dto.endDate && { endDate: new Date(dto.endDate) }),
-        registrationDeadline: sections?.participationConditions === false ? null : (
-          dto.registrationDeadline !== undefined
-            ? (dto.registrationDeadline ? new Date(dto.registrationDeadline) : null)
-            : event.registrationDeadline
-        ),
-        maxParticipants: sections?.participationConditions === false ? null : (
-          dto.maxParticipants !== undefined ? dto.maxParticipants : event.maxParticipants
-        ),
-        ...(dto.enableWaitlist !== undefined && { enableWaitlist: dto.enableWaitlist }),
-        ...(dto.waitlistCapacity !== undefined && { waitlistCapacity: dto.waitlistCapacity }),
+        registrationDeadline:
+          sections?.participationConditions === false
+            ? null
+            : dto.registrationDeadline !== undefined
+              ? dto.registrationDeadline
+                ? new Date(dto.registrationDeadline)
+                : null
+              : event.registrationDeadline,
+        maxParticipants:
+          sections?.participationConditions === false
+            ? null
+            : dto.maxParticipants !== undefined
+              ? dto.maxParticipants
+              : event.maxParticipants,
+        ...(dto.enableWaitlist !== undefined && {
+          enableWaitlist: dto.enableWaitlist,
+        }),
+        ...(dto.waitlistCapacity !== undefined && {
+          waitlistCapacity: dto.waitlistCapacity,
+        }),
         ...(dto.isPaid !== undefined && { isPaid: dto.isPaid }),
-        ...(dto.ticketPrice !== undefined && { ticketPrice: dto.isPaid ? dto.ticketPrice : null }),
+        ...(dto.ticketPrice !== undefined && {
+          ticketPrice: dto.isPaid ? dto.ticketPrice : null,
+        }),
         ...(dto.currency !== undefined && { currency: dto.currency }),
         ...(dto.isFeatured !== undefined && { isFeatured: dto.isFeatured }),
-        rulesMg: sections?.rules === false ? null : (dto.rulesMg !== undefined ? dto.rulesMg : event.rulesMg),
-        rulesFr: sections?.rules === false ? null : (dto.rulesFr !== undefined ? dto.rulesFr : event.rulesFr),
+        rulesMg:
+          sections?.rules === false
+            ? null
+            : dto.rulesMg !== undefined
+              ? dto.rulesMg
+              : event.rulesMg,
+        rulesFr:
+          sections?.rules === false
+            ? null
+            : dto.rulesFr !== undefined
+              ? dto.rulesFr
+              : event.rulesFr,
         metadata: updatedMetadata,
       },
       include: { rewards: true },
@@ -1813,7 +1877,9 @@ export class EventsService {
           },
         },
         orderBy: [
-          ...(query.status === 'WAITLIST' ? [{ waitlistPosition: 'asc' as const }] : []),
+          ...(query.status === 'WAITLIST'
+            ? [{ waitlistPosition: 'asc' as const }]
+            : []),
           { createdAt: 'desc' as const },
         ],
         skip,
@@ -1920,7 +1986,11 @@ export class EventsService {
   async uploadEventCover(
     dto: UploadEventCoverDto,
     adminId: string,
-  ): Promise<{ success: boolean; url: string; provider: 'cloudinary' | 'local' }> {
+  ): Promise<{
+    success: boolean;
+    url: string;
+    provider: 'cloudinary' | 'local';
+  }> {
     const { buffer, mimeType } =
       this.cloudinaryService.validateAndDecodeBase64Image(dto.base64Data);
 
@@ -1954,8 +2024,12 @@ export class EventsService {
           dto.originalName || `event-cover-${Date.now()}.${ext}`,
           'kanto/events/covers',
         );
-        this.logger.log(`[Events] Image de couverture hébergée sur Cloudinary : ${cloudinaryUrl}`);
-        this.cloudinarySyncService.syncLocalUploadsToCloudinary().catch(() => {});
+        this.logger.log(
+          `[Events] Image de couverture hébergée sur Cloudinary : ${cloudinaryUrl}`,
+        );
+        this.cloudinarySyncService
+          .syncLocalUploadsToCloudinary()
+          .catch(() => {});
         return { success: true, url: cloudinaryUrl, provider: 'cloudinary' };
       } catch (err: unknown) {
         this.logger.error(
@@ -1976,7 +2050,9 @@ export class EventsService {
     fs.writeFileSync(filePath, buffer);
 
     const localUrl = `/uploads/${subfolder}/${filename}`;
-    this.logger.log(`[Events] Image de couverture enregistrée en local : ${localUrl}`);
+    this.logger.log(
+      `[Events] Image de couverture enregistrée en local : ${localUrl}`,
+    );
 
     return { success: true, url: localUrl, provider: 'local' };
   }
@@ -2004,7 +2080,9 @@ export class EventsService {
       include: { user: true },
     });
     if (!participation) {
-      throw new NotFoundException('Ce participant n’est pas inscrit à cet événement.');
+      throw new NotFoundException(
+        'Ce participant n’est pas inscrit à cet événement.',
+      );
     }
 
     if (participation.status === EventParticipationStatus.CANCELLED) {
@@ -2037,10 +2115,7 @@ export class EventsService {
             eventId,
             status: EventParticipationStatus.WAITLIST,
           },
-          orderBy: [
-            { waitlistPosition: 'asc' },
-            { createdAt: 'asc' },
-          ],
+          orderBy: [{ waitlistPosition: 'asc' }, { createdAt: 'asc' }],
         });
 
         if (nextInWaitlist) {
@@ -2106,7 +2181,9 @@ export class EventsService {
           isBroadcast: false,
         });
       } catch (notifErr) {
-        this.logger.warn(`Erreur notification annulation participant : ${notifErr}`);
+        this.logger.warn(
+          `Erreur notification annulation participant : ${notifErr}`,
+        );
       }
     }
 
@@ -2128,14 +2205,18 @@ export class EventsService {
           isBroadcast: false,
         });
       } catch (promotedNotifErr) {
-        this.logger.warn(`Erreur notification promotion liste d'attente : ${promotedNotifErr}`);
+        this.logger.warn(
+          `Erreur notification promotion liste d'attente : ${promotedNotifErr}`,
+        );
       }
     }
 
     return {
       success: true,
       message: `L'inscription de ${participation.user.name || participation.user.email || 'l’utilisateur'} a été annulée.${
-        result.promotedUser ? ' Un participant de la liste d’attente a été promu automatiquement.' : ''
+        result.promotedUser
+          ? ' Un participant de la liste d’attente a été promu automatiquement.'
+          : ''
       }`,
       cancelledParticipation: result.cancelled,
       promotedUserId: result.promotedUser?.userId || null,

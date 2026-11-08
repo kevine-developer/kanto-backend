@@ -17,7 +17,6 @@ import {
   CreateMarketingRequestDto,
   SendMarketingMessageDto,
 } from '../../dto/partner-marketing.dto.js';
-import type { Partner } from '../../../../generated/prisma/client.js';
 
 @Controller('v1/marketing')
 @UseGuards(PartnerApiKeyGuard, PartnerScopesGuard)
@@ -82,12 +81,9 @@ export class PartnerMarketingV1Controller {
     @Param('id') requestId: string,
     @Body() dto: SendMarketingMessageDto,
   ) {
-    return this.partnerMarketingService.addMessage(
-      requestId,
-      partner.id,
-      dto,
-      { role: 'PARTNER', name: partner.name },
-    );
+    return this.partnerMarketingService.addMessage(requestId, partner.id, dto, {
+      role: 'PARTNER',
+      name: partner.name,
+    });
   }
 }
-

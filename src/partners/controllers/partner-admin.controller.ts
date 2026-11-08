@@ -8,9 +8,14 @@ import {
   UseGuards,
   Req,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import type { Request } from 'express';
-import { AuthGuard, Roles, Session, type UserSession } from '../../auth/index.js';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import {
+  AuthGuard,
+  Roles,
+  Session,
+  type UserSession,
+} from '../../auth/index.js';
 import { PartnersService } from '../services/partners.service.js';
 import { PartnerEventsService } from '../services/partner-events.service.js';
 import { PartnerMarketingService } from '../services/partner-marketing.service.js';
@@ -49,7 +54,9 @@ export class PartnerAdminController {
   // ─── Partenaires (Organisations) ──────────────────────────────────────────
 
   @Get()
-  @ApiOperation({ summary: 'Lister les organisations partenaires avec filtres' })
+  @ApiOperation({
+    summary: 'Lister les organisations partenaires avec filtres',
+  })
   async getPartners(
     @Query('status') status?: PartnerStatus,
     @Query('search') search?: string,
@@ -65,13 +72,17 @@ export class PartnerAdminController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Consulter les détails d’une organisation partenaire' })
+  @ApiOperation({
+    summary: 'Consulter les détails d’une organisation partenaire',
+  })
   async getPartnerDetails(@Param('id') id: string) {
     return this.partnersService.getPartnerByIdOrSlug(id);
   }
 
   @Post(':id/verify')
-  @ApiOperation({ summary: 'Valider, suspendre ou rejeter une organisation partenaire' })
+  @ApiOperation({
+    summary: 'Valider, suspendre ou rejeter une organisation partenaire',
+  })
   async verifyPartner(
     @Param('id') partnerId: string,
     @Body() dto: VerifyPartnerDto,
@@ -79,17 +90,15 @@ export class PartnerAdminController {
     @Req() req?: Request,
   ) {
     const adminUserId = resolveAdminId(session, req);
-    return this.partnersService.verifyPartner(
-      partnerId,
-      dto,
-      adminUserId,
-    );
+    return this.partnersService.verifyPartner(partnerId, dto, adminUserId);
   }
 
   // ─── Modération des événements partenaires ────────────────────────────────
 
   @Get('events/list')
-  @ApiOperation({ summary: 'Lister les événements partenaires pour modération' })
+  @ApiOperation({
+    summary: 'Lister les événements partenaires pour modération',
+  })
   async getEvents(
     @Query('moderationStatus') moderationStatus?: EventModerationStatus,
     @Query('partnerId') partnerId?: string,
@@ -143,7 +152,9 @@ export class PartnerAdminController {
   }
 
   @Post('marketing/requests/:id/review')
-  @ApiOperation({ summary: 'Examiner, chiffrer ou programmer une demande marketing' })
+  @ApiOperation({
+    summary: 'Examiner, chiffrer ou programmer une demande marketing',
+  })
   async reviewMarketingRequest(
     @Param('id') requestId: string,
     @Body() dto: ReviewMarketingRequestDto,
@@ -159,12 +170,13 @@ export class PartnerAdminController {
   }
 
   @Post('marketing/requests/:id/messages')
-  @ApiOperation({ summary: 'Envoyer une réponse administrative dans le fil marketing' })
+  @ApiOperation({
+    summary: 'Envoyer une réponse administrative dans le fil marketing',
+  })
   async sendMarketingMessage(
     @Param('id') requestId: string,
     @Body() dto: SendMarketingMessageDto,
     @Session() session?: UserSession,
-    @Req() req?: Request,
   ) {
     const authorName = (session?.user as any)?.name || 'Équipe Kanto MG';
     return this.marketingService.addMessage(

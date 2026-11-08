@@ -138,7 +138,9 @@ describe('PartnerMarketingService', () => {
       const res = await service.addMessage(
         'req_1',
         null,
-        { message: 'Bien sûr, les dates du 5 au 12 décembre sont disponibles.' },
+        {
+          message: 'Bien sûr, les dates du 5 au 12 décembre sont disponibles.',
+        },
         { role: 'ADMIN', name: 'Équipe Kanto MG' },
       );
 

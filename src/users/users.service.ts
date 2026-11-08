@@ -878,7 +878,11 @@ export class UsersService {
   async deleteAccount(
     userId: string,
     dto: DeleteAccountDto,
-  ): Promise<{ success: boolean; message: string; deletionScheduledAt?: Date }> {
+  ): Promise<{
+    success: boolean;
+    message: string;
+    deletionScheduledAt?: Date;
+  }> {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
       include: {
@@ -1063,7 +1067,9 @@ export class UsersService {
       },
     });
 
-    this.logger.log(`[reactivateAccount] Compte réactivé avec succès pour l'utilisateur ${userId}`);
+    this.logger.log(
+      `[reactivateAccount] Compte réactivé avec succès pour l'utilisateur ${userId}`,
+    );
 
     this.resendService
       .sendAccountReactivatedEmail({
@@ -1071,7 +1077,10 @@ export class UsersService {
         userName: user.name,
       })
       .catch((err) => {
-        this.logger.warn(`Échec envoi email réactivation pour ${user.email}:`, err);
+        this.logger.warn(
+          `Échec envoi email réactivation pour ${user.email}:`,
+          err,
+        );
       });
 
     return {
@@ -1090,7 +1099,8 @@ export class UsersService {
 
     return {
       success: true,
-      message: 'La suppression de votre compte reste programmée. Vous avez été déconnecté.',
+      message:
+        'La suppression de votre compte reste programmée. Vous avez été déconnecté.',
     };
   }
 
@@ -1121,7 +1131,9 @@ export class UsersService {
       },
     });
 
-    this.logger.log(`[purgeScheduledDeletions] ${expiredUsers.length} compte(s) à purger définitivement.`);
+    this.logger.log(
+      `[purgeScheduledDeletions] ${expiredUsers.length} compte(s) à purger définitivement.`,
+    );
 
     const results: { id: string; success: boolean; error?: string }[] = [];
 
@@ -1210,7 +1222,9 @@ export class UsersService {
           !expUser.image.includes('default-avatar') &&
           !expUser.image.includes('default_avatar')
         ) {
-          this.cloudinaryService.deleteMediaFromUrl(expUser.image).catch(() => {});
+          this.cloudinaryService
+            .deleteMediaFromUrl(expUser.image)
+            .catch(() => {});
         }
 
         // Envoi email final
@@ -1243,7 +1257,9 @@ export class UsersService {
    */
   async blockUser(currentUserId: string, targetUserId: string) {
     if (currentUserId === targetUserId) {
-      throw new BadRequestException('Vous ne pouvez pas vous bloquer vous-même.');
+      throw new BadRequestException(
+        'Vous ne pouvez pas vous bloquer vous-même.',
+      );
     }
 
     const targetUser = await this.prisma.user.findUnique({
@@ -1282,7 +1298,9 @@ export class UsersService {
       });
     });
 
-    this.logger.log(`🛡️ [UserBlock] Utilisateur ${currentUserId} a bloqué ${targetUserId}`);
+    this.logger.log(
+      `🛡️ [UserBlock] Utilisateur ${currentUserId} a bloqué ${targetUserId}`,
+    );
 
     return {
       success: true,
@@ -1302,7 +1320,9 @@ export class UsersService {
       },
     });
 
-    this.logger.log(`🛡️ [UserBlock] Utilisateur ${currentUserId} a débloqué ${targetUserId}`);
+    this.logger.log(
+      `🛡️ [UserBlock] Utilisateur ${currentUserId} a débloqué ${targetUserId}`,
+    );
 
     return {
       success: true,

@@ -548,7 +548,10 @@ export class RealtimeGateway
         err instanceof Error
           ? err.message
           : 'Erreur lors de la création du salon';
-      this.logger.error(`Erreur création salon : ${rawMsg}`, err instanceof Error ? err.stack : undefined);
+      this.logger.error(
+        `Erreur création salon : ${rawMsg}`,
+        err instanceof Error ? err.stack : undefined,
+      );
       return {
         success: false,
         message: this.sanitizePublicErrorMessage(
@@ -1582,5 +1585,4 @@ export class RealtimeGateway
 
     return rawMessage;
   }
-
 }

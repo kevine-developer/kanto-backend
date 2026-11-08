@@ -86,7 +86,9 @@ export class BetaEmailDispatcherService {
     // Déchiffrement transparent systématique de l'adresse destinataire
     const to = decryptEmail(options.to).trim().toLowerCase();
     if (!to || !to.includes('@')) {
-      throw new Error(`Adresse e-mail destinataire invalide : ${maskEmail(options.to)}`);
+      throw new Error(
+        `Adresse e-mail destinataire invalide : ${maskEmail(options.to)}`,
+      );
     }
 
     // 1. Récupération de la configuration globale pour liens par défaut

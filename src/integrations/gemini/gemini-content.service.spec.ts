@@ -23,13 +23,17 @@ describe('GeminiContentService', () => {
 
   it('résout correctement les deepLinks en fonction du thème', () => {
     expect(
-      service.resolveDeepLink('apprentissage de la langue malgache (vocabulaire)'),
+      service.resolveDeepLink(
+        'apprentissage de la langue malgache (vocabulaire)',
+      ),
     ).toBe('/(tabs)/learn');
+    expect(service.resolveDeepLink('défis linguistiques et gamification')).toBe(
+      '/(tabs)/play',
+    );
     expect(
-      service.resolveDeepLink('défis linguistiques et gamification'),
-    ).toBe('/(tabs)/play');
-    expect(
-      service.resolveDeepLink('contes et récits traditionnels malgaches (angano)'),
+      service.resolveDeepLink(
+        'contes et récits traditionnels malgaches (angano)',
+      ),
     ).toBe('/(tabs)/explore');
   });
 
@@ -52,4 +56,3 @@ describe('GeminiContentService', () => {
     expect(theme.length).toBeGreaterThan(5);
   });
 });
-

@@ -47,7 +47,10 @@ export class PartnerPortalController {
 
   @Post('register')
   @ApiOperation({ summary: 'Enregistrer une nouvelle organisation partenaire' })
-  @ApiResponse({ status: 201, description: 'Organisation partenaire créée avec succès.' })
+  @ApiResponse({
+    status: 201,
+    description: 'Organisation partenaire créée avec succès.',
+  })
   async register(
     @Body() dto: RegisterPartnerDto,
     @Session() session?: UserSession,
@@ -58,15 +61,16 @@ export class PartnerPortalController {
   }
 
   @Get('me')
-  @ApiOperation({ summary: 'Consulter le profil de l’organisation partenaire connectée' })
-  async getMyProfile(
-    @Session() session?: UserSession,
-    @Req() req?: Request,
-  ) {
+  @ApiOperation({
+    summary: 'Consulter le profil de l’organisation partenaire connectée',
+  })
+  async getMyProfile(@Session() session?: UserSession, @Req() req?: Request) {
     const userId = this.getUserId(session, req);
     const partner = await this.partnersService.getPartnerByUserId(userId);
     if (!partner) {
-      throw new NotFoundException('Aucune organisation partenaire associée à ce compte.');
+      throw new NotFoundException(
+        'Aucune organisation partenaire associée à ce compte.',
+      );
     }
     return partner;
   }
@@ -87,11 +91,10 @@ export class PartnerPortalController {
   }
 
   @Get('dashboard')
-  @ApiOperation({ summary: 'Statistiques consolidées du tableau de bord organisateur' })
-  async getDashboard(
-    @Session() session?: UserSession,
-    @Req() req?: Request,
-  ) {
+  @ApiOperation({
+    summary: 'Statistiques consolidées du tableau de bord organisateur',
+  })
+  async getDashboard(@Session() session?: UserSession, @Req() req?: Request) {
     const userId = this.getUserId(session, req);
     const partner = await this.partnersService.getPartnerByUserId(userId);
     if (!partner) {
@@ -102,10 +105,7 @@ export class PartnerPortalController {
 
   @Get('api-keys')
   @ApiOperation({ summary: 'Lister les clés API du partenaire' })
-  async listApiKeys(
-    @Session() session?: UserSession,
-    @Req() req?: Request,
-  ) {
+  async listApiKeys(@Session() session?: UserSession, @Req() req?: Request) {
     const userId = this.getUserId(session, req);
     const partner = await this.partnersService.getPartnerByUserId(userId);
     if (!partner) {
@@ -118,7 +118,8 @@ export class PartnerPortalController {
   @ApiOperation({ summary: 'Générer une nouvelle clé API développeur' })
   @ApiResponse({
     status: 201,
-    description: 'Clé API générée. Attention : la clé complète en clair n’est affichée qu’une seule fois !',
+    description:
+      'Clé API générée. Attention : la clé complète en clair n’est affichée qu’une seule fois !',
   })
   async createApiKey(
     @Body() dto: CreateApiKeyDto,

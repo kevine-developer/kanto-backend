@@ -72,4 +72,3 @@ export class ReviewMarketingRequestDto {
   @IsOptional()
   adminFeedback?: string;
 }
-

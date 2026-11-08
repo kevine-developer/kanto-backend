@@ -109,10 +109,7 @@ export class UserQuizController {
 
   @Get(':id/stats')
   @UseGuards(AuthGuard)
-  async getDeckStats(
-    @Param('id') id: string,
-    @Session() session: UserSession,
-  ) {
+  async getDeckStats(@Param('id') id: string, @Session() session: UserSession) {
     return this.userQuizService.getDeckStats(session.user.id, id);
   }
 
@@ -161,7 +158,11 @@ export class UserQuizController {
     @Body() dto: UpdateUserQuestionDto,
     @Session() session: UserSession,
   ) {
-    return this.userQuizService.updateQuestion(session.user.id, questionId, dto);
+    return this.userQuizService.updateQuestion(
+      session.user.id,
+      questionId,
+      dto,
+    );
   }
 
   @Delete('questions/:questionId')

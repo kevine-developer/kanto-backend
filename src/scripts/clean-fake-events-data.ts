@@ -13,7 +13,9 @@ const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  console.log('🧹 [Clean Fake Events Data] Démarrage du nettoyage des données fictives...');
+  console.log(
+    '🧹 [Clean Fake Events Data] Démarrage du nettoyage des données fictives...',
+  );
 
   const targetSlugs = [
     'herinandron-ny-teny-malagasy',
@@ -28,7 +30,7 @@ async function main() {
 
   // Dates futures pour l'événement programmé
   const scheduledStart = new Date(now.getTime() + 13 * 24 * 3600 * 1000); // ~21 nov
-  const scheduledEnd = new Date(now.getTime() + 20 * 24 * 3600 * 1000);   // ~28 nov
+  const scheduledEnd = new Date(now.getTime() + 20 * 24 * 3600 * 1000); // ~28 nov
 
   // 1. Récupérer les événements cibles
   const events = await prisma.event.findMany({
@@ -42,7 +44,9 @@ async function main() {
     console.log(`\n--- Nettoyage de "${ev.titleFr}" (${ev.slug}) ---`);
     console.log(`  Avant :`);
     console.log(`    Statut: ${ev.status}`);
-    console.log(`    Période: ${ev.startDate.toISOString().slice(0, 10)} -> ${ev.endDate.toISOString().slice(0, 10)}`);
+    console.log(
+      `    Période: ${ev.startDate.toISOString().slice(0, 10)} -> ${ev.endDate.toISOString().slice(0, 10)}`,
+    );
     console.log(`    Compteur participants: ${ev.currentParticipantsCount}`);
     console.log(`    Participations en base: ${ev.participations.length}`);
 
@@ -86,11 +90,17 @@ async function main() {
 
     console.log(`  Après :`);
     console.log(`    Statut: ${updated.status}`);
-    console.log(`    Période: ${updated.startDate.toISOString().slice(0, 10)} -> ${updated.endDate.toISOString().slice(0, 10)}`);
-    console.log(`    Compteur participants: ${updated.currentParticipantsCount}`);
+    console.log(
+      `    Période: ${updated.startDate.toISOString().slice(0, 10)} -> ${updated.endDate.toISOString().slice(0, 10)}`,
+    );
+    console.log(
+      `    Compteur participants: ${updated.currentParticipantsCount}`,
+    );
   }
 
-  console.log('\n✅ Nettoyage terminé avec succès ! Tous les compteurs sont à 0 et les statuts/dates sont cohérents.');
+  console.log(
+    '\n✅ Nettoyage terminé avec succès ! Tous les compteurs sont à 0 et les statuts/dates sont cohérents.',
+  );
 }
 
 main()
@@ -102,4 +112,3 @@ main()
     await prisma.$disconnect();
     await pool.end();
   });
-

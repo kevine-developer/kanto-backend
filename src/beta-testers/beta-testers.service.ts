@@ -111,7 +111,11 @@ export class BetaTestersService {
 
     // 2. Vérification d'une inscription existante via hash HMAC-SHA-256 déterministe (avec fallback résilient)
     const emailHashVal = hashEmail(email);
-    let existing: Awaited<ReturnType<typeof this.prisma.betaTester.findFirst<{ include: { group: true } }>>> = null;
+    let existing: Awaited<
+      ReturnType<
+        typeof this.prisma.betaTester.findFirst<{ include: { group: true } }>
+      >
+    > = null;
     try {
       existing = await this.prisma.betaTester.findFirst({
         where: {
@@ -499,7 +503,8 @@ export class BetaTestersService {
     confirmedAt?: Date | null;
     androidStatus?: string | null;
     iosStatus?: string | null;
-  }): 'INSCRIT' | 'EN_ATTENTE' | 'CONFIRME' | 'VERIFIE' | 'INSTALLE' | 'INACTIF' {
+  }):
+    'INSCRIT' | 'EN_ATTENTE' | 'CONFIRME' | 'VERIFIE' | 'INSTALLE' | 'INACTIF' {
     if (tester.unsubscribedAt || tester.status === TesterStatus.REJECTED) {
       return 'INACTIF';
     }
@@ -521,9 +526,14 @@ export class BetaTestersService {
     }
     if (
       tester.confirmationStatus &&
-      ['INSCRIT', 'EN_ATTENTE', 'CONFIRME', 'VERIFIE', 'INSTALLE', 'INACTIF'].includes(
-        tester.confirmationStatus,
-      )
+      [
+        'INSCRIT',
+        'EN_ATTENTE',
+        'CONFIRME',
+        'VERIFIE',
+        'INSTALLE',
+        'INACTIF',
+      ].includes(tester.confirmationStatus)
     ) {
       return tester.confirmationStatus as any;
     }
@@ -594,7 +604,8 @@ export class BetaTestersService {
   async confirmParticipation(dto: ConfirmParticipationDto) {
     const email = dto.email.trim().toLowerCase();
     const emailHashVal = hashEmail(email);
-    let tester: Awaited<ReturnType<typeof this.prisma.betaTester.findFirst>> = null;
+    let tester: Awaited<ReturnType<typeof this.prisma.betaTester.findFirst>> =
+      null;
 
     try {
       tester = await this.prisma.betaTester.findFirst({
@@ -627,7 +638,10 @@ export class BetaTestersService {
     if (action === 'INSTALLED') {
       updateData.installedAt = tester.installedAt || now;
       updateData.confirmationStatus = 'INSTALLE';
-      if (tester.platforms.includes('ANDROID') && tester.androidStatus !== 'REJECTED') {
+      if (
+        tester.platforms.includes('ANDROID') &&
+        tester.androidStatus !== 'REJECTED'
+      ) {
         updateData.androidStatus = 'ACTIVE';
       }
       if (tester.platforms.includes('IOS') && tester.iosStatus !== 'REJECTED') {
@@ -670,9 +684,16 @@ export class BetaTestersService {
   async verifyParticipation(emailInput: string) {
     const email = emailInput.trim().toLowerCase();
     const emailHashVal = hashEmail(email);
-    let tester: Awaited<ReturnType<typeof this.prisma.betaTester.findFirst<{
-      include: { group: true; feedbacks: { take: 1; orderBy: { createdAt: 'desc' } } };
-    }>>> = null;
+    let tester: Awaited<
+      ReturnType<
+        typeof this.prisma.betaTester.findFirst<{
+          include: {
+            group: true;
+            feedbacks: { take: 1; orderBy: { createdAt: 'desc' } };
+          };
+        }>
+      >
+    > = null;
 
     try {
       tester = await this.prisma.betaTester.findFirst({
@@ -738,7 +759,12 @@ export class BetaTestersService {
       where: {
         status: 'ACTIVE',
         platform: {
-          in: hasAndroid && hasIos ? ['ANDROID', 'IOS', 'ALL'] : hasAndroid ? ['ANDROID', 'ALL'] : ['IOS', 'ALL'],
+          in:
+            hasAndroid && hasIos
+              ? ['ANDROID', 'IOS', 'ALL']
+              : hasAndroid
+                ? ['ANDROID', 'ALL']
+                : ['IOS', 'ALL'],
         },
       },
       orderBy: { publishedAt: 'desc' },
@@ -765,9 +791,9 @@ export class BetaTestersService {
       ['CONFIRME', 'VERIFIE', 'INSTALLE'].includes(unifiedStatus) ||
       Boolean(tester.confirmedAt);
     const step4Done =
-      ['VERIFIE', 'INSTALLE'].includes(unifiedStatus) || Boolean(tester.installedAt);
-    const step5Done =
-      tester.feedbacks && tester.feedbacks.length > 0;
+      ['VERIFIE', 'INSTALLE'].includes(unifiedStatus) ||
+      Boolean(tester.installedAt);
+    const step5Done = tester.feedbacks && tester.feedbacks.length > 0;
 
     let currentStepIndex = 1;
     if (step4Done) currentStepIndex = 5;
@@ -780,7 +806,8 @@ export class BetaTestersService {
         index: 1,
         key: 'REGISTERED',
         title: 'Candidature enregistrée',
-        description: 'Votre inscription au programme bêta a été prise en compte avec succès.',
+        description:
+          'Votre inscription au programme bêta a été prise en compte avec succès.',
         completed: step1Done,
         date: tester.createdAt,
       },
@@ -788,13 +815,18 @@ export class BetaTestersService {
         index: 2,
         key: 'INVITATION',
         title: 'Accès & Invitation',
-        description: hasAndroid && hasIos
-          ? 'Autorisation accordée pour Google Play et Apple TestFlight.'
-          : hasAndroid
-            ? 'Ajout de votre compte Google au groupe de test fermé Google Play.'
-            : 'Génération de votre accès au test sur Apple TestFlight.',
+        description:
+          hasAndroid && hasIos
+            ? 'Autorisation accordée pour Google Play et Apple TestFlight.'
+            : hasAndroid
+              ? 'Ajout de votre compte Google au groupe de test fermé Google Play.'
+              : 'Génération de votre accès au test sur Apple TestFlight.',
         completed: step2Done,
-        date: tester.androidInvitedAt || tester.iosInvitedAt || tester.invitedAt || null,
+        date:
+          tester.androidInvitedAt ||
+          tester.iosInvitedAt ||
+          tester.invitedAt ||
+          null,
       },
       {
         index: 3,
@@ -810,7 +842,8 @@ export class BetaTestersService {
         index: 4,
         key: 'INSTALLED',
         title: 'Installation de Kanto MG',
-        description: 'Télécharger et ouvrir Kanto MG sur votre appareil mobile.',
+        description:
+          'Télécharger et ouvrir Kanto MG sur votre appareil mobile.',
         completed: step4Done,
         date: tester.installedAt || null,
       },
@@ -818,7 +851,8 @@ export class BetaTestersService {
         index: 5,
         key: 'TESTING',
         title: 'Exploration & Retours',
-        description: 'Découvrir la culture malgache et partager vos avis et signalements.',
+        description:
+          'Découvrir la culture malgache et partager vos avis et signalements.',
         completed: step5Done,
         date: tester.feedbacks?.[0]?.createdAt || null,
       },
@@ -889,7 +923,8 @@ export class BetaTestersService {
   async resendInvitePublic(emailInput: string) {
     const email = emailInput.trim().toLowerCase();
     const emailHashVal = hashEmail(email);
-    let tester: Awaited<ReturnType<typeof this.prisma.betaTester.findFirst>> = null;
+    let tester: Awaited<ReturnType<typeof this.prisma.betaTester.findFirst>> =
+      null;
     try {
       tester = await this.prisma.betaTester.findFirst({
         where: {
@@ -1987,7 +2022,9 @@ export class BetaTestersService {
         sanitizeCsvCell(t.iosStatus),
         sanitizeCsvCell(t.group?.name || ''),
         sanitizeCsvCell(t.createdAt.toISOString()),
-        sanitizeCsvCell(t.lastContactedAt ? t.lastContactedAt.toISOString() : ''),
+        sanitizeCsvCell(
+          t.lastContactedAt ? t.lastContactedAt.toISOString() : '',
+        ),
       ];
     });
 
@@ -2065,7 +2102,9 @@ export class BetaTestersService {
   ) {
     const updateData: Prisma.BetaTesterUpdateInput = {
       ...(dto.status ? { status: dto.status } : {}),
-      ...(dto.confirmationStatus ? { confirmationStatus: dto.confirmationStatus } : {}),
+      ...(dto.confirmationStatus
+        ? { confirmationStatus: dto.confirmationStatus }
+        : {}),
       ...(dto.notes ? { notes: dto.notes } : {}),
     };
 

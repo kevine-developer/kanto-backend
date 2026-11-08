@@ -244,4 +244,3 @@ export class ReviewPartnerEventDto {
   @IsOptional()
   rejectionReason?: string;
 }
-

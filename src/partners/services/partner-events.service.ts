@@ -1,10 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  ForbiddenException,
-  BadRequestException,
-  Logger,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import {
   CreatePartnerEventDto,
@@ -232,28 +226,58 @@ export class PartnerEventsService {
         ...(dto.titleMg && { titleMg: dto.titleMg.trim() }),
         ...(dto.descriptionFr && { descriptionFr: dto.descriptionFr.trim() }),
         ...(dto.descriptionMg && { descriptionMg: dto.descriptionMg.trim() }),
-        ...(dto.shortDescFr !== undefined && { shortDescFr: dto.shortDescFr?.trim() || null }),
-        ...(dto.shortDescMg !== undefined && { shortDescMg: dto.shortDescMg?.trim() || null }),
+        ...(dto.shortDescFr !== undefined && {
+          shortDescFr: dto.shortDescFr?.trim() || null,
+        }),
+        ...(dto.shortDescMg !== undefined && {
+          shortDescMg: dto.shortDescMg?.trim() || null,
+        }),
         ...(dto.category && { category: dto.category }),
-        ...(dto.participationType && { participationType: dto.participationType }),
+        ...(dto.participationType && {
+          participationType: dto.participationType,
+        }),
         ...(dto.startDate && { startDate: new Date(dto.startDate) }),
         ...(dto.endDate && { endDate: new Date(dto.endDate) }),
         ...(dto.registrationDeadline !== undefined && {
-          registrationDeadline: dto.registrationDeadline ? new Date(dto.registrationDeadline) : null,
+          registrationDeadline: dto.registrationDeadline
+            ? new Date(dto.registrationDeadline)
+            : null,
         }),
-        ...(dto.location !== undefined && { location: dto.location?.trim() || null }),
-        ...(dto.externalUrl !== undefined && { externalUrl: dto.externalUrl?.trim() || null }),
-        ...(dto.imageUrl !== undefined && { imageUrl: dto.imageUrl?.trim() || null }),
-        ...(dto.bannerUrl !== undefined && { bannerUrl: dto.bannerUrl?.trim() || null }),
-        ...(dto.maxParticipants !== undefined && { maxParticipants: dto.maxParticipants || null }),
-        ...(dto.enableWaitlist !== undefined && { enableWaitlist: dto.enableWaitlist }),
-        ...(dto.waitlistCapacity !== undefined && { waitlistCapacity: dto.waitlistCapacity || null }),
+        ...(dto.location !== undefined && {
+          location: dto.location?.trim() || null,
+        }),
+        ...(dto.externalUrl !== undefined && {
+          externalUrl: dto.externalUrl?.trim() || null,
+        }),
+        ...(dto.imageUrl !== undefined && {
+          imageUrl: dto.imageUrl?.trim() || null,
+        }),
+        ...(dto.bannerUrl !== undefined && {
+          bannerUrl: dto.bannerUrl?.trim() || null,
+        }),
+        ...(dto.maxParticipants !== undefined && {
+          maxParticipants: dto.maxParticipants || null,
+        }),
+        ...(dto.enableWaitlist !== undefined && {
+          enableWaitlist: dto.enableWaitlist,
+        }),
+        ...(dto.waitlistCapacity !== undefined && {
+          waitlistCapacity: dto.waitlistCapacity || null,
+        }),
         ...(dto.isPaid !== undefined && { isPaid: dto.isPaid }),
-        ...(dto.ticketPrice !== undefined && { ticketPrice: dto.ticketPrice || null }),
+        ...(dto.ticketPrice !== undefined && {
+          ticketPrice: dto.ticketPrice || null,
+        }),
         ...(dto.currency !== undefined && { currency: dto.currency || 'MGA' }),
-        ...(dto.rulesFr !== undefined && { rulesFr: dto.rulesFr?.trim() || null }),
-        ...(dto.rulesMg !== undefined && { rulesMg: dto.rulesMg?.trim() || null }),
-        ...(dto.cancelledReason !== undefined && { cancelledReason: dto.cancelledReason?.trim() || null }),
+        ...(dto.rulesFr !== undefined && {
+          rulesFr: dto.rulesFr?.trim() || null,
+        }),
+        ...(dto.rulesMg !== undefined && {
+          rulesMg: dto.rulesMg?.trim() || null,
+        }),
+        ...(dto.cancelledReason !== undefined && {
+          cancelledReason: dto.cancelledReason?.trim() || null,
+        }),
         ...(dto.status && { status: dto.status }),
         moderationStatus: nextModerationStatus,
       },
@@ -289,7 +313,11 @@ export class PartnerEventsService {
       event._count.participations === 0
     ) {
       await this.prisma.event.delete({ where: { id: eventId } });
-      return { success: true, action: 'DELETED', message: 'Événement supprimé avec succès.' };
+      return {
+        success: true,
+        action: 'DELETED',
+        message: 'Événement supprimé avec succès.',
+      };
     }
 
     // Sinon, on applique une annulation propre avec motif
@@ -297,7 +325,8 @@ export class PartnerEventsService {
       where: { id: eventId },
       data: {
         status: EventStatus.CANCELLED,
-        cancelledReason: reason?.trim() || 'Annulé par l’organisateur partenaire',
+        cancelledReason:
+          reason?.trim() || 'Annulé par l’organisateur partenaire',
       },
     });
 
@@ -443,9 +472,10 @@ export class PartnerEventsService {
 
     const confirmedCount = event._count.participations;
     const maxCapacity = event.maxParticipants;
-    const fillRate = maxCapacity && maxCapacity > 0
-      ? Math.min(100, Math.round((confirmedCount / maxCapacity) * 100))
-      : null;
+    const fillRate =
+      maxCapacity && maxCapacity > 0
+        ? Math.min(100, Math.round((confirmedCount / maxCapacity) * 100))
+        : null;
 
     return {
       eventId: event.id,
@@ -489,7 +519,11 @@ export class PartnerEventsService {
         { titleFr: { contains: query.search.trim(), mode: 'insensitive' } },
         { titleMg: { contains: query.search.trim(), mode: 'insensitive' } },
         { slug: { contains: query.search.trim(), mode: 'insensitive' } },
-        { partner: { name: { contains: query.search.trim(), mode: 'insensitive' } } },
+        {
+          partner: {
+            name: { contains: query.search.trim(), mode: 'insensitive' },
+          },
+        },
       ];
     }
 
@@ -559,7 +593,10 @@ export class PartnerEventsService {
         moderationStatus: dto.decision,
         moderatedAt: new Date(),
         moderatedById: adminId,
-        moderationRejectionReason: !isApproved ? dto.rejectionReason?.trim() || 'Non conforme à la charte culturelle Kanto MG' : null,
+        moderationRejectionReason: !isApproved
+          ? dto.rejectionReason?.trim() ||
+            'Non conforme à la charte culturelle Kanto MG'
+          : null,
         status: nextStatus,
       },
     });
@@ -588,4 +625,3 @@ export class PartnerEventsService {
     return updated;
   }
 }
-

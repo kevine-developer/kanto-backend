@@ -579,7 +579,8 @@ export function pageShell(options: {
 }): string {
   const { title, pageTitle, description, body, hideHeader } = options;
   const year = currentYear();
-  const supportEmail = options.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
+  const supportEmail =
+    options.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
   const bodyClass = hideHeader ? ' class="hide-header"' : '';
 
   return `<!DOCTYPE html>

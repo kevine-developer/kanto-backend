@@ -92,7 +92,6 @@ export interface BetaTesterInvitationEmailOptions {
   idempotencyKey?: string;
 }
 
-
 export interface ContributionSubmittedEmailOptions {
   to: string;
   userName?: string;
@@ -140,7 +139,6 @@ export interface SecurityChangeEmailOptions {
   action: 'changed' | 'added';
   idempotencyKey?: string;
 }
-
 
 export interface AccountPendingDeletionEmailOptions {
   to: string;

@@ -21,7 +21,10 @@ import {
   Session,
   type UserSession,
 } from '../../auth/index.js';
-import { ReportReason, ReportStatus } from '../../../generated/prisma/client.js';
+import {
+  ReportReason,
+  ReportStatus,
+} from '../../../generated/prisma/client.js';
 
 @Controller('moderation')
 export class ModerationController {

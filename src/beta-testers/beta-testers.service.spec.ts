@@ -5,7 +5,11 @@ import { BetaEmailDispatcherService } from './services/beta-email-dispatcher.ser
 import { PrismaService } from '../prisma/prisma.service.js';
 import { AdminAuditService } from '../admin/admin-audit.service.js';
 import { TesterStatus, Prisma } from '../../generated/prisma/client.js';
-import { hashEmail, encryptEmail, maskEmail } from './utils/beta-crypto.util.js';
+import {
+  hashEmail,
+  encryptEmail,
+  maskEmail,
+} from './utils/beta-crypto.util.js';
 
 describe('BetaTestersService', () => {
   let service: BetaTestersService;
@@ -625,8 +629,10 @@ describe('BetaTestersService', () => {
       prisma.betaAutomationConfig.findFirst.mockResolvedValue({
         androidAvailability: 'BETA_OPEN',
         iosAvailability: 'BETA_OPEN',
-        playStoreWebLink: 'https://play.google.com/apps/testing/com.kantomg.app',
-        playStoreAppLink: 'https://play.google.com/store/apps/details?id=com.kantomg.app',
+        playStoreWebLink:
+          'https://play.google.com/apps/testing/com.kantomg.app',
+        playStoreAppLink:
+          'https://play.google.com/store/apps/details?id=com.kantomg.app',
         testFlightPublicLink: 'https://testflight.apple.com/join/kanto',
         appStorePublicLink: null,
       });
@@ -634,8 +640,12 @@ describe('BetaTestersService', () => {
       const info = await service.getDownloadInfo();
       expect(info.android.availability).toBe('BETA_OPEN');
       expect(info.ios.availability).toBe('BETA_OPEN');
-      expect(info.android.playStoreWebLink).toBe('https://play.google.com/apps/testing/com.kantomg.app');
-      expect(info.ios.testFlightLink).toBe('https://testflight.apple.com/join/kanto');
+      expect(info.android.playStoreWebLink).toBe(
+        'https://play.google.com/apps/testing/com.kantomg.app',
+      );
+      expect(info.ios.testFlightLink).toBe(
+        'https://testflight.apple.com/join/kanto',
+      );
     });
   });
 });

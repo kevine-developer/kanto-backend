@@ -9,7 +9,9 @@ export interface AuthenticatedPartnerRequest {
 
 export const CurrentPartner = createParamDecorator(
   (data: keyof Partner | undefined, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest<AuthenticatedPartnerRequest>();
+    const request = ctx
+      .switchToHttp()
+      .getRequest<AuthenticatedPartnerRequest>();
     const partner = request.partner;
     if (!partner) return null;
     return data ? partner[data] : partner;
@@ -18,8 +20,9 @@ export const CurrentPartner = createParamDecorator(
 
 export const CurrentApiKey = createParamDecorator(
   (_data: unknown, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest<AuthenticatedPartnerRequest>();
+    const request = ctx
+      .switchToHttp()
+      .getRequest<AuthenticatedPartnerRequest>();
     return request.apiKey ?? null;
   },
 );
-

@@ -8,7 +8,6 @@ import { PrismaService } from '../../prisma/prisma.service.js';
 import {
   CreateApiKeyDto,
   RevokeApiKeyDto,
-  PartnerApiScope,
 } from '../dto/partner-api-key.dto.js';
 import { ApiKeyEnvironment } from '../../../generated/prisma/client.js';
 
@@ -30,7 +29,8 @@ export class PartnerApiKeysService {
     }
 
     const env = dto.environment || ApiKeyEnvironment.LIVE;
-    const prefix = env === ApiKeyEnvironment.TEST ? 'kanto_test_' : 'kanto_live_';
+    const prefix =
+      env === ApiKeyEnvironment.TEST ? 'kanto_test_' : 'kanto_live_';
 
     // Génération de 32 octets aléatoires cryptographiques sécurisés (64 caractères hex)
     const randomBytes = crypto.randomBytes(32).toString('hex');
@@ -55,7 +55,7 @@ export class PartnerApiKeysService {
         name: dto.name.trim(),
         keyPrefix: displayPrefix,
         keyHash,
-        scopes: dto.scopes as string[],
+        scopes: dto.scopes,
         environment: env,
         rateLimit: dto.rateLimit || 120,
         expiresAt,
@@ -125,7 +125,9 @@ export class PartnerApiKeysService {
       where: { id: keyId },
       data: {
         revokedAt: new Date(),
-        revocationReason: dto?.reason?.trim() || 'Révocation manuelle demandée par le partenaire',
+        revocationReason:
+          dto?.reason?.trim() ||
+          'Révocation manuelle demandée par le partenaire',
       },
       select: {
         id: true,
@@ -170,4 +172,3 @@ export class PartnerApiKeysService {
     });
   }
 }
-

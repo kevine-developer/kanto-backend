@@ -59,7 +59,9 @@ export class PartnersModule implements OnModuleInit {
     // Seed idempotent des emplacements publicitaires marketing par défaut
     try {
       await this.marketingService.seedDefaultPlacementsIfEmpty();
-      this.logger.log('Catalogue des emplacements marketing Kanto vérifié avec succès.');
+      this.logger.log(
+        'Catalogue des emplacements marketing Kanto vérifié avec succès.',
+      );
     } catch (err: any) {
       this.logger.warn(
         `Impossible d'initialiser les emplacements marketing : ${err.message}`,

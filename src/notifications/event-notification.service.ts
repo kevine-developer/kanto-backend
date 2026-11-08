@@ -397,7 +397,7 @@ export class EventNotificationService {
           break;
         }
 
-      case 'CONTRIBUTION_APPROVED': {
+        case 'CONTRIBUTION_APPROVED': {
           const preview = event.contributionTitle.slice(0, 45);
           await this.notificationsService.createNotification({
             userId: user.id,

@@ -125,4 +125,3 @@ export const DEFAULT_MARKETING_PLACEMENTS: DefaultPlacementItem[] = [
     orderIndex: 6,
   },
 ];
-

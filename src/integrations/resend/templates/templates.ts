@@ -924,7 +924,6 @@ export interface ContributionStatusUpdateEmailData {
   feedbackReason?: string;
 }
 
-
 /**
  * 9b. Email envoyé à l'utilisateur lors de la soumission d'une contribution (Accusé de réception).
  */
@@ -997,7 +996,8 @@ Kanto — Lova, Kolontsaina & Tantara Malagasy`.trim();
 
     <div style="margin-top: 20px;">
       ${renderNotice({
-        content: 'Délai indicatif de modération : notre équipe traite généralement les propositions sous 24 à 48 heures. Vous recevrez une notification dès validation.',
+        content:
+          'Délai indicatif de modération : notre équipe traite généralement les propositions sous 24 à 48 heures. Vous recevrez une notification dès validation.',
         variant: 'info',
       })}
     </div>
@@ -1266,7 +1266,6 @@ https://kanto.mg`.trim();
   return { subject, html, text };
 }
 
-
 // ============================================================
 // 17. Notification de mise en attente de suppression (Rétractation 30 jours)
 // ============================================================
@@ -1324,10 +1323,12 @@ https://kanto.mg`.trim();
     </p>
 
     ${renderNotice({
-      title: 'Période de rétractation jusqu\'au ' + dateStr,
+      title: "Période de rétractation jusqu'au " + dateStr,
       content:
-        'Votre compte sera définitivement supprimé le <strong>' + dateStr + '</strong>.<br>' +
-        'D\'ici cette date, vos sessions ont été déconnectées et votre profil est masqué aux autres utilisateurs.',
+        'Votre compte sera définitivement supprimé le <strong>' +
+        dateStr +
+        '</strong>.<br>' +
+        "D'ici cette date, vos sessions ont été déconnectées et votre profil est masqué aux autres utilisateurs.",
       variant: 'security',
     })}
 

@@ -115,7 +115,9 @@ export class PartnerMarketingService implements OnModuleInit {
     const initialMessage = {
       senderRole: 'PARTNER',
       senderName: event.titleFr,
-      text: dto.campaignGoals || 'Demande de visibilité et campagne promotionnelle soumise.',
+      text:
+        dto.campaignGoals ||
+        'Demande de visibilité et campagne promotionnelle soumise.',
       sentAt: new Date().toISOString(),
     };
 
@@ -139,7 +141,9 @@ export class PartnerMarketingService implements OnModuleInit {
       },
       include: {
         placements: { include: { placement: true } },
-        event: { select: { id: true, titleFr: true, titleMg: true, slug: true } },
+        event: {
+          select: { id: true, titleFr: true, titleMg: true, slug: true },
+        },
       },
     });
 
@@ -259,24 +263,33 @@ export class PartnerMarketingService implements OnModuleInit {
       },
     });
 
-    return { success: true, message: newMessage, totalMessages: (updated.messages as any[]).length };
+    return {
+      success: true,
+      message: newMessage,
+      totalMessages: (updated.messages as any[]).length,
+    };
   }
 
   /**
    * Enregistre un incrément d'impression ou de clic sur une campagne marketing (métriques réelles).
    */
-  async recordMetrics(requestId: string, type: 'IMPRESSION' | 'CLICK' | 'CONVERSION') {
+  async recordMetrics(
+    requestId: string,
+    type: 'IMPRESSION' | 'CLICK' | 'CONVERSION',
+  ) {
     const data: any = {};
     if (type === 'IMPRESSION') data.impressionsCount = { increment: 1 };
     if (type === 'CLICK') data.clicksCount = { increment: 1 };
     if (type === 'CONVERSION') data.conversionsCount = { increment: 1 };
 
-    void this.prisma.marketingRequest
-      .update({
+    try {
+      await this.prisma.marketingRequest.update({
         where: { id: requestId },
         data,
-      })
-      .catch(() => {});
+      });
+    } catch {
+      // Ignorer silencieusement si la campagne n'existe plus
+    }
   }
 
   // ─── Administration Kanto ───────────────────────────────────────────────────
@@ -304,7 +317,13 @@ export class PartnerMarketingService implements OnModuleInit {
         where,
         include: {
           partner: {
-            select: { id: true, name: true, slug: true, email: true, type: true },
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              email: true,
+              type: true,
+            },
           },
           event: {
             select: { id: true, titleFr: true, titleMg: true, slug: true },
@@ -351,8 +370,12 @@ export class PartnerMarketingService implements OnModuleInit {
       where: { id: requestId },
       data: {
         status: dto.status,
-        actualStartDate: dto.actualStartDate ? new Date(dto.actualStartDate) : request.actualStartDate,
-        actualEndDate: dto.actualEndDate ? new Date(dto.actualEndDate) : request.actualEndDate,
+        actualStartDate: dto.actualStartDate
+          ? new Date(dto.actualStartDate)
+          : request.actualStartDate,
+        actualEndDate: dto.actualEndDate
+          ? new Date(dto.actualEndDate)
+          : request.actualEndDate,
         adminFeedback: dto.adminFeedback?.trim() || request.adminFeedback,
       },
     });
@@ -372,4 +395,3 @@ export class PartnerMarketingService implements OnModuleInit {
     return updated;
   }
 }
-

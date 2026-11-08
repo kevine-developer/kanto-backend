@@ -30,7 +30,7 @@ export class ItemsInteractionService {
       this.logger.warn(
         `⚠️ [Items] Impossible de liker : élément "${id}" introuvable`,
       );
-      throw new NotFoundException("Contenu introuvable ou retiré.");
+      throw new NotFoundException('Contenu introuvable ou retiré.');
     }
 
     // Vérifier si l'utilisateur a déjà liké
@@ -94,7 +94,7 @@ export class ItemsInteractionService {
       this.logger.warn(
         `⚠️ [Items] Impossible de retirer le like : élément "${id}" introuvable`,
       );
-      throw new NotFoundException("Contenu introuvable ou retiré.");
+      throw new NotFoundException('Contenu introuvable ou retiré.');
     }
 
     const existingLike = await this.prisma.like.findUnique({
@@ -146,7 +146,7 @@ export class ItemsInteractionService {
     });
 
     if (!existing) {
-      throw new NotFoundException("Contenu introuvable ou retiré.");
+      throw new NotFoundException('Contenu introuvable ou retiré.');
     }
 
     const existingFavorite = await this.prisma.favorite.findUnique({
@@ -214,7 +214,7 @@ export class ItemsInteractionService {
       this.logger.warn(
         `⚠️ [Items] Impossible d'incrémenter la vue : élément "${id}" introuvable`,
       );
-      throw new NotFoundException("Contenu introuvable ou retiré.");
+      throw new NotFoundException('Contenu introuvable ou retiré.');
     }
 
     const redisViews = await this.redis.incr(`kanto:views:item:${id}`);

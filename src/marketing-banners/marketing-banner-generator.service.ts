@@ -55,7 +55,8 @@ export class MarketingBannerGeneratorService {
       this.logger.warn(
         `⚠️ [BannerGenerator] GEMINI_API_KEY non configurée — utilisation du catalogue culturel de secours pour "${theme}".`,
       );
-      const fallbackContent = this.geminiContent.getFallbackBannerContent(theme);
+      const fallbackContent =
+        this.geminiContent.getFallbackBannerContent(theme);
       return await this.saveBanner(fallbackContent, theme, true);
     }
 
@@ -73,7 +74,8 @@ export class MarketingBannerGeneratorService {
       );
 
       // 3. Repli résilient sur le catalogue culturel de secours
-      const fallbackContent = this.geminiContent.getFallbackBannerContent(theme);
+      const fallbackContent =
+        this.geminiContent.getFallbackBannerContent(theme);
       return await this.saveBanner(fallbackContent, theme, true);
     }
   }

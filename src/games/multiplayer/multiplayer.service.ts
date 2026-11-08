@@ -19,7 +19,10 @@ import {
   StartMultiplayerGameDto,
   SubmitMultiplayerAnswerDto,
 } from './dto/multiplayer.dto.js';
-import { REALTIME_CHANNELS, SOCKET_EVENTS } from '../../realtime/realtime.constants.js';
+import {
+  REALTIME_CHANNELS,
+  SOCKET_EVENTS,
+} from '../../realtime/realtime.constants.js';
 import {
   MULTIPLAYER_CONFIG,
   calculateLobbyExpiresAt,
@@ -74,9 +77,13 @@ export interface MultiplayerPlayerPublic {
   earnedXp: number;
 }
 
-function parseBooleanUserAnswer(answer: string | boolean | undefined | null): boolean | null {
+function parseBooleanUserAnswer(
+  answer: string | boolean | undefined | null,
+): boolean | null {
   if (typeof answer === 'boolean') return answer;
-  const norm = String(answer || '').trim().toLowerCase();
+  const norm = String(answer || '')
+    .trim()
+    .toLowerCase();
   if (norm === 'true' || norm === 'vrai' || norm === 'marina' || norm === '1') {
     return true;
   }
@@ -997,7 +1004,7 @@ export class MultiplayerService {
         });
       }
       throw new BadRequestException(
-        'Ce salon a expiré et n\'est plus accessible.',
+        "Ce salon a expiré et n'est plus accessible.",
       );
     }
 
@@ -1041,7 +1048,7 @@ export class MultiplayerService {
           freshSession.expiresAt.getTime() <= Date.now())
       ) {
         throw new BadRequestException(
-          'Ce salon a expiré et n\'est plus accessible.',
+          "Ce salon a expiré et n'est plus accessible.",
         );
       }
 
@@ -1348,7 +1355,7 @@ export class MultiplayerService {
         });
       }
       throw new BadRequestException(
-        'Ce salon a expiré et n\'est plus disponible.',
+        "Ce salon a expiré et n'est plus disponible.",
       );
     }
 
@@ -1369,7 +1376,12 @@ export class MultiplayerService {
       session.code,
     );
 
-    return { session, questions, players: session.players, serverTime: Date.now() };
+    return {
+      session,
+      questions,
+      players: session.players,
+      serverTime: Date.now(),
+    };
   }
 
   // Alias rétrocompatibilité
@@ -1517,7 +1529,8 @@ export class MultiplayerService {
         if (q) {
           if (q.gameType === 'TRUE_FALSE') {
             const parsedAnswer = parseBooleanUserAnswer(dto.userAnswer);
-            isCorrect = parsedAnswer !== null && parsedAnswer === Boolean(q.isTrue);
+            isCorrect =
+              parsedAnswer !== null && parsedAnswer === Boolean(q.isTrue);
             explanationMg = q.explanationMg;
             explanationFr = q.explanationFr;
             correctAnswer = q.isTrue ? 'true' : 'false';
@@ -1544,7 +1557,8 @@ export class MultiplayerService {
         });
         if (q) {
           const parsedAnswer = parseBooleanUserAnswer(dto.userAnswer);
-          isCorrect = parsedAnswer !== null && parsedAnswer === Boolean(q.isTrue);
+          isCorrect =
+            parsedAnswer !== null && parsedAnswer === Boolean(q.isTrue);
           explanationMg = q.explanationMg;
           explanationFr = q.explanationFr;
           correctAnswer = q.isTrue ? 'true' : 'false';
@@ -2546,7 +2560,9 @@ export class MultiplayerService {
             `⏳ [MultiplayerService] Salon ${session.code} automatiquement fermé après expiration (créé à ${session.createdAt.toISOString()})`,
           );
 
-          await this.redisService.del(`duel:snapshot_questions:${session.code}`);
+          await this.redisService.del(
+            `duel:snapshot_questions:${session.code}`,
+          );
           await this.redisService.del(`duel:spectator:${session.code}`);
 
           await this.redisService.publish(REALTIME_CHANNELS.DUEL, {
@@ -2556,7 +2572,8 @@ export class MultiplayerService {
               code: session.code,
               status: 'EXPIRED',
               reason: 'LOBBY_TIMEOUT',
-              messageMg: 'Tapitra ny fe-potoana fiandrasana. Nofaranana ny salon.',
+              messageMg:
+                'Tapitra ny fe-potoana fiandrasana. Nofaranana ny salon.',
               messageFr:
                 'Le délai maximal d’attente est dépassé. Le salon a expiré.',
             },

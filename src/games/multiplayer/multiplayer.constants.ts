@@ -85,4 +85,3 @@ export function calculateLobbyExpiresAt(
   const ttlSec = getLobbyTtlSeconds(is1v1Duel);
   return new Date(from.getTime() + ttlSec * 1000);
 }
-

@@ -189,7 +189,9 @@ describe('EventsService', () => {
               ],
             },
             AND: expect.arrayContaining([
-              expect.objectContaining({ endDate: expect.objectContaining({ gte: expect.any(Date) }) }),
+              expect.objectContaining({
+                endDate: expect.objectContaining({ gte: expect.any(Date) }),
+              }),
             ]),
           }),
         }),
@@ -206,7 +208,9 @@ describe('EventsService', () => {
                 OR: expect.arrayContaining([
                   { status: EventStatus.COMPLETED },
                   { status: EventStatus.CANCELLED },
-                  { endDate: expect.objectContaining({ lt: expect.any(Date) }) },
+                  {
+                    endDate: expect.objectContaining({ lt: expect.any(Date) }),
+                  },
                 ]),
               }),
             ]),
@@ -664,9 +668,9 @@ describe('EventsService', () => {
         'admin_1',
       );
 
-      expect(cloudinaryService.validateAndDecodeBase64Image).toHaveBeenCalledWith(
-        'data:image/png;base64,ZmFrZQ==',
-      );
+      expect(
+        cloudinaryService.validateAndDecodeBase64Image,
+      ).toHaveBeenCalledWith('data:image/png;base64,ZmFrZQ==');
       expect(cloudinaryService.uploadImageBase64).toHaveBeenCalledWith(
         'data:image/png;base64,ZmFrZQ==',
         'couverture.png',
@@ -712,4 +716,3 @@ describe('EventsService', () => {
     });
   });
 });
-

@@ -251,7 +251,11 @@ describe('BetaTestersController', () => {
       } as unknown as Response;
 
       await controller.register(
-        { email: 'existant@example.com', platforms: ['ANDROID'], termsAccepted: true },
+        {
+          email: 'existant@example.com',
+          platforms: ['ANDROID'],
+          termsAccepted: true,
+        },
         req,
         res,
       );

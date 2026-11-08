@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/unbound-method */
 import { jest } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MarketingBannerGeneratorService } from './marketing-banner-generator.service.js';
@@ -42,14 +41,16 @@ describe('MarketingBannerGeneratorService (Tolérance aux pannes et Repli cultur
           'culture et patrimoine malgache (musique, danse, fady)',
         ),
       generateBannerContent: jest.fn<any>(),
-      getFallbackBannerContent: jest.fn<any>().mockImplementation((theme: string) => {
-        return (
-          FALLBACK_BANNER_THEMES[theme] ||
-          FALLBACK_BANNER_THEMES[
-            'culture et patrimoine malgache (musique, danse, fady)'
-          ]
-        );
-      }),
+      getFallbackBannerContent: jest
+        .fn<any>()
+        .mockImplementation((theme: string) => {
+          return (
+            FALLBACK_BANNER_THEMES[theme] ||
+            FALLBACK_BANNER_THEMES[
+              'culture et patrimoine malgache (musique, danse, fady)'
+            ]
+          );
+        }),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -101,7 +102,9 @@ describe('MarketingBannerGeneratorService (Tolérance aux pannes et Repli cultur
   it('bascule automatiquement sur le catalogue de repli culturel lors d’une erreur "fetch failed"', async () => {
     // Simuler le crash réseau Node.js (fetch failed) rencontré par l'utilisateur
     const networkError = new TypeError('fetch failed');
-    (networkError as any).cause = new Error('getaddrinfo ENOTFOUND generativelanguage.googleapis.com');
+    (networkError as any).cause = new Error(
+      'getaddrinfo ENOTFOUND generativelanguage.googleapis.com',
+    );
     geminiContent.generateBannerContent.mockRejectedValue(networkError);
 
     const result = await service.generateAndSaveBanner();
@@ -134,4 +137,3 @@ describe('MarketingBannerGeneratorService (Tolérance aux pannes et Repli cultur
     expect(prisma.marketingBanner.create).toHaveBeenCalled();
   });
 });
-
