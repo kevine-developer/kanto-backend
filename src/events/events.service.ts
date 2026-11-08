@@ -187,6 +187,7 @@ export class EventsService {
                     status: true,
                     score: true,
                     progressPercent: true,
+                    waitlistPosition: true,
                     completedAt: true,
                   },
                 },
@@ -242,6 +243,7 @@ export class EventsService {
                   status: true,
                   score: true,
                   progressPercent: true,
+                  waitlistPosition: true,
                 },
               },
             }
@@ -400,6 +402,7 @@ export class EventsService {
           return {
             success: true,
             isWaitlist: false,
+            alreadyRegistered: false,
             participation: updated,
             message: 'Votre inscription a été réactivée avec succès.',
           };
@@ -432,6 +435,7 @@ export class EventsService {
           return {
             success: true,
             isWaitlist: true,
+            alreadyRegistered: false,
             waitlistPosition,
             participation: updated,
             message: `Vous avez été réinscrit sur la liste d'attente (position #${waitlistPosition}).`,
@@ -447,6 +451,7 @@ export class EventsService {
         return {
           success: true,
           isWaitlist: true,
+          alreadyRegistered: true,
           waitlistPosition: existing.waitlistPosition,
           participation: existing,
           message: `Vous êtes déjà inscrit sur la liste d’attente (position #${existing.waitlistPosition ?? 1}).`,
@@ -456,6 +461,7 @@ export class EventsService {
       return {
         success: true,
         isWaitlist: false,
+        alreadyRegistered: true,
         participation: existing,
         message: 'Vous participez déjà à cet événement.',
       };
@@ -473,31 +479,54 @@ export class EventsService {
         );
       }
 
-      // Inscription en liste d'attente atomique
-      const waitlistResult = await this.prisma.$transaction(async (tx) => {
-        const waitlistCount = await tx.eventParticipation.count({
-          where: { eventId, status: EventParticipationStatus.WAITLIST },
-        });
+      // Inscription en liste d'attente atomique avec gestion de concurrence (P2002)
+      let waitlistResult;
+      try {
+        waitlistResult = await this.prisma.$transaction(async (tx) => {
+          const waitlistCount = await tx.eventParticipation.count({
+            where: { eventId, status: EventParticipationStatus.WAITLIST },
+          });
 
-        if (event.waitlistCapacity && waitlistCount >= event.waitlistCapacity) {
-          throw new ConflictException(
-            'La liste d’attente de cet événement a atteint sa capacité maximale.',
-          );
+          if (event.waitlistCapacity && waitlistCount >= event.waitlistCapacity) {
+            throw new ConflictException(
+              'La liste d’attente de cet événement a atteint sa capacité maximale.',
+            );
+          }
+
+          const waitlistPosition = waitlistCount + 1;
+          const p = await tx.eventParticipation.create({
+            data: {
+              eventId,
+              userId,
+              status: EventParticipationStatus.WAITLIST,
+              waitlistPosition,
+              metadata: ipAddress ? { ipAddress } : undefined,
+            },
+          });
+
+          return { participation: p, waitlistPosition };
+        });
+      } catch (err: any) {
+        if (err?.code === 'P2002') {
+          const found = await this.prisma.eventParticipation.findUnique({
+            where: { eventId_userId: { eventId, userId } },
+          });
+          if (found) {
+            return {
+              success: true,
+              isWaitlist: found.status === EventParticipationStatus.WAITLIST,
+              alreadyRegistered: true,
+              waitlistPosition: found.waitlistPosition,
+              participation: found,
+              message:
+                found.status === EventParticipationStatus.WAITLIST
+                  ? `Vous êtes déjà inscrit sur la liste d’attente (position #${found.waitlistPosition ?? 1}).`
+                  : 'Vous participez déjà à cet événement.',
+            };
+          }
         }
-
-        const waitlistPosition = waitlistCount + 1;
-        const p = await tx.eventParticipation.create({
-          data: {
-            eventId,
-            userId,
-            status: EventParticipationStatus.WAITLIST,
-            waitlistPosition,
-            metadata: ipAddress ? { ipAddress } : undefined,
-          },
-        });
-
-        return { participation: p, waitlistPosition };
-      });
+        throw err;
+      }
 
       this.logger.log(
         `[Events] Utilisateur ${userId} placé sur la liste d'attente #${waitlistResult.waitlistPosition} pour l'événement ${eventId}`,
@@ -528,30 +557,54 @@ export class EventsService {
       return {
         success: true,
         isWaitlist: true,
+        alreadyRegistered: false,
         waitlistPosition: waitlistResult.waitlistPosition,
         participation: waitlistResult.participation,
         message: `Vous avez rejoint la liste d’attente avec succès (position #${waitlistResult.waitlistPosition}).`,
       };
     }
 
-    // Création atomique de la participation confirmée
-    const participation = await this.prisma.$transaction(async (tx) => {
-      const p = await tx.eventParticipation.create({
-        data: {
-          eventId,
-          userId,
-          status: EventParticipationStatus.REGISTERED,
-          metadata: ipAddress ? { ipAddress } : undefined,
-        },
-      });
+    // Création atomique de la participation confirmée avec gestion de concurrence (P2002)
+    let participation;
+    try {
+      participation = await this.prisma.$transaction(async (tx) => {
+        const p = await tx.eventParticipation.create({
+          data: {
+            eventId,
+            userId,
+            status: EventParticipationStatus.REGISTERED,
+            metadata: ipAddress ? { ipAddress } : undefined,
+          },
+        });
 
-      await tx.event.update({
-        where: { id: eventId },
-        data: { currentParticipantsCount: { increment: 1 } },
-      });
+        await tx.event.update({
+          where: { id: eventId },
+          data: { currentParticipantsCount: { increment: 1 } },
+        });
 
-      return p;
-    });
+        return p;
+      });
+    } catch (err: any) {
+      if (err?.code === 'P2002') {
+        const found = await this.prisma.eventParticipation.findUnique({
+          where: { eventId_userId: { eventId, userId } },
+        });
+        if (found) {
+          return {
+            success: true,
+            isWaitlist: found.status === EventParticipationStatus.WAITLIST,
+            alreadyRegistered: true,
+            waitlistPosition: found.waitlistPosition,
+            participation: found,
+            message:
+              found.status === EventParticipationStatus.WAITLIST
+                ? `Vous êtes déjà inscrit sur la liste d’attente (position #${found.waitlistPosition ?? 1}).`
+                : 'Vous participez déjà à cet événement.',
+          };
+        }
+      }
+      throw err;
+    }
 
     this.logger.log(
       `[Events] Utilisateur ${userId} inscrit à l'événement ${eventId} (${event.slug})`,
@@ -582,6 +635,7 @@ export class EventsService {
     return {
       success: true,
       isWaitlist: false,
+      alreadyRegistered: false,
       participation,
       message: 'Inscription enregistrée avec succès !',
     };

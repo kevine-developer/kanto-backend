@@ -24,7 +24,13 @@ import {
   UpdateEventStatusDto,
   UploadEventCoverDto,
 } from './dto/events.dto.js';
-import { AuthGuard, Roles, Session, type UserSession } from '../auth/index.js';
+import {
+  AuthGuard,
+  OptionalAuth,
+  Roles,
+  Session,
+  type UserSession,
+} from '../auth/index.js';
 
 @Controller('events')
 export class EventsController {
@@ -36,6 +42,8 @@ export class EventsController {
    * Liste paginée des événements publics avec filtres (catégorie, statut, recherche, featured, mes événements).
    */
   @Get()
+  @UseGuards(AuthGuard)
+  @OptionalAuth()
   async getEvents(
     @Query() query: EventQueryDto,
     @Session() session?: UserSession,
@@ -47,6 +55,8 @@ export class EventsController {
    * Événement vedette pour la page d'accueil.
    */
   @Get('featured')
+  @UseGuards(AuthGuard)
+  @OptionalAuth()
   async getFeaturedEvent(@Session() session?: UserSession) {
     return this.eventsService.getFeaturedEvent(session?.user?.id);
   }
@@ -222,6 +232,8 @@ export class EventsController {
    * Détails complets d'un événement (par ID ou slug).
    */
   @Get(':idOrSlug')
+  @UseGuards(AuthGuard)
+  @OptionalAuth()
   async getEvent(
     @Param('idOrSlug') idOrSlug: string,
     @Session() session?: UserSession,
