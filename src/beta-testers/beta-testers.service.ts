@@ -12,6 +12,7 @@ import {
   RegisterBetaTesterDto,
   UpdatePlatformsDto,
   UnsubscribeBetaDto,
+  ConfirmParticipationDto,
   BulkActionDto,
   SubmitFeedbackDto,
   UpdateFeedbackDto,
@@ -487,23 +488,209 @@ export class BetaTestersService {
   }
 
   /**
-   * Vérification publique du statut d'un testeur.
+   * Calcule le statut de confirmation unifié d'un testeur.
    */
-  async verifyParticipation(emailInput: string) {
-    const email = emailInput.trim().toLowerCase();
+  private resolveConfirmationStatus(tester: {
+    unsubscribedAt?: Date | null;
+    status?: TesterStatus;
+    confirmationStatus?: string | null;
+    installedAt?: Date | null;
+    verifiedAt?: Date | null;
+    confirmedAt?: Date | null;
+    androidStatus?: string | null;
+    iosStatus?: string | null;
+  }): 'INSCRIT' | 'EN_ATTENTE' | 'CONFIRME' | 'VERIFIE' | 'INSTALLE' | 'INACTIF' {
+    if (tester.unsubscribedAt || tester.status === TesterStatus.REJECTED) {
+      return 'INACTIF';
+    }
+    if (tester.installedAt || tester.confirmationStatus === 'INSTALLE') {
+      return 'INSTALLE';
+    }
+    if (tester.verifiedAt || tester.confirmationStatus === 'VERIFIE') {
+      return 'VERIFIE';
+    }
+    if (tester.confirmedAt || tester.confirmationStatus === 'CONFIRME') {
+      return 'CONFIRME';
+    }
+    if (
+      tester.status === TesterStatus.APPROVED ||
+      tester.androidStatus === 'ACCEPTED' ||
+      tester.iosStatus === 'ACCEPTED'
+    ) {
+      return 'EN_ATTENTE';
+    }
+    if (
+      tester.confirmationStatus &&
+      ['INSCRIT', 'EN_ATTENTE', 'CONFIRME', 'VERIFIE', 'INSTALLE', 'INACTIF'].includes(
+        tester.confirmationStatus,
+      )
+    ) {
+      return tester.confirmationStatus as any;
+    }
+    return 'INSCRIT';
+  }
+
+  /**
+   * Informations publiques de disponibilité et téléchargement pour le portail web.
+   */
+  async getDownloadInfo() {
+    const config = await this.getAutomationConfig();
+    const [latestAndroidVersion, latestIosVersion] = await Promise.all([
+      this.prisma.betaVersion.findFirst({
+        where: {
+          platform: { in: ['ANDROID', 'ALL'] },
+          status: 'ACTIVE',
+        },
+        orderBy: { publishedAt: 'desc' },
+      }),
+      this.prisma.betaVersion.findFirst({
+        where: {
+          platform: { in: ['IOS', 'ALL'] },
+          status: 'ACTIVE',
+        },
+        orderBy: { publishedAt: 'desc' },
+      }),
+    ]);
+
+    return {
+      success: true,
+      android: {
+        availability: config.androidAvailability || 'BETA_OPEN',
+        playStoreWebLink: config.playStoreWebLink,
+        playStoreAppLink: config.playStoreAppLink,
+        instructions: config.instructionsAndroid,
+        latestVersion: latestAndroidVersion
+          ? {
+              version: latestAndroidVersion.version,
+              buildNumber: latestAndroidVersion.buildNumber,
+              title: latestAndroidVersion.title,
+              releaseNotes: latestAndroidVersion.releaseNotes,
+              publishedAt: latestAndroidVersion.publishedAt,
+            }
+          : null,
+      },
+      ios: {
+        availability: config.iosAvailability || 'BETA_OPEN',
+        appStoreLink: config.appStorePublicLink || null,
+        testFlightLink: config.testFlightPublicLink || null,
+        instructions: config.instructionsIos,
+        latestVersion: latestIosVersion
+          ? {
+              version: latestIosVersion.version,
+              buildNumber: latestIosVersion.buildNumber,
+              title: latestIosVersion.title,
+              releaseNotes: latestIosVersion.releaseNotes,
+              publishedAt: latestIosVersion.publishedAt,
+            }
+          : null,
+      },
+      supportEmail: config.supportEmail || 'contact@kanto.mg',
+    };
+  }
+
+  /**
+   * Confirmation active de participation par le testeur (« J'ai rejoint le programme » / « J'ai installé »).
+   */
+  async confirmParticipation(dto: ConfirmParticipationDto) {
+    const email = dto.email.trim().toLowerCase();
     const emailHashVal = hashEmail(email);
-    let tester: Awaited<ReturnType<typeof this.prisma.betaTester.findFirst<{ include: { group: true } }>>> = null;
+    let tester: Awaited<ReturnType<typeof this.prisma.betaTester.findFirst>> = null;
+
     try {
       tester = await this.prisma.betaTester.findFirst({
         where: {
           OR: [{ emailHash: emailHashVal }, { email }],
         },
-        include: { group: true },
+      });
+    } catch {
+      tester = await this.prisma.betaTester.findFirst({ where: { email } });
+    }
+
+    if (!tester) {
+      throw new NotFoundException(
+        'Aucune candidature trouvée avec cette adresse e-mail. Veuillez d’abord vous inscrire.',
+      );
+    }
+
+    if (tester.unsubscribedAt || tester.status === TesterStatus.REJECTED) {
+      throw new BadRequestException(
+        'Votre compte est actuellement désinscrit du programme bêta.',
+      );
+    }
+
+    const action = dto.action || 'JOINED';
+    const now = new Date();
+    const updateData: Prisma.BetaTesterUpdateInput = {
+      lastContactedAt: now,
+    };
+
+    if (action === 'INSTALLED') {
+      updateData.installedAt = tester.installedAt || now;
+      updateData.confirmationStatus = 'INSTALLE';
+      if (tester.platforms.includes('ANDROID') && tester.androidStatus !== 'REJECTED') {
+        updateData.androidStatus = 'ACTIVE';
+      }
+      if (tester.platforms.includes('IOS') && tester.iosStatus !== 'REJECTED') {
+        updateData.iosStatus = 'ACTIVE';
+      }
+      this.logger.log(
+        `📲 [BetaTesters] Installation déclarée confirmée pour ${maskEmail(email)}`,
+      );
+    } else {
+      updateData.confirmedAt = tester.confirmedAt || now;
+      if (
+        !tester.confirmationStatus ||
+        tester.confirmationStatus === 'INSCRIT' ||
+        tester.confirmationStatus === 'EN_ATTENTE'
+      ) {
+        updateData.confirmationStatus = 'CONFIRME';
+      }
+      if (tester.androidStatus === 'INVITED') {
+        updateData.androidStatus = 'ACCEPTED';
+      }
+      if (tester.iosStatus === 'INVITED') {
+        updateData.iosStatus = 'ACCEPTED';
+      }
+      this.logger.log(
+        `✅ [BetaTesters] Participation au programme bêta confirmée pour ${maskEmail(email)}`,
+      );
+    }
+
+    await this.prisma.betaTester.update({
+      where: { id: tester.id },
+      data: updateData,
+    });
+
+    return this.verifyParticipation(email);
+  }
+
+  /**
+   * Vérification publique du statut d'un testeur avec espace personnel complet.
+   */
+  async verifyParticipation(emailInput: string) {
+    const email = emailInput.trim().toLowerCase();
+    const emailHashVal = hashEmail(email);
+    let tester: Awaited<ReturnType<typeof this.prisma.betaTester.findFirst<{
+      include: { group: true; feedbacks: { take: 1; orderBy: { createdAt: 'desc' } } };
+    }>>> = null;
+
+    try {
+      tester = await this.prisma.betaTester.findFirst({
+        where: {
+          OR: [{ emailHash: emailHashVal }, { email }],
+        },
+        include: {
+          group: true,
+          feedbacks: { take: 1, orderBy: { createdAt: 'desc' } },
+        },
       });
     } catch {
       tester = await this.prisma.betaTester.findFirst({
         where: { email },
-        include: { group: true },
+        include: {
+          group: true,
+          feedbacks: { take: 1, orderBy: { createdAt: 'desc' } },
+        },
       });
     }
 
@@ -516,29 +703,126 @@ export class BetaTestersService {
       };
     }
 
-    const config = await this.prisma.betaAutomationConfig.findFirst();
-
+    const config = await this.getAutomationConfig();
     const hasAndroid = tester.platforms.includes('ANDROID');
     const hasIos = tester.platforms.includes('IOS');
 
     const canDownloadAndroid =
       hasAndroid &&
-      (tester.androidStatus === 'INVITED' ||
+      (config.androidAvailability === 'PUBLIC' ||
+        tester.androidStatus === 'INVITED' ||
         tester.androidStatus === 'ACCEPTED' ||
         tester.androidStatus === 'ACTIVE' ||
         tester.status === TesterStatus.INVITED ||
-        tester.status === TesterStatus.APPROVED);
+        tester.status === TesterStatus.APPROVED ||
+        Boolean(tester.confirmedAt));
 
     const canDownloadIos =
       hasIos &&
-      (tester.iosStatus === 'INVITED' ||
+      (config.iosAvailability === 'PUBLIC' ||
+        tester.iosStatus === 'INVITED' ||
         tester.iosStatus === 'ACCEPTED' ||
-        tester.iosStatus === 'ACTIVE');
+        tester.iosStatus === 'ACTIVE' ||
+        Boolean(tester.confirmedAt) ||
+        Boolean(config.testFlightPublicLink));
 
     const masked = maskEmail(tester.email);
     const isUnsubscribed = Boolean(
       tester.unsubscribedAt || tester.status === TesterStatus.REJECTED,
     );
+
+    const unifiedStatus = this.resolveConfirmationStatus(tester);
+
+    // Récupérer la dernière version active pour sa plateforme
+    const activeVersions = await this.prisma.betaVersion.findMany({
+      where: {
+        status: 'ACTIVE',
+        platform: {
+          in: hasAndroid && hasIos ? ['ANDROID', 'IOS', 'ALL'] : hasAndroid ? ['ANDROID', 'ALL'] : ['IOS', 'ALL'],
+        },
+      },
+      orderBy: { publishedAt: 'desc' },
+      take: 1,
+    });
+    const latestVersion = activeVersions[0]
+      ? {
+          version: activeVersions[0].version,
+          buildNumber: activeVersions[0].buildNumber,
+          title: activeVersions[0].title,
+          releaseNotes: activeVersions[0].releaseNotes,
+          publishedAt: activeVersions[0].publishedAt,
+        }
+      : null;
+
+    // Définition des 5 étapes du parcours
+    const step1Done = true;
+    const step2Done =
+      unifiedStatus !== 'INSCRIT' ||
+      tester.androidStatus === 'INVITED' ||
+      tester.iosStatus === 'INVITED' ||
+      tester.status === TesterStatus.APPROVED;
+    const step3Done =
+      ['CONFIRME', 'VERIFIE', 'INSTALLE'].includes(unifiedStatus) ||
+      Boolean(tester.confirmedAt);
+    const step4Done =
+      ['VERIFIE', 'INSTALLE'].includes(unifiedStatus) || Boolean(tester.installedAt);
+    const step5Done =
+      tester.feedbacks && tester.feedbacks.length > 0;
+
+    let currentStepIndex = 1;
+    if (step4Done) currentStepIndex = 5;
+    else if (step3Done) currentStepIndex = 4;
+    else if (step2Done) currentStepIndex = 3;
+    else currentStepIndex = 2;
+
+    const steps = [
+      {
+        index: 1,
+        key: 'REGISTERED',
+        title: 'Candidature enregistrée',
+        description: 'Votre inscription au programme bêta a été prise en compte avec succès.',
+        completed: step1Done,
+        date: tester.createdAt,
+      },
+      {
+        index: 2,
+        key: 'INVITATION',
+        title: 'Accès & Invitation',
+        description: hasAndroid && hasIos
+          ? 'Autorisation accordée pour Google Play et Apple TestFlight.'
+          : hasAndroid
+            ? 'Ajout de votre compte Google au groupe de test fermé Google Play.'
+            : 'Génération de votre accès au test sur Apple TestFlight.',
+        completed: step2Done,
+        date: tester.androidInvitedAt || tester.iosInvitedAt || tester.invitedAt || null,
+      },
+      {
+        index: 3,
+        key: 'JOINED',
+        title: 'Rejoindre le test',
+        description: hasAndroid
+          ? 'Accepter l’invitation sur la page web Google Play Closed Testing.'
+          : 'Installer TestFlight sur votre iPhone ou iPad et accepter l’invitation.',
+        completed: step3Done,
+        date: tester.confirmedAt || null,
+      },
+      {
+        index: 4,
+        key: 'INSTALLED',
+        title: 'Installation de Kanto MG',
+        description: 'Télécharger et ouvrir Kanto MG sur votre appareil mobile.',
+        completed: step4Done,
+        date: tester.installedAt || null,
+      },
+      {
+        index: 5,
+        key: 'TESTING',
+        title: 'Exploration & Retours',
+        description: 'Découvrir la culture malgache et partager vos avis et signalements.',
+        completed: step5Done,
+        date: tester.feedbacks?.[0]?.createdAt || null,
+      },
+    ];
 
     return {
       success: true,
@@ -553,6 +837,10 @@ export class BetaTestersService {
         status: tester.status,
         androidStatus: tester.androidStatus,
         iosStatus: tester.iosStatus,
+        confirmationStatus: unifiedStatus,
+        confirmedAt: tester.confirmedAt,
+        installedAt: tester.installedAt,
+        verifiedAt: tester.verifiedAt,
         groupName: tester.group?.name || null,
         createdAt: tester.createdAt,
         androidInvitedAt: tester.androidInvitedAt || tester.invitedAt,
@@ -560,17 +848,33 @@ export class BetaTestersService {
         unsubscribedAt: tester.unsubscribedAt,
         isUnsubscribed,
       },
+      availability: {
+        android: config.androidAvailability || 'BETA_OPEN',
+        ios: config.iosAvailability || 'BETA_OPEN',
+      },
       links: {
         androidWeb:
-          config?.playStoreWebLink ||
+          config.playStoreWebLink ||
           'https://play.google.com/apps/testing/com.devengalere.kantomg',
         androidStore:
-          config?.playStoreAppLink ||
+          config.playStoreAppLink ||
           'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
+        appStore: config.appStorePublicLink || null,
         testFlight:
-          config?.testFlightPublicLink ||
+          config.testFlightPublicLink ||
           'https://testflight.apple.com/join/kantomg',
       },
+      instructions: {
+        android:
+          config.instructionsAndroid ||
+          '1. Cliquez sur le lien « Rejoindre le test Google Play » ci-dessous avec votre compte Google connecté.\n2. Cliquez sur « Devenir testeur ».\n3. Téléchargez ensuite Kanto MG directement depuis le Play Store.\n4. Cliquez sur « J’ai rejoint le programme » pour confirmer votre participation.',
+        ios:
+          config.instructionsIos ||
+          '1. Installez gratuitement l’application « Apple TestFlight » depuis l’App Store.\n2. Cliquez sur « Ouvrir dans TestFlight » sur votre iPhone ou iPad.\n3. Acceptez l’invitation et installez Kanto MG.\n4. Cliquez sur « J’ai rejoint le programme » pour valider votre statut.',
+      },
+      latestVersion,
+      steps,
+      currentStepIndex,
       canDownloadAndroid: !isUnsubscribed && canDownloadAndroid,
       canDownloadIos: !isUnsubscribed && canDownloadIos,
       message: isUnsubscribed
@@ -1097,8 +1401,13 @@ export class BetaTestersService {
       'https://play.google.com/apps/testing/com.devengalere.kantomg',
     playStoreAppLink:
       'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
+    appStorePublicLink: null as string | null,
     testFlightPublicLink: 'https://testflight.apple.com/join/kantomg',
     supportEmail: 'contact@kanto.mg',
+    androidAvailability: 'BETA_OPEN',
+    iosAvailability: 'BETA_OPEN',
+    instructionsAndroid: null as string | null,
+    instructionsIos: null as string | null,
     updatedAt: new Date(),
   };
 
@@ -1125,8 +1434,13 @@ export class BetaTestersService {
                 'https://play.google.com/apps/testing/com.devengalere.kantomg',
               playStoreAppLink:
                 'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
+              appStorePublicLink: null,
               testFlightPublicLink: 'https://testflight.apple.com/join/kantomg',
               supportEmail: 'contact@kanto.mg',
+              androidAvailability: 'BETA_OPEN',
+              iosAvailability: 'BETA_OPEN',
+              instructionsAndroid: null,
+              instructionsIos: null,
             },
           });
         } catch (createErr) {
@@ -1168,8 +1482,13 @@ export class BetaTestersService {
             playStoreAppLink:
               dto.playStoreAppLink ??
               'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
+            appStorePublicLink: dto.appStorePublicLink ?? null,
             testFlightPublicLink: dto.testFlightPublicLink ?? null,
             supportEmail: dto.supportEmail ?? 'contact@kanto.mg',
+            androidAvailability: dto.androidAvailability ?? 'BETA_OPEN',
+            iosAvailability: dto.iosAvailability ?? 'BETA_OPEN',
+            instructionsAndroid: dto.instructionsAndroid ?? null,
+            instructionsIos: dto.instructionsIos ?? null,
           },
         });
       }
@@ -1194,6 +1513,7 @@ export class BetaTestersService {
     search?: string;
     platform?: 'ANDROID' | 'IOS' | 'ALL';
     status?: string;
+    confirmationStatus?: string;
     androidStatus?: string;
     iosStatus?: string;
     groupId?: string;
@@ -1208,6 +1528,32 @@ export class BetaTestersService {
 
     if (query.status && query.status !== 'ALL') {
       where.status = query.status as TesterStatus;
+    }
+
+    if (query.confirmationStatus && query.confirmationStatus !== 'ALL') {
+      if (query.confirmationStatus === 'CONFIRME') {
+        where.OR = [
+          { confirmationStatus: 'CONFIRME' },
+          { confirmedAt: { not: null } },
+        ];
+      } else if (query.confirmationStatus === 'INSTALLE') {
+        where.OR = [
+          { confirmationStatus: 'INSTALLE' },
+          { installedAt: { not: null } },
+        ];
+      } else if (query.confirmationStatus === 'VERIFIE') {
+        where.OR = [
+          { confirmationStatus: 'VERIFIE' },
+          { verifiedAt: { not: null } },
+        ];
+      } else if (query.confirmationStatus === 'INACTIF') {
+        where.OR = [
+          { status: TesterStatus.REJECTED },
+          { unsubscribedAt: { not: null } },
+        ];
+      } else {
+        where.confirmationStatus = query.confirmationStatus;
+      }
     }
 
     if (query.androidStatus && query.androidStatus !== 'ALL') {
@@ -1261,6 +1607,7 @@ export class BetaTestersService {
         ...t,
         email: masked, // Masquage par défaut dans les listes administratives
         maskedEmail: masked,
+        confirmationStatus: this.resolveConfirmationStatus(t),
       };
     });
 
@@ -1285,6 +1632,9 @@ export class BetaTestersService {
       activeCount,
       unsubscribedCount,
       feedbacksCount,
+      confirmedCount,
+      installedCount,
+      verifiedCount,
     ] = await Promise.all([
       this.prisma.betaTester.count({ where: { unsubscribedAt: null } }),
       this.prisma.betaTester.count({
@@ -1325,6 +1675,33 @@ export class BetaTestersService {
         where: { unsubscribedAt: { not: null } },
       }),
       this.prisma.betaFeedback.count(),
+      this.prisma.betaTester.count({
+        where: {
+          OR: [
+            { confirmationStatus: 'CONFIRME' },
+            { confirmedAt: { not: null } },
+          ],
+          unsubscribedAt: null,
+        },
+      }),
+      this.prisma.betaTester.count({
+        where: {
+          OR: [
+            { confirmationStatus: 'INSTALLE' },
+            { installedAt: { not: null } },
+          ],
+          unsubscribedAt: null,
+        },
+      }),
+      this.prisma.betaTester.count({
+        where: {
+          OR: [
+            { confirmationStatus: 'VERIFIE' },
+            { verifiedAt: { not: null } },
+          ],
+          unsubscribedAt: null,
+        },
+      }),
     ]);
 
     return {
@@ -1337,6 +1714,9 @@ export class BetaTestersService {
       activeCount,
       unsubscribedCount,
       feedbacksCount,
+      confirmedCount,
+      installedCount,
+      verifiedCount,
     };
   }
 
@@ -1681,12 +2061,21 @@ export class BetaTestersService {
 
   async updateStatus(
     id: string,
-    dto: { status: TesterStatus; notes?: string },
+    dto: { status?: TesterStatus; confirmationStatus?: string; notes?: string },
   ) {
     const updateData: Prisma.BetaTesterUpdateInput = {
-      status: dto.status,
+      ...(dto.status ? { status: dto.status } : {}),
+      ...(dto.confirmationStatus ? { confirmationStatus: dto.confirmationStatus } : {}),
       ...(dto.notes ? { notes: dto.notes } : {}),
     };
+
+    if (dto.confirmationStatus === 'VERIFIE') {
+      updateData.verifiedAt = new Date();
+    } else if (dto.confirmationStatus === 'CONFIRME') {
+      updateData.confirmedAt = new Date();
+    } else if (dto.confirmationStatus === 'INSTALLE') {
+      updateData.installedAt = new Date();
+    }
 
     if (dto.status === TesterStatus.APPROVED) {
       const config = await this.prisma.betaAutomationConfig.findFirst();

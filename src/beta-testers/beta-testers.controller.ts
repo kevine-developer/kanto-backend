@@ -20,6 +20,7 @@ import {
   UpdatePlatformsDto,
   UnsubscribeBetaDto,
   VerifyBetaTesterDto,
+  ConfirmParticipationDto,
   SubmitFeedbackDto,
   UpdateFeedbackDto,
   CreateBetaGroupDto,
@@ -240,6 +241,34 @@ export class BetaTestersController {
       };
     }
     return this.betaTestersService.verifyParticipation(email.trim());
+  }
+
+  /**
+   * Confirmation publique de participation ou d'installation par le testeur (« J'ai rejoint le programme bêta »).
+   */
+  @Post([
+    'api/beta-testers/confirm-participation',
+    'beta-testers/confirm-participation',
+  ])
+  @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
+  async confirmParticipation(@Body() dto: ConfirmParticipationDto) {
+    if (!dto?.email || !dto.email.trim()) {
+      return {
+        success: false,
+        message: 'Veuillez renseigner votre adresse e-mail pour confirmer votre participation.',
+      };
+    }
+    return this.betaTestersService.confirmParticipation(dto);
+  }
+
+  /**
+   * Informations publiques de disponibilité et téléchargement (sans authentification).
+   */
+  @Get(['api/beta-testers/download-info', 'beta-testers/download-info'])
+  @HttpCode(HttpStatus.OK)
+  async getDownloadInfo() {
+    return this.betaTestersService.getDownloadInfo();
   }
 
   /**
@@ -568,6 +597,7 @@ export class BetaTestersController {
   @Roles(['ADMIN', 'admin'])
   findAll(
     @Query('status') status?: string,
+    @Query('confirmationStatus') confirmationStatus?: string,
     @Query('androidStatus') androidStatus?: string,
     @Query('iosStatus') iosStatus?: string,
     @Query('groupId') groupId?: string,
@@ -578,6 +608,7 @@ export class BetaTestersController {
   ) {
     return this.betaTestersService.findAll({
       status,
+      confirmationStatus,
       androidStatus,
       iosStatus,
       groupId,
@@ -615,7 +646,8 @@ export class BetaTestersController {
   @Roles(['ADMIN', 'admin'])
   updateStatus(@Param('id') id: string, @Body() dto: UpdateTesterStatusDto) {
     return this.betaTestersService.updateStatus(id, {
-      status: dto.status as TesterStatus,
+      status: dto.status ? (dto.status as TesterStatus) : undefined,
+      confirmationStatus: dto.confirmationStatus,
       notes: dto.notes,
     });
   }

@@ -206,13 +206,23 @@ describe('BetaTestersController', () => {
       } as unknown as Response;
 
       await controller.register(
-        { email: 'nouveau@example.com', fullName: 'Nouveau Testeur' },
+        {
+          email: 'nouveau@example.com',
+          fullName: 'Nouveau Testeur',
+          platforms: ['ANDROID'],
+          termsAccepted: true,
+        },
         req,
         res,
       );
 
       expect(service.register).toHaveBeenCalledWith(
-        { email: 'nouveau@example.com', fullName: 'Nouveau Testeur' },
+        {
+          email: 'nouveau@example.com',
+          fullName: 'Nouveau Testeur',
+          platforms: ['ANDROID'],
+          termsAccepted: true,
+        },
         '127.0.0.1',
         'JestClient',
       );
@@ -240,7 +250,11 @@ describe('BetaTestersController', () => {
         json: jest.fn(),
       } as unknown as Response;
 
-      await controller.register({ email: 'existant@example.com' }, req, res);
+      await controller.register(
+        { email: 'existant@example.com', platforms: ['ANDROID'], termsAccepted: true },
+        req,
+        res,
+      );
 
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith(duplicateResult);

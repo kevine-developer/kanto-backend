@@ -69,13 +69,14 @@ export class GeminiContentService {
   private ai: GoogleGenAI | null = null;
 
   private readonly model =
-    process.env.GEMINI_CONTENT_MODEL || 'gemini-2.5-flash';
+    process.env.GEMINI_CONTENT_MODEL || 'gemini-3.8-flash';
 
   private readonly candidateModels: string[] = [
     process.env.GEMINI_CONTENT_MODEL,
+    'gemini-3.8-flash',
+    'gemini-3.8-flash-lite',
     'gemini-2.5-flash',
     'gemini-2.0-flash',
-    'gemini-1.5-flash',
   ].filter((m, i, arr): m is string => Boolean(m) && arr.indexOf(m) === i);
 
   constructor() {
@@ -187,7 +188,7 @@ export class GeminiContentService {
     let lastError: unknown;
 
     for (const currentModel of this.candidateModels) {
-      const maxRetries = 2;
+      const maxRetries = 3;
       for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
           const response = await this.ai.models.generateContent({
@@ -219,8 +220,16 @@ export class GeminiContentService {
             msg.includes('ETIMEDOUT') ||
             msg.includes('ENOTFOUND');
 
+          // Sur erreur 404 (modèle déprécié ou non trouvé), pas de retry : passage immédiat au modèle suivant
+          if (msg.includes('404') || msg.includes('NOT_FOUND')) {
+            this.logger.warn(
+              `⚠️ [GeminiContent] Modèle "${currentModel}" non disponible (404/NOT_FOUND). Essai du modèle suivant...`,
+            );
+            break;
+          }
+
           if (isTemporary && attempt < maxRetries) {
-            const delayMs = attempt * 1500;
+            const delayMs = attempt * 2000 + Math.floor(Math.random() * 500);
             this.logger.warn(
               `⚠️ [GeminiContent] Tentative ${attempt}/${maxRetries} échouée sur modèle "${currentModel}" (${fullMsg}). Nouvelle tentative dans ${delayMs}ms...`,
             );
@@ -229,7 +238,7 @@ export class GeminiContentService {
           }
 
           this.logger.warn(
-            `⚠️ [GeminiContent] Modèle "${currentModel}" non disponible (${fullMsg}). Essai du modèle suivant...`,
+            `⚠️ [GeminiContent] Modèle "${currentModel}" non disponible après ${attempt} tentative(s) (${fullMsg}). Essai du modèle suivant...`,
           );
           break;
         }

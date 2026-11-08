@@ -62,6 +62,12 @@ model BetaTester {
   // Retours & Feedbacks
   feedbacks          BetaFeedback[]
 
+  // Suivi de confirmation & progression du testeur
+  confirmationStatus String?      @default("INSCRIT") // INSCRIT, EN_ATTENTE, CONFIRME, VERIFIE, INSTALLE, INACTIF
+  confirmedAt        DateTime?
+  installedAt        DateTime?
+  verifiedAt         DateTime?
+
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
 
@@ -69,6 +75,7 @@ model BetaTester {
   @@index([emailHash])
   @@index([androidStatus])
   @@index([iosStatus])
+  @@index([confirmationStatus])
   @@index([groupId])
   @@index([createdAt])
   @@map("beta_testers")
@@ -155,8 +162,18 @@ model BetaAutomationConfig {
   feedbackRequestDays     Int      @default(14)
   playStoreWebLink        String   @default("https://play.google.com/apps/testing/com.devengalere.kantomg")
   playStoreAppLink        String   @default("https://play.google.com/store/apps/details?id=com.devengalere.kantomg")
+  appStorePublicLink      String?
   testFlightPublicLink    String?
   supportEmail            String   @default("contact@kanto.mg")
+
+  // Disponibilités des plateformes : "PUBLIC" | "BETA_OPEN" | "BETA_CLOSED" | "PENDING" | "UNAVAILABLE"
+  androidAvailability     String   @default("BETA_OPEN")
+  iosAvailability         String   @default("BETA_OPEN")
+
+  // Instructions personnalisées
+  instructionsAndroid     String?  @db.Text
+  instructionsIos         String?  @db.Text
+
   updatedAt               DateTime @updatedAt
 
   @@map("beta_automation_configs")
