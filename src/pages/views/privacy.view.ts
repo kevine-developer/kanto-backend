@@ -10,6 +10,7 @@ export function renderPrivacyPage(options?: {
   return pageShell({
     title: 'Kanto MG — Politique de confidentialité & RGPD',
     pageTitle: 'Politique de confidentialité',
+    slug: 'privacy',
     hideHeader: options?.hideHeader,
     supportEmail,
     description:

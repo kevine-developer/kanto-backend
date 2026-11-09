@@ -51,6 +51,7 @@ import { DailyChallengeModule } from './games/daily-challenge/daily-challenge.mo
 import { AppVersionModule } from './app-version/app-version.module.js';
 import { PartnersModule } from './partners/partners.module.js';
 import { ReviewsModule } from './reviews/reviews.module.js';
+import { SeoModule } from './seo/seo.module.js';
 
 @Module({
   imports: [
@@ -126,6 +127,7 @@ import { ReviewsModule } from './reviews/reviews.module.js';
     AppVersionModule,
     PartnersModule,
     ReviewsModule,
+    SeoModule,
   ],
   controllers: [AppController],
   providers: [

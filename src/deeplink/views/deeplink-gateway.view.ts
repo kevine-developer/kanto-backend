@@ -71,18 +71,80 @@ export function renderDeeplinkGatewayPage(
   <meta name="description" content="${escapeHtml(pageDescription)}">
   <meta name="theme-color" content="#16442A">
 
+  <!-- Canonical & hreflang SEO -->
+  <link rel="canonical" href="${escapeHtml(canonicalUrl)}">
+  <link rel="alternate" hreflang="fr" href="${escapeHtml(canonicalUrl)}">
+  <link rel="alternate" hreflang="mg" href="${escapeHtml(canonicalUrl)}">
+  <link rel="alternate" hreflang="x-default" href="${escapeHtml(canonicalUrl)}">
+
   <!-- Open Graph / Réseaux sociaux & Messageries -->
   <meta property="og:site_name" content="Kanto MG">
   <meta property="og:type" content="article">
   <meta property="og:title" content="${escapeHtml(pageTitle)}">
   <meta property="og:description" content="${escapeHtml(pageDescription)}">
   <meta property="og:url" content="${escapeHtml(canonicalUrl)}">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:locale:alternate" content="mg_MG">
   <meta property="og:image" content="https://app-kanto.gastsar.fr/assets/images/icon.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@KantoMG">
   <meta name="twitter:title" content="${escapeHtml(pageTitle)}">
   <meta name="twitter:description" content="${escapeHtml(pageDescription)}">
+  <meta name="twitter:image" content="https://app-kanto.gastsar.fr/assets/images/icon.png">
+
+  <!-- Données structurées Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Kanto MG",
+            "item": "https://app-kanto.gastsar.fr/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": ${JSON.stringify(content.categoryLabel || 'Patrimoine')},
+            "item": "https://app-kanto.gastsar.fr/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": ${JSON.stringify(pageTitle)},
+            "item": ${JSON.stringify(canonicalUrl)}
+          }
+        ]
+      },
+      {
+        "@type": "CreativeWork",
+        "name": ${JSON.stringify(pageTitle)},
+        "headline": ${JSON.stringify(pageTitle)},
+        "description": ${JSON.stringify(pageDescription)},
+        "inLanguage": ["mg", "fr"],
+        "publisher": {
+          "@type": "Organization",
+          "name": "Kanto MG",
+          "url": "https://app-kanto.gastsar.fr/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://app-kanto.gastsar.fr/logo.png"
+          }
+        },
+        ${content.author ? `"author": { "@type": "Person", "name": ${JSON.stringify(content.author)} },` : ''}
+        "mainEntityOfPage": ${JSON.stringify(canonicalUrl)}
+      }
+    ]
+  }
+  </script>
 
   <!-- Favicon & Typographie -->
   <link rel="icon" href="/favicon.ico">
@@ -408,6 +470,27 @@ export function renderDeeplinkGatewayPage(
       border-color: var(--kanto-green);
     }
 
+    .deeplink-footer-nav {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 12px;
+      font-size: 11.5px;
+      color: var(--kanto-text-muted);
+    }
+    .deeplink-footer-nav a {
+      color: var(--kanto-green);
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.15s ease;
+    }
+    .deeplink-footer-nav a:hover {
+      text-decoration: underline;
+    }
+    .deeplink-footer-nav span {
+      opacity: 0.4;
+    }
     .footer-text {
       text-align: center;
       font-size: 12px;
@@ -573,6 +656,21 @@ export function renderDeeplinkGatewayPage(
     <div class="footer-text">
       Kanto MG • Ny haren-tsaina sy ny fahendrena malagasy ho an'ny rehetra
     </div>
+    <nav class="deeplink-footer-nav" aria-label="Patrimoine malgache">
+      <a href="/">Accueil</a>
+      <span>·</span>
+      <a href="/ohabolana">Ohabolana</a>
+      <span>·</span>
+      <a href="/angano">Angano</a>
+      <span>·</span>
+      <a href="/kabary">Kabary</a>
+      <span>·</span>
+      <a href="/tononkalo">Tononkalo</a>
+      <span>·</span>
+      <a href="/raki-teny">Raki-teny</a>
+      <span>·</span>
+      <a href="/histoire">Tantara</a>
+    </nav>
   </div>
 
   <script>

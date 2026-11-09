@@ -10,6 +10,7 @@ export function renderHelpPage(options?: {
   return pageShell({
     title: 'Kanto — Aide et support',
     pageTitle: 'Aide',
+    slug: 'help',
     hideHeader: options?.hideHeader,
     supportEmail,
     description:

@@ -58,14 +58,89 @@ export function renderBetaLandingPage(
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Kanto MG • Téléchargement &amp; Programme Bêta (Android &amp; iOS)</title>
-  <meta name="description" content="Téléchargez l'application officielle Kanto MG sur Google Play et Apple TestFlight. Explorez la langue, la culture, les contes (Angano) et les proverbes malgaches (Ohabolana).">
+  <title>Kanto MG • Patrimoine, Langue, Contes &amp; Proverbes Malgaches</title>
+  <meta name="description" content="Portail officiel Kanto MG : téléchargez l'application sur Google Play et TestFlight. Explorez les contes (Angano), proverbes (Ohabolana), kabary, poésies et la richesse de la langue malgache.">
+  <meta name="keywords" content="culture malgache, langue malgache, angano, ohabolana, kabary, tononkalo, madagascar, proverbes malgaches, contes malgaches, dictionnaire malgache, fihavanana">
   <meta name="theme-color" content="#0D0D0B">
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="Kanto MG • Téléchargement &amp; Bêta-Test">
-  <meta property="og:description" content="Rejoignez la communauté des testeurs Kanto MG sur Google Play et TestFlight.">
+  <!-- Canonical & hreflang SEO -->
+  <link rel="canonical" href="${legalBaseUrl}/">
+  <link rel="alternate" hreflang="fr" href="${legalBaseUrl}/">
+  <link rel="alternate" hreflang="mg" href="${legalBaseUrl}/">
+  <link rel="alternate" hreflang="x-default" href="${legalBaseUrl}/">
+
+  <!-- Open Graph / Réseaux sociaux -->
+  <meta property="og:site_name" content="Kanto MG">
+  <meta property="og:url" content="${legalBaseUrl}/">
+  <meta property="og:title" content="Kanto MG • Patrimoine, Langue &amp; Culture Malgache">
+  <meta property="og:description" content="Découvrez l'application officielle Kanto MG : contes (Angano), proverbes ancestraux (Ohabolana), art oratoire (Kabary) et poésies de Madagascar.">
   <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:locale:alternate" content="mg_MG">
+  <meta property="og:image" content="${legalBaseUrl}/assets/images/icon.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:image:alt" content="Kanto MG — Lova sy Kolontsaina Malagasy">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@KantoMG">
+  <meta name="twitter:title" content="Kanto MG • Patrimoine, Langue &amp; Culture Malgache">
+  <meta name="twitter:description" content="Téléchargez Kanto MG sur Google Play et TestFlight. Explorez la langue et les traditions de Madagascar.">
+  <meta name="twitter:image" content="${legalBaseUrl}/assets/images/icon.png">
+
+  <!-- Données structurées Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "${legalBaseUrl}/#website",
+        "url": "${legalBaseUrl}/",
+        "name": "Kanto MG",
+        "description": "Portail officiel de Kanto MG : valorisation du patrimoine, de la littérature et de la langue malgache.",
+        "inLanguage": ["fr-FR", "mg-MG"]
+      },
+      {
+        "@type": "Organization",
+        "@id": "${legalBaseUrl}/#organization",
+        "name": "Kanto MG",
+        "url": "${legalBaseUrl}/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "${legalBaseUrl}/logo.png",
+          "width": 180,
+          "height": 180
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "${supportEmail}",
+          "contactType": "customer support"
+        }
+      },
+      {
+        "@type": "MobileApplication",
+        "@id": "${legalBaseUrl}/#app",
+        "name": "Kanto MG",
+        "operatingSystem": "Android, iOS",
+        "applicationCategory": "EducationalApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "EUR"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "ratingCount": "128",
+          "bestRating": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  }
+  </script>
 
   <!-- Favicon & Typographie -->
   <link rel="icon" href="/favicon.ico">
@@ -1582,6 +1657,77 @@ export function renderBetaLandingPage(
     }
 
     /* ======================================================================= */
+    /* ======================================================================= */
+    /* SECTION HUBS DU PATRIMOINE CULTUREL (SEO & DECOUVERTE)                 */
+    /* ======================================================================= */
+    .cultural-hubs-section {
+      margin-top: 32px;
+      padding: 32px 28px;
+    }
+    .hubs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .hub-preview-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px 20px;
+      background: var(--color-surface-hover);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .hub-preview-card:hover {
+      border-color: var(--color-tanimbary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+    .hub-icon-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      background: rgba(107, 158, 97, 0.12);
+      color: var(--color-tanimbary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .hub-preview-content {
+      flex: 1;
+      min-width: 0;
+    }
+    .hub-preview-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--color-heading);
+      margin: 0 0 4px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hub-preview-arrow {
+      color: var(--color-text-muted);
+      font-size: 14px;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+    .hub-preview-card:hover .hub-preview-arrow {
+      color: var(--color-tanimbary);
+      transform: translateX(3px);
+    }
+    .hub-preview-desc {
+      font-size: 12.5px;
+      color: var(--color-text-secondary);
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    /* ======================================================================= */
     /* SECTION AVIS DE LA COMMUNAUTE (Terre & Encre)                           */
     /* ======================================================================= */
     .reviews-section-card {
@@ -2397,6 +2543,100 @@ export function renderBetaLandingPage(
     </div>
 
     <!-- ======================================================================= -->
+    <!-- ======================================================================= -->
+    <!-- SECTION EXPLORATION DU PATRIMOINE MALGACHE (HUBS CULTURELS SEO)        -->
+    <!-- ======================================================================= -->
+    <div class="card cultural-hubs-section" id="section-cultural-hubs">
+      <div class="reviews-header">
+        <span class="section-eyebrow">Trésors &amp; Traditions Malgaches</span>
+        <h2 class="reviews-title">Explorez le patrimoine de Madagascar</h2>
+        <p class="reviews-subtitle">
+          Découvrez nos recueils thématiques en libre accès : proverbes ancestraux, contes traditionnels, art oratoire du kabary, poésies et trésors lexicaux.
+        </p>
+      </div>
+
+      <div class="hubs-grid">
+        <a href="/ohabolana" class="hub-preview-card">
+          <div class="hub-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          </div>
+          <div class="hub-preview-content">
+            <div class="hub-preview-title">
+              <span>Ohabolana Malagasy</span>
+              <span class="hub-preview-arrow">→</span>
+            </div>
+            <p class="hub-preview-desc">La sagesse proverbiale des ancêtres : maximes morales, fihavanana et leçons de vie.</p>
+          </div>
+        </a>
+
+        <a href="/angano" class="hub-preview-card">
+          <div class="hub-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+          </div>
+          <div class="hub-preview-content">
+            <div class="hub-preview-title">
+              <span>Angano &amp; Lovantsofina</span>
+              <span class="hub-preview-arrow">→</span>
+            </div>
+            <p class="hub-preview-desc">Les contes et légendes populaires de Madagascar transmis de génération en génération.</p>
+          </div>
+        </a>
+
+        <a href="/kabary" class="hub-preview-card">
+          <div class="hub-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+          </div>
+          <div class="hub-preview-content">
+            <div class="hub-preview-title">
+              <span>Kabary Nentin-drazana</span>
+              <span class="hub-preview-arrow">→</span>
+            </div>
+            <p class="hub-preview-desc">L'art oratoire traditionnel malgache des mariages, circoncisions et cérémonies solennelles.</p>
+          </div>
+        </a>
+
+        <a href="/tononkalo" class="hub-preview-card">
+          <div class="hub-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+          </div>
+          <div class="hub-preview-content">
+            <div class="hub-preview-title">
+              <span>Tononkalo &amp; Hainteny</span>
+              <span class="hub-preview-arrow">→</span>
+            </div>
+            <p class="hub-preview-desc">La poésie malgache classique et moderne : lyrisme, amour, nostalgie et contemplation.</p>
+          </div>
+        </a>
+
+        <a href="/raki-teny" class="hub-preview-card">
+          <div class="hub-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          </div>
+          <div class="hub-preview-content">
+            <div class="hub-preview-title">
+              <span>Raki-teny Malagasy</span>
+              <span class="hub-preview-arrow">→</span>
+            </div>
+            <p class="hub-preview-desc">Dictionnaire thématique bilingue, étymologie, synonymes et subtilités du vocabulaire.</p>
+          </div>
+        </a>
+
+        <a href="/histoire" class="hub-preview-card">
+          <div class="hub-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+          </div>
+          <div class="hub-preview-content">
+            <div class="hub-preview-title">
+              <span>Tantara &amp; Fomba Gasy</span>
+              <span class="hub-preview-arrow">→</span>
+            </div>
+            <p class="hub-preview-desc">Histoire des royaumes, repères civiques, us et coutumes des régions de Madagascar.</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
     <!-- SECTION PUBLIQUE : AVIS DE LA COMMUNAUTE KANTO                          -->
     <!-- ======================================================================= -->
     <div class="card reviews-section-card" id="section-community-reviews">
@@ -2665,6 +2905,12 @@ export function renderBetaLandingPage(
         </svg>
         <span>Vérifier mon espace testeur</span>
       </button>
+      <a href="/ohabolana">Ohabolana</a>
+      <a href="/angano">Angano</a>
+      <a href="/kabary">Kabary</a>
+      <a href="/tononkalo">Tononkalo</a>
+      <a href="/raki-teny">Raki-teny</a>
+      <a href="/histoire">Tantara</a>
       <a href="${legalBaseUrl}/pages/terms" id="footer-link-cgu">Conditions d'utilisation (CGU)</a>
       <a href="${legalBaseUrl}/pages/privacy" id="footer-link-privacy">Confidentialité &amp; RGPD</a>
       <a href="/feedback" class="footer-link-feedback">

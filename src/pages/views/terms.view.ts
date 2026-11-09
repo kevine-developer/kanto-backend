@@ -10,6 +10,7 @@ export function renderTermsPage(options?: {
   return pageShell({
     title: "Kanto MG — Conditions Générales d'Utilisation",
     pageTitle: "Conditions d'utilisation (CGU)",
+    slug: 'terms',
     hideHeader: options?.hideHeader,
     supportEmail,
     description:
