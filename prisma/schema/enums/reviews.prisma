@@ -1,0 +1,18 @@
+// ============================================================
+// ENUMS — AVIS & TÉMOIGNAGES UTILISATEURS
+// ============================================================
+
+enum PublicDisplayNameType {
+  FIRSTNAME   // Afficher le prénom de l'utilisateur
+  PSEUDO      // Afficher le pseudonyme / nom d'utilisateur
+  ANONYMOUS   // Afficher de manière anonyme ("Membre de la communauté")
+}
+
+enum ReviewModerationStatus {
+  NOT_AUTHORIZED // L'utilisateur n'a pas autorisé la publication publique (usage interne uniquement)
+  PENDING        // En attente de vérification par la modération
+  APPROVED       // Validé et publié publiquement sur le portail
+  REJECTED       // Refusé par la modération (ex: contenu offensant, spam)
+  WITHDRAWN      // Retiré par l'utilisateur (droit de rétractation)
+}
+

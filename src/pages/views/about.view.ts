@@ -10,6 +10,7 @@ export function renderAboutPage(options?: {
   return pageShell({
     title: 'Kanto — À propos',
     pageTitle: 'À propos de Kanto',
+    slug: 'about',
     hideHeader: options?.hideHeader,
     supportEmail,
     description:

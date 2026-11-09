@@ -576,20 +576,88 @@ export function pageShell(options: {
   body: string;
   hideHeader?: boolean;
   supportEmail?: string;
+  canonicalUrl?: string;
+  slug?: string;
 }): string {
   const { title, pageTitle, description, body, hideHeader } = options;
   const year = currentYear();
   const supportEmail =
     options.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
   const bodyClass = hideHeader ? ' class="hide-header"' : '';
+  const canonicalUrl =
+    options.canonicalUrl ||
+    (options.slug
+      ? `https://app-kanto.gastsar.fr/pages/${options.slug}`
+      : 'https://app-kanto.gastsar.fr/');
 
   return `<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="${description || `Kanto — ${pageTitle}`}">
   <title>${title}</title>
+  <meta name="description" content="${description || `Kanto — ${pageTitle}`}">
+  <link rel="icon" href="/favicon.ico">
+
+  <!-- Canonical & hreflang SEO -->
+  <link rel="canonical" href="${canonicalUrl}">
+  <link rel="alternate" hreflang="fr" href="${canonicalUrl}">
+  <link rel="alternate" hreflang="mg" href="${canonicalUrl}">
+  <link rel="alternate" hreflang="x-default" href="${canonicalUrl}">
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Kanto MG">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="${title}">
+  <meta property="og:description" content="${description || `Kanto — ${pageTitle}`}">
+  <meta property="og:url" content="${canonicalUrl}">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:image" content="https://app-kanto.gastsar.fr/assets/images/icon.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="${title}">
+  <meta name="twitter:description" content="${description || `Kanto — ${pageTitle}`}">
+  <meta name="twitter:image" content="https://app-kanto.gastsar.fr/assets/images/icon.png">
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Kanto MG",
+            "item": "https://app-kanto.gastsar.fr/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": ${JSON.stringify(pageTitle)},
+            "item": ${JSON.stringify(canonicalUrl)}
+          }
+        ]
+      },
+      {
+        "@type": "WebPage",
+        "name": ${JSON.stringify(pageTitle)},
+        "headline": ${JSON.stringify(pageTitle)},
+        "description": ${JSON.stringify(description || pageTitle)},
+        "url": ${JSON.stringify(canonicalUrl)},
+        "publisher": {
+          "@type": "Organization",
+          "name": "Kanto MG",
+          "url": "https://app-kanto.gastsar.fr/"
+        }
+      }
+    ]
+  }
+  </script>
+
   ${PAGE_FONT}
   <style>${PAGE_CSS}</style>
 </head>
@@ -606,6 +674,12 @@ export function pageShell(options: {
     <div class="footer">
       <div>© ${year} <strong>kanto.mg</strong> — Ny harena ara-kolontsaina malagasy</div>
       <div class="footer-links">
+        <a href="/ohabolana">Ohabolana</a>
+        <a href="/angano">Angano</a>
+        <a href="/kabary">Kabary</a>
+        <a href="/tononkalo">Tononkalo</a>
+        <a href="/raki-teny">Raki-teny</a>
+        <a href="/histoire">Tantara</a>
         <a href="/pages/terms">Conditions d'utilisation (CGU)</a>
         <a href="/pages/privacy">Confidentialité &amp; RGPD</a>
         <a href="/pages/help">Aide &amp; FAQ</a>

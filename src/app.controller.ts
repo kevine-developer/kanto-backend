@@ -149,15 +149,6 @@ export class AppController {
   }
 
   /**
-   * Fichier robots.txt interdisant l'indexation directe des routes API par les robots
-   */
-  @Get('robots.txt')
-  @Header('Content-Type', 'text/plain')
-  getRobots(): string {
-    return 'User-agent: *\nDisallow: /\n';
-  }
-
-  /**
    * Logo officiel Kanto MG (PNG)
    * Servi avec mise en cache optimisée pour le portail web app-kanto.gastsar.fr
    */

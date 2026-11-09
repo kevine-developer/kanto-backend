@@ -26,6 +26,12 @@ export const SOCKET_EVENTS = {
   JOIN_LEADERBOARD: 'join:leaderboard',
   LEAVE_LEADERBOARD: 'leave:leaderboard',
 
+  // Événements de Présence & Disponibilité
+  PRESENCE_HEARTBEAT: 'presence:heartbeat',
+  PRESENCE_CHECK: 'presence:check',
+  PRESENCE_GET_BATCH: 'presence:get_batch',
+  PRESENCE_STATUS_UPDATE: 'presence:status_update',
+
   // Événements Duel / Multijoueur Kahoot
   DUEL_CREATE: 'duel:create',
   DUEL_JOIN: 'duel:join',
@@ -60,6 +66,7 @@ export const SOCKET_EVENTS = {
   DUEL_PLAYER_DISCONNECTED: 'duel:player_disconnected',
   DUEL_PLAYER_RECONNECTED: 'duel:player_reconnected',
   DUEL_RECONNECT: 'duel:reconnect',
+  DUEL_CLOSE_NOW: 'duel:close_now',
 } as const;
 
 /**

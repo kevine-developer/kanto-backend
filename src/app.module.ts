@@ -50,6 +50,8 @@ import { ContentWizardModule } from './games/content-wizard/content-wizard.modul
 import { DailyChallengeModule } from './games/daily-challenge/daily-challenge.module.js';
 import { AppVersionModule } from './app-version/app-version.module.js';
 import { PartnersModule } from './partners/partners.module.js';
+import { ReviewsModule } from './reviews/reviews.module.js';
+import { SeoModule } from './seo/seo.module.js';
 
 @Module({
   imports: [
@@ -124,6 +126,8 @@ import { PartnersModule } from './partners/partners.module.js';
     DailyChallengeModule,
     AppVersionModule,
     PartnersModule,
+    ReviewsModule,
+    SeoModule,
   ],
   controllers: [AppController],
   providers: [

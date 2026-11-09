@@ -10,6 +10,7 @@ export function renderLicensesPage(options?: {
   return pageShell({
     title: 'Kanto — Licences et crédits',
     pageTitle: 'Licences et crédits',
+    slug: 'licenses',
     hideHeader: options?.hideHeader,
     supportEmail,
     description:

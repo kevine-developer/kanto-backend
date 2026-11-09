@@ -6,10 +6,14 @@ import {
   SubmitMultiplayerAnswerDto,
 } from './dto/multiplayer.dto.js';
 import { MultiplayerService } from './multiplayer.service.js';
+import { PresenceService } from '../../presence/presence.service.js';
 
 @Controller(['games/multiplayer', 'games/duel'])
 export class MultiplayerController {
-  constructor(private readonly multiplayerService: MultiplayerService) {}
+  constructor(
+    private readonly multiplayerService: MultiplayerService,
+    private readonly presenceService: PresenceService,
+  ) {}
 
   @Post('create')
   @UseGuards(AuthGuard)
@@ -81,4 +85,39 @@ export class MultiplayerController {
   ) {
     return this.multiplayerService.handlePlayerLeave(session.user.id, code);
   }
+
+  @Get('availability/:targetUserId')
+  @UseGuards(AuthGuard)
+  async checkAvailability(
+    @Param('targetUserId') targetUserId: string,
+    @Session() session: UserSession,
+  ) {
+    return this.presenceService.getUserDuelAvailability(
+      session.user.id,
+      targetUserId,
+    );
+  }
+
+  @Post('batch-availability')
+  @UseGuards(AuthGuard)
+  async getBatchAvailability(
+    @Body('userIds') userIds: string[],
+    @Session() session: UserSession,
+  ) {
+    return this.presenceService.getBatchUsersDuelAvailability(
+      session.user.id,
+      Array.isArray(userIds) ? userIds : [],
+    );
+  }
+
+  @Post('presence/heartbeat')
+  @UseGuards(AuthGuard)
+  async recordHeartbeat(
+    @Body('appState') appState: 'active' | 'background' | 'inactive',
+    @Session() session: UserSession,
+  ) {
+    await this.presenceService.recordHeartbeat(session.user.id, appState ?? 'active');
+    return { success: true };
+  }
+
 }

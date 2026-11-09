@@ -10,6 +10,7 @@ import { PrismaService } from '../../prisma/prisma.service.js';
 import { RedisService } from '../../redis/redis.service.js';
 import { NotificationsService } from '../../notifications/notifications.service.js';
 import { UserQuizService } from '../../user-quiz/user-quiz.service.js';
+import { PresenceService } from '../../presence/presence.service.js';
 import {
   createPrismaMock,
   type PrismaMock,
@@ -22,6 +23,7 @@ describe('MultiplayerService', () => {
   let redisMock: Record<string, jest.Mock>;
   let notificationsMock: Record<string, jest.Mock>;
   let userQuizMock: Record<string, jest.Mock>;
+  let presenceMock: Record<string, jest.Mock>;
 
   beforeEach(async () => {
     prismaMock = createPrismaMock();
@@ -50,6 +52,19 @@ describe('MultiplayerService', () => {
       recordPlay: jest.fn(() => Promise.resolve({ success: true })),
     };
 
+    presenceMock = {
+      getUserDuelAvailability: jest.fn(() =>
+        Promise.resolve({
+          status: 'ONLINE',
+          isAvailableForDuel: true,
+          messageFr: 'Le joueur est disponible pour un duel.',
+          messageMg: 'Vonona hifanandrina ny mpilalao.',
+        }),
+      ),
+      setPlayerInGame: jest.fn(() => Promise.resolve()),
+      clearPlayerInGame: jest.fn(() => Promise.resolve()),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         MultiplayerService,
@@ -57,6 +72,7 @@ describe('MultiplayerService', () => {
         { provide: RedisService, useValue: redisMock },
         { provide: NotificationsService, useValue: notificationsMock },
         { provide: UserQuizService, useValue: userQuizMock },
+        { provide: PresenceService, useValue: presenceMock },
       ],
     }).compile();
 
@@ -650,9 +666,14 @@ describe('MultiplayerService', () => {
       (prismaMock.duelSession.findMany as any).mockResolvedValue([
         expiredSession,
       ]);
-      (prismaMock.duelSession.updateMany as any).mockResolvedValue({
-        count: 1,
-      });
+      (prismaMock.duelSession.updateMany as any).mockImplementation(
+        ({ where }: any) => {
+          if (where?.id === 'sess_to_expire') {
+            return Promise.resolve({ count: 1 });
+          }
+          return Promise.resolve({ count: 0 });
+        },
+      );
 
       const closedCount = await service.expirePendingSessions();
 

@@ -3,6 +3,7 @@ import { PrismaModule } from '../../prisma/prisma.module.js';
 import { RedisModule } from '../../redis/redis.module.js';
 import { NotificationsModule } from '../../notifications/notifications.module.js';
 import { UserQuizModule } from '../../user-quiz/user-quiz.module.js';
+import { PresenceModule } from '../../presence/presence.module.js';
 import { MultiplayerController } from './multiplayer.controller.js';
 import { MultiplayerService } from './multiplayer.service.js';
 import { MultiplayerExpirationScheduler } from './multiplayer-expiration.scheduler.js';
@@ -11,6 +12,7 @@ import { MultiplayerExpirationScheduler } from './multiplayer-expiration.schedul
   imports: [
     PrismaModule,
     RedisModule,
+    PresenceModule,
     forwardRef(() => NotificationsModule),
     forwardRef(() => UserQuizModule),
   ],

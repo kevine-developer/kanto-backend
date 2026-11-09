@@ -20,6 +20,7 @@ import { PrismaService } from '../prisma/prisma.service.js';
 import { auth } from '../auth/auth.js';
 import { DuelService } from '../games/duel/duel.service.js';
 import { DuelGameTypeEnum } from '../games/duel/dto/duel.dto.js';
+import { PresenceService } from '../presence/presence.service.js';
 import {
   REALTIME_CHANNELS,
   SOCKET_EVENTS,
@@ -149,12 +150,14 @@ export class RealtimeGateway
   private unsubscribeLeaderboard: (() => void) | null = null;
   private unsubscribeDuel: (() => void) | null = null;
   private readonly disconnectTimers = new Map<string, NodeJS.Timeout>();
+  private readonly declineCountdownTimers = new Map<string, NodeJS.Timeout>();
   private readonly reactionRateLimits = new Map<string, number>();
 
   constructor(
     private readonly redisService: RedisService,
     private readonly duelService: DuelService,
     private readonly prisma: PrismaService,
+    private readonly presenceService: PresenceService,
   ) {}
 
   afterInit() {
@@ -210,6 +213,8 @@ export class RealtimeGateway
     this.unsubscribeDuel?.();
     this.disconnectTimers.forEach((timer) => clearTimeout(timer));
     this.disconnectTimers.clear();
+    this.declineCountdownTimers.forEach((timer) => clearTimeout(timer));
+    this.declineCountdownTimers.clear();
     this.reactionRateLimits.clear();
   }
 
@@ -225,6 +230,7 @@ export class RealtimeGateway
         const room = RealtimeRooms.user(authenticatedUserId);
         await client.join(room);
         (client.data as Record<string, unknown>).userId = authenticatedUserId;
+        await this.presenceService.recordSocketConnect(authenticatedUserId, client.id);
         this.logger.log(
           `🔌 [Realtime] Client connecté et authentifié : ${client.id} (room: ${room})`,
         );
@@ -247,6 +253,16 @@ export class RealtimeGateway
       string | undefined;
     const userId = (client.data as Record<string, unknown>)?.userId as
       string | undefined;
+
+    if (userId) {
+      void this.presenceService.recordSocketDisconnect(userId, client.id).then(async () => {
+        const remainingStatus = await this.presenceService.getRawPresenceStatus(userId);
+        this.server.emit(SOCKET_EVENTS.PRESENCE_STATUS_UPDATE, {
+          userId,
+          status: remainingStatus,
+        });
+      });
+    }
 
     if (duelCode && userId) {
       const room = RealtimeRooms.duel(duelCode);
@@ -576,25 +592,51 @@ export class RealtimeGateway
         return { success: false, message: 'Le code du salon est requis' };
       }
 
+      const cleanCode = data.code.trim().toUpperCase();
       const userId = this.getClientUserId(client, data?.opponentId);
       const result = await this.duelService.declineDuelChallenge(
-        data.code,
+        cleanCode,
         userId,
         data?.opponentName,
       );
 
       const room = RealtimeRooms.duel(result.code);
+      const countdownSeconds = 10;
+      const closeAt = Date.now() + countdownSeconds * 1000;
+
+      // Diffuser le refus avec le compte à rebours de 10s au créateur et participants
       this.server.to(room).emit(SOCKET_EVENTS.DUEL_CHALLENGE_DECLINED, {
         code: result.code,
         opponentId: userId,
         opponentName: result.declinerName,
-        messageMg: `Nandà ny fanamby i ${result.declinerName}.`,
-        messageFr: `${result.declinerName} a décliné le défi.`,
+        messageMg: `Nandà ny fanamby i ${result.declinerName}. Hakatona afaka 10 segondra ity salon ity.`,
+        messageFr: `${result.declinerName} a refusé votre défi. Ce salon sera fermé dans 10 secondes.`,
+        closeAt,
+        countdownSeconds,
       });
 
       this.logger.log(
-        `⚔️ [DuelGateway] Défi décliné par ${result.declinerName} pour le salon ${room}`,
+        `⚔️ [DuelGateway] Défi décliné par ${result.declinerName} pour le salon ${room}. Fermeture automatique programmée dans ${countdownSeconds}s (closeAt: ${closeAt})`,
       );
+
+      // Annuler tout timer précédent s'il existait déjà
+      const existingTimer = this.declineCountdownTimers.get(cleanCode);
+      if (existingTimer) {
+        clearTimeout(existingTimer);
+      }
+
+      // Programmer la fermeture automatique et libération du salon après 10s
+      const timer = setTimeout(async () => {
+        this.declineCountdownTimers.delete(cleanCode);
+        try {
+          await this.performRoomAutoClosure(cleanCode, 'CHALLENGE_DECLINED');
+        } catch (err: unknown) {
+          const msg = err instanceof Error ? err.message : String(err);
+          this.logger.warn(`Erreur fermeture automatique du salon ${cleanCode} : ${msg}`);
+        }
+      }, countdownSeconds * 1000);
+
+      this.declineCountdownTimers.set(cleanCode, timer);
 
       return { success: true };
     } catch (err: unknown) {
@@ -602,6 +644,82 @@ export class RealtimeGateway
         err instanceof Error ? err.message : 'Erreur lors du refus du défi';
       this.logger.warn(`Erreur refus défi : ${msg}`);
       return { success: false, message: msg };
+    }
+  }
+
+  /**
+   * Fermeture immédiate du salon à l'initiative de l'hôte (ex: bouton "Fermer maintenant").
+   */
+  @SubscribeMessage(SOCKET_EVENTS.DUEL_CLOSE_NOW)
+  async handleDuelCloseNow(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: { code: string; userId?: string },
+  ) {
+    if (!data?.code) return { success: false };
+    const cleanCode = data.code.trim().toUpperCase();
+    const declineTimer = this.declineCountdownTimers.get(cleanCode);
+    if (declineTimer) {
+      clearTimeout(declineTimer);
+      this.declineCountdownTimers.delete(cleanCode);
+    }
+    await this.performRoomAutoClosure(cleanCode, 'HOST_CLOSED_EARLY');
+    return { success: true };
+  }
+
+  /**
+   * Clôture automatique et libération des ressources d'un salon suite à refus ou expiration.
+   */
+  private async performRoomAutoClosure(code: string, reason = 'CHALLENGE_DECLINED') {
+    const cleanCode = code.trim().toUpperCase();
+    const room = RealtimeRooms.duel(cleanCode);
+
+    try {
+      const session = await this.prisma.duelSession.findUnique({
+        where: { code: cleanCode },
+        select: { id: true, status: true },
+      });
+
+      if (!session) {
+        this.logger.log(`[DuelGateway] Salon ${cleanCode} introuvable pour fermeture automatique.`);
+        return;
+      }
+
+      // Ne pas fermer si la session est devenue active entre-temps
+      if (session.status === 'STARTING' || session.status === 'FINISHED') {
+        this.logger.log(
+          `[DuelGateway] Salon ${cleanCode} est en statut ${session.status}, fermeture annulée.`,
+        );
+        return;
+      }
+
+      // Mettre à jour le statut en base si la session était en attente
+      if (session.status === 'WAITING' || session.status === 'READY') {
+        await this.prisma.duelSession.update({
+          where: { id: session.id },
+          data: {
+            status: 'CANCELLED',
+            finishedAt: new Date(),
+          },
+        });
+      }
+
+      // Notifier les participants connectés de la fermeture finale
+      this.server.to(room).emit(SOCKET_EVENTS.DUEL_SESSION_CANCELLED, {
+        code: cleanCode,
+        reason,
+        messageMg: "Nakatona ny efitrano taorian'ny fandavana ny fanamby.",
+        messageFr: "Le salon a été fermé suite au refus du défi.",
+      });
+
+      // Déconnecter proprement les sockets de la room
+      this.server.in(room).socketsLeave(room);
+
+      this.logger.log(
+        `📢 [DuelGateway] Salon ${cleanCode} (${room}) fermé définitivement et libéré suite au compte à rebours de refus.`,
+      );
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      this.logger.warn(`Erreur clôture salon ${cleanCode} : ${msg}`);
     }
   }
 
@@ -701,6 +819,11 @@ export class RealtimeGateway
       const userId = this.getClientUserId(client, data?.userId);
       const cleanCode = data.code.trim().toUpperCase();
       const timerKey = `${cleanCode}:${userId}`;
+        const declineTimer = this.declineCountdownTimers.get(cleanCode);
+        if (declineTimer) {
+          clearTimeout(declineTimer);
+          this.declineCountdownTimers.delete(cleanCode);
+        }
 
       const pendingTimer = this.disconnectTimers.get(timerKey);
       if (pendingTimer) {
@@ -1585,4 +1708,67 @@ export class RealtimeGateway
 
     return rawMessage;
   }
+
+  // ============================================================================
+  // ÉCOUTEURS DE PRÉSENCE EN TEMPS RÉEL & DISPONIBILITÉ 1V1
+  // ============================================================================
+
+  @SubscribeMessage(SOCKET_EVENTS.PRESENCE_HEARTBEAT)
+  async handlePresenceHeartbeat(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() payload: { appState?: 'active' | 'background' | 'inactive' },
+  ) {
+    const userId = (client.data as Record<string, unknown>)?.userId as string | undefined;
+    if (!userId) return { success: false, reason: 'UNAUTHENTICATED' };
+
+    const appState = payload?.appState ?? 'active';
+    await this.presenceService.recordHeartbeat(userId, appState);
+    const newStatus = await this.presenceService.getRawPresenceStatus(userId);
+    this.server.emit(SOCKET_EVENTS.PRESENCE_STATUS_UPDATE, {
+      userId,
+      status: newStatus,
+    });
+    return { success: true, status: newStatus };
+  }
+
+  @SubscribeMessage(SOCKET_EVENTS.PRESENCE_CHECK)
+  async handlePresenceCheck(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() payload: { targetUserId: string },
+  ) {
+    const requesterId = (client.data as Record<string, unknown>)?.userId as string | undefined;
+    if (!payload?.targetUserId) {
+      return { success: false, error: 'TARGET_USER_ID_REQUIRED' };
+    }
+
+    const availability = await this.presenceService.getUserDuelAvailability(
+      requesterId,
+      payload.targetUserId,
+    );
+
+    return {
+      success: true,
+      data: availability,
+    };
+  }
+
+  @SubscribeMessage(SOCKET_EVENTS.PRESENCE_GET_BATCH)
+  async handlePresenceGetBatch(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() payload: { userIds: string[] },
+  ) {
+    const requesterId = (client.data as Record<string, unknown>)?.userId as string | undefined;
+    const userIds = Array.isArray(payload?.userIds) ? payload.userIds : [];
+
+    const map = await this.presenceService.getBatchUsersDuelAvailability(
+      requesterId,
+      userIds,
+    );
+
+    return {
+      success: true,
+      data: map,
+    };
+  }
+
 }

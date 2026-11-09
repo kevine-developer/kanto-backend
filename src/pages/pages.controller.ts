@@ -52,6 +52,7 @@ export class PagesController {
         return pageShell({
           title: `Kanto — ${doc.title}`,
           pageTitle: doc.title,
+          slug: doc.slug,
           hideHeader,
           supportEmail,
           description: doc.summary || 'Politique de confidentialité Kanto',

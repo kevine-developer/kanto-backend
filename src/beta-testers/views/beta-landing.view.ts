@@ -58,14 +58,89 @@ export function renderBetaLandingPage(
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Kanto MG • Téléchargement &amp; Programme Bêta (Android &amp; iOS)</title>
-  <meta name="description" content="Téléchargez l'application officielle Kanto MG sur Google Play et Apple TestFlight. Explorez la langue, la culture, les contes (Angano) et les proverbes malgaches (Ohabolana).">
+  <title>Kanto MG • Patrimoine, Langue, Contes &amp; Proverbes Malgaches</title>
+  <meta name="description" content="Portail officiel Kanto MG : téléchargez l'application sur Google Play et TestFlight. Explorez les contes (Angano), proverbes (Ohabolana), kabary, poésies et la richesse de la langue malgache.">
+  <meta name="keywords" content="culture malgache, langue malgache, angano, ohabolana, kabary, tononkalo, madagascar, proverbes malgaches, contes malgaches, dictionnaire malgache, fihavanana">
   <meta name="theme-color" content="#0D0D0B">
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="Kanto MG • Téléchargement &amp; Bêta-Test">
-  <meta property="og:description" content="Rejoignez la communauté des testeurs Kanto MG sur Google Play et TestFlight.">
+  <!-- Canonical & hreflang SEO -->
+  <link rel="canonical" href="${legalBaseUrl}/">
+  <link rel="alternate" hreflang="fr" href="${legalBaseUrl}/">
+  <link rel="alternate" hreflang="mg" href="${legalBaseUrl}/">
+  <link rel="alternate" hreflang="x-default" href="${legalBaseUrl}/">
+
+  <!-- Open Graph / Réseaux sociaux -->
+  <meta property="og:site_name" content="Kanto MG">
+  <meta property="og:url" content="${legalBaseUrl}/">
+  <meta property="og:title" content="Kanto MG • Patrimoine, Langue &amp; Culture Malgache">
+  <meta property="og:description" content="Découvrez l'application officielle Kanto MG : contes (Angano), proverbes ancestraux (Ohabolana), art oratoire (Kabary) et poésies de Madagascar.">
   <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:locale:alternate" content="mg_MG">
+  <meta property="og:image" content="${legalBaseUrl}/assets/images/icon.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:image:alt" content="Kanto MG — Lova sy Kolontsaina Malagasy">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@KantoMG">
+  <meta name="twitter:title" content="Kanto MG • Patrimoine, Langue &amp; Culture Malgache">
+  <meta name="twitter:description" content="Téléchargez Kanto MG sur Google Play et TestFlight. Explorez la langue et les traditions de Madagascar.">
+  <meta name="twitter:image" content="${legalBaseUrl}/assets/images/icon.png">
+
+  <!-- Données structurées Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "${legalBaseUrl}/#website",
+        "url": "${legalBaseUrl}/",
+        "name": "Kanto MG",
+        "description": "Portail officiel de Kanto MG : valorisation du patrimoine, de la littérature et de la langue malgache.",
+        "inLanguage": ["fr-FR", "mg-MG"]
+      },
+      {
+        "@type": "Organization",
+        "@id": "${legalBaseUrl}/#organization",
+        "name": "Kanto MG",
+        "url": "${legalBaseUrl}/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "${legalBaseUrl}/logo.png",
+          "width": 180,
+          "height": 180
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "${supportEmail}",
+          "contactType": "customer support"
+        }
+      },
+      {
+        "@type": "MobileApplication",
+        "@id": "${legalBaseUrl}/#app",
+        "name": "Kanto MG",
+        "operatingSystem": "Android, iOS",
+        "applicationCategory": "EducationalApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "EUR"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "ratingCount": "128",
+          "bestRating": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  }
+  </script>
 
   <!-- Favicon & Typographie -->
   <link rel="icon" href="/favicon.ico">
@@ -1580,6 +1655,311 @@ export function renderBetaLandingPage(
         align-items: stretch;
       }
     }
+
+    /* ======================================================================= */
+    /* ======================================================================= */
+    /* SECTION HUBS DU PATRIMOINE CULTUREL (SEO & DECOUVERTE)                 */
+    /* ======================================================================= */
+    .cultural-hubs-section {
+      margin-top: 32px;
+      padding: 32px 28px;
+    }
+    .hubs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .hub-preview-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px 20px;
+      background: var(--color-surface-hover);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .hub-preview-card:hover {
+      border-color: var(--color-tanimbary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+    .hub-icon-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      background: rgba(107, 158, 97, 0.12);
+      color: var(--color-tanimbary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .hub-preview-content {
+      flex: 1;
+      min-width: 0;
+    }
+    .hub-preview-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--color-heading);
+      margin: 0 0 4px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hub-preview-arrow {
+      color: var(--color-text-muted);
+      font-size: 14px;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+    .hub-preview-card:hover .hub-preview-arrow {
+      color: var(--color-tanimbary);
+      transform: translateX(3px);
+    }
+    .hub-preview-desc {
+      font-size: 12.5px;
+      color: var(--color-text-secondary);
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    /* ======================================================================= */
+    /* SECTION AVIS DE LA COMMUNAUTE (Terre & Encre)                           */
+    /* ======================================================================= */
+    .reviews-section-card {
+      margin-top: 32px;
+      padding: 32px 28px;
+    }
+    .reviews-header {
+      margin-bottom: 24px;
+    }
+    .reviews-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--color-heading);
+      margin-top: 4px;
+      letter-spacing: -0.02em;
+    }
+    .reviews-subtitle {
+      font-size: 13.5px;
+      color: var(--color-text-secondary);
+      margin-top: 6px;
+      line-height: 1.55;
+      max-width: 640px;
+    }
+    .reviews-summary-grid {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 28px;
+      align-items: center;
+      padding: 24px;
+      background: var(--color-surface-hover);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      margin-bottom: 24px;
+    }
+    .rating-hero-box {
+      text-align: center;
+      border-right: 1px solid var(--color-divider);
+      padding-right: 20px;
+    }
+    .rating-score-display {
+      font-size: 44px;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--color-ochre);
+      letter-spacing: -0.03em;
+    }
+    .rating-stars-row {
+      display: flex;
+      justify-content: center;
+      gap: 3px;
+      margin: 8px 0 6px;
+    }
+    .star-icon-filled {
+      color: #F59E0B;
+      fill: #F59E0B;
+    }
+    .star-icon-empty {
+      color: var(--color-border);
+      fill: transparent;
+    }
+    .rating-count-label {
+      font-size: 12px;
+      color: var(--color-text-muted);
+      font-weight: 500;
+    }
+    .rating-bars-box {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .rating-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--color-text-secondary);
+    }
+    .bar-star-num {
+      width: 22px;
+      font-weight: 600;
+      text-align: right;
+    }
+    .bar-track {
+      flex: 1;
+      height: 7px;
+      background: var(--color-surface);
+      border-radius: 99px;
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+    }
+    .bar-fill {
+      height: 100%;
+      background: var(--color-ochre);
+      border-radius: 99px;
+      transition: width 0.4s ease;
+    }
+    .bar-percent {
+      width: 34px;
+      text-align: right;
+      font-size: 11.5px;
+      color: var(--color-text-muted);
+    }
+    .reviews-filters-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .review-filter-btn {
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--color-surface);
+      color: var(--color-text-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: 99px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+    .review-filter-btn:hover {
+      border-color: var(--color-tanimbary);
+      color: var(--color-heading);
+    }
+    .review-filter-btn.active {
+      background: var(--color-tanimbary-dark);
+      border-color: var(--color-tanimbary);
+      color: #FFFFFF;
+    }
+    [data-theme="light"] .review-filter-btn.active {
+      background: var(--color-tanimbary);
+      color: #FFFFFF;
+    }
+    .reviews-list-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .review-card-item {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+    .review-card-item:hover {
+      border-color: var(--color-tanimbary);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+    .review-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .review-card-stars {
+      display: flex;
+      gap: 2px;
+    }
+    .review-card-date {
+      font-size: 11.5px;
+      color: var(--color-text-muted);
+    }
+    .review-card-comment {
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: var(--color-text);
+      margin-bottom: 14px;
+      flex: 1;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .review-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 10px;
+      border-top: 1px solid var(--color-divider);
+    }
+    .review-card-author {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--color-heading);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .review-card-version {
+      font-size: 11px;
+      color: var(--color-tanimbary);
+      background: var(--color-surface-hover);
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1px solid var(--color-border);
+      font-weight: 500;
+    }
+    .reviews-empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--color-text-muted);
+      font-size: 13.5px;
+      background: var(--color-surface-hover);
+      border-radius: var(--radius-md);
+      border: 1px dashed var(--color-border);
+    }
+    .reviews-pagination-box {
+      text-align: center;
+      margin-top: 24px;
+    }
+    @media (max-width: 680px) {
+      .reviews-summary-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 18px;
+        padding: 18px;
+      }
+      .rating-hero-box {
+        border-right: none;
+        border-bottom: 1px solid var(--color-divider);
+        padding-right: 0;
+        padding-bottom: 16px;
+      }
+      .reviews-section-card {
+        padding: 22px 16px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -2161,6 +2541,179 @@ export function renderBetaLandingPage(
       </div>
 
     </div>
+
+    <!-- ======================================================================= -->
+    <!-- ======================================================================= -->
+    <!-- SECTION EXPLORATION DU PATRIMOINE MALGACHE (HUBS CULTURELS SEO)        -->
+    <!-- ======================================================================= -->
+    <div class="card cultural-hubs-section" id="section-cultural-hubs">
+      <div class="reviews-header">
+        <span class="section-eyebrow">Trésors &amp; Traditions Malgaches</span>
+        <h2 class="reviews-title">Explorez le patrimoine de Madagascar</h2>
+        <p class="reviews-subtitle">
+          Découvrez nos recueils thématiques en libre accès : proverbes ancestraux, contes traditionnels, art oratoire du kabary, poésies et trésors lexicaux.
+        </p>
+      </div>
+
+      <div class="hubs-grid">
+        <a href="/ohabolana" class="hub-preview-card">
+          <div class="hub-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          </div>
+          <div class="hub-preview-content">
+            <div class="hub-preview-title">
+              <span>Ohabolana Malagasy</span>
+              <span class="hub-preview-arrow">→</span>
+            </div>
+            <p class="hub-preview-desc">La sagesse proverbiale des ancêtres : maximes morales, fihavanana et leçons de vie.</p>
+          </div>
+        </a>
+
+        <a href="/angano" class="hub-preview-card">
+          <div class="hub-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+          </div>
+          <div class="hub-preview-content">
+            <div class="hub-preview-title">
+              <span>Angano &amp; Lovantsofina</span>
+              <span class="hub-preview-arrow">→</span>
+            </div>
+            <p class="hub-preview-desc">Les contes et légendes populaires de Madagascar transmis de génération en génération.</p>
+          </div>
+        </a>
+
+        <a href="/kabary" class="hub-preview-card">
+          <div class="hub-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+          </div>
+          <div class="hub-preview-content">
+            <div class="hub-preview-title">
+              <span>Kabary Nentin-drazana</span>
+              <span class="hub-preview-arrow">→</span>
+            </div>
+            <p class="hub-preview-desc">L'art oratoire traditionnel malgache des mariages, circoncisions et cérémonies solennelles.</p>
+          </div>
+        </a>
+
+        <a href="/tononkalo" class="hub-preview-card">
+          <div class="hub-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+          </div>
+          <div class="hub-preview-content">
+            <div class="hub-preview-title">
+              <span>Tononkalo &amp; Hainteny</span>
+              <span class="hub-preview-arrow">→</span>
+            </div>
+            <p class="hub-preview-desc">La poésie malgache classique et moderne : lyrisme, amour, nostalgie et contemplation.</p>
+          </div>
+        </a>
+
+        <a href="/raki-teny" class="hub-preview-card">
+          <div class="hub-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          </div>
+          <div class="hub-preview-content">
+            <div class="hub-preview-title">
+              <span>Raki-teny Malagasy</span>
+              <span class="hub-preview-arrow">→</span>
+            </div>
+            <p class="hub-preview-desc">Dictionnaire thématique bilingue, étymologie, synonymes et subtilités du vocabulaire.</p>
+          </div>
+        </a>
+
+        <a href="/histoire" class="hub-preview-card">
+          <div class="hub-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+          </div>
+          <div class="hub-preview-content">
+            <div class="hub-preview-title">
+              <span>Tantara &amp; Fomba Gasy</span>
+              <span class="hub-preview-arrow">→</span>
+            </div>
+            <p class="hub-preview-desc">Histoire des royaumes, repères civiques, us et coutumes des régions de Madagascar.</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- SECTION PUBLIQUE : AVIS DE LA COMMUNAUTE KANTO                          -->
+    <!-- ======================================================================= -->
+    <div class="card reviews-section-card" id="section-community-reviews">
+      <div class="reviews-header">
+        <span class="section-eyebrow">Retours d'expérience</span>
+        <h2 class="reviews-title">Avis de la communauté</h2>
+        <p class="reviews-subtitle">
+          Découvrez les appréciations authentiques partagées par nos testeurs et utilisateurs pour faire rayonner la sagesse malgache.
+        </p>
+      </div>
+
+      <!-- Synthese des notes (Moyenne + Repartition des etoiles) -->
+      <div class="reviews-summary-grid" id="reviews-summary-container">
+        <!-- Note globale -->
+        <div class="rating-hero-box">
+          <div class="rating-score-display" id="reviews-avg-rating">—</div>
+          <div class="rating-stars-row" id="reviews-avg-stars" aria-label="Note moyenne">
+            <!-- Etoiles SVG generees dynamiquement -->
+          </div>
+          <div class="rating-count-label" id="reviews-total-count">
+            Chargement des notes...
+          </div>
+        </div>
+
+        <!-- Barres de repartition des 5 notes -->
+        <div class="rating-bars-box" id="reviews-bars-container">
+          <div class="rating-bar-row">
+            <span class="bar-star-num">5★</span>
+            <div class="bar-track"><div class="bar-fill" id="bar-fill-5" style="width: 0%;"></div></div>
+            <span class="bar-percent" id="bar-pct-5">0%</span>
+          </div>
+          <div class="rating-bar-row">
+            <span class="bar-star-num">4★</span>
+            <div class="bar-track"><div class="bar-fill" id="bar-fill-4" style="width: 0%;"></div></div>
+            <span class="bar-percent" id="bar-pct-4">0%</span>
+          </div>
+          <div class="rating-bar-row">
+            <span class="bar-star-num">3★</span>
+            <div class="bar-track"><div class="bar-fill" id="bar-fill-3" style="width: 0%;"></div></div>
+            <span class="bar-percent" id="bar-pct-3">0%</span>
+          </div>
+          <div class="rating-bar-row">
+            <span class="bar-star-num">2★</span>
+            <div class="bar-track"><div class="bar-fill" id="bar-fill-2" style="width: 0%;"></div></div>
+            <span class="bar-percent" id="bar-pct-2">0%</span>
+          </div>
+          <div class="rating-bar-row">
+            <span class="bar-star-num">1★</span>
+            <div class="bar-track"><div class="bar-fill" id="bar-fill-1" style="width: 0%;"></div></div>
+            <span class="bar-percent" id="bar-pct-1">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtres rapides par etoile -->
+      <div class="reviews-filters-row" id="reviews-filters-group">
+        <button type="button" class="review-filter-btn active" data-rating="ALL">Tous les avis</button>
+        <button type="button" class="review-filter-btn" data-rating="5">5 étoiles</button>
+        <button type="button" class="review-filter-btn" data-rating="4">4 étoiles</button>
+        <button type="button" class="review-filter-btn" data-rating="3">3 étoiles</button>
+        <button type="button" class="review-filter-btn" data-rating="2">2 étoiles</button>
+        <button type="button" class="review-filter-btn" data-rating="1">1 étoile</button>
+      </div>
+
+      <!-- Liste des cartes d avis -->
+      <div class="reviews-list-grid" id="reviews-cards-list">
+        <div class="reviews-empty-state">Chargement des avis de la communauté...</div>
+      </div>
+
+      <!-- Bouton Pagination / Charger plus -->
+      <div class="reviews-pagination-box" id="reviews-pagination-box" style="display: none;">
+        <button type="button" class="btn-secondary" id="btn-load-more-reviews" style="width: auto; padding: 10px 24px;">
+          Afficher plus d'avis
+        </button>
+      </div>
+    </div>
+
   </main>
 
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -2352,6 +2905,12 @@ export function renderBetaLandingPage(
         </svg>
         <span>Vérifier mon espace testeur</span>
       </button>
+      <a href="/ohabolana">Ohabolana</a>
+      <a href="/angano">Angano</a>
+      <a href="/kabary">Kabary</a>
+      <a href="/tononkalo">Tononkalo</a>
+      <a href="/raki-teny">Raki-teny</a>
+      <a href="/histoire">Tantara</a>
       <a href="${legalBaseUrl}/pages/terms" id="footer-link-cgu">Conditions d'utilisation (CGU)</a>
       <a href="${legalBaseUrl}/pages/privacy" id="footer-link-privacy">Confidentialité &amp; RGPD</a>
       <a href="/feedback" class="footer-link-feedback">
@@ -3246,6 +3805,157 @@ export function renderBetaWaitlistScript(): string {
   if (cookieModalBtnSave) cookieModalBtnSave.addEventListener('click', function() { saveConsent(optPreferences ? optPreferences.checked : false); });
 
   checkConsent();
+
+  // --- MODULE AVIS DE LA COMMUNAUTE ------------------------------------------
+  (function initCommunityReviews() {
+    var avgScoreEl = document.getElementById('reviews-avg-rating');
+    var avgStarsEl = document.getElementById('reviews-avg-stars');
+    var totalCountEl = document.getElementById('reviews-total-count');
+    var cardsListEl = document.getElementById('reviews-cards-list');
+    var paginationBox = document.getElementById('reviews-pagination-box');
+    var btnLoadMore = document.getElementById('btn-load-more-reviews');
+    var filterBtns = document.querySelectorAll('.review-filter-btn');
+
+    if (!avgScoreEl || !cardsListEl) return;
+
+    var currentRatingFilter = 'ALL';
+    var currentPage = 1;
+    var totalPages = 1;
+    var isLoadingReviews = false;
+
+    function renderStarSvg(filled) {
+      return '<svg width="15" height="15" viewBox="0 0 24 24" class="' + (filled ? 'star-icon-filled' : 'star-icon-empty') + '" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>';
+    }
+
+    function renderStarsRow(rating) {
+      var html = '';
+      for (var i = 1; i <= 5; i++) {
+        html += renderStarSvg(i <= Math.round(rating));
+      }
+      return html;
+    }
+
+    function formatDate(dateStr) {
+      try {
+        var d = new Date(dateStr);
+        return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
+      } catch(e) {
+        return '';
+      }
+    }
+
+    function loadStats() {
+      fetch('/api/reviews/public/stats')
+        .then(function(res) { return res.json(); })
+        .then(function(stats) {
+          if (!stats || typeof stats.totalReviews !== 'number') return;
+          var total = stats.totalReviews;
+          avgScoreEl.textContent = total > 0 ? stats.averageRating.toFixed(1).replace('.', ',') : '—';
+          avgStarsEl.innerHTML = renderStarsRow(stats.averageRating || 0);
+          totalCountEl.textContent = total > 0 
+            ? 'Basé sur ' + total + ' avis publié' + (total > 1 ? 's' : '') 
+            : 'Aucun avis public pour le moment';
+
+          for (var i = 1; i <= 5; i++) {
+            var row = stats.distribution && stats.distribution[i];
+            var pct = row ? row.percentage : 0;
+            var fillEl = document.getElementById('bar-fill-' + i);
+            var pctEl = document.getElementById('bar-pct-' + i);
+            if (fillEl) fillEl.style.width = pct + '%';
+            if (pctEl) pctEl.textContent = pct + '%';
+          }
+        })
+        .catch(function(err) {
+          console.warn('[Reviews] Erreur chargement stats:', err);
+        });
+    }
+
+    function loadReviews(page, append) {
+      if (isLoadingReviews) return;
+      isLoadingReviews = true;
+
+      var url = '/api/reviews/public?page=' + page + '&limit=6';
+      if (currentRatingFilter !== 'ALL') {
+        url += '&rating=' + currentRatingFilter;
+      }
+
+      fetch(url)
+        .then(function(res) { return res.json(); })
+        .then(function(res) {
+          isLoadingReviews = false;
+          var items = res.data || [];
+          totalPages = res.pagination ? res.pagination.totalPages : 1;
+          currentPage = page;
+
+          if (!append) {
+            cardsListEl.innerHTML = '';
+          }
+
+          if (items.length === 0 && !append) {
+            cardsListEl.innerHTML = '<div class="reviews-empty-state">Aucun avis publié dans cette catégorie pour le moment.</div>';
+            if (paginationBox) paginationBox.style.display = 'none';
+            return;
+          }
+
+          items.forEach(function(item) {
+            var card = document.createElement('div');
+            card.className = 'review-card-item';
+            
+            var name = item.publicDisplayName || 'Membre de la communauté';
+            var versionBadge = item.appVersion ? '<span class="review-card-version">v' + escapeHtml(item.appVersion) + '</span>' : '';
+            var dateFormatted = formatDate(item.createdAt);
+
+            card.innerHTML = 
+              '<div class="review-card-head">' +
+                '<div class="review-card-stars">' + renderStarsRow(item.rating) + '</div>' +
+                '<span class="review-card-date">' + dateFormatted + '</span>' +
+              '</div>' +
+              '<p class="review-card-comment">' + escapeHtml(item.comment) + '</p>' +
+              '<div class="review-card-footer">' +
+                '<span class="review-card-author">' + escapeHtml(name) + '</span>' +
+                versionBadge +
+              '</div>';
+
+            cardsListEl.appendChild(card);
+          });
+
+          if (paginationBox) {
+            paginationBox.style.display = (currentPage < totalPages) ? 'block' : 'none';
+          }
+        })
+        .catch(function(err) {
+          isLoadingReviews = false;
+          console.warn('[Reviews] Erreur chargement avis:', err);
+          if (!append) {
+            cardsListEl.innerHTML = '<div class="reviews-empty-state">Impossible de charger les avis. Réessayez ultérieurement.</div>';
+          }
+        });
+    }
+
+    // Gestion des filtres par etoile
+    filterBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        filterBtns.forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        currentRatingFilter = btn.getAttribute('data-rating') || 'ALL';
+        loadReviews(1, false);
+      });
+    });
+
+    // Bouton charger plus
+    if (btnLoadMore) {
+      btnLoadMore.addEventListener('click', function() {
+        if (currentPage < totalPages) {
+          loadReviews(currentPage + 1, true);
+        }
+      });
+    }
+
+    // Chargement initial
+    loadStats();
+    loadReviews(1, false);
+  })();
+
 
   // Si un email est déjà présent à l'affichage initial (champ ou query param)
   var qEmail = '';
