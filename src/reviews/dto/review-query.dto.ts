@@ -21,6 +21,13 @@ export class PublicReviewsQueryDto {
   @Min(1)
   @Max(5)
   rating?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  @Max(5)
+  minRating?: number = 4;
 }
 
 export class AdminReviewsQueryDto {

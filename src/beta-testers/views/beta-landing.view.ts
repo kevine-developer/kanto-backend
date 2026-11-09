@@ -1728,57 +1728,104 @@ export function renderBetaLandingPage(
     }
 
     /* ======================================================================= */
-    /* SECTION AVIS DE LA COMMUNAUTE (Terre & Encre)                           */
+    /* SECTION AVIS DE LA COMMUNAUTE — DESIGN MODERNE EPURE (>= 4 ETOILES)     */
     /* ======================================================================= */
     .reviews-section-card {
-      margin-top: 32px;
-      padding: 32px 28px;
+      margin-top: 36px;
+      padding: 36px 32px;
+      border-radius: var(--radius-lg);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
     }
-    .reviews-header {
-      margin-bottom: 24px;
+    .reviews-header-modern {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--color-divider);
     }
     .reviews-title {
-      font-size: 22px;
-      font-weight: 700;
+      font-size: 24px;
+      font-weight: 800;
       color: var(--color-heading);
+      letter-spacing: -0.025em;
       margin-top: 4px;
-      letter-spacing: -0.02em;
     }
     .reviews-subtitle {
-      font-size: 13.5px;
+      font-size: 14px;
       color: var(--color-text-secondary);
       margin-top: 6px;
       line-height: 1.55;
-      max-width: 640px;
+      max-width: 580px;
     }
-    .reviews-summary-grid {
-      display: grid;
-      grid-template-columns: 200px 1fr;
-      gap: 28px;
+    .reviews-trust-pill {
+      display: flex;
       align-items: center;
-      padding: 24px;
+      gap: 14px;
+      padding: 10px 18px;
       background: var(--color-surface-hover);
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      margin-bottom: 24px;
+      border-radius: 99px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
     }
-    .rating-hero-box {
-      text-align: center;
-      border-right: 1px solid var(--color-divider);
-      padding-right: 20px;
-    }
-    .rating-score-display {
-      font-size: 44px;
+    .trust-pill-score {
+      font-size: 24px;
       font-weight: 800;
-      line-height: 1;
       color: var(--color-ochre);
-      letter-spacing: -0.03em;
+      line-height: 1;
+      letter-spacing: -0.02em;
     }
-    .rating-stars-row {
+    .trust-pill-info {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .trust-pill-stars {
+      display: flex;
+      gap: 2px;
+    }
+    .trust-pill-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .reviews-list-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    .review-card-item {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+      position: relative;
+    }
+    .review-card-item:hover {
+      border-color: var(--color-tanimbary);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.07);
+    }
+    .review-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .review-card-stars {
+      display: flex;
       gap: 3px;
-      margin: 8px 0 6px;
     }
     .star-icon-filled {
       color: #F59E0B;
@@ -1788,175 +1835,114 @@ export function renderBetaLandingPage(
       color: var(--color-border);
       fill: transparent;
     }
-    .rating-count-label {
-      font-size: 12px;
-      color: var(--color-text-muted);
-      font-weight: 500;
-    }
-    .rating-bars-box {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-    .rating-bar-row {
-      display: flex;
+    .review-card-badge-verified {
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
-      font-size: 12px;
-      color: var(--color-text-secondary);
-    }
-    .bar-star-num {
-      width: 22px;
+      gap: 4px;
+      font-size: 11px;
       font-weight: 600;
-      text-align: right;
-    }
-    .bar-track {
-      flex: 1;
-      height: 7px;
-      background: var(--color-surface);
+      color: var(--color-tanimbary);
+      background: rgba(74, 103, 65, 0.08);
+      padding: 3px 8px;
       border-radius: 99px;
-      overflow: hidden;
-      border: 1px solid var(--color-border);
+      border: 1px solid rgba(74, 103, 65, 0.2);
     }
-    .bar-fill {
-      height: 100%;
-      background: var(--color-ochre);
-      border-radius: 99px;
-      transition: width 0.4s ease;
-    }
-    .bar-percent {
-      width: 34px;
-      text-align: right;
-      font-size: 11.5px;
-      color: var(--color-text-muted);
-    }
-    .reviews-filters-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
-    }
-    .review-filter-btn {
-      padding: 6px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      background: var(--color-surface);
-      color: var(--color-text-secondary);
-      border: 1px solid var(--color-border);
-      border-radius: 99px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      font-family: inherit;
-    }
-    .review-filter-btn:hover {
-      border-color: var(--color-tanimbary);
-      color: var(--color-heading);
-    }
-    .review-filter-btn.active {
-      background: var(--color-tanimbary-dark);
-      border-color: var(--color-tanimbary);
-      color: #FFFFFF;
-    }
-    [data-theme="light"] .review-filter-btn.active {
-      background: var(--color-tanimbary);
-      color: #FFFFFF;
-    }
-    .reviews-list-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
-    }
-    .review-card-item {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      padding: 18px 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-    }
-    .review-card-item:hover {
-      border-color: var(--color-tanimbary);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-    }
-    .review-card-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .review-card-stars {
-      display: flex;
-      gap: 2px;
-    }
-    .review-card-date {
-      font-size: 11.5px;
-      color: var(--color-text-muted);
+    [data-theme="dark"] .review-card-badge-verified {
+      background: rgba(74, 103, 65, 0.18);
+      color: #8EB285;
+      border-color: rgba(74, 103, 65, 0.35);
     }
     .review-card-comment {
-      font-size: 13.5px;
-      line-height: 1.55;
+      font-size: 14px;
+      line-height: 1.6;
       color: var(--color-text);
-      margin-bottom: 14px;
+      margin-bottom: 18px;
       flex: 1;
       white-space: pre-wrap;
       word-break: break-word;
+      font-style: italic;
     }
     .review-card-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 10px;
+      padding-top: 14px;
       border-top: 1px solid var(--color-divider);
     }
-    .review-card-author {
-      font-size: 12.5px;
-      font-weight: 600;
-      color: var(--color-heading);
+    .review-author-group {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 10px;
+    }
+    .review-avatar-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(74, 103, 65, 0.12);
+      color: var(--color-tanimbary);
+      border: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    [data-theme="dark"] .review-avatar-circle {
+      background: rgba(74, 103, 65, 0.22);
+      color: #8EB285;
+    }
+    .review-author-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .review-card-author {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-heading);
+    }
+    .review-card-date {
+      font-size: 11px;
+      color: var(--color-text-muted);
     }
     .review-card-version {
-      font-size: 11px;
-      color: var(--color-tanimbary);
+      font-size: 10.5px;
+      font-family: monospace;
+      color: var(--color-text-muted);
       background: var(--color-surface-hover);
       padding: 2px 7px;
       border-radius: 4px;
       border: 1px solid var(--color-border);
-      font-weight: 500;
     }
     .reviews-empty-state {
       grid-column: 1 / -1;
       text-align: center;
-      padding: 40px 20px;
+      padding: 48px 24px;
       color: var(--color-text-muted);
-      font-size: 13.5px;
+      font-size: 14px;
       background: var(--color-surface-hover);
       border-radius: var(--radius-md);
       border: 1px dashed var(--color-border);
     }
     .reviews-pagination-box {
       text-align: center;
-      margin-top: 24px;
+      margin-top: 28px;
     }
     @media (max-width: 680px) {
-      .reviews-summary-grid {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 18px;
-        padding: 18px;
-      }
-      .rating-hero-box {
-        border-right: none;
-        border-bottom: 1px solid var(--color-divider);
-        padding-right: 0;
-        padding-bottom: 16px;
-      }
       .reviews-section-card {
-        padding: 22px 16px;
+        padding: 24px 18px;
+        margin-top: 24px;
+      }
+      .reviews-header-modern {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+      }
+      .reviews-list-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
       }
     }
 
@@ -2637,79 +2623,39 @@ export function renderBetaLandingPage(
     </div>
 
     <!-- ======================================================================= -->
-    <!-- SECTION PUBLIQUE : AVIS DE LA COMMUNAUTE KANTO                          -->
+    <!-- SECTION PUBLIQUE : AVIS DE LA COMMUNAUTE (DESIGN MODERNE SANS FILTRE)   -->
     <!-- ======================================================================= -->
     <div class="card reviews-section-card" id="section-community-reviews">
-      <div class="reviews-header">
-        <span class="section-eyebrow">Retours d'expérience</span>
-        <h2 class="reviews-title">Avis de la communauté</h2>
-        <p class="reviews-subtitle">
-          Découvrez les appréciations authentiques partagées par nos testeurs et utilisateurs pour faire rayonner la sagesse malgache.
-        </p>
-      </div>
-
-      <!-- Synthese des notes (Moyenne + Repartition des etoiles) -->
-      <div class="reviews-summary-grid" id="reviews-summary-container">
-        <!-- Note globale -->
-        <div class="rating-hero-box">
-          <div class="rating-score-display" id="reviews-avg-rating">—</div>
-          <div class="rating-stars-row" id="reviews-avg-stars" aria-label="Note moyenne">
-            <!-- Etoiles SVG generees dynamiquement -->
-          </div>
-          <div class="rating-count-label" id="reviews-total-count">
-            Chargement des notes...
-          </div>
+      <div class="reviews-header-modern">
+        <div>
+          <span class="section-eyebrow">Retours d'expérience</span>
+          <h2 class="reviews-title">Ce que dit notre communauté</h2>
+          <p class="reviews-subtitle">
+            Découvrez les retours authentiques partagés par nos testeurs pour faire rayonner la culture malgache.
+          </p>
         </div>
 
-        <!-- Barres de repartition des 5 notes -->
-        <div class="rating-bars-box" id="reviews-bars-container">
-          <div class="rating-bar-row">
-            <span class="bar-star-num">5★</span>
-            <div class="bar-track"><div class="bar-fill" id="bar-fill-5" style="width: 0%;"></div></div>
-            <span class="bar-percent" id="bar-pct-5">0%</span>
-          </div>
-          <div class="rating-bar-row">
-            <span class="bar-star-num">4★</span>
-            <div class="bar-track"><div class="bar-fill" id="bar-fill-4" style="width: 0%;"></div></div>
-            <span class="bar-percent" id="bar-pct-4">0%</span>
-          </div>
-          <div class="rating-bar-row">
-            <span class="bar-star-num">3★</span>
-            <div class="bar-track"><div class="bar-fill" id="bar-fill-3" style="width: 0%;"></div></div>
-            <span class="bar-percent" id="bar-pct-3">0%</span>
-          </div>
-          <div class="rating-bar-row">
-            <span class="bar-star-num">2★</span>
-            <div class="bar-track"><div class="bar-fill" id="bar-fill-2" style="width: 0%;"></div></div>
-            <span class="bar-percent" id="bar-pct-2">0%</span>
-          </div>
-          <div class="rating-bar-row">
-            <span class="bar-star-num">1★</span>
-            <div class="bar-track"><div class="bar-fill" id="bar-fill-1" style="width: 0%;"></div></div>
-            <span class="bar-percent" id="bar-pct-1">0%</span>
+        <!-- Badge de confiance moderne -->
+        <div class="reviews-trust-pill" id="reviews-trust-badge">
+          <div class="trust-pill-score" id="reviews-avg-rating">5.0</div>
+          <div class="trust-pill-info">
+            <div class="trust-pill-stars" id="reviews-avg-stars">
+              <!-- Étoiles SVG générées dynamiquement -->
+            </div>
+            <div class="trust-pill-label" id="reviews-total-count">Avis certifiés</div>
           </div>
         </div>
       </div>
 
-      <!-- Filtres rapides par etoile -->
-      <div class="reviews-filters-row" id="reviews-filters-group">
-        <button type="button" class="review-filter-btn active" data-rating="ALL">Tous les avis</button>
-        <button type="button" class="review-filter-btn" data-rating="5">5 étoiles</button>
-        <button type="button" class="review-filter-btn" data-rating="4">4 étoiles</button>
-        <button type="button" class="review-filter-btn" data-rating="3">3 étoiles</button>
-        <button type="button" class="review-filter-btn" data-rating="2">2 étoiles</button>
-        <button type="button" class="review-filter-btn" data-rating="1">1 étoile</button>
-      </div>
-
-      <!-- Liste des cartes d avis -->
+      <!-- Grille moderne des avis (uniquement 4 et 5 étoiles) -->
       <div class="reviews-list-grid" id="reviews-cards-list">
         <div class="reviews-empty-state">Chargement des avis de la communauté...</div>
       </div>
 
       <!-- Bouton Pagination / Charger plus -->
       <div class="reviews-pagination-box" id="reviews-pagination-box" style="display: none;">
-        <button type="button" class="btn-secondary" id="btn-load-more-reviews" style="width: auto; padding: 10px 24px;">
-          Afficher plus d'avis
+        <button type="button" class="btn-secondary" id="btn-load-more-reviews" style="width: auto; padding: 11px 28px;">
+          Découvrir plus d'avis
         </button>
       </div>
     </div>
@@ -3806,7 +3752,7 @@ export function renderBetaWaitlistScript(): string {
 
   checkConsent();
 
-  // --- MODULE AVIS DE LA COMMUNAUTE ------------------------------------------
+  // --- MODULE AVIS DE LA COMMUNAUTE (DESIGN MODERNE SANS FILTRE, MINIMUM 4 ETOILES) ---
   (function initCommunityReviews() {
     var avgScoreEl = document.getElementById('reviews-avg-rating');
     var avgStarsEl = document.getElementById('reviews-avg-stars');
@@ -3814,11 +3760,9 @@ export function renderBetaWaitlistScript(): string {
     var cardsListEl = document.getElementById('reviews-cards-list');
     var paginationBox = document.getElementById('reviews-pagination-box');
     var btnLoadMore = document.getElementById('btn-load-more-reviews');
-    var filterBtns = document.querySelectorAll('.review-filter-btn');
 
-    if (!avgScoreEl || !cardsListEl) return;
+    if (!cardsListEl) return;
 
-    var currentRatingFilter = 'ALL';
     var currentPage = 1;
     var totalPages = 1;
     var isLoadingReviews = false;
@@ -3844,25 +3788,31 @@ export function renderBetaWaitlistScript(): string {
       }
     }
 
+    function getInitials(name) {
+      if (!name) return 'K';
+      var parts = name.trim().split(/\s+/);
+      if (parts.length >= 2 && parts[0] && parts[1]) {
+        return (parts[0][0] + parts[1][0]).toUpperCase();
+      }
+      return name.slice(0, 2).toUpperCase();
+    }
+
     function loadStats() {
       fetch('/api/reviews/public/stats')
         .then(function(res) { return res.json(); })
         .then(function(stats) {
           if (!stats || typeof stats.totalReviews !== 'number') return;
           var total = stats.totalReviews;
-          avgScoreEl.textContent = total > 0 ? stats.averageRating.toFixed(1).replace('.', ',') : '—';
-          avgStarsEl.innerHTML = renderStarsRow(stats.averageRating || 0);
-          totalCountEl.textContent = total > 0 
-            ? 'Basé sur ' + total + ' avis publié' + (total > 1 ? 's' : '') 
-            : 'Aucun avis public pour le moment';
-
-          for (var i = 1; i <= 5; i++) {
-            var row = stats.distribution && stats.distribution[i];
-            var pct = row ? row.percentage : 0;
-            var fillEl = document.getElementById('bar-fill-' + i);
-            var pctEl = document.getElementById('bar-pct-' + i);
-            if (fillEl) fillEl.style.width = pct + '%';
-            if (pctEl) pctEl.textContent = pct + '%';
+          if (avgScoreEl) {
+            avgScoreEl.textContent = total > 0 ? stats.averageRating.toFixed(1).replace('.', ',') : '5,0';
+          }
+          if (avgStarsEl) {
+            avgStarsEl.innerHTML = renderStarsRow(total > 0 ? stats.averageRating : 5);
+          }
+          if (totalCountEl) {
+            totalCountEl.textContent = total > 0 
+              ? total + ' avis certifié' + (total > 1 ? 's' : '') + ' (4★ et 5★)' 
+              : 'Avis 4★ et 5★ certifiés';
           }
         })
         .catch(function(err) {
@@ -3874,10 +3824,8 @@ export function renderBetaWaitlistScript(): string {
       if (isLoadingReviews) return;
       isLoadingReviews = true;
 
-      var url = '/api/reviews/public?page=' + page + '&limit=6';
-      if (currentRatingFilter !== 'ALL') {
-        url += '&rating=' + currentRatingFilter;
-      }
+      // Charge uniquement les avis ayant au moins 4 étoiles sans filtre
+      var url = '/api/reviews/public?page=' + page + '&limit=6&minRating=4';
 
       fetch(url)
         .then(function(res) { return res.json(); })
@@ -3892,7 +3840,7 @@ export function renderBetaWaitlistScript(): string {
           }
 
           if (items.length === 0 && !append) {
-            cardsListEl.innerHTML = '<div class="reviews-empty-state">Aucun avis publié dans cette catégorie pour le moment.</div>';
+            cardsListEl.innerHTML = '<div class="reviews-empty-state">Aucun avis 4 ou 5 étoiles disponible pour le moment.</div>';
             if (paginationBox) paginationBox.style.display = 'none';
             return;
           }
@@ -3902,17 +3850,27 @@ export function renderBetaWaitlistScript(): string {
             card.className = 'review-card-item';
             
             var name = item.publicDisplayName || 'Membre de la communauté';
+            var initials = getInitials(name);
             var versionBadge = item.appVersion ? '<span class="review-card-version">v' + escapeHtml(item.appVersion) + '</span>' : '';
             var dateFormatted = formatDate(item.createdAt);
 
             card.innerHTML = 
               '<div class="review-card-head">' +
                 '<div class="review-card-stars">' + renderStarsRow(item.rating) + '</div>' +
-                '<span class="review-card-date">' + dateFormatted + '</span>' +
+                '<div class="review-card-badge-verified">' +
+                  '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>' +
+                  '<span>Vérifié</span>' +
+                '</div>' +
               '</div>' +
-              '<p class="review-card-comment">' + escapeHtml(item.comment) + '</p>' +
+              '<p class="review-card-comment">« ' + escapeHtml(item.comment) + ' »</p>' +
               '<div class="review-card-footer">' +
-                '<span class="review-card-author">' + escapeHtml(name) + '</span>' +
+                '<div class="review-author-group">' +
+                  '<div class="review-avatar-circle">' + escapeHtml(initials) + '</div>' +
+                  '<div class="review-author-meta">' +
+                    '<span class="review-card-author">' + escapeHtml(name) + '</span>' +
+                    '<span class="review-card-date">' + dateFormatted + '</span>' +
+                  '</div>' +
+                '</div>' +
                 versionBadge +
               '</div>';
 
@@ -3931,16 +3889,6 @@ export function renderBetaWaitlistScript(): string {
           }
         });
     }
-
-    // Gestion des filtres par etoile
-    filterBtns.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        filterBtns.forEach(function(b) { b.classList.remove('active'); });
-        btn.classList.add('active');
-        currentRatingFilter = btn.getAttribute('data-rating') || 'ALL';
-        loadReviews(1, false);
-      });
-    });
 
     // Bouton charger plus
     if (btnLoadMore) {

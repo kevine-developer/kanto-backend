@@ -145,6 +145,7 @@ describe('ReviewsService — Scénarios Métier & Protection des Données', () =
           where: {
             isPublicationAuthorized: true,
             moderationStatus: 'APPROVED',
+            rating: { gte: 4 },
           },
           select: {
             id: true,
