@@ -151,8 +151,12 @@ export class ReviewsService {
       moderationStatus: 'APPROVED',
     };
 
+    // Par défaut, seuls les avis d'au moins 4 étoiles sont affichés publiquement
     if (query.rating && query.rating >= 1 && query.rating <= 5) {
       where.rating = query.rating;
+    } else {
+      const minRating = query.minRating !== undefined ? query.minRating : 4;
+      where.rating = { gte: minRating };
     }
 
     const [total, items] = await Promise.all([
