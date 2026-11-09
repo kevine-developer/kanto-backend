@@ -1,3 +1,4 @@
+import { LocksService } from './locks/locks.service.js';
 import {
   BadRequestException,
   Body,
@@ -41,6 +42,7 @@ export class AppController {
     @Optional() private readonly redisService?: RedisService,
     @Optional() private readonly resendService?: ResendService,
     @Optional() private readonly betaTestersService?: BetaTestersService,
+    @Optional() private readonly locksService?: LocksService,
   ) {}
 
   /**

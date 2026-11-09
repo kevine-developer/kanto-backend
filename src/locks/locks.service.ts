@@ -449,6 +449,23 @@ export class LocksService implements OnModuleInit {
       throw new NotFoundException(`Module avec la clé "${key}" non trouvé.`);
     }
 
+    // Règle stricte : interdiction de désactiver les deux langues de l'application
+    if (key === 'language:fr' || key === 'language:mg') {
+      const willBeLocked = data.isLocked !== undefined ? data.isLocked : existing.isLocked;
+      const willBeVisible = data.isVisible !== undefined ? data.isVisible : existing.isVisible;
+      const willBeActive = !willBeLocked && willBeVisible;
+      if (!willBeActive) {
+        const otherKey = key === 'language:fr' ? 'language:mg' : 'language:fr';
+        const other = await this.prisma.moduleLock.findUnique({ where: { key: otherKey } });
+        const isOtherActive = other ? (!other.isLocked && other.isVisible) : true;
+        if (!isOtherActive) {
+          throw new BadRequestException(
+            "Impossible de désactiver toutes les langues : au moins une langue d'application ('fr' ou 'mg') doit obligatoirement rester active.",
+          );
+        }
+      }
+    }
+
     const updated = await this.prisma.moduleLock.update({
       where: { key },
       data: {
@@ -528,6 +545,17 @@ export class LocksService implements OnModuleInit {
     const nextVisibility =
       isVisible !== undefined ? isVisible : !existing.isVisible;
 
+    if ((key === 'language:fr' || key === 'language:mg') && !nextVisibility) {
+      const otherKey = key === 'language:fr' ? 'language:mg' : 'language:fr';
+      const other = await this.prisma.moduleLock.findUnique({ where: { key: otherKey } });
+      const isOtherActive = other ? (!other.isLocked && other.isVisible) : true;
+      if (!isOtherActive) {
+        throw new BadRequestException(
+          "Impossible de masquer toutes les langues : au moins une langue d'application ('fr' ou 'mg') doit obligatoirement rester active.",
+        );
+      }
+    }
+
     const updated = await this.prisma.moduleLock.update({
       where: { key },
       data: { isVisible: nextVisibility },
@@ -551,6 +579,11 @@ export class LocksService implements OnModuleInit {
    * Supprime un module (jeu ou catégorie) et son illustration Cloudinary.
    */
   async deleteModuleLock(key: string) {
+    if (key === 'language:fr' || key === 'language:mg') {
+      throw new BadRequestException(
+        "Les modules de langue système de l'application ne peuvent pas être supprimés.",
+      );
+    }
     const existing = await this.prisma.moduleLock.findUnique({
       where: { key },
     });
@@ -648,4 +681,109 @@ export class LocksService implements OnModuleInit {
     );
     return { url: `/uploads/${safeSubfolder}/${fileName}`, provider: 'local' };
   }
+  /**
+   * Retourne l'état d'activation des langues de l'application mobile.
+   */
+  async getAppLanguages(): Promise<{
+    fr: boolean;
+    mg: boolean;
+    activeLanguages: ('fr' | 'mg')[];
+    defaultLanguage: 'fr' | 'mg';
+  }> {
+    const [frLock, mgLock] = await Promise.all([
+      this.prisma.moduleLock.findUnique({ where: { key: 'language:fr' } }),
+      this.prisma.moduleLock.findUnique({ where: { key: 'language:mg' } }),
+    ]);
+
+    const frActive = frLock ? (!frLock.isLocked && frLock.isVisible) : true;
+    const mgActive = mgLock ? (!mgLock.isLocked && mgLock.isVisible) : true;
+
+    const activeLanguages: ('fr' | 'mg')[] = [];
+    if (frActive) activeLanguages.push('fr');
+    if (mgActive) activeLanguages.push('mg');
+
+    return {
+      fr: frActive,
+      mg: mgActive,
+      activeLanguages,
+      defaultLanguage: frActive ? 'fr' : 'mg',
+    };
+  }
+
+  /**
+   * Met à jour l'activation des langues de l'application avec interdiction stricte
+   * de désactiver les deux langues simultanément.
+   */
+  async updateAppLanguages(data: { fr?: boolean; mg?: boolean }): Promise<{
+    fr: boolean;
+    mg: boolean;
+    activeLanguages: ('fr' | 'mg')[];
+    defaultLanguage: 'fr' | 'mg';
+  }> {
+    const current = await this.getAppLanguages();
+
+    const nextFr = data.fr !== undefined ? Boolean(data.fr) : current.fr;
+    const nextMg = data.mg !== undefined ? Boolean(data.mg) : current.mg;
+
+    if (!nextFr && !nextMg) {
+      throw new BadRequestException(
+        "Impossible de désactiver toutes les langues : au moins une langue d'application ('fr' ou 'mg') doit obligatoirement rester active.",
+      );
+    }
+
+    await Promise.all([
+      this.prisma.moduleLock.upsert({
+        where: { key: 'language:fr' },
+        create: {
+          key: 'language:fr',
+          type: 'FEATURE',
+          nameFr: 'Langue Française (Application)',
+          nameMg: 'Fiteny Frantsay (Fampiharana)',
+          isLocked: !nextFr,
+          isVisible: nextFr,
+          lockReason: nextFr ? null : "Langue temporairement désactivée par l'administration",
+        },
+        update: {
+          isLocked: !nextFr,
+          isVisible: nextFr,
+          lockReason: nextFr ? null : "Langue temporairement désactivée par l'administration",
+        },
+      }),
+      this.prisma.moduleLock.upsert({
+        where: { key: 'language:mg' },
+        create: {
+          key: 'language:mg',
+          type: 'FEATURE',
+          nameFr: 'Langue Malagasy (Application)',
+          nameMg: 'Fiteny Malagasy (Fampiharana)',
+          isLocked: !nextMg,
+          isVisible: nextMg,
+          lockReason: nextMg ? null : "Langue temporairement désactivée par l'administration",
+        },
+        update: {
+          isLocked: !nextMg,
+          isVisible: nextMg,
+          lockReason: nextMg ? null : "Langue temporairement désactivée par l'administration",
+        },
+      }),
+    ]);
+
+    try {
+      await this.redisService.del(CACHE_KEY_PUBLIC_LOCKS);
+    } catch {}
+
+    this.logger.log(`🌐 [AppLanguages] Langues mises à jour : FR=${nextFr}, MG=${nextMg}`);
+
+    const activeLanguages: ('fr' | 'mg')[] = [];
+    if (nextFr) activeLanguages.push('fr');
+    if (nextMg) activeLanguages.push('mg');
+
+    return {
+      fr: nextFr,
+      mg: nextMg,
+      activeLanguages,
+      defaultLanguage: nextFr ? 'fr' : 'mg',
+    };
+  }
+
 }

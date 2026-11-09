@@ -25,7 +25,7 @@ import { CreateContributionCommentDto } from './dto/create-contribution-comment.
 import { DisputeContributionDto } from './dto/dispute-contribution.dto.js';
 import { ResolveDisputeDto } from './dto/resolve-dispute.dto.js';
 import { CheckDuplicateDto } from './dto/check-duplicate.dto.js';
-import { AuthGuard, Roles, Session, type UserSession } from '../auth/index.js';
+import { AuthGuard, OptionalAuth, Roles, Session, type UserSession } from '../auth/index.js';
 import { Throttle } from '@nestjs/throttler';
 
 // Contributions Controller
@@ -110,6 +110,7 @@ export class ContributionsController {
 
   /** GET /contributions/community?category=KABARY&limit=50 */
   @Get('community')
+  @OptionalAuth()
   findCommunity(
     @Query('category') category?: string,
     @Query('limit') limit?: number,
@@ -181,6 +182,7 @@ export class ContributionsController {
 
   /** GET /contributions/:id — Détail d'une contribution */
   @Get(':id')
+  @OptionalAuth()
   findOne(@Param('id') id: string, @Session() session?: UserSession) {
     const role = session?.user?.role
       ? Array.isArray(session.user.role)

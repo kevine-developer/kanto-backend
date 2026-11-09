@@ -35,9 +35,10 @@ export const DEFAULT_TERMS_HTML = `<h1>Conditions Générales d'Utilisation</h1>
   <li>Respecter la propriété intellectuelle des contenus</li>
 </ul>
 
-<h2>5. Contributions utilisateurs</h2>
+<h2>5. Contributions et avis utilisateurs</h2>
 <p>Les proverbes, citations et autres contenus soumis par les utilisateurs sont vérifiés avant publication. En soumettant une contribution, vous accordez à Kanto une licence non exclusive pour l'afficher dans l'application. Vous conservez la propriété de votre contribution.</p>
 <p>Toute contribution jugée inappropriée ou incorrecte sera retirée sans préavis.</p>
+<p>En acceptant les présentes CGU lors de son inscription ou lors de l'envoi d'un avis, l'utilisateur accepte que son témoignage d'expérience (note, commentaire et prénom usuel) puisse être valorisé sur le site officiel de Kanto MG pour guider la communauté. Aucune case à cocher redondante n'est exigée lors de la soumission de l'avis. Aucune adresse e-mail ou donnée personnelle privée n'est divulguée. L'utilisateur bénéficie d'un droit de retrait permanent sur simple demande au support.</p>
 
 <h2>6. Système de gamification</h2>
 <p>Les points d'expérience (XP), niveaux, séries de connexion et classements sont calculés automatiquement par le système. Kanto se réserve le droit de modifier les règles de calcul à tout moment. Toute tentative de manipulation du système entraînera la suspension du compte.</p>
