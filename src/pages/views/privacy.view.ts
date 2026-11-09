@@ -57,6 +57,16 @@ export function renderPrivacyPage(options?: {
         <li>Logs techniques anonymisés sans adresse e-mail en clair.</li>
       </ul>
 
+      
+      <h3>2.4 Avis et Témoignages de la Communauté</h3>
+      <p>Lorsque vous choisissez de soumettre une évaluation ou un avis :</p>
+      <ul>
+        <li><strong>Données collectées :</strong> Note de satisfaction (1 à 5 étoiles), commentaire textuel, catégorie, version de l'application et date de soumission.</li>
+        <li><strong>Base légale :</strong> Consentement explicite (article 6.1.a du RGPD) pour l'affichage public sur le portail officiel, et intérêt légitime pour l'amélioration continue de l'application.</li>
+        <li><strong>Données visibles publiquement :</strong> Exclusivement la note, le commentaire, la date et le nom choisi (prénom, pseudonyme ou mention anonyme). Votre adresse e-mail et votre identifiant interne de compte ne sont jamais divulgués.</li>
+        <li><strong>Droit de retrait :</strong> Vous pouvez à tout instant retirer votre consentement depuis les paramètres de votre compte ou en contactant notre équipe. L'avis est alors retiré immédiatement de la vue publique.</li>
+      </ul>
+
       <h2>3. Finalités du traitement &amp; Bases légales</h2>
       <table>
         <thead>

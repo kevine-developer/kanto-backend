@@ -90,15 +90,24 @@ export function renderTermsPage(options?: {
         Certaines fonctionnalités, visuels ou textes mis à disposition dans le cadre du bêta-test sont confidentiels. Le bêta-testeur s'engage à ne pas diffuser, publier ou décompiler les fichiers d'installation (APK, AAB, bundles iOS) sans autorisation expresse écrite de l'équipe Kanto MG.
       </p>
 
-      <h2 id="art-5">5. Retours Utilisateurs et Signalement de Bugs</h2>
+      
+      <h2 id="art-5">5. Retours Utilisateurs, Avis et Témoignages</h2>
       <p>
-        La participation active au bêta-test inclut la possibilité de transmettre des retours d'expérience constructifs via notre interface dédiée (onglet « Retours » de la plateforme) ou directement par e-mail.
+        La participation active à Kanto MG inclut la possibilité de transmettre des avis, notes (1 à 5 étoiles) et retours d'expérience via l'application mobile ou le portail web.
       </p>
-      <p>
-        En transmettant un retour, suggestion ou rapport de dysfonctionnement, le testeur accorde à Kanto MG le droit d'utiliser ces observations pour améliorer l'application, sans aucune contrepartie financière.
-      </p>
-
-      <h2 id="art-6">6. Compte Utilisateur et Conduite Éthique</h2>
+      <div class="callout">
+        <p><strong>Avis et témoignages des utilisateurs :</strong></p>
+        <ul>
+          <li>Les avis laissés dans l'application restent <strong>strictement privés par défaut</strong> et sont utilisés uniquement à des fins d'amélioration du service.</li>
+          <li>L'utilisateur peut choisir d'autoriser la publication de son avis sur le portail officiel de Kanto MG via une case à cocher explicite et non précochée.</li>
+          <li>Cette autorisation est <strong>facultative et révocable à tout moment</strong> depuis l'application ou sur simple demande.</li>
+          <li>Les données affichées publiquement se limitent strictement à la note attribuée, au commentaire et au nom choisi par l'utilisateur (prénom, pseudonyme ou mention anonyme).</li>
+          <li><strong>L'adresse e-mail de l'utilisateur n'est jamais rendue publique.</strong></li>
+          <li>Kanto MG se réserve le droit de modérer, refuser ou retirer tout avis ne respectant pas les règles de bienséance ou les valeurs de respect mutuel, sans jamais modifier le sens ni la note attribuée.</li>
+          <li><strong>Aucun avis rémunéré ou incité n'est publié sur la plateforme.</strong></li>
+        </ul>
+      </div>
+<h2 id="art-6">6. Compte Utilisateur et Conduite Éthique</h2>
       <p>Chaque utilisateur et testeur s'engage formellement à :</p>
       <ul>
         <li>Fournir une adresse e-mail valide et personnelle lors de son inscription.</li>

@@ -12,6 +12,7 @@ import { PrismaService } from '../../prisma/prisma.service.js';
 import { RedisService } from '../../redis/redis.service.js';
 import { NotificationsService } from '../../notifications/notifications.service.js';
 import { UserQuizService } from '../../user-quiz/user-quiz.service.js';
+import { PresenceService } from '../../presence/presence.service.js';
 import {
   CreateMultiplayerGameDto,
   MultiplayerGameTypeEnum,
@@ -104,6 +105,7 @@ export class MultiplayerService {
     private readonly notificationsService: NotificationsService,
     @Inject(forwardRef(() => UserQuizService))
     private readonly userQuizService: UserQuizService,
+    private readonly presenceService: PresenceService,
   ) {}
 
   /**
@@ -473,23 +475,14 @@ export class MultiplayerService {
         throw new NotFoundException('Le joueur défié est introuvable.');
       }
 
-      // Garde-fou Anti-Spam : Vérifier s'il n'y a pas déjà un défi en attente entre ces deux mêmes joueurs (< 10 minutes)
-      const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
-      const activePendingDuel = await this.prisma.duelSession.findFirst({
-        where: {
-          status: 'WAITING',
-          createdAt: { gte: tenMinutesAgo },
-          OR: [
-            { player1Id: userId, player2Id: dto.opponentId },
-            { player1Id: dto.opponentId, player2Id: userId },
-          ],
-        },
-      });
+      // Vérification atomique de disponibilité & présence du joueur défié
+      const availability = await this.presenceService.getUserDuelAvailability(
+        userId,
+        dto.opponentId!,
+      );
 
-      if (activePendingDuel) {
-        throw new BadRequestException(
-          'Un défi est déjà en attente avec ce joueur. Veuillez patienter ou rejoindre ce défi.',
-        );
+      if (!availability.isAvailableForDuel) {
+        throw new BadRequestException(availability.messageFr);
       }
     }
 
@@ -2585,6 +2578,32 @@ export class MultiplayerService {
           `Erreur lors de la clôture du salon expiré ${session.code} : ${String(err)}`,
         );
       }
+    }
+
+    // Nettoyage des sessions IN_PROGRESS orphelines (abandonnées sans clôture depuis > 15 minutes)
+    try {
+      const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000);
+      const abandonedInProgress = await this.prisma.duelSession.updateMany({
+        where: {
+          status: 'IN_PROGRESS',
+          updatedAt: { lte: fifteenMinutesAgo },
+        },
+        data: {
+          status: 'EXPIRED',
+          finishedAt: now,
+        },
+      });
+
+      if (abandonedInProgress.count > 0) {
+        count += abandonedInProgress.count;
+        this.logger.log(
+          `🧹 [MultiplayerService] ${abandonedInProgress.count} partie(s) orpheline(s) en statut IN_PROGRESS automatiquement clôturée(s).`,
+        );
+      }
+    } catch (err) {
+      this.logger.warn(
+        `Erreur lors de la clôture des parties orphelines IN_PROGRESS : ${String(err)}`,
+      );
     }
 
     return count;
