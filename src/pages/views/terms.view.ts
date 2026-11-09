@@ -92,20 +92,19 @@ export function renderTermsPage(options?: {
       </p>
 
       
-      <h2 id="art-5">5. Retours Utilisateurs, Avis et Témoignages</h2>
+      <h2 id="art-5">5. Retours Utilisateurs, Avis et Témoignages Publics</h2>
       <p>
-        La participation active à Kanto MG inclut la possibilité de transmettre des avis, notes (1 à 5 étoiles) et retours d'expérience via l'application mobile ou le portail web.
+        La participation active à Kanto MG inclut la possibilité de transmettre des avis, notes (1 à 5 étoiles) et témoignages d'expérience directement depuis l'application mobile ou le portail officiel.
       </p>
       <div class="callout">
-        <p><strong>Avis et témoignages des utilisateurs :</strong></p>
+        <p><strong>Cadre légal et engagements relatifs aux avis de la communauté :</strong></p>
         <ul>
-          <li>Les avis laissés dans l'application restent <strong>strictement privés par défaut</strong> et sont utilisés uniquement à des fins d'amélioration du service.</li>
-          <li>L'utilisateur peut choisir d'autoriser la publication de son avis sur le portail officiel de Kanto MG via une case à cocher explicite et non précochée.</li>
-          <li>Cette autorisation est <strong>facultative et révocable à tout moment</strong> depuis l'application ou sur simple demande.</li>
-          <li>Les données affichées publiquement se limitent strictement à la note attribuée, au commentaire et au nom choisi par l'utilisateur (prénom, pseudonyme ou mention anonyme).</li>
-          <li><strong>L'adresse e-mail de l'utilisateur n'est jamais rendue publique.</strong></li>
-          <li>Kanto MG se réserve le droit de modérer, refuser ou retirer tout avis ne respectant pas les règles de bienséance ou les valeurs de respect mutuel, sans jamais modifier le sens ni la note attribuée.</li>
-          <li><strong>Aucun avis rémunéré ou incité n'est publié sur la plateforme.</strong></li>
+          <li><strong>Acceptation intégrée aux CGU :</strong> En acceptant les présentes Conditions Générales d'Utilisation lors de la création de son compte ou lors de l'envoi d'un avis, l'utilisateur autorise Kanto MG à valoriser publiquement son témoignage (note de 1 à 5 étoiles, commentaire et prénom) sur le portail officiel de l'application (<a href="https://app-kanto.gastsar.fr">app-kanto.gastsar.fr</a>) afin d'éclairer et guider la communauté.</li>
+          <li><strong>Expérience fluide sans case à cocher superflue :</strong> L'acceptation étant directement intégrée aux CGU de l'application, aucune case à cocher redondante n'est exigée lors de la saisie d'un avis, assurant ainsi un confort d'utilisation optimal et sans friction.</li>
+          <li><strong>Protection absolue des coordonnées privées :</strong> En cas de publication sur le site officiel, seules la note attribuée, le commentaire, la date de dépôt et le prénom usuel (ou le pseudonyme associé au compte) sont rendus publics. <strong>L'adresse e-mail, les identifiants techniques et les informations personnelles privées ne sont jamais divulgués.</strong></li>
+          <li><strong>Authenticité et sincérité :</strong> Tous les avis publiés émanent d'utilisateurs réels de l'application. Kanto MG s'interdit formellement de publier des avis rémunérés, sponsorisés, incités ou générés artificiellement.</li>
+          <li><strong>Modération éthique et bienveillante :</strong> Afin de préserver la courtoisie et les valeurs d'<em>Haja</em> (respect mutuel) et de <em>Fihavanana</em>, les avis sont relus avant diffusion. L'équipe éditoriale s'interdit toute altération ou manipulation : le sens et la note attribuée restent strictement intacts. Seuls les propos diffamatoires, injurieux, haineux, publicitaires ou non conformes à la loi sont écartés.</li>
+          <li><strong>Révocabilité et droit de retrait permanent :</strong> L'utilisateur conserve à tout moment la pleine maîtrise de son avis. Il peut révoquer son autorisation sur simple demande adressée à notre support (<a href="mailto:${supportEmail}">${supportEmail}</a>). L'avis est alors retiré du portail public sans délai ni justification.</li>
         </ul>
       </div>
 <h2 id="art-6">6. Compte Utilisateur et Conduite Éthique</h2>

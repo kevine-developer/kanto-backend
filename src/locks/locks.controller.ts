@@ -15,6 +15,14 @@ export class LocksController {
   }
 
   /**
+   * Endpoint public retournant l'état d'activation des langues de l'application mobile.
+   */
+  @Get('languages/status')
+  async getAppLanguages() {
+    return this.locksService.getAppLanguages();
+  }
+
+  /**
    * Endpoint public pour récupérer le statut d'un module unique par sa clé.
    */
   @Get(':key')

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Put,
   Param,
   Patch,
   Post,
@@ -122,6 +123,16 @@ export class AdminLocksController {
   @Get()
   async getAdminLocks(@Query('type') type?: 'GAME' | 'CATEGORY' | 'FEATURE') {
     return this.locksService.getAdminLocks(type);
+  }
+
+  @Get('languages/status')
+  async getAppLanguages() {
+    return this.locksService.getAppLanguages();
+  }
+
+  @Put('languages/status')
+  async updateAppLanguages(@Body() body: { fr?: boolean; mg?: boolean }) {
+    return this.locksService.updateAppLanguages(body);
   }
 
   @Get(':key')

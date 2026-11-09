@@ -1,3 +1,4 @@
+import { LocksModule } from '../locks/locks.module.js';
 import { Module } from '@nestjs/common';
 import { AdminUsersController } from './admin-users.controller.js';
 import { AdminUsersService } from './admin-users.service.js';
@@ -13,7 +14,7 @@ import { AdminEmailsController } from './admin-emails.controller.js';
 import { AdminAuditService } from './admin-audit.service.js';
 
 @Module({
-  imports: [UserQuizModule, NotificationsModule],
+  imports: [UserQuizModule, NotificationsModule, LocksModule],
   controllers: [
     AdminUsersController,
     AdminSystemController,
