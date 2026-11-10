@@ -3,9 +3,11 @@ import { pageShell } from '../page.helpers.js';
 export function renderAboutPage(options?: {
   hideHeader?: boolean;
   supportEmail?: string;
+  appVersion?: string;
 }): string {
   const supportEmail =
     options?.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
+  const appVersion = options?.appVersion || process.env.APP_VERSION || '0.0.23';
 
   return pageShell({
     title: 'Kanto — À propos',
@@ -56,7 +58,7 @@ export function renderAboutPage(options?: {
       <table>
         <thead><tr><th>Composant</th><th>Version</th></tr></thead>
         <tbody>
-          <tr><td>Application mobile</td><td>1.0.0</td></tr>
+          <tr><td>Application mobile</td><td>${appVersion}</td></tr>
           <tr><td>API backend</td><td>1.0.0</td></tr>
           <tr><td>Plateforme</td><td>iOS 15+, Android 9+</td></tr>
         </tbody>

@@ -148,7 +148,7 @@ export class PoesiesService {
   }
 
   async findAll(query: FindPoesiesQueryDto) {
-    const { page = 1, limit = 20, search, category, author } = query;
+    const { page = 1, limit = 20, search, category, categories, author, authors } = query;
     const {
       skip,
       limit: takeLimit,
@@ -161,10 +161,16 @@ export class PoesiesService {
 
     const where: Prisma.PoesieWhereInput = {
       status: 'PUBLISHED',
-      ...(category
+      ...(categories
+        ? { category: { in: categories.split(',').map((c) => c.trim()).filter(Boolean) } }
+        : category
         ? { category: { equals: category, mode: 'insensitive' } }
         : {}),
-      ...(author ? { author: { contains: author, mode: 'insensitive' } } : {}),
+      ...(authors
+        ? { author: { in: authors.split(',').map((a) => a.trim()).filter(Boolean) } }
+        : author
+        ? { author: { contains: author, mode: 'insensitive' } }
+        : {}),
       ...(search
         ? (() => {
             const rawSearch = search.trim();

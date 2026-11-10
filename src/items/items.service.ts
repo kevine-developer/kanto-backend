@@ -187,7 +187,18 @@ export class ItemsService {
         query.isFeatured === true || String(query.isFeatured) === 'true';
     }
 
-    if (query.themeSlug) {
+    if (query.themeSlugs) {
+      const slugs = query.themeSlugs.split(',').map((s) => s.trim()).filter(Boolean);
+      if (slugs.length > 0) {
+        where.themes = {
+          some: {
+            theme: {
+              slug: { in: slugs },
+            },
+          },
+        };
+      }
+    } else if (query.themeSlug) {
       where.themes = {
         some: {
           theme: {
@@ -195,6 +206,13 @@ export class ItemsService {
           },
         },
       };
+    }
+
+    if (query.origins) {
+      const originList = query.origins.split(',').map((s) => s.trim()).filter(Boolean);
+      if (originList.length > 0) {
+        where.origins = { hasSome: originList };
+      }
     }
 
     if (query.excludeIds) {

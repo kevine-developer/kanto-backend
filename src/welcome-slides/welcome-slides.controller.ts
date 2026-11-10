@@ -46,7 +46,7 @@ export class WelcomeSlidesController {
   @Post('upload-image')
   @UseGuards(AuthGuard)
   @Roles(['ADMIN', 'admin'])
-  @Throttle({ upload: { limit: 15, ttl: 60000 } })
+  @Throttle({ default: { limit: 15, ttl: 60000 } })
   uploadPhoto(@Body() body: UploadWelcomeSlideImageDto) {
     return this.welcomeSlidesService.saveUploadedImage(
       body.imageBase64,

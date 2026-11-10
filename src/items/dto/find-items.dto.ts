@@ -21,6 +21,14 @@ export class FindItemsQueryDto {
 
   @IsOptional()
   @IsString()
+  themeSlugs?: string;
+
+  @IsOptional()
+  @IsString()
+  origins?: string;
+
+  @IsOptional()
+  @IsString()
   search?: string;
 
   @IsOptional()

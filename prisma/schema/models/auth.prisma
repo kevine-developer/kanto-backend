@@ -46,6 +46,11 @@ model User {
   xpTransactions XpTransaction[]
   badges         UserBadge[]
 
+  // Espace Pédagogique Indépendant (Apprendre)
+  lessonProgress UserLessonProgress[]
+  trackProgress  UserTrackProgress[]
+  reviewItems    UserReviewItem[]
+
   // Relations sociales, Amis & Blocages
   sentFriendships        Friendship[]    @relation("SentFriendships")
   receivedFriendships    Friendship[]    @relation("ReceivedFriendships")

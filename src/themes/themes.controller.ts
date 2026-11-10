@@ -10,6 +10,11 @@ export class ThemesController {
     return this.themesService.findAll();
   }
 
+  @Get('filter-options/:category')
+  getFilterOptions(@Param('category') category: string) {
+    return this.themesService.getFilterOptions(category);
+  }
+
   @Get(':slug')
   findOne(@Param('slug') slug: string) {
     return this.themesService.findOne(slug);

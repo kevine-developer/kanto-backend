@@ -21,6 +21,7 @@ import {
   DEFAULT_HISTORY_DATES,
   DEFAULT_NATIONAL_EMBLEMS,
 } from '../history/constants/history-defaults.constant.js';
+import { seedLearning } from '../../prisma/seed-learning.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -2190,6 +2191,31 @@ async function seedProduction() {
         },
       });
     }
+  }
+
+  // ─── Synchronisation Espace Didactique (Parcours, Cours & 5 Micro-Quiz) ──────
+  try {
+    const learningStats = await seedLearning(prisma);
+    allStats.push({
+      category: 'Parcours didactiques (Apprendre)',
+      totalInFile: learningStats.tracksCreated + learningStats.tracksUpdated,
+      created: learningStats.tracksCreated,
+      updated: learningStats.tracksUpdated,
+      unchanged: 0,
+      skipped: 0,
+      errors: 0,
+    });
+    allStats.push({
+      category: 'Leçons & Micro-Quiz (5 questions)',
+      totalInFile: learningStats.lessonsCreated + learningStats.lessonsUpdated,
+      created: learningStats.lessonsCreated,
+      updated: learningStats.lessonsUpdated,
+      unchanged: 0,
+      skipped: 0,
+      errors: 0,
+    });
+  } catch (err: any) {
+    console.warn('[Seed Prod] Erreur lors de la synchronisation pédagogique:', err?.message || err);
   }
 
   // ─── Synthèse & Observabilité Consolidée ────────────────────────────────────

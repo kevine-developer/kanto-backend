@@ -187,11 +187,21 @@ export class KabaryService {
       status: 'PUBLISHED',
     };
 
-    if (query.occasion) {
+    if (query.occasions) {
+      const occasionList = query.occasions.split(',').map((s) => s.trim()).filter(Boolean);
+      if (occasionList.length > 0) {
+        where.occasion = { in: occasionList };
+      }
+    } else if (query.occasion) {
       where.occasion = { contains: query.occasion, mode: 'insensitive' };
     }
 
-    if (query.region) {
+    if (query.regions) {
+      const regionList = query.regions.split(',').map((s) => s.trim()).filter(Boolean);
+      if (regionList.length > 0) {
+        where.region = { in: regionList };
+      }
+    } else if (query.region) {
       where.region = { contains: query.region, mode: 'insensitive' };
     }
 
@@ -200,7 +210,18 @@ export class KabaryService {
         query.isFeatured === true || String(query.isFeatured) === 'true';
     }
 
-    if (query.themeSlug) {
+    if (query.themeSlugs) {
+      const slugs = query.themeSlugs.split(',').map((s) => s.trim()).filter(Boolean);
+      if (slugs.length > 0) {
+        where.themes = {
+          some: {
+            theme: {
+              slug: { in: slugs },
+            },
+          },
+        };
+      }
+    } else if (query.themeSlug) {
       where.themes = {
         some: {
           theme: {

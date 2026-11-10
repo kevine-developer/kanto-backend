@@ -48,7 +48,7 @@ export class AdminHistoryController {
   // TÉLÉVERSEMENT DE PHOTO
   // ==========================================
   @Post('upload-image')
-  @Throttle({ upload: { limit: 15, ttl: 60000 } })
+  @Throttle({ default: { limit: 15, ttl: 60000 } })
   uploadPhoto(@Body() body: UploadHistoryImageDto) {
     return this.historyService.saveUploadedImage(
       body.imageBase64,

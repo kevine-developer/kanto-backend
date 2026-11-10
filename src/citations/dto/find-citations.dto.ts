@@ -8,7 +8,15 @@ export class FindCitationsQueryDto {
 
   @IsOptional()
   @IsString()
+  themeSlugs?: string;
+
+  @IsOptional()
+  @IsString()
   authorId?: string;
+
+  @IsOptional()
+  @IsString()
+  authors?: string;
 
   @IsOptional()
   @IsString()

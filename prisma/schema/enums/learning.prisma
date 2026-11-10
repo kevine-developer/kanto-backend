@@ -1,0 +1,23 @@
+// ============================================================
+// ENUMS — ESPACE PÉDAGOGIQUE (Apprendre)
+// ============================================================
+
+enum LearningLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum LessonType {
+  VOCABULARY
+  GRAMMAR
+  CULTURE
+  TRADITION
+  LITERATURE
+}
+
+enum LessonStatus {
+  IN_PROGRESS
+  COMPLETED
+}
+

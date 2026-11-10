@@ -146,7 +146,7 @@ export class AdminLocksController {
   }
 
   @Post('upload-image')
-  @Throttle({ upload: { limit: 15, ttl: 60000 } })
+  @Throttle({ default: { limit: 15, ttl: 60000 } })
   async uploadModuleImage(@Body() body: UploadImageDto) {
     return this.locksService.saveUploadedImage(
       body.imageBase64,
