@@ -12,7 +12,15 @@ export class FindRecitationsQueryDto {
 
   @IsOptional()
   @IsString()
+  authors?: string;
+
+  @IsOptional()
+  @IsString()
   tag?: string;
+
+  @IsOptional()
+  @IsString()
+  tags?: string;
 
   @IsOptional()
   @Type(() => Number)

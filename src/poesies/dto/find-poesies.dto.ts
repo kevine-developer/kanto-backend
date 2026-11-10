@@ -12,7 +12,15 @@ export class FindPoesiesQueryDto {
 
   @IsOptional()
   @IsString()
+  categories?: string;
+
+  @IsOptional()
+  @IsString()
   author?: string;
+
+  @IsOptional()
+  @IsString()
+  authors?: string;
 
   @IsOptional()
   @Type(() => Number)

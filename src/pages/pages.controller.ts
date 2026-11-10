@@ -115,11 +115,28 @@ export class PagesController {
   async getAbout(
     @Query('embed') embed?: string,
     @Query('inApp') inApp?: string,
+    @Query('version') version?: string,
   ): Promise<string> {
     const supportEmail = await this.getSupportEmail();
+    let appVersion = version?.trim();
+    if (!appVersion) {
+      try {
+        const latest = await this.prisma.appVersion.findFirst({
+          where: { isPublished: true },
+          orderBy: { publishedAt: 'desc' },
+          select: { version: true },
+        });
+        if (latest?.version) {
+          appVersion = latest.version;
+        }
+      } catch {
+        // Fallback
+      }
+    }
     return renderAboutPage({
       hideHeader: this.isEmbed(embed, inApp),
       supportEmail,
+      appVersion: appVersion || '0.0.23',
     });
   }
 

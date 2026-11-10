@@ -155,9 +155,25 @@ export class CitationsService {
 
     if (query.authorId) {
       where.authorId = query.authorId;
+    } else if (query.authors) {
+      const authorList = query.authors.split(',').map((s) => s.trim()).filter(Boolean);
+      if (authorList.length > 0) {
+        where.author = { name: { in: authorList } };
+      }
     }
 
-    if (query.themeSlug) {
+    if (query.themeSlugs) {
+      const slugs = query.themeSlugs.split(',').map((s) => s.trim()).filter(Boolean);
+      if (slugs.length > 0) {
+        where.themes = {
+          some: {
+            theme: {
+              slug: { in: slugs },
+            },
+          },
+        };
+      }
+    } else if (query.themeSlug) {
       where.themes = {
         some: {
           theme: {
