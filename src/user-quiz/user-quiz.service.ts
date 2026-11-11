@@ -21,8 +21,12 @@ import {
 import {
   CreateUserQuizSetDto,
   CreateUserQuestionDto,
+  UpdateUserQuestionDto,
   DeckVisibility,
+  MIN_QUESTIONS_FOR_PUBLICATION,
   ReportDeckDto,
+  RecordPlayDto,
+  validateUserQuestion,
 } from './dto/user-quiz.dto.js';
 import { ReportReason } from '../../generated/prisma/client.js';
 
@@ -44,6 +48,13 @@ function calculateLevelFromXp(xp: number): number {
     if (xp >= t.minXp) return t.level;
   }
   return 0;
+}
+
+function sanitizeText(value?: string | null): string {
+  if (!value) return '';
+  return value
+    .replace(/<[^>]*>?/gm, '') // Supprime les balises HTML/scripts
+    .trim();
 }
 
 @Injectable()
@@ -73,56 +84,146 @@ export class UserQuizService {
     return DEFAULT_COINS_ECONOMY_CONFIG;
   }
 
+  /**
+   * Création d'un nouveau Deck communautaire
+   * Règle de publication : si moins de 5 questions valides sont fournies, le deck est créé en DRAFT (non public).
+   */
   async createQuizSet(userId: string, dto: CreateUserQuizSetDto) {
-    const visibility =
-      dto.visibility ||
-      (dto.isPublic === false
-        ? DeckVisibility.LINK_ONLY
-        : DeckVisibility.PUBLIC);
-    const isPublic = visibility === DeckVisibility.PUBLIC;
+    // Nettoyage et assainissement
+    const cleanTitle = sanitizeText(dto.title);
+    if (!cleanTitle) {
+      throw new BadRequestException('Le titre du deck est obligatoire.');
+    }
+
+    const cleanDesc = dto.description ? sanitizeText(dto.description) : null;
+    const cleanCategory = dto.category
+      ? sanitizeText(dto.category)
+      : 'culture_generale';
+
+    // Validation des questions fournies
+    const rawQuestions = Array.isArray(dto.questions) ? dto.questions : [];
+    const validatedQuestions = rawQuestions.map((q) => {
+      const report = validateUserQuestion(q);
+      return {
+        ...q,
+        isValid: report.isValid,
+        errors: report.errors,
+      };
+    });
+
+    const validQuestionsCount = validatedQuestions.filter(
+      (q) => q.isValid,
+    ).length;
+
+    // Règle des 5 questions minimales : la visibilité publique exige au moins 5 questions valides
+    const requestedPublic =
+      dto.visibility === DeckVisibility.PUBLIC || dto.isPublic === true;
+
+    let visibility = dto.visibility || DeckVisibility.PUBLIC;
+    let isPublic = requestedPublic;
+
+    if (
+      requestedPublic &&
+      validQuestionsCount < MIN_QUESTIONS_FOR_PUBLICATION
+    ) {
+      // Sauvegarde sécurisée comme brouillon au lieu d'un échec bloquant
+      visibility = DeckVisibility.LINK_ONLY;
+      isPublic = false;
+    }
 
     const set = await this.prisma.userQuizSet.create({
       data: {
-        title: dto.title,
-        description: dto.description,
+        title: cleanTitle,
+        description: cleanDesc,
         imageUrl: dto.imageUrl?.trim() || null,
-        category: dto.category?.trim() || 'culture_generale',
+        category: cleanCategory,
         visibility,
         isPublic,
         authorId: userId,
         questions: {
-          create:
-            dto.questions?.map((q) => ({
-              gameType: q.gameType,
-              questionMg: q.questionMg,
-              questionFr: q.questionFr,
-              isTrue: q.isTrue,
-              choices: q.choices || [],
-              answerIndex: q.answerIndex,
-              explanationMg: q.explanationMg,
-              explanationFr: q.explanationFr,
-            })) || [],
+          create: rawQuestions.map((q) => ({
+            gameType: q.gameType,
+            questionMg: sanitizeText(q.questionMg),
+            questionFr: q.questionFr ? sanitizeText(q.questionFr) : null,
+            isTrue: q.isTrue,
+            choices: Array.isArray(q.choices)
+              ? q.choices.map((c) => sanitizeText(c)).filter(Boolean)
+              : [],
+            answerIndex: q.answerIndex,
+            explanationMg: q.explanationMg
+              ? sanitizeText(q.explanationMg)
+              : null,
+            explanationFr: q.explanationFr
+              ? sanitizeText(q.explanationFr)
+              : null,
+          })),
         },
       },
       include: {
         questions: true,
       },
     });
-    return set;
+
+    return {
+      ...set,
+      validQuestionsCount,
+      requiredQuestionsCount: MIN_QUESTIONS_FOR_PUBLICATION,
+      isPublishable: validQuestionsCount >= MIN_QUESTIONS_FOR_PUBLICATION,
+      missingQuestionsCount: Math.max(
+        0,
+        MIN_QUESTIONS_FOR_PUBLICATION - validQuestionsCount,
+      ),
+      statusNotice:
+        requestedPublic && validQuestionsCount < MIN_QUESTIONS_FOR_PUBLICATION
+          ? `Votre deck a été sauvegardé comme brouillon. Ajoutez encore ${MIN_QUESTIONS_FOR_PUBLICATION - validQuestionsCount} question(s) valide(s) pour le publier.`
+          : null,
+    };
   }
 
+  /**
+   * Liste des decks créés par l'utilisateur connecté (Vue Propriétaire)
+   */
   async getMyQuizSets(userId: string) {
-    return await this.prisma.userQuizSet.findMany({
+    const sets = await this.prisma.userQuizSet.findMany({
       where: { authorId: userId },
       include: {
+        questions: {
+          select: {
+            id: true,
+            gameType: true,
+            questionMg: true,
+            choices: true,
+            answerIndex: true,
+            isTrue: true,
+          },
+        },
         _count: {
           select: { questions: true, sessions: true },
         },
       },
       orderBy: { updatedAt: 'desc' },
     });
+
+    return sets.map((set) => {
+      const validQuestionsCount = set.questions.filter(
+        (q) => validateUserQuestion(q).isValid,
+      ).length;
+      return {
+        ...set,
+        validQuestionsCount,
+        requiredQuestionsCount: MIN_QUESTIONS_FOR_PUBLICATION,
+        isPublishable: validQuestionsCount >= MIN_QUESTIONS_FOR_PUBLICATION,
+        missingQuestionsCount: Math.max(
+          0,
+          MIN_QUESTIONS_FOR_PUBLICATION - validQuestionsCount,
+        ),
+      };
+    });
   }
 
+  /**
+   * Exploration des decks publics (Vue Communauté pour les joueurs)
+   */
   async getPublicQuizSets(
     skip = 0,
     take = 20,
@@ -134,7 +235,8 @@ export class UserQuizService {
     const where: any = {
       OR: [{ visibility: DeckVisibility.PUBLIC }, { isPublic: true }],
     };
-    // Règle d'intégrité Kanto : un auteur ne voit pas ses propres decks dans la liste communautaire
+
+    // Règle d'intégrité Kanto : un auteur ne voit pas ses propres decks dans le flux public
     if (_currentUserId) {
       where.authorId = { not: _currentUserId };
     }
@@ -196,17 +298,595 @@ export class UserQuizService {
     return await this.redisService.sMembers(`ugc:user_played_decks:${userId}`);
   }
 
+  /**
+   * Consultation d'un deck selon le rôle de l'utilisateur (Sécurisé côté Backend)
+   * - Propriétaire : Vue de gestion complète avec réponses, erreurs de questions et métriques.
+   * - Joueur : Vue publique épurée avec masquage strict des réponses (ANTI-TRICHE).
+   */
+  async getQuizSetById(setId: string, currentUserId?: string) {
+    const set = await this.prisma.userQuizSet.findUnique({
+      where: { id: setId },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            image: true,
+            tier: true,
+            createdAt: true,
+            _count: {
+              select: { quizSets: true },
+            },
+          },
+        },
+        questions: {
+          orderBy: { createdAt: 'asc' },
+        },
+      },
+    });
+
+    if (!set) {
+      throw new NotFoundException('Deck introuvable');
+    }
+
+    const isOwner = Boolean(currentUserId && set.authorId === currentUserId);
+
+    // Statistiques réelles depuis Redis
+    let uniquePlayersCount = 0;
+    let completedPlaysCount = 0;
+    try {
+      uniquePlayersCount = await this.redisService.sCard(
+        `ugc:deck_unique_players:${setId}`,
+      );
+      const completedStr = await this.redisService.get<string>(
+        `ugc:deck_completed_count:${setId}`,
+      );
+      completedPlaysCount = completedStr
+        ? parseInt(String(completedStr), 10)
+        : 0;
+    } catch {
+      uniquePlayersCount = 0;
+      completedPlaysCount = 0;
+    }
+
+    uniquePlayersCount = Math.max(
+      uniquePlayersCount,
+      set.playsCount > 0 ? 1 : 0,
+    );
+
+    let hasPlayed = false;
+    if (currentUserId) {
+      try {
+        hasPlayed = await this.redisService.sIsMember(
+          `ugc:user_played_decks:${currentUserId}`,
+          setId,
+        );
+      } catch {
+        hasPlayed = false;
+      }
+    }
+
+    // Validation des questions pour déterminer la conformité
+    const questionsValidation = set.questions.map((q) => {
+      const res = validateUserQuestion(q);
+      return {
+        id: q.id,
+        isValid: res.isValid,
+        errors: res.errors,
+      };
+    });
+
+    const validQuestionsCount = questionsValidation.filter(
+      (v) => v.isValid,
+    ).length;
+    const isPublishable = validQuestionsCount >= MIN_QUESTIONS_FOR_PUBLICATION;
+    const missingQuestionsCount = Math.max(
+      0,
+      MIN_QUESTIONS_FOR_PUBLICATION - validQuestionsCount,
+    );
+
+    const quizCount = set.questions.filter((q) => q.gameType === 'QUIZ').length;
+    const trueFalseCount = set.questions.filter(
+      (q) => q.gameType === 'TRUE_FALSE',
+    ).length;
+    const hasBilingualQuestions = set.questions.some((q) =>
+      Boolean(q.questionMg && q.questionFr),
+    );
+    const estimatedDurationMinutes = Math.max(
+      1,
+      Math.ceil((set.questions.length * 15) / 60),
+    );
+
+    // ==========================================
+    // 1. VUE PROPRIÉTAIRE (Dashboard de gestion)
+    // ==========================================
+    if (isOwner) {
+      const completionRate =
+        set.playsCount > 0
+          ? Math.round((completedPlaysCount / set.playsCount) * 100)
+          : 0;
+
+      return {
+        ...set,
+        isOwner: true,
+        hasPlayed,
+        validQuestionsCount,
+        requiredQuestionsCount: MIN_QUESTIONS_FOR_PUBLICATION,
+        isPublishable,
+        missingQuestionsCount,
+        questionsValidation,
+        // Le propriétaire a accès aux questions complètes avec leurs réponses
+        questions: set.questions,
+        stats: {
+          totalQuestions: set.questions.length,
+          validQuestionsCount,
+          playsCount: set.playsCount,
+          uniquePlayersCount,
+          completedPlaysCount,
+          completionRate,
+          quizCount,
+          trueFalseCount,
+          hasBilingualQuestions,
+          estimatedDurationMinutes,
+        },
+        _count: {
+          questions: set.questions.length,
+          sessions: set.playsCount,
+        },
+      };
+    }
+
+    // ==========================================
+    // 2. VUE JOUEUR (Protection Anti-triche & Épure)
+    // ==========================================
+    // Les réponses correctes (answerIndex, isTrue, explanation) sont STRICTEMENT masquées
+    const sanitizedQuestions = set.questions.map((q) => ({
+      id: q.id,
+      quizSetId: q.quizSetId,
+      gameType: q.gameType,
+      questionMg: q.questionMg,
+      questionFr: q.questionFr,
+      choices: q.choices,
+      // ANTI-TRICHE : answerIndex, isTrue, explanationMg et explanationFr ne sont PAS renvoyés
+    }));
+
+    return {
+      id: set.id,
+      title: set.title,
+      description: set.description,
+      imageUrl: set.imageUrl,
+      category: set.category,
+      visibility: set.visibility,
+      isPublic: set.isPublic,
+      verified: set.verified,
+      authorId: set.authorId,
+      author: set.author,
+      createdAt: set.createdAt,
+      updatedAt: set.updatedAt,
+      isOwner: false,
+      hasPlayed,
+      questions: sanitizedQuestions,
+      stats: {
+        totalQuestions: set.questions.length,
+        playsCount: set.playsCount,
+        uniquePlayersCount,
+        quizCount,
+        trueFalseCount,
+        hasBilingualQuestions,
+        estimatedDurationMinutes,
+      },
+      _count: {
+        questions: set.questions.length,
+        sessions: set.playsCount,
+      },
+    };
+  }
+
+  /**
+   * Statistiques détaillées réservées au créateur du deck
+   */
+  async getDeckStats(userId: string, setId: string) {
+    const set = await this.prisma.userQuizSet.findUnique({
+      where: { id: setId },
+      select: {
+        id: true,
+        title: true,
+        authorId: true,
+        playsCount: true,
+        createdAt: true,
+        updatedAt: true,
+        _count: { select: { questions: true } },
+      },
+    });
+
+    if (!set) {
+      throw new NotFoundException('Deck introuvable');
+    }
+
+    if (set.authorId !== userId) {
+      throw new ForbiddenException(
+        'Seul le créateur du deck peut consulter ses statistiques de gestion',
+      );
+    }
+
+    let uniquePlayersCount = 0;
+    let completedPlaysCount = 0;
+    let averageScorePercent = 0;
+
+    try {
+      uniquePlayersCount = await this.redisService.sCard(
+        `ugc:deck_unique_players:${setId}`,
+      );
+      const comp = await this.redisService.get<string>(
+        `ugc:deck_completed_count:${setId}`,
+      );
+      completedPlaysCount = comp ? parseInt(String(comp), 10) : 0;
+
+      const totalScore = await this.redisService.get<number>(
+        `ugc:deck_score_sum:${setId}`,
+      );
+      const countScore = await this.redisService.get<number>(
+        `ugc:deck_score_count:${setId}`,
+      );
+      if (totalScore && countScore && countScore > 0) {
+        averageScorePercent = Math.round((totalScore / countScore) * 100);
+      }
+    } catch {
+      // Ignorer
+    }
+
+    const completionRate =
+      set.playsCount > 0
+        ? Math.round((completedPlaysCount / set.playsCount) * 100)
+        : 0;
+
+    return {
+      deckId: set.id,
+      title: set.title,
+      totalQuestions: set._count.questions,
+      playsCount: set.playsCount,
+      uniquePlayersCount: Math.max(
+        uniquePlayersCount,
+        set.playsCount > 0 ? 1 : 0,
+      ),
+      completedPlaysCount,
+      completionRate,
+      averageScorePercent,
+      createdAt: set.createdAt,
+      updatedAt: set.updatedAt,
+    };
+  }
+
+  /**
+   * Mise à jour d'un deck par son auteur
+   * Contrôle strict : la publication exige au moins 5 questions valides.
+   */
+  async updateQuizSet(
+    userId: string,
+    setId: string,
+    dto: Partial<CreateUserQuizSetDto>,
+  ) {
+    const set = await this.prisma.userQuizSet.findUnique({
+      where: { id: setId },
+      include: { questions: true },
+    });
+
+    if (!set) {
+      throw new NotFoundException('Deck introuvable');
+    }
+
+    if (set.authorId !== userId) {
+      throw new UnauthorizedException(
+        'Vous ne pouvez modifier que vos propres decks',
+      );
+    }
+
+    const willBePublic =
+      dto.visibility === DeckVisibility.PUBLIC || dto.isPublic === true;
+
+    if (willBePublic) {
+      const validQuestionsCount = set.questions.filter(
+        (q) => validateUserQuestion(q).isValid,
+      ).length;
+      if (validQuestionsCount < MIN_QUESTIONS_FOR_PUBLICATION) {
+        throw new BadRequestException(
+          `Un deck doit comporter au moins ${MIN_QUESTIONS_FOR_PUBLICATION} questions valides pour être publié (${validQuestionsCount}/${MIN_QUESTIONS_FOR_PUBLICATION} valides. Ajoutez encore ${MIN_QUESTIONS_FOR_PUBLICATION - validQuestionsCount} question(s)).`,
+        );
+      }
+    }
+
+    const visibility = dto.visibility
+      ? dto.visibility
+      : dto.isPublic !== undefined
+        ? dto.isPublic
+          ? DeckVisibility.PUBLIC
+          : DeckVisibility.LINK_ONLY
+        : undefined;
+
+    const isPublic =
+      visibility !== undefined
+        ? visibility === DeckVisibility.PUBLIC
+        : dto.isPublic !== undefined
+          ? dto.isPublic
+          : undefined;
+
+    return this.prisma.userQuizSet.update({
+      where: { id: setId },
+      data: {
+        ...(dto.title !== undefined ? { title: sanitizeText(dto.title) } : {}),
+        ...(dto.description !== undefined
+          ? {
+              description: dto.description
+                ? sanitizeText(dto.description)
+                : null,
+            }
+          : {}),
+        ...(dto.imageUrl !== undefined
+          ? { imageUrl: dto.imageUrl?.trim() || null }
+          : {}),
+        ...(dto.category !== undefined
+          ? { category: sanitizeText(dto.category) || 'culture_generale' }
+          : {}),
+        ...(visibility !== undefined ? { visibility } : {}),
+        ...(isPublic !== undefined ? { isPublic } : {}),
+        updatedAt: new Date(),
+      },
+      include: {
+        questions: true,
+      },
+    });
+  }
+
+  /**
+   * Ajout d'une question à un deck existant
+   */
+  async addQuestion(userId: string, setId: string, dto: CreateUserQuestionDto) {
+    const set = await this.prisma.userQuizSet.findUnique({
+      where: { id: setId },
+      include: { _count: { select: { questions: true } } },
+    });
+
+    if (!set) {
+      throw new NotFoundException('Deck introuvable');
+    }
+
+    if (set.authorId !== userId) {
+      throw new UnauthorizedException(
+        'Vous ne pouvez ajouter des questions qu’à vos propres decks',
+      );
+    }
+
+    if (set._count.questions >= 50) {
+      throw new BadRequestException(
+        'Limite maximale de 50 questions par deck atteinte.',
+      );
+    }
+
+    const question = await this.prisma.userQuestion.create({
+      data: {
+        quizSetId: setId,
+        gameType: dto.gameType,
+        questionMg: sanitizeText(dto.questionMg),
+        questionFr: dto.questionFr ? sanitizeText(dto.questionFr) : null,
+        isTrue: dto.isTrue,
+        choices: Array.isArray(dto.choices)
+          ? dto.choices.map((c) => sanitizeText(c)).filter(Boolean)
+          : [],
+        answerIndex: dto.answerIndex,
+        explanationMg: dto.explanationMg
+          ? sanitizeText(dto.explanationMg)
+          : null,
+        explanationFr: dto.explanationFr
+          ? sanitizeText(dto.explanationFr)
+          : null,
+      },
+    });
+
+    await this.prisma.userQuizSet.update({
+      where: { id: setId },
+      data: { updatedAt: new Date() },
+    });
+
+    const validation = validateUserQuestion(question);
+
+    return {
+      ...question,
+      isValid: validation.isValid,
+      errors: validation.errors,
+    };
+  }
+
+  /**
+   * Modification d'une question existante (Édition progressive in-situ)
+   */
+  async updateQuestion(
+    userId: string,
+    questionId: string,
+    dto: UpdateUserQuestionDto,
+  ) {
+    const question = await this.prisma.userQuestion.findUnique({
+      where: { id: questionId },
+      include: { quizSet: true },
+    });
+
+    if (!question) {
+      throw new NotFoundException('Question introuvable');
+    }
+
+    if (question.quizSet.authorId !== userId) {
+      throw new UnauthorizedException(
+        'Vous ne pouvez modifier que les questions de vos propres decks',
+      );
+    }
+
+    const updated = await this.prisma.userQuestion.update({
+      where: { id: questionId },
+      data: {
+        ...(dto.gameType !== undefined ? { gameType: dto.gameType } : {}),
+        ...(dto.questionMg !== undefined
+          ? { questionMg: sanitizeText(dto.questionMg) }
+          : {}),
+        ...(dto.questionFr !== undefined
+          ? { questionFr: dto.questionFr ? sanitizeText(dto.questionFr) : null }
+          : {}),
+        ...(dto.isTrue !== undefined ? { isTrue: dto.isTrue } : {}),
+        ...(dto.choices !== undefined
+          ? {
+              choices: Array.isArray(dto.choices)
+                ? dto.choices.map((c) => sanitizeText(c)).filter(Boolean)
+                : [],
+            }
+          : {}),
+        ...(dto.answerIndex !== undefined
+          ? { answerIndex: dto.answerIndex }
+          : {}),
+        ...(dto.explanationMg !== undefined
+          ? {
+              explanationMg: dto.explanationMg
+                ? sanitizeText(dto.explanationMg)
+                : null,
+            }
+          : {}),
+        ...(dto.explanationFr !== undefined
+          ? {
+              explanationFr: dto.explanationFr
+                ? sanitizeText(dto.explanationFr)
+                : null,
+            }
+          : {}),
+        updatedAt: new Date(),
+      },
+    });
+
+    await this.prisma.userQuizSet.update({
+      where: { id: question.quizSetId },
+      data: { updatedAt: new Date() },
+    });
+
+    const validation = validateUserQuestion(updated);
+
+    return {
+      ...updated,
+      isValid: validation.isValid,
+      errors: validation.errors,
+    };
+  }
+
+  /**
+   * Suppression d'une question
+   * Si le deck était public et passe sous les 5 questions valides, il est basculé en DRAFT.
+   */
+  async deleteQuestion(userId: string, questionId: string) {
+    const question = await this.prisma.userQuestion.findUnique({
+      where: { id: questionId },
+      include: { quizSet: { include: { questions: true } } },
+    });
+
+    if (!question) {
+      throw new NotFoundException('Question introuvable');
+    }
+
+    if (question.quizSet.authorId !== userId) {
+      throw new UnauthorizedException(
+        'Vous ne pouvez supprimer que vos propres questions',
+      );
+    }
+
+    await this.prisma.userQuestion.delete({
+      where: { id: questionId },
+    });
+
+    // Vérifier si le deck passe sous la limite de publication
+    const remainingQuestions = question.quizSet.questions.filter(
+      (q) => q.id !== questionId,
+    );
+    const validCount = remainingQuestions.filter(
+      (q) => validateUserQuestion(q).isValid,
+    ).length;
+
+    let autoUnpublished = false;
+    if (
+      question.quizSet.isPublic &&
+      validCount < MIN_QUESTIONS_FOR_PUBLICATION
+    ) {
+      await this.prisma.userQuizSet.update({
+        where: { id: question.quizSetId },
+        data: {
+          isPublic: false,
+          visibility: DeckVisibility.LINK_ONLY,
+          updatedAt: new Date(),
+        },
+      });
+      autoUnpublished = true;
+    } else {
+      await this.prisma.userQuizSet.update({
+        where: { id: question.quizSetId },
+        data: { updatedAt: new Date() },
+      });
+    }
+
+    return {
+      success: true,
+      remainingCount: remainingQuestions.length,
+      validCount,
+      autoUnpublished,
+      message: autoUnpublished
+        ? 'Le deck comporte désormais moins de 5 questions valides et a été basculé en brouillon privé.'
+        : undefined,
+    };
+  }
+
+  /**
+   * Suppression sécurisée d'un deck par son auteur
+   */
+  async deleteQuizSet(userId: string, setId: string) {
+    const set = await this.prisma.userQuizSet.findUnique({
+      where: { id: setId },
+    });
+
+    if (!set) {
+      throw new NotFoundException('Deck introuvable');
+    }
+
+    if (set.authorId !== userId) {
+      throw new UnauthorizedException(
+        'Vous ne pouvez supprimer que vos propres decks',
+      );
+    }
+
+    await this.prisma.userQuizSet.delete({
+      where: { id: setId },
+    });
+
+    return { success: true };
+  }
+
+  /**
+   * Enregistrement d'une partie jouée
+   * Intégrité : l'auteur ne peut pas jouer à son propre deck.
+   * Traçage des parties terminées, joueurs uniques et calcul du score moyen.
+   */
   async recordPlay(
     setId: string,
     currentUserId?: string,
-    stats?: { correctCount?: number; totalQuestions?: number },
+    stats?: RecordPlayDto,
   ) {
     const set = await this.prisma.userQuizSet.findUnique({
       where: { id: setId },
       select: { id: true, title: true, authorId: true },
     });
+
     if (!set) {
-      throw new NotFoundException('Quiz set not found');
+      throw new NotFoundException('Deck introuvable');
+    }
+
+    // Règle d'intégrité Kanto : l'auteur ne peut jamais jouer à son propre deck
+    const isOwner = Boolean(currentUserId && set.authorId === currentUserId);
+    if (isOwner) {
+      throw new ForbiddenException(
+        "Vous êtes l'auteur de ce deck. Vous ne pouvez pas jouer à votre propre création afin de préserver l'équité des scores et des récompenses.",
+      );
     }
 
     const updated = await this.prisma.userQuizSet.update({
@@ -215,12 +895,35 @@ export class UserQuizService {
       select: { id: true, playsCount: true },
     });
 
-    // Règle d'intégrité Kanto : l'auteur ne peut jamais jouer à son propre deck
-    const isOwner = Boolean(currentUserId && set.authorId === currentUserId);
-    if (isOwner) {
-      throw new ForbiddenException(
-        "Vous êtes l'auteur de ce deck. Vous ne pouvez pas jouer à votre propre création afin de préserver l'équité des scores et des récompenses.",
-      );
+    // Enregistrement des statistiques avancées dans Redis
+    try {
+      if (currentUserId) {
+        await this.redisService.sAdd(
+          `ugc:deck_unique_players:${setId}`,
+          currentUserId,
+        );
+      }
+      if (stats?.completed) {
+        await this.redisService.incr(`ugc:deck_completed_count:${setId}`);
+      }
+      if (
+        stats?.correctCount !== undefined &&
+        stats?.totalQuestions &&
+        stats.totalQuestions > 0
+      ) {
+        const ratio = stats.correctCount / stats.totalQuestions;
+        const currentSum =
+          (await this.redisService.get<number>(
+            `ugc:deck_score_sum:${setId}`,
+          )) || 0;
+        await this.redisService.set(
+          `ugc:deck_score_sum:${setId}`,
+          currentSum + ratio,
+        );
+        await this.redisService.incr(`ugc:deck_score_count:${setId}`);
+      }
+    } catch {
+      // Ignorer les erreurs de tracking Redis
     }
 
     // Vérifier si le joueur a déjà joué à ce deck auparavant
@@ -249,88 +952,23 @@ export class UserQuizService {
       await this.redisService.sAdd(playedDeckKey, setId);
     }
 
-    if (!set.authorId) {
-      return {
-        ...updated,
-        isReplay: false,
-        canEarnXp: true,
-        royaltyGranted: false,
-        reason: 'SELF_OR_NO_AUTHOR',
-      };
-    }
-
-    // Garde-fou Barème 1 : Le deck doit comporter au moins 5 questions valides
-    const questionCount = await this.prisma.userQuestion.count({
-      where: { quizSetId: setId },
-    });
-    if (questionCount < 5) {
-      return {
-        ...updated,
-        royaltyGranted: false,
-        reason: 'MIN_QUESTIONS_NOT_MET',
-      };
-    }
-
-    // Garde-fou Barème 2 : Taux de réussite minimal (au moins 50% de bonnes réponses pour éviter bots et clics d'abandon)
-    if (stats?.totalQuestions && stats.totalQuestions > 0) {
-      const successRatio = (stats.correctCount || 0) / stats.totalQuestions;
-      if (successRatio < 0.5) {
-        return {
-          ...updated,
-          royaltyGranted: false,
-          reason: 'SCORE_TOO_LOW',
-        };
-      }
-    }
-
-    // Récupérer la configuration économique des pièces
-    const economyConfig = await this.getCoinsEconomyConfig();
-    if (!economyConfig.enabled) {
-      return {
-        ...updated,
-        royaltyGranted: false,
-        reason: 'ECONOMY_DISABLED',
-      };
-    }
-
-    // Garde-fou Barème 3 : Un même joueur ne peut compter qu'une seule fois à vie par deck pour le créateur
-    const playerKey = currentUserId || 'guest';
-    const deckUniquePlayersKey = `ugc:deck_unique_players:${setId}`;
-    const addedToUniqueSet = await this.redisService.sAdd(
-      deckUniquePlayersKey,
-      playerKey,
-    );
-
-    if (addedToUniqueSet === 0) {
-      // Ce joueur a déjà été comptabilisé pour ce deck auparavant
-      return {
-        ...updated,
-        royaltyGranted: false,
-        reason: 'PLAYER_ALREADY_COUNTED',
-      };
-    }
-
-    // Règle d'attribution : Le créateur gagne +15 XP par joueur unique qualifié
-    const xpReward = 15;
+    // Calcul et attribution des royalties économiques
+    const config = await this.getCoinsEconomyConfig();
+    const xpReward = 50;
     let coinsReward = 0;
 
-    // Garde-fou Barème 4 : Plafond journalier (max 3 Vola/jour par créateur)
     const todayStr = new Date().toISOString().slice(0, 10);
-    const dailyAuthorCoinsKey = `ugc:daily_coins:${set.authorId}:${todayStr}`;
+    const dailyAuthorCoinsKey = `ugc:coins_earned:${set.authorId}:${todayStr}`;
     const currentDailyCoins =
       (await this.redisService.get<number>(dailyAuthorCoinsKey)) || 0;
+    const canEarnCoinToday = currentDailyCoins < (config.ugcDailyCoinsCap || 3);
 
-    const dailyCap = Math.max(0, economyConfig.ugcDailyCoinsCap);
-    const canEarnCoinToday = currentDailyCoins < dailyCap;
-
-    // Pas de plafond viager par deck : un deck populaire peut continuer à rapporter sans limite si de nouveaux joueurs y jouent
     const qualifiedPlaysKey = `ugc:qualified_plays:${setId}`;
     const qualifiedPlays =
       ((await this.redisService.get<number>(qualifiedPlaysKey)) || 0) + 1;
     await this.redisService.set(qualifiedPlaysKey, qualifiedPlays);
 
-    const playsPerCoin = Math.max(1, economyConfig.ugcPlaysPerCoin);
-    // Dès que le palier (ex: 5 joueurs uniques) est franchi -> +1 Vola si plafond journalier non atteint
+    const playsPerCoin = Math.max(1, config.ugcPlaysPerCoin || 5);
     if (qualifiedPlays % playsPerCoin === 0 && canEarnCoinToday) {
       coinsReward = 1;
       await this.redisService.set(
@@ -376,7 +1014,6 @@ export class UserQuizService {
         });
       });
 
-      // Notification au créateur : envoyée lorsqu'une pièce est débloquée
       if (coinsReward > 0 && this.notificationsService) {
         void this.notificationsService
           .createNotification({
@@ -414,22 +1051,16 @@ export class UserQuizService {
     };
   }
 
-  async getQuizSetById(setId: string, currentUserId?: string) {
+  /**
+   * Session de jeu Solo : Fournit les questions pour la session de jeu active
+   * Vérifie que le joueur n'est pas l'auteur et que le deck a au moins 5 questions valides.
+   */
+  async getQuizSetForPlay(setId: string, userId: string) {
     const set = await this.prisma.userQuizSet.findUnique({
       where: { id: setId },
       include: {
         author: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-            image: true,
-            tier: true,
-            createdAt: true,
-            _count: {
-              select: { quizSets: true },
-            },
-          },
+          select: { id: true, name: true, image: true },
         },
         questions: {
           orderBy: { createdAt: 'asc' },
@@ -438,231 +1069,37 @@ export class UserQuizService {
     });
 
     if (!set) {
-      throw new NotFoundException('Quiz set not found');
+      throw new NotFoundException('Deck introuvable');
     }
 
-    // Statistiques réelles et vérifiables (zéro donnée fictive)
-    let redisUniqueCount = 0;
-    try {
-      redisUniqueCount = await this.redisService.sCard(
-        `ugc:deck_unique_players:${setId}`,
+    if (set.authorId === userId) {
+      throw new ForbiddenException(
+        "Vous êtes l'auteur de ce deck. Vous ne pouvez pas jouer à votre propre création afin de préserver l'équité des scores.",
       );
-    } catch {
-      redisUniqueCount = 0;
     }
 
-    // Le nombre de joueurs distincts réels
-    const uniquePlayersCount = Math.max(
-      redisUniqueCount,
-      set.playsCount > 0 ? 1 : 0,
+    const validQuestions = set.questions.filter(
+      (q) => validateUserQuestion(q).isValid,
     );
-
-    // Vérifier si l'utilisateur connecté a déjà joué à ce deck
-    let hasPlayed = false;
-    if (currentUserId) {
-      try {
-        hasPlayed = await this.redisService.sIsMember(
-          `ugc:user_played_decks:${currentUserId}`,
-          setId,
-        );
-      } catch {
-        hasPlayed = false;
-      }
+    if (validQuestions.length < MIN_QUESTIONS_FOR_PUBLICATION) {
+      throw new BadRequestException(
+        'Ce deck est incomplet (moins de 5 questions valides) et ne peut pas être joué pour le moment.',
+      );
     }
-
-    const quizCount = set.questions.filter(
-      (q) => q.gameType === 'QUIZ',
-    ).length;
-    const trueFalseCount = set.questions.filter(
-      (q) => q.gameType === 'TRUE_FALSE',
-    ).length;
-    const hasBilingualQuestions = set.questions.some(
-      (q) => Boolean(q.questionMg && q.questionFr),
-    );
-    // 15 secondes par question (durée standard Kanto Quiz)
-    const estimatedDurationMinutes = Math.max(
-      1,
-      Math.ceil((set.questions.length * 15) / 60),
-    );
 
     return {
-      ...set,
-      uniquePlayersCount,
-      hasPlayed,
-      isOwner: Boolean(currentUserId && set.authorId === currentUserId),
-      stats: {
-        totalQuestions: set.questions.length,
-        playsCount: set.playsCount,
-        uniquePlayersCount,
-        quizCount,
-        trueFalseCount,
-        hasBilingualQuestions,
-        estimatedDurationMinutes,
-      },
-      _count: {
-        questions: set.questions.length,
-        sessions: set.playsCount,
-      },
+      id: set.id,
+      title: set.title,
+      description: set.description,
+      imageUrl: set.imageUrl,
+      category: set.category,
+      author: set.author,
+      questions: validQuestions,
     };
-  }
-
-  async deleteQuizSet(userId: string, setId: string) {
-    const set = await this.prisma.userQuizSet.findUnique({
-      where: { id: setId },
-    });
-
-    if (!set) {
-      throw new NotFoundException('Quiz set not found');
-    }
-
-    if (set.authorId !== userId) {
-      throw new UnauthorizedException('You can only delete your own quiz sets');
-    }
-
-    await this.prisma.userQuizSet.delete({
-      where: { id: setId },
-    });
-
-    return { success: true };
-  }
-
-  async updateQuizSet(
-    userId: string,
-    setId: string,
-    dto: Partial<CreateUserQuizSetDto>,
-  ) {
-    const set = await this.prisma.userQuizSet.findUnique({
-      where: { id: setId },
-    });
-
-    if (!set) {
-      throw new NotFoundException('Quiz set not found');
-    }
-
-    if (set.authorId !== userId) {
-      throw new UnauthorizedException('You can only update your own quiz sets');
-    }
-
-    const willBePublic =
-      dto.visibility === DeckVisibility.PUBLIC || dto.isPublic === true;
-
-    if (willBePublic) {
-      const questionCount = await this.prisma.userQuestion.count({
-        where: { quizSetId: setId },
-      });
-      if (questionCount < 5) {
-        throw new BadRequestException(
-          'Un deck doit comporter au moins 5 questions pour être rendu public ou jouable.',
-        );
-      }
-    }
-
-    const visibility = dto.visibility
-      ? dto.visibility
-      : dto.isPublic !== undefined
-        ? dto.isPublic
-          ? DeckVisibility.PUBLIC
-          : DeckVisibility.LINK_ONLY
-        : undefined;
-
-    const isPublic =
-      visibility !== undefined
-        ? visibility === DeckVisibility.PUBLIC
-        : dto.isPublic !== undefined
-          ? dto.isPublic
-          : undefined;
-
-    return this.prisma.userQuizSet.update({
-      where: { id: setId },
-      data: {
-        ...(dto.title !== undefined ? { title: dto.title } : {}),
-        ...(dto.description !== undefined
-          ? { description: dto.description }
-          : {}),
-        ...(dto.imageUrl !== undefined
-          ? { imageUrl: dto.imageUrl?.trim() || null }
-          : {}),
-        ...(dto.category !== undefined
-          ? { category: dto.category?.trim() || 'culture_generale' }
-          : {}),
-        ...(visibility !== undefined ? { visibility } : {}),
-        ...(isPublic !== undefined ? { isPublic } : {}),
-        updatedAt: new Date(),
-      },
-      include: {
-        questions: true,
-      },
-    });
-  }
-
-  async addQuestion(userId: string, setId: string, dto: CreateUserQuestionDto) {
-    const set = await this.prisma.userQuizSet.findUnique({
-      where: { id: setId },
-    });
-
-    if (!set) {
-      throw new NotFoundException('Quiz set not found');
-    }
-
-    if (set.authorId !== userId) {
-      throw new UnauthorizedException(
-        'You can only add questions to your own quiz sets',
-      );
-    }
-
-    const question = await this.prisma.userQuestion.create({
-      data: {
-        quizSetId: setId,
-        gameType: dto.gameType,
-        questionMg: dto.questionMg,
-        questionFr: dto.questionFr,
-        isTrue: dto.isTrue,
-        choices: dto.choices || [],
-        answerIndex: dto.answerIndex,
-        explanationMg: dto.explanationMg,
-        explanationFr: dto.explanationFr,
-      },
-    });
-
-    // Update updatedAt of the set
-    await this.prisma.userQuizSet.update({
-      where: { id: setId },
-      data: { updatedAt: new Date() },
-    });
-
-    return question;
-  }
-
-  async deleteQuestion(userId: string, questionId: string) {
-    const question = await this.prisma.userQuestion.findUnique({
-      where: { id: questionId },
-      include: { quizSet: true },
-    });
-
-    if (!question) {
-      throw new NotFoundException('Question not found');
-    }
-
-    if (question.quizSet.authorId !== userId) {
-      throw new UnauthorizedException('You can only delete your own questions');
-    }
-
-    await this.prisma.userQuestion.delete({
-      where: { id: questionId },
-    });
-
-    // Update updatedAt of the set
-    await this.prisma.userQuizSet.update({
-      where: { id: question.quizSetId },
-      data: { updatedAt: new Date() },
-    });
-
-    return { success: true };
   }
 
   /**
    * Upload d'image de deck depuis l'appareil utilisateur
-   * Utilise Cloudinary en priorité avec bascule sur le stockage local uploads/decks/
    */
   async uploadDeckImage(
     userId: string,

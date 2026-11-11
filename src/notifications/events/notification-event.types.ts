@@ -16,6 +16,7 @@ export type NotificationEventType =
   | 'SECURITY_PASSWORD_ADDED'
   | 'SECURITY_ACCOUNT_DELETED'
   // Modération des contributions
+  | 'CONTRIBUTION_SUBMITTED'
   | 'CONTRIBUTION_APPROVED'
   | 'CONTRIBUTION_REJECTED'
   | 'CONTRIBUTION_CHANGES_REQUESTED'
@@ -83,6 +84,13 @@ export interface SecurityAccountDeletedEvent extends BaseEventPayload {
   type: 'SECURITY_ACCOUNT_DELETED';
 }
 
+export interface ContributionSubmittedEvent extends BaseEventPayload {
+  type: 'CONTRIBUTION_SUBMITTED';
+  contributionId: string;
+  contributionTitle: string;
+  category: string;
+}
+
 export interface ContributionApprovedEvent extends BaseEventPayload {
   type: 'CONTRIBUTION_APPROVED';
   contributionId: string;
@@ -130,6 +138,7 @@ export type NotificationEvent =
   | SecurityPasswordChangedEvent
   | SecurityPasswordAddedEvent
   | SecurityAccountDeletedEvent
+  | ContributionSubmittedEvent
   | ContributionApprovedEvent
   | ContributionRejectedEvent
   | ContributionChangesRequestedEvent

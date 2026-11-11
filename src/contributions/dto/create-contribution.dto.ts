@@ -20,4 +20,7 @@ export class CreateContributionDto {
 
   @IsOptional()
   isDraft?: boolean;
+
+  @IsOptional()
+  isAnonymous?: boolean;
 }

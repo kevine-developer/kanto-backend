@@ -1,7 +1,9 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { AppModule } from './app.module.js'; // NestJS Kanto App
+import { PartnersModule } from './partners/partners.module.js';
 import {
   LoggingInterceptor,
   TrafficRegulationInterceptor,
@@ -12,6 +14,7 @@ import {
 } from './common/filters/index.js';
 import { validateEnvironment } from './config/env.validation.js';
 import express from 'express';
+import fs from 'node:fs';
 import net from 'node:net';
 import path from 'node:path';
 
@@ -155,6 +158,7 @@ async function bootstrap() {
     allowedHeaders: [
       'Content-Type',
       'Authorization',
+      'X-API-Key',
       'X-Requested-With',
       'Accept',
       'Origin',
@@ -204,6 +208,22 @@ async function bootstrap() {
     }),
   );
 
+  // Servir les assets publics statiques (logo officiel, favicon, polices de marque)
+  const publicDir = path.resolve(process.cwd(), 'public');
+  if (fs.existsSync(publicDir)) {
+    app.use(
+      express.static(publicDir, {
+        dotfiles: 'ignore',
+        index: false,
+        maxAge: '7d',
+        setHeaders: (res) => {
+          res.setHeader('X-Content-Type-Options', 'nosniff');
+          res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+        },
+      }),
+    );
+  }
+
   // Servir les fichiers audio et médias téléchargeables de manière sécurisée
   app.use(
     '/uploads',
@@ -217,6 +237,44 @@ async function bootstrap() {
       },
     }),
   );
+
+  // ─── Documentation Swagger / OpenAPI — API Partenaires & Organisateurs ──────
+  const partnerSwaggerConfig = new DocumentBuilder()
+    .setTitle('Kanto MG — API Partenaires & Développeurs')
+    .setDescription(
+      `Documentation officielle de l'API Partenaires de Kanto MG (v1).\n\n` +
+        `### Authentification\n` +
+        `Pour interagir avec l'API v1, renseignez votre clé secrète développeur soit :\n` +
+        `- Via l'en-tête HTTP : \`X-API-Key: kanto_live_...\`\n` +
+        `- Ou via Bearer : \`Authorization: Bearer kanto_live_...\`\n\n` +
+        `Les clés de bac à sable utilisent le préfixe \`kanto_test_...\`.\n\n` +
+        `### Scopes d'autorisation\n` +
+        `- \`events:read\` : Consultation des événements du partenaire\n` +
+        `- \`events:write\` : Création et modification d'événements\n` +
+        `- \`events:delete\` : Annulation d'événements avec motif\n` +
+        `- \`registrations:read\` : Consultation de la liste des participants (respect RGPD)\n` +
+        `- \`media:upload\` : Téléversement d'affiches et bannières\n` +
+        `- \`marketing:read\` : Consultation du catalogue publicitaire et suivi des demandes\n` +
+        `- \`marketing:write\` : Soumission de demandes de sponsoring et messages`,
+    )
+    .setVersion('1.0.0')
+    .addApiKey({ type: 'apiKey', name: 'X-API-Key', in: 'header' }, 'X-API-Key')
+    .addBearerAuth(
+      { type: 'http', scheme: 'bearer', bearerFormat: 'API Key' },
+      'BearerAuth',
+    )
+    .build();
+
+  const partnerDocument = SwaggerModule.createDocument(
+    app,
+    partnerSwaggerConfig,
+    {
+      include: [PartnersModule],
+    },
+  );
+  SwaggerModule.setup('api/partners/docs', app, partnerDocument, {
+    customSiteTitle: 'Kanto MG — Documentation API Partenaires',
+  });
 
   const desiredPort = Number(process.env.PORT) || 3000;
   const port = await getAvailablePort(desiredPort);

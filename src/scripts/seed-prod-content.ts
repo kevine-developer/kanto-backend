@@ -21,13 +21,16 @@ import {
   DEFAULT_HISTORY_DATES,
   DEFAULT_NATIONAL_EMBLEMS,
 } from '../history/constants/history-defaults.constant.js';
+import { seedLearning } from '../../prisma/seed-learning.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
-  console.error('❌ [Seed Prod] Variable DATABASE_URL manquante dans l\'environnement.');
+  console.error(
+    "❌ [Seed Prod] Variable DATABASE_URL manquante dans l'environnement.",
+  );
   process.exit(1);
 }
 
@@ -63,7 +66,9 @@ function findSeedDataDir(): string {
       return dir;
     }
   }
-  throw new Error(`Répertoire seed-data introuvable. Candidats explorés : ${candidates.join(', ')}`);
+  throw new Error(
+    `Répertoire seed-data introuvable. Candidats explorés : ${candidates.join(', ')}`,
+  );
 }
 
 interface SeedStats {
@@ -77,18 +82,90 @@ interface SeedStats {
 }
 
 const DEFAULT_THEMES = [
-  { nameMg: 'Fahendrena', nameFr: 'Sagesse', slug: 'sagesse', icon: 'bulb-outline', color: '#E0533C' },
-  { nameMg: 'Fihavanana', nameFr: 'Solidarité', slug: 'solidarite', icon: 'people-outline', color: '#2E7D32' },
-  { nameMg: 'Fitiavana', nameFr: 'Amour', slug: 'amour', icon: 'heart-outline', color: '#D81B60' },
-  { nameMg: 'Fianakaviana', nameFr: 'Famille', slug: 'famille', icon: 'home-outline', color: '#1565C0' },
-  { nameMg: 'Asa sy Faharisihana', nameFr: 'Travail & Effort', slug: 'travail', icon: 'hammer-outline', color: '#EF6C00' },
-  { nameMg: 'Fanabeazana', nameFr: 'Éducation', slug: 'education', icon: 'book-outline', color: '#6A1B9A' },
-  { nameMg: 'Faharetana', nameFr: 'Persévérance', slug: 'perseverance', icon: 'shield-checkmark-outline', color: '#00838F' },
-  { nameMg: 'Fitondran-tena', nameFr: 'Morale & Vertu', slug: 'morale', icon: 'leaf-outline', color: '#2E7D32' },
-  { nameMg: 'Zavaboary', nameFr: 'Nature & Environnement', slug: 'nature', icon: 'earth-outline', color: '#1B5E20' },
-  { nameMg: 'Fahafatesana sy Fisaonana', nameFr: 'Mort & Deuil', slug: 'mort-deuil', icon: 'moon-outline', color: '#37474F' },
-  { nameMg: 'Tantara sy Fomba', nameFr: 'Histoire & Coutumes', slug: 'histoire-coutumes', icon: 'library-outline', color: '#795548' },
-  { nameMg: 'Fitantanana sy Fanjakana', nameFr: 'Pouvoir & Justice', slug: 'pouvoir-justice', icon: 'scale-outline', color: '#455A64' },
+  {
+    nameMg: 'Fahendrena',
+    nameFr: 'Sagesse',
+    slug: 'sagesse',
+    icon: 'bulb-outline',
+    color: '#E0533C',
+  },
+  {
+    nameMg: 'Fihavanana',
+    nameFr: 'Solidarité',
+    slug: 'solidarite',
+    icon: 'people-outline',
+    color: '#2E7D32',
+  },
+  {
+    nameMg: 'Fitiavana',
+    nameFr: 'Amour',
+    slug: 'amour',
+    icon: 'heart-outline',
+    color: '#D81B60',
+  },
+  {
+    nameMg: 'Fianakaviana',
+    nameFr: 'Famille',
+    slug: 'famille',
+    icon: 'home-outline',
+    color: '#1565C0',
+  },
+  {
+    nameMg: 'Asa sy Faharisihana',
+    nameFr: 'Travail & Effort',
+    slug: 'travail',
+    icon: 'hammer-outline',
+    color: '#EF6C00',
+  },
+  {
+    nameMg: 'Fanabeazana',
+    nameFr: 'Éducation',
+    slug: 'education',
+    icon: 'book-outline',
+    color: '#6A1B9A',
+  },
+  {
+    nameMg: 'Faharetana',
+    nameFr: 'Persévérance',
+    slug: 'perseverance',
+    icon: 'shield-checkmark-outline',
+    color: '#00838F',
+  },
+  {
+    nameMg: 'Fitondran-tena',
+    nameFr: 'Morale & Vertu',
+    slug: 'morale',
+    icon: 'leaf-outline',
+    color: '#2E7D32',
+  },
+  {
+    nameMg: 'Zavaboary',
+    nameFr: 'Nature & Environnement',
+    slug: 'nature',
+    icon: 'earth-outline',
+    color: '#1B5E20',
+  },
+  {
+    nameMg: 'Fahafatesana sy Fisaonana',
+    nameFr: 'Mort & Deuil',
+    slug: 'mort-deuil',
+    icon: 'moon-outline',
+    color: '#37474F',
+  },
+  {
+    nameMg: 'Tantara sy Fomba',
+    nameFr: 'Histoire & Coutumes',
+    slug: 'histoire-coutumes',
+    icon: 'library-outline',
+    color: '#795548',
+  },
+  {
+    nameMg: 'Fitantanana sy Fanjakana',
+    nameFr: 'Pouvoir & Justice',
+    slug: 'pouvoir-justice',
+    icon: 'scale-outline',
+    color: '#455A64',
+  },
 ];
 
 const DEFAULT_REGIONS = [
@@ -97,7 +174,7 @@ const DEFAULT_REGIONS = [
   'Itasy',
   'Bongolava',
   'Haute Matsiatra',
-  'Amoron\'i Mania',
+  "Amoron'i Mania",
   'Vatovavy-Fitovinany',
   'Ihorombe',
   'Atsimo-Atsinanana',
@@ -161,15 +238,22 @@ async function ensureSchemaColumns() {
       ALTER TABLE IF EXISTS "riddle_questions" ADD COLUMN IF NOT EXISTS "contentSourceId" TEXT;
     `);
   } catch (err: any) {
-    console.warn('⚠️ [Preflight Schema] Contrôle de schéma non bloquant :', err.message);
+    console.warn(
+      '⚠️ [Preflight Schema] Contrôle de schéma non bloquant :',
+      err.message,
+    );
   }
 }
 
 async function seedProduction() {
-  console.log('🚀 [Kanto Backend] Démarrage du seed idempotent intégral de production...');
+  console.log(
+    '🚀 [Kanto Backend] Démarrage du seed idempotent intégral de production...',
+  );
   await ensureSchemaColumns();
   const seedDataDir = findSeedDataDir();
-  console.log(`📁 [Kanto Backend] Répertoire de données de référence : ${seedDataDir}`);
+  console.log(
+    `📁 [Kanto Backend] Répertoire de données de référence : ${seedDataDir}`,
+  );
 
   const allStats: SeedStats[] = [];
 
@@ -178,8 +262,19 @@ async function seedProduction() {
   for (const t of DEFAULT_THEMES) {
     const upserted = await prisma.theme.upsert({
       where: { slug: t.slug },
-      update: { nameMg: t.nameMg, nameFr: t.nameFr, icon: t.icon, color: t.color },
-      create: { nameMg: t.nameMg, nameFr: t.nameFr, slug: t.slug, icon: t.icon, color: t.color },
+      update: {
+        nameMg: t.nameMg,
+        nameFr: t.nameFr,
+        icon: t.icon,
+        color: t.color,
+      },
+      create: {
+        nameMg: t.nameMg,
+        nameFr: t.nameFr,
+        slug: t.slug,
+        icon: t.icon,
+        color: t.color,
+      },
     });
     themeMap.set(t.slug, upserted.id);
   }
@@ -242,7 +337,12 @@ async function seedProduction() {
           where: {
             OR: [
               ...(item.id ? [{ id: item.id }] : []),
-              { malagasy: { equals: cleanMalagasy, mode: 'insensitive' as const } },
+              {
+                malagasy: {
+                  equals: cleanMalagasy,
+                  mode: 'insensitive' as const,
+                },
+              },
             ],
           },
         });
@@ -267,7 +367,9 @@ async function seedProduction() {
                 example: item.example || null,
                 phonetic: item.phonetic || null,
                 category,
-                origins: Array.isArray(item.origins) ? item.origins : existing.origins,
+                origins: Array.isArray(item.origins)
+                  ? item.origins
+                  : existing.origins,
                 difficulty: item.difficulty || existing.difficulty,
               },
             });
@@ -276,7 +378,8 @@ async function seedProduction() {
             itemsStats.unchanged++;
           }
         } else {
-          const baseSlug = slugify(item.slug || cleanMalagasy.substring(0, 50)) || 'item';
+          const baseSlug =
+            slugify(item.slug || cleanMalagasy.substring(0, 50)) || 'item';
           let slug = baseSlug;
           let counter = 1;
           while (await prisma.malagasyItem.findUnique({ where: { slug } })) {
@@ -323,13 +426,23 @@ async function seedProduction() {
             let tId = themeMap.get(tSlug);
             if (!tId) {
               const exTheme = await prisma.theme.findFirst({
-                where: { OR: [{ slug: tSlug }, { nameFr: trimmedTheme }, { nameMg: trimmedTheme }] },
+                where: {
+                  OR: [
+                    { slug: tSlug },
+                    { nameFr: trimmedTheme },
+                    { nameMg: trimmedTheme },
+                  ],
+                },
               });
               if (exTheme) {
                 tId = exTheme.id;
               } else {
                 const newT = await prisma.theme.create({
-                  data: { nameFr: trimmedTheme, nameMg: trimmedTheme, slug: tSlug },
+                  data: {
+                    nameFr: trimmedTheme,
+                    nameMg: trimmedTheme,
+                    slug: tSlug,
+                  },
                 });
                 tId = newT.id;
               }
@@ -343,7 +456,10 @@ async function seedProduction() {
           }
         }
       } catch (err) {
-        console.error(`⚠️ [Seed Prod Items] Erreur sur "${cleanMalagasy.substring(0, 30)}..." :`, err);
+        console.error(
+          `⚠️ [Seed Prod Items] Erreur sur "${cleanMalagasy.substring(0, 30)}..." :`,
+          err,
+        );
         itemsStats.errors++;
       }
     }
@@ -389,7 +505,12 @@ async function seedProduction() {
       processedCitations.add(normKey);
 
       try {
-        const sourceName = (c.source || c.sourceName || c.author || 'Ntaolo Malagasy').trim();
+        const sourceName = (
+          c.source ||
+          c.sourceName ||
+          c.author ||
+          'Ntaolo Malagasy'
+        ).trim();
         let authorId: string | null = null;
         if (sourceName && sourceName.toLowerCase() !== 'anonyme') {
           const author = await prisma.author.upsert({
@@ -404,7 +525,12 @@ async function seedProduction() {
           where: {
             OR: [
               ...(c.id ? [{ id: c.id }] : []),
-              { citationMg: { equals: cleanCitationMg, mode: 'insensitive' as const } },
+              {
+                citationMg: {
+                  equals: cleanCitationMg,
+                  mode: 'insensitive' as const,
+                },
+              },
             ],
           },
         });
@@ -455,7 +581,9 @@ async function seedProduction() {
             const tId = themeMap.get(tSlug);
             if (tId) {
               await prisma.citationTheme.upsert({
-                where: { citationId_themeId: { citationId: targetId, themeId: tId } },
+                where: {
+                  citationId_themeId: { citationId: targetId, themeId: tId },
+                },
                 update: {},
                 create: { citationId: targetId, themeId: tId },
               });
@@ -463,7 +591,10 @@ async function seedProduction() {
           }
         }
       } catch (err) {
-        console.error(`⚠️ [Seed Prod Citations] Erreur sur "${cleanCitationMg.substring(0, 30)}..." :`, err);
+        console.error(
+          `⚠️ [Seed Prod Citations] Erreur sur "${cleanCitationMg.substring(0, 30)}..." :`,
+          err,
+        );
         citationsStats.errors++;
       }
     }
@@ -503,7 +634,8 @@ async function seedProduction() {
 
       const cleanWord = item.word.trim();
       const slug = item.slug ? item.slug.trim() : slugify(cleanWord);
-      const rarity: WordRarity = (item.rarity && validRarities[item.rarity]) || WordRarity.VERY_RARE;
+      const rarity: WordRarity =
+        (item.rarity && validRarities[item.rarity]) || WordRarity.VERY_RARE;
 
       try {
         const existing = await prisma.rakiTenyWord.findFirst({
@@ -569,13 +701,17 @@ async function seedProduction() {
               contextUsage: item.contextUsage || '',
               etymology: item.etymology || null,
               status: 'PUBLISHED',
-              isFeatured: item.isFeatured !== undefined ? item.isFeatured : i < 3,
+              isFeatured:
+                item.isFeatured !== undefined ? item.isFeatured : i < 3,
             },
           });
           rakiStats.created++;
         }
       } catch (err) {
-        console.error(`⚠️ [Seed Prod Raki-Teny] Erreur sur "${cleanWord}" :`, err);
+        console.error(
+          `⚠️ [Seed Prod Raki-Teny] Erreur sur "${cleanWord}" :`,
+          err,
+        );
         rakiStats.errors++;
       }
     }
@@ -626,7 +762,8 @@ async function seedProduction() {
             : DifficultyLevel.EASY;
 
       const choices = q.optionsFr || q.choices || [];
-      const answerIndex = typeof q.correctAnswerIndex === 'number' ? q.correctAnswerIndex : 0;
+      const answerIndex =
+        typeof q.correctAnswerIndex === 'number' ? q.correctAnswerIndex : 0;
 
       const quizData = {
         category: q.category || 'culture_generale',
@@ -673,7 +810,10 @@ async function seedProduction() {
           quizStats.created++;
         }
       } catch (err) {
-        console.error(`⚠️ [Seed Prod Quiz] Erreur sur "${mainPrompt.substring(0, 30)}..." :`, err);
+        console.error(
+          `⚠️ [Seed Prod Quiz] Erreur sur "${mainPrompt.substring(0, 30)}..." :`,
+          err,
+        );
         quizStats.errors++;
       }
     }
@@ -737,7 +877,9 @@ async function seedProduction() {
             ? DifficultyLevel.MEDIUM
             : DifficultyLevel.EASY;
 
-      const theme = (vf.category && TF_THEME_CATEGORY_MAP[vf.category]) || TrueFalseTheme.GEN;
+      const theme =
+        (vf.category && TF_THEME_CATEGORY_MAP[vf.category]) ||
+        TrueFalseTheme.GEN;
 
       const tfData = {
         questionMg: questionMg || mainQ,
@@ -767,8 +909,26 @@ async function seedProduction() {
           where: {
             OR: [
               ...(vf.id ? [{ id: vf.id }] : []),
-              ...(questionMg ? [{ questionMg: { equals: questionMg, mode: 'insensitive' as const } }] : []),
-              ...(questionFr ? [{ questionFr: { equals: questionFr, mode: 'insensitive' as const } }] : []),
+              ...(questionMg
+                ? [
+                    {
+                      questionMg: {
+                        equals: questionMg,
+                        mode: 'insensitive' as const,
+                      },
+                    },
+                  ]
+                : []),
+              ...(questionFr
+                ? [
+                    {
+                      questionFr: {
+                        equals: questionFr,
+                        mode: 'insensitive' as const,
+                      },
+                    },
+                  ]
+                : []),
             ],
           },
         });
@@ -789,7 +949,10 @@ async function seedProduction() {
           tfStats.created++;
         }
       } catch (err) {
-        console.error(`⚠️ [Seed Prod Vrai/Faux] Erreur sur "${mainQ.substring(0, 30)}..." :`, err);
+        console.error(
+          `⚠️ [Seed Prod Vrai/Faux] Erreur sur "${mainQ.substring(0, 30)}..." :`,
+          err,
+        );
         tfStats.errors++;
       }
     }
@@ -829,7 +992,9 @@ async function seedProduction() {
         riddleFr: r.riddleFr || '',
         options: Array.isArray(r.options) ? r.options : [],
         correctAnswer: r.correctAnswer,
-        acceptedAnswers: Array.isArray(r.acceptedAnswers) ? r.acceptedAnswers : [],
+        acceptedAnswers: Array.isArray(r.acceptedAnswers)
+          ? r.acceptedAnswers
+          : [],
         explanation: r.explanation || '',
         clue: r.clue || null,
         level: typeof r.level === 'number' ? r.level : 1,
@@ -845,7 +1010,12 @@ async function seedProduction() {
           where: {
             OR: [
               ...(r.id ? [{ id: r.id }] : []),
-              { riddleMg: { equals: r.riddleMg.trim(), mode: 'insensitive' as const } },
+              {
+                riddleMg: {
+                  equals: r.riddleMg.trim(),
+                  mode: 'insensitive' as const,
+                },
+              },
             ],
           },
         });
@@ -879,7 +1049,10 @@ async function seedProduction() {
           riddlesStats.created++;
         }
       } catch (err) {
-        console.error(`⚠️ [Seed Prod Devinettes] Erreur sur "${r.riddleMg.substring(0, 30)}..." :`, err);
+        console.error(
+          `⚠️ [Seed Prod Devinettes] Erreur sur "${r.riddleMg.substring(0, 30)}..." :`,
+          err,
+        );
         riddlesStats.errors++;
       }
     }
@@ -899,7 +1072,9 @@ async function seedProduction() {
 
   const wordPuzzleFile = path.join(seedDataDir, 'word-puzzle.data.json');
   if (fs.existsSync(wordPuzzleFile)) {
-    const rawLevels: any[] = JSON.parse(fs.readFileSync(wordPuzzleFile, 'utf-8'));
+    const rawLevels: any[] = JSON.parse(
+      fs.readFileSync(wordPuzzleFile, 'utf-8'),
+    );
     wordPuzzleStats.totalInFile = rawLevels.length;
 
     for (const lvl of rawLevels) {
@@ -913,7 +1088,9 @@ async function seedProduction() {
             description: lvl.description || null,
             difficulty: lvl.difficulty || 'EASY',
             passThreshold: lvl.passThreshold || 5,
-            totalSentences: Array.isArray(lvl.sentences) ? lvl.sentences.length : 10,
+            totalSentences: Array.isArray(lvl.sentences)
+              ? lvl.sentences.length
+              : 10,
             status: 'PUBLISHED',
           },
           update: {
@@ -956,7 +1133,10 @@ async function seedProduction() {
         }
         wordPuzzleStats.created++;
       } catch (err) {
-        console.error(`⚠️ [Seed Prod WordPuzzle] Erreur sur niveau ${lvl.levelNumber}:`, err);
+        console.error(
+          `⚠️ [Seed Prod WordPuzzle] Erreur sur niveau ${lvl.levelNumber}:`,
+          err,
+        );
         wordPuzzleStats.errors++;
       }
     }
@@ -976,7 +1156,9 @@ async function seedProduction() {
 
   const missingWordFile = path.join(seedDataDir, 'missing-word.data.json');
   if (fs.existsSync(missingWordFile)) {
-    const rawLevels: any[] = JSON.parse(fs.readFileSync(missingWordFile, 'utf-8'));
+    const rawLevels: any[] = JSON.parse(
+      fs.readFileSync(missingWordFile, 'utf-8'),
+    );
     missingWordStats.totalInFile = rawLevels.length;
 
     for (const lvl of rawLevels) {
@@ -990,7 +1172,9 @@ async function seedProduction() {
             description: lvl.description || null,
             difficulty: lvl.difficulty || 'EASY',
             passThreshold: lvl.passThreshold || 5,
-            totalQuestions: Array.isArray(lvl.questions) ? lvl.questions.length : 10,
+            totalQuestions: Array.isArray(lvl.questions)
+              ? lvl.questions.length
+              : 10,
             status: 'PUBLISHED',
           },
           update: {
@@ -1035,7 +1219,10 @@ async function seedProduction() {
         }
         missingWordStats.created++;
       } catch (err) {
-        console.error(`⚠️ [Seed Prod MissingWord] Erreur sur niveau ${lvl.levelNumber}:`, err);
+        console.error(
+          `⚠️ [Seed Prod MissingWord] Erreur sur niveau ${lvl.levelNumber}:`,
+          err,
+        );
         missingWordStats.errors++;
       }
     }
@@ -1103,7 +1290,9 @@ async function seedProduction() {
               illustration: c.illustration?.trim() || null,
               moralMg: c.moral?.textMg || null,
               moralFr: c.moral?.textFr || null,
-              variantIds: Array.isArray(c.variants || c.varient) ? c.variants || c.varient : [],
+              variantIds: Array.isArray(c.variants || c.varient)
+                ? c.variants || c.varient
+                : [],
               isFeatured: i < 3,
               status: 'PUBLISHED',
             },
@@ -1363,7 +1552,9 @@ async function seedProduction() {
 
   const recitationFile = path.join(seedDataDir, 'recitation.data.json');
   if (fs.existsSync(recitationFile)) {
-    const rawRecitations: any[] = JSON.parse(fs.readFileSync(recitationFile, 'utf-8'));
+    const rawRecitations: any[] = JSON.parse(
+      fs.readFileSync(recitationFile, 'utf-8'),
+    );
     recitationStats.totalInFile = rawRecitations.length;
 
     for (let i = 0; i < rawRecitations.length; i++) {
@@ -1383,8 +1574,12 @@ async function seedProduction() {
               author: r.author || existing.author,
               description: r.description || existing.description,
               durationMinutes: r.durationMinutes || existing.durationMinutes,
-              contentLines: Array.isArray(r.content) ? r.content : existing.contentLines,
-              references: Array.isArray(r.references) ? r.references : existing.references,
+              contentLines: Array.isArray(r.content)
+                ? r.content
+                : existing.contentLines,
+              references: Array.isArray(r.references)
+                ? r.references
+                : existing.references,
               tags: Array.isArray(r.tags) ? r.tags : existing.tags,
             },
           });
@@ -1415,7 +1610,10 @@ async function seedProduction() {
           recitationStats.created++;
         }
       } catch (err) {
-        console.error(`⚠️ [Seed Prod Recitation] Erreur sur "${r.title}" :`, err);
+        console.error(
+          `⚠️ [Seed Prod Recitation] Erreur sur "${r.title}" :`,
+          err,
+        );
         recitationStats.errors++;
       }
     }
@@ -1479,11 +1677,26 @@ async function seedProduction() {
   };
 
   const CIVIC_DOC_FILES = [
-    { file: 'droits-et-vote.data.json', subCategory: CivicSubCategory.DROITS_VOTE },
-    { file: 'civic-institution.data.json', subCategory: CivicSubCategory.INSTITUTION },
-    { file: 'symboles-histoire.data.json', subCategory: CivicSubCategory.SYMBOLES_HISTOIRE },
-    { file: 'vivre-ensemble.data.json', subCategory: CivicSubCategory.VIVRE_ENSEMBLE },
-    { file: 'ecologie-civisme.data.json', subCategory: CivicSubCategory.ECOLOGIE_CIVISME },
+    {
+      file: 'droits-et-vote.data.json',
+      subCategory: CivicSubCategory.DROITS_VOTE,
+    },
+    {
+      file: 'civic-institution.data.json',
+      subCategory: CivicSubCategory.INSTITUTION,
+    },
+    {
+      file: 'symboles-histoire.data.json',
+      subCategory: CivicSubCategory.SYMBOLES_HISTOIRE,
+    },
+    {
+      file: 'vivre-ensemble.data.json',
+      subCategory: CivicSubCategory.VIVRE_ENSEMBLE,
+    },
+    {
+      file: 'ecologie-civisme.data.json',
+      subCategory: CivicSubCategory.ECOLOGIE_CIVISME,
+    },
   ];
 
   for (const { file: fileName, subCategory } of CIVIC_DOC_FILES) {
@@ -1494,37 +1707,54 @@ async function seedProduction() {
     civicContentStats.totalInFile += rawList.length;
 
     for (const item of rawList) {
-      const titleFr = typeof item.title === 'object' && item.title !== null
-        ? (item.title.fr || item.title.mg || '')
-        : (item.titleFr || item.title || '');
-      const titleMg = typeof item.title === 'object' && item.title !== null
-        ? (item.title.mg || item.title.fr || '')
-        : (item.titleMg || item.title || '');
+      const titleFr =
+        typeof item.title === 'object' && item.title !== null
+          ? item.title.fr || item.title.mg || ''
+          : item.titleFr || item.title || '';
+      const titleMg =
+        typeof item.title === 'object' && item.title !== null
+          ? item.title.mg || item.title.fr || ''
+          : item.titleMg || item.title || '';
 
-      const summaryFr = typeof item.summary === 'object' && item.summary !== null
-        ? (item.summary.fr || null)
-        : (item.summaryFr || null);
-      const summaryMg = typeof item.summary === 'object' && item.summary !== null
-        ? (item.summary.mg || null)
-        : (item.summaryMg || null);
+      const summaryFr =
+        typeof item.summary === 'object' && item.summary !== null
+          ? item.summary.fr || null
+          : item.summaryFr || null;
+      const summaryMg =
+        typeof item.summary === 'object' && item.summary !== null
+          ? item.summary.mg || null
+          : item.summaryMg || null;
 
       const contentFr = Array.isArray(item.contentFr)
         ? item.contentFr
-        : (typeof item.content === 'object' && Array.isArray(item.content?.fr) ? item.content.fr : []);
+        : typeof item.content === 'object' && Array.isArray(item.content?.fr)
+          ? item.content.fr
+          : [];
       const contentMg = Array.isArray(item.contentMg)
         ? item.contentMg
-        : (typeof item.content === 'object' && Array.isArray(item.content?.mg) ? item.content.mg : []);
+        : typeof item.content === 'object' && Array.isArray(item.content?.mg)
+          ? item.content.mg
+          : [];
 
       const themes = Array.isArray(item.themes)
         ? item.themes
-        : (Array.isArray(item.theme) ? item.theme : []);
+        : Array.isArray(item.theme)
+          ? item.theme
+          : [];
       const sources = Array.isArray(item.sources) ? item.sources : [];
 
-      const rawSlug = item.slug || item.id || slugify(titleFr) || slugify(titleMg) || `civic-${subCategory.toLowerCase()}-${civicContentStats.totalInFile}`;
+      const rawSlug =
+        item.slug ||
+        item.id ||
+        slugify(titleFr) ||
+        slugify(titleMg) ||
+        `civic-${subCategory.toLowerCase()}-${civicContentStats.totalInFile}`;
       const slug = slugify(rawSlug) || `civic-${Date.now()}`;
 
       try {
-        const existing = await prisma.civicContent.findUnique({ where: { slug } });
+        const existing = await prisma.civicContent.findUnique({
+          where: { slug },
+        });
         let contentId = existing?.id;
         if (!existing) {
           const created = await prisma.civicContent.create({
@@ -1563,13 +1793,29 @@ async function seedProduction() {
         }
 
         // Structure roles si présents
-        if (contentId && Array.isArray(item.structure) && item.structure.length > 0) {
+        if (
+          contentId &&
+          Array.isArray(item.structure) &&
+          item.structure.length > 0
+        ) {
           for (let sIdx = 0; sIdx < item.structure.length; sIdx++) {
             const s = item.structure[sIdx];
-            const sTitleFr = typeof s.title === 'object' ? (s.title?.fr || s.title?.mg || '') : (s.titleFr || s.title || '');
-            const sTitleMg = typeof s.title === 'object' ? (s.title?.mg || s.title?.fr || '') : (s.titleMg || s.title || '');
-            const sRoleFr = typeof s.role === 'object' ? (s.role?.fr || s.role?.mg || '') : (s.roleFr || s.role || '');
-            const sRoleMg = typeof s.role === 'object' ? (s.role?.mg || s.role?.fr || '') : (s.roleMg || s.role || '');
+            const sTitleFr =
+              typeof s.title === 'object'
+                ? s.title?.fr || s.title?.mg || ''
+                : s.titleFr || s.title || '';
+            const sTitleMg =
+              typeof s.title === 'object'
+                ? s.title?.mg || s.title?.fr || ''
+                : s.titleMg || s.title || '';
+            const sRoleFr =
+              typeof s.role === 'object'
+                ? s.role?.fr || s.role?.mg || ''
+                : s.roleFr || s.role || '';
+            const sRoleMg =
+              typeof s.role === 'object'
+                ? s.role?.mg || s.role?.fr || ''
+                : s.roleMg || s.role || '';
 
             const existingRole = await prisma.civicStructureRole.findFirst({
               where: { civicContentId: contentId, orderIndex: sIdx },
@@ -1617,7 +1863,9 @@ async function seedProduction() {
 
   try {
     for (const item of DEFAULT_CIVIC_LESSONS) {
-      const existing = await prisma.civicLesson.findUnique({ where: { id: item.id } });
+      const existing = await prisma.civicLesson.findUnique({
+        where: { id: item.id },
+      });
       const preservedImage = existing?.imageUrl || item.imageUrl || null;
 
       await prisma.civicLesson.upsert({
@@ -1646,7 +1894,9 @@ async function seedProduction() {
     }
 
     for (const item of DEFAULT_PRESIDENTS) {
-      const existing = await prisma.president.findUnique({ where: { id: item.id } });
+      const existing = await prisma.president.findUnique({
+        where: { id: item.id },
+      });
       const preservedImage = existing?.imageUrl || item.imageUrl || null;
 
       await prisma.president.upsert({
@@ -1691,11 +1941,16 @@ async function seedProduction() {
     }
 
     for (const item of DEFAULT_BANKNOTES) {
-      const existing = await prisma.banknote.findUnique({ where: { id: item.id } });
+      const existing = await prisma.banknote.findUnique({
+        where: { id: item.id },
+      });
       const preservedImage = existing?.imageUrl || item.imageUrl || null;
-      const preservedImageVerso = existing?.imageUrlVerso || item.imageUrlVerso || null;
+      const preservedImageVerso =
+        existing?.imageUrlVerso || item.imageUrlVerso || null;
       const preservedComingSoon =
-        existing?.isComingSoon !== undefined ? existing.isComingSoon : Boolean(item.isComingSoon);
+        existing?.isComingSoon !== undefined
+          ? existing.isComingSoon
+          : Boolean(item.isComingSoon);
 
       await prisma.banknote.upsert({
         where: { id: item.id },
@@ -1751,7 +2006,9 @@ async function seedProduction() {
     }
 
     for (const item of DEFAULT_PROVINCE_BLASONS) {
-      const existing = await prisma.provinceBlason.findUnique({ where: { id: item.id } });
+      const existing = await prisma.provinceBlason.findUnique({
+        where: { id: item.id },
+      });
       const preservedImage = existing?.imageUrl || item.imageUrl || null;
 
       await prisma.provinceBlason.upsert({
@@ -1794,7 +2051,9 @@ async function seedProduction() {
     }
 
     for (const item of DEFAULT_NATURE_EMBLEMS) {
-      const existing = await prisma.natureEmblem.findUnique({ where: { id: item.id } });
+      const existing = await prisma.natureEmblem.findUnique({
+        where: { id: item.id },
+      });
       const preservedImage = existing?.imageUrl || item.imageUrl || null;
 
       await prisma.natureEmblem.upsert({
@@ -1839,7 +2098,9 @@ async function seedProduction() {
     }
 
     for (const item of DEFAULT_HISTORY_DATES) {
-      const existing = await prisma.historyDate.findUnique({ where: { id: item.id } });
+      const existing = await prisma.historyDate.findUnique({
+        where: { id: item.id },
+      });
       const preservedImage = existing?.imageUrl || item.imageUrl || null;
 
       await prisma.historyDate.upsert({
@@ -1905,7 +2166,10 @@ async function seedProduction() {
       historyStats.created++;
     }
   } catch (err) {
-    console.error('⚠️ [Seed Prod Histoire/Patrimoine] Erreur lors de l\'upsert des constantes :', err);
+    console.error(
+      "⚠️ [Seed Prod Histoire/Patrimoine] Erreur lors de l'upsert des constantes :",
+      err,
+    );
     historyStats.errors++;
   }
   allStats.push(historyStats);
@@ -1913,7 +2177,9 @@ async function seedProduction() {
   // ─── 16. Proverbe du jour ───────────────────────────────────────────────────
   const dailyProverbCount = await prisma.dailyProverb.count();
   if (dailyProverbCount === 0) {
-    const firstP = await prisma.malagasyItem.findFirst({ where: { category: 'PROVERBE' } });
+    const firstP = await prisma.malagasyItem.findFirst({
+      where: { category: 'PROVERBE' },
+    });
     if (firstP) {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -1921,28 +2187,64 @@ async function seedProduction() {
         data: {
           date: today,
           itemId: firstP.id,
-          editorial: 'Proverbe d\'ouverture de Kanto MG',
+          editorial: "Proverbe d'ouverture de Kanto MG",
         },
       });
     }
   }
 
-  // ─── Synthèse & Observabilité Consolidée ────────────────────────────────────
-  console.log('\n═══════════════════════════════════════════════════════════════════════════════════════');
-  console.log('🎉 COMPTE RENDU DU SEED INTÉGRAL DE PRODUCTION (KANTO MG)');
-  console.log('═══════════════════════════════════════════════════════════════════════════════════════');
-  for (const s of allStats) {
-    console.log(
-      `  • ${s.category.padEnd(42)} : ${String(s.created).padStart(3)} créé(s), ${String(s.updated).padStart(3)} mis à jour, ${String(s.unchanged).padStart(3)} inchangé(s), ${String(s.errors).padStart(2)} erreur(s)`
+  // ─── Synchronisation Espace Didactique (Parcours, Cours & 5 Micro-Quiz) ──────
+  try {
+    const learningStats = await seedLearning(prisma);
+    allStats.push({
+      category: 'Parcours didactiques (Apprendre)',
+      totalInFile: learningStats.tracksCreated + learningStats.tracksUpdated,
+      created: learningStats.tracksCreated,
+      updated: learningStats.tracksUpdated,
+      unchanged: 0,
+      skipped: 0,
+      errors: 0,
+    });
+    allStats.push({
+      category: 'Leçons & Micro-Quiz (5 questions)',
+      totalInFile: learningStats.lessonsCreated + learningStats.lessonsUpdated,
+      created: learningStats.lessonsCreated,
+      updated: learningStats.lessonsUpdated,
+      unchanged: 0,
+      skipped: 0,
+      errors: 0,
+    });
+  } catch (err: any) {
+    console.warn(
+      '[Seed Prod] Erreur lors de la synchronisation pédagogique:',
+      err?.message || err,
     );
   }
-  console.log('═══════════════════════════════════════════════════════════════════════════════════════\n');
+
+  // ─── Synthèse & Observabilité Consolidée ────────────────────────────────────
+  console.log(
+    '\n═══════════════════════════════════════════════════════════════════════════════════════',
+  );
+  console.log('🎉 COMPTE RENDU DU SEED INTÉGRAL DE PRODUCTION (KANTO MG)');
+  console.log(
+    '═══════════════════════════════════════════════════════════════════════════════════════',
+  );
+  for (const s of allStats) {
+    console.log(
+      `  • ${s.category.padEnd(42)} : ${String(s.created).padStart(3)} créé(s), ${String(s.updated).padStart(3)} mis à jour, ${String(s.unchanged).padStart(3)} inchangé(s), ${String(s.errors).padStart(2)} erreur(s)`,
+    );
+  }
+  console.log(
+    '═══════════════════════════════════════════════════════════════════════════════════════\n',
+  );
 
   const totalErrors = allStats.reduce((sum, s) => sum + s.errors, 0);
   if (totalErrors > 0) {
     console.warn(`⚠️ [Seed Prod] ${totalErrors} anomalie(s) rencontrée(s).`);
   } else {
-    console.log('✨ [Seed Prod] Synchronisation intégrale 100% réussie. Tous les jeux et contenus sont prêts.');
+    console.log(
+      '✨ [Seed Prod] Synchronisation intégrale 100% réussie. Tous les jeux et contenus sont prêts.',
+    );
   }
 }
 

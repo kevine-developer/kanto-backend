@@ -1,7 +1,9 @@
+import { LocksService } from '../locks/locks.service.js';
 import {
   Body,
   Controller,
   Get,
+  Put,
   Post,
   BadRequestException,
   UseGuards,
@@ -77,6 +79,7 @@ export class AdminSystemController {
     private readonly resendService: ResendService,
     private readonly cloudinaryService: CloudinaryService,
     private readonly cloudinarySyncService: CloudinarySyncService,
+    private readonly locksService: LocksService,
   ) {}
 
   @Post('test-email')
@@ -146,5 +149,14 @@ export class AdminSystemController {
   @Post('cloudinary/sync')
   async triggerCloudinarySync() {
     return this.cloudinarySyncService.syncLocalUploadsToCloudinary();
+  }
+  @Get('languages')
+  async getAppLanguages() {
+    return this.locksService.getAppLanguages();
+  }
+
+  @Put('languages')
+  async updateAppLanguages(@Body() body: { fr?: boolean; mg?: boolean }) {
+    return this.locksService.updateAppLanguages(body);
   }
 }

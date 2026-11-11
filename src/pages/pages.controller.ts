@@ -21,6 +21,20 @@ export class PagesController {
     );
   }
 
+  private async getSupportEmail(): Promise<string> {
+    try {
+      const config = await this.prisma.betaAutomationConfig.findFirst({
+        select: { supportEmail: true },
+      });
+      if (config?.supportEmail) {
+        return config.supportEmail;
+      }
+    } catch {
+      // Fallback si la configuration n'est pas encore enregistrée
+    }
+    return process.env.SUPPORT_EMAIL || 'support@kanto.mg';
+  }
+
   @Get('privacy')
   @Header('Content-Type', 'text/html; charset=utf-8')
   @Header('Cache-Control', 'public, max-age=300')
@@ -29,6 +43,7 @@ export class PagesController {
     @Query('inApp') inApp?: string,
   ): Promise<string> {
     const hideHeader = this.isEmbed(embed, inApp);
+    const supportEmail = await this.getSupportEmail();
     try {
       const doc = await this.prisma.legalDocument.findUnique({
         where: { slug: 'privacy' },
@@ -37,7 +52,9 @@ export class PagesController {
         return pageShell({
           title: `Kanto — ${doc.title}`,
           pageTitle: doc.title,
+          slug: doc.slug,
           hideHeader,
+          supportEmail,
           description: doc.summary || 'Politique de confidentialité Kanto',
           body: doc.contentHtml,
         });
@@ -45,7 +62,7 @@ export class PagesController {
     } catch {
       // Fallback sur le template statique en cas d'indisponibilité
     }
-    return renderPrivacyPage({ hideHeader });
+    return renderPrivacyPage({ hideHeader, supportEmail });
   }
 
   @Get('terms')
@@ -56,6 +73,7 @@ export class PagesController {
     @Query('inApp') inApp?: string,
   ): Promise<string> {
     const hideHeader = this.isEmbed(embed, inApp);
+    const supportEmail = await this.getSupportEmail();
     try {
       const doc = await this.prisma.legalDocument.findUnique({
         where: { slug: 'terms' },
@@ -65,6 +83,7 @@ export class PagesController {
           title: `Kanto — ${doc.title}`,
           pageTitle: doc.title,
           hideHeader,
+          supportEmail,
           description:
             doc.summary || "Conditions générales d'utilisation Kanto",
           body: doc.contentHtml,
@@ -73,36 +92,65 @@ export class PagesController {
     } catch {
       // Fallback sur le template statique en cas d'indisponibilité
     }
-    return renderTermsPage({ hideHeader });
+    return renderTermsPage({ hideHeader, supportEmail });
   }
 
   @Get('help')
   @Header('Content-Type', 'text/html; charset=utf-8')
   @Header('Cache-Control', 'public, max-age=1800')
-  getHelp(
+  async getHelp(
     @Query('embed') embed?: string,
     @Query('inApp') inApp?: string,
-  ): string {
-    return renderHelpPage({ hideHeader: this.isEmbed(embed, inApp) });
+  ): Promise<string> {
+    const supportEmail = await this.getSupportEmail();
+    return renderHelpPage({
+      hideHeader: this.isEmbed(embed, inApp),
+      supportEmail,
+    });
   }
 
   @Get('about')
   @Header('Content-Type', 'text/html; charset=utf-8')
   @Header('Cache-Control', 'public, max-age=3600')
-  getAbout(
+  async getAbout(
     @Query('embed') embed?: string,
     @Query('inApp') inApp?: string,
-  ): string {
-    return renderAboutPage({ hideHeader: this.isEmbed(embed, inApp) });
+    @Query('version') version?: string,
+  ): Promise<string> {
+    const supportEmail = await this.getSupportEmail();
+    let appVersion = version?.trim();
+    if (!appVersion) {
+      try {
+        const latest = await this.prisma.appVersion.findFirst({
+          where: { isPublished: true },
+          orderBy: { publishedAt: 'desc' },
+          select: { version: true },
+        });
+        if (latest?.version) {
+          appVersion = latest.version;
+        }
+      } catch {
+        // Fallback
+      }
+    }
+    return renderAboutPage({
+      hideHeader: this.isEmbed(embed, inApp),
+      supportEmail,
+      appVersion: appVersion || '0.0.23',
+    });
   }
 
   @Get('licenses')
   @Header('Content-Type', 'text/html; charset=utf-8')
   @Header('Cache-Control', 'public, max-age=86400')
-  getLicenses(
+  async getLicenses(
     @Query('embed') embed?: string,
     @Query('inApp') inApp?: string,
-  ): string {
-    return renderLicensesPage({ hideHeader: this.isEmbed(embed, inApp) });
+  ): Promise<string> {
+    const supportEmail = await this.getSupportEmail();
+    return renderLicensesPage({
+      hideHeader: this.isEmbed(embed, inApp),
+      supportEmail,
+    });
   }
 }

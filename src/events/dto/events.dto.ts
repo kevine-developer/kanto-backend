@@ -19,13 +19,13 @@ export class CreateEventRewardDto {
   @IsEnum(EventRewardType, { message: 'Type de récompense invalide' })
   rewardType: EventRewardType;
 
-  @IsNotEmpty({ message: 'Titre malgache de la récompense obligatoire' })
+  @IsOptional()
   @IsString()
-  titleMg: string;
+  titleMg?: string;
 
-  @IsNotEmpty({ message: 'Titre français de la récompense obligatoire' })
+  @IsOptional()
   @IsString()
-  titleFr: string;
+  titleFr?: string;
 
   @IsOptional()
   @IsNumber()
@@ -55,21 +55,21 @@ export class CreateEventDto {
   @IsString()
   slug?: string;
 
-  @IsNotEmpty({ message: 'Titre en malgache obligatoire' })
+  @IsOptional()
   @IsString()
-  titleMg: string;
+  titleMg?: string;
 
-  @IsNotEmpty({ message: 'Titre en français obligatoire' })
+  @IsOptional()
   @IsString()
-  titleFr: string;
+  titleFr?: string;
 
-  @IsNotEmpty({ message: 'Description en malgache obligatoire' })
+  @IsOptional()
   @IsString()
-  descriptionMg: string;
+  descriptionMg?: string;
 
-  @IsNotEmpty({ message: 'Description en français obligatoire' })
+  @IsOptional()
   @IsString()
-  descriptionFr: string;
+  descriptionFr?: string;
 
   @IsOptional()
   @IsString()
@@ -120,6 +120,28 @@ export class CreateEventDto {
   @IsNumber()
   @Min(1)
   maxParticipants?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  enableWaitlist?: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  waitlistCapacity?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  isPaid?: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  ticketPrice?: number;
+
+  @IsOptional()
+  @IsString()
+  currency?: string;
 
   @IsOptional()
   @IsBoolean()
@@ -209,6 +231,28 @@ export class UpdateEventDto {
 
   @IsOptional()
   @IsBoolean()
+  enableWaitlist?: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  waitlistCapacity?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  isPaid?: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  ticketPrice?: number;
+
+  @IsOptional()
+  @IsString()
+  currency?: string;
+
+  @IsOptional()
+  @IsBoolean()
   isFeatured?: boolean;
 
   @IsOptional()
@@ -241,6 +285,10 @@ export class EventQueryDto {
   @IsOptional()
   @IsString()
   status?: string;
+
+  @IsOptional()
+  @IsString()
+  timeFilter?: string; // 'upcoming' | 'ongoing' | 'past' | 'completed' | 'all'
 
   @IsOptional()
   @IsString()
@@ -291,4 +339,28 @@ export class DistributeRewardsDto {
   @IsNumber()
   @Min(1)
   topN?: number;
+}
+
+export class AdminCancelParticipationDto {
+  @IsNotEmpty({ message: 'Le motif d’annulation est obligatoire' })
+  @IsString()
+  reason: string;
+
+  @IsOptional()
+  @IsString()
+  internalNotes?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  notifyUser?: boolean;
+}
+
+export class UploadEventCoverDto {
+  @IsNotEmpty({ message: 'Données image base64 obligatoires' })
+  @IsString()
+  base64Data: string;
+
+  @IsOptional()
+  @IsString()
+  originalName?: string;
 }

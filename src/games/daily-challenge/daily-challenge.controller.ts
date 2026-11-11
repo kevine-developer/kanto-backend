@@ -1,19 +1,11 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { DailyChallengeService } from './daily-challenge.service.js';
 import { SubmitDailyAnswerDto } from './dto/daily-challenge.dto.js';
 import { Session, type UserSession } from '../../auth/index.js';
 
 @Controller('games/daily-challenge')
 export class DailyChallengeController {
-  constructor(
-    private readonly dailyChallengeService: DailyChallengeService,
-  ) {}
+  constructor(private readonly dailyChallengeService: DailyChallengeService) {}
 
   @Get()
   getDailyChallenge(@Query('date') date?: string) {
@@ -29,4 +21,3 @@ export class DailyChallengeController {
     return this.dailyChallengeService.submitAnswer(userId, dto);
   }
 }
-

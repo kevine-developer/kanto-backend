@@ -61,6 +61,7 @@ export const CONTRIBUTION_PUBLIC_SELECT = {
   duplicateTargetTitle: true,
   isDuplicateConfirmed: true,
   markedForDeletionAt: true,
+  isAnonymous: true,
 } as const;
 
 export const CONTRIBUTION_BASE_SELECT = {
@@ -320,6 +321,20 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       });
     }
 
+    // 5. Notification centralisée et accusé de réception par e-mail
+    void this.eventNotificationService
+      .dispatchNotificationEvent({
+        type: 'CONTRIBUTION_SUBMITTED',
+        recipientUserId: params.userId,
+        contributionId: params.contributionId,
+        contributionTitle: params.titlePreview,
+        category: updated.category,
+      })
+      .catch((err) => {
+        this.logger.warn(
+          `Échec dispatch CONTRIBUTION_SUBMITTED à ${params.userId}: ${err}`,
+        );
+      });
     // 5. Notification in-app neutre à l'utilisateur
     void this.notificationsService
       .createNotification({
@@ -378,6 +393,7 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
         duplicateOfId: dupCheck.targetId,
         duplicateTypeOf: dupCheck.targetType,
         duplicateTargetTitle: dupCheck.targetTitle,
+        isAnonymous: Boolean(dto.isAnonymous),
       },
       select: CONTRIBUTION_BASE_SELECT,
     });
@@ -779,7 +795,10 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
 
       const userVote =
         (votes as Array<{ value: number }> | undefined)?.[0]?.value ?? 0;
-      return { ...rest, userVote };
+      const isAnonymous = Boolean((rest as any).isAnonymous);
+      const isAuthor = Boolean(userId && (rest as any).userId === userId);
+      const user = isAnonymous && !isAuthor ? null : (rest as any).user;
+      return { ...rest, userVote, user, isAnonymous };
     });
   }
 
@@ -806,11 +825,14 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
 
     if (!contribution) throw new NotFoundException('Contribution introuvable');
 
-    const isAdmin = role === 'ADMIN' || role === 'admin';
+    const isAdmin = typeof role === 'string' && role.toUpperCase() === 'ADMIN';
     const isAuthor = Boolean(userId && contribution.userId === userId);
 
-    // ⛔ Sécurité stricte : Si non approuvée, accessible uniquement à l'auteur ou à un admin
+    // 🔒 Sécurité stricte : Si non approuvée, accessible uniquement à l'auteur ou à un admin
     if (contribution.status !== 'APPROVED' && !isAuthor && !isAdmin) {
+      this.logger.warn(
+        `[findOne] Accès refusé pour la contribution ${id} (statut: ${contribution.status}, demandeur: ${userId ?? 'anonyme'}, auteur: ${contribution.userId})`,
+      );
       throw new NotFoundException('Contribution introuvable');
     }
 
@@ -834,6 +856,11 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       if (!isAuthor) {
         delete rest.adminFeedback;
       }
+    }
+
+    const isAnonymous = Boolean((rest as any).isAnonymous);
+    if (isAnonymous && !isAuthor && !isAdmin) {
+      (rest as any).user = null;
     }
 
     const userVote =
@@ -1318,6 +1345,13 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
     });
     if (!contribution) throw new NotFoundException('Contribution introuvable');
 
+    // Sécurité éditoriale : interdiction stricte de l'auto-validation par l'administrateur
+    if (approve && adminUserId && contribution.userId === adminUserId) {
+      throw new ForbiddenException(
+        'Un administrateur ne peut pas auto-valider sa propre contribution. La revue par un pair est requise.',
+      );
+    }
+
     // ── Cas 1 : Demande de modifications au contributeur ─────────────────────
     if (!approve && requestChanges) {
       const feedback =
@@ -1358,7 +1392,9 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
             feedbackReason: feedback,
           })
           .catch((err) => {
-            this.logger.warn(`Échec dispatch CONTRIBUTION_CHANGES_REQUESTED : ${err}`);
+            this.logger.warn(
+              `Échec dispatch CONTRIBUTION_CHANGES_REQUESTED : ${err}`,
+            );
           });
       }
 
@@ -1667,24 +1703,19 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       );
     }
 
+    // 🔒 Les contributions soumises pour vérification ne peuvent plus être modifiées (aucun délai de dépassement)
+    if (!isAdmin && contribution.status === 'PENDING_REVIEW') {
+      throw new BadRequestException({
+        statusCode: 400,
+        error: 'CONTRIBUTION_PENDING_REVIEW_LOCKED',
+        message:
+          'Une contribution soumise pour vérification ne peut plus être modifiée.',
+      });
+    }
+
     const isDraft = contribution.status === 'DRAFT';
     const isChangesRequested = contribution.status === 'CHANGES_REQUESTED';
     const isPending = contribution.status === 'PENDING_REVIEW';
-
-    // Règle des 48h uniquement pour les contributions en attente
-    if (!isAdmin && isPending) {
-      const diffHours =
-        (Date.now() - new Date(contribution.createdAt).getTime()) /
-        (1000 * 60 * 60);
-      if (diffHours > 48) {
-        throw new BadRequestException({
-          statusCode: 400,
-          error: 'CONTRIBUTION_MODIFICATION_EXPIRED',
-          message:
-            'Vous ne pouvez modifier une contribution en attente que dans les 48 heures suivant sa création.',
-        });
-      }
-    }
 
     const newTextMg =
       dto.textMg !== undefined ? dto.textMg : contribution.textMg;
@@ -1709,6 +1740,9 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
         ...(dto.textFr !== undefined ? { textFr: dto.textFr } : {}),
         ...(dto.meaning !== undefined ? { meaning: dto.meaning } : {}),
         ...(dto.region !== undefined ? { region: dto.region } : {}),
+        ...(dto.isAnonymous !== undefined
+          ? { isAnonymous: Boolean(dto.isAnonymous) }
+          : {}),
       },
       select: CONTRIBUTION_BASE_SELECT,
     });
@@ -1725,7 +1759,7 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
         },
         userId: contribution.userId,
         previousStatus: 'DRAFT',
-        titlePreview: newTextMg.slice(0, 45),
+        titlePreview: (newTextMg || '').slice(0, 45),
       });
       return { success: true, contribution: res.contribution };
     }
@@ -1742,7 +1776,7 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
         },
         userId: contribution.userId,
         previousStatus: contribution.status,
-        titlePreview: newTextMg.slice(0, 45),
+        titlePreview: (newTextMg || '').slice(0, 45),
       });
       return { success: true, contribution: res.contribution };
     }
@@ -1777,18 +1811,23 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       );
     }
 
-    if (!isAdmin && contribution.status !== 'DRAFT') {
-      const diffHours =
-        (Date.now() - new Date(contribution.createdAt).getTime()) /
-        (1000 * 60 * 60);
-      if (diffHours > 24) {
-        throw new BadRequestException({
-          statusCode: 400,
-          error: 'CONTRIBUTION_DELETION_EXPIRED',
-          message:
-            'Vous ne pouvez supprimer une contribution soumise que dans les 24 heures suivant sa création.',
-        });
-      }
+    // 🔒 Les contributions soumises pour vérification ne peuvent plus être supprimées (aucun délai de dépassement)
+    if (!isAdmin && contribution.status === 'PENDING_REVIEW') {
+      throw new BadRequestException({
+        statusCode: 400,
+        error: 'CONTRIBUTION_PENDING_REVIEW_LOCKED',
+        message:
+          'Une contribution soumise pour vérification ne peut plus être supprimée.',
+      });
+    }
+
+    if (
+      !isAdmin &&
+      (contribution.status === 'APPROVED' || contribution.status === 'ARCHIVED')
+    ) {
+      throw new BadRequestException(
+        'Une contribution approuvée ou archivée ne peut pas être supprimée par son auteur.',
+      );
     }
 
     await this.logAudit({

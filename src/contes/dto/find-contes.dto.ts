@@ -15,6 +15,10 @@ export class FindContesQueryDto {
 
   @IsOptional()
   @IsString()
+  themeSlugs?: string;
+
+  @IsOptional()
+  @IsString()
   search?: string;
 
   @IsOptional()

@@ -10,6 +10,7 @@ import { PrismaService } from '../../prisma/prisma.service.js';
 import { RedisService } from '../../redis/redis.service.js';
 import { NotificationsService } from '../../notifications/notifications.service.js';
 import { UserQuizService } from '../../user-quiz/user-quiz.service.js';
+import { PresenceService } from '../../presence/presence.service.js';
 import {
   createPrismaMock,
   type PrismaMock,
@@ -22,6 +23,7 @@ describe('MultiplayerService', () => {
   let redisMock: Record<string, jest.Mock>;
   let notificationsMock: Record<string, jest.Mock>;
   let userQuizMock: Record<string, jest.Mock>;
+  let presenceMock: Record<string, jest.Mock>;
 
   beforeEach(async () => {
     prismaMock = createPrismaMock();
@@ -39,6 +41,7 @@ describe('MultiplayerService', () => {
         memoryCache.delete(key);
         return Promise.resolve(1);
       }),
+      publish: jest.fn(() => Promise.resolve(1)),
     };
 
     notificationsMock = {
@@ -49,6 +52,19 @@ describe('MultiplayerService', () => {
       recordPlay: jest.fn(() => Promise.resolve({ success: true })),
     };
 
+    presenceMock = {
+      getUserDuelAvailability: jest.fn(() =>
+        Promise.resolve({
+          status: 'ONLINE',
+          isAvailableForDuel: true,
+          messageFr: 'Le joueur est disponible pour un duel.',
+          messageMg: 'Vonona hifanandrina ny mpilalao.',
+        }),
+      ),
+      setPlayerInGame: jest.fn(() => Promise.resolve()),
+      clearPlayerInGame: jest.fn(() => Promise.resolve()),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         MultiplayerService,
@@ -56,6 +72,7 @@ describe('MultiplayerService', () => {
         { provide: RedisService, useValue: redisMock },
         { provide: NotificationsService, useValue: notificationsMock },
         { provide: UserQuizService, useValue: userQuizMock },
+        { provide: PresenceService, useValue: presenceMock },
       ],
     }).compile();
 
@@ -487,6 +504,208 @@ describe('MultiplayerService', () => {
         expect.objectContaining({
           where: { id: 'sess_dec' },
           data: expect.objectContaining({ status: 'CANCELLED' }),
+        }),
+      );
+    });
+  });
+
+  describe('Gestion du Cycle de Vie et Expiration des Salons', () => {
+    it('devrait assigner une date limite expiresAt lors de la création du salon', async () => {
+      (prismaMock.user.findUnique as any).mockResolvedValue({
+        name: 'Hôte Test',
+        image: null,
+      });
+      (prismaMock.trueFalseQuestion.findMany as any).mockResolvedValue([
+        { id: 'q1' },
+        { id: 'q2' },
+        { id: 'q3' },
+        { id: 'q4' },
+        { id: 'q5' },
+      ]);
+      (prismaMock.duelSession.findUnique as any).mockResolvedValue(null);
+      (prismaMock.duelSession.create as any).mockImplementation((args: any) =>
+        Promise.resolve({
+          id: 'sess_exp_1',
+          code: args.data.code,
+          gameType: args.data.gameType,
+          status: 'WAITING',
+          expiresAt: args.data.expiresAt,
+          players: [
+            {
+              userId: 'user_host',
+              name: 'Hôte Test',
+              isHost: true,
+              score: 0,
+            },
+          ],
+        }),
+      );
+
+      const beforeCreation = Date.now();
+      const res = await service.createGame('user_host', {
+        gameType: MultiplayerGameTypeEnum.TRUE_FALSE,
+        totalQuestions: 5,
+      });
+
+      expect(res.session).toBeDefined();
+      expect(prismaMock.duelSession.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            expiresAt: expect.any(Date),
+            status: 'WAITING',
+          }),
+        }),
+      );
+
+      const createdExpiresAt = (prismaMock.duelSession.create as any).mock
+        .calls[0][0].data.expiresAt as Date;
+      expect(createdExpiresAt.getTime()).toBeGreaterThan(beforeCreation);
+      // Durée par défaut multijoueur = 15 minutes (900s)
+      expect(createdExpiresAt.getTime()).toBeGreaterThanOrEqual(
+        beforeCreation + 890 * 1000,
+      );
+    });
+
+    it('devrait refuser la création si l’utilisateur dépasse la limite de création horaire', async () => {
+      (prismaMock.user.findUnique as any).mockResolvedValue({
+        name: 'Spammer',
+        image: null,
+      });
+      (redisMock.get as any).mockResolvedValue(10); // Limite de 10 atteinte
+
+      await expect(
+        service.createGame('user_spammer', {
+          gameType: MultiplayerGameTypeEnum.TRUE_FALSE,
+        }),
+      ).rejects.toThrow('Limite de création de salons atteinte');
+    });
+
+    it('devrait refuser qu’un joueur rejoigne un salon expiré', async () => {
+      const expiredDate = new Date(Date.now() - 60000); // Expiré il y a 1 minute
+      (prismaMock.duelSession.findUnique as any).mockResolvedValue({
+        id: 'sess_expired',
+        code: 'EXPR01',
+        status: 'WAITING',
+        expiresAt: expiredDate,
+        players: [],
+      });
+      (prismaMock.duelSession.update as any).mockResolvedValue({});
+
+      await expect(
+        service.joinGame('user_late', { code: 'EXPR01' }),
+      ).rejects.toThrow('Ce salon a expiré');
+
+      expect(prismaMock.duelSession.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: 'sess_expired' },
+          data: expect.objectContaining({ status: 'EXPIRED' }),
+        }),
+      );
+    });
+
+    it('devrait refuser de démarrer un salon expiré', async () => {
+      const expiredDate = new Date(Date.now() - 10000);
+      (prismaMock.duelSession.findUnique as any).mockResolvedValue({
+        id: 'sess_expired_start',
+        code: 'EXPR02',
+        status: 'WAITING',
+        player1Id: 'host_id',
+        expiresAt: expiredDate,
+        players: [
+          { userId: 'host_id', isHost: true },
+          { userId: 'p2_id', isHost: false },
+        ],
+      });
+      (prismaMock.duelSession.update as any).mockResolvedValue({});
+
+      await expect(
+        service.startGame('host_id', { code: 'EXPR02' }),
+      ).rejects.toThrow('Ce salon a expiré et ne peut plus être démarré');
+    });
+
+    it('devrait garantir un démarrage atomique et idempotent (bloquer les doubles démarrages)', async () => {
+      (prismaMock.duelSession.findUnique as any).mockResolvedValue({
+        id: 'sess_atomic',
+        code: 'ATOM01',
+        status: 'WAITING',
+        player1Id: 'host_id',
+        expiresAt: new Date(Date.now() + 600000),
+        players: [
+          { userId: 'host_id', isHost: true },
+          { userId: 'p2_id', isHost: false },
+        ],
+        timePerQuestion: 15,
+        gameType: MultiplayerGameTypeEnum.TRUE_FALSE,
+        questionIds: ['q1', 'q2'],
+      });
+      (redisMock.get as any).mockResolvedValue(null);
+
+      // Simulation : lockTransition renvoie count = 0 (une autre requête a déjà basculé le statut en STARTING)
+      (prismaMock.duelSession.updateMany as any).mockResolvedValue({
+        count: 0,
+      });
+
+      await expect(
+        service.startGame('host_id', { code: 'ATOM01' }),
+      ).rejects.toThrow(
+        'La partie a déjà été lancée ou est en cours de démarrage',
+      );
+    });
+
+    it('expirePendingSessions : devrait fermer les salons expirés et notifier via Redis sans toucher aux parties en cours', async () => {
+      const now = new Date();
+      const expiredSession = {
+        id: 'sess_to_expire',
+        code: 'EXPIR3',
+        status: 'WAITING',
+        expiresAt: new Date(now.getTime() - 120000),
+        createdAt: new Date(now.getTime() - 900000),
+        players: [{ userId: 'u1' }],
+      };
+
+      (prismaMock.duelSession.findMany as any).mockResolvedValue([
+        expiredSession,
+      ]);
+      (prismaMock.duelSession.updateMany as any).mockImplementation(
+        ({ where }: any) => {
+          if (where?.id === 'sess_to_expire') {
+            return Promise.resolve({ count: 1 });
+          }
+          return Promise.resolve({ count: 0 });
+        },
+      );
+
+      const closedCount = await service.expirePendingSessions();
+
+      expect(closedCount).toBe(1);
+      expect(prismaMock.duelSession.updateMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: {
+            id: 'sess_to_expire',
+            status: { in: ['WAITING', 'READY'] },
+          },
+          data: expect.objectContaining({
+            status: 'EXPIRED',
+          }),
+        }),
+      );
+
+      // Vérifier que l'événement Redis Pub/Sub est bien émis pour avertir les participants
+      expect(redisMock.publish).toHaveBeenCalledWith(
+        'kanto:events:duel',
+        expect.objectContaining({
+          event: 'duel:session_expired',
+          code: 'EXPIR3',
+          closeRoom: true,
+        }),
+      );
+
+      // Vérifier que la requête findMany ne cible STRICTEMENT QUE WAITING et READY (JAMAIS IN_PROGRESS)
+      expect(prismaMock.duelSession.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({
+            status: { in: ['WAITING', 'READY'] },
+          }),
         }),
       );
     });

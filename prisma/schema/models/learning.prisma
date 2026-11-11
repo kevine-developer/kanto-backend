@@ -1,0 +1,125 @@
+// ============================================================
+// MODÈLES — ESPACE PÉDAGOGIQUE INDÉPENDANT (Apprendre)
+// Parcours, Leçons structurées, Progression & Révision espacée
+// ============================================================
+
+model LearningTrack {
+  id               String        @id @default(cuid())
+  slug             String        @unique // Ex: "fondamentaux-langue-malgache", "fihavanana-valeurs"
+  title            String
+  titleMg          String
+  description      String?       @db.Text
+  descriptionMg    String?       @db.Text
+  level            LearningLevel @default(BEGINNER)
+  icon             String?       // Nom d'icône (ex: "GraduationCap", "BookOpen", "Compass")
+  color            String?       // Code couleur d'accent (ex: "#4A6741", "#C58B38")
+  orderIndex       Int           @default(0)
+  isPublished      Boolean       @default(true)
+  estimatedMinutes Int           @default(30)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  lessons       LearningLesson[]
+  trackProgress UserTrackProgress[]
+
+  @@index([level, isPublished])
+  @@index([orderIndex])
+  @@map("learning_tracks")
+}
+
+model LearningLesson {
+  id              String       @id @default(cuid())
+  trackId         String
+  track           LearningTrack @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  slug            String       @unique // Ex: "salutations-et-politesse-aza-fady"
+  title           String
+  titleMg         String
+  summary         String?      @db.Text
+  summaryMg       String?      @db.Text
+  type            LessonType   @default(CULTURE)
+  orderIndex      Int          @default(0)
+  durationMinutes Int          @default(5)
+  audioUrl        String?
+  illustrationUrl String?
+  isPublished     Boolean      @default(true)
+
+  // Blocs de contenu structurés :
+  // [
+  //   { type: 'intro', textFr: '...', textMg: '...' },
+  //   { type: 'concept', termMg: 'Azafady', phonetic: 'aza-fadi', meaningFr: 'Pardon / S\'il vous plaît', explanation: '...' },
+  //   { type: 'example', textMg: '...', textFr: '...' },
+  //   { type: 'didYouKnow', textFr: '...', textMg: '...' },
+  //   { type: 'quiz', question: '...', questionMg: '...', choices: [...], correctIndex: 0, explanation: '...' }
+  // ]
+  sections        Json         @default("[]")
+
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  progress    UserLessonProgress[]
+  reviewItems UserReviewItem[]
+
+  @@index([trackId, orderIndex])
+  @@index([isPublished])
+  @@map("learning_lessons")
+}
+
+model UserLessonProgress {
+  id               String       @id @default(cuid())
+  userId           String
+  user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId         String
+  lesson           LearningLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  status           LessonStatus @default(IN_PROGRESS)
+  score            Int          @default(100)
+  timeSpentSeconds Int          @default(0)
+  completedAt      DateTime?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  @@unique([userId, lessonId])
+  @@index([userId, status])
+  @@map("user_lesson_progress")
+}
+
+model UserTrackProgress {
+  id                    String        @id @default(cuid())
+  userId                String
+  user                  User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trackId               String
+  track                 LearningTrack @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  completedLessonsCount Int           @default(0)
+  totalLessonsCount     Int           @default(0)
+  isCompleted           Boolean       @default(false)
+  lastAccessedAt        DateTime      @default(now())
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+
+  @@unique([userId, trackId])
+  @@index([userId, isCompleted])
+  @@map("user_track_progress")
+}
+
+model UserReviewItem {
+  id             String          @id @default(cuid())
+  userId         String
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId       String?
+  lesson         LearningLesson? @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  termMg         String          // Terme ou expression malgache
+  meaningFr      String          // Traduction française
+  phonetic       String?         // Aide à la prononciation
+  contextMg      String?         // Exemple d'usage en malgache
+  contextFr      String?         // Traduction de l'exemple
+  masteryLevel   Int             @default(1) // 1 (Début) à 5 (Maîtrisé)
+  nextReviewDue  DateTime        @default(now())
+  intervalDays   Int             @default(1)
+  reviewCount    Int             @default(0)
+  lastReviewedAt DateTime?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@index([userId, nextReviewDue])
+  @@map("user_review_items")
+}
+

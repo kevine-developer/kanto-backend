@@ -71,40 +71,112 @@ export function renderDeeplinkGatewayPage(
   <meta name="description" content="${escapeHtml(pageDescription)}">
   <meta name="theme-color" content="#16442A">
 
+  <!-- Canonical & hreflang SEO -->
+  <link rel="canonical" href="${escapeHtml(canonicalUrl)}">
+  <link rel="alternate" hreflang="fr" href="${escapeHtml(canonicalUrl)}">
+  <link rel="alternate" hreflang="mg" href="${escapeHtml(canonicalUrl)}">
+  <link rel="alternate" hreflang="x-default" href="${escapeHtml(canonicalUrl)}">
+
   <!-- Open Graph / Réseaux sociaux & Messageries -->
   <meta property="og:site_name" content="Kanto MG">
   <meta property="og:type" content="article">
   <meta property="og:title" content="${escapeHtml(pageTitle)}">
   <meta property="og:description" content="${escapeHtml(pageDescription)}">
   <meta property="og:url" content="${escapeHtml(canonicalUrl)}">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:locale:alternate" content="mg_MG">
   <meta property="og:image" content="https://app-kanto.gastsar.fr/assets/images/icon.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@KantoMG">
   <meta name="twitter:title" content="${escapeHtml(pageTitle)}">
   <meta name="twitter:description" content="${escapeHtml(pageDescription)}">
+  <meta name="twitter:image" content="https://app-kanto.gastsar.fr/assets/images/icon.png">
+
+  <!-- Données structurées Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Kanto MG",
+            "item": "https://app-kanto.gastsar.fr/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": ${JSON.stringify(content.categoryLabel || 'Patrimoine')},
+            "item": "https://app-kanto.gastsar.fr/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": ${JSON.stringify(pageTitle)},
+            "item": ${JSON.stringify(canonicalUrl)}
+          }
+        ]
+      },
+      {
+        "@type": "CreativeWork",
+        "name": ${JSON.stringify(pageTitle)},
+        "headline": ${JSON.stringify(pageTitle)},
+        "description": ${JSON.stringify(pageDescription)},
+        "inLanguage": ["mg", "fr"],
+        "publisher": {
+          "@type": "Organization",
+          "name": "Kanto MG",
+          "url": "https://app-kanto.gastsar.fr/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://app-kanto.gastsar.fr/logo.png"
+          }
+        },
+        ${content.author ? `"author": { "@type": "Person", "name": ${JSON.stringify(content.author)} },` : ''}
+        "mainEntityOfPage": ${JSON.stringify(canonicalUrl)}
+      }
+    ]
+  }
+  </script>
 
   <!-- Favicon & Typographie -->
   <link rel="icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
+    @font-face {
+      font-family: 'LazyDog';
+      src: url('/fonts/LazyDog.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
     :root {
-      --kanto-green: #16442A;
-      --kanto-green-dark: #0D2B1A;
-      --kanto-green-light: #245E3B;
-      --kanto-green-subtle: rgba(22, 68, 42, 0.08);
-      --kanto-terracotta: #C85A32;
-      --kanto-bg: #F9F8F5;
-      --kanto-card-bg: #FFFFFF;
-      --kanto-card-border: #E8E5DF;
-      --kanto-text: #191B1F;
-      --kanto-text-secondary: #5E6573;
-      --kanto-text-muted: #8E95A3;
-      --radius-sm: 8px;
-      --radius-md: 12px;
+      --kanto-green: #4A6741;
+      --kanto-green-dark: #374E30;
+      --kanto-green-light: #5B7F50;
+      --kanto-green-subtle: #E5ECE2;
+      --kanto-terracotta: #C0392B;
+      --kanto-terracotta-soft: #FDF2F0;
+      --kanto-bg: #F5F4F0;
+      --kanto-card-bg: #FEFEFC;
+      --kanto-card-border: #E5E2DB;
+      --kanto-text: #1A1A1A;
+      --kanto-text-secondary: #5C5C5C;
+      --kanto-text-muted: #8A8A8A;
+      --kanto-font-serif: 'Newsreader', Georgia, serif;
+      --kanto-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --radius-sm: 6px;
+      --radius-md: 10px;
       --radius-lg: 16px;
       --radius-full: 9999px;
     }
@@ -149,24 +221,32 @@ export function renderDeeplinkGatewayPage(
       width: 38px;
       height: 38px;
       border-radius: var(--radius-sm);
-      background-color: var(--kanto-green);
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #FFFFFF;
-      font-weight: 800;
-      font-size: 19px;
       box-shadow: 0 4px 10px rgba(22, 68, 42, 0.2);
+      background-color: #FFFFFF;
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .brand-title {
-      font-size: 22px;
-      font-weight: 800;
+      font-family: 'LazyDog', 'Plus Jakarta Sans', sans-serif;
+      font-size: 26px;
+      line-height: 1;
+      font-weight: 400;
       color: var(--kanto-green);
-      letter-spacing: -0.5px;
+      letter-spacing: 0.3px;
     }
 
     .brand-domain {
+      font-family: 'LazyDog', 'Plus Jakarta Sans', sans-serif;
       color: var(--kanto-terracotta);
     }
 
@@ -231,7 +311,8 @@ export function renderDeeplinkGatewayPage(
       color: var(--kanto-text);
       line-height: 1.4;
       margin-bottom: 14px;
-      letter-spacing: -0.3px;
+      font-family: var(--kanto-font-serif);
+      letter-spacing: -0.015em;
     }
 
     .quote-box {
@@ -245,7 +326,9 @@ export function renderDeeplinkGatewayPage(
     .quote-malagasy {
       font-size: 17px;
       font-weight: 600;
-      color: var(--kanto-green-dark);
+      font-family: var(--kanto-font-serif);
+      font-style: italic;
+      color: var(--kanto-text);
       line-height: 1.5;
       margin-bottom: 10px;
     }
@@ -344,7 +427,9 @@ export function renderDeeplinkGatewayPage(
       padding: 6px 12px;
       font-size: 12px;
       font-weight: 600;
-      color: var(--kanto-green-dark);
+      font-family: var(--kanto-font-serif);
+      font-style: italic;
+      color: var(--kanto-text);
     }
 
     /* Actions et Boutons */
@@ -393,6 +478,27 @@ export function renderDeeplinkGatewayPage(
       border-color: var(--kanto-green);
     }
 
+    .deeplink-footer-nav {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 12px;
+      font-size: 11.5px;
+      color: var(--kanto-text-muted);
+    }
+    .deeplink-footer-nav a {
+      color: var(--kanto-green);
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.15s ease;
+    }
+    .deeplink-footer-nav a:hover {
+      text-decoration: underline;
+    }
+    .deeplink-footer-nav span {
+      opacity: 0.4;
+    }
     .footer-text {
       text-align: center;
       font-size: 12px;
@@ -417,7 +523,15 @@ export function renderDeeplinkGatewayPage(
   <div class="main-wrapper">
     <!-- En-tête Marque -->
     <a href="https://app-kanto.gastsar.fr" class="brand-header">
-      <div class="brand-logo">K</div>
+      <div class="brand-logo">
+        <img
+          src="/logo.png"
+          alt="Logo Kanto MG"
+          width="38"
+          height="38"
+          onerror="this.onerror=null; this.src='/favicon.png';"
+        />
+      </div>
       <div class="brand-title">kanto<span class="brand-domain">.mg</span></div>
     </a>
 
@@ -550,6 +664,21 @@ export function renderDeeplinkGatewayPage(
     <div class="footer-text">
       Kanto MG • Ny haren-tsaina sy ny fahendrena malagasy ho an'ny rehetra
     </div>
+    <nav class="deeplink-footer-nav" aria-label="Patrimoine malgache">
+      <a href="/">Accueil</a>
+      <span>·</span>
+      <a href="/ohabolana">Ohabolana</a>
+      <span>·</span>
+      <a href="/angano">Angano</a>
+      <span>·</span>
+      <a href="/kabary">Kabary</a>
+      <span>·</span>
+      <a href="/tononkalo">Tononkalo</a>
+      <span>·</span>
+      <a href="/raki-teny">Raki-teny</a>
+      <span>·</span>
+      <a href="/histoire">Tantara</a>
+    </nav>
   </div>
 
   <script>

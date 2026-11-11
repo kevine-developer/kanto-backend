@@ -3,33 +3,38 @@
 // ============================================================
 
 model User {
-  id            String           @id @default(cuid())
-  email         String           @unique
-  name          String
-  username      String?          @unique
-  emailVerified Boolean          @default(false)
-  image         String?
-  role          UserRole         @default(USER)
-  tier          SubscriptionTier @default(FREE)
-  tierExpiresAt DateTime?        // Date d'expiration du statut VIP/Premium (null = permanent)
-  pushToken     String?          // Expo Push Notification Token (ex: ExponentPushToken[xxx])
-  termsAcceptedAt DateTime?      // Horodatage acceptation CGU & politique de confidentialité
-  termsVersion    String?        @default("1.0") // Version des CGU acceptées
-  banned        Boolean?
-  banReason     String?
-  banExpires    DateTime?
-  createdAt     DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
+  id                  String           @id @default(cuid())
+  email               String           @unique
+  name                String
+  username            String?          @unique
+  emailVerified       Boolean          @default(false)
+  image               String?
+  role                UserRole         @default(USER)
+  tier                SubscriptionTier @default(FREE)
+  tierExpiresAt       DateTime?        // Date d'expiration du statut VIP/Premium (null = permanent)
+  pushToken           String?          // Expo Push Notification Token (ex: ExponentPushToken[xxx])
+  termsAcceptedAt     DateTime?        // Horodatage acceptation CGU & politique de confidentialité
+  termsVersion        String?          @default("1.0") // Version des CGU acceptées
+  banned              Boolean?
+  banReason           String?
+  banExpires          DateTime?
+  status              UserStatus?      @default(ACTIVE) // Statut du compte (ACTIVE, SUSPENDED, BANNED, DEACTIVATED, PENDING_DELETION)
+  deactivatedAt       DateTime?        // Date de demande de désactivation / suppression
+  deletionScheduledAt DateTime?        // Date de suppression définitive (now + 30 jours)
+  suspendedUntil      DateTime?        // Date de fin de suspension temporaire
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
 
   // Better Auth relations
   sessions Session[]
   accounts Account[]
 
   // Relations d'activité
-  favorites         Favorite[]
-  likes             Like[]
-  viewHistories     ViewHistory[]
-  reports           ContentReport[]
+  favorites            Favorite[]
+  likes                Like[]
+  viewHistories        ViewHistory[]
+  reports              ContentReport[]
+  receivedReports      ContentReport[]       @relation("ReportedUser")
   contributions        Contribution[]
   contributionVotes    ContributionVote[]
   contributionComments ContributionComment[]
@@ -41,11 +46,18 @@ model User {
   xpTransactions XpTransaction[]
   badges         UserBadge[]
 
-  // Relations sociales & Amis
+  // Espace Pédagogique Indépendant (Apprendre)
+  lessonProgress UserLessonProgress[]
+  trackProgress  UserTrackProgress[]
+  reviewItems    UserReviewItem[]
+
+  // Relations sociales, Amis & Blocages
   sentFriendships        Friendship[]    @relation("SentFriendships")
   receivedFriendships    Friendship[]    @relation("ReceivedFriendships")
   sentEncouragements     Encouragement[] @relation("SentEncouragements")
   receivedEncouragements Encouragement[] @relation("ReceivedEncouragements")
+  blockedUsers           UserBlock[]     @relation("UserBlocksSent")
+  blockedBy              UserBlock[]     @relation("UserBlocksReceived")
 
   // Relations UGC (Quiz persos)
   quizSets               UserQuizSet[]
@@ -55,13 +67,34 @@ model User {
   sentReferrals          Referral[]      @relation("ReferrerReferrals")
   receivedReferral       Referral?       @relation("RefereeReferral")
 
+  // Relations Partenaires & Organisateurs
+  partners               Partner[]
+
   // Relations Événements & Fanamby
   eventParticipations    EventParticipation[]
   eventRewardClaims      EventRewardClaim[]
   eventLeaderboardEntries EventLeaderboardEntry[]
 
+  // Relations Avis & Témoignages
+  appReviews             AppReview[]
+
   @@index([tier, tierExpiresAt])
+  @@index([status, deletionScheduledAt])
   @@map("users")
+}
+
+model UserBlock {
+  id        String   @id @default(cuid())
+  blockerId String
+  blocker   User     @relation("UserBlocksSent", fields: [blockerId], references: [id], onDelete: Cascade)
+  blockedId String
+  blocked   User     @relation("UserBlocksReceived", fields: [blockedId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([blockerId, blockedId])
+  @@index([blockerId])
+  @@index([blockedId])
+  @@map("user_blocks")
 }
 
 model Session {

@@ -8,11 +8,14 @@ import {
   buildVerificationEmail,
   buildBetaTesterRegistrationEmail,
   buildBetaTesterInvitationEmail,
+  buildContributionSubmittedEmail,
   buildContributionApprovedEmail,
   buildModerationAlertAdminEmail,
   buildContributionStatusUpdateEmail,
   buildSecurityChangeEmail,
   buildAccountDeletionEmail,
+  buildAccountPendingDeletionEmail,
+  buildAccountReactivatedEmail,
   buildVipGrantedEmail,
   buildVipExtendedEmail,
   buildVipExpiringEmail,
@@ -89,6 +92,15 @@ export interface BetaTesterInvitationEmailOptions {
   idempotencyKey?: string;
 }
 
+export interface ContributionSubmittedEmailOptions {
+  to: string;
+  userName?: string;
+  contributionTitle: string;
+  category: string;
+  contributionId?: string;
+  idempotencyKey?: string;
+}
+
 export interface ContributionApprovedEmailOptions {
   to: string;
   userName?: string;
@@ -125,6 +137,19 @@ export interface SecurityChangeEmailOptions {
   to: string;
   userName?: string;
   action: 'changed' | 'added';
+  idempotencyKey?: string;
+}
+
+export interface AccountPendingDeletionEmailOptions {
+  to: string;
+  userName?: string;
+  deletionScheduledAt: Date;
+  idempotencyKey?: string;
+}
+
+export interface AccountReactivatedEmailOptions {
+  to: string;
+  userName?: string;
   idempotencyKey?: string;
 }
 
@@ -806,6 +831,39 @@ export class ResendService {
   /**
    * 6. Félicitations lors de l'approbation d'une contribution culturelle.
    */
+
+  /**
+   * 5b. Accusé de réception lors de la soumission d'une contribution culturelle.
+   */
+  async sendContributionSubmittedEmail(
+    options: ContributionSubmittedEmailOptions,
+  ): Promise<SendEmailResult> {
+    const { subject, html, text } = buildContributionSubmittedEmail({
+      to: options.to,
+      userName: options.userName,
+      contributionTitle: options.contributionTitle,
+      category: options.category,
+    });
+
+    return this.sendEmail({
+      to: options.to,
+      subject,
+      text,
+      html,
+      templateType: 'CONTRIBUTION_SUBMITTED',
+      recipientName: options.userName,
+      idempotencyKey:
+        options.idempotencyKey ||
+        (options.contributionId
+          ? `contrib-submitted-${options.contributionId}`
+          : undefined),
+      metadata: {
+        contributionId: options.contributionId,
+        category: options.category,
+      },
+    });
+  }
+
   async sendContributionApprovedEmail(
     options: ContributionApprovedEmailOptions,
   ): Promise<SendEmailResult> {
@@ -933,6 +991,53 @@ export class ResendService {
   /**
    * 10. Confirmation de suppression définitive de compte (RGPD).
    */
+
+  /**
+   * 10b. Notification de période de rétractation (30 jours).
+   */
+  async sendAccountPendingDeletionEmail(
+    options: AccountPendingDeletionEmailOptions,
+  ): Promise<SendEmailResult> {
+    const { subject, html, text } = buildAccountPendingDeletionEmail({
+      to: options.to,
+      userName: options.userName,
+      deletionScheduledAt: options.deletionScheduledAt,
+    });
+
+    return this.sendEmail({
+      to: options.to,
+      subject,
+      text,
+      html,
+      templateType: 'ACCOUNT_PENDING_DELETION',
+      recipientName: options.userName,
+      idempotencyKey: options.idempotencyKey,
+      bypassSuppression: true,
+    });
+  }
+
+  /**
+   * 10c. Notification de réactivation de compte.
+   */
+  async sendAccountReactivatedEmail(
+    options: AccountReactivatedEmailOptions,
+  ): Promise<SendEmailResult> {
+    const { subject, html, text } = buildAccountReactivatedEmail({
+      to: options.to,
+      userName: options.userName,
+    });
+
+    return this.sendEmail({
+      to: options.to,
+      subject,
+      text,
+      html,
+      templateType: 'ACCOUNT_REACTIVATED',
+      recipientName: options.userName,
+      idempotencyKey: options.idempotencyKey,
+    });
+  }
+
   async sendAccountDeletionEmail(
     options: AccountDeletionEmailOptions,
   ): Promise<SendEmailResult> {

@@ -47,7 +47,7 @@ async function main() {
       endDate: oneWeekAhead,
       location: 'Fampiharana Kanto MG (Toerana nomerika)',
       isFeatured: true,
-      currentParticipantsCount: 42,
+      currentParticipantsCount: 0,
       rewards: {
         create: [
           {
@@ -107,7 +107,7 @@ async function main() {
       metadata: {
         gameModuleId: 'quizGame',
       },
-      currentParticipantsCount: 88,
+      currentParticipantsCount: 0,
       rewards: {
         create: [
           {
@@ -152,7 +152,7 @@ async function main() {
       endDate: oneMonthAhead,
       location: 'Espace Communauté Kanto MG',
       isFeatured: false,
-      currentParticipantsCount: 15,
+      currentParticipantsCount: 0,
       rewards: {
         create: [
           {

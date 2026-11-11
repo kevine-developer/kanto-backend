@@ -14,7 +14,9 @@ import { UserQuizService } from './user-quiz.service.js';
 import {
   CreateUserQuestionDto,
   CreateUserQuizSetDto,
+  RecordPlayDto,
   ReportDeckDto,
+  UpdateUserQuestionDto,
   UploadDeckImageDto,
 } from './dto/user-quiz.dto.js';
 
@@ -91,9 +93,24 @@ export class UserQuizController {
   async recordPlay(
     @Param('id') id: string,
     @Session() session: UserSession,
-    @Body() body?: { correctCount?: number; totalQuestions?: number },
+    @Body() body?: RecordPlayDto,
   ) {
     return this.userQuizService.recordPlay(id, session.user.id, body);
+  }
+
+  @Get(':id/play')
+  @UseGuards(AuthGuard)
+  async getQuizSetForPlay(
+    @Param('id') id: string,
+    @Session() session: UserSession,
+  ) {
+    return this.userQuizService.getQuizSetForPlay(id, session.user.id);
+  }
+
+  @Get(':id/stats')
+  @UseGuards(AuthGuard)
+  async getDeckStats(@Param('id') id: string, @Session() session: UserSession) {
+    return this.userQuizService.getDeckStats(session.user.id, id);
   }
 
   @Get(':id')
@@ -132,6 +149,20 @@ export class UserQuizController {
     @Session() session: UserSession,
   ) {
     return this.userQuizService.addQuestion(session.user.id, setId, dto);
+  }
+
+  @Patch('questions/:questionId')
+  @UseGuards(AuthGuard)
+  async updateQuestion(
+    @Param('questionId') questionId: string,
+    @Body() dto: UpdateUserQuestionDto,
+    @Session() session: UserSession,
+  ) {
+    return this.userQuizService.updateQuestion(
+      session.user.id,
+      questionId,
+      dto,
+    );
   }
 
   @Delete('questions/:questionId')

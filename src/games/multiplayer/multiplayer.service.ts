@@ -12,6 +12,7 @@ import { PrismaService } from '../../prisma/prisma.service.js';
 import { RedisService } from '../../redis/redis.service.js';
 import { NotificationsService } from '../../notifications/notifications.service.js';
 import { UserQuizService } from '../../user-quiz/user-quiz.service.js';
+import { PresenceService } from '../../presence/presence.service.js';
 import {
   CreateMultiplayerGameDto,
   MultiplayerGameTypeEnum,
@@ -19,7 +20,14 @@ import {
   StartMultiplayerGameDto,
   SubmitMultiplayerAnswerDto,
 } from './dto/multiplayer.dto.js';
-import { REALTIME_CHANNELS } from '../../realtime/realtime.constants.js';
+import {
+  REALTIME_CHANNELS,
+  SOCKET_EVENTS,
+} from '../../realtime/realtime.constants.js';
+import {
+  MULTIPLAYER_CONFIG,
+  calculateLobbyExpiresAt,
+} from './multiplayer.constants.js';
 
 /**
  * Mélange pseudo-aléatoire déterministe (Fisher-Yates basé sur une graine textuelle).
@@ -70,6 +78,22 @@ export interface MultiplayerPlayerPublic {
   earnedXp: number;
 }
 
+function parseBooleanUserAnswer(
+  answer: string | boolean | undefined | null,
+): boolean | null {
+  if (typeof answer === 'boolean') return answer;
+  const norm = String(answer || '')
+    .trim()
+    .toLowerCase();
+  if (norm === 'true' || norm === 'vrai' || norm === 'marina' || norm === '1') {
+    return true;
+  }
+  if (norm === 'false' || norm === 'faux' || norm === 'diso' || norm === '0') {
+    return false;
+  }
+  return null;
+}
+
 @Injectable()
 export class MultiplayerService {
   private readonly logger = new Logger(MultiplayerService.name);
@@ -81,6 +105,7 @@ export class MultiplayerService {
     private readonly notificationsService: NotificationsService,
     @Inject(forwardRef(() => UserQuizService))
     private readonly userQuizService: UserQuizService,
+    private readonly presenceService: PresenceService,
   ) {}
 
   /**
@@ -289,7 +314,7 @@ export class MultiplayerService {
           },
           select: { id: true },
         });
-        const shuffledAdditional = [...additional].sort(
+        const shuffledAdditional = [...(additional || [])].sort(
           () => Math.random() - 0.5,
         );
         available = [
@@ -298,7 +323,7 @@ export class MultiplayerService {
         ];
       }
 
-      const shuffled = [...available].sort(() => Math.random() - 0.5);
+      const shuffled = [...(available || [])].sort(() => Math.random() - 0.5);
       selectedIds = shuffled.slice(0, totalQuestions).map((q) => q.id);
     } else if (normalizedGameType === 'QUIZ') {
       // Mapping des clés de thèmes vers les catégories possibles en base
@@ -408,6 +433,21 @@ export class MultiplayerService {
       );
     }
 
+    // Garde-fou Anti-Spam (Fail-Fast) : Limiter la création excessive de salons par utilisateur
+    const createRateLimitKey = `duel:create_rate:${userId}`;
+    const userCreationsCount =
+      (await this.redisService.get<number>(createRateLimitKey)) || 0;
+    if (userCreationsCount >= MULTIPLAYER_CONFIG.MAX_ROOMS_PER_USER_PER_HOUR) {
+      throw new BadRequestException(
+        'Limite de création de salons atteinte. Veuillez patienter avant de créer un nouveau salon.',
+      );
+    }
+    await this.redisService.set(
+      createRateLimitKey,
+      userCreationsCount + 1,
+      MULTIPLAYER_CONFIG.ROOM_CREATION_WINDOW_SECONDS,
+    );
+
     const playerName = dto.userName || user.name || 'Mpilalao 1';
     const playerAvatar = dto.userAvatar || user.image || null;
 
@@ -435,23 +475,14 @@ export class MultiplayerService {
         throw new NotFoundException('Le joueur défié est introuvable.');
       }
 
-      // Garde-fou Anti-Spam : Vérifier s'il n'y a pas déjà un défi en attente entre ces deux mêmes joueurs (< 10 minutes)
-      const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
-      const activePendingDuel = await this.prisma.duelSession.findFirst({
-        where: {
-          status: 'WAITING',
-          createdAt: { gte: tenMinutesAgo },
-          OR: [
-            { player1Id: userId, player2Id: dto.opponentId },
-            { player1Id: dto.opponentId, player2Id: userId },
-          ],
-        },
-      });
+      // Vérification atomique de disponibilité & présence du joueur défié
+      const availability = await this.presenceService.getUserDuelAvailability(
+        userId,
+        dto.opponentId!,
+      );
 
-      if (activePendingDuel) {
-        throw new BadRequestException(
-          'Un défi est déjà en attente avec ce joueur. Veuillez patienter ou rejoindre ce défi.',
-        );
+      if (!availability.isAvailableForDuel) {
+        throw new BadRequestException(availability.messageFr);
       }
     }
 
@@ -521,11 +552,14 @@ export class MultiplayerService {
     while (attempts < 5) {
       const existing = await this.prisma.duelSession.findUnique({
         where: { code },
+        select: { id: true },
       });
       if (!existing) break;
       code = this.generateRoomCode();
       attempts++;
     }
+
+    const expiresAt = calculateLobbyExpiresAt(is1v1Duel);
 
     // Déterminer le statut animateur/spectateur de l'hôte
     // Un créateur de son propre deck est d'office animateur spectateur pour éviter la triche (interdit en duel 1v1)
@@ -542,6 +576,7 @@ export class MultiplayerService {
         code,
         gameType,
         status: 'WAITING',
+        expiresAt,
         player1Id: userId,
         player1Name: playerName,
         player1Avatar: playerAvatar,
@@ -655,6 +690,7 @@ export class MultiplayerService {
       players: session.players,
       isHostSpectator: hostIsSpectator,
       isDeckCreator: isDeckAuthorUser,
+      serverTime: Date.now(),
     };
   }
 
@@ -950,6 +986,21 @@ export class MultiplayerService {
     // Réinitialiser le compteur de tentatives en cas de succès
     await this.redisService.del(rateLimitKey);
 
+    if (
+      session.status === 'EXPIRED' ||
+      (session.expiresAt && session.expiresAt.getTime() <= Date.now())
+    ) {
+      if (session.status === 'WAITING' || session.status === 'READY') {
+        await this.prisma.duelSession.update({
+          where: { id: session.id },
+          data: { status: 'EXPIRED', finishedAt: new Date() },
+        });
+      }
+      throw new BadRequestException(
+        "Ce salon a expiré et n'est plus accessible.",
+      );
+    }
+
     if (session.status === 'CANCELLED') {
       throw new BadRequestException(
         'Ce salon a été fermé par son organisateur.',
@@ -981,6 +1032,16 @@ export class MultiplayerService {
       if (!freshSession) {
         throw new NotFoundException(
           `Ce salon n'existe pas ou a expiré (${cleanCode}).`,
+        );
+      }
+
+      if (
+        freshSession.status === 'EXPIRED' ||
+        (freshSession.expiresAt &&
+          freshSession.expiresAt.getTime() <= Date.now())
+      ) {
+        throw new BadRequestException(
+          "Ce salon a expiré et n'est plus accessible.",
         );
       }
 
@@ -1096,6 +1157,7 @@ export class MultiplayerService {
       questions,
       players: updatedPlayers,
       isHost: session.player1Id === userId,
+      serverTime: Date.now(),
     };
   }
 
@@ -1127,9 +1189,39 @@ export class MultiplayerService {
       );
     }
 
+    if (
+      session.status === 'EXPIRED' ||
+      (session.expiresAt && session.expiresAt.getTime() <= Date.now())
+    ) {
+      await this.prisma.duelSession.update({
+        where: { id: session.id },
+        data: { status: 'EXPIRED', finishedAt: new Date() },
+      });
+      throw new BadRequestException(
+        'Ce salon a expiré et ne peut plus être démarré.',
+      );
+    }
+
     if (session.status !== 'WAITING' && session.status !== 'READY') {
       throw new BadRequestException(
         'La partie a déjà démarré ou n’est plus disponible.',
+      );
+    }
+
+    // Verrou atomique optimiste pour empêcher deux démarrages simultanés (double clic / concurrence)
+    const lockTransition = await this.prisma.duelSession.updateMany({
+      where: {
+        id: session.id,
+        status: { in: ['WAITING', 'READY'] },
+      },
+      data: {
+        status: 'STARTING',
+      },
+    });
+
+    if (lockTransition.count === 0) {
+      throw new BadRequestException(
+        'La partie a déjà été lancée ou est en cours de démarrage.',
       );
     }
 
@@ -1245,6 +1337,21 @@ export class MultiplayerService {
       );
     }
 
+    if (
+      session.status === 'EXPIRED' ||
+      (session.expiresAt && session.expiresAt.getTime() <= Date.now())
+    ) {
+      if (session.status === 'WAITING' || session.status === 'READY') {
+        await this.prisma.duelSession.update({
+          where: { id: session.id },
+          data: { status: 'EXPIRED', finishedAt: new Date() },
+        });
+      }
+      throw new BadRequestException(
+        "Ce salon a expiré et n'est plus disponible.",
+      );
+    }
+
     if (session.status === 'CANCELLED') {
       throw new BadRequestException(
         'Ce salon a été fermé par son organisateur.',
@@ -1262,7 +1369,12 @@ export class MultiplayerService {
       session.code,
     );
 
-    return { session, questions, players: session.players };
+    return {
+      session,
+      questions,
+      players: session.players,
+      serverTime: Date.now(),
+    };
   }
 
   // Alias rétrocompatibilité
@@ -1409,8 +1521,9 @@ export class MultiplayerService {
         );
         if (q) {
           if (q.gameType === 'TRUE_FALSE') {
-            const boolAnswer = dto.userAnswer.toLowerCase() === 'true';
-            isCorrect = boolAnswer === q.isTrue;
+            const parsedAnswer = parseBooleanUserAnswer(dto.userAnswer);
+            isCorrect =
+              parsedAnswer !== null && parsedAnswer === Boolean(q.isTrue);
             explanationMg = q.explanationMg;
             explanationFr = q.explanationFr;
             correctAnswer = q.isTrue ? 'true' : 'false';
@@ -1436,8 +1549,9 @@ export class MultiplayerService {
           where: { id: dto.questionId },
         });
         if (q) {
-          const boolAnswer = dto.userAnswer.toLowerCase() === 'true';
-          isCorrect = boolAnswer === q.isTrue;
+          const parsedAnswer = parseBooleanUserAnswer(dto.userAnswer);
+          isCorrect =
+            parsedAnswer !== null && parsedAnswer === Boolean(q.isTrue);
           explanationMg = q.explanationMg;
           explanationFr = q.explanationFr;
           correctAnswer = q.isTrue ? 'true' : 'false';
@@ -2397,6 +2511,150 @@ export class MultiplayerService {
   }
 
   /**
+   * Clôture automatique des salons non démarrés arrivés à expiration (TTL).
+   * Appelé périodiquement par le MultiplayerExpirationScheduler.
+   * Ne touche JAMAIS aux parties en cours (IN_PROGRESS) ni terminées (FINISHED).
+   */
+  async expirePendingSessions(): Promise<number> {
+    const now = new Date();
+    const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+
+    const expiredSessions = await this.prisma.duelSession.findMany({
+      where: {
+        status: { in: ['WAITING', 'READY'] },
+        OR: [
+          { expiresAt: { lte: now } },
+          { expiresAt: null, createdAt: { lte: thirtyMinutesAgo } },
+        ],
+      },
+      include: { players: true },
+      take: 50,
+    });
+
+    if (expiredSessions.length === 0) return 0;
+
+    let count = 0;
+    for (const session of expiredSessions) {
+      try {
+        const updated = await this.prisma.duelSession.updateMany({
+          where: {
+            id: session.id,
+            status: { in: ['WAITING', 'READY'] },
+          },
+          data: {
+            status: 'EXPIRED',
+            finishedAt: now,
+          },
+        });
+
+        if (updated.count > 0) {
+          count++;
+          this.logger.log(
+            `⏳ [MultiplayerService] Salon ${session.code} automatiquement fermé après expiration (créé à ${session.createdAt.toISOString()})`,
+          );
+
+          await this.redisService.del(
+            `duel:snapshot_questions:${session.code}`,
+          );
+          await this.redisService.del(`duel:spectator:${session.code}`);
+
+          await this.redisService.publish(REALTIME_CHANNELS.DUEL, {
+            event: SOCKET_EVENTS.DUEL_SESSION_EXPIRED,
+            code: session.code,
+            data: {
+              code: session.code,
+              status: 'EXPIRED',
+              reason: 'LOBBY_TIMEOUT',
+              messageMg:
+                'Tapitra ny fe-potoana fiandrasana. Nofaranana ny salon.',
+              messageFr:
+                'Le délai maximal d’attente est dépassé. Le salon a expiré.',
+            },
+            closeRoom: true,
+          });
+        }
+      } catch (err) {
+        this.logger.warn(
+          `Erreur lors de la clôture du salon expiré ${session.code} : ${String(err)}`,
+        );
+      }
+    }
+
+    // Nettoyage des sessions IN_PROGRESS orphelines (abandonnées sans clôture depuis > 15 minutes)
+    try {
+      const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000);
+      const abandonedInProgress = await this.prisma.duelSession.updateMany({
+        where: {
+          status: 'IN_PROGRESS',
+          updatedAt: { lte: fifteenMinutesAgo },
+        },
+        data: {
+          status: 'EXPIRED',
+          finishedAt: now,
+        },
+      });
+
+      if (abandonedInProgress.count > 0) {
+        count += abandonedInProgress.count;
+        this.logger.log(
+          `🧹 [MultiplayerService] ${abandonedInProgress.count} partie(s) orpheline(s) en statut IN_PROGRESS automatiquement clôturée(s).`,
+        );
+      }
+    } catch (err) {
+      this.logger.warn(
+        `Erreur lors de la clôture des parties orphelines IN_PROGRESS : ${String(err)}`,
+      );
+    }
+
+    return count;
+  }
+
+  /**
+   * Indicateurs et métriques du système multijoueur (Observabilité & Administration).
+   */
+  async getMultiplayerMetrics() {
+    const [
+      waiting,
+      ready,
+      starting,
+      inProgress,
+      finished,
+      cancelled,
+      expired,
+      totalPlayers,
+    ] = await Promise.all([
+      this.prisma.duelSession.count({ where: { status: 'WAITING' } }),
+      this.prisma.duelSession.count({ where: { status: 'READY' } }),
+      this.prisma.duelSession.count({ where: { status: 'STARTING' } }),
+      this.prisma.duelSession.count({ where: { status: 'IN_PROGRESS' } }),
+      this.prisma.duelSession.count({ where: { status: 'FINISHED' } }),
+      this.prisma.duelSession.count({ where: { status: 'CANCELLED' } }),
+      this.prisma.duelSession.count({ where: { status: 'EXPIRED' } }),
+      this.prisma.duelPlayer.count(),
+    ]);
+
+    return {
+      waiting,
+      ready,
+      starting,
+      inProgress,
+      finished,
+      cancelled,
+      expired,
+      totalSessions:
+        waiting +
+        ready +
+        starting +
+        inProgress +
+        finished +
+        cancelled +
+        expired,
+      totalPlayers,
+      serverTime: Date.now(),
+    };
+  }
+
+  /**
    * Récupère les données publiques des questions sans révéler les réponses (Zero-Knowledge anti-triche).
    */
   private async getPublicQuestions(
@@ -2433,10 +2691,7 @@ export class MultiplayerService {
               q.gameType === 'TRUE_FALSE'
                 ? ['true', 'false']
                 : roomCode && q.gameType === 'QUIZ'
-                  ? deterministicShuffle(
-                      q.choices || [],
-                      `${roomCode}:${q.id}`,
-                    )
+                  ? deterministicShuffle(q.choices || [], `${roomCode}:${q.id}`)
                   : q.choices || [],
           });
         }

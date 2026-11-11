@@ -13,6 +13,7 @@ describe('BetaTestersController', () => {
     getPublicTesterCount: jest.Mock<any>;
     verifyParticipation: jest.Mock<any>;
     resendInvitePublic: jest.Mock<any>;
+    getAutomationConfig: jest.Mock<any>;
   };
 
   beforeEach(async () => {
@@ -21,6 +22,9 @@ describe('BetaTestersController', () => {
       getPublicTesterCount: jest.fn<any>().mockResolvedValue(42),
       verifyParticipation: jest.fn<any>(),
       resendInvitePublic: jest.fn<any>(),
+      getAutomationConfig: jest.fn<any>().mockResolvedValue({
+        supportEmail: 'support@kanto.mg',
+      }),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -68,8 +72,58 @@ describe('BetaTestersController', () => {
     });
   });
 
+  describe('getBugReportScript', () => {
+    it('doit servir le script client dédié au signalement de bugs', () => {
+      const res = {
+        setHeader: jest.fn(),
+        send: jest.fn(),
+      } as unknown as Response;
+
+      controller.getBugReportScript(res);
+
+      expect(res.setHeader).toHaveBeenCalledWith(
+        'Content-Type',
+        'application/javascript; charset=utf-8',
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('selectedCategory'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('api/beta-testers/feedback'),
+      );
+    });
+  });
+
+  describe('getBugReportPage', () => {
+    it('doit générer la page dédiée avec le deeplink app mobile et le formulaire web', async () => {
+      const res = {
+        setHeader: jest.fn(),
+        send: jest.fn(),
+      } as unknown as Response;
+
+      await controller.getBugReportPage('BUG', 'ANDROID', 'test@kanto.mg', res);
+
+      expect(res.setHeader).toHaveBeenCalledWith(
+        'Content-Type',
+        'text/html; charset=utf-8',
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('kantomg://feedback?type=bug'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('Signaler une anomalie'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('bug-report-form'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('support@kanto.mg'),
+      );
+    });
+  });
+
   describe('getBetaLandingPage', () => {
-    it('doit générer la page d’accueil avec la bannière et le modal de consentement', async () => {
+    it('doit générer la page d’accueil avec la bannière, les modales CGU et cookies', async () => {
       const res = {
         setHeader: jest.fn(),
         send: jest.fn(),
@@ -89,6 +143,9 @@ describe('BetaTestersController', () => {
         expect.stringContaining('kanto-cookie-modal'),
       );
       expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('kanto-cgu-modal'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
         expect.stringContaining('btn-cookie-settings'),
       );
       expect(res.send).toHaveBeenCalledWith(
@@ -96,6 +153,33 @@ describe('BetaTestersController', () => {
       );
       expect(res.send).toHaveBeenCalledWith(
         expect.stringContaining('[data-theme="light"]'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('support@kanto.mg'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('/feedback'),
+      );
+    });
+
+    it('doit rediriger vers /feedback si le paramètre tab=feedback est passé', async () => {
+      const res = {
+        setHeader: jest.fn(),
+        redirect: jest.fn(),
+        send: jest.fn(),
+      } as unknown as Response;
+
+      await controller.getBetaLandingPage(
+        undefined,
+        undefined,
+        'feedback',
+        res,
+        'test@kanto.mg',
+      );
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        302,
+        '/feedback?email=test%40kanto.mg',
       );
     });
   });
@@ -122,13 +206,23 @@ describe('BetaTestersController', () => {
       } as unknown as Response;
 
       await controller.register(
-        { email: 'nouveau@example.com', fullName: 'Nouveau Testeur' },
+        {
+          email: 'nouveau@example.com',
+          fullName: 'Nouveau Testeur',
+          platforms: ['ANDROID'],
+          termsAccepted: true,
+        },
         req,
         res,
       );
 
       expect(service.register).toHaveBeenCalledWith(
-        { email: 'nouveau@example.com', fullName: 'Nouveau Testeur' },
+        {
+          email: 'nouveau@example.com',
+          fullName: 'Nouveau Testeur',
+          platforms: ['ANDROID'],
+          termsAccepted: true,
+        },
         '127.0.0.1',
         'JestClient',
       );
@@ -156,10 +250,76 @@ describe('BetaTestersController', () => {
         json: jest.fn(),
       } as unknown as Response;
 
-      await controller.register({ email: 'existant@example.com' }, req, res);
+      await controller.register(
+        {
+          email: 'existant@example.com',
+          platforms: ['ANDROID'],
+          termsAccepted: true,
+        },
+        req,
+        res,
+      );
 
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith(duplicateResult);
+    });
+  });
+
+  describe('verifyParticipation', () => {
+    it('doit vérifier le statut via requête POST (Body JSON)', async () => {
+      const mockResult = {
+        success: true,
+        exists: true,
+        tester: {
+          id: 't-123',
+          maskedEmail: 't***@kanto.mg',
+          platforms: ['ANDROID'],
+          androidStatus: 'APPROVED',
+        },
+      };
+      service.verifyParticipation.mockResolvedValue(mockResult);
+
+      const res = await controller.verifyParticipation({
+        email: 'test@kanto.mg',
+      });
+
+      expect(service.verifyParticipation).toHaveBeenCalledWith('test@kanto.mg');
+      expect(res).toEqual(mockResult);
+    });
+
+    it('doit renvoyer un message d’erreur si l’e-mail POST est vide', async () => {
+      const res = await controller.verifyParticipation({ email: '' });
+
+      expect(res.success).toBe(false);
+      expect(res.exists).toBe(false);
+      expect(service.verifyParticipation).not.toHaveBeenCalled();
+    });
+
+    it('doit vérifier le statut via requête GET (Query string)', async () => {
+      const mockResult = {
+        success: true,
+        exists: true,
+        tester: {
+          id: 't-123',
+          maskedEmail: 't***@kanto.mg',
+          platforms: ['ANDROID'],
+          androidStatus: 'APPROVED',
+        },
+      };
+      service.verifyParticipation.mockResolvedValue(mockResult);
+
+      const res = await controller.verifyParticipationByQuery('test@kanto.mg');
+
+      expect(service.verifyParticipation).toHaveBeenCalledWith('test@kanto.mg');
+      expect(res).toEqual(mockResult);
+    });
+
+    it('doit renvoyer un message d’erreur si l’e-mail GET est absent', async () => {
+      const res = await controller.verifyParticipationByQuery(undefined);
+
+      expect(res.success).toBe(false);
+      expect(res.exists).toBe(false);
+      expect(service.verifyParticipation).not.toHaveBeenCalled();
     });
   });
 });

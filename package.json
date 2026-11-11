@@ -45,7 +45,10 @@
     "clean:avatars": "tsx src/scripts/clean-default-avatars.ts",
     "fix:media": "tsx src/scripts/fix-broken-media-urls.ts",
     "seed:raki-teny": "tsx src/scripts/seed-raki-teny.ts",
-    "test:email": "tsx src/scripts/test-email.ts"
+    "clean:events": "tsx src/scripts/clean-fake-events-data.ts",
+    "test:email": "tsx src/scripts/test-email.ts",
+    "seed:learning": "tsx prisma/seed-learning.ts",
+    "seed:learning:prod": "tsx prisma/seed-learning.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -58,6 +61,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/platform-socket.io": "^11.2.3",
     "@nestjs/schedule": "^12.0.2",
+    "@nestjs/swagger": "^11.4.8",
     "@nestjs/throttler": "^6.5.0",
     "@nestjs/websockets": "^11.2.3",
     "@prisma/adapter-pg": "^7.9.1",
@@ -79,6 +83,7 @@
     "rxjs": "^7.8.1",
     "socket.io": "^4.8.3",
     "svix": "^2.8.0",
+    "swagger-ui-express": "^5.0.1",
     "tsx": "^4.23.12"
   },
   "devDependencies": {

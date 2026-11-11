@@ -13,5 +13,9 @@ export class CreateConteDto {
   moralMg?: string;
   moralFr?: string;
   illustration?: string;
+  audioUrlMg?: string;
+  audioUrlFr?: string;
+  isHumanVoiceMg?: boolean;
+  isHumanVoiceFr?: boolean;
   paragraphs?: CreateParagraphDto[];
 }

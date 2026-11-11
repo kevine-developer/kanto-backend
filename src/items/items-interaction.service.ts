@@ -30,7 +30,7 @@ export class ItemsInteractionService {
       this.logger.warn(
         `⚠️ [Items] Impossible de liker : élément "${id}" introuvable`,
       );
-      throw new NotFoundException(`Élément "${id}" introuvable`);
+      throw new NotFoundException('Contenu introuvable ou retiré.');
     }
 
     // Vérifier si l'utilisateur a déjà liké
@@ -94,7 +94,7 @@ export class ItemsInteractionService {
       this.logger.warn(
         `⚠️ [Items] Impossible de retirer le like : élément "${id}" introuvable`,
       );
-      throw new NotFoundException(`Élément "${id}" introuvable`);
+      throw new NotFoundException('Contenu introuvable ou retiré.');
     }
 
     const existingLike = await this.prisma.like.findUnique({
@@ -146,7 +146,7 @@ export class ItemsInteractionService {
     });
 
     if (!existing) {
-      throw new NotFoundException(`Élément "${id}" introuvable`);
+      throw new NotFoundException('Contenu introuvable ou retiré.');
     }
 
     const existingFavorite = await this.prisma.favorite.findUnique({
@@ -214,7 +214,7 @@ export class ItemsInteractionService {
       this.logger.warn(
         `⚠️ [Items] Impossible d'incrémenter la vue : élément "${id}" introuvable`,
       );
-      throw new NotFoundException(`Élément "${id}" introuvable`);
+      throw new NotFoundException('Contenu introuvable ou retiré.');
     }
 
     const redisViews = await this.redis.incr(`kanto:views:item:${id}`);
@@ -256,7 +256,40 @@ export class ItemsInteractionService {
     });
 
     if (!existing) {
-      throw new NotFoundException(`Élément "${id}" introuvable`);
+      // Fallback de résilience : vérification si l'identifiant correspond à un Deck UGC communautaire
+      const existingDeck = await this.prisma.userQuizSet.findUnique({
+        where: { id },
+        select: { id: true },
+      });
+
+      if (existingDeck) {
+        const deckReasonMap: Record<string, any> = {
+          translation: 'OTHER',
+          spelling: 'SPELLING_GRAMMAR',
+          meaning: 'WRONG_ANSWER',
+          inappropriate: 'INAPPROPRIATE_CONTENT',
+          WRONG_ANSWER: 'WRONG_ANSWER',
+          INAPPROPRIATE_CONTENT: 'INAPPROPRIATE_CONTENT',
+          PLAGIARISM: 'PLAGIARISM',
+          SPELLING_GRAMMAR: 'SPELLING_GRAMMAR',
+          other: 'OTHER',
+        };
+        const reason = (dto.reason && deckReasonMap[dto.reason]) || 'OTHER';
+        const report = await this.prisma.contentReport.create({
+          data: {
+            quizSetId: id,
+            userId: userId || null,
+            reason,
+            description: dto.description || null,
+          },
+        });
+        this.logger.log(
+          `🚩 [Items -> Deck Fallback] Signalement deck ID ${id} par utilisateur ${userId || 'anonyme'}`,
+        );
+        return { success: true, reportId: report.id };
+      }
+
+      throw new NotFoundException('Contenu introuvable ou retiré.');
     }
 
     await this.prisma.malagasyItem.update({

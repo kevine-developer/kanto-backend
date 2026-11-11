@@ -120,9 +120,13 @@ export class CivicQuizService {
           data.sourceReference !== undefined ? data.sourceReference : undefined,
         sourceUrl: data.sourceUrl !== undefined ? data.sourceUrl : undefined,
         historicalPeriod:
-          data.historicalPeriod !== undefined ? data.historicalPeriod : undefined,
+          data.historicalPeriod !== undefined
+            ? data.historicalPeriod
+            : undefined,
         contentSourceType:
-          data.contentSourceType !== undefined ? data.contentSourceType : undefined,
+          data.contentSourceType !== undefined
+            ? data.contentSourceType
+            : undefined,
         contentSourceId:
           data.contentSourceId !== undefined ? data.contentSourceId : undefined,
         levelNumber:
@@ -260,16 +264,66 @@ export class CivicQuizService {
     const availableLevelCount = Math.floor(totalQuestions / questionsPerLevel);
 
     const LEVEL_METADATA = [
-      { nameFr: 'Débutant', nameMg: 'Fiantombohana', badgeColor: '#355239', badgeBg: '#EEF4EF' },
-      { nameFr: 'Initié', nameMg: 'Fianarana', badgeColor: '#2C4A52', badgeBg: '#EDF3F5' },
-      { nameFr: 'Curieux', nameMg: 'Fahalalana', badgeColor: '#15803D', badgeBg: '#DCFCE7' },
-      { nameFr: 'Intermédiaire', nameMg: 'Fivoarana', badgeColor: '#2563EB', badgeBg: '#EFF6FF' },
-      { nameFr: 'Avancé', nameMg: 'Fanazavana', badgeColor: '#7A4A28', badgeBg: '#F7EFEA' },
-      { nameFr: 'Confirmé', nameMg: 'Fahazarana', badgeColor: '#D97706', badgeBg: '#FEF3C7' },
-      { nameFr: 'Érudit', nameMg: 'Faharanitana', badgeColor: '#7C3AED', badgeBg: '#F5F3FF' },
-      { nameFr: 'Sagesse', nameMg: 'Fahendrena', badgeColor: '#6B3A48', badgeBg: '#F7EEF0' },
-      { nameFr: 'Maître', nameMg: 'Fahaizana', badgeColor: '#9333EA', badgeBg: '#FAF5FF' },
-      { nameFr: 'Palier Suprême', nameMg: 'Fandresena Rova', badgeColor: '#B45309', badgeBg: '#FFFBEB' },
+      {
+        nameFr: 'Débutant',
+        nameMg: 'Fiantombohana',
+        badgeColor: '#355239',
+        badgeBg: '#EEF4EF',
+      },
+      {
+        nameFr: 'Initié',
+        nameMg: 'Fianarana',
+        badgeColor: '#2C4A52',
+        badgeBg: '#EDF3F5',
+      },
+      {
+        nameFr: 'Curieux',
+        nameMg: 'Fahalalana',
+        badgeColor: '#15803D',
+        badgeBg: '#DCFCE7',
+      },
+      {
+        nameFr: 'Intermédiaire',
+        nameMg: 'Fivoarana',
+        badgeColor: '#2563EB',
+        badgeBg: '#EFF6FF',
+      },
+      {
+        nameFr: 'Avancé',
+        nameMg: 'Fanazavana',
+        badgeColor: '#7A4A28',
+        badgeBg: '#F7EFEA',
+      },
+      {
+        nameFr: 'Confirmé',
+        nameMg: 'Fahazarana',
+        badgeColor: '#D97706',
+        badgeBg: '#FEF3C7',
+      },
+      {
+        nameFr: 'Érudit',
+        nameMg: 'Faharanitana',
+        badgeColor: '#7C3AED',
+        badgeBg: '#F5F3FF',
+      },
+      {
+        nameFr: 'Sagesse',
+        nameMg: 'Fahendrena',
+        badgeColor: '#6B3A48',
+        badgeBg: '#F7EEF0',
+      },
+      {
+        nameFr: 'Maître',
+        nameMg: 'Fahaizana',
+        badgeColor: '#9333EA',
+        badgeBg: '#FAF5FF',
+      },
+      {
+        nameFr: 'Palier Suprême',
+        nameMg: 'Fandresena Rova',
+        badgeColor: '#B45309',
+        badgeBg: '#FFFBEB',
+      },
     ];
 
     const levels = Array.from({ length: availableLevelCount }, (_, idx) => {
@@ -446,9 +500,9 @@ export class CivicQuizService {
       userAnswerIndex === expectedIndex ||
       Boolean(
         typeof userAnswerText === 'string' &&
-          expectedChoiceText &&
-          userAnswerText.trim().toLowerCase() ===
-            expectedChoiceText.trim().toLowerCase(),
+        expectedChoiceText &&
+        userAnswerText.trim().toLowerCase() ===
+          expectedChoiceText.trim().toLowerCase(),
       );
 
     await this.prisma.civicQuizAnswer.create({

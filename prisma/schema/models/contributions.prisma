@@ -12,6 +12,7 @@ model Contribution {
   status   ContributionStatus @default(DRAFT)
   score     Int           @default(0)
   viewCount Int           @default(0)
+  isAnonymous           Boolean   @default(false)
 
   // Détection & Modération automatique des contenus
   moderationFlagged      Boolean   @default(false)

@@ -10,6 +10,8 @@ import { PrismaService } from '../prisma/prisma.service.js';
 import { ProgressionService } from '../progression/progression.service.js';
 import { NotificationsService } from '../notifications/notifications.service.js';
 import { BadgesService } from '../badges/badges.service.js';
+import { CloudinaryService } from '../integrations/cloudinary/cloudinary.service.js';
+import { CloudinarySyncService } from '../integrations/cloudinary/cloudinary-sync.service.js';
 import {
   EventCategory,
   EventParticipationStatus,
@@ -24,6 +26,8 @@ describe('EventsService', () => {
   let progressionService: any;
   let notificationsService: any;
   let badgesService: any;
+  let cloudinaryService: any;
+  let cloudinarySyncService: any;
 
   const mockFutureStart = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   const mockFutureEnd = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
@@ -124,6 +128,30 @@ describe('EventsService', () => {
       getUserBadges: jest.fn<any>().mockResolvedValue([]),
     };
 
+    cloudinaryService = {
+      isConfigured: jest.fn<any>().mockReturnValue(true),
+      validateAndDecodeBase64Image: jest.fn<any>().mockReturnValue({
+        buffer: Buffer.from('fake-image-bytes'),
+        mimeType: 'image/png',
+      }),
+      uploadImageBase64: jest
+        .fn<any>()
+        .mockResolvedValue(
+          'https://res.cloudinary.com/kanto/events/covers/sample.png',
+        ),
+      deleteMediaFromUrl: jest.fn<any>().mockResolvedValue(true),
+    };
+
+    cloudinarySyncService = {
+      syncLocalUploadsToCloudinary: jest.fn<any>().mockResolvedValue({
+        migratedCount: 0,
+        errorsCount: 0,
+        totalFound: 0,
+        skipped: false,
+        message: 'OK',
+      }),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         EventsService,
@@ -131,6 +159,8 @@ describe('EventsService', () => {
         { provide: ProgressionService, useValue: progressionService },
         { provide: NotificationsService, useValue: notificationsService },
         { provide: BadgesService, useValue: badgesService },
+        { provide: CloudinaryService, useValue: cloudinaryService },
+        { provide: CloudinarySyncService, useValue: cloudinarySyncService },
       ],
     }).compile();
 
@@ -143,6 +173,51 @@ describe('EventsService', () => {
       expect(res.items).toHaveLength(1);
       expect(res.pagination.total).toBe(1);
       expect(prisma.event.findMany).toHaveBeenCalled();
+    });
+
+    it('filtre correctement les événements à venir (upcoming) sans inclure les événements expirés', async () => {
+      await service.getPublicEvents({ timeFilter: 'upcoming', limit: 6 });
+      expect(prisma.event.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({
+            status: {
+              in: [
+                EventStatus.PUBLISHED,
+                EventStatus.ACTIVE,
+                EventStatus.SCHEDULED,
+                EventStatus.CANCELLED,
+              ],
+            },
+            AND: expect.arrayContaining([
+              expect.objectContaining({
+                endDate: expect.objectContaining({ gte: expect.any(Date) }),
+              }),
+            ]),
+          }),
+        }),
+      );
+    });
+
+    it('filtre correctement les événements passés (past)', async () => {
+      await service.getPublicEvents({ timeFilter: 'past', limit: 10 });
+      expect(prisma.event.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({
+            AND: expect.arrayContaining([
+              expect.objectContaining({
+                OR: expect.arrayContaining([
+                  { status: EventStatus.COMPLETED },
+                  { status: EventStatus.CANCELLED },
+                  {
+                    endDate: expect.objectContaining({ lt: expect.any(Date) }),
+                  },
+                ]),
+              }),
+            ]),
+          }),
+          orderBy: [{ endDate: 'desc' }],
+        }),
+      );
     });
 
     it('renvoie l’événement vedette pour l’accueil', async () => {
@@ -258,7 +333,9 @@ describe('EventsService', () => {
       expect(prisma.eventParticipation.update).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { id: 'part_1' },
-          data: { status: EventParticipationStatus.CANCELLED },
+          data: expect.objectContaining({
+            status: EventParticipationStatus.CANCELLED,
+          }),
         }),
       );
     });
@@ -430,6 +507,212 @@ describe('EventsService', () => {
       expect(prisma.event.delete).toHaveBeenCalledWith({
         where: { id: 'evt_draft_empty' },
       });
+    });
+  });
+  describe('Création flexible des langues et sections', () => {
+    it('permet de créer un événement UNIQUEMENT en malgache', async () => {
+      prisma.event.findUnique.mockResolvedValueOnce(null);
+      prisma.event.create.mockImplementationOnce(({ data }: any) =>
+        Promise.resolve({ id: 'evt_mg_only', ...data }),
+      );
+
+      const res = await service.createEvent(
+        {
+          titleMg: 'Hetsika Kolontsaina 2026',
+          descriptionMg: 'Fankalazana ny vakoka sy ny fomba amam-panao.',
+          startDate: mockFutureStart,
+          endDate: mockFutureEnd,
+          metadata: {
+            contentConfig: {
+              languageMode: 'mg',
+              languages: ['mg'],
+              sections: {
+                shortDescription: false,
+                rules: false,
+                participationConditions: false,
+                practicalInfo: false,
+                rewards: false,
+                gameModule: false,
+              },
+            },
+          },
+        },
+        'admin_1',
+      );
+
+      expect(res.id).toBe('evt_mg_only');
+      expect(res.titleMg).toBe('Hetsika Kolontsaina 2026');
+      expect(res.titleFr).toBe('Hetsika Kolontsaina 2026'); // Rétrocompatibilité schéma DB sans casser
+      expect(res.metadata.contentConfig.languageMode).toBe('mg');
+      expect(res.metadata.contentConfig.languages).toEqual(['mg']);
+      expect(prisma.event.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            titleMg: 'Hetsika Kolontsaina 2026',
+            status: EventStatus.DRAFT,
+          }),
+        }),
+      );
+    });
+
+    it('permet de créer un événement UNIQUEMENT en français', async () => {
+      prisma.event.findUnique.mockResolvedValueOnce(null);
+      prisma.event.create.mockImplementationOnce(({ data }: any) =>
+        Promise.resolve({ id: 'evt_fr_only', ...data }),
+      );
+
+      const res = await service.createEvent(
+        {
+          titleFr: 'Festival du Patrimoine 2026',
+          descriptionFr: 'Grande célébration culturelle des traditions.',
+          startDate: mockFutureStart,
+          endDate: mockFutureEnd,
+          metadata: {
+            contentConfig: {
+              languageMode: 'fr',
+              languages: ['fr'],
+              sections: {
+                shortDescription: true,
+                rules: false,
+                participationConditions: true,
+                practicalInfo: true,
+                rewards: false,
+                gameModule: false,
+              },
+            },
+          },
+          shortDescFr: 'Un voyage au cœur de la culture',
+          location: 'Antananarivo',
+        },
+        'admin_1',
+      );
+
+      expect(res.id).toBe('evt_fr_only');
+      expect(res.titleFr).toBe('Festival du Patrimoine 2026');
+      expect(res.titleMg).toBe('Festival du Patrimoine 2026');
+      expect(res.shortDescFr).toBe('Un voyage au cœur de la culture');
+      expect(res.location).toBe('Antananarivo');
+      expect(res.metadata.contentConfig.languageMode).toBe('fr');
+    });
+
+    it('rejette la création si la langue activée manque de titre ou description', async () => {
+      await expect(
+        service.createEvent(
+          {
+            titleFr: 'Titre seul sans description',
+            startDate: mockFutureStart,
+            endDate: mockFutureEnd,
+            metadata: {
+              contentConfig: {
+                languageMode: 'fr',
+                languages: ['fr'],
+              },
+            },
+          } as any,
+          'admin_1',
+        ),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('désactive proprement les sections désactivées en base (nullification)', async () => {
+      prisma.event.findUnique.mockResolvedValueOnce(null);
+      prisma.event.create.mockImplementationOnce(({ data }: any) =>
+        Promise.resolve({ id: 'evt_sections_off', ...data }),
+      );
+
+      const res = await service.createEvent(
+        {
+          titleFr: 'Atelier de Poésie',
+          titleMg: 'Atrikasa Tononkalo',
+          descriptionFr: 'Découverte des poèmes d’hier et d’aujourd’hui.',
+          descriptionMg: 'Fahalalana ny tononkalo malagasy.',
+          shortDescFr: 'Texte ignoré car section désactivée',
+          rulesFr: 'Règles ignorées car section désactivée',
+          location: 'Lieu ignoré car section désactivée',
+          startDate: mockFutureStart,
+          endDate: mockFutureEnd,
+          metadata: {
+            contentConfig: {
+              languageMode: 'both',
+              languages: ['mg', 'fr'],
+              sections: {
+                shortDescription: false,
+                rules: false,
+                participationConditions: false,
+                practicalInfo: false,
+                rewards: false,
+                gameModule: false,
+              },
+            },
+          },
+        },
+        'admin_1',
+      );
+
+      expect(res.shortDescFr).toBeNull();
+      expect(res.shortDescMg).toBeNull();
+      expect(res.rulesFr).toBeNull();
+      expect(res.rulesMg).toBeNull();
+      expect(res.location).toBeNull();
+      expect(res.metadata.contentConfig.sections.shortDescription).toBe(false);
+    });
+  });
+
+  describe('Upload de couverture', () => {
+    it('enregistre l’image sur Cloudinary si le service est configuré', async () => {
+      const res = await service.uploadEventCover(
+        {
+          base64Data: 'data:image/png;base64,ZmFrZQ==',
+          originalName: 'couverture.png',
+        },
+        'admin_1',
+      );
+
+      expect(
+        cloudinaryService.validateAndDecodeBase64Image,
+      ).toHaveBeenCalledWith('data:image/png;base64,ZmFrZQ==');
+      expect(cloudinaryService.uploadImageBase64).toHaveBeenCalledWith(
+        'data:image/png;base64,ZmFrZQ==',
+        'couverture.png',
+        'kanto/events/covers',
+      );
+      expect(res).toEqual({
+        success: true,
+        url: 'https://res.cloudinary.com/kanto/events/covers/sample.png',
+        provider: 'cloudinary',
+      });
+    });
+
+    it('rejette l’upload si le format MIME n’est pas supporté', async () => {
+      cloudinaryService.validateAndDecodeBase64Image.mockReturnValueOnce({
+        buffer: Buffer.from('fake-gif'),
+        mimeType: 'image/gif',
+      });
+
+      await expect(
+        service.uploadEventCover(
+          {
+            base64Data: 'data:image/gif;base64,ZmFrZQ==',
+          },
+          'admin_1',
+        ),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('rejette l’upload si la taille dépasse 5 Mo', async () => {
+      cloudinaryService.validateAndDecodeBase64Image.mockReturnValueOnce({
+        buffer: Buffer.alloc(6 * 1024 * 1024), // 6 Mo
+        mimeType: 'image/png',
+      });
+
+      await expect(
+        service.uploadEventCover(
+          {
+            base64Data: 'data:image/png;base64,gros-fichier',
+          },
+          'admin_1',
+        ),
+      ).rejects.toThrow(BadRequestException);
     });
   });
 });

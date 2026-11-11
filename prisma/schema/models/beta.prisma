@@ -1,24 +1,180 @@
 // ============================================================
-// MODÈLES — PROGRAMME BÊTA-TESTEURS GOOGLE PLAY
+// MODÈLES — PLATEFORME DE BÊTA-TEST KANTO MG (ANDROID & IOS)
 // ============================================================
 
-model BetaTester {
+model BetaGroup {
   id              String       @id @default(cuid())
-  email           String       @unique
-  fullName        String?
-  deviceModel     String?      // Modèle smartphone (ex: Samsung Galaxy S23, Xiaomi...)
-  androidVersion  String?      // Version Android
-  notes           String?      @db.Text
-  status          TesterStatus @default(PENDING)
-  invitedAt       DateTime?
-  inviteCount     Int          @default(0)
-  playLinkSent    String?
-  ipAddress       String?
-  userAgent       String?
+  name            String       @unique // Ex: "Early Access", "Beta 1", "VIP Testeurs"
+  description     String?
+  color           String?      @default("#4A6741")
+  targetPlatforms String[]     @default([]) // ["ANDROID", "IOS"]
+  isDefault       Boolean      @default(false)
+  testers         BetaTester[]
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
 
+  @@map("beta_groups")
+}
+
+model BetaTester {
+  id                 String       @id @default(cuid())
+  email              String       @unique
+  emailHash          String?      @unique
+  fullName           String?
+  platforms          String[]     @default(["ANDROID"]) // ["ANDROID"], ["IOS"], ou ["ANDROID", "IOS"]
+  status             TesterStatus @default(PENDING) // PENDING, APPROVED, INVITED, REJECTED
+  androidStatus      String       @default("NOT_REQUESTED") // NOT_REQUESTED, PENDING, INVITED, ACCEPTED, ACTIVE, REJECTED
+  iosStatus          String       @default("NOT_REQUESTED") // NOT_REQUESTED, PENDING, INVITED, ACCEPTED, ACTIVE, REJECTED
+  termsAccepted      Boolean      @default(true)
+  termsAcceptedAt    DateTime?    @default(now())
+
+  // Cohorte / Groupe
+  groupId            String?
+  group              BetaGroup?   @relation(fields: [groupId], references: [id], onDelete: SetNull)
+
+  // Suivi des invitations indépendantes
+  androidInvitedAt   DateTime?
+  iosInvitedAt       DateTime?
+  androidInviteCount Int          @default(0)
+  iosInviteCount     Int          @default(0)
+
+  // Liens d'accès envoyés
+  playLinkSent       String?
+  testFlightLinkSent String?
+
+  // Désinscription & RGPD
+  unsubscribeToken   String?      @unique
+  unsubscribedAt     DateTime?
+  unsubscribeReason  String?
+
+  // Métadonnées & Communications
+  notes              String?      @db.Text
+  lastContactedAt    DateTime?
+  ipAddress          String?
+  userAgent          String?
+
+  // Rétrocompatibilité
+  deviceModel        String?
+  androidVersion     String?
+  invitedAt          DateTime?
+  inviteCount        Int          @default(0)
+
+  // Retours & Feedbacks
+  feedbacks          BetaFeedback[]
+
+  // Suivi de confirmation & progression du testeur
+  confirmationStatus String?      @default("INSCRIT") // INSCRIT, EN_ATTENTE, CONFIRME, VERIFIE, INSTALLE, INACTIF
+  confirmedAt        DateTime?
+  installedAt        DateTime?
+  verifiedAt         DateTime?
+
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+
   @@index([status])
+  @@index([emailHash])
+  @@index([androidStatus])
+  @@index([iosStatus])
+  @@index([confirmationStatus])
+  @@index([groupId])
   @@index([createdAt])
   @@map("beta_testers")
+}
+
+model BetaVersion {
+  id           String    @id @default(cuid())
+  version      String    // ex: "0.1.0"
+  buildNumber  Int       // ex: 31
+  platform     String    // "ANDROID" | "IOS" | "ALL"
+  title        String?
+  releaseNotes String?   @db.Text
+  knownIssues  String?   @db.Text
+  downloadUrl  String?
+  status       String    @default("ACTIVE") // "DRAFT" | "ACTIVE" | "EXPIRED" | "ARCHIVED"
+  publishedAt  DateTime  @default(now())
+  notifiedAt   DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([platform, status])
+  @@index([version])
+  @@map("beta_versions")
+}
+
+model BetaFeedback {
+  id            String      @id @default(cuid())
+  testerId      String?
+  tester        BetaTester? @relation(fields: [testerId], references: [id], onDelete: SetNull)
+  email         String
+  emailHash     String?
+  category      String      // "BUG", "UI_UX", "PERFORMANCE", "NAVIGATION", "CONTENT", "SUGGESTION", "OTHER"
+  title         String?
+  description   String      @db.Text
+  platform      String      // "ANDROID" | "IOS" | "ALL"
+  appVersion    String?
+  deviceInfo    String?
+  screenshotUrl String?
+  status        String      @default("NEW") // "NEW", "IN_PROGRESS", "RESOLVED", "REJECTED", "CLOSED"
+  priority      String      @default("MEDIUM") // "LOW", "MEDIUM", "HIGH", "CRITICAL"
+  internalNotes String?     @db.Text
+  assignedTo    String?
+  resolvedAt    DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([category])
+  @@index([platform])
+  @@index([status])
+  @@index([emailHash])
+  @@index([priority])
+  @@index([createdAt])
+  @@map("beta_feedbacks")
+}
+
+model BetaEmailTemplate {
+  id                  String   @id @default(cuid())
+  code                String   @unique // CONFIRMATION, PENDING, ACCEPTANCE, INVITE_ANDROID, INVITE_IOS, NEW_VERSION, ANNOUNCEMENT, FEEDBACK_REQUEST, THANK_YOU, PROGRAM_END
+  name                String
+  subject             String
+  title               String
+  senderName          String?
+  contentHtml         String   @db.Text
+  contentText         String?  @db.Text
+  buttonText          String?
+  buttonUrl           String?
+  secondaryButtonText String?
+  secondaryButtonUrl  String?
+  footerText          String?  @db.Text
+  accentColor         String?  @default("#4A6741")
+  isActive            Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@map("beta_email_templates")
+}
+
+model BetaAutomationConfig {
+  id                      String   @id @default(cuid())
+  autoConfirmRegistration Boolean  @default(true)
+  autoInviteOnApproval    Boolean  @default(false)
+  autoNotifyNewVersions   Boolean  @default(true)
+  reminderIntervalDays    Int      @default(7)
+  feedbackRequestDays     Int      @default(14)
+  playStoreWebLink        String   @default("https://play.google.com/apps/testing/com.devengalere.kantomg")
+  playStoreAppLink        String   @default("https://play.google.com/store/apps/details?id=com.devengalere.kantomg")
+  appStorePublicLink      String?
+  testFlightPublicLink    String?
+  supportEmail            String   @default("contact@kanto.mg")
+
+  // Disponibilités des plateformes : "PUBLIC" | "BETA_OPEN" | "BETA_CLOSED" | "PENDING" | "UNAVAILABLE"
+  androidAvailability     String   @default("BETA_OPEN")
+  iosAvailability         String   @default("BETA_OPEN")
+
+  // Instructions personnalisées
+  instructionsAndroid     String?  @db.Text
+  instructionsIos         String?  @db.Text
+
+  updatedAt               DateTime @updatedAt
+
+  @@map("beta_automation_configs")
 }

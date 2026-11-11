@@ -15,11 +15,23 @@ export class FindKabaryQueryDto {
 
   @IsOptional()
   @IsString()
+  themeSlugs?: string;
+
+  @IsOptional()
+  @IsString()
   occasion?: string;
 
   @IsOptional()
   @IsString()
+  occasions?: string;
+
+  @IsOptional()
+  @IsString()
   region?: string;
+
+  @IsOptional()
+  @IsString()
+  regions?: string;
 
   @IsOptional()
   @IsString()

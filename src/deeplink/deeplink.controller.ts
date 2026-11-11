@@ -317,7 +317,13 @@ export class DeeplinkController {
 
   // ─── 2d. Mots Rares & Raki-teny Miafina ─────────────────────────────────────
 
-  @Get(['raki-teny/:id', 'rakiteny/:id', 'word/:id', 'teny/:id', 'mot-rare/:id'])
+  @Get([
+    'raki-teny/:id',
+    'rakiteny/:id',
+    'word/:id',
+    'teny/:id',
+    'mot-rare/:id',
+  ])
   async handleRakiTeny(
     @Param('id') id: string,
     @Req() req: Request,
@@ -1059,7 +1065,8 @@ export class DeeplinkController {
       categoryLabel: 'Catégorie Culturelle',
       badge: 'Vakoka Malagasy',
       title: info.title,
-      textMg: 'Tsidiho ny tahirin-kevitra sy ny vakoka malagasy ato amin’ny Kanto MG.',
+      textMg:
+        'Tsidiho ny tahirin-kevitra sy ny vakoka malagasy ato amin’ny Kanto MG.',
       textFr: info.desc,
       author: 'Kanto MG',
       metaInfo: 'Patrimoine & Culture',
@@ -1138,17 +1145,25 @@ export class DeeplinkController {
         });
 
         if (referralCode && !referralCode.user?.banned) {
-          referrerName = referralCode.user.name || (referralCode.user.username ? `@${referralCode.user.username}` : 'Un ami Kanto');
+          referrerName =
+            referralCode.user.name ||
+            (referralCode.user.username
+              ? `@${referralCode.user.username}`
+              : 'Un ami Kanto');
           referrerAvatar = referralCode.user.image || undefined;
 
           // Incrément non bloquant des clics
-          this.prisma.referralCode.update({
-            where: { id: referralCode.id },
-            data: { clicksCount: { increment: 1 } },
-          }).catch(() => {});
+          this.prisma.referralCode
+            .update({
+              where: { id: referralCode.id },
+              data: { clicksCount: { increment: 1 } },
+            })
+            .catch(() => {});
         }
       } catch (err) {
-        this.logger.warn(`Erreur récupération invitation parrainage ${code}: ${err}`);
+        this.logger.warn(
+          `Erreur récupération invitation parrainage ${code}: ${err}`,
+        );
       }
     }
 
@@ -1161,12 +1176,14 @@ export class DeeplinkController {
       notes: `Utilisez le code de parrainage : ${code}`,
       author: referrerName,
       metaInfo: 'Programme de Parrainage Kanto MG',
-      userStats: referrerAvatar ? {
-        level: 1,
-        totalXp: 0,
-        streak: 0,
-        avatar: referrerAvatar,
-      } : undefined,
+      userStats: referrerAvatar
+        ? {
+            level: 1,
+            totalXp: 0,
+            streak: 0,
+            avatar: referrerAvatar,
+          }
+        : undefined,
     };
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');

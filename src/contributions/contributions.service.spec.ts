@@ -26,7 +26,9 @@ describe('ContributionsService - Deadlines & Permissions', () => {
     createNotification: (jest.fn as any)().mockResolvedValue({}),
   };
   const mockEventNotificationService = {
-    dispatchNotificationEvent: (jest.fn as any)().mockResolvedValue({ success: true }),
+    dispatchNotificationEvent: (jest.fn as any)().mockResolvedValue({
+      success: true,
+    }),
   };
   const mockRedisService = createAvailableRedisMock();
   const mockDuplicateDetectionService = {
@@ -51,7 +53,10 @@ describe('ContributionsService - Deadlines & Permissions', () => {
         ContributionsService,
         { provide: PrismaService, useValue: prismaMock },
         { provide: NotificationsService, useValue: mockNotificationsService },
-        { provide: EventNotificationService, useValue: mockEventNotificationService },
+        {
+          provide: EventNotificationService,
+          useValue: mockEventNotificationService,
+        },
         { provide: RedisService, useValue: mockRedisService },
         {
           provide: DuplicateDetectionService,
@@ -67,13 +72,14 @@ describe('ContributionsService - Deadlines & Permissions', () => {
     service = module.get<ContributionsService>(ContributionsService);
   });
 
-  describe('update() - Règle des 48h (2 jours)', () => {
-    it('doit autoriser la modification par l auteur si moins de 48h se sont écoulées', async () => {
-      const recentDate = new Date(Date.now() - 10 * 60 * 60 * 1000); // Il y a 10h
+  describe('update() - Règle de verrouillage des soumissions (aucun délai de dépassement)', () => {
+    it('doit autoriser la modification d un brouillon par l auteur sans limite de temps', async () => {
+      const oldDate = new Date(Date.now() - 200 * 60 * 60 * 1000); // 200h passées (aucun délai de dépassement)
       const mockContrib = {
         id: 'c1',
         userId: 'u1',
-        createdAt: recentDate,
+        status: 'DRAFT',
+        createdAt: oldDate,
       };
       prismaMock.contribution.findUnique.mockResolvedValue(mockContrib as any);
       prismaMock.contribution.update.mockResolvedValue({
@@ -89,13 +95,13 @@ describe('ContributionsService - Deadlines & Permissions', () => {
       expect(prismaMock.contribution.update).toHaveBeenCalled();
     });
 
-    it('doit rejeter avec CONTRIBUTION_MODIFICATION_EXPIRED si plus de 48h pour un utilisateur normal', async () => {
-      const oldDate = new Date(Date.now() - 50 * 60 * 60 * 1000); // Il y a 50h (> 48h)
+    it('doit rejeter avec CONTRIBUTION_PENDING_REVIEW_LOCKED si la contribution est soumise pour vérification', async () => {
+      const recentDate = new Date(); // Même tout juste créée
       const mockContrib = {
         id: 'c1',
         userId: 'u1',
         status: 'PENDING_REVIEW',
-        createdAt: oldDate,
+        createdAt: recentDate,
       };
       prismaMock.contribution.findUnique.mockResolvedValue(mockContrib as any);
 
@@ -108,16 +114,19 @@ describe('ContributionsService - Deadlines & Permissions', () => {
       } catch (err: any) {
         expect(err.getResponse()).toMatchObject({
           statusCode: 400,
-          error: 'CONTRIBUTION_MODIFICATION_EXPIRED',
+          error: 'CONTRIBUTION_PENDING_REVIEW_LOCKED',
         });
       }
     });
 
-    it('doit autoriser un ADMIN à modifier même si plus de 48h se sont écoulées', async () => {
+    it('doit autoriser un ADMIN à modifier même si la contribution est en PENDING_REVIEW', async () => {
       const oldDate = new Date(Date.now() - 100 * 60 * 60 * 1000); // Il y a 100h
       const mockContrib = {
         id: 'c1',
         userId: 'u1',
+        status: 'PENDING_REVIEW',
+        textMg: 'Ohabolana taloha',
+        textFr: 'Proverbe ancien',
         createdAt: oldDate,
       };
       prismaMock.contribution.findUnique.mockResolvedValue(mockContrib as any);
@@ -156,14 +165,37 @@ describe('ContributionsService - Deadlines & Permissions', () => {
     });
   });
 
-  describe('remove() - Règle des 24h (1 jour)', () => {
-    it('doit autoriser la suppression logique (archivage) par l auteur si moins de 24h se sont écoulées', async () => {
-      const recentDate = new Date(Date.now() - 5 * 60 * 60 * 1000); // Il y a 5h
+  describe('remove() - Règle de verrouillage des soumissions (aucun délai de dépassement)', () => {
+    it('doit refuser la suppression avec CONTRIBUTION_PENDING_REVIEW_LOCKED si soumise pour vérification', async () => {
       const mockContrib = {
         id: 'c1',
         userId: 'u1',
         status: 'PENDING_REVIEW',
-        createdAt: recentDate,
+        createdAt: new Date(),
+      };
+      prismaMock.contribution.findUnique.mockResolvedValue(mockContrib as any);
+
+      await expect(service.remove('c1', 'u1', 'USER')).rejects.toThrow(
+        BadRequestException,
+      );
+
+      try {
+        await service.remove('c1', 'u1', 'USER');
+      } catch (err: any) {
+        expect(err.getResponse()).toMatchObject({
+          statusCode: 400,
+          error: 'CONTRIBUTION_PENDING_REVIEW_LOCKED',
+        });
+      }
+    });
+
+    it('doit autoriser l archivage par l auteur d une contribution en CHANGES_REQUESTED sans limite de temps', async () => {
+      const oldDate = new Date(Date.now() - 300 * 60 * 60 * 1000); // 300h passées (aucun délai de dépassement)
+      const mockContrib = {
+        id: 'c1',
+        userId: 'u1',
+        status: 'CHANGES_REQUESTED',
+        createdAt: oldDate,
       };
       prismaMock.contribution.findUnique.mockResolvedValue(mockContrib as any);
       prismaMock.contribution.update.mockResolvedValue({
@@ -180,31 +212,7 @@ describe('ContributionsService - Deadlines & Permissions', () => {
       });
     });
 
-    it('doit rejeter avec CONTRIBUTION_DELETION_EXPIRED si plus de 24h pour un utilisateur normal', async () => {
-      const oldDate = new Date(Date.now() - 25 * 60 * 60 * 1000); // Il y a 25h (> 24h)
-      const mockContrib = {
-        id: 'c1',
-        userId: 'u1',
-        status: 'PENDING_REVIEW',
-        createdAt: oldDate,
-      };
-      prismaMock.contribution.findUnique.mockResolvedValue(mockContrib as any);
-
-      await expect(service.remove('c1', 'u1', 'USER')).rejects.toThrow(
-        BadRequestException,
-      );
-
-      try {
-        await service.remove('c1', 'u1', 'USER');
-      } catch (err: any) {
-        expect(err.getResponse()).toMatchObject({
-          statusCode: 400,
-          error: 'CONTRIBUTION_DELETION_EXPIRED',
-        });
-      }
-    });
-
-    it('doit autoriser un ADMIN à archiver même si plus de 24h se sont écoulées', async () => {
+    it('doit autoriser un ADMIN à archiver même si la contribution est en PENDING_REVIEW', async () => {
       const oldDate = new Date(Date.now() - 72 * 60 * 60 * 1000); // Il y a 3 jours
       const mockContrib = {
         id: 'c1',

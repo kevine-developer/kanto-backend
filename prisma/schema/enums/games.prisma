@@ -14,9 +14,11 @@ enum TrueFalseTheme {
 enum DuelStatus {
   WAITING      // En attente d'un adversaire
   READY        // Les 2 joueurs sont connectés et prêts
+  STARTING     // Démarrage de la partie en cours
   IN_PROGRESS  // Duel en cours
   FINISHED     // Duel terminé
   CANCELLED    // Abandon / Annulé
+  EXPIRED      // Salon fermé automatiquement après expiration
 }
 
 enum DuelGameType {

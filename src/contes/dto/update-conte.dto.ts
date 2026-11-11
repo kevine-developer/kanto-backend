@@ -9,6 +9,10 @@ export class UpdateConteDto {
   moralMg?: string;
   moralFr?: string;
   illustration?: string;
+  audioUrlMg?: string;
+  audioUrlFr?: string;
+  isHumanVoiceMg?: boolean;
+  isHumanVoiceFr?: boolean;
   status?: 'PUBLISHED' | 'DRAFT' | 'ARCHIVED';
   paragraphs?: CreateParagraphDto[];
 }

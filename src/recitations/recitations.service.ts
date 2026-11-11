@@ -122,7 +122,7 @@ export class RecitationsService {
   }
 
   async findAll(query: FindRecitationsQueryDto) {
-    const { page = 1, limit = 20, search, author, tag } = query;
+    const { page = 1, limit = 20, search, author, authors, tag, tags } = query;
     const {
       skip,
       limit: takeLimit,
@@ -135,8 +135,30 @@ export class RecitationsService {
 
     const where: Prisma.RecitationWhereInput = {
       status: 'PUBLISHED',
-      ...(author ? { author: { contains: author, mode: 'insensitive' } } : {}),
-      ...(tag ? { tags: { has: tag } } : {}),
+      ...(authors
+        ? {
+            author: {
+              in: authors
+                .split(',')
+                .map((a) => a.trim())
+                .filter(Boolean),
+            },
+          }
+        : author
+          ? { author: { contains: author, mode: 'insensitive' } }
+          : {}),
+      ...(tags
+        ? {
+            tags: {
+              hasSome: tags
+                .split(',')
+                .map((t) => t.trim())
+                .filter(Boolean),
+            },
+          }
+        : tag
+          ? { tags: { has: tag } }
+          : {}),
       ...(search
         ? (() => {
             const rawSearch = search.trim();

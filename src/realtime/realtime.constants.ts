@@ -5,6 +5,7 @@ export const REALTIME_CHANNELS = {
   NOTIFICATIONS: 'kanto:events:notifications',
   COMMENTS: 'kanto:events:comments',
   LEADERBOARD: 'kanto:events:leaderboard',
+  DUEL: 'kanto:events:duel',
 } as const;
 
 /**
@@ -25,6 +26,12 @@ export const SOCKET_EVENTS = {
   JOIN_LEADERBOARD: 'join:leaderboard',
   LEAVE_LEADERBOARD: 'leave:leaderboard',
 
+  // Événements de Présence & Disponibilité
+  PRESENCE_HEARTBEAT: 'presence:heartbeat',
+  PRESENCE_CHECK: 'presence:check',
+  PRESENCE_GET_BATCH: 'presence:get_batch',
+  PRESENCE_STATUS_UPDATE: 'presence:status_update',
+
   // Événements Duel / Multijoueur Kahoot
   DUEL_CREATE: 'duel:create',
   DUEL_JOIN: 'duel:join',
@@ -41,6 +48,7 @@ export const SOCKET_EVENTS = {
   DUEL_ROUND_END: 'duel:round_end',
   DUEL_GAME_FINISH: 'duel:game_finish',
   DUEL_SESSION_CANCELLED: 'duel:session_cancelled',
+  DUEL_SESSION_EXPIRED: 'duel:session_expired',
   DUEL_TOGGLE_SPECTATOR: 'duel:toggle_spectator',
   DUEL_HOST_DETAILS: 'duel:host_details',
   DUEL_KICK_PLAYER: 'duel:kick_player',
@@ -58,6 +66,7 @@ export const SOCKET_EVENTS = {
   DUEL_PLAYER_DISCONNECTED: 'duel:player_disconnected',
   DUEL_PLAYER_RECONNECTED: 'duel:player_reconnected',
   DUEL_RECONNECT: 'duel:reconnect',
+  DUEL_CLOSE_NOW: 'duel:close_now',
 } as const;
 
 /**
@@ -128,4 +137,11 @@ export interface LeaderboardRealtimePayload {
   xpDelta?: number;
   source?: string;
   timestamp?: number;
+}
+
+export interface DuelRealtimeBroadcastPayload {
+  event: string;
+  code: string;
+  data: Record<string, unknown>;
+  closeRoom?: boolean;
 }

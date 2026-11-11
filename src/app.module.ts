@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
-import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { AppThrottlerGuard } from './common/guards/app-throttler.guard.js';
 import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
@@ -48,6 +49,11 @@ import { ReferralModule } from './referral/referral.module.js';
 import { EventsModule } from './events/events.module.js';
 import { ContentWizardModule } from './games/content-wizard/content-wizard.module.js';
 import { DailyChallengeModule } from './games/daily-challenge/daily-challenge.module.js';
+import { AppVersionModule } from './app-version/app-version.module.js';
+import { PartnersModule } from './partners/partners.module.js';
+import { ReviewsModule } from './reviews/reviews.module.js';
+import { SeoModule } from './seo/seo.module.js';
+import { LearningModule } from './learning/learning.module.js';
 
 @Module({
   imports: [
@@ -56,22 +62,12 @@ import { DailyChallengeModule } from './games/daily-challenge/daily-challenge.mo
       {
         name: 'burst',
         ttl: 1000, // 1 seconde
-        limit: 60, // max 60 requêtes par seconde par IP (navigation fluide / chargement simultané)
+        limit: 20, // max 20 requêtes par seconde par tracker (protection anti-burst)
       },
       {
         name: 'default',
         ttl: 60000, // 1 minute
-        limit: 600, // max 600 requêtes par minute par IP
-      },
-      {
-        name: 'auth',
-        ttl: 60000, // 1 minute
-        limit: 20, // max 20 tentatives d'authentification par minute
-      },
-      {
-        name: 'upload',
-        ttl: 60000, // 1 minute
-        limit: 15, // max 15 téléversements d'images par minute par IP (protection disque & Cloudinary)
+        limit: 120, // max 120 requêtes par minute par tracker (soit 2 req/s en moyenne)
       },
     ]),
     // Planification des tâches récurrentes (cron jobs)
@@ -120,6 +116,11 @@ import { DailyChallengeModule } from './games/daily-challenge/daily-challenge.mo
     EventsModule,
     ContentWizardModule,
     DailyChallengeModule,
+    AppVersionModule,
+    PartnersModule,
+    ReviewsModule,
+    SeoModule,
+    LearningModule,
   ],
   controllers: [AppController],
   providers: [
@@ -127,7 +128,7 @@ import { DailyChallengeModule } from './games/daily-challenge/daily-challenge.mo
     // Applique ThrottlerGuard globalement sur toutes les routes
     {
       provide: APP_GUARD,
-      useClass: ThrottlerGuard,
+      useClass: AppThrottlerGuard,
     },
   ],
 })

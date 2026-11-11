@@ -5,10 +5,22 @@
     "french": "Un seul arbre ne fait pas une forêt",
     "meaning": "Ce proverbe souligne l'importance de la communauté et de la collaboration. Une personne seule ne peut pas accomplir autant qu'un groupe uni.",
     "example": "Utilisé pour encourager le travail d'équipe ou rappeler qu'on a besoin des autres pour réussir pleinement.",
-    "themes": ["Sagesse", "Collaboration", "Communauté"],
+    "themes": [
+      "Sagesse",
+      "Collaboration",
+      "Communauté"
+    ],
     "category": "proverbe",
-    "origins": ["Merina", "Betsileo"],
-    "dialectVariants": [{ "dialect": "Sud", "text": "Tsy ala ny hazo tokana" }],
+    "origins": [
+      "Merina",
+      "Betsileo"
+    ],
+    "dialectVariants": [
+      {
+        "dialect": "Sud",
+        "text": "Tsy ala ny hazo tokana"
+      }
+    ],
     "viewCount": 0,
     "reportCount": 0
   },
@@ -18,9 +30,15 @@
     "french": "Ne mettez pas de l'orgueil dans votre amour",
     "meaning": "L'amour véritable doit être humble et sincère, dépourvu d'arrogance ou de vanité.",
     "example": "Conseil donné dans les relations amoureuses ou amicales pour préserver l'authenticité des sentiments.",
-    "themes": ["Amour", "Humilité", "Sagesse"],
+    "themes": [
+      "Amour",
+      "Humilité",
+      "Sagesse"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -31,9 +49,15 @@
     "french": "L'argent est comme un visiteur : il arrive aujourd'hui et demain il repart",
     "meaning": "Ce proverbe illustre le caractère éphémère de la richesse matérielle et encourage à ne pas y accorder une importance démesurée.",
     "example": "Utilisé pour relativiser l'importance de l'argent et pour encourager la prévoyance ou la générosité.",
-    "themes": ["Argent", "Sagesse", "Éphémère"],
+    "themes": [
+      "Argent",
+      "Sagesse",
+      "Éphémère"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -44,9 +68,15 @@
     "french": "À cœur vaillant rien d'impossible (littéralement : Il n'y a rien de dur qui ne cède à l'ardeur/persévérance)",
     "meaning": "Avec de la volonté, de la persévérance et de l'effort, on peut surmonter tous les obstacles.",
     "example": "Expression utilisée pour motiver quelqu'un face à une tâche difficile ou pour souligner le succès obtenu grâce à la persévérance.",
-    "themes": ["Persévérance", "Volonté", "Courage"],
+    "themes": [
+      "Persévérance",
+      "Volonté",
+      "Courage"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -57,9 +87,15 @@
     "french": "Nier l'existence de Dieu, c'est sauter les yeux fermés",
     "meaning": "Ce proverbe suggère que nier l'existence d'une force supérieure ou d'une réalité au-delà de ce qui est visible est un acte imprudent et risqué.",
     "example": "Employé dans des discussions philosophiques ou religieuses pour inciter à la prudence face à l'inconnu ou au spirituel.",
-    "themes": ["Spiritualité", "Prudence", "Sagesse"],
+    "themes": [
+      "Spiritualité",
+      "Prudence",
+      "Sagesse"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -70,9 +106,15 @@
     "french": "L'amitié est comme le plumage d'un poulet, elle ne s'en va qu'à la mort",
     "meaning": "Ce proverbe souligne la force et la pérennité d'une véritable amitié, qui dure toute la vie.",
     "example": "Utilisé pour valoriser une amitié sincère et durable.",
-    "themes": ["Amitié", "Loyauté", "Sagesse"],
+    "themes": [
+      "Amitié",
+      "Loyauté",
+      "Sagesse"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -83,9 +125,16 @@
     "french": "C’est l’arbre qui devient pirogue, mais c’est la terre où il a poussé qui le rend bon.",
     "meaning": "On réussit grâce à ses origines ou à l’environnement qui nous a nourris. L'éducation et les racines sont le fondement de la qualité d'une personne.",
     "example": "Raha tsara fanabeazana ianao, tsarovy fa 'ny tany naniriany no tsara'. (Si tu as une bonne éducation, souviens-toi que 'c'est la terre où il a poussé qui le rend bon').",
-    "themes": ["Valeurs", "Éducation", "Origines", "Sagesse"],
+    "themes": [
+      "Valeurs",
+      "Éducation",
+      "Origines",
+      "Sagesse"
+    ],
     "category": "proverbe",
-    "origins": ["Merina"],
+    "origins": [
+      "Merina"
+    ],
     "dialectVariants": [
       {
         "dialect": "Betsileo",
@@ -101,11 +150,20 @@
     "french": "Ne sois pas comme la canne à sucre d'hiver, sinon tu n’auras rien à manger au printemps.",
     "meaning": "Ne dilapide pas toutes tes ressources prématurément, pense à l'avenir et fais preuve de prévoyance.",
     "example": "Mitsitsy vola isika izao, satria 'aza manao fary ririnina'. (Nous économisons de l'argent maintenant, car 'il ne faut pas être comme la canne à sucre d'hiver').",
-    "themes": ["Sagesse", "Prévoyance", "Économie"],
+    "themes": [
+      "Sagesse",
+      "Prévoyance",
+      "Économie"
+    ],
     "category": "proverbe",
-    "origins": ["Betsimisaraka"],
+    "origins": [
+      "Betsimisaraka"
+    ],
     "dialectVariants": [
-      { "dialect": "Sihanaka", "text": "Aza atao maniry mialoha ny orana" }
+      {
+        "dialect": "Sihanaka",
+        "text": "Aza atao maniry mialoha ny orana"
+      }
     ],
     "viewCount": 0,
     "reportCount": 0
@@ -116,9 +174,15 @@
     "french": "La nuit apporte la réflexion",
     "meaning": "Les moments de calme ou d'obscurité favorisent la pensée, la réflexion et la sagesse.",
     "example": "On le cite lorsqu'on conseille de prendre le temps de méditer ou de réfléchir avant d'agir.",
-    "themes": ["Réflexion", "Sagesse", "Calme"],
+    "themes": [
+      "Réflexion",
+      "Sagesse",
+      "Calme"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -129,9 +193,15 @@
     "french": "Ne rejette pas la pirogue qui t’a aidé à traverser la rivière",
     "meaning": "Ne renie pas ceux ou ce qui t’ont aidé dans ton parcours.",
     "example": "On l'utilise pour rappeler la reconnaissance envers les bienfaiteurs ou les soutiens passés.",
-    "themes": ["Gratitude", "Respect", "Reconnaissance"],
+    "themes": [
+      "Gratitude",
+      "Respect",
+      "Reconnaissance"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -142,9 +212,15 @@
     "french": "Ne forcez pas les choses",
     "meaning": "Il ne faut pas précipiter les événements ou pousser à agir avant qu’il soit mûr.",
     "example": "On le cite pour rappeler qu’il vaut mieux attendre le bon moment plutôt que forcer.",
-    "themes": ["Prudence", "Temps", "Patience"],
+    "themes": [
+      "Prudence",
+      "Temps",
+      "Patience"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -155,9 +231,15 @@
     "french": "N’échangez pas ce qui est mûr contre ce qui est cru",
     "meaning": "Ne troquez pas quelque chose de sûr et bon contre quelque chose d’incertain.",
     "example": "Dans les décisions professionnelles, mieux vaut garder ce qui fonctionne.",
-    "themes": ["Sagacité", "Stabilité", "Décision"],
+    "themes": [
+      "Sagacité",
+      "Stabilité",
+      "Décision"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -168,9 +250,15 @@
     "french": "L’eau ne refuse pas de descendre, ni la fumée de monter",
     "meaning": "Les choses suivent leur nature ou leur destin : accepter le flux naturel.",
     "example": "On l'emploie pour rappeler qu’on ne peut lutter contre certains courants.",
-    "themes": ["Nature", "Acceptation", "Destin"],
+    "themes": [
+      "Nature",
+      "Acceptation",
+      "Destin"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -181,9 +269,15 @@
     "french": "La poudre ne refuse pas le feu, ni le feu le combustible",
     "meaning": "Tout élément trouve sa fonction dans un système cohérent.",
     "example": "Illustration d’un processus où chaque rôle est complémentaire.",
-    "themes": ["Interaction", "Rôle", "Complémentarité"],
+    "themes": [
+      "Interaction",
+      "Rôle",
+      "Complémentarité"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -194,9 +288,15 @@
     "french": "Celui qui demeure longtemps s’enrichit (devenant trois puis famille)",
     "meaning": "La persévérance et la stabilité conduisent à la force et à la croissance.",
     "example": "On l’utilise quand on parle de projet ou entreprise qui grandit avec le temps.",
-    "themes": ["Persévérance", "Croissance", "Stabilité"],
+    "themes": [
+      "Persévérance",
+      "Croissance",
+      "Stabilité"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -207,10 +307,18 @@
     "french": "Comme les cornes du boeuf sauvage : l’une forte, l’autre bien utile",
     "meaning": "Les différences ont chacune leur utilité ; force et orientation sont complémentaires.",
     "example": "Souvent cité pour valoriser les talents divers d’une équipe.",
-    "themes": ["Diversité", "Force", "Utilité"],
+    "themes": [
+      "Diversité",
+      "Force",
+      "Utilité"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
-    "dialectVariants": ["Haolo dialect"],
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [
+      "Haolo dialect"
+    ],
     "viewCount": 0,
     "reportCount": 0
   },
@@ -220,9 +328,15 @@
     "french": "Cacher son vol comme certains fruits cachent leurs graines",
     "meaning": "Parler peu de ses fautes ou actes mauvais; ruser à cachette.",
     "example": "Employé pour dénoncer hypocrisie ou duplicité.",
-    "themes": ["Ruse", "Hypocrisie", "Secret"],
+    "themes": [
+      "Ruse",
+      "Hypocrisie",
+      "Secret"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -233,9 +347,15 @@
     "french": "Ne soyez pas comme celui qui vend l’écorce pour teindre le natte",
     "meaning": "Ne pas mélanger des tâches incompatibles, ne pas être pressé sans secours.",
     "example": "Peut servir de mise en garde contre le multitâche mal préparé.",
-    "themes": ["Organisation", "Attention", "Mauvaise précipitation"],
+    "themes": [
+      "Organisation",
+      "Attention",
+      "Mauvaise précipitation"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -246,9 +366,15 @@
     "french": "Il vaut mieux refuser d’aller que dire oui et ne pas agir",
     "meaning": "Il est préférable de décliner plutôt que de promettre et ne pas tenir.",
     "example": "Dans des situations professionnelles, mieux vaut être clair que s’engager sans ressources.",
-    "themes": ["Intégrité", "Clarté", "Engagement"],
+    "themes": [
+      "Intégrité",
+      "Clarté",
+      "Engagement"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -259,9 +385,15 @@
     "french": "Le rempart de pierre protège la cité, la palissade les habitations royales",
     "meaning": "La sécurité collective est construite par des barrières solides.",
     "example": "Illustrer la valeur d’un bon cadre dans une organisation.",
-    "themes": ["Protection", "Structure", "Sécurité"],
+    "themes": [
+      "Protection",
+      "Structure",
+      "Sécurité"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -272,9 +404,15 @@
     "french": "N’a que la fumée pour héritage (comme vieille cuisinière)",
     "meaning": "Ne recevoir que peu ou aucun avantage malgré un partage.",
     "example": "Utilisé pour souligner les injustices dans une distribution.",
-    "themes": ["Injustice", "Inégalité", "Partage"],
+    "themes": [
+      "Injustice",
+      "Inégalité",
+      "Partage"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -285,9 +423,15 @@
     "french": "J’ai changé ce qui était mûr contre du cru",
     "meaning": "Avoir fait un échange malheureux avant de mesurer la valeur.",
     "example": "Souvent cité comme confession d'une erreur personnelle passée.",
-    "themes": ["Erreur", "Réflexion", "Sagesse"],
+    "themes": [
+      "Erreur",
+      "Réflexion",
+      "Sagesse"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -298,9 +442,15 @@
     "french": "Ce qui est cuisiné selon l’espoir finit par cuire",
     "meaning": "Avec effort et préparation, même les projets difficiles peuvent réussir.",
     "example": "Encourageant dans les débuts de projets ambitieux.",
-    "themes": ["Espoir", "Travail", "Résilience"],
+    "themes": [
+      "Espoir",
+      "Travail",
+      "Résilience"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -311,9 +461,15 @@
     "french": "Ce que l’on a cuit est ce qu’on a pu faire",
     "meaning": "Faire de son mieux en fonction de ses moyens.",
     "example": "Apprécié dans des contextes modestes ou humbles.",
-    "themes": ["Effort", "Humilité", "Limite"],
+    "themes": [
+      "Effort",
+      "Humilité",
+      "Limite"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -324,9 +480,15 @@
     "french": "Ne laisse pas le grand être contrôlé par le petit",
     "meaning": "Il ne faut pas dépendre de ceux qui ont moins de compétence ou de statut.",
     "example": "Appliqué dans le mentoring ou leadership pour conserver autonomie.",
-    "themes": ["Leadership", "Indépendance", "Respect"],
+    "themes": [
+      "Leadership",
+      "Indépendance",
+      "Respect"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -337,9 +499,15 @@
     "french": "Celui qui a volé des citrouilles en veut toujours trop",
     "meaning": "L’avidité fait perdre ce qu’on a acquis ; vouloir tout peut tout compromettre.",
     "example": "Conseil de modération dans les ambitions ou gains rapides.",
-    "themes": ["Avidité", "Modération", "Perte"],
+    "themes": [
+      "Avidité",
+      "Modération",
+      "Perte"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -350,9 +518,15 @@
     "french": "Ne vendez pas ce que vous possédez à bas prix",
     "meaning": "Valorisez vos biens ou qualités ; ne vous sous-estimez pas.",
     "example": "Appliqué au personal branding ou valorisation de son travail.",
-    "themes": ["Valeur", "Respect", "Estime"],
+    "themes": [
+      "Valeur",
+      "Respect",
+      "Estime"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -363,9 +537,15 @@
     "french": "L’homme qui vend son miel ne peut qu’en lécher les doigts",
     "meaning": "Parfois, en vendant ses propres acquis, on ne garde que peu pour soi.",
     "example": "Utilisé quand on donne trop et que l’on ne récolte pas.",
-    "themes": ["Partage", "Sacrifice", "Profit"],
+    "themes": [
+      "Partage",
+      "Sacrifice",
+      "Profit"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -376,9 +556,16 @@
     "french": "La faute est comme une pierre qui heurte celui qui est inattentif",
     "meaning": "Ce proverbe enseigne que les erreurs ou les fautes atteignent ceux qui manquent de vigilance et de prudence. Il souligne l'importance d'être attentif à ses actions pour éviter les conséquences négatives.",
     "example": "Il faut toujours être prudent dans ses décisions, car 'ny heloka, toy ny harona: izay tsy mitandrina no voadona'.",
-    "themes": ["Prudence", "Faute", "Attention", "Conséquence"],
+    "themes": [
+      "Prudence",
+      "Faute",
+      "Attention",
+      "Conséquence"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -389,9 +576,16 @@
     "french": "Avoir honte de son peu de viande et ne servir que du riz sec",
     "meaning": "Critique l'attitude de celui qui, par fausse honte ou par avarice, préfère ne rien offrir plutôt que de partager le peu qu'il possède. Cela dénonce un orgueil mal placé ou un égoïsme masqué.",
     "example": "Naleony tsy nanasa olona mihitsy toy izay hizara ny kely ananany, dia ilay 'mena-maso an-daoka'.",
-    "themes": ["Orgueil", "Avarice", "Apparence", "Partage"],
+    "themes": [
+      "Orgueil",
+      "Avarice",
+      "Apparence",
+      "Partage"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -402,9 +596,16 @@
     "french": "Celui qui n'a pas voulu dépenser pour un couvercle a mangé du riz cru",
     "meaning": "L'avarice ou le refus d'investir dans les outils nécessaires mène à un résultat médiocre. Il faut savoir dépenser à bon escient pour réussir.",
     "example": "Tsy nividy fitaovana tsara izy dia tsy vita ny asany : 'tsy mahafoy vola hamidy takotra, ka manta vary'.",
-    "themes": ["Avarice", "Investissement", "Conséquence", "Sagesse"],
+    "themes": [
+      "Avarice",
+      "Investissement",
+      "Conséquence",
+      "Sagesse"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -415,9 +616,17 @@
     "french": "Mieux vaut perdre un peu d'argent qu'un peu d'amitié (ou de lien social)",
     "meaning": "Ce proverbe met en avant la primauté des relations humaines et des liens sociaux ('fihavanana') sur les biens matériels. La cohésion sociale a plus de valeur que l'argent.",
     "example": "Naleony nanaiky fatiantoka kely mba tsy hisian'ny disadisa, satria 'aleo very tsikalakalam-bola toy izay very tsikalakalam-pihavanana'.",
-    "themes": [ "Fihavanana", "Relation humaine", "Argent", "Priorité", "Sagesse" ],
+    "themes": [
+      "Fihavanana",
+      "Relation humaine",
+      "Argent",
+      "Priorité",
+      "Sagesse"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -428,9 +637,16 @@
     "french": "Le talentueux ne réfléchit pas, mais celui qui réfléchit n'est pas talentueux",
     "meaning": "Ce proverbe oppose l'habileté innée ou acquise par l'expérience (qui devient intuitive) à l'excès de réflexion qui peut paralyser l'action. Il valorise l'action spontanée et la maîtrise qui n'a plus besoin de penser.",
     "example": "Mijery an'i Rivo manao sary sokitra ianao dia mahita hoe 'ny mahay tsy misaina'. (En regardant Rivo sculpter, tu vois bien que 'le talentueux n'a pas besoin de réfléchir').",
-    "themes": ["Talent", "Action", "Intuition", "Sagesse"],
+    "themes": [
+      "Talent",
+      "Action",
+      "Intuition",
+      "Sagesse"
+    ],
     "category": "proverbe",
-    "origins": ["Merina"],
+    "origins": [
+      "Merina"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -441,9 +657,16 @@
     "french": "Celui qui fait ce que font les sauterelles, meurt précipitamment",
     "meaning": "Mise en garde contre le danger de suivre aveuglément la foule ou les effets de mode. Agir sans réflexion personnelle en imitant les autres peut mener à sa perte.",
     "example": "Nirohotra nanao fampiasam-bola tsy mazava toa ny rehetra izy ka bankirompitra, 'izay manao ny ataon'ny valala, maty an-kamehana'.",
-    "themes": ["Imitation", "Prudence", "Foule", "Danger"],
+    "themes": [
+      "Imitation",
+      "Prudence",
+      "Foule",
+      "Danger"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -454,9 +677,15 @@
     "french": "Les pieds de la fortune ne sont pas lavés",
     "meaning": "La chance ou l'opportunité arrive de manière inattendue et souvent sans prévenir. Il faut être prêt à la saisir à tout moment, car elle ne suit pas les rituels ou les préparations.",
     "example": "Nahazo asa tampoka izy nefa tsy nikasa akory: 'ny tongo-karena tsy mba votra'.",
-    "themes": ["Chance", "Opportunité", "Inattendu"],
+    "themes": [
+      "Chance",
+      "Opportunité",
+      "Inattendu"
+    ],
     "category": "proverbe",
-    "origins": ["Général"],
+    "origins": [
+      "Général"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
@@ -467,13 +696,21 @@
     "french": "L'esclave abandonne son corps, mais l'enfant (l'homme libre) n'abandonne pas son coeur/esprit",
     "meaning": "Même dans la soumission physique ou l'oppression, l'esprit et la volonté peuvent rester libres. Ce proverbe souligne la résilience intérieure et la force du coeur face à l'adversité.",
     "example": "Na dia teo ambany fangejana aza izy ireo, tsy nilavo lefona ny fanahiny: 'ny andevo mitolo-batana, fa ny zaza tsy mitolo-po'.",
-    "themes": ["Liberté", "Esprit", "Résilience", "Volonté"],
+    "themes": [
+      "Liberté",
+      "Esprit",
+      "Résilience",
+      "Volonté"
+    ],
     "category": "proverbe",
-    "origins": ["Merina"],
+    "origins": [
+      "Merina"
+    ],
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
-  }, {
+  },
+  {
     "id": "proverbID-37",
     "malagasy": "Adin’akôhovavy : mafana am-boalöhany.",
     "french": "Combat de poules : d’une intensité seulement au début (Se dit d’une fébrilité toute éphémère).",
@@ -512,7 +749,8 @@
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
-  }, {
+  },
+  {
     "id": "proverbID-39",
     "malagasy": "Adin’osy : mifarana amin’ny fihogo.",
     "french": "Combat de boucs : se termine par des coups de tête (se dit d’un affrontement qui se termine par des coups ou qui se terminent par un affrontement)",
@@ -711,7 +949,8 @@
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
-  },{
+  },
+  {
     "id": "proverbID-49",
     "malagasy": "Zalimety avaízo: an-tanaña hômaña.",
     "french": "Allumettes de nos jours: c’est dans le village qu’on pourra manger. (Car il est impossible d’allumer du feu en raison de la très mauvaise qualité des allumettes).",
@@ -1110,7 +1349,8 @@
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
-  }, {
+  },
+  {
     "id": "proverbID-69",
     "malagasy": "Zaza bi-lelo sarotro ampitafiñy.",
     "french": "Enfant morveux, difficile à habiller. (L’apparence souvent dénote le caractère).",
@@ -1249,7 +1489,8 @@
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
-  },{
+  },
+  {
     "id": "proverbID-76",
     "malagasy": "Pake vambahy: efa lasam-balaña.",
     "french": "Un paquet en calebasse: c’est une affaire démodée. (Se dit d’une méthode ou d’un procédé dépassé par le temps, suranné).",
@@ -1568,7 +1809,8 @@
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
-  }, {
+  },
+  {
     "id": "proverbID-92",
     "malagasy": "Na amboako, na amboan’ôloño, izay vandaña kary.",
     "french": "Qu’il s’agisse de mon chien ou de celui d’un autre individu, celui qui est zébré est dit “Kary” (félin). (C’est-à-dire mauvais. Un mauvais individu est toujours mauvais, il ne peut être qualifié autrement, quel qu’il soit).",
@@ -2067,7 +2309,8 @@
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
-  },{
+  },
+  {
     "id": "proverbID-117",
     "malagasy": "Jaolahy miady, vôsitry mañantombaña: fandra-draha tsy miala amin-tany.",
     "french": "Les taureaux se battent, les boeufs castrés s’y mêlent : les détracteurs sont partout présents.",
@@ -2286,7 +2529,8 @@
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
-  }, {
+  },
+  {
     "id": "proverbID-128",
     "malagasy": "Kaiki-panenditry añ’alan-tainkilotro: fahavoazaña roa dia.",
     "french": "Piqûre de guêpe dans un champ de tainkilotro (plantes vésicantes) : un malheur double. (Allusion à un malheur venant coup après coup).",
@@ -2446,7 +2690,8 @@
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
-  },{
+  },
+  {
     "id": "proverbID-136",
     "malagasy": "Kalo nanihitry, Tôto nañarato: hafa ny leñy, hafa ny vôky.",
     "french": "Kalo a pêché, Toto a usé du filet, l’une est mouillée, l’autre est rassasié. (Allusion à celui qui bénéficie d’une chose pour laquelle il n’a pas peiné).",
@@ -2645,7 +2890,8 @@
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
-  },{
+  },
+  {
     "id": "proverbID-146",
     "malagasy": "Lagrify maiñy mahiaña, antitry fö mböla misy menaka.",
     "french": "Griffes de girofle sèches: c’est dur, c’est vieux mais elle a encore de l’huile (essence). (Allusion à celui qui, quoique vieux, possède encore une forte vitalité).",
@@ -2804,7 +3050,8 @@
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
-  },{
+  },
+  {
     "id": "proverbID-154",
     "malagasy": "Lakan-tsara fatotro : afiopioko fö tsy afaka.",
     "french": "Pirogue bien amarrée : ne peut être arrachée malgré la force qui la balance ou tiraille. (Une entreprise solide ne se dégrade pas facilement).",
@@ -3043,7 +3290,8 @@
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
-  },{
+  },
+  {
     "id": "proverbID-166",
     "malagasy": "Lambolahy mitamanta hôfiky: tsy izy tiaña fö ny hita haniñy.",
     "french": "Un sanglier qui croque des dioscorées: ce n’est pas qu’il les aime mais il mange ce qu’il trouve. (Faute de grive, on mange les merles).",
@@ -3262,7 +3510,8 @@
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
-  }, {
+  },
+  {
     "id": "proverbID-177",
     "malagasy": "Drakidraky namangy farihy: tsy môdy tsy harivariva.",
     "french": "Quand des canards visitent la mare, ils ne rentrent que le soir. (Se dit des gens qui, une fois partis, ne rentrent que tardivement).",
@@ -3461,7 +3710,8 @@
     "dialectVariants": [],
     "viewCount": 0,
     "reportCount": 0
-  },{
+  },
+  {
     "id": "proverbID-187",
     "malagasy": "Faly mena mitôhy amin- drafia: raha miharoharo tsy maharitry ela.",
     "french": "De la soie rouge nouée avec du rafia, c’est un mélange, qui ne va pas durer longtemps.",
@@ -3716,6 +3966,1783 @@
     "category": "proverbe",
     "origins": [
       "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-200",
+    "malagasy": "Ny fihavanana toy ny landy : maty ifonosana, velona itafiana, ary ny madilana harahim-panondro",
+    "french": "La fraternité est comme la soie : à la mort on s'en enveloppe, durant la vie on s'en vêt, et là où le fil s'amincit on le soutient du doigt",
+    "meaning": "Le lien de parenté accompagne l'être humain du berceau jusqu'au tombeau ; lorsqu'une discorde menace de le fragiliser, chacun doit y apporter un soin attentif et délicat pour le réparer.",
+    "example": "Cité lors des réconciliations familiales ou des discours de mariage pour sceller l'union et la patience mutuelle.",
+    "themes": [
+      "Fihavanana",
+      "Landy",
+      "Firaisankina",
+      "Fianakaviana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Merina",
+      "Betsileo"
+    ],
+    "dialectVariants": [
+      {
+        "dialect": "Hauts-Plateaux",
+        "text": "Ny fihavanana toy ny landy : raha madilana tohizana"
+      }
+    ],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-201",
+    "malagasy": "Tondro tokana tsy mahazo hao",
+    "french": "Un seul doigt ne peut attraper un pou",
+    "meaning": "Une personne isolée ne peut venir à bout d'une tâche complexe ou d'un ennemi rusé ; seule la conjugaison des efforts permet le succès.",
+    "example": "Formule populaire invoquée pour mobiliser les villageois lors des travaux d'intérêt commun (valin-tanana).",
+    "themes": [
+      "Firaisankina",
+      "Fiombonana",
+      "Ezaka"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsileo",
+      "Merina",
+      "Général"
+    ],
+    "dialectVariants": [
+      {
+        "dialect": "Betsimisaraka",
+        "text": "Tondro raiky tsy mahazo hao"
+      },
+      {
+        "dialect": "Antandroy",
+        "text": "Tondro raike tsy mahazo hao"
+      }
+    ],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-202",
+    "malagasy": "Ny hevitry ny maro mahataka-davitra",
+    "french": "La réflexion commune porte loin",
+    "meaning": "Le dialogue et la délibération collective permettent de trouver des solutions plus justes, plus durables et plus perspicaces que la seule intuition individuelle.",
+    "example": "Rappelé au début d'un fokonolona ou d'une assemblée délibérative pour solliciter l'avis des aînés et des jeunes.",
+    "themes": [
+      "Fahendrena",
+      "Fiombonana",
+      "Fokonolona"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Merina",
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-203",
+    "malagasy": "Ady lova, ady fananana ; fa tsarovy ny fihavanana",
+    "french": "Disputes d'héritage, querelles de biens ; mais n'oubliez jamais les liens du sang",
+    "meaning": "Même au cœur des différends matériels les plus épineux, il ne faut jamais porter atteinte définitive à la fraternité qui lie les héritiers.",
+    "example": "Conseil paternel prodigué aux enfants lors de la transmission des terres et des rizières.",
+    "themes": [
+      "Fihavanana",
+      "Lova",
+      "Fananana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général",
+      "Merina"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-204",
+    "malagasy": "Raha rano no taitra, mamaky fefiloha ; fa raha fo no taitra, maharava fihavanana",
+    "french": "Quand l'eau s'agite, elle brise les digues ; mais quand le cœur s'emporte, il détruit la parenté",
+    "meaning": "La colère non maîtrisée a des conséquences dévastatrices sur les liens sociaux, bien plus graves qu'une inondation matérielle réparable.",
+    "example": "Admonestation prononcée par les sages pour calmer deux interlocuteurs emportés par la dispute.",
+    "themes": [
+      "Fihavanana",
+      "Fahendrena",
+      "Fifehezan-tena"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Merina",
+      "Betsileo"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-205",
+    "malagasy": "Izay iray vatsy, iray aina",
+    "french": "Ceux qui partagent les mêmes provisions partagent le même souffle de vie",
+    "meaning": "Partager sa nourriture et ses ressources crée un pacte sacré de solidarité et d'assistance mutuelle indéfectible.",
+    "example": "Prononcé lors des voyages en groupe, des expéditions ou des repas communautaires.",
+    "themes": [
+      "Fihavanana",
+      "Fizarana",
+      "Firaisankina"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-206",
+    "malagasy": "Ny fihavanana toy ny vomanga : mitsimoka ao an-tany ka tsy hita ny lohany sy ny vodiny",
+    "french": "La parenté est comme la patate douce : elle ramifie sous terre sans qu'on en distingue le commencement de la fin",
+    "meaning": "Les ramifications généalogiques et les alliances traditionnelles relient tous les membres de la communauté de façon profonde et inextricable.",
+    "example": "Utilisé lors de la découverte de liens familiaux éloignés entre personnes qui se croyaient étrangères.",
+    "themes": [
+      "Fihavanana",
+      "Tantara",
+      "Fianakaviana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsileo",
+      "Merina"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-207",
+    "malagasy": "Aza manao fihavanamborona : maneno raha mahita vokatra, fa mangina raha sendra ny manify",
+    "french": "N'ayez pas une amitié d'oiseau : gazouillant devant les fruits mûrs, silencieux quand survient la disette",
+    "meaning": "Il faut dénoncer les amis hypocrites qui ne se manifestent que dans l'abondance et disparaissent dès que surviennent les temps difficiles.",
+    "example": "Mise en garde contre les flagorneurs et les compagnons d'intérêt.",
+    "themes": [
+      "Fihavanana",
+      "Fahitsiana",
+      "Fanamelohana ny fitaka"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Merina"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-208",
+    "malagasy": "Hazo tokana maniry an-tany tsara : na tsy ala aza, mahatahotra",
+    "french": "Un arbre solitaire poussant sur un sol fertile : même s'il n'est pas forêt, il impose le respect",
+    "meaning": "Une personne juste, bien instruite et solide dans ses principes possède une autorité morale remarquable, même lorsqu'elle agit seule.",
+    "example": "Éloge adressé à un individu intègre qui défend la justice malgré l'adversité.",
+    "themes": [
+      "Fahendrena",
+      "Toetra mendrika",
+      "Herim-po"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Hauts-Plateaux"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-209",
+    "malagasy": "Ny teny toy ny atody : raha latsaka ka vaky, tsy azo tononina intsony",
+    "french": "La parole est comme un œuf : tombé et brisé, on ne peut plus le reconstituer",
+    "meaning": "Une parole blessante ou mensongère échappée de la bouche provoque des torts irréparables. La prudence verbale s'impose en toute circonstance.",
+    "example": "Conseil récurrent dans les kabary traditionnels pour inviter les orateurs à peser chaque terme.",
+    "themes": [
+      "Fahendrena",
+      "Fitenenana",
+      "Fahamalinana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Merina",
+      "Général"
+    ],
+    "dialectVariants": [
+      {
+        "dialect": "Sakalava",
+        "text": "Ny vola misy latsaka azo alaina, fa ny vava mivoaka tsy azo ampidirina"
+      }
+    ],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-210",
+    "malagasy": "Ny fanahy no olona",
+    "french": "C'est l'âme et la conscience morale qui font l'être humain",
+    "meaning": "La valeur d'un être ne réside ni dans son apparence physique, ni dans ses richesses matérielles, mais dans sa droiture morale, sa bienveillance et son esprit.",
+    "example": "Proverbe fondamental et maxime morale suprême de la philosophie malgache.",
+    "themes": [
+      "Fahendrena",
+      "Fanahy",
+      "Toetra mendrika",
+      "Soatoavina"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [
+      {
+        "dialect": "Betsimisaraka",
+        "text": "Ny fanahy no oloña"
+      },
+      {
+        "dialect": "Antandroy",
+        "text": "Ny fagnahy ro olo"
+      }
+    ],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-211",
+    "malagasy": "Ny marina mitombina toy ny vatolampy",
+    "french": "La vérité demeure inébranlable comme le rocher",
+    "meaning": "Le mensonge et les rumeurs finissent par s'effondrer d'eux-mêmes avec le temps, tandis que la vérité reste debout et immuable face aux tempêtes.",
+    "example": "Cité lors des jugements coutumiers pour rassurer la partie sincère face aux calomnies.",
+    "themes": [
+      "Fahamarinana",
+      "Fahendrena",
+      "Faharetana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Merina",
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-212",
+    "malagasy": "Aza manao vava manidina, ka ny tongotra no mikarapoka",
+    "french": "Ne parlez pas comme si vous voliez haut, pour trébucher ensuite des pieds",
+    "meaning": "Il faut éviter la jactance, les vantardises et les promesses démesurées qu'on est incapable d'assumer dans les actes concrets.",
+    "example": "Critique constructive à l'égard de ceux qui se vantent avant même d'avoir agi.",
+    "themes": [
+      "Fahendrena",
+      "Fanetren-tena",
+      "Asa"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Hauts-Plateaux"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-213",
+    "malagasy": "Ny teny malefaka manamora ny mafy, ary ny teny masiaka manasarotra ny tsotra",
+    "french": "La parole douce adoucit ce qui est dur, tandis que le mot acerbe complique ce qui était simple",
+    "meaning": "La diplomatie, la courtoisie et la modération permettent de dénouer les conflits les plus complexes, alors que l'agressivité envenime les moindres malentendus.",
+    "example": "Maxime diplomatique utilisée par les médiateurs (mpanelana) dans les pourparlers communautaires.",
+    "themes": [
+      "Fahendrena",
+      "Fitenenana",
+      "Fihavanana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-214",
+    "malagasy": "Aza mandrora mitsilany, sao mahavoa tena",
+    "french": "Ne crachez pas en l'air couché sur le dos, de peur que cela ne vous retombe au visage",
+    "meaning": "Toute action malveillante, médisance ou complot ourdi contre autrui finit inévitablement par se retourner contre son auteur.",
+    "example": "Avertissement solennel contre la trahison et les coups bas dans la vie sociale.",
+    "themes": [
+      "Fahendrena",
+      "Fahamarinana",
+      "Fahamalinana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-215",
+    "malagasy": "Ny lalan-kely tsy azo anariana vato, sao lalovan'ny tena maraina",
+    "french": "Ne jetez pas de pierres sur le sentier, car vous pourriez l'emprunter vous-même au matin",
+    "meaning": "Il ne faut jamais saboter l'avenir ou nuire à ceux dont on pourrait avoir besoin demain ; la vie est un cycle imprévisible.",
+    "example": "Rappel à la prudence lorsqu'on quitte un emploi, un village ou des partenaires.",
+    "themes": [
+      "Fahendrena",
+      "Fahamalinana",
+      "Ho avy"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsileo",
+      "Merina"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-216",
+    "malagasy": "Izay hendry mianatra amin'ny hadisoan'ny hafa, ny adala kosa miandry ny fahavoazany",
+    "french": "Le sage s'instruit des erreurs d'autrui, tandis que l'insensé attend son propre malheur pour comprendre",
+    "meaning": "L'intelligence consiste à observer l'expérience des devanciers pour s'épargner des souffrances inutiles.",
+    "example": "Leçon d'éducation donnée aux adolescents pour les prémunir contre les pièges de l'imprudence.",
+    "themes": [
+      "Fahendrena",
+      "Fanabeazana",
+      "Fianarana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-217",
+    "malagasy": "Ny fahanginana no fiarovan'ny hendry, ary ny resaka maro no fandriky ny adala",
+    "french": "Le silence est le rempart du sage, et le bavardage inconsidéré le piège de l'insensé",
+    "meaning": "Savoir écouter et retenir sa langue permet d'analyser la situation avec clarté et d'éviter les pièges de la précipitation verbale.",
+    "example": "Éloge du calme et de la retenue au cours d'une négociation tendue.",
+    "themes": [
+      "Fahendrena",
+      "Fitenenana",
+      "Fifehezan-tena"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Merina",
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-218",
+    "malagasy": "Aza manao fitia kibon-kisoa : be fisehona fa kely hena",
+    "french": "Ne témoignez pas une amitié semblable à la panse de porc : volumineuse à la vue mais pauvre en viande",
+    "meaning": "Il convient de fuir les déclarations grandiloquentes et superficielles d'affection qui ne s'accompagnent d'aucun secours concret.",
+    "example": "Critique des faux soutiens qui prodiguent de belles paroles sans jamais poser d'acte utile.",
+    "themes": [
+      "Fahendrena",
+      "Fahitsiana",
+      "Fihavanana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Merina"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-219",
+    "malagasy": "Ny asa vita no ifampitsarana",
+    "french": "C'est à l'œuvre accomplie que l'on se juge mutuellement",
+    "meaning": "Les intentions et les discours ne valent rien devant le résultat concret de l'effort ; seules les réalisations effectives témoignent du mérite.",
+    "example": "Utilisé lors de la clôture des moissons ou de l'évaluation d'un projet communautaire.",
+    "themes": [
+      "Asa",
+      "Ezaka",
+      "Fahamarinana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [
+      {
+        "dialect": "Betsimisaraka",
+        "text": "Ny asa vita no ifanjavaña"
+      }
+    ],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-220",
+    "malagasy": "Izay maharitra vadin'antitra",
+    "french": "Celui qui persévère parvient à la vieillesse avec sérénité",
+    "meaning": "La patience, l'endurance et la régularité dans l'effort permettent de surmonter les épreuves de l'existence et d'atteindre une plénitude respectée.",
+    "example": "Encouragement adressé à un travailleur, un étudiant ou un artisan confronté à des débuts laborieux.",
+    "themes": [
+      "Faharetana",
+      "Ezaka",
+      "Fahendrena"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-221",
+    "malagasy": "Ny kamo ihany no matin-ketaheta eo amoron-drano",
+    "french": "Seul le paresseux meurt de soif au bord de la source",
+    "meaning": "Posséder des opportunités ou vivre entouré de richesses ne sert à rien si l'on ne consent pas à l'effort élémentaire de tendre la main pour les cueillir.",
+    "example": "Reproche adressé à ceux qui se plaignent du manque de travail tout en refusant les occasions qui se présentent.",
+    "themes": [
+      "Asa",
+      "Fanamelohana ny hakamoana",
+      "Ezaka"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-222",
+    "malagasy": "Aza manao kely tsy mba mamindro, lehibe tsy mba miasa",
+    "french": "Ne soyez pas enfant refusant de se réchauffer au foyer, ni adulte rechignant au labeur",
+    "meaning": "Chaque étape de la vie a ses devoirs stricts : la jeunesse doit apprendre docilement et l'âge adulte doit s'adonner au travail productif.",
+    "example": "Leçon de maturité et d'assiduité répétée aux jeunes générations.",
+    "themes": [
+      "Asa",
+      "Fanabeazana",
+      "Adidy"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Merina",
+      "Betsileo"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-223",
+    "malagasy": "Ny riaka tsy miandry mpantsaka",
+    "french": "Le fleuve en crue n'attend pas le porteur d'eau",
+    "meaning": "Le cours du temps et les circonstances opportunes ne ralentissent pas pour attendre les retardataires ; il faut agir au moment opportun.",
+    "example": "Appel pressant à saisir sans délai les saisons agricoles favorables (semis, repiquage).",
+    "themes": [
+      "Fotoana",
+      "Asa",
+      "Fahamalinana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsileo",
+      "Merina"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-224",
+    "malagasy": "Aza manao vava be fihinam-bary, fa tanana zatra miasa no ananana",
+    "french": "N'ayez pas seulement une grande bouche pour manger le riz, mais de vaillantes mains habituées à la tâche pour l'obtenir",
+    "meaning": "Le droit de jouir des fruits de la terre implique le devoir moral d'avoir participé préalablement à leur culture.",
+    "example": "Rappel à l'ordre convivial lors des repas partagés au village.",
+    "themes": [
+      "Asa",
+      "Fahitsiana",
+      "Fahamarinana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-225",
+    "malagasy": "Tsy misy orana tsy manala hetaheta ny tany",
+    "french": "Il n'est pas de pluie qui n'étanche un tant soit peu la soif de la terre",
+    "meaning": "Même le travail le plus modeste ou le résultat apparemment infime produit un effet positif et contribue au progrès général.",
+    "example": "Consolation bienveillante pour valoriser les petits progrès et débuts discrets.",
+    "themes": [
+      "Ezaka",
+      "Fanantenana",
+      "Asa"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-226",
+    "malagasy": "Ny taona mamokatra tsy vokatry ny torimaso",
+    "french": "Une année d'abondance ne naît pas du sommeil",
+    "meaning": "Les greniers bien remplis et la prospérité familiale sont le fruit direct des levers matinaux et de la sueur versée aux champs.",
+    "example": "Adage paysan scandé aux aurores avant le départ pour la rizière.",
+    "themes": [
+      "Asa",
+      "Vokatra",
+      "Ezaka"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsileo",
+      "Merina"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-227",
+    "malagasy": "Antidahim-bariky ny fiaiñaña : izay tsy mambokiñy tsy hömaña",
+    "french": "La vie est comme le vieux maki : qui ne saute pas d'arbre en arbre ne mange pas",
+    "meaning": "Dans l'existence, le mouvement, l'audace et l'effort quotidien sont la condition absolue de la nourriture et de la subsistance.",
+    "example": "Proverbe fondamental betsimisaraka cité pour inciter les jeunes au labeur et à la mobilité active.",
+    "themes": [
+      "Asa",
+      "Ezaka",
+      "Betsimisaraka",
+      "Zavaboary"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [
+      {
+        "dialect": "Merina",
+        "text": "Ny fiainana toy ny gidro : izay tsy mitsambikina tsy mihinana"
+      }
+    ],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-228",
+    "malagasy": "Kojeja bi-löha tsy lanin'akôho boty",
+    "french": "Le criquet à grosse tête ne peut être avalé par un poussin chétif",
+    "meaning": "Pour entreprendre un projet ambitieux ou assumer de hautes responsabilités, il faut posséder les moyens, les compétences et l'envergure appropriés.",
+    "example": "Mise en garde contre la prétention inconsidérée et l'absence de préparation technique.",
+    "themes": [
+      "Fahendrena",
+      "Fahamalinana",
+      "Betsimisaraka"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-229",
+    "malagasy": "Akôho be holy tsy be fe",
+    "french": "La poule qui reste immobile sur ses pattes n'a pas de cuisses charnues",
+    "meaning": "L'inactivité et l'absence de courage ne procurent aucun développement ni aucune richesse matérielle ; seul l'exercice forge la force.",
+    "example": "Parabole campagnarde illustrant la nécessité de courir et d'agir sans relâche pour prospérer.",
+    "themes": [
+      "Asa",
+      "Ezaka",
+      "Betsimisaraka"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-230",
+    "malagasy": "Izay mangiñy, völamena",
+    "french": "Celui qui sait se taire est revêtu d'or",
+    "meaning": "Dans la culture de l'Est, la retenue, l'écoute silencieuse et l'observation priment toujours sur le bavardage impétueux.",
+    "example": "Recommandation d'attitude pour les jeunes assistant aux conseils des aînés.",
+    "themes": [
+      "Fahendrena",
+      "Fitenenana",
+      "Fanajana",
+      "Betsimisaraka"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [
+      {
+        "dialect": "Merina",
+        "text": "Ny teny volafotsy, fa ny fahanginana volamena"
+      }
+    ],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-231",
+    "malagasy": "Lalaña vava tsy lalaña tongotra : mora lazaiñy fa sarotra fiaiñaña",
+    "french": "Le chemin tracé par la bouche n'est pas le sentier foulé par les pieds : facile à énoncer, difficile à parcourir",
+    "meaning": "Déclarer de nobles intentions ou donner des leçons de morale est aisé ; appliquer rigoureusement ces règles dans sa propre vie exige une volonté de fer.",
+    "example": "Rappel à la modestie adressé aux donneurs de leçons qui n'éprouvent pas leurs propres conseils.",
+    "themes": [
+      "Fahendrena",
+      "Fahitsiana",
+      "Betsimisaraka"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-232",
+    "malagasy": "Rivotra be tsy mandrava hazo manam-paka lalina",
+    "french": "Le grand vent de mousson n'abat pas l'arbre aux racines profondes",
+    "meaning": "L'individu profondément ancré dans sa culture, ses valeurs ancestrales et l'éducation de ses parents résiste à toutes les tempêtes de la vie.",
+    "example": "Éloge de la fidélité aux coutumes et aux fondations spirituelles lors des périodes de crise.",
+    "themes": [
+      "Faharetana",
+      "Soatoavina",
+      "Fianakaviana",
+      "Betsimisaraka"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-233",
+    "malagasy": "Fandri-boay nahavoa aomby : raha tsy tiaña möra tönga",
+    "french": "Le piège à crocodile qui capture un bœuf : le malheur survient vite quand on baisse la garde",
+    "meaning": "L'inattention et la négligence peuvent transformer une mesure de sécurité en désastre imprévu.",
+    "example": "Conseil de vigilance lors de la manipulation d'engins ou de décisions délicates.",
+    "themes": [
+      "Fahamalinana",
+      "Betsimisaraka"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-234",
+    "malagasy": "Akanga maro tsy vakin'amboa",
+    "french": "Une troupe nombreuse de pintades n'est pas dispersée par le chien",
+    "meaning": "Lorsque les membres d'une communauté se serrent les coudes et restent unis, aucune menace extérieure ne peut entamer leur sérénité.",
+    "example": "Hymne à la solidarité du clan face aux agressions extérieures.",
+    "themes": [
+      "Firaisankina",
+      "Fihavanana",
+      "Betsimisaraka"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka",
+      "Hauts-Plateaux"
+    ],
+    "dialectVariants": [
+      {
+        "dialect": "Merina",
+        "text": "Akanga maro tsy vakin'ny amboa"
+      }
+    ],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-235",
+    "malagasy": "Sakalava very omby ka ny sisa no atao tsara hidy",
+    "french": "Le Sakalava qui perd un bœuf veille à cadenasser doublement l'enclos pour ceux qui restent",
+    "meaning": "L'adversité et les pertes passées doivent servir de leçon pour redoubler de vigilance et protéger les biens précieux qui demeurent.",
+    "example": "Formule d'expérience énoncée pour encourager la prévoyance après un échec ou un vol.",
+    "themes": [
+      "Fahamalinana",
+      "Fahendrena",
+      "Sakalava"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Sakalava"
+    ],
+    "dialectVariants": [
+      {
+        "dialect": "Merina",
+        "text": "Very omby vao mahatonga vala"
+      }
+    ],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-236",
+    "malagasy": "Tomendry añabo kakazo ; vataña fô aty fa jery jiaby aminarô añy",
+    "french": "Perché sur la cime de l'arbre ; le corps seul est ici, mais tout le regard et l'esprit sont auprès des vôtres là-bas",
+    "meaning": "Même éloigné géographiquement par ses devoirs, le cœur et la sollicitude d'une personne sincère restent attachés aux siens.",
+    "example": "Salutation chaleureuse et poétique adressée aux proches lors des voyages lointains.",
+    "themes": [
+      "Fitiavana",
+      "Fianakaviana",
+      "Sakalava"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Sakalava"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-237",
+    "malagasy": "Tia vady manompo rafozaña",
+    "french": "Qui aime son conjoint se dévoue corps et âme pour ses beaux-parents",
+    "meaning": "Le mariage dans la tradition malgache ne lie pas deux individus isolés mais deux familles entières : respecter sa belle-famille est la preuve suprême de l'amour conjugal.",
+    "example": "Conseil traditionnel majeur délivré aux jeunes mariés lors des noces.",
+    "themes": [
+      "Fanambadiana",
+      "Fianakaviana",
+      "Fanajana",
+      "Sakalava"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Sakalava",
+      "Général"
+    ],
+    "dialectVariants": [
+      {
+        "dialect": "Merina",
+        "text": "Tia vady, manaja rafozana"
+      }
+    ],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-238",
+    "malagasy": "Nahoana no ny Betsimisaraka no namono mamba, ka ny Sakalava no miravaka ny nifiny ?",
+    "french": "Pourquoi serait-ce le Betsimisaraka qui brave le caïman, et le Sakalava qui se parerait de ses dents ?",
+    "meaning": "Il est profondément injuste que certains supportent tous les risques et les sueurs du labeur, pendant que d'autres s'arrogent la gloire et les honneurs sans effort.",
+    "example": "Dénonciation ferme de l'usurpation des mérites dans une œuvre collective.",
+    "themes": [
+      "Fahamarinana",
+      "Asa",
+      "Sakalava",
+      "Betsimisaraka"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Sakalava",
+      "Betsimisaraka"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-239",
+    "malagasy": "Omby mahia tsy fointsika, omby matavy an'olona",
+    "french": "Le zébu maigre qui nous appartient nous est plus cher que le taureau gras d'autrui",
+    "meaning": "Il faut chérir et valoriser ses propres biens modestes et les siens, plutôt que de jalouser ou convoiter les fastes trompeurs du voisin.",
+    "example": "Éloge du contentement et de la fidélité à son modeste patrimoine familial.",
+    "themes": [
+      "Fahendrena",
+      "Fianakaviana",
+      "Sakalava"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Sakalava",
+      "Bara"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-240",
+    "malagasy": "Ny fanekena natao teo an-kianja, tsy ravana ao an-trano",
+    "french": "Le pacte conclu sur la place publique ne se dénonce point une fois rentré sous le toit",
+    "meaning": "La parole donnée et les engagements solennels pris devant la communauté sont sacrés et doivent être honorés sans duplicité.",
+    "example": "Rappel à l'intégrité et au respect des serments après un accord conclu.",
+    "themes": [
+      "Fahamarinana",
+      "Teny",
+      "Sakalava"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Sakalava",
+      "Menabe"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-241",
+    "malagasy": "Ana-tsiriry tsy toroan-dagno",
+    "french": "Le poussin de la sarcelle n'a nul besoin qu'on lui montre la rivière",
+    "meaning": "Inutile d'enseigner avec condescendance ce qui relève de l'instinct naturel, de la vocation innée ou d'une expérience déjà acquise.",
+    "example": "S'applique lorsqu'un aîné constate la dextérité spontanée d'un enfant héritant du talent de ses parents.",
+    "themes": [
+      "Fanabeazana",
+      "Fahendrena",
+      "Antandroy"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Antandroy"
+    ],
+    "dialectVariants": [
+      {
+        "dialect": "Merina",
+        "text": "Zanak'omby tsy ampianarin-domano"
+      }
+    ],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-242",
+    "malagasy": "Izay manan-tsira mahay mahandro",
+    "french": "Celui qui possède le sel sait comment réussir le repas",
+    "meaning": "Pour mener à bien une mission délicate, il est indispensable de disposer des ressources élémentaires et du savoir-faire adéquat.",
+    "example": "Reconnaissance de la compétence de celui qui dispose des outils appropriés pour résoudre une crise.",
+    "themes": [
+      "Fahendrena",
+      "Fahaizana",
+      "Antandroy"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Antandroy"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-243",
+    "malagasy": "Ny mahery tsy maody tsy ela velona",
+    "french": "Le fort qui dédaigne la prudence et le discernement ne vit pas longtemps",
+    "meaning": "La seule puissance musculaire ou l'arrogance bravache sans intelligence ni tempérance conduit tout droit à une fin tragique.",
+    "example": "Avertissement adressé aux querelleurs qui abusent de leur force physique pour intimider autrui.",
+    "themes": [
+      "Fahendrena",
+      "Fifehezan-tena",
+      "Antandroy"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Antandroy"
+    ],
+    "dialectVariants": [
+      {
+        "dialect": "Merina",
+        "text": "Ny mahery tsy maody tsy ela velona"
+      }
+    ],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-244",
+    "malagasy": "Tandriondriono maola mahazo ty marentane",
+    "french": "L'agitation aveugle et insensée ne récolte que tourments et désolation",
+    "meaning": "Agir avec précipitation et sans écouter les avis des personnes avisées entraîne des conséquences douloureuses pour soi et ses proches.",
+    "example": "Conseil de pondération prodigué face aux réactions impulsives.",
+    "themes": [
+      "Fahendrena",
+      "Fahamalinana",
+      "Antandroy"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Antandroy"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-245",
+    "malagasy": "Tagnamboa tsy folaka hevitse",
+    "french": "L'arbre du grand désert ne manque jamais de souplesse face à la sécheresse",
+    "meaning": "L'être endurci par les rigueurs de l'environnement apprend l'art de l'adaptation et de l'ingéniosité pour survivre dignement.",
+    "example": "Célébration de la résilience du peuple du Sud face aux pénuries climatiques.",
+    "themes": [
+      "Faharetana",
+      "Herim-po",
+      "Antandroy"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Antandroy"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-246",
+    "malagasy": "Ny tso-drano zava-mahery : mahatsara ny lalana diavin'ny tena",
+    "french": "La bénédiction des aînés est une force souveraine : elle aplanit la route sous les pas",
+    "meaning": "La bénédiction paternelle et maternelle reçue d'un cœur pur protège l'individu, conjure le mauvais sort et ouvre les voies du succès.",
+    "example": "Invoqué solennellement lorsqu'un enfant quitte le toit familial pour ses études ou une nouvelle étape de vie.",
+    "themes": [
+      "Fanajana",
+      "Ray aman-dreny",
+      "Fitahiana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-247",
+    "malagasy": "Aza mandika fefy natsangan'ny ray",
+    "french": "Ne franchissez pas avec désinvolture la clôture bâtie par vos pères",
+    "meaning": "Il est du devoir de la jeunesse de respecter les lois morales, les coutumes éprouvées et les délimitations établies par les ancêtres.",
+    "example": "Rappel à l'ordre coutumier lors des querelles de bornage ou de rupture des traditions sacrées.",
+    "themes": [
+      "Fanajana",
+      "Lova",
+      "Razana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsileo",
+      "Merina"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-248",
+    "malagasy": "Ny loloina an-doha tsy mba enta-mavesatra : ny fitiavana ny ray aman-dreny",
+    "french": "Ce que l'on porte sur la tête par amour filial ne semble jamais un lourd fardeau",
+    "meaning": "Prendre soin de ses géniteurs dans leur grand âge n'est pas une corvée pénible, mais une dette sacrée de reconnaissance acquittée avec joie.",
+    "example": "Exhortation des enfants à veiller sur leurs parents vieillissants avec dévouement.",
+    "themes": [
+      "Fitiavana",
+      "Ray aman-dreny",
+      "Fanajana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-249",
+    "malagasy": "Aza manao am-bava malefaka ka an-tsaina misy lefona",
+    "french": "N'ayez pas des paroles doucereuses sur les lèvres tout en dissimulant une lance dans votre cœur",
+    "meaning": "La duplicité, l'hypocrisie et les sourires trompeurs doivent être bannis ; l'honnêteté exige la concordance parfaite entre les propos et les pensées.",
+    "example": "Mise en garde contre la traîtrise feutrée dans les relations professionnelles et politiques.",
+    "themes": [
+      "Fahitsiana",
+      "Fahamarinana",
+      "Fahendrena"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Merina",
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-250",
+    "malagasy": "Ny hazo avo halan'ny rivotra",
+    "french": "L'arbre le plus élevé est le premier buté par les assauts du vent",
+    "meaning": "Occuper un rang élevé ou jouir d'une grande notoriété expose inévitablement aux critiques, aux jalousies et aux épreuves les plus intenses.",
+    "example": "Conseil de prudence et d'humilité adressé aux dirigeants et personnalités publiques.",
+    "themes": [
+      "Fahendrena",
+      "Fitondrana",
+      "Fanetren-tena"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsileo",
+      "Merina"
+    ],
+    "dialectVariants": [
+      {
+        "dialect": "Betsileo",
+        "text": "Hazo lehibe ifofofofon'ny tafiotra"
+      }
+    ],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-251",
+    "malagasy": "Aleo halan'andriana toy izay halam-bahoaka",
+    "french": "Mieux vaut encourir le déplaisir des princes que d'être honni par le peuple",
+    "meaning": "Le jugement et l'affection de la masse populaire laborieuse ont un poids moral et historique bien supérieur à la faveur éphémère des puissants.",
+    "example": "Maxime démocratique traditionnelle proclamée lors des débats civiques et royaux.",
+    "themes": [
+      "Fahamarinana",
+      "Vahoaka",
+      "Fitondrana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Merina"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-252",
+    "malagasy": "Aza manary ny hazo nanantona anao fony ianao rendrika",
+    "french": "Ne jetez point avec dédain la branche flottante qui vous a sauvé lorsque vous couliez",
+    "meaning": "Il est odieux d'oublier ou de mépriser les bienfaiteurs modestes qui vous ont secouru au moment de la détresse une fois la prospérité retrouvée.",
+    "example": "Leçon de gratitude pérenne envers ceux qui ont tendu la main dans les débuts difficiles.",
+    "themes": [
+      "Fisaorana",
+      "Fahitsiana",
+      "Fihavanana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-253",
+    "malagasy": "Ny volamena tsy matahotra afo, ny marina tsy matahotra fitsarana",
+    "french": "L'or pur ne craint pas la fournaise, la vérité ne redoute point le tribunal",
+    "meaning": "L'homme sincère et droit dans sa conscience affronte sans pâlir les épreuves et les jugements, car son innocence finit toujours par éclater.",
+    "example": "Cité par l'accusé injustement diffamé devant les juges traditionnels.",
+    "themes": [
+      "Fahamarinana",
+      "Herim-po",
+      "Fahendrena"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-254",
+    "malagasy": "Izay manao tsara fototra, tsy matahotra rivotra",
+    "french": "Celui qui bâtit sur de solides fondations ne tremble point devant les bourrasques",
+    "meaning": "Une éducation solide, un métier bien appris et des principes inaltérables garantissent la stabilité de l'existence face aux aléas de la vie.",
+    "example": "Encouragement à la rigueur dès les étapes initiales d'un apprentissage.",
+    "themes": [
+      "Fanabeazana",
+      "Faharetana",
+      "Fahendrena"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-255",
+    "malagasy": "Ny fisaorana tsy mampahantra, ny fitahiana tsy mampanefy",
+    "french": "Exprimer sa gratitude n'appauvrit personne, bénir autrui ne coûte aucune peine",
+    "meaning": "La politesse, la bienveillance et les vœux sincères sont des trésors moraux inépuisables qui enrichissent celui qui les donne comme celui qui les reçoit.",
+    "example": "Leçon de courtoisie élémentaire dispensée dès le plus jeune âge.",
+    "themes": [
+      "Fanajana",
+      "Fisaorana",
+      "Fahendrena"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-256",
+    "malagasy": "Ny omby mahia tsy namana",
+    "french": "Le bœuf émacié ne trouve point de compagnon d'attelage",
+    "meaning": "Constat lucide et critique de la cruauté humaine : les personnes dans la misère sont trop souvent délaissées par ceux qui les entouraient au temps de leur splendeur.",
+    "example": "Dénonciation de l'égoïsme mondain et appel à la compassion pour les démunis.",
+    "themes": [
+      "Fihavanana",
+      "Fahendrena",
+      "Fiantrana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsileo",
+      "Merina"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-257",
+    "malagasy": "Aza mandao ny omby mahavokatra ka hihazakazaka hanenjika ny vorona manidina",
+    "french": "N'abandonnez pas la vache productive pour courir après l'oiseau qui s'envole",
+    "meaning": "Il ne faut point délaisser un bien certain, acquis par le labeur, pour des chimères séduisantes mais hautement improbables.",
+    "example": "Avertissement contre la spéculation hasardeuse et les promesses mirobolantes.",
+    "themes": [
+      "Fahendrena",
+      "Fahamalinana",
+      "Asa"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-258",
+    "malagasy": "Ny valin-tanana no mampitombo ny voka-bary",
+    "french": "C'est l'entraide communautaire des bras qui démultiplie la récolte du riz",
+    "meaning": "La solidarité active dans le repiquage et la moisson permet d'achever en un jour ce qu'une famille isolée peinerait à réaliser en un mois.",
+    "example": "Appel traditionnel à l'esprit d'entraide (valin-tanana) lors de la saison des pluies.",
+    "themes": [
+      "Firaisankina",
+      "Valin-tanana",
+      "Asa"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsileo",
+      "Merina"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-259",
+    "malagasy": "Aza manao fitia tsipolitra : liana amin'ny voalohany, fa manary amin'ny farany",
+    "french": "N'ayez point un amour de fétu de paille : flamboyant au départ, prompt à s'éteindre et à abandonner à la fin",
+    "meaning": "La véritable amitié et l'engagement sincère se mesurent à leur constance dans la durée et non à un enthousiasme passager.",
+    "example": "Conseil de fidélité dans les relations amicales et professionnelles.",
+    "themes": [
+      "Fitiavana",
+      "Faharetana",
+      "Fahitsiana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Merina"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-260",
+    "malagasy": "Ny lova tsara indrindra ho an'ny zanaka dia ny fahendrena sy ny fanabeazana",
+    "french": "Le plus bel héritage pour un enfant réside dans la sagesse et l'éducation qu'on lui transmet",
+    "meaning": "Les terres et l'or peuvent être perdus ou dilapidés, mais l'instruction et les valeurs morales chevillées au corps demeurent pour toujours.",
+    "example": "Exhortation des parents à privilégier l'instruction de leur progéniture.",
+    "themes": [
+      "Fanabeazana",
+      "Fahendrena",
+      "Lova"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-261",
+    "malagasy": "Ny teny ratsy toy ny tsilo : mora atsindrona fa sarotra alana",
+    "french": "La mauvaise parole est pareille à l'épine : facile à planter, douloureuse à retirer",
+    "meaning": "Une parole offensante s'enracine durablement dans le cœur de celui qui la reçoit et laisse des cicatrices vivaces même après le pardon.",
+    "example": "Invitation solennelle à la retenue verbale lors des tensions familiales.",
+    "themes": [
+      "Fahendrena",
+      "Fitenenana",
+      "Fihavanana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-262",
+    "malagasy": "Aza manao lamban-tsolifara : tsara ety ivelany fa simba ao anaty",
+    "french": "Ne ressemblez point à la natte de cercueil : éclatante au regard extérieur mais corrompue en son for intérieur",
+    "meaning": "Il faut condamner l'apparence respectable masquant la noirceur de l'âme ; la pureté intérieure prime sur l'artifice.",
+    "example": "Reproche adressé aux faux dévots et aux imposteurs de la vie publique.",
+    "themes": [
+      "Fahitsiana",
+      "Fahamarinana",
+      "Fahendrena"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Merina"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-263",
+    "malagasy": "Ny olona mahay manetry tena no asandratra",
+    "french": "L'être capable d'humilité véritable est celui que la communauté élève",
+    "meaning": "Ceux qui s'abstiennent d'arrogance et savent servir avec modestie finissent toujours par gagner la confiance et l'estime unanime de leurs pairs.",
+    "example": "Maxime célébrant la vertu d'humilité chez les grands orateurs et chefs traditionnels.",
+    "themes": [
+      "Fanetren-tena",
+      "Fahendrena",
+      "Soatoavina"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-264",
+    "malagasy": "Ny fitiavana tsy mba an-tery : toy ny rano mikoriana am-pahatoniana",
+    "french": "L'amour ne se commande point de force : il est pareil à l'eau qui s'écoule paisiblement",
+    "meaning": "Les sentiments sincères et les unions durables doivent naître du libre consentement et de l'harmonie naturelle des cœurs.",
+    "example": "Principe coutumier défendant la liberté et la sincérité des sentiments amoureux.",
+    "themes": [
+      "Fitiavana",
+      "Fanambadiana",
+      "Fahendrena"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-265",
+    "malagasy": "Ny asa iaraha-manao dia maivana, ny entana ifandrombahana tsy mandratra soroka",
+    "french": "Le travail partagé devient léger, le fardeau porté ensemble ne blesse point l'épaule",
+    "meaning": "Face aux corvées les plus ardues, la répartition fraternelle des efforts transforme la pénibilité en un moment de communion joyeuse.",
+    "example": "Cri d'encouragement lors du transport de bois de charpente ou de digues de rizière.",
+    "themes": [
+      "Firaisankina",
+      "Asa",
+      "Fihavanana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-266",
+    "malagasy": "Ny andro lasa tsy mba miverina",
+    "french": "Le jour enfui ne revient jamais sur ses pas",
+    "meaning": "Le temps est un trésor précieux et irréversible ; chaque instant doit être employé à des œuvres utiles pour soi et sa communauté.",
+    "example": "Avertissement contre la procrastination et le gaspillage des heures de jeunesse.",
+    "themes": [
+      "Fotoana",
+      "Fahendrena",
+      "Asa"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-267",
+    "malagasy": "Ny marina toy ny fary : na voatoto aza, mbola mamy ihany",
+    "french": "La vérité est pareille à la canne à sucre : même broyée sous la meule, elle conserve sa douceur",
+    "meaning": "L'authenticité et la probité résistent à toutes les humiliations et calomnies ; le temps finit toujours par en révéler la saveur irremplaçable.",
+    "example": "Encouragement pour celui qui endure l'injustice pour être resté fidèle à la vérité.",
+    "themes": [
+      "Fahamarinana",
+      "Fahendrena",
+      "Faharetana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsimisaraka",
+      "Hauts-Plateaux"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-268",
+    "malagasy": "Aza manao rano an-tavy : manopy ka manary",
+    "french": "Ne traitez pas autrui comme l'eau de la cuvette : s'y laver puis la rejeter avec dédain",
+    "meaning": "Il est indigne de n'approcher une personne que pour exploiter ses services ou son soutien, pour ensuite l'abandonner froidement une fois le besoin comblé.",
+    "example": "Condamnation morale de l'ingratitude et de l'opportunisme relationnel.",
+    "themes": [
+      "Fahitsiana",
+      "Fihavanana",
+      "Fanajana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Merina"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-269",
+    "malagasy": "Tsy misy valala tsy an-katsaka",
+    "french": "Il n'est point de sauterelle qui ne finisse un jour par se poser sur le maïs",
+    "meaning": "Chacun a ses habitudes, ses vulnérabilités et ses points d'attache ; avec de la patience, les intentions cachées finissent toujours par se dévoiler.",
+    "example": "Maxime de déduction et de perspicacité face aux faux-fuyants d'un suspect.",
+    "themes": [
+      "Fahendrena",
+      "Fahamalinana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-270",
+    "malagasy": "Ny zaza hendry voninahitry ny ray aman-dreniny",
+    "french": "L'enfant bien élevé et sage fait la fierté et l'honneur de ses parents",
+    "meaning": "La droiture et les succès d'un enfant rejaillissent sur toute sa famille et récompensent dignement les sacrifices de ses éducateurs.",
+    "example": "Compliment traditionnel adressé aux parents lors de la réussite scolaire ou sociale d'un jeune.",
+    "themes": [
+      "Fanabeazana",
+      "Ray aman-dreny",
+      "Voninahitra"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-271",
+    "malagasy": "Ny fitiavana marina tsy mba manao vava be",
+    "french": "Le véritable amour ne s'embarrasse point de grands discours tapageurs",
+    "meaning": "Les sentiments les plus sincères et les plus profonds s'expriment dans la discrétion des actes quotidiens plutôt que dans les promesses ronflantes.",
+    "example": "Rappel à la sobriété et à l'authenticité dans l'engagement conjugal ou fraternel.",
+    "themes": [
+      "Fitiavana",
+      "Fahitsiana",
+      "Fahendrena"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-272",
+    "malagasy": "Ny henatra no tsara noho ny faharesena",
+    "french": "Le sens de l'honneur et la pudeur valent mieux que la déchéance morale",
+    "meaning": "Mieux vaut renoncer dignement à un affrontement stérile ou à un gain douteux que de perdre sa réputation et l'estime de soi.",
+    "example": "Conseil de modération donné pour désamorcer une surenchère verbale dangereuse.",
+    "themes": [
+      "Fahendrena",
+      "Soatoavina",
+      "Fifehezan-tena"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Merina",
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-273",
+    "malagasy": "Izay manao soa ho an'ny hafa, manao soa ho an'ny tenany",
+    "french": "Qui sème le bien envers son semblable fait du bien à sa propre existence",
+    "meaning": "La bienveillance et la générosité créent autour de l'individu un cercle vertueux d'amitié, de protection et de paix intérieure.",
+    "example": "Motivation à l'altruisme et à l'assistance des personnes vulnérables.",
+    "themes": [
+      "Fahendrena",
+      "Fiantrana",
+      "Fihavanana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-274",
+    "malagasy": "Aza manao vorona manara-drenirano : mora midina fa sarotra miakatra",
+    "french": "N'imitez point l'oiseau qui suit docilement le cours du fleuve : descendre est aisé, remonter le courant est périlleux",
+    "meaning": "Se laisser glisser sur la pente de la facilité ou des mauvaises fréquentations est tentant, mais redresser sa vie exige des efforts colossaux.",
+    "example": "Avertissement donné à la jeunesse contre les tentations de la dérive et du laisser-aller.",
+    "themes": [
+      "Fanabeazana",
+      "Fahamalinana",
+      "Herim-po"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsileo",
+      "Merina"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-275",
+    "malagasy": "Ny fanetren-tena no loharanon'ny voninahitra",
+    "french": "L'humilité est la source la plus pure de la véritable grandeur",
+    "meaning": "C'est en sachant s'effacer, servir autrui et reconnaître ses limites que l'on acquiert une autorité morale naturelle et incontestable.",
+    "example": "Éloge coutumier prononcé en l'honneur d'un doyen respecté pour sa modestie.",
+    "themes": [
+      "Fanetren-tena",
+      "Fahendrena",
+      "Soatoavina"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-276",
+    "malagasy": "Ny namana marina hita amin'ny andro fahoriana",
+    "french": "Le véritable ami se reconnaît au jour de l'adversité",
+    "meaning": "Les compagnons de fête fuient au premier orage ; seuls ceux qui demeurent à vos côtés dans le deuil ou la misère méritent le titre de frère.",
+    "example": "Reconnaissance émue témoignée à un proche venu prêter main-forte lors d'un coup dur.",
+    "themes": [
+      "Fihavanana",
+      "Fahitsiana",
+      "Faharetana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-277",
+    "malagasy": "Ny fahaizana tsy voavidy vola, fa iasana am-poto-kevitra",
+    "french": "Le vrai savoir ne s'achète pas avec de l'argent, il s'acquiert par l'étude patiente et la méditation",
+    "meaning": "La richesse matérielle ne peut remplacer la rigueur intellectuelle, la culture et l'apprentissage méthodique d'un métier.",
+    "example": "Exhortation des étudiants et des apprentis à la persévérance scolaire.",
+    "themes": [
+      "Fanabeazana",
+      "Fahaizana",
+      "Asa"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-278",
+    "malagasy": "Izay tsy mandray anatra, mandray loza",
+    "french": "Celui qui rejette les sages conseils des anciens s'expose de plein fouet au désastre",
+    "meaning": "Le refus obstiné d'écouter les avertissements bienveillants conduit inévitablement aux erreurs les plus destructrices.",
+    "example": "Rappel à la docilité adressé à celui qui persiste dans une démarche imprudente.",
+    "themes": [
+      "Fahendrena",
+      "Fanabeazana",
+      "Fahamalinana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-279",
+    "malagasy": "Ny fahamarinana toy ny masoandro : na takon-drahona aza, hiposaka ihany",
+    "french": "La vérité est pareille au soleil : même masquée par les nuages sombres, elle finit toujours par rayonner",
+    "meaning": "Les complots, les faux témoignages et l'injustice peuvent masquer temporairement la réalité, mais la lumière finit toujours par triompher.",
+    "example": "Parole de foi et d'espoir prononcée lors d'épreuves judiciaires ou de calomnies publiques.",
+    "themes": [
+      "Fahamarinana",
+      "Fanantenana",
+      "Fahendrena"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-280",
+    "malagasy": "Ny fihavanana toy ny lalan-kely an-tsaha : raha tsy ifamelezana, dia tapitr'ahitra",
+    "french": "L'amitié est comme le sentier des rizières : si on ne l'emprunte pas régulièrement, les herbes folles l'effacent",
+    "meaning": "Les relations fraternelles demandent un entretien constant (visites, nouvelles, marques d'affection) sous peine de s'étioler avec la distance.",
+    "example": "Justification traditionnelle d'une visite de courtoisie inopinée à un parent éloigné.",
+    "themes": [
+      "Fihavanana",
+      "Fianakaviana",
+      "Fikolokolona"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Betsileo",
+      "Merina"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-281",
+    "malagasy": "Izay mahay manaja ny madinika, hajain'ny lehibe",
+    "french": "Celui qui sait témoigner de la déférence aux humbles gagne tout naturellement le respect des grands",
+    "meaning": "La courtoisie envers les faibles est la véritable marque des âmes nobles et inspire la confiance des chefs et des aînés.",
+    "example": "Maxime de comportement politique et social enseignée aux futurs responsables.",
+    "themes": [
+      "Fanajana",
+      "Fahendrena",
+      "Toetra mendrika"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-282",
+    "malagasy": "Ny marina tsy mba maty an-drano",
+    "french": "La vérité ne se noie jamais au fond des eaux",
+    "meaning": "Aucune tentative de dissimulation ni aucun étouffement de scandale ne peut submerger définitivement la vérité.",
+    "example": "Formule d'apaisement utilisée lorsque des faits longtemps cachés refont surface.",
+    "themes": [
+      "Fahamarinana",
+      "Fahendrena"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-283",
+    "malagasy": "Ny zoky manoro, ny zandry mankato",
+    "french": "L'aîné guide le chemin avec bienveillance, le cadet prête l'oreille avec respect",
+    "meaning": "L'harmonie de la famille et de la société repose sur ce pacte intergénérationnel : la transmission protectrice des devanciers et la docilité studieuse des cadets.",
+    "example": "Principe fondamental de la hiérarchie coutumière malgache.",
+    "themes": [
+      "Fianakaviana",
+      "Fanajana",
+      "Zoky sy Zandry"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-284",
+    "malagasy": "Aza manao am-pihavanana kely toy ny voatavo : maniry ka manongana ny tompony",
+    "french": "Ne pratiquez point une fraternité de courge grimpante : grandissant pour finir par écraser le piquet qui l'a soutenue",
+    "meaning": "Il faut flétrir l'arrogance de ceux qui, après avoir grandi grâce à la générosité d'un bienfaiteur, se retournent contre lui pour l'évincer.",
+    "example": "Sévère réprimande contre l'ingratitude des protégés envers leurs mentors.",
+    "themes": [
+      "Fahitsiana",
+      "Fihavanana",
+      "Fanajana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Merina"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-285",
+    "malagasy": "Ny tany tsy mba mandà faty, ny fihavanana tsy mba mandà havana",
+    "french": "La terre ne refuse jamais la dépouille, et la fraternité ne repousse jamais le parent revenu",
+    "meaning": "L'amour familial et la communauté ont une capacité infinie d'accueil et de pardon pour le membre égaré qui revient chercher refuge.",
+    "example": "Accueil inconditionnel d'un membre de la famille après une longue absence ou des erreurs passées.",
+    "themes": [
+      "Fihavanana",
+      "Famindram-po",
+      "Fianakaviana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-286",
+    "malagasy": "Ny fandeferana tsy faharesena, fa fandresena ny hatezerana",
+    "french": "Savoir pardonner et céder avec noblesse n'est point une défaite, mais la victoire sur sa propre rancœur",
+    "meaning": "La modération et l'apaisement volontaire témoignent d'une force d'âme supérieure à celle qui s'abandonne aveuglément à la vengeance.",
+    "example": "Exhortation à la paix concluant un arbitrage traditionnel entre deux voisins.",
+    "themes": [
+      "Fahendrena",
+      "Fihavanana",
+      "Famindram-po"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
+    ],
+    "dialectVariants": [],
+    "viewCount": 0,
+    "reportCount": 0
+  },
+  {
+    "id": "proverbID-287",
+    "malagasy": "Ny fiainana toy ny kodiaran-kalesy : anio ambony, rahampitso ambany",
+    "french": "L'existence humaine est comme la roue du chariot : aujourd'hui au faîte, demain au ras du sol",
+    "meaning": "Les honneurs et les fortunes sont changeants ; celui qui prospère aujourd'hui doit rester humble et généreux, car la roue tourne pour tous.",
+    "example": "Leçon de modestie pour ceux que le succès récent rend orgueilleux.",
+    "themes": [
+      "Fahendrena",
+      "Fanetren-tena",
+      "Fiainana"
+    ],
+    "category": "proverbe",
+    "origins": [
+      "Général"
     ],
     "dialectVariants": [],
     "viewCount": 0,

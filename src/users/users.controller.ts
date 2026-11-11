@@ -55,7 +55,7 @@ export class UsersController {
 
   @Post('me/avatar')
   @UseGuards(AuthGuard)
-  @Throttle({ upload: { limit: 15, ttl: 60000 } })
+  @Throttle({ default: { limit: 15, ttl: 60000 } })
   uploadAvatar(@Body() body: UploadAvatarDto, @Session() session: UserSession) {
     return this.usersService.uploadAvatar(
       session.user.id,

@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common';
 import { EventsService } from './events.service.js';
 import {
+  AdminCancelParticipationDto,
   CreateEventDto,
   CreateEventRewardDto,
   DistributeRewardsDto,
@@ -21,8 +22,15 @@ import {
   SubmitEventProgressDto,
   UpdateEventDto,
   UpdateEventStatusDto,
+  UploadEventCoverDto,
 } from './dto/events.dto.js';
-import { AuthGuard, Roles, Session, type UserSession } from '../auth/index.js';
+import {
+  AuthGuard,
+  OptionalAuth,
+  Roles,
+  Session,
+  type UserSession,
+} from '../auth/index.js';
 
 @Controller('events')
 export class EventsController {
@@ -34,6 +42,8 @@ export class EventsController {
    * Liste paginée des événements publics avec filtres (catégorie, statut, recherche, featured, mes événements).
    */
   @Get()
+  @UseGuards(AuthGuard)
+  @OptionalAuth()
   async getEvents(
     @Query() query: EventQueryDto,
     @Session() session?: UserSession,
@@ -45,6 +55,8 @@ export class EventsController {
    * Événement vedette pour la page d'accueil.
    */
   @Get('featured')
+  @UseGuards(AuthGuard)
+  @OptionalAuth()
   async getFeaturedEvent(@Session() session?: UserSession) {
     return this.eventsService.getFeaturedEvent(session?.user?.id);
   }
@@ -88,6 +100,40 @@ export class EventsController {
       status,
       search,
     });
+  }
+
+  /**
+   * Upload sécurisé d'une photo de présentation / couverture d'événement (admin).
+   */
+  @Post('admin/upload-cover')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  async uploadCover(
+    @Body() dto: UploadEventCoverDto,
+    @Session() session: UserSession,
+  ) {
+    return this.eventsService.uploadEventCover(dto, session.user.id);
+  }
+
+  /**
+   * Annulation administrative d'un participant avec motif et promotion automatique de liste d'attente (admin).
+   */
+  @Post('admin/:id/participants/:userId/cancel')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  @HttpCode(HttpStatus.OK)
+  async adminCancelParticipant(
+    @Param('id') eventId: string,
+    @Param('userId') userId: string,
+    @Body() dto: AdminCancelParticipationDto,
+    @Session() session: UserSession,
+  ) {
+    return this.eventsService.adminCancelParticipant(
+      eventId,
+      userId,
+      dto,
+      session.user.id,
+    );
   }
 
   /**
@@ -186,6 +232,8 @@ export class EventsController {
    * Détails complets d'un événement (par ID ou slug).
    */
   @Get(':idOrSlug')
+  @UseGuards(AuthGuard)
+  @OptionalAuth()
   async getEvent(
     @Param('idOrSlug') idOrSlug: string,
     @Session() session?: UserSession,
@@ -213,10 +261,7 @@ export class EventsController {
   @Post(':id/cancel')
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
-  async cancel(
-    @Param('id') eventId: string,
-    @Session() session: UserSession,
-  ) {
+  async cancel(@Param('id') eventId: string, @Session() session: UserSession) {
     return this.eventsService.cancelParticipation(eventId, session.user.id);
   }
 

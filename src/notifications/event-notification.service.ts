@@ -35,8 +35,7 @@ export class EventNotificationService {
 
     // 1. Déterminer une clé d'idempotence pour déduplication
     const idempotencyKey =
-      event.idempotencyKey ||
-      this.generateIdempotencyKey(event);
+      event.idempotencyKey || this.generateIdempotencyKey(event);
 
     const lockKey = `event_lock:${idempotencyKey}`;
     const alreadyProcessed = await this.redisService.get<string>(lockKey);
@@ -75,13 +74,12 @@ export class EventNotificationService {
       }
 
       // 3. Charger les préférences de notification
-      const prefs = await this.notificationsService.getUserPreferences(
-        recipientUserId,
-      );
+      const prefs =
+        await this.notificationsService.getUserPreferences(recipientUserId);
 
       let inAppCreated = false;
       let emailSent = false;
-      let pushSent = false;
+      const pushSent = false;
 
       // 4. Traitement selon le type d'événement
       switch (event.type) {
@@ -252,8 +250,10 @@ export class EventNotificationService {
             userId: user.id,
             titleMg: 'Fanitsiana ny satan’ny kaonty',
             titleFr: 'Mise à jour du statut de votre compte',
-            messageMg: `Namboarina ho amin'ny sata Standard ny kaontinao. ${event.reason || ''}`.trim(),
-            messageFr: `Votre compte a été rétabli en statut Standard par l'administration. ${event.reason || ''}`.trim(),
+            messageMg:
+              `Namboarina ho amin'ny sata Standard ny kaontinao. ${event.reason || ''}`.trim(),
+            messageFr:
+              `Votre compte a été rétabli en statut Standard par l'administration. ${event.reason || ''}`.trim(),
             category: 'system',
             badgeText: 'Compte',
             badgeType: 'info',
@@ -355,6 +355,48 @@ export class EventNotificationService {
         }
 
         // ─── MODÉRATION DES CONTRIBUTIONS ────────────────────────────────────
+
+        case 'CONTRIBUTION_SUBMITTED': {
+          const preview = event.contributionTitle.slice(0, 45);
+          await this.notificationsService.createNotification({
+            userId: user.id,
+            titleMg: 'Fandraisana anjara : Voaray ny tolotrao 📜',
+            titleFr: 'Contribution : Proposition bien reçue 📜',
+            messageMg: `Voaray soa aman-tsara ny fandraisana anjaranao (« ${preview}... »). Andalam-pandinihana ataon'ny ekipa izany ankehitriny.`,
+            messageFr: `Votre contribution (« ${preview}... ») a bien été enregistrée et est en attente de modération par l'équipe Kanto.`,
+            category: 'community',
+            badgeText: 'Fandraisana anjara',
+            badgeType: 'info',
+            iconName: 'document-text-outline',
+            iconColor: '#3B82F6',
+            targetRoute: '/(tabs)/profil',
+            isBroadcast: false,
+            idempotencyKey: `notif_${idempotencyKey}`,
+          });
+          inAppCreated = true;
+
+          if (this.resendService && user.email) {
+            void this.resendService
+              .sendContributionSubmittedEmail({
+                to: user.email,
+                userName: user.name || undefined,
+                contributionTitle: preview,
+                category: event.category,
+                contributionId: event.contributionId,
+                idempotencyKey: `email_${idempotencyKey}`,
+              })
+              .then(() => {
+                emailSent = true;
+              })
+              .catch((err) => {
+                this.logger.warn(
+                  `[EventNotification] Échec email accusé de réception contribution : ${err}`,
+                );
+              });
+          }
+          break;
+        }
+
         case 'CONTRIBUTION_APPROVED': {
           const preview = event.contributionTitle.slice(0, 45);
           await this.notificationsService.createNotification({

@@ -1,0 +1,46 @@
+// ============================================================
+// MODÈLES — AVIS & TÉMOIGNAGES UTILISATEURS (AppReview)
+// ============================================================
+
+model AppReview {
+  id                      String                 @id @default(cuid())
+  rating                  Int                    // Note globale attribuée de 1 à 5 étoiles
+  comment                 String                 @db.Text // Commentaire textuel de l'utilisateur
+  category                String?                @default("general") // 'general' | 'suggestion' | 'content' | 'bug'
+
+  // Informations utilisateur / auteur
+  userId                  String?
+  user                    User?                  @relation(fields: [userId], references: [id], onDelete: SetNull)
+  authorName              String?                // Nom ou pseudo brut saisi
+  authorEmail             String?                // Email confidentiel (JAMAIS exposé publiquement)
+
+  // Gestion du consentement de publication
+  isPublicationAuthorized Boolean                @default(false) // Consentement explicite de publication publique
+  publicDisplayNameType   PublicDisplayNameType  @default(ANONYMOUS) // Type de nom choisi
+  publicDisplayName       String?                // Nom affiché calculé (ex: "Toky", "Utilisateur anonyme", etc.)
+  consentDate             DateTime?              // Date à laquelle le consentement a été accordé
+  consentWithdrawnDate    DateTime?              // Date de révocation éventuelle du consentement
+  consentVersion          String?                @default("1.0") // Version des mentions légales au moment du consentement
+
+  // Modération administrative
+  moderationStatus        ReviewModerationStatus @default(NOT_AUTHORIZED)
+  moderatorNote           String?                @db.Text // Motif interne ou note du modérateur (non publique)
+  moderatedAt             DateTime?
+  moderatedBy             String?                // Identifiant ou email du modérateur
+
+  // Métadonnées techniques
+  appVersion              String?                // Version de l'application (ex: "1.0.4", "v0.1.0")
+  platform                String?                // "ANDROID" | "IOS" | "WEB"
+  deviceInfo              String?                // Infos appareil optionnelles
+
+  createdAt               DateTime               @default(now())
+  updatedAt               DateTime               @updatedAt
+
+  @@index([rating])
+  @@index([moderationStatus])
+  @@index([isPublicationAuthorized])
+  @@index([userId])
+  @@index([createdAt])
+  @@map("app_reviews")
+}
+
