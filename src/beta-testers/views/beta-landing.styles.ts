@@ -138,11 +138,11 @@ export const BETA_LANDING_CSS = `
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--color-border);
-    padding: 14px 28px;
+    padding: 10px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
+    gap: 10px;
     transition: background-color 0.25s ease, border-color 0.25s ease;
   }
 
@@ -193,130 +193,11 @@ export const BETA_LANDING_CSS = `
   }
 
   .brand-domain {
-    color: var(--color-terracotta);
-    font-weight: 700;
-  }
-
-  .brand-tag {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--color-ink-subtle);
-  }
-
-  .header-nav {
-    display: none;
-    align-items: center;
-    gap: 22px;
-  }
-
-  @media (min-width: 960px) {
-    .header-nav {
-      display: flex;
-    }
-  }
-
-  .header-nav-link {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--color-ink-muted);
-    text-decoration: none;
-    transition: color 0.15s ease;
-    position: relative;
-  }
-
-  .header-nav-link:hover {
-    color: var(--color-terracotta);
-  }
-
-  .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .theme-toggle-btn {
-    background: var(--color-bg-alt);
-    border: 1px solid var(--color-border);
-    color: var(--color-ink);
-    width: 36px;
-    height: 36px;
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .theme-toggle-btn:hover {
-    border-color: var(--color-terracotta);
-    color: var(--color-terracotta);
-    transform: translateY(-1px);
-  }
-
-  .status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    background: var(--color-tanimbary-soft);
-    border: 1px solid var(--color-border);
-    padding: 6px 12px;
-    border-radius: 999px;
-    font-size: 11.5px;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-    color: var(--color-tanimbary);
-  }
-
-  .status-indicator {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--color-tanimbary);
-    box-shadow: 0 0 0 3px rgba(43, 68, 38, 0.2);
-    animation: pulse-dot 2.4s infinite ease-in-out;
-  }
-
-  @keyframes pulse-dot {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.25); opacity: 0.7; }
-  }
-
-  .header-cta-btn {
-    display: none;
-    align-items: center;
-    gap: 6px;
-    background: var(--color-terracotta);
-    color: #FFFFFF !important;
-    padding: 8px 16px;
-    border-radius: 999px;
-    font-size: 12.5px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background-color 0.2s ease, transform 0.15s ease;
-    box-shadow: 0 2px 8px rgba(185, 56, 38, 0.25);
-  }
-
-  @media (min-width: 640px) {
-    .header-cta-btn {
-      display: inline-flex;
-    }
-  }
-
-  .header-cta-btn:hover {
-    background: var(--color-terracotta-hover);
-    transform: translateY(-1px);
-  }
-
-  /* ─── CONTENEUR PRINCIPAL ────────────────────────────────────────────────── */
-  main {
     flex: 1;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 24px 80px;
+    padding: 0 16px 90px;
   }
 
   @media (min-width: 768px) {
@@ -327,7 +208,7 @@ export const BETA_LANDING_CSS = `
 
   /* ─── HERO SECTION ASYMÉTRIQUE MONUMENTAL ────────────────────────────────── */
   .hero-editorial {
-    padding: 56px 0 68px;
+    padding: 32px 0 48px;
     display: grid;
     grid-template-columns: 1fr;
     gap: 48px;
@@ -450,13 +331,20 @@ export const BETA_LANDING_CSS = `
   }
 
   .hero-badges-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 24px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
     margin-top: 18px;
-    padding-top: 22px;
+    padding-top: 20px;
     border-top: 1px solid var(--color-border-subtle);
+  }
+
+  @media (min-width: 640px) {
+    .hero-badges-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
   }
 
   .hero-stat-item {
@@ -491,7 +379,7 @@ export const BETA_LANDING_CSS = `
 
   .phone-mockup-wrapper {
     width: 100%;
-    max-width: 340px;
+    max-width: 320px;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: 40px;
@@ -1003,7 +891,7 @@ export const BETA_LANDING_CSS = `
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    padding: 44px 32px;
+    padding: 28px 18px;
     box-shadow: var(--color-card-shadow-hover);
     margin-bottom: 96px;
     position: relative;
@@ -1098,7 +986,7 @@ export const BETA_LANDING_CSS = `
     border: 1px solid var(--color-border);
     background: var(--color-surface-input);
     color: var(--color-ink);
-    font-size: 14.5px;
+    font-size: 16px; /* Empêche le zoom automatique sur iOS Safari */
     font-family: inherit;
     transition: border-color 0.2s, box-shadow 0.2s;
   }
