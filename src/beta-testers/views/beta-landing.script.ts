@@ -108,6 +108,64 @@ export function renderBetaWaitlistScript(): string {
   if (tabDl) tabDl.addEventListener('click', function() { switchTab('download'); });
   if (tabAlr) tabAlr.addEventListener('click', function() { switchTab('already'); });
 
+  
+  // Clic Header Se connecter
+  var btnHeaderLogin = document.getElementById('header-btn-login');
+  if (btnHeaderLogin) {
+    btnHeaderLogin.addEventListener('click', function(e) {
+      if (e) e.preventDefault();
+      switchTab('already');
+      var pnl = document.getElementById('panel-already') || document.getElementById('section-inscription');
+      if (pnl) pnl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      var input = document.getElementById('check-email-input');
+      if (input) setTimeout(function() { input.focus(); }, 200);
+    });
+  }
+
+  // Clic Header Créer un compte
+  var btnHeaderReg = document.getElementById('header-btn-register');
+  if (btnHeaderReg) {
+    btnHeaderReg.addEventListener('click', function(e) {
+      if (e) e.preventDefault();
+      switchTab('register');
+      var pnl = document.getElementById('section-inscription');
+      if (pnl) pnl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      var input = document.getElementById('reg-email');
+      if (input) setTimeout(function() { input.focus(); }, 200);
+    });
+  }
+
+  // Clic Hero Créer mon compte
+  var btnHeroAction = document.getElementById('hero-btn-primary-action');
+  if (btnHeroAction) {
+    btnHeroAction.addEventListener('click', function(e) {
+      if (e) e.preventDefault();
+      switchTab('register');
+      var pnl = document.getElementById('section-inscription');
+      if (pnl) pnl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      var input = document.getElementById('reg-email');
+      if (input) setTimeout(function() { input.focus(); }, 200);
+    });
+  }
+
+  // Fermeture du bandeau sticky mobile avec mémorisation de session
+  var btnCloseSticky = document.getElementById('btn-close-sticky-bar');
+  var stickyBar = document.getElementById('mobile-sticky-bar');
+  if (btnCloseSticky && stickyBar) {
+    try {
+      if (sessionStorage.getItem('kanto_sticky_closed') === 'true') {
+        stickyBar.style.display = 'none';
+      }
+    } catch(e) {}
+
+    btnCloseSticky.addEventListener('click', function() {
+      stickyBar.style.display = 'none';
+      try {
+        sessionStorage.setItem('kanto_sticky_closed', 'true');
+      } catch(e) {}
+    });
+  }
+
   var linkOpenAlready = document.getElementById('link-open-already');
   if (linkOpenAlready) {
     linkOpenAlready.addEventListener('click', function(e) {

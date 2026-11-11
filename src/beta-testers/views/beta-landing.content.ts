@@ -1,6 +1,16 @@
 /**
  * Kanto MG — Expérience Éditoriale Immersive du Portail Officiel
  * « Kanto — La culture malgache, autrement »
+ *
+ * Architecture de conversion :
+ * - Navigation : Logo + Liens + Se connecter + Bouton « Créer un compte »
+ * - Hero : Titre noble + Surtitre + Inscription immédiate + Badges Stores directs (Google Play / TestFlight)
+ * - Section Inscription & Avantages : 6 piliers concrets de la création de compte + formulaire optimisé
+ * - Section Téléchargement Stores : Android (Google Play), iOS (TestFlight), QR Code desktop
+ * - Les 6 Trésors : Bento éditorial (Ohabolana, Angano, Kabary, Tononkalo, Raki-teny, Tantara)
+ * - Sanctuaire Mobile : 4 engagements (hors-ligne, audio natif, zéro pub, révision)
+ * - Avis Certifiés : Témoignages vérifiés 5.0/5 avec pagination AJAX
+ * - Smart Sticky Store Bar Mobile fermable (zéro obstruction)
  */
 
 export interface BetaLandingContentOptions {
@@ -28,16 +38,18 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
   } = opt;
 
   return `
-  <!-- En-tête institutionnel & navigation éditoriale -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- EN-TÊTE INSTITUTIONNEL & NAVIGATION MULTI-DEVICE                       -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
   <header>
-    <a href="/" class="brand" aria-label="kanto.mg - Portail officiel">
+    <a href="/" class="brand" aria-label="kanto.mg - Accueil">
       <div class="brand-logo-wrap">
         <img
           src="/logo.png"
           alt="Logo officiel Kanto MG"
           class="brand-logo"
-          width="36"
-          height="36"
+          width="34"
+          height="34"
           onerror="this.onerror=null; this.src='/favicon.png';"
         />
       </div>
@@ -47,14 +59,14 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
       </div>
     </a>
 
-    <!-- Navigation rapide vers les 6 univers culturels -->
+    <!-- Navigation culturelle desktop -->
     <nav class="header-nav" aria-label="Navigation culturelle">
       <a href="#univers" class="header-nav-link">Les 6 Trésors</a>
       <a href="/ohabolana" class="header-nav-link">Ohabolana</a>
       <a href="/angano" class="header-nav-link">Angano</a>
       <a href="/kabary" class="header-nav-link">Kabary</a>
       <a href="/tononkalo" class="header-nav-link">Tononkalo</a>
-      <a href="/histoire" class="header-nav-link">Tantara</a>
+      <a href="#telechargement" class="header-nav-link">Application</a>
     </nav>
 
     <div class="header-actions">
@@ -64,27 +76,27 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
         <svg id="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
       </button>
 
-      <!-- Pastille de statut testeurs en direct -->
-      <div class="status-pill" title="Membres pionniers inscrits à la communauté Kanto">
-        <span class="status-indicator"></span>
-        <span id="header-tester-count">${countBadgeText}</span>
-      </div>
+      <!-- Bouton secondaire Se connecter / Mon Espace (Desktop & Mobile) -->
+      <button type="button" class="header-login-btn" id="header-btn-login" aria-label="Accéder à mon espace testeur">
+        <span>Se connecter</span>
+      </button>
 
-      <!-- Bouton d'action direct Télécharger -->
-      <a href="#telechargement" class="header-cta-btn" id="header-btn-download">
-        <span>Installer l'app</span>
-        <span aria-hidden="true">↓</span>
+      <!-- Action principale Créer un compte -->
+      <a href="#section-inscription" class="header-cta-btn" id="header-btn-register">
+        <span>Créer un compte</span>
       </a>
     </div>
   </header>
 
   <main>
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <!-- HERO SECTION ASYMÉTRIQUE MONUMENTAL                                    -->
+    <!-- HERO SECTION MOBILE-FIRST : TRANSMISSION & CONVERSION IMMÉDIATE       -->
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <section class="hero-editorial" aria-labelledby="hero-main-title">
       <div class="hero-content">
-        <div class="eyebrow-pill"><span>Édition Officielle • Madagascar</span></div>
+        <div class="eyebrow-pill">
+          <span>Plateforme Officielle • Lova Malagasy</span>
+        </div>
 
         <h1 id="hero-main-title" class="hero-title">
           La culture malgache, <em>autrement.</em>
@@ -95,45 +107,47 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
         </div>
 
         <p class="hero-lead">
-          Kanto MG est un sanctuaire numérique d'exception dédié au rayonnement et à la transmission vivante du patrimoine de Madagascar. Proverbes ancestraux (<em>Ohabolana</em>), récits des veillées (<em>Angano</em>), éloquence oratoire (<em>Kabary</em>) et poésie des Hauts Plateaux réunis dans une expérience mobile sobre, exigeante et accessible à tous.
+          Kanto MG réunit les proverbes ancestraux (<em>Ohabolana</em>), les récits des veillées (<em>Angano</em>), l'éloquence oratoire (<em>Kabary</em>) et la poésie des Hauts Plateaux dans un sanctuaire numérique sobre, bilingue et accessible à tous.
         </p>
 
+        <!-- Cluster de Conversion Prioritaire Hero -->
         <div class="hero-conversion-cluster">
-          <!-- Actions principales Bêta & Découverte -->
+          <!-- 1. Actions Majeures : Inscription & Découverte -->
           <div class="hero-actions-group">
-            <a href="#telechargement" class="btn-hero-primary" id="hero-btn-primary-action">
-              <span>Rejoindre la Bêta fermée</span>
+            <a href="#section-inscription" class="btn-hero-primary" id="hero-btn-primary-action">
+              <span>Créer mon compte</span>
               <span aria-hidden="true">→</span>
             </a>
-            <a href="#univers" class="btn-hero-secondary">
-              <span>Découvrir les 6 univers</span>
+            <a href="#telechargement" class="btn-hero-secondary" id="hero-btn-discover-app">
+              <span>Découvrir l'application</span>
             </a>
           </div>
 
-          <!-- Accès directs Store (Google Play & Apple TestFlight) -->
-          <div class="hero-store-buttons" aria-label="Téléchargement direct sur les plateformes officielles">
-            <a href="https://play.google.com/apps/testing/com.devengalere.kantomg" class="store-badge-btn store-android" target="_blank" rel="noopener noreferrer">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-android);"><path d="M17 19H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2z"></path><circle cx="12" cy="12" r="2"></circle></svg>
+          <!-- 2. Badges de Téléchargement Stores Officiels Immédiats -->
+          <div class="hero-store-buttons" aria-label="Téléchargement direct de l'application">
+            <a href="https://play.google.com/apps/testing/com.devengalere.kantomg" class="store-badge-btn store-android" id="hero-store-google-play" target="_blank" rel="noopener noreferrer">
+              <span class="store-platform-tag">Android</span>
               <div class="store-badge-text">
                 <span class="store-badge-sub">Disponible sur</span>
                 <span class="store-badge-title">Google Play</span>
               </div>
             </a>
-            <a href="https://testflight.apple.com/join/TEAM_KANTO" class="store-badge-btn store-ios" target="_blank" rel="noopener noreferrer">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-ios);"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"></path><path d="M10 2c1 .5 2 2 2 5"></path></svg>
+
+            <a href="https://testflight.apple.com/join/TEAM_KANTO" class="store-badge-btn store-ios" id="hero-store-testflight" target="_blank" rel="noopener noreferrer">
+              <span class="store-platform-tag">iOS</span>
               <div class="store-badge-text">
                 <span class="store-badge-sub">Télécharger sur</span>
-                <span class="store-badge-title">TestFlight iOS</span>
+                <span class="store-badge-title">Apple TestFlight</span>
               </div>
             </a>
           </div>
 
           <div class="hero-guarantee-note">
-            <span>Accès 100% gratuit • Zéro publicité intrusive • Mode hors-ligne</span>
+            <span>Inscription en 30 secondes • 100% Gratuit • Sans publicité</span>
           </div>
         </div>
 
-        <!-- Métriques réelles de réassurance -->
+        <!-- Indicateurs de confiance et réassurance -->
         <div class="hero-badges-row">
           <div class="hero-stat-item">
             <span class="hero-stat-value">5.0 / 5</span>
@@ -148,8 +162,8 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
             <span class="hero-stat-label">Malagasy &amp; Français</span>
           </div>
           <div class="hero-stat-item">
-            <span class="hero-stat-value">Android &amp; iOS</span>
-            <span class="hero-stat-label">Google Play &amp; TestFlight</span>
+            <span class="hero-stat-value" id="header-tester-count">${countBadgeText}</span>
+            <span class="hero-stat-label">Membres pionniers</span>
           </div>
         </div>
       </div>
@@ -170,7 +184,6 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
                 La solidarité fraternelle est semblable à un fil délicat : rompue, on peut la renouer, mais elle garde toujours un nœud.
               </div>
               <div class="phone-audio-pill">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
                 <span>Écoute audio malgache</span>
               </div>
             </div>
@@ -178,21 +191,12 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
             <!-- Grille des univers dans le mockup -->
             <div class="phone-hubs-grid">
               <div class="phone-hub-item">
-                <div class="phone-hub-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                </div>
                 <span class="phone-hub-name">Ohabolana</span>
               </div>
               <div class="phone-hub-item">
-                <div class="phone-hub-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                </div>
                 <span class="phone-hub-name">Angano</span>
               </div>
               <div class="phone-hub-item">
-                <div class="phone-hub-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
-                </div>
                 <span class="phone-hub-name">Kabary</span>
               </div>
             </div>
@@ -202,11 +206,323 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <!-- SECTION LES SIX TRÉSORS DE KANTO (COMPOSITION ASYMÉTRIQUE)            -->
+    <!-- SECTION 1 : INSCRIPTION DÉDIÉE & AVANTAGES CONCRETS                    -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <section class="conversion-section" id="section-inscription" aria-labelledby="section-inscription-title">
+      <div class="conversion-header">
+        <span class="section-eyebrow">Rejoindre la Communauté Kanto</span>
+        <h2 id="section-inscription-title" class="conversion-title">Créez votre compte membre</h2>
+        <p class="conversion-desc">
+          Participez activement au rayonnement de la langue malgache, enregistrez vos favoris et accédez en avant-première aux nouvelles fonctionnalités.
+        </p>
+      </div>
+
+      <!-- Arguments concrets et réels de l'adhésion -->
+      <div class="membership-benefits-grid">
+        <div class="benefit-card">
+          <span class="benefit-number">01</span>
+          <h4>Espace personnel</h4>
+          <p>Mémorisez vos proverbes, poésies et contes favoris pour les retrouver en un clic.</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-number">02</span>
+          <h4>Participation communautaire</h4>
+          <p>Donnez votre avis sur l'application, votez pour les meilleurs contenus et échangez.</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-number">03</span>
+          <h4>Préservation culturelle</h4>
+          <p>Contribuez à sauvegarder la richesse des traditions et parlers régionaux de la Grande Île.</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-number">04</span>
+          <h4>Jeux et défis civiques</h4>
+          <p>Relevez les devinettes quotidiennes (Ankamantatra), mots croisés et quiz culturels.</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-number">05</span>
+          <h4>Suivi de progression</h4>
+          <p>Cumulez des points d'expérience (XP), gardez votre série active et suivez vos apprentissages.</p>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-number">06</span>
+          <h4>Corpus 100% hors-ligne</h4>
+          <p>Accédez à l'ensemble du dictionnaire et des récits même sans connexion Internet.</p>
+        </div>
+      </div>
+
+      <!-- Onglets interactifs (Inscription vs Téléchargement vs Mon Espace) -->
+      <div class="tabs-nav" role="tablist">
+        <button type="button" class="tab-btn ${initialTab === 'register' && !isRegistered ? 'active' : ''}" id="tab-btn-register" role="tab" aria-selected="${initialTab === 'register' && !isRegistered}">
+          <span>Créer mon compte</span>
+        </button>
+        <button type="button" class="tab-btn ${initialTab === 'download' ? 'active' : ''}" id="tab-btn-download" role="tab" aria-selected="${initialTab === 'download'}">
+          <span>Téléchargement</span>
+        </button>
+        <button type="button" class="tab-btn ${initialTab === 'already_registered' || isRegistered ? 'active' : ''}" id="tab-btn-already" role="tab" style="display: none;">
+          <span>Mon Espace</span>
+        </button>
+      </div>
+
+      <!-- Bannières d'alerte et de confirmation -->
+      <div id="error-banner" class="banner error">
+        <span id="error-text">${errorVal}</span>
+      </div>
+      <div id="success-banner" class="banner success">
+        <span id="success-text"></span>
+      </div>
+
+      <!-- ─── VOLET 1 : FORMULAIRE D'INSCRIPTION ─────────────────────────────── -->
+      <div id="panel-register" style="display: ${initialTab === 'register' && !isRegistered ? 'block' : 'none'};">
+        <form id="waitlist-form" class="form-container">
+          <!-- Piège anti-spam invisible -->
+          <div class="hp-trap">
+            <input type="text" id="hp-website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="reg-email">
+              <span>Votre adresse e-mail</span>
+              <span class="field-badge-required">Requis</span>
+            </label>
+            <input 
+              type="email" 
+              id="reg-email" 
+              class="field-input" 
+              placeholder="ex: nom@domaine.com" 
+              required 
+              value="${emailVal}"
+              autocomplete="email"
+            >
+            <p class="field-note">
+              Utilisée pour lier votre compte et vos accès Google Play ou TestFlight.
+            </p>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="reg-name">
+              <span>Prénom ou nom public</span>
+              <span class="field-badge-opt">Optionnel</span>
+            </label>
+            <input 
+              type="text" 
+              id="reg-name" 
+              class="field-input" 
+              placeholder="ex: Rova, Faly, Hery..."
+              autocomplete="name"
+            >
+          </div>
+
+          <!-- Choix de plateformes tactiles -->
+          <div class="field">
+            <label class="field-label">
+              <span>Sur quel smartphone utilisez-vous Kanto ?</span>
+            </label>
+            <div class="platforms-grid">
+              <div class="platform-card checked" id="card-android">
+                <div class="platform-card-head">
+                  <span class="platform-title">Android</span>
+                  <span class="platform-status-badge">Prêt</span>
+                </div>
+                <p class="platform-desc">Google Play Closed Testing &amp; APK signé.</p>
+              </div>
+
+              <div class="platform-card" id="card-ios">
+                <div class="platform-card-head">
+                  <span class="platform-title">iPhone / iOS</span>
+                  <span class="platform-status-badge">TestFlight</span>
+                </div>
+                <p class="platform-desc">Invitation personnelle Apple TestFlight.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Consentements légaux RGPD & CGU -->
+          <div class="consent-card-box">
+            <div class="consent-item">
+              <input type="checkbox" id="consent-cgu" class="consent-checkbox" required checked>
+              <label for="consent-cgu" class="consent-label">
+                J'accepte les <button type="button" id="btn-open-cgu-modal">Conditions Générales d'Utilisation</button> de Kanto MG.
+              </label>
+            </div>
+            <div class="consent-item">
+              <input type="checkbox" id="consent-privacy" class="consent-checkbox" required checked>
+              <label for="consent-privacy" class="consent-label">
+                J'accepte la <button type="button" id="btn-open-privacy-modal">Politique de Confidentialité</button> (identifiants chiffrés AES-256-GCM, aucune cession de données).
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit-main" id="btn-submit-reg">
+            <span>Créer mon compte Kanto</span>
+          </button>
+
+          <div class="already-link-box">
+            Vous avez déjà un compte ? <a id="link-open-already">Accéder à mon espace membre</a>
+          </div>
+        </form>
+      </div>
+
+      <!-- ─── VOLET 2 : TÉLÉCHARGEMENT DIRECT STORES ─────────────────────────── -->
+      <div id="panel-download" style="display: ${initialTab === 'download' ? 'block' : 'none'};">
+        <div class="form-container">
+          <div class="download-grid">
+            <div class="download-card">
+              <div>
+                <span class="platform-pill-badge android">Android</span>
+                <h3 class="download-card-title">Google Play Store</h3>
+                <p class="download-card-desc">
+                  Version officielle de test certifiée pour smartphones et tablettes Android (Android 9.0 et supérieur).
+                </p>
+                <div class="download-meta-tags">
+                  <span>Version Bêta active</span>
+                  <span>Mises à jour automatiques</span>
+                </div>
+              </div>
+              <a href="https://play.google.com/apps/testing/com.devengalere.kantomg" class="download-action-btn android" target="_blank" rel="noopener noreferrer">
+                <span>Accéder sur Google Play ↗</span>
+              </a>
+            </div>
+
+            <div class="download-card">
+              <div>
+                <span class="platform-pill-badge ios">iOS / Apple</span>
+                <h3 class="download-card-title">Apple TestFlight</h3>
+                <p class="download-card-desc">
+                  Version préliminaire complète pour iPhone et iPad via l'application Apple TestFlight.
+                </p>
+                <div class="download-meta-tags">
+                  <span>iOS 15.0 et ultérieur</span>
+                  <span>Accès direct</span>
+                </div>
+              </div>
+              <a href="https://testflight.apple.com/join/TEAM_KANTO" class="download-action-btn ios" target="_blank" rel="noopener noreferrer">
+                <span>Accéder sur TestFlight ↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── VOLET 3 : MON ESPACE MEMBRE ────────────────────────────────────── -->
+      <div id="panel-already" style="display: ${initialTab === 'already_registered' || isRegistered ? 'block' : 'none'};">
+        <div class="form-container" style="text-align: center; padding: 20px 0;">
+          <h3 style="font-family: var(--font-serif); font-size: 24px; margin-bottom: 12px; color: var(--color-heading);">
+            Consultez votre statut Bêta-Testeur Kanto
+          </h3>
+          <p style="font-size: 14.5px; color: var(--color-ink-muted); margin-bottom: 24px; max-width: 480px; margin-left: auto; margin-right: auto;">
+            Saisissez l'adresse e-mail avec laquelle vous êtes inscrit pour vérifier votre statut ou recevoir vos liens personnels de téléchargement.
+          </p>
+
+          <form id="check-status-form">
+            <div class="field" style="max-width: 420px; margin: 0 auto 20px;">
+              <input 
+                type="email" 
+                id="check-email-input" 
+                class="field-input" 
+                placeholder="votre.email@domaine.com" 
+                required 
+                value="${emailVal}"
+              >
+            </div>
+            <button type="submit" class="btn-submit-main" style="max-width: 280px; margin: 0 auto;">
+              <span>Vérifier mon compte</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ─── VOLET 4 : DÉSINCRIPTION ────────────────────────────────────────── -->
+      <div id="panel-unsubscribe" style="display: ${initialTab === 'unsubscribe' ? 'block' : 'none'};">
+        <div class="form-container" style="text-align: center; padding: 20px 0;">
+          <h3 style="font-family: var(--font-serif); font-size: 22px; margin-bottom: 12px; color: var(--color-terracotta);">
+            Désinscription de la communauté Bêta
+          </h3>
+          <p style="font-size: 14px; color: var(--color-ink-muted); margin-bottom: 24px;">
+            Vos données personnelles seront immédiatement et définitivement effacées conformément au RGPD.
+          </p>
+          <button type="button" class="btn-submit-main" id="btn-confirm-unsub" style="max-width: 280px; margin: 0 auto; background: var(--color-ink);">
+            <span>Confirmer ma désinscription</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SECTION 2 : TÉLÉCHARGEMENT MAJEUR DÉDIÉ (APPLICATION & QR CODE)        -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <section class="editorial-section download-showcase-section" id="telechargement" aria-labelledby="showcase-download-title">
+      <div class="section-header-editorial">
+        <span class="section-eyebrow">Application Mobile Kanto MG</span>
+        <h2 id="showcase-download-title" class="section-title-editorial">Le patrimoine malgache dans votre poche.</h2>
+        <p class="section-lead-editorial">
+          Installez Kanto MG sur votre smartphone et découvrez la langue, les contes et la sagesse de Madagascar partout avec vous.
+        </p>
+      </div>
+
+      <div class="download-showcase-box">
+        <div class="download-showcase-content">
+          <div class="showcase-status-row">
+            <span class="showcase-badge-active">Android disponible</span>
+            <span class="showcase-badge-active">iOS TestFlight disponible</span>
+          </div>
+
+          <h3 class="showcase-heading">Emportez vos trésors partout</h3>
+          <p class="showcase-text">
+            Fonctionne entièrement sans réseau Internet. Écoutez les contes au clair de lune, apprenez un proverbe chaque matin et perfectionnez votre vocabulaire avec des voix de locuteurs natifs.
+          </p>
+
+          <div class="showcase-store-buttons">
+            <a href="https://play.google.com/apps/testing/com.devengalere.kantomg" class="store-badge-btn store-android" target="_blank" rel="noopener noreferrer">
+              <span class="store-platform-tag">Android</span>
+              <div class="store-badge-text">
+                <span class="store-badge-sub">Obtenir sur</span>
+                <span class="store-badge-title">Google Play</span>
+              </div>
+            </a>
+
+            <a href="https://testflight.apple.com/join/TEAM_KANTO" class="store-badge-btn store-ios" target="_blank" rel="noopener noreferrer">
+              <span class="store-platform-tag">iOS</span>
+              <div class="store-badge-text">
+                <span class="store-badge-sub">Installer via</span>
+                <span class="store-badge-title">Apple TestFlight</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- QR Code interactif pour les utilisateurs sur ordinateur -->
+        <div class="download-showcase-qr" aria-hidden="true">
+          <div class="qr-frame">
+            <!-- QR code vectoriel SVG pur menant vers app-kanto.gastsar.fr -->
+            <svg class="qr-svg" viewBox="0 0 120 120" width="120" height="120" fill="currentColor">
+              <rect x="10" y="10" width="30" height="30" fill="none" stroke="currentColor" stroke-width="6"/>
+              <rect x="20" y="20" width="10" height="10" fill="currentColor"/>
+              <rect x="80" y="10" width="30" height="30" fill="none" stroke="currentColor" stroke-width="6"/>
+              <rect x="90" y="20" width="10" height="10" fill="currentColor"/>
+              <rect x="10" y="80" width="30" height="30" fill="none" stroke="currentColor" stroke-width="6"/>
+              <rect x="20" y="90" width="10" height="10" fill="currentColor"/>
+              <rect x="50" y="10" width="10" height="20" fill="currentColor"/>
+              <rect x="50" y="40" width="20" height="10" fill="currentColor"/>
+              <rect x="10" y="50" width="20" height="10" fill="currentColor"/>
+              <rect x="80" y="50" width="10" height="20" fill="currentColor"/>
+              <rect x="50" y="70" width="10" height="30" fill="currentColor"/>
+              <rect x="70" y="70" width="30" height="10" fill="currentColor"/>
+              <rect x="70" y="90" width="10" height="20" fill="currentColor"/>
+              <rect x="90" y="90" width="20" height="20" fill="currentColor"/>
+            </svg>
+            <span class="qr-caption">Scannez pour installer sur smartphone</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SECTION 3 : LES SIX TRÉSORS DE KANTO (BENTO GRID ÉDITORIAL)            -->
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <section class="editorial-section" id="univers" aria-labelledby="univers-title">
       <div class="section-header-editorial">
-        <span class="section-eyebrow">Les Richesses de Kanto MG</span>
+        <span class="section-eyebrow">Le Sanctuaire Culturel</span>
         <h2 id="univers-title" class="section-title-editorial">Six univers pour explorer l'âme malgache.</h2>
         <p class="section-lead-editorial">
           Chaque rubrique a été pensée comme un chapitre vivant de notre héritage, alliant rigueur linguistique, contexte culturel et esthétique contemporaine.
@@ -214,7 +530,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
       </div>
 
       <div class="univers-bento-grid">
-        <!-- 1. Ohabolana (Majeur Heroic) -->
+        <!-- 1. Ohabolana -->
         <a href="/ohabolana" class="bento-card bento-card-heroic">
           <div>
             <div class="bento-card-top"><span class="bento-number">01</span></div>
@@ -234,14 +550,14 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
           </div>
         </a>
 
-        <!-- 2. Angano (Side) -->
+        <!-- 2. Angano -->
         <a href="/angano" class="bento-card bento-card-side">
           <div>
             <div class="bento-card-top"><span class="bento-number">02</span></div>
             <div class="bento-card-body" style="margin-top: 18px;">
               <h3>Angano sy Lovantsofina</h3>
               <p>
-                Les récits légendaires des veillées au clair de lune : les ruses d'Ikotofetsy sy Imahakà, la force de Darafify et les contes moraux qui ont bercé l'enfance malgache.
+                Les récits légendaires des veillées au clair de lune : les ruses d'Ikotofetsy sy Imahakà, la force de Darafify et les contes moraux.
               </p>
             </div>
           </div>
@@ -251,14 +567,14 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
           </div>
         </a>
 
-        <!-- 3. Kabary (Third) -->
+        <!-- 3. Kabary -->
         <a href="/kabary" class="bento-card bento-card-third">
           <div>
             <div class="bento-card-top"><span class="bento-number">03</span></div>
             <div class="bento-card-body" style="margin-top: 18px;">
               <h3>Kabary &amp; Art Oratoire</h3>
               <p>
-                L'éloquence sacrée des orateurs traditionnels (<em>Mpikabary</em>) pour le mariage, les réjouissances et les étapes fondatrices de la vie sociale.
+                L'éloquence sacrée des orateurs traditionnels (<em>Mpikabary</em>) pour le mariage et les étapes fondatrices de la vie sociale.
               </p>
             </div>
           </div>
@@ -268,14 +584,14 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
           </div>
         </a>
 
-        <!-- 4. Tononkalo & Tsianjery (Third) -->
+        <!-- 4. Tononkalo -->
         <a href="/tononkalo" class="bento-card bento-card-third">
           <div>
             <div class="bento-card-top"><span class="bento-number">04</span></div>
             <div class="bento-card-body" style="margin-top: 18px;">
               <h3>Tononkalo &amp; Haisoratra</h3>
               <p>
-                La poésie malgache contemporaine et classique : Rado, Dox, Jean-Joseph Rabearivelo, avec module de mémorisation guidée (Tsianjery).
+                La poésie malgache contemporaine et classique : Rado, Dox, Jean-Joseph Rabearivelo, avec module de mémorisation guidée.
               </p>
             </div>
           </div>
@@ -285,14 +601,14 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
           </div>
         </a>
 
-        <!-- 5. Raki-teny (Third) -->
+        <!-- 5. Raki-teny -->
         <a href="/raki-teny" class="bento-card bento-card-third">
           <div>
             <div class="bento-card-top"><span class="bento-number">05</span></div>
             <div class="bento-card-body" style="margin-top: 18px;">
               <h3>Raki-teny &amp; Voambolana</h3>
               <p>
-                Dictionnaire thématique bilingue, subtilités du vocabulaire, étymologies austronésiennes et richesse des dialectes des régions de l'île.
+                Dictionnaire thématique bilingue, subtilités du vocabulaire, étymologies et richesses des dialectes régionaux.
               </p>
             </div>
           </div>
@@ -302,14 +618,14 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
           </div>
         </a>
 
-        <!-- 6. Tantara & Fomba (Half) -->
-        <a href="/histoire" class="bento-card bento-card-heroic" style="grid-column: span 12; background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-tanimbary-soft) 100%); ">
+        <!-- 6. Tantara & Fomba -->
+        <a href="/histoire" class="bento-card bento-card-heroic" style="grid-column: span 12; background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-tanimbary-soft) 100%);">
           <div>
             <div class="bento-card-top"><span class="bento-number">06</span></div>
             <div class="bento-card-body" style="margin-top: 18px;">
               <h3>Tantara, Fomba Gasy &amp; Repères Civiques</h3>
               <p>
-                Histoire des souverains, organisation des clans, valeurs du Fihavanana, us et coutumes des 18 ethnies et repères républicains pour comprendre Madagascar dans toute sa profondeur.
+                Histoire des souverains, organisation des clans, valeurs du Fihavanana et us et coutumes des 18 ethnies de l'île.
               </p>
             </div>
           </div>
@@ -322,7 +638,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <!-- SECTION EXPÉRIENCE MOBILE & SANCTUAIRE CULTUREL                       -->
+    <!-- SECTION 4 : ENGAGEMENTS DE L'APPLICATION MOBILE                        -->
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <section class="experience-strip" aria-labelledby="experience-title">
       <span class="section-eyebrow">Conçu pour la transmission</span>
@@ -334,227 +650,28 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
       <div class="pillars-grid">
         <div class="pillar-item">
           <h4>Sans distraction</h4>
-          <p>Zéro publicité intrusive, zéro traçage commercial. Un sanctuaire apaisé dédié uniquement à la lecture, à la contemplation et au respect des textes.</p>
+          <p>Zéro publicité intrusive, zéro traçage commercial. Un sanctuaire apaisé dédié uniquement à la lecture et au recueillement.</p>
         </div>
 
         <div class="pillar-item">
           <h4>100% Hors-ligne</h4>
-          <p>Voyagez sereinement. Vos contes, proverbes, dictionnaire et poésies restent entièrement accessibles même sans réseau mobile sur les routes de Madagascar.</p>
+          <p>Voyagez sereinement. Vos contes, proverbes et poésies restent entièrement accessibles sans réseau mobile.</p>
         </div>
 
         <div class="pillar-item">
           <h4>Audio &amp; Phonétique</h4>
-          <p>Écoutez les prononciations authentiques enregistrées par des locuteurs natifs pour apprécier la musicalité et la nuance de chaque accent régional.</p>
+          <p>Écoutez les prononciations authentiques enregistrées par des locuteurs natifs pour apprécier la musicalité de la langue.</p>
         </div>
 
         <div class="pillar-item">
           <h4>Révision &amp; Jeux</h4>
-          <p>Ankamantatra (devinettes), mots croisés culturels, quiz civiques et répétition espacée pour ancrer les connaissances de manière ludique et durable.</p>
+          <p>Ankamantatra (devinettes), mots croisés et quiz civiques pour ancrer les connaissances de manière ludique.</p>
         </div>
       </div>
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <!-- SECTION CONVERSION : TÉLÉCHARGEMENT & INSCRIPTION BÊTA                -->
-    <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <section class="conversion-section" id="telechargement" aria-labelledby="conversion-title">
-      <div class="conversion-header">
-        <span class="section-eyebrow">Accès Anticipé &amp; Téléchargement</span>
-        <h2 id="conversion-title" class="conversion-title">Rejoignez l'aventure Kanto MG</h2>
-        <p class="conversion-desc">
-          Participez aux tests fermés sur Android et iOS, ou téléchargez la dernière version disponible pour faire rayonner la culture malgache.
-        </p>
-      </div>
-
-      <!-- Onglets interactifs -->
-      <div class="tabs-nav" role="tablist">
-        <button type="button" class="tab-btn ${initialTab === 'register' && !isRegistered ? 'active' : ''}" id="tab-btn-register" role="tab" aria-selected="${initialTab === 'register' && !isRegistered}"><span>Inscription Bêta</span></button>
-        <button type="button" class="tab-btn ${initialTab === 'download' ? 'active' : ''}" id="tab-btn-download" role="tab" aria-selected="${initialTab === 'download'}"><span>Téléchargement</span></button>
-        <button type="button" class="tab-btn ${initialTab === 'already_registered' || isRegistered ? 'active' : ''}" id="tab-btn-already" role="tab" style="display: none;">
-          <span>Mon Espace</span>
-        </button>
-      </div>
-
-      <!-- Bannières d'alerte et de confirmation -->
-      <div id="error-banner" class="banner error"><span id="error-text">${errorVal}</span>
-      </div>
-      <div id="success-banner" class="banner success"><span id="success-text"></span>
-      </div>
-
-      <!-- ─── VOLET 1 : FORMULAIRE D'INSCRIPTION BÊTA ────────────────────────── -->
-      <div id="panel-register" style="display: ${initialTab === 'register' && !isRegistered ? 'block' : 'none'};">
-        <form id="waitlist-form" class="form-container">
-          <!-- Piège anti-spam invisible -->
-          <div class="hp-trap">
-            <input type="text" id="hp-website" name="website" tabindex="-1" autocomplete="off">
-          </div>
-
-          <div class="field">
-            <label class="field-label" for="reg-email">
-              <span>Votre adresse e-mail</span>
-              <span style="color: var(--color-terracotta);">Requis</span>
-            </label>
-            <input 
-              type="email" 
-              id="reg-email" 
-              class="field-input" 
-              placeholder="ex: nom@domaine.com" 
-              required 
-              value="${emailVal}"
-              autocomplete="email"
-            >
-            <p class="field-note">
-              Adresse utilisée pour votre compte Google Play Store ou Apple ID.
-            </p>
-          </div>
-
-          <div class="field">
-            <label class="field-label" for="reg-name">
-              <span>Prénom ou nom public</span>
-              <span style="color: var(--color-ink-subtle);">Optionnel</span>
-            </label>
-            <input 
-              type="text" 
-              id="reg-name" 
-              class="field-input" 
-              placeholder="ex: Rova, Faly, Hery..."
-              autocomplete="name"
-            >
-          </div>
-
-          <!-- Choix de plateformes -->
-          <div class="field">
-            <label class="field-label">
-              <span>Appareils sur lesquels vous souhaitez tester Kanto</span>
-            </label>
-            <div class="platforms-grid">
-              <div class="platform-card checked" id="card-android">
-                <div class="platform-card-head">
-                  <span class="platform-title">Android</span>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-android);"><path d="M17 19H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2z"></path><circle cx="12" cy="12" r="2"></circle></svg>
-                </div>
-                <p class="platform-desc">Google Play Closed Testing &amp; APK signé direct.</p>
-              </div>
-
-              <div class="platform-card" id="card-ios">
-                <div class="platform-card-head">
-                  <span class="platform-title">iPhone / iOS</span>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-ios);"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"></path><path d="M10 2c1 .5 2 2 2 5"></path></svg>
-                </div>
-                <p class="platform-desc">Apple TestFlight sur invitation personnelle.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Consentements légaux RGPD & CGU -->
-          <div class="consent-card-box">
-            <div class="consent-item">
-              <input type="checkbox" id="consent-cgu" class="consent-checkbox" required checked>
-              <label for="consent-cgu" class="consent-label">
-                J'accepte les <button type="button" id="btn-open-cgu-modal">Conditions Générales d'Utilisation</button> du programme Bêta-Testeur Kanto.
-              </label>
-            </div>
-            <div class="consent-item">
-              <input type="checkbox" id="consent-privacy" class="consent-checkbox" required checked>
-              <label for="consent-privacy" class="consent-label">
-                J'accepte la <button type="button" id="btn-open-privacy-modal">Politique de Confidentialité</button> (mes identifiants sont chiffrés AES-256-GCM et jamais cédés).
-              </label>
-            </div>
-          </div>
-
-          <button type="submit" class="btn-submit-main" id="btn-submit-reg"><span>Rejoindre le cercle des testeurs</span></button>
-
-          <div class="already-link-box">
-            Vous participez déjà au programme ? <a id="link-open-already">Consulter mon espace testeur</a>
-          </div>
-        </form>
-      </div>
-
-      <!-- ─── VOLET 2 : TÉLÉCHARGEMENT DIRECT ────────────────────────────────── -->
-      <div id="panel-download" style="display: ${initialTab === 'download' ? 'block' : 'none'};">
-        <div class="form-container">
-          <div class="download-grid">
-            <div class="download-card">
-              <div>
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-android);"><path d="M17 19H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2z"></path><circle cx="12" cy="12" r="2"></circle></svg>
-                  <span class="download-card-title">Google Play (Android)</span>
-                </div>
-                <p class="download-card-desc">
-                  Version de test certifiée pour smartphones et tablettes Android (Android 9 et supérieur).
-                </p>
-              </div>
-              <a href="https://play.google.com/apps/testing/com.devengalere.kantomg" class="download-action-btn android" target="_blank" rel="noopener noreferrer">
-                <span>Accéder sur Google Play</span>
-                <span aria-hidden="true">↗</span>
-              </a>
-            </div>
-
-            <div class="download-card">
-              <div>
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-ios);"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"></path></svg>
-                  <span class="download-card-title">TestFlight (Apple iOS)</span>
-                </div>
-                <p class="download-card-desc">
-                  Version préliminaire officielle pour iPhone et iPad via l'application Apple TestFlight.
-                </p>
-              </div>
-              <a href="https://testflight.apple.com/join/TEAM_KANTO" class="download-action-btn ios" target="_blank" rel="noopener noreferrer">
-                <span>Accéder sur TestFlight</span>
-                <span aria-hidden="true">↗</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ─── VOLET 3 : DÉJÀ INSCRIT / MON ESPACE ────────────────────────────── -->
-      <div id="panel-already" style="display: ${initialTab === 'already_registered' || isRegistered ? 'block' : 'none'};">
-        <div class="form-container" style="text-align: center; padding: 20px 0;">
-          <h3 style="font-family: var(--font-serif); font-size: 24px; margin-bottom: 12px; color: var(--color-heading);">
-            Consultez votre statut Bêta-Testeur Kanto
-          </h3>
-          <p style="font-size: 14px; color: var(--color-ink-muted); margin-bottom: 24px;">
-            Saisissez l'adresse e-mail avec laquelle vous vous êtes inscrit pour recevoir vos liens d'installation personnels ou gérer votre participation.
-          </p>
-
-          <form id="check-status-form">
-            <div class="field" style="max-width: 420px; margin: 0 auto 20px;">
-              <input 
-                type="email" 
-                id="check-email-input" 
-                class="field-input" 
-                placeholder="votre.email@domaine.com" 
-                required 
-                value="${emailVal}"
-              >
-            </div>
-            <button type="submit" class="btn-submit-main" style="max-width: 280px; margin: 0 auto;">
-              Vérifier mon inscription
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <!-- ─── VOLET 4 : DÉSINCRIPTION ────────────────────────────────────────── -->
-      <div id="panel-unsubscribe" style="display: ${initialTab === 'unsubscribe' ? 'block' : 'none'};">
-        <div class="form-container" style="text-align: center; padding: 20px 0;">
-          <h3 style="font-family: var(--font-serif); font-size: 22px; margin-bottom: 12px; color: var(--color-terracotta);">
-            Désinscription du programme Bêta
-          </h3>
-          <p style="font-size: 14px; color: var(--color-ink-muted); margin-bottom: 24px;">
-            En confirmant votre désinscription, votre accès aux préversions sera révoqué et vos données personnelles seront immédiatement supprimées de nos registres de test.
-          </p>
-          <button type="button" class="btn-submit-main" id="btn-confirm-unsub" style="max-width: 280px; margin: 0 auto; background: var(--color-ink);">
-            Confirmer ma désinscription
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <!-- SECTION AVIS DE LA COMMUNAUTÉ (DONNÉES EN DIRECT DE L'API)            -->
+    <!-- SECTION 5 : AVIS CERTIFIÉS DE LA COMMUNAUTÉ                            -->
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <section class="reviews-section-editorial" id="section-community-reviews" aria-labelledby="reviews-section-title">
       <div class="reviews-header-modern">
@@ -594,20 +711,38 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
   </main>
 
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- BARRE D'ACTION MOBILE FIXE (SMART STICKY BAR, FERMABLE)                -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="mobile-sticky-bar" id="mobile-sticky-bar" aria-label="Installation mobile">
+    <div class="mobile-sticky-info">
+      <img src="/logo.png" alt="Logo Kanto" width="28" height="28" class="mobile-sticky-logo" onerror="this.onerror=null; this.src='/favicon.png';">
+      <div class="mobile-sticky-text">
+        <strong>Kanto MG</strong>
+        <span>Android &amp; iOS</span>
+      </div>
+    </div>
+    <div class="mobile-sticky-actions">
+      <a href="#section-inscription" class="btn-sticky-store primary" id="sticky-btn-register">Créer un compte</a>
+      <a href="https://play.google.com/apps/testing/com.devengalere.kantomg" class="btn-sticky-store store" target="_blank" rel="noopener noreferrer">Stores</a>
+      <button type="button" class="btn-sticky-close" id="btn-close-sticky-bar" aria-label="Fermer le bandeau">✕</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
   <!-- MODALES LÉGALES & COOKIES                                              -->
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
   <div id="kanto-cgu-modal" class="kanto-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="cgu-modal-title" style="display: none;">
     <div class="kanto-modal-card">
       <div class="kanto-modal-head">
         <h2 id="cgu-modal-title" class="kanto-modal-title">
-          <span>Conditions Générales d'Utilisation • Bêta</span>
+          <span>Conditions Générales d'Utilisation • Bêta-Testeur Kanto</span>
         </h2>
         <button type="button" id="cgu-modal-close" class="kanto-modal-close" aria-label="Fermer la modale">✕</button>
       </div>
       <div class="kanto-modal-scroll">
         <div class="cgu-highlight-box">
           <strong>Esprit Kanto MG : Fihavanana &amp; Haja</strong><br>
-          En rejoignant le programme bêta, vous devenez pionnier d'un sanctuaire numérique dédié au patrimoine, aux contes (<em>Angano</em>), proverbes (<em>Ohabolana</em>) et traditions de Madagascar.
+          En rejoignant Kanto, vous devenez acteur d'un sanctuaire numérique dédié au patrimoine, aux contes (<em>Angano</em>), proverbes (<em>Ohabolana</em>) et traditions de Madagascar.
         </div>
         <p>Les versions de test sont fournies pour évaluation et signalement d'anomalies. Vous conservez la liberté totale de vous retirer du programme à tout instant.</p>
       </div>
@@ -691,26 +826,6 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
   <!-- PIED DE PAGE ÉDITORIAL & INSTITUTIONNEL                                -->
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
-  
-  <!-- Barre d'action d'installation permanente sur smartphone (Mobile Sticky Store Bar) -->
-  <div class="mobile-sticky-bar" id="mobile-sticky-bar" aria-label="Installation mobile">
-    <div class="mobile-sticky-info">
-      <img src="/logo.png" alt="Logo Kanto" width="28" height="28" class="mobile-sticky-logo" onerror="this.onerror=null; this.src='/favicon.png';">
-      <div class="mobile-sticky-text">
-        <strong>Kanto MG</strong>
-        <span>Android &amp; iOS</span>
-      </div>
-    </div>
-    <div class="mobile-sticky-actions">
-      <a href="https://play.google.com/apps/testing/com.devengalere.kantomg" class="btn-sticky-store android" target="_blank" rel="noopener noreferrer">
-        Google Play
-      </a>
-      <a href="https://testflight.apple.com/join/TEAM_KANTO" class="btn-sticky-store ios" target="_blank" rel="noopener noreferrer">
-        TestFlight
-      </a>
-    </div>
-  </div>
-
   <footer>
     <div class="footer-inner">
       <div class="footer-top-grid">
@@ -745,7 +860,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
             <a href="${legalBaseUrl}/pages/help">Aide &amp; FAQ</a>
             <a href="${legalBaseUrl}/pages/licenses">Crédits &amp; Licences</a>
             <a href="/feedback">Signaler une anomalie</a>
-            <button type="button" id="footer-link-my-space">Mon espace testeur</button>
+            <button type="button" id="footer-link-my-space">Mon espace membre</button>
           </div>
         </div>
 
