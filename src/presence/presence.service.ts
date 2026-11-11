@@ -252,7 +252,7 @@ export class PresenceService {
         reason: 'BANNED',
         messageFr: "Ce joueur n'est pas disponible pour recevoir un défi.",
         messageMg:
-          'Tsy afaka mandray fanamby ity mpilalao ity amin\'izao fotoana izao.',
+          "Tsy afaka mandray fanamby ity mpilalao ity amin'izao fotoana izao.",
       };
     }
 
@@ -276,7 +276,7 @@ export class PresenceService {
           reason: 'BLOCKED',
           messageFr: "Ce joueur n'est pas disponible pour recevoir un défi.",
           messageMg:
-            'Tsy afaka mandray fanamby ity mpilalao ity amin\'izao fotoana izao.',
+            "Tsy afaka mandray fanamby ity mpilalao ity amin'izao fotoana izao.",
         };
       }
     }
@@ -303,7 +303,7 @@ export class PresenceService {
         isAvailableForDuel: false,
         reason: 'IN_GAME',
         messageFr: 'Ce joueur participe déjà à une partie.',
-        messageMg: 'Efa mandray anjara amin\'ny lalao hafa ity mpilalao ity.',
+        messageMg: "Efa mandray anjara amin'ny lalao hafa ity mpilalao ity.",
       };
     }
 
@@ -348,7 +348,7 @@ export class PresenceService {
         reason: 'OFFLINE',
         messageFr: 'Ce joueur est actuellement hors ligne.',
         messageMg:
-          'Tsy mifandray amin\'ny aterineto ity mpilalao ity amin\'izao fotoana izao.',
+          "Tsy mifandray amin'ny aterineto ity mpilalao ity amin'izao fotoana izao.",
       };
     }
 
@@ -479,7 +479,7 @@ export class PresenceService {
           reason: 'BLOCKED',
           messageFr: "Ce joueur n'est pas disponible pour recevoir un défi.",
           messageMg:
-            'Tsy afaka mandray fanamby ity mpilalao ity amin\'izao fotoana izao.',
+            "Tsy afaka mandray fanamby ity mpilalao ity amin'izao fotoana izao.",
         };
         continue;
       }
@@ -491,7 +491,7 @@ export class PresenceService {
           isAvailableForDuel: false,
           reason: 'IN_GAME',
           messageFr: 'Ce joueur participe déjà à une partie.',
-          messageMg: 'Efa mandray anjara amin\'ny lalao hafa ity mpilalao ity.',
+          messageMg: "Efa mandray anjara amin'ny lalao hafa ity mpilalao ity.",
         };
         continue;
       }
@@ -524,7 +524,7 @@ export class PresenceService {
           reason: 'OFFLINE',
           messageFr: 'Ce joueur est actuellement hors ligne.',
           messageMg:
-            'Tsy mifandray amin\'ny aterineto ity mpilalao ity amin\'izao fotoana izao.',
+            "Tsy mifandray amin'ny aterineto ity mpilalao ity amin'izao fotoana izao.",
         };
       } else if (rawPresence === PlayerPresenceStatus.AWAY) {
         results[targetId] = {

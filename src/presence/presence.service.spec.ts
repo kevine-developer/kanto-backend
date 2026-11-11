@@ -54,13 +54,13 @@ describe('PresenceService — Système de Présence & Disponibilité 1v1', () =>
       expect(status).toBe(PlayerPresenceStatus.ONLINE);
     });
 
-    it('doit renvoyer AWAY si l\'application est déclarée en arrière-plan (background)', async () => {
+    it("doit renvoyer AWAY si l'application est déclarée en arrière-plan (background)", async () => {
       await service.recordHeartbeat('user-bg', 'background');
       const status = await service.getRawPresenceStatus('user-bg');
       expect(status).toBe(PlayerPresenceStatus.AWAY);
     });
 
-    it('doit basculer en OFFLINE si l\'application signale explicitement être inactive', async () => {
+    it("doit basculer en OFFLINE si l'application signale explicitement être inactive", async () => {
       await service.recordHeartbeat('user-closing', 'inactive');
       const status = await service.getRawPresenceStatus('user-closing');
       expect(status).toBe(PlayerPresenceStatus.OFFLINE);
@@ -68,7 +68,7 @@ describe('PresenceService — Système de Présence & Disponibilité 1v1', () =>
   });
 
   describe('2. Règles métier & Disponibilité 1v1 (getUserDuelAvailability)', () => {
-    it('doit interdire l\'auto-défi (expéditeur === destinataire)', async () => {
+    it("doit interdire l'auto-défi (expéditeur === destinataire)", async () => {
       const res = await service.getUserDuelAvailability('player-1', 'player-1');
       expect(res.isAvailableForDuel).toBe(false);
       expect(res.messageFr).toBe('Vous ne pouvez pas vous défier vous-même.');
@@ -141,7 +141,9 @@ describe('PresenceService — Système de Présence & Disponibilité 1v1', () =>
       const res = await service.getUserDuelAvailability('p1', 'p-pending');
       expect(res.isAvailableForDuel).toBe(false);
       expect(res.status).toBe(PlayerPresenceStatus.BUSY);
-      expect(res.messageFr).toBe('Ce joueur a déjà reçu une invitation de votre part.');
+      expect(res.messageFr).toBe(
+        'Ce joueur a déjà reçu une invitation de votre part.',
+      );
     });
 
     it('doit refuser si le joueur est hors ligne', async () => {
@@ -191,8 +193,9 @@ describe('PresenceService — Système de Présence & Disponibilité 1v1', () =>
       const res = await service.getUserDuelAvailability('p1', 'p-ready');
       expect(res.isAvailableForDuel).toBe(true);
       expect(res.status).toBe(PlayerPresenceStatus.ONLINE);
-      expect(res.messageFr).toBe('Ce joueur est en ligne et disponible pour un duel.');
+      expect(res.messageFr).toBe(
+        'Ce joueur est en ligne et disponible pour un duel.',
+      );
     });
   });
 });
-

@@ -114,10 +114,8 @@ export class ContesService {
         moralFr: data.moralFr !== undefined ? data.moralFr : undefined,
         illustration:
           data.illustration !== undefined ? data.illustration : undefined,
-        audioUrlMg:
-          data.audioUrlMg !== undefined ? data.audioUrlMg : undefined,
-        audioUrlFr:
-          data.audioUrlFr !== undefined ? data.audioUrlFr : undefined,
+        audioUrlMg: data.audioUrlMg !== undefined ? data.audioUrlMg : undefined,
+        audioUrlFr: data.audioUrlFr !== undefined ? data.audioUrlFr : undefined,
         isHumanVoiceMg:
           data.isHumanVoiceMg !== undefined ? data.isHumanVoiceMg : undefined,
         isHumanVoiceFr:

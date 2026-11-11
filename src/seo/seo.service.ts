@@ -100,7 +100,10 @@ Kanto MG est une plateforme culturelle et éducative malgache valorisant les val
    */
   async getSitemapXml(): Promise<string> {
     const now = Date.now();
-    if (this.cachedSitemap && now - this.cachedSitemap.generatedAt < this.SITEMAP_CACHE_TTL) {
+    if (
+      this.cachedSitemap &&
+      now - this.cachedSitemap.generatedAt < this.SITEMAP_CACHE_TTL
+    ) {
       return this.cachedSitemap.xml;
     }
 
@@ -108,7 +111,11 @@ Kanto MG est une plateforme culturelle et éducative malgache valorisant les val
     const currentDate = new Date().toISOString().split('T')[0];
 
     // 1. Pages statiques et hubs culturels prioritaires
-    const staticRoutes: { path: string; changefreq: string; priority: string }[] = [
+    const staticRoutes: {
+      path: string;
+      changefreq: string;
+      priority: string;
+    }[] = [
       { path: '', changefreq: 'daily', priority: '1.0' },
       { path: 'ohabolana', changefreq: 'weekly', priority: '0.9' },
       { path: 'angano', changefreq: 'weekly', priority: '0.9' },
@@ -123,7 +130,12 @@ Kanto MG est une plateforme culturelle et éducative malgache valorisant les val
       { path: 'pages/privacy', changefreq: 'monthly', priority: '0.5' },
     ];
 
-    let dynamicUrls: { loc: string; lastmod: string; changefreq: string; priority: string }[] = [];
+    const dynamicUrls: {
+      loc: string;
+      lastmod: string;
+      changefreq: string;
+      priority: string;
+    }[] = [];
 
     try {
       // 2. Extraire les contenus culturels publiés dans Prisma
@@ -209,7 +221,9 @@ Kanto MG est une plateforme culturelle et éducative malgache valorisant les val
         });
       }
     } catch (err) {
-      this.logger.warn(`[SEO] Erreur chargement URLs dynamiques sitemap: ${err}`);
+      this.logger.warn(
+        `[SEO] Erreur chargement URLs dynamiques sitemap: ${err}`,
+      );
     }
 
     // Construction du XML Sitemap
@@ -244,7 +258,15 @@ ${urlElements.join('\n')}
   /**
    * Données des rubriques culturelles pour les Hubs éditoriaux
    */
-  async getHubData(category: 'ohabolana' | 'angano' | 'kabary' | 'tononkalo' | 'raki-teny' | 'histoire') {
+  async getHubData(
+    category:
+      | 'ohabolana'
+      | 'angano'
+      | 'kabary'
+      | 'tononkalo'
+      | 'raki-teny'
+      | 'histoire',
+  ) {
     switch (category) {
       case 'ohabolana': {
         const items = await this.prisma.malagasyItem.findMany({
@@ -266,7 +288,8 @@ ${urlElements.join('\n')}
             nameMg: 'Ohabolana Malagasy',
             nameFr: 'Proverbes & Sagesses de Madagascar',
             eyebrow: 'Trésor de la Sagesse Ancestrale',
-            metaTitle: 'Ohabolana Malagasy • Proverbes Malgaches et Sagesses Ancestrales — Kanto MG',
+            metaTitle:
+              'Ohabolana Malagasy • Proverbes Malgaches et Sagesses Ancestrales — Kanto MG',
             metaDescription:
               'Découvrez le trésor des proverbes malgaches (Ohabolana), leur traduction en français et leur sens philosophique profond. Apprenez la langue et les valeurs du Fihavanana.',
             introTextFr:
@@ -308,7 +331,8 @@ ${urlElements.join('\n')}
             nameMg: 'Angano sy Tantara Malagasy',
             nameFr: 'Contes et Légendes de Madagascar',
             eyebrow: 'Transmission Orale & Féerie',
-            metaTitle: 'Angano Malagasy • Contes et Légendes Traditionnelles de Madagascar — Kanto MG',
+            metaTitle:
+              'Angano Malagasy • Contes et Légendes Traditionnelles de Madagascar — Kanto MG',
             metaDescription:
               'Explorez les contes et mythes de Madagascar (Ibonia, Trimobe, Fara). Récits bilingues captivants et morales éducatives sur Kanto MG.',
             introTextFr:
@@ -322,8 +346,10 @@ ${urlElements.join('\n')}
             id: c.id,
             slug: c.slug || c.id,
             title: `${c.title} (${c.titleFr})`,
-            translation: c.subtitleFr || c.moralFr || 'Conte traditionnel malgache',
-            explanation: c.moralFr || 'Morale ancestrale transmise par le conte.',
+            translation:
+              c.subtitleFr || c.moralFr || 'Conte traditionnel malgache',
+            explanation:
+              c.moralFr || 'Morale ancestrale transmise par le conte.',
             url: `/angano/${c.slug || c.id}`,
           })),
         };
@@ -349,7 +375,8 @@ ${urlElements.join('\n')}
             nameMg: 'Kabary Malagasy',
             nameFr: 'Art Oratoire & Discours Rituels Malgaches',
             eyebrow: 'Patrimoine Culturel Immatériel',
-            metaTitle: 'Kabary Malagasy • Discours Rituels et Art Oratoire de Madagascar — Kanto MG',
+            metaTitle:
+              'Kabary Malagasy • Discours Rituels et Art Oratoire de Madagascar — Kanto MG',
             metaDescription:
               'Initiez-vous à l’art oratoire malgache (Kabary) inscrit au patrimoine immatériel de l’UNESCO. Formules rituelles, fiançailles, mariages et fêtes traditionnelles.',
             introTextFr:
@@ -364,7 +391,9 @@ ${urlElements.join('\n')}
             slug: k.slug || k.id,
             title: `${k.title} — ${k.titleFr}`,
             translation: k.occasionFr || 'Discours rituel traditionnel',
-            explanation: k.concludingProverbFr || 'Formule oratoire et protocole solennel.',
+            explanation:
+              k.concludingProverbFr ||
+              'Formule oratoire et protocole solennel.',
             url: `/kabary/${k.slug || k.id}`,
           })),
         };
@@ -390,7 +419,8 @@ ${urlElements.join('\n')}
             nameMg: 'Tononkalo sy Hainteny',
             nameFr: 'Poésie & Littérature Malgaches',
             eyebrow: 'Lyrisme & Hainteny',
-            metaTitle: 'Poésie Malgache (Tononkalo) • Hainteny et Auteurs Illustres — Kanto MG',
+            metaTitle:
+              'Poésie Malgache (Tononkalo) • Hainteny et Auteurs Illustres — Kanto MG',
             metaDescription:
               'Découvrez la poésie malgache, du hainteny traditionnel aux œuvres majeures de Jean-Joseph Rabearivelo, Dox et Rado. Richesse lyrique de Madagascar.',
             introTextFr:
@@ -418,7 +448,8 @@ ${urlElements.join('\n')}
             nameMg: 'Raki-teny Malagasy',
             nameFr: 'Dictionnaire & Richesse Lexicale de Madagascar',
             eyebrow: 'Lexique & Nuances de la Langue',
-            metaTitle: 'Dictionnaire Malgache (Raki-teny) • Vocabulaire, Racines et Expressions — Kanto MG',
+            metaTitle:
+              'Dictionnaire Malgache (Raki-teny) • Vocabulaire, Racines et Expressions — Kanto MG',
             metaDescription:
               'Enrichissez votre vocabulaire malgache : définitions bilingues, expressions idiomatiques, étymologie et finesses dialectales de Madagascar sur Kanto MG.',
             introTextFr:
@@ -464,7 +495,8 @@ ${urlElements.join('\n')}
             nameMg: 'Tantara sy Vakoka Malagasy',
             nameFr: 'Histoire, Patrimoine & Langue Malgaches',
             eyebrow: 'Patrimoine National & Mémoire',
-            metaTitle: 'Histoire et Patrimoine de Madagascar • Traditions et Langue — Kanto MG',
+            metaTitle:
+              'Histoire et Patrimoine de Madagascar • Traditions et Langue — Kanto MG',
             metaDescription:
               'Parcourez les grandes dates de l’histoire de Madagascar, les souverains illustres, les emblèmes nationaux et les fondements de la culture malgache sur Kanto MG.',
             introTextFr:

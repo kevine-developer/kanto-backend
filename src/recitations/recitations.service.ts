@@ -136,15 +136,29 @@ export class RecitationsService {
     const where: Prisma.RecitationWhereInput = {
       status: 'PUBLISHED',
       ...(authors
-        ? { author: { in: authors.split(',').map((a) => a.trim()).filter(Boolean) } }
+        ? {
+            author: {
+              in: authors
+                .split(',')
+                .map((a) => a.trim())
+                .filter(Boolean),
+            },
+          }
         : author
-        ? { author: { contains: author, mode: 'insensitive' } }
-        : {}),
+          ? { author: { contains: author, mode: 'insensitive' } }
+          : {}),
       ...(tags
-        ? { tags: { hasSome: tags.split(',').map((t) => t.trim()).filter(Boolean) } }
+        ? {
+            tags: {
+              hasSome: tags
+                .split(',')
+                .map((t) => t.trim())
+                .filter(Boolean),
+            },
+          }
         : tag
-        ? { tags: { has: tag } }
-        : {}),
+          ? { tags: { has: tag } }
+          : {}),
       ...(search
         ? (() => {
             const rawSearch = search.trim();

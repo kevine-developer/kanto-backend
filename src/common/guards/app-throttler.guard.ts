@@ -18,8 +18,11 @@ export class AppThrottlerGuard extends ThrottlerGuard {
     }
 
     const forwarded = req.headers?.['x-forwarded-for'];
-    const ip = req.ip || (typeof forwarded === 'string' ? forwarded.split(',')[0].trim() : '127.0.0.1');
+    const ip =
+      req.ip ||
+      (typeof forwarded === 'string'
+        ? forwarded.split(',')[0].trim()
+        : '127.0.0.1');
     return `ip_${ip}`;
   }
 }
-

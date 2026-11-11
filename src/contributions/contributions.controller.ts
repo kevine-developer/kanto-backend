@@ -25,7 +25,13 @@ import { CreateContributionCommentDto } from './dto/create-contribution-comment.
 import { DisputeContributionDto } from './dto/dispute-contribution.dto.js';
 import { ResolveDisputeDto } from './dto/resolve-dispute.dto.js';
 import { CheckDuplicateDto } from './dto/check-duplicate.dto.js';
-import { AuthGuard, OptionalAuth, Roles, Session, type UserSession } from '../auth/index.js';
+import {
+  AuthGuard,
+  OptionalAuth,
+  Roles,
+  Session,
+  type UserSession,
+} from '../auth/index.js';
 import { Throttle } from '@nestjs/throttler';
 
 // Contributions Controller

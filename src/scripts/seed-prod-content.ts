@@ -2215,7 +2215,10 @@ async function seedProduction() {
       errors: 0,
     });
   } catch (err: any) {
-    console.warn('[Seed Prod] Erreur lors de la synchronisation pédagogique:', err?.message || err);
+    console.warn(
+      '[Seed Prod] Erreur lors de la synchronisation pédagogique:',
+      err?.message || err,
+    );
   }
 
   // ─── Synthèse & Observabilité Consolidée ────────────────────────────────────

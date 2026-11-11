@@ -9,4 +9,3 @@ import { PresenceService } from './presence.service.js';
   exports: [PresenceService],
 })
 export class PresenceModule {}
-

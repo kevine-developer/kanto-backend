@@ -118,7 +118,8 @@ export class ContesController {
   @Roles(['ADMIN', 'admin'])
   uploadAudio(
     @Param('id') id: string,
-    @Body() body: { language: 'mg' | 'fr'; base64Data: string; isHumanVoice?: boolean },
+    @Body()
+    body: { language: 'mg' | 'fr'; base64Data: string; isHumanVoice?: boolean },
   ) {
     return this.contesAudioService.uploadAudio(
       id,

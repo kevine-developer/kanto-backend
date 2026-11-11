@@ -75,7 +75,9 @@ describe('LearningService', () => {
   describe('getDashboard', () => {
     it('devrait retourner le tableau de bord avec les parcours par défaut en fallback seed', async () => {
       // Simulation d'une base de données vide ou indisponible -> fallback sur SEED_LEARNING_TRACKS
-      prismaMock.learningTrack.findMany.mockRejectedValue(new Error('DB unreachable'));
+      prismaMock.learningTrack.findMany.mockRejectedValue(
+        new Error('DB unreachable'),
+      );
 
       const dashboard = await service.getDashboard('test-user-id');
 
@@ -91,7 +93,9 @@ describe('LearningService', () => {
 
   describe('getTracks', () => {
     it('devrait retourner la liste des parcours filtrés par niveau si spécifié', async () => {
-      prismaMock.learningTrack.findMany.mockRejectedValue(new Error('DB unreachable'));
+      prismaMock.learningTrack.findMany.mockRejectedValue(
+        new Error('DB unreachable'),
+      );
 
       const tracks = await service.getTracks('BEGINNER');
 
@@ -102,9 +106,13 @@ describe('LearningService', () => {
 
   describe('getTrackBySlug', () => {
     it('devrait retourner un parcours avec la première leçon disponible par défaut', async () => {
-      prismaMock.learningTrack.findUnique.mockRejectedValue(new Error('DB unreachable'));
+      prismaMock.learningTrack.findUnique.mockRejectedValue(
+        new Error('DB unreachable'),
+      );
 
-      const track = await service.getTrackBySlug('fondamentaux-langue-malgache');
+      const track = await service.getTrackBySlug(
+        'fondamentaux-langue-malgache',
+      );
 
       expect(track).toBeDefined();
       expect(track.slug).toBe('fondamentaux-langue-malgache');
@@ -117,9 +125,13 @@ describe('LearningService', () => {
 
   describe('getLessonBySlug (5 questions & audioEnabled)', () => {
     it('devrait retourner la leçon avec exactement 5 questions de micro-quiz et audioEnabled actif par défaut', async () => {
-      prismaMock.learningLesson.findUnique.mockRejectedValue(new Error('DB unreachable'));
+      prismaMock.learningLesson.findUnique.mockRejectedValue(
+        new Error('DB unreachable'),
+      );
 
-      const lesson = await service.getLessonBySlug('salutations-et-politesse-aza-fady');
+      const lesson = await service.getLessonBySlug(
+        'salutations-et-politesse-aza-fady',
+      );
 
       expect(lesson).toBeDefined();
       expect(lesson.audioEnabled).toBe(true);
@@ -128,13 +140,19 @@ describe('LearningService', () => {
     });
 
     it('devrait contenir exactement 5 questions de micro-quiz pour chaque leçon du seed', async () => {
-      prismaMock.learningLesson.findUnique.mockRejectedValue(new Error('DB unreachable'));
+      prismaMock.learningLesson.findUnique.mockRejectedValue(
+        new Error('DB unreachable'),
+      );
 
-      const lessonNew = await service.getLessonBySlug('compter-et-faire-le-marche-tsena');
+      const lessonNew = await service.getLessonBySlug(
+        'compter-et-faire-le-marche-tsena',
+      );
       expect(lessonNew).toBeDefined();
       expect(lessonNew.microQuiz?.length).toBe(5);
 
-      const lessonKabary = await service.getLessonBySlug('l-art-du-kabary-discours-rituel');
+      const lessonKabary = await service.getLessonBySlug(
+        'l-art-du-kabary-discours-rituel',
+      );
       expect(lessonKabary).toBeDefined();
       expect(lessonKabary.microQuiz?.length).toBe(5);
     });
@@ -142,12 +160,21 @@ describe('LearningService', () => {
 
   describe('completeLesson (seuil de validation ≥ 60%)', () => {
     it('devrait valider la leçon avec succès lorsque le score est supérieur ou égal à 60%', async () => {
-      prismaMock.learningLesson.findFirst.mockRejectedValue(new Error('DB unreachable'));
-      prismaMock.userLessonProgress.upsert.mockResolvedValue({ status: 'COMPLETED', score: 67 });
-
-      const result = await service.completeLesson('salutations-et-politesse-aza-fady', 'user-1', {
+      prismaMock.learningLesson.findFirst.mockRejectedValue(
+        new Error('DB unreachable'),
+      );
+      prismaMock.userLessonProgress.upsert.mockResolvedValue({
+        status: 'COMPLETED',
         score: 67,
       });
+
+      const result = await service.completeLesson(
+        'salutations-et-politesse-aza-fady',
+        'user-1',
+        {
+          score: 67,
+        },
+      );
 
       expect(result).toBeDefined();
       expect(result.success).toBe(true);
@@ -157,13 +184,22 @@ describe('LearningService', () => {
     });
 
     it('devrait refuser la validation lorsque le score est inférieur à 60%', async () => {
-      prismaMock.learningLesson.findFirst.mockRejectedValue(new Error('DB unreachable'));
+      prismaMock.learningLesson.findFirst.mockRejectedValue(
+        new Error('DB unreachable'),
+      );
       prismaMock.userLessonProgress.findUnique.mockResolvedValue(null);
-      prismaMock.userLessonProgress.upsert.mockResolvedValue({ status: 'IN_PROGRESS', score: 33 });
-
-      const result = await service.completeLesson('salutations-et-politesse-aza-fady', 'user-1', {
+      prismaMock.userLessonProgress.upsert.mockResolvedValue({
+        status: 'IN_PROGRESS',
         score: 33,
       });
+
+      const result = await service.completeLesson(
+        'salutations-et-politesse-aza-fady',
+        'user-1',
+        {
+          score: 33,
+        },
+      );
 
       expect(result).toBeDefined();
       expect(result.success).toBe(false);

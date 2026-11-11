@@ -3056,6 +3056,17 @@ export function renderBetaWaitlistScript(): string {
     return masked + '@' + domain;
   }
 
+  // ─── PROTECTION XSS CLIENT POUR LE RENDU DYNAMIQUE ───
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
   // ─── CHARGEMENT DES INFOS DE TÉLÉCHARGEMENT EN TEMPS RÉEL ───
   async function loadDownloadInfo() {
     try {
@@ -3790,7 +3801,7 @@ export function renderBetaWaitlistScript(): string {
 
     function getInitials(name) {
       if (!name) return 'K';
-      var parts = name.trim().split(/\s+/);
+      var parts = name.trim().split(/\\s+/);
       if (parts.length >= 2 && parts[0] && parts[1]) {
         return (parts[0][0] + parts[1][0]).toUpperCase();
       }
@@ -3799,7 +3810,7 @@ export function renderBetaWaitlistScript(): string {
 
     function loadStats() {
       fetch('/api/reviews/public/stats')
-        .then(function(res) { return res.json(); })
+        .then(function(res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
         .then(function(stats) {
           if (!stats || typeof stats.totalReviews !== 'number') return;
           var total = stats.totalReviews;
@@ -3828,7 +3839,7 @@ export function renderBetaWaitlistScript(): string {
       var url = '/api/reviews/public?page=' + page + '&limit=6&minRating=4';
 
       fetch(url)
-        .then(function(res) { return res.json(); })
+        .then(function(res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
         .then(function(res) {
           isLoadingReviews = false;
           var items = res.data || [];

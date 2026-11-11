@@ -188,7 +188,10 @@ export class KabaryService {
     };
 
     if (query.occasions) {
-      const occasionList = query.occasions.split(',').map((s) => s.trim()).filter(Boolean);
+      const occasionList = query.occasions
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean);
       if (occasionList.length > 0) {
         where.occasion = { in: occasionList };
       }
@@ -197,7 +200,10 @@ export class KabaryService {
     }
 
     if (query.regions) {
-      const regionList = query.regions.split(',').map((s) => s.trim()).filter(Boolean);
+      const regionList = query.regions
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean);
       if (regionList.length > 0) {
         where.region = { in: regionList };
       }
@@ -211,7 +217,10 @@ export class KabaryService {
     }
 
     if (query.themeSlugs) {
-      const slugs = query.themeSlugs.split(',').map((s) => s.trim()).filter(Boolean);
+      const slugs = query.themeSlugs
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean);
       if (slugs.length > 0) {
         where.themes = {
           some: {

@@ -451,13 +451,17 @@ export class LocksService implements OnModuleInit {
 
     // Règle stricte : interdiction de désactiver les deux langues de l'application
     if (key === 'language:fr' || key === 'language:mg') {
-      const willBeLocked = data.isLocked !== undefined ? data.isLocked : existing.isLocked;
-      const willBeVisible = data.isVisible !== undefined ? data.isVisible : existing.isVisible;
+      const willBeLocked =
+        data.isLocked !== undefined ? data.isLocked : existing.isLocked;
+      const willBeVisible =
+        data.isVisible !== undefined ? data.isVisible : existing.isVisible;
       const willBeActive = !willBeLocked && willBeVisible;
       if (!willBeActive) {
         const otherKey = key === 'language:fr' ? 'language:mg' : 'language:fr';
-        const other = await this.prisma.moduleLock.findUnique({ where: { key: otherKey } });
-        const isOtherActive = other ? (!other.isLocked && other.isVisible) : true;
+        const other = await this.prisma.moduleLock.findUnique({
+          where: { key: otherKey },
+        });
+        const isOtherActive = other ? !other.isLocked && other.isVisible : true;
         if (!isOtherActive) {
           throw new BadRequestException(
             "Impossible de désactiver toutes les langues : au moins une langue d'application ('fr' ou 'mg') doit obligatoirement rester active.",
@@ -547,8 +551,10 @@ export class LocksService implements OnModuleInit {
 
     if ((key === 'language:fr' || key === 'language:mg') && !nextVisibility) {
       const otherKey = key === 'language:fr' ? 'language:mg' : 'language:fr';
-      const other = await this.prisma.moduleLock.findUnique({ where: { key: otherKey } });
-      const isOtherActive = other ? (!other.isLocked && other.isVisible) : true;
+      const other = await this.prisma.moduleLock.findUnique({
+        where: { key: otherKey },
+      });
+      const isOtherActive = other ? !other.isLocked && other.isVisible : true;
       if (!isOtherActive) {
         throw new BadRequestException(
           "Impossible de masquer toutes les langues : au moins une langue d'application ('fr' ou 'mg') doit obligatoirement rester active.",
@@ -695,8 +701,8 @@ export class LocksService implements OnModuleInit {
       this.prisma.moduleLock.findUnique({ where: { key: 'language:mg' } }),
     ]);
 
-    const frActive = frLock ? (!frLock.isLocked && frLock.isVisible) : true;
-    const mgActive = mgLock ? (!mgLock.isLocked && mgLock.isVisible) : true;
+    const frActive = frLock ? !frLock.isLocked && frLock.isVisible : true;
+    const mgActive = mgLock ? !mgLock.isLocked && mgLock.isVisible : true;
 
     const activeLanguages: ('fr' | 'mg')[] = [];
     if (frActive) activeLanguages.push('fr');
@@ -741,12 +747,16 @@ export class LocksService implements OnModuleInit {
           nameMg: 'Fiteny Frantsay (Fampiharana)',
           isLocked: !nextFr,
           isVisible: nextFr,
-          lockReason: nextFr ? null : "Langue temporairement désactivée par l'administration",
+          lockReason: nextFr
+            ? null
+            : "Langue temporairement désactivée par l'administration",
         },
         update: {
           isLocked: !nextFr,
           isVisible: nextFr,
-          lockReason: nextFr ? null : "Langue temporairement désactivée par l'administration",
+          lockReason: nextFr
+            ? null
+            : "Langue temporairement désactivée par l'administration",
         },
       }),
       this.prisma.moduleLock.upsert({
@@ -758,12 +768,16 @@ export class LocksService implements OnModuleInit {
           nameMg: 'Fiteny Malagasy (Fampiharana)',
           isLocked: !nextMg,
           isVisible: nextMg,
-          lockReason: nextMg ? null : "Langue temporairement désactivée par l'administration",
+          lockReason: nextMg
+            ? null
+            : "Langue temporairement désactivée par l'administration",
         },
         update: {
           isLocked: !nextMg,
           isVisible: nextMg,
-          lockReason: nextMg ? null : "Langue temporairement désactivée par l'administration",
+          lockReason: nextMg
+            ? null
+            : "Langue temporairement désactivée par l'administration",
         },
       }),
     ]);
@@ -772,7 +786,9 @@ export class LocksService implements OnModuleInit {
       await this.redisService.del(CACHE_KEY_PUBLIC_LOCKS);
     } catch {}
 
-    this.logger.log(`🌐 [AppLanguages] Langues mises à jour : FR=${nextFr}, MG=${nextMg}`);
+    this.logger.log(
+      `🌐 [AppLanguages] Langues mises à jour : FR=${nextFr}, MG=${nextMg}`,
+    );
 
     const activeLanguages: ('fr' | 'mg')[] = [];
     if (nextFr) activeLanguages.push('fr');
@@ -785,5 +801,4 @@ export class LocksService implements OnModuleInit {
       defaultLanguage: nextFr ? 'fr' : 'mg',
     };
   }
-
 }

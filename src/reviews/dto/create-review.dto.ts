@@ -24,8 +24,12 @@ export class CreateReviewDto {
   rating: number;
 
   @IsString({ message: 'Le commentaire doit être une chaîne de caractères.' })
-  @MinLength(10, { message: 'Le commentaire doit contenir au moins 10 caractères.' })
-  @MaxLength(2000, { message: 'Le commentaire ne peut pas dépasser 2000 caractères.' })
+  @MinLength(10, {
+    message: 'Le commentaire doit contenir au moins 10 caractères.',
+  })
+  @MaxLength(2000, {
+    message: 'Le commentaire ne peut pas dépasser 2000 caractères.',
+  })
   comment: string;
 
   @IsOptional()
@@ -61,4 +65,3 @@ export class CreateReviewDto {
   @IsString()
   deviceInfo?: string;
 }
-

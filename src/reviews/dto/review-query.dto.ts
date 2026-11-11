@@ -59,4 +59,3 @@ export class AdminReviewsQueryDto {
   @IsString()
   search?: string;
 }
-

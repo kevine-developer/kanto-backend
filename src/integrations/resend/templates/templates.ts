@@ -601,6 +601,25 @@ export function buildFeedbackAdminEmail(
     ? `${data.userName}${data.userEmail ? ` <${data.userEmail}>` : ''}`
     : data.userEmail || 'Utilisateur anonyme';
 
+  const isAppReview = data.message.includes('[Avis Kanto]');
+  const adminBaseUrl = (
+    process.env.ADMIN_FRONTEND_URL ||
+    process.env.ADMIN_URL ||
+    'https://kanto-admin.vercel.app'
+  ).replace(/\/$/, '');
+
+  const moderationNoticeText = isAppReview
+    ? `\n\nModération requise : cet avis est enregistré en statut PENDING. Approuvez-le dans ${adminBaseUrl}/reviews pour l'afficher sur app-kanto.gastsar.fr.`
+    : '';
+
+  const moderationNoticeHtml = isAppReview
+    ? renderNotice({
+        title: 'Publication sur app-kanto.gastsar.fr',
+        content: `Cet avis est enregistré en statut <strong>En attente de validation</strong> (<code>PENDING</code>). Il n’apparaîtra sur <strong>app-kanto.gastsar.fr</strong> qu’après approbation manuelle dans <a href="${escapeHtml(adminBaseUrl)}/reviews" target="_blank" rel="noopener noreferrer" style="color: ${KANTO_COLORS.tanimbary}; font-weight: 600; text-decoration: underline;">Kanto Admin → Avis &amp; Témoignages</a>.`,
+        variant: 'info',
+      })
+    : '';
+
   const text = `Kanto — Avis Utilisateur
 
 Type : ${cleanType}
@@ -608,7 +627,7 @@ De   : ${fromDisplay}
 Date : ${dateFormatted}
 
 Message :
-${data.message.trim()}`.trim();
+${data.message.trim()}${moderationNoticeText}`.trim();
 
   const metadataItems = [
     { label: 'Type de retour', value: cleanType },
@@ -642,6 +661,8 @@ ${data.message.trim()}`.trim();
         </td>
       </tr>
     </table>
+
+    ${moderationNoticeHtml}
 
     <p style="font-size: 12px; color: ${KANTO_COLORS.textFootnote}; margin: 0;">
       Pour répondre à cet utilisateur, utilisez directement la fonction de réponse de votre logiciel de messagerie.

@@ -38,9 +38,11 @@ export class CompleteLessonDto {
 export class ReviewActionDto {
   @IsOptional()
   @IsString()
-  action?: 'AGAIN' | 'HARD' | 'GOOD' | 'EASY' | 'again' | 'hard' | 'good' | 'easy';
+  action?:
+    'AGAIN' | 'HARD' | 'GOOD' | 'EASY' | 'again' | 'hard' | 'good' | 'easy';
 
   @IsOptional()
   @IsString()
-  quality?: 'again' | 'hard' | 'good' | 'easy' | 'AGAIN' | 'HARD' | 'GOOD' | 'EASY';
+  quality?:
+    'again' | 'hard' | 'good' | 'easy' | 'AGAIN' | 'HARD' | 'GOOD' | 'EASY';
 }

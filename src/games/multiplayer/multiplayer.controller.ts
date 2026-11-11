@@ -116,8 +116,10 @@ export class MultiplayerController {
     @Body('appState') appState: 'active' | 'background' | 'inactive',
     @Session() session: UserSession,
   ) {
-    await this.presenceService.recordHeartbeat(session.user.id, appState ?? 'active');
+    await this.presenceService.recordHeartbeat(
+      session.user.id,
+      appState ?? 'active',
+    );
     return { success: true };
   }
-
 }
