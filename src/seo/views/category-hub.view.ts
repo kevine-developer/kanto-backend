@@ -114,7 +114,7 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
   <link rel="icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Données Structurées Schema.org -->
   <script type="application/ld+json">
@@ -144,82 +144,94 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
       font-display: swap;
     }
     :root, [data-theme="dark"] {
-      --color-bg: #0D0D0B;
+      --color-bg: #0C0C0A;
       --color-surface: #141412;
-      --color-surface-hover: #1E1E1B;
-      --color-border: #242420;
-      --color-divider: #282824;
-      --color-tanimbary: #6B9E61;
+      --color-surface-hover: #1D1D19;
+      --color-border: #262520;
+      --color-divider: #1F1E1A;
+      --color-terracotta: #E65A48;
+      --color-terracotta-soft: rgba(230, 90, 72, 0.12);
+      --color-tanimbary: #7AA870;
       --color-tanimbary-dark: #16442A;
-      --color-ochre: #C58B38;
-      --color-text: #F0F0EC;
-      --color-text-secondary: #9C9C98;
-      --color-text-muted: #707070;
-      --color-heading: #FFFFFF;
-      --radius-sm: 6px;
-      --radius-md: 10px;
-      --radius-lg: 14px;
+      --color-amber: #E0A24A;
+      --color-text: #F4F3EE;
+      --color-text-secondary: #A09E96;
+      --color-text-muted: #6E6D66;
+      --color-heading: #FCFBF7;
+      --font-serif: 'Newsreader', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
     }
     [data-theme="light"] {
-      --color-bg: #F5F4F0;
-      --color-surface: #FEFEFC;
-      --color-surface-hover: #F2F1EC;
-      --color-border: #E2E0D8;
-      --color-divider: #ECEAE3;
-      --color-tanimbary: #4A6741;
+      --color-bg: #F8F6F0;
+      --color-surface: #FFFFFF;
+      --color-surface-hover: #F2EFE8;
+      --color-border: #E5E1D7;
+      --color-divider: #ECE8DD;
+      --color-terracotta: #B93826;
+      --color-terracotta-soft: rgba(185, 56, 38, 0.08);
+      --color-tanimbary: #2B4426;
       --color-tanimbary-dark: #16442A;
-      --color-ochre: #A67026;
-      --color-text: #1A1A1A;
-      --color-text-secondary: #5C5C58;
-      --color-text-muted: #8C8C88;
-      --color-heading: #111110;
+      --color-amber: #C48833;
+      --color-text: #141311;
+      --color-text-secondary: #5C5A52;
+      --color-text-muted: #8C897E;
+      --color-heading: #141311;
+      --font-serif: 'Newsreader', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: var(--font-sans);
       background-color: var(--color-bg);
       color: var(--color-text);
       line-height: 1.6;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      -webkit-font-smoothing: antialiased;
     }
     header {
-      padding: 16px 24px;
+      padding: 18px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--color-border);
-      max-width: 960px;
+      max-width: 1040px;
       margin: 0 auto;
       width: 100%;
     }
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 11px;
+      gap: 12px;
       text-decoration: none;
       color: inherit;
     }
-    .brand-logo { width: 36px; height: 36px; border-radius: 8px; }
+    .brand-logo { width: 34px; height: 34px; border-radius: 4px; border: 1px solid var(--color-border); }
     .brand-title {
-      font-family: 'LazyDog', cursive, sans-serif;
-      font-size: 24px;
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
       color: var(--color-heading);
+      line-height: 1.1;
     }
     .brand-sub {
-      font-size: 10px;
+      font-size: 9.5px;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--color-tanimbary);
+      letter-spacing: 1.8px;
+      color: var(--color-terracotta);
       font-weight: 700;
     }
     main {
       flex: 1;
-      max-width: 960px;
+      max-width: 1040px;
       margin: 0 auto;
       width: 100%;
-      padding: 32px 20px 60px;
+      padding: 40px 24px 72px;
     }
     .breadcrumbs {
       display: flex;
@@ -227,196 +239,252 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
       gap: 8px;
       font-size: 12px;
       color: var(--color-text-muted);
-      margin-bottom: 24px;
+      margin-bottom: 28px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-weight: 600;
     }
     .breadcrumbs a {
       color: var(--color-text-secondary);
       text-decoration: none;
     }
-    .breadcrumbs a:hover { color: var(--color-tanimbary); }
+    .breadcrumbs a:hover { color: var(--color-terracotta); }
     .hero-eyebrow {
-      display: inline-block;
-      font-size: 11.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 2px;
       font-weight: 700;
-      color: var(--color-ochre);
-      margin-bottom: 8px;
+      color: var(--color-terracotta);
+      margin-bottom: 12px;
+    }
+    .hero-eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 18px;
+      height: 1.5px;
+      background: var(--color-terracotta);
     }
     h1 {
-      font-size: 32px;
-      font-weight: 800;
+      font-family: var(--font-serif);
+      font-size: clamp(32px, 4.5vw, 44px);
+      font-weight: 500;
       color: var(--color-heading);
       letter-spacing: -0.025em;
-      line-height: 1.25;
-      margin-bottom: 14px;
+      line-height: 1.18;
+      margin-bottom: 16px;
     }
     .hero-desc {
-      font-size: 15px;
+      font-size: 16px;
       color: var(--color-text-secondary);
-      line-height: 1.6;
-      max-width: 720px;
-      margin-bottom: 28px;
+      line-height: 1.65;
+      max-width: 760px;
+      margin-bottom: 36px;
     }
     .quote-box {
       background: var(--color-surface);
-      border-left: 4px solid var(--color-tanimbary);
-      padding: 16px 20px;
+      border-left: 3px solid var(--color-terracotta);
+      padding: 22px 26px;
       border-radius: 0 var(--radius-md) var(--radius-md) 0;
-      margin-bottom: 36px;
+      margin-bottom: 48px;
       border-top: 1px solid var(--color-border);
       border-right: 1px solid var(--color-border);
       border-bottom: 1px solid var(--color-border);
     }
     .quote-box-mg {
+      font-family: var(--font-serif);
       font-style: italic;
-      font-weight: 600;
+      font-weight: 500;
       color: var(--color-heading);
-      font-size: 14.5px;
-      margin-bottom: 6px;
+      font-size: 18px;
+      line-height: 1.5;
+      margin-bottom: 8px;
     }
     .quote-box-fr {
-      font-size: 13px;
+      font-size: 13.5px;
       color: var(--color-text-secondary);
+      line-height: 1.55;
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 12px;
     }
     .section-title {
-      font-size: 20px;
-      font-weight: 700;
+      font-family: var(--font-serif);
+      font-size: 24px;
+      font-weight: 600;
       color: var(--color-heading);
-      margin-bottom: 16px;
       letter-spacing: -0.015em;
+    }
+    .section-meta {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-text-muted);
     }
     .content-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
-      margin-bottom: 40px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 18px;
+      margin-bottom: 48px;
     }
     .content-card {
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
-      padding: 20px;
+      padding: 24px;
       text-decoration: none;
       color: inherit;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: transform 0.15s ease, border-color 0.15s ease;
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
     .content-card:hover {
-      border-color: var(--color-tanimbary);
+      border-color: var(--color-terracotta);
       transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
     }
     .card-title {
-      font-size: 15px;
-      font-weight: 700;
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-weight: 600;
       color: var(--color-heading);
-      margin-bottom: 8px;
-      line-height: 1.4;
+      margin-bottom: 10px;
+      line-height: 1.35;
     }
     .card-trans {
-      font-size: 13px;
+      font-size: 13.5px;
       color: var(--color-text-secondary);
-      margin-bottom: 12px;
-      line-height: 1.5;
+      margin-bottom: 16px;
+      line-height: 1.55;
       flex: 1;
     }
     .card-link-more {
       font-size: 12px;
-      font-weight: 600;
-      color: var(--color-tanimbary);
+      font-weight: 700;
+      color: var(--color-terracotta);
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
     }
     .cta-banner {
-      background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-hover) 100%);
+      background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
-      padding: 32px 28px;
+      padding: 40px 32px;
       text-align: center;
-      margin-top: 30px;
+      margin-top: 36px;
+      position: relative;
+    }
+    .cta-banner::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--color-terracotta), transparent);
     }
     .cta-title {
-      font-size: 20px;
-      font-weight: 800;
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 600;
       color: var(--color-heading);
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      letter-spacing: -0.015em;
     }
     .cta-desc {
-      font-size: 13.5px;
+      font-size: 14.5px;
       color: var(--color-text-secondary);
-      max-width: 560px;
-      margin: 0 auto 20px;
+      max-width: 600px;
+      margin: 0 auto 24px;
+      line-height: 1.6;
     }
     .btn-cta {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: var(--color-tanimbary);
+      background: var(--color-terracotta);
       color: #FFFFFF;
       font-weight: 700;
       font-size: 13.5px;
-      padding: 12px 24px;
-      border-radius: var(--radius-md);
+      padding: 13px 26px;
+      border-radius: var(--radius-sm);
       text-decoration: none;
-      transition: opacity 0.15s ease;
+      letter-spacing: 0.3px;
+      transition: opacity 0.15s ease, transform 0.15s ease;
     }
-    .btn-cta:hover { opacity: 0.9; }
+    .btn-cta:hover { opacity: 0.92; transform: translateY(-1px); }
     .hub-nav-tags {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
-      margin-top: 24px;
+      margin-top: 32px;
       padding-top: 24px;
-      border-top: 1px solid var(--color-divider);
+      border-top: 1px solid var(--color-border);
     }
     .tag-link {
       font-size: 12px;
-      padding: 6px 12px;
+      padding: 7px 14px;
       border-radius: 99px;
       border: 1px solid var(--color-border);
       color: var(--color-text-secondary);
       text-decoration: none;
       background: var(--color-surface);
+      transition: border-color 0.15s ease, color 0.15s ease;
     }
     .tag-link:hover {
-      border-color: var(--color-tanimbary);
+      border-color: var(--color-terracotta);
       color: var(--color-heading);
     }
     footer {
       border-top: 1px solid var(--color-border);
-      padding: 24px 20px;
-      font-size: 12px;
+      padding: 32px 24px;
+      font-size: 12.5px;
       color: var(--color-text-muted);
       text-align: center;
-      max-width: 960px;
+      max-width: 1040px;
       margin: 0 auto;
       width: 100%;
+    }
+    .footer-quote {
+      font-family: var(--font-serif);
+      font-style: italic;
+      color: var(--color-text-secondary);
+      margin-bottom: 12px;
+      font-size: 14px;
     }
     .footer-links {
       display: flex;
       justify-content: center;
-      gap: 16px;
+      gap: 18px;
       flex-wrap: wrap;
-      margin-top: 8px;
+      margin-top: 12px;
     }
     .footer-links a { color: var(--color-text-secondary); text-decoration: none; }
-    .footer-links a:hover { color: var(--color-tanimbary); }
+    .footer-links a:hover { color: var(--color-terracotta); }
   </style>
 </head>
 <body>
   <header>
     <a href="/" class="brand">
-      <img src="/logo.png" alt="Logo Kanto MG" class="brand-logo" width="36" height="36" onerror="this.onerror=null; this.src='/favicon.png';">
+      <img src="/logo.png" alt="Logo Kanto MG" class="brand-logo" width="34" height="34" onerror="this.onerror=null; this.src='/favicon.png';">
       <div>
         <div class="brand-title">Kanto</div>
         <div class="brand-sub">Madagascar</div>
       </div>
     </a>
     <div>
-      <a href="/#panel-register" class="btn-cta" style="padding: 7px 14px; font-size: 12px;">Accès Anticipé</a>
+      <a href="/#panel-register" class="btn-cta" style="padding: 8px 16px; font-size: 12px;">Accès Anticipé</a>
     </div>
   </header>
 
@@ -425,7 +493,7 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
     <nav class="breadcrumbs" aria-label="Fil d'Ariane">
       <a href="/">Accueil</a>
       <span>›</span>
-      <span style="color: var(--color-text);">${escapeHtml(config.nameFr)}</span>
+      <span style="color: var(--color-heading);">${escapeHtml(config.nameFr)}</span>
     </nav>
 
     <!-- En-tête de catégorie -->
@@ -440,7 +508,10 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
     </div>
 
     <!-- Grille de contenus représentatifs -->
-    <h2 class="section-title">Sélection &amp; Extraits Culturels</h2>
+    <div class="section-head">
+      <h2 class="section-title">Sélection &amp; Extraits Culturels</h2>
+      <span class="section-meta">Corpus numérique Kanto</span>
+    </div>
     <div class="content-grid">
       ${items
         .map(
@@ -480,6 +551,7 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
   </main>
 
   <footer>
+    <div class="footer-quote">« Ny hazo no vanon-ko lakana, ny tany naniriany no tsara »</div>
     <div>© ${year} <strong>kanto.mg</strong> — Ny harena ara-kolontsaina malagasy</div>
     <div class="footer-links">
       <a href="/pages/terms">Conditions d'utilisation (CGU)</a>

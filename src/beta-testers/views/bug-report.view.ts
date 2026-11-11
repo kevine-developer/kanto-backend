@@ -51,7 +51,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
   <link rel="icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <script>
     (function() {
@@ -297,8 +297,9 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
     }
 
     .page-title {
-      font-size: 26px;
-      font-weight: 700;
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 32px;
+      font-weight: 600;
       color: var(--color-heading);
       letter-spacing: -0.4px;
       margin-bottom: 8px;
