@@ -48,7 +48,8 @@ export class ReviewsService {
    * Calcule le nom affiché selon le choix de l'utilisateur
    */
   public computePublicDisplayName(
-    type: PublicDisplayNameTypeDto | string = PublicDisplayNameTypeDto.ANONYMOUS,
+    type:
+      PublicDisplayNameTypeDto | string = PublicDisplayNameTypeDto.ANONYMOUS,
     rawName?: string | null,
     username?: string | null,
   ): string {
@@ -96,9 +97,14 @@ export class ReviewsService {
     }
 
     const isAuthorized = Boolean(dto.isPublicationAuthorized);
-    const displayType = dto.publicDisplayNameType || PublicDisplayNameTypeDto.ANONYMOUS;
+    const displayType =
+      dto.publicDisplayNameType || PublicDisplayNameTypeDto.ANONYMOUS;
     const publicDisplayName = isAuthorized
-      ? this.computePublicDisplayName(displayType, resolvedAuthorName, resolvedUsername)
+      ? this.computePublicDisplayName(
+          displayType,
+          resolvedAuthorName,
+          resolvedUsername,
+        )
       : null;
 
     const review = await this.prisma.appReview.create({
@@ -114,7 +120,9 @@ export class ReviewsService {
         publicDisplayName,
         consentDate: isAuthorized ? new Date() : null,
         consentVersion: isAuthorized ? '1.0' : null,
-        moderationStatus: isAuthorized ? ('PENDING' as any) : ('NOT_AUTHORIZED' as any),
+        moderationStatus: isAuthorized
+          ? ('PENDING' as any)
+          : ('NOT_AUTHORIZED' as any),
         appVersion: dto.appVersion || null,
         platform: dto.platform || null,
         deviceInfo: dto.deviceInfo || null,
@@ -300,7 +308,9 @@ export class ReviewsService {
     }
 
     if (userId && review.userId && review.userId !== userId) {
-      throw new ForbiddenException('Vous n’êtes pas autorisé à modifier cet avis.');
+      throw new ForbiddenException(
+        'Vous n’êtes pas autorisé à modifier cet avis.',
+      );
     }
 
     const updated = await this.prisma.appReview.update({
@@ -316,7 +326,8 @@ export class ReviewsService {
 
     return {
       success: true,
-      message: 'Votre consentement a été retiré. Cet avis ne sera plus affiché sur le site public.',
+      message:
+        'Votre consentement a été retiré. Cet avis ne sera plus affiché sur le site public.',
       isPublicationAuthorized: updated.isPublicationAuthorized,
       moderationStatus: updated.moderationStatus,
     };
@@ -341,7 +352,9 @@ export class ReviewsService {
     }
 
     if (userId && review.userId && review.userId !== userId) {
-      throw new ForbiddenException('Vous n’êtes pas autorisé à modifier cet avis.');
+      throw new ForbiddenException(
+        'Vous n’êtes pas autorisé à modifier cet avis.',
+      );
     }
 
     const newType = displayType || (review.publicDisplayNameType as any);
@@ -357,7 +370,7 @@ export class ReviewsService {
       where: { id: reviewId },
       data: {
         isPublicationAuthorized: isAuthorized,
-        publicDisplayNameType: newType as any,
+        publicDisplayNameType: newType,
         publicDisplayName: newDisplayName,
         consentDate: isAuthorized ? new Date() : review.consentDate,
         consentWithdrawnDate: !isAuthorized ? new Date() : null,
@@ -484,4 +497,3 @@ export class ReviewsService {
     };
   }
 }
-

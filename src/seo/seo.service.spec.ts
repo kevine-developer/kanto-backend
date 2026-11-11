@@ -61,7 +61,7 @@ describe('SeoService', () => {
       },
     };
 
-    service = new SeoService(mockPrisma as unknown as PrismaService);
+    service = new SeoService(mockPrisma);
   });
 
   describe('getRobotsTxt', () => {
@@ -71,7 +71,9 @@ describe('SeoService', () => {
       expect(robots).toContain('Allow: /');
       expect(robots).toContain('Disallow: /api/');
       expect(robots).toContain('Disallow: /admin/');
-      expect(robots).toContain('Sitemap: https://app-kanto.gastsar.fr/sitemap.xml');
+      expect(robots).toContain(
+        'Sitemap: https://app-kanto.gastsar.fr/sitemap.xml',
+      );
     });
 
     it('should disallow everything on admin subdomains or staging', () => {
@@ -86,23 +88,39 @@ describe('SeoService', () => {
     it('should generate a valid XML sitemap with static and dynamic cultural URLs', async () => {
       const xml = await service.getSitemapXml('https://app-kanto.gastsar.fr');
       expect(xml).toContain('<?xml version="1.0" encoding="UTF-8"?>');
-      expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
+      expect(xml).toContain(
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+      );
       expect(xml).toContain('<loc>https://app-kanto.gastsar.fr/</loc>');
-      expect(xml).toContain('<loc>https://app-kanto.gastsar.fr/ohabolana</loc>');
+      expect(xml).toContain(
+        '<loc>https://app-kanto.gastsar.fr/ohabolana</loc>',
+      );
       expect(xml).toContain('<loc>https://app-kanto.gastsar.fr/angano</loc>');
       expect(xml).toContain('<loc>https://app-kanto.gastsar.fr/kabary</loc>');
-      expect(xml).toContain('<loc>https://app-kanto.gastsar.fr/tononkalo</loc>');
-      expect(xml).toContain('<loc>https://app-kanto.gastsar.fr/ohabolana/item-1</loc>');
-      expect(xml).toContain('<loc>https://app-kanto.gastsar.fr/angano/conte-1</loc>');
-      expect(xml).toContain('<loc>https://app-kanto.gastsar.fr/kabary/kabary-1</loc>');
-      expect(xml).toContain('<loc>https://app-kanto.gastsar.fr/tononkalo/poesie-1</loc>');
+      expect(xml).toContain(
+        '<loc>https://app-kanto.gastsar.fr/tononkalo</loc>',
+      );
+      expect(xml).toContain(
+        '<loc>https://app-kanto.gastsar.fr/ohabolana/item-1</loc>',
+      );
+      expect(xml).toContain(
+        '<loc>https://app-kanto.gastsar.fr/angano/conte-1</loc>',
+      );
+      expect(xml).toContain(
+        '<loc>https://app-kanto.gastsar.fr/kabary/kabary-1</loc>',
+      );
+      expect(xml).toContain(
+        '<loc>https://app-kanto.gastsar.fr/tononkalo/poesie-1</loc>',
+      );
     });
   });
 
   describe('getLlmsTxt', () => {
     it('should return GEO markdown content for LLMs', () => {
       const llms = service.getLlmsTxt();
-      expect(llms).toContain('# Kanto MG — Sanctuaire Numérique du Patrimoine & de la Culture Malgache');
+      expect(llms).toContain(
+        '# Kanto MG — Sanctuaire Numérique du Patrimoine & de la Culture Malgache',
+      );
       expect(llms).toContain('## Corpus Culturel Indexé');
       expect(llms).toContain('/ohabolana');
       expect(llms).toContain('/angano');

@@ -10,4 +10,3 @@ import { SeoService } from './seo.service.js';
   exports: [SeoService],
 })
 export class SeoModule {}
-

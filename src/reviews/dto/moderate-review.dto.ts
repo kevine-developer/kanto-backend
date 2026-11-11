@@ -14,7 +14,8 @@ export class ModerateReviewDto {
 
   @IsOptional()
   @IsString()
-  @MaxLength(1000, { message: 'La note de modération ne peut pas dépasser 1000 caractères.' })
+  @MaxLength(1000, {
+    message: 'La note de modération ne peut pas dépasser 1000 caractères.',
+  })
   moderatorNote?: string;
 }
-

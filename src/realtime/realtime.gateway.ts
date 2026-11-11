@@ -230,7 +230,10 @@ export class RealtimeGateway
         const room = RealtimeRooms.user(authenticatedUserId);
         await client.join(room);
         (client.data as Record<string, unknown>).userId = authenticatedUserId;
-        await this.presenceService.recordSocketConnect(authenticatedUserId, client.id);
+        await this.presenceService.recordSocketConnect(
+          authenticatedUserId,
+          client.id,
+        );
         this.logger.log(
           `🔌 [Realtime] Client connecté et authentifié : ${client.id} (room: ${room})`,
         );
@@ -255,13 +258,16 @@ export class RealtimeGateway
       string | undefined;
 
     if (userId) {
-      void this.presenceService.recordSocketDisconnect(userId, client.id).then(async () => {
-        const remainingStatus = await this.presenceService.getRawPresenceStatus(userId);
-        this.server.emit(SOCKET_EVENTS.PRESENCE_STATUS_UPDATE, {
-          userId,
-          status: remainingStatus,
+      void this.presenceService
+        .recordSocketDisconnect(userId, client.id)
+        .then(async () => {
+          const remainingStatus =
+            await this.presenceService.getRawPresenceStatus(userId);
+          this.server.emit(SOCKET_EVENTS.PRESENCE_STATUS_UPDATE, {
+            userId,
+            status: remainingStatus,
+          });
         });
-      });
     }
 
     if (duelCode && userId) {
@@ -632,7 +638,9 @@ export class RealtimeGateway
           await this.performRoomAutoClosure(cleanCode, 'CHALLENGE_DECLINED');
         } catch (err: unknown) {
           const msg = err instanceof Error ? err.message : String(err);
-          this.logger.warn(`Erreur fermeture automatique du salon ${cleanCode} : ${msg}`);
+          this.logger.warn(
+            `Erreur fermeture automatique du salon ${cleanCode} : ${msg}`,
+          );
         }
       }, countdownSeconds * 1000);
 
@@ -669,7 +677,10 @@ export class RealtimeGateway
   /**
    * Clôture automatique et libération des ressources d'un salon suite à refus ou expiration.
    */
-  private async performRoomAutoClosure(code: string, reason = 'CHALLENGE_DECLINED') {
+  private async performRoomAutoClosure(
+    code: string,
+    reason = 'CHALLENGE_DECLINED',
+  ) {
     const cleanCode = code.trim().toUpperCase();
     const room = RealtimeRooms.duel(cleanCode);
 
@@ -680,7 +691,9 @@ export class RealtimeGateway
       });
 
       if (!session) {
-        this.logger.log(`[DuelGateway] Salon ${cleanCode} introuvable pour fermeture automatique.`);
+        this.logger.log(
+          `[DuelGateway] Salon ${cleanCode} introuvable pour fermeture automatique.`,
+        );
         return;
       }
 
@@ -708,7 +721,7 @@ export class RealtimeGateway
         code: cleanCode,
         reason,
         messageMg: "Nakatona ny efitrano taorian'ny fandavana ny fanamby.",
-        messageFr: "Le salon a été fermé suite au refus du défi.",
+        messageFr: 'Le salon a été fermé suite au refus du défi.',
       });
 
       // Déconnecter proprement les sockets de la room
@@ -819,11 +832,11 @@ export class RealtimeGateway
       const userId = this.getClientUserId(client, data?.userId);
       const cleanCode = data.code.trim().toUpperCase();
       const timerKey = `${cleanCode}:${userId}`;
-        const declineTimer = this.declineCountdownTimers.get(cleanCode);
-        if (declineTimer) {
-          clearTimeout(declineTimer);
-          this.declineCountdownTimers.delete(cleanCode);
-        }
+      const declineTimer = this.declineCountdownTimers.get(cleanCode);
+      if (declineTimer) {
+        clearTimeout(declineTimer);
+        this.declineCountdownTimers.delete(cleanCode);
+      }
 
       const pendingTimer = this.disconnectTimers.get(timerKey);
       if (pendingTimer) {
@@ -1718,7 +1731,8 @@ export class RealtimeGateway
     @ConnectedSocket() client: Socket,
     @MessageBody() payload: { appState?: 'active' | 'background' | 'inactive' },
   ) {
-    const userId = (client.data as Record<string, unknown>)?.userId as string | undefined;
+    const userId = (client.data as Record<string, unknown>)?.userId as
+      string | undefined;
     if (!userId) return { success: false, reason: 'UNAUTHENTICATED' };
 
     const appState = payload?.appState ?? 'active';
@@ -1736,7 +1750,8 @@ export class RealtimeGateway
     @ConnectedSocket() client: Socket,
     @MessageBody() payload: { targetUserId: string },
   ) {
-    const requesterId = (client.data as Record<string, unknown>)?.userId as string | undefined;
+    const requesterId = (client.data as Record<string, unknown>)?.userId as
+      string | undefined;
     if (!payload?.targetUserId) {
       return { success: false, error: 'TARGET_USER_ID_REQUIRED' };
     }
@@ -1757,7 +1772,8 @@ export class RealtimeGateway
     @ConnectedSocket() client: Socket,
     @MessageBody() payload: { userIds: string[] },
   ) {
-    const requesterId = (client.data as Record<string, unknown>)?.userId as string | undefined;
+    const requesterId = (client.data as Record<string, unknown>)?.userId as
+      string | undefined;
     const userIds = Array.isArray(payload?.userIds) ? payload.userIds : [];
 
     const map = await this.presenceService.getBatchUsersDuelAvailability(
@@ -1770,5 +1786,4 @@ export class RealtimeGateway
       data: map,
     };
   }
-
 }

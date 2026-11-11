@@ -188,7 +188,10 @@ export class ItemsService {
     }
 
     if (query.themeSlugs) {
-      const slugs = query.themeSlugs.split(',').map((s) => s.trim()).filter(Boolean);
+      const slugs = query.themeSlugs
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean);
       if (slugs.length > 0) {
         where.themes = {
           some: {
@@ -209,7 +212,10 @@ export class ItemsService {
     }
 
     if (query.origins) {
-      const originList = query.origins.split(',').map((s) => s.trim()).filter(Boolean);
+      const originList = query.origins
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean);
       if (originList.length > 0) {
         where.origins = { hasSome: originList };
       }

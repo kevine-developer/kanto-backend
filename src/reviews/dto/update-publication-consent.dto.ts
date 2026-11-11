@@ -14,4 +14,3 @@ export class UpdateDisplayNamePreferenceDto {
   @IsEnum(PublicDisplayNameTypeDto)
   publicDisplayNameType: PublicDisplayNameTypeDto;
 }
-

@@ -53,10 +53,7 @@ export class LearningController {
    */
   @Get('tracks/:slug')
   @OptionalAuth()
-  getTrack(
-    @Param('slug') slug: string,
-    @Session() session?: UserSession,
-  ) {
+  getTrack(@Param('slug') slug: string, @Session() session?: UserSession) {
     return this.learningService.getTrackBySlug(slug, session?.user?.id);
   }
 
@@ -65,10 +62,7 @@ export class LearningController {
    */
   @Get('lessons/:slug')
   @OptionalAuth()
-  getLesson(
-    @Param('slug') slug: string,
-    @Session() session?: UserSession,
-  ) {
+  getLesson(@Param('slug') slug: string, @Session() session?: UserSession) {
     return this.learningService.getLessonBySlug(slug, session?.user?.id);
   }
 
@@ -123,4 +117,3 @@ export class LearningController {
     return this.learningService.getMyProgress(session.user.id);
   }
 }
-

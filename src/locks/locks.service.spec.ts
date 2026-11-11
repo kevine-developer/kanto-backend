@@ -38,8 +38,16 @@ describe('LocksService — Gestion des langues d’application', () => {
   describe('getAppLanguages', () => {
     it('devrait retourner les deux langues actives par défaut si non verrouillées', async () => {
       prismaMock.moduleLock.findUnique
-        .mockResolvedValueOnce({ key: 'language:fr', isLocked: false, isVisible: true })
-        .mockResolvedValueOnce({ key: 'language:mg', isLocked: false, isVisible: true });
+        .mockResolvedValueOnce({
+          key: 'language:fr',
+          isLocked: false,
+          isVisible: true,
+        })
+        .mockResolvedValueOnce({
+          key: 'language:mg',
+          isLocked: false,
+          isVisible: true,
+        });
 
       const res = await service.getAppLanguages();
 
@@ -51,8 +59,16 @@ describe('LocksService — Gestion des langues d’application', () => {
 
     it('devrait refléter correctement si la langue malagasy est désactivée', async () => {
       prismaMock.moduleLock.findUnique
-        .mockResolvedValueOnce({ key: 'language:fr', isLocked: false, isVisible: true })
-        .mockResolvedValueOnce({ key: 'language:mg', isLocked: true, isVisible: false });
+        .mockResolvedValueOnce({
+          key: 'language:fr',
+          isLocked: false,
+          isVisible: true,
+        })
+        .mockResolvedValueOnce({
+          key: 'language:mg',
+          isLocked: true,
+          isVisible: false,
+        });
 
       const res = await service.getAppLanguages();
 
@@ -64,8 +80,16 @@ describe('LocksService — Gestion des langues d’application', () => {
 
     it('devrait choisir mg comme langue par défaut si fr est désactivé', async () => {
       prismaMock.moduleLock.findUnique
-        .mockResolvedValueOnce({ key: 'language:fr', isLocked: true, isVisible: false })
-        .mockResolvedValueOnce({ key: 'language:mg', isLocked: false, isVisible: true });
+        .mockResolvedValueOnce({
+          key: 'language:fr',
+          isLocked: true,
+          isVisible: false,
+        })
+        .mockResolvedValueOnce({
+          key: 'language:mg',
+          isLocked: false,
+          isVisible: true,
+        });
 
       const res = await service.getAppLanguages();
 
@@ -79,8 +103,16 @@ describe('LocksService — Gestion des langues d’application', () => {
   describe('updateAppLanguages — Règle de non-désactivation simultanée', () => {
     it('devrait refuser catégoriquement de désactiver les deux langues simultanément', async () => {
       prismaMock.moduleLock.findUnique
-        .mockResolvedValueOnce({ key: 'language:fr', isLocked: false, isVisible: true })
-        .mockResolvedValueOnce({ key: 'language:mg', isLocked: false, isVisible: true });
+        .mockResolvedValueOnce({
+          key: 'language:fr',
+          isLocked: false,
+          isVisible: true,
+        })
+        .mockResolvedValueOnce({
+          key: 'language:mg',
+          isLocked: false,
+          isVisible: true,
+        });
 
       await expect(
         service.updateAppLanguages({ fr: false, mg: false }),
@@ -90,19 +122,35 @@ describe('LocksService — Gestion des langues d’application', () => {
     it('devrait refuser de désactiver la seule langue restante active', async () => {
       // Actuellement : FR actif, MG inactif
       prismaMock.moduleLock.findUnique
-        .mockResolvedValueOnce({ key: 'language:fr', isLocked: false, isVisible: true })
-        .mockResolvedValueOnce({ key: 'language:mg', isLocked: true, isVisible: false });
+        .mockResolvedValueOnce({
+          key: 'language:fr',
+          isLocked: false,
+          isVisible: true,
+        })
+        .mockResolvedValueOnce({
+          key: 'language:mg',
+          isLocked: true,
+          isVisible: false,
+        });
 
       // Tentative de désactiver FR sans réactiver MG
-      await expect(
-        service.updateAppLanguages({ fr: false }),
-      ).rejects.toThrow(BadRequestException);
+      await expect(service.updateAppLanguages({ fr: false })).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it('devrait accepter de désactiver une langue si l’autre reste active', async () => {
       prismaMock.moduleLock.findUnique
-        .mockResolvedValueOnce({ key: 'language:fr', isLocked: false, isVisible: true })
-        .mockResolvedValueOnce({ key: 'language:mg', isLocked: false, isVisible: true });
+        .mockResolvedValueOnce({
+          key: 'language:fr',
+          isLocked: false,
+          isVisible: true,
+        })
+        .mockResolvedValueOnce({
+          key: 'language:mg',
+          isLocked: false,
+          isVisible: true,
+        });
 
       prismaMock.moduleLock.upsert.mockResolvedValue({});
 

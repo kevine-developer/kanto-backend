@@ -9,4 +9,3 @@ import { LearningService } from './learning.service.js';
   exports: [LearningService],
 })
 export class LearningModule {}
-

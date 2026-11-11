@@ -159,5 +159,4 @@ export class AdminSystemController {
   async updateAppLanguages(@Body() body: { fr?: boolean; mg?: boolean }) {
     return this.locksService.updateAppLanguages(body);
   }
-
 }

@@ -493,4 +493,3 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
 </body>
 </html>`.trim();
 }
-

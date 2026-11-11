@@ -27,4 +27,3 @@ export interface UserDuelAvailability {
 export interface PresenceHeartbeatPayload {
   appState?: 'active' | 'background' | 'inactive';
 }
-

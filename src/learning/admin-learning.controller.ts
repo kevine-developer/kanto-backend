@@ -49,7 +49,9 @@ export class AdminLearningController {
    * Bascule globale de la lecture vocale des prononciations sur toutes les leçons (ou par parcours).
    */
   @Patch('toggle-all-audio')
-  async toggleAllAudio(@Body() body: { audioEnabled: boolean; trackId?: string }) {
+  async toggleAllAudio(
+    @Body() body: { audioEnabled: boolean; trackId?: string },
+  ) {
     const audioEnabled = body.audioEnabled !== false;
     const where = body.trackId ? { trackId: body.trackId } : {};
     const lessons = await this.prisma.learningLesson.findMany({ where });
@@ -119,7 +121,12 @@ export class AdminLearningController {
    */
   @Post('tracks')
   async createTrack(@Body() body: any) {
-    const slug = body.slug || body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const slug =
+      body.slug ||
+      body.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
     return this.prisma.learningTrack.create({
       data: {
         slug,
@@ -147,14 +154,24 @@ export class AdminLearningController {
       data: {
         ...(body.title !== undefined && { title: body.title }),
         ...(body.titleMg !== undefined && { titleMg: body.titleMg }),
-        ...(body.description !== undefined && { description: body.description }),
-        ...(body.descriptionMg !== undefined && { descriptionMg: body.descriptionMg }),
+        ...(body.description !== undefined && {
+          description: body.description,
+        }),
+        ...(body.descriptionMg !== undefined && {
+          descriptionMg: body.descriptionMg,
+        }),
         ...(body.level !== undefined && { level: body.level }),
         ...(body.icon !== undefined && { icon: body.icon }),
         ...(body.color !== undefined && { color: body.color }),
-        ...(body.orderIndex !== undefined && { orderIndex: Number(body.orderIndex) }),
-        ...(body.estimatedMinutes !== undefined && { estimatedMinutes: Number(body.estimatedMinutes) }),
-        ...(body.isPublished !== undefined && { isPublished: body.isPublished }),
+        ...(body.orderIndex !== undefined && {
+          orderIndex: Number(body.orderIndex),
+        }),
+        ...(body.estimatedMinutes !== undefined && {
+          estimatedMinutes: Number(body.estimatedMinutes),
+        }),
+        ...(body.isPublished !== undefined && {
+          isPublished: body.isPublished,
+        }),
       },
     });
   }
@@ -211,8 +228,16 @@ export class AdminLearningController {
    */
   @Post('lessons')
   async createLesson(@Body() body: any) {
-    const slug = body.slug || body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-    const sections = this.applyAudioConfig(body.sections || [], body.audioEnabled);
+    const slug =
+      body.slug ||
+      body.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+    const sections = this.applyAudioConfig(
+      body.sections || [],
+      body.audioEnabled,
+    );
 
     const created = await this.prisma.learningLesson.create({
       data: {
@@ -250,7 +275,10 @@ export class AdminLearningController {
         select: { sections: true },
       });
       if (current) {
-        finalSections = this.applyAudioConfig(current.sections as any[], body.audioEnabled);
+        finalSections = this.applyAudioConfig(
+          current.sections as any[],
+          body.audioEnabled,
+        );
       }
     }
 
@@ -262,9 +290,15 @@ export class AdminLearningController {
         ...(body.summary !== undefined && { summary: body.summary }),
         ...(body.summaryMg !== undefined && { summaryMg: body.summaryMg }),
         ...(body.type !== undefined && { type: body.type }),
-        ...(body.orderIndex !== undefined && { orderIndex: Number(body.orderIndex) }),
-        ...(body.durationMinutes !== undefined && { durationMinutes: Number(body.durationMinutes) }),
-        ...(body.isPublished !== undefined && { isPublished: body.isPublished }),
+        ...(body.orderIndex !== undefined && {
+          orderIndex: Number(body.orderIndex),
+        }),
+        ...(body.durationMinutes !== undefined && {
+          durationMinutes: Number(body.durationMinutes),
+        }),
+        ...(body.isPublished !== undefined && {
+          isPublished: body.isPublished,
+        }),
         ...(finalSections !== undefined && { sections: finalSections }),
       },
     });
@@ -302,4 +336,3 @@ export class AdminLearningController {
     });
   }
 }
-

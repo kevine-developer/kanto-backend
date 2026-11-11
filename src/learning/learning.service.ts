@@ -1,7 +1,12 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { RedisService } from '../redis/redis.service.js';
-import { SEED_LEARNING_TRACKS, SeedTrack, SeedLesson, SeedSection } from './learning.seed-data.js';
+import {
+  SEED_LEARNING_TRACKS,
+  SeedTrack,
+  SeedLesson,
+  SeedSection,
+} from './learning.seed-data.js';
 import { CompleteLessonDto, ReviewActionDto } from './dto/learning.dto.js';
 
 @Injectable()
@@ -76,10 +81,14 @@ export class LearningService {
     // Si aucune leçon en cours, proposer la première leçon du premier parcours non terminé
     if (!continueLesson && tracks.length > 0) {
       const firstActiveTrack = tracks.find((t) => !t.isCompleted) || tracks[0];
-      const trackDetail = await this.getTrackBySlug(firstActiveTrack.slug, userId);
+      const trackDetail = await this.getTrackBySlug(
+        firstActiveTrack.slug,
+        userId,
+      );
       const firstAvailableLesson =
-        trackDetail.lessons.find((l: any) => l.status === 'available' || l.status === 'in_progress') ||
-        trackDetail.lessons[0];
+        trackDetail.lessons.find(
+          (l: any) => l.status === 'available' || l.status === 'in_progress',
+        ) || trackDetail.lessons[0];
 
       if (firstAvailableLesson) {
         continueLesson = {
@@ -148,7 +157,10 @@ export class LearningService {
         ? dbTracks
         : SEED_LEARNING_TRACKS.filter((t) => !level || t.level === level);
 
-    let userProgressMap = new Map<string, { completed: number; isCompleted: boolean }>();
+    const userProgressMap = new Map<
+      string,
+      { completed: number; isCompleted: boolean }
+    >();
 
     if (userId) {
       try {
@@ -172,7 +184,9 @@ export class LearningService {
       const completedCount = progressInfo ? progressInfo.completed : 0;
       const isCompleted = progressInfo ? progressInfo.isCompleted : false;
       const progressPercent =
-        lessonsCount > 0 ? Math.round((completedCount / lessonsCount) * 100) : 0;
+        lessonsCount > 0
+          ? Math.round((completedCount / lessonsCount) * 100)
+          : 0;
 
       return {
         id: t.id || t.slug,
@@ -234,7 +248,10 @@ export class LearningService {
     }
 
     // Récupérer la progression des leçons pour cet utilisateur
-    let userLessonProgressMap = new Map<string, { status: string; score: number }>();
+    const userLessonProgressMap = new Map<
+      string,
+      { status: string; score: number }
+    >();
     if (userId) {
       try {
         const progressList = await this.prisma.userLessonProgress.findMany({
@@ -244,7 +261,10 @@ export class LearningService {
           },
         });
         progressList.forEach((p) => {
-          userLessonProgressMap.set(p.lessonId, { status: p.status, score: p.score });
+          userLessonProgressMap.set(p.lessonId, {
+            status: p.status,
+            score: p.score,
+          });
         });
       } catch {
         // Ignorer
@@ -254,44 +274,49 @@ export class LearningService {
     let foundFirstIncomplete = false;
     let completedLessonsCount = 0;
 
-    const lessonsWithStatus = (track.lessons || []).map((lesson: any, index: number) => {
-      const progress = userLessonProgressMap.get(lesson.id || lesson.slug);
-      let status: 'completed' | 'in_progress' | 'available' | 'locked' = 'locked';
+    const lessonsWithStatus = (track.lessons || []).map(
+      (lesson: any, index: number) => {
+        const progress = userLessonProgressMap.get(lesson.id || lesson.slug);
+        let status: 'completed' | 'in_progress' | 'available' | 'locked' =
+          'locked';
 
-      if (progress?.status === 'COMPLETED') {
-        status = 'completed';
-        completedLessonsCount += 1;
-      } else if (progress?.status === 'IN_PROGRESS') {
-        status = 'in_progress';
-        foundFirstIncomplete = true;
-      } else if (!foundFirstIncomplete) {
-        // La première leçon non complétée devient disponible
-        status = 'available';
-        foundFirstIncomplete = true;
-      } else {
-        status = 'locked';
-      }
+        if (progress?.status === 'COMPLETED') {
+          status = 'completed';
+          completedLessonsCount += 1;
+        } else if (progress?.status === 'IN_PROGRESS') {
+          status = 'in_progress';
+          foundFirstIncomplete = true;
+        } else if (!foundFirstIncomplete) {
+          // La première leçon non complétée devient disponible
+          status = 'available';
+          foundFirstIncomplete = true;
+        } else {
+          status = 'locked';
+        }
 
-      return {
-        id: lesson.id || lesson.slug,
-        trackId: track.id || track.slug,
-        slug: lesson.slug,
-        title: lesson.title,
-        titleMg: lesson.titleMg,
-        description: lesson.summary || lesson.description,
-        descriptionMg: lesson.summaryMg || lesson.descriptionMg,
-        type: lesson.type,
-        order: lesson.orderIndex ?? index + 1,
-        durationMinutes: lesson.durationMinutes || 5,
-        xpReward: 25,
-        status,
-        userScore: progress?.score ?? null,
-      };
-    });
+        return {
+          id: lesson.id || lesson.slug,
+          trackId: track.id || track.slug,
+          slug: lesson.slug,
+          title: lesson.title,
+          titleMg: lesson.titleMg,
+          description: lesson.summary || lesson.description,
+          descriptionMg: lesson.summaryMg || lesson.descriptionMg,
+          type: lesson.type,
+          order: lesson.orderIndex ?? index + 1,
+          durationMinutes: lesson.durationMinutes || 5,
+          xpReward: 25,
+          status,
+          userScore: progress?.score ?? null,
+        };
+      },
+    );
 
     const totalLessons = lessonsWithStatus.length;
     const progressPercent =
-      totalLessons > 0 ? Math.round((completedLessonsCount / totalLessons) * 100) : 0;
+      totalLessons > 0
+        ? Math.round((completedLessonsCount / totalLessons) * 100)
+        : 0;
 
     return {
       id: track.id || track.slug,
@@ -327,7 +352,9 @@ export class LearningService {
 
     const list = Array.isArray(rawSections) ? rawSections : [];
     const configSection = list.find((s: any) => s.type === 'config');
-    const audioEnabled: boolean = configSection ? configSection.audioEnabled !== false : true;
+    const audioEnabled: boolean = configSection
+      ? configSection.audioEnabled !== false
+      : true;
 
     list.forEach((s: any, idx: number) => {
       if (s.type === 'intro') {
@@ -398,7 +425,7 @@ export class LearningService {
       (sec) =>
         sec.type !== 'anecdote' &&
         sec.titleFr !== 'Le saviez-vous ?' &&
-        sec.titleMg !== 'Fahatsiarovana'
+        sec.titleMg !== 'Fahatsiarovana',
     );
 
     return {
@@ -430,7 +457,13 @@ export class LearningService {
               lessons: {
                 where: { isPublished: true },
                 orderBy: { orderIndex: 'asc' },
-                select: { id: true, slug: true, title: true, titleMg: true, orderIndex: true },
+                select: {
+                  id: true,
+                  slug: true,
+                  title: true,
+                  titleMg: true,
+                  orderIndex: true,
+                },
               },
             },
           },
@@ -525,8 +558,8 @@ export class LearningService {
       typeof lesson.sections === 'string'
         ? JSON.parse(lesson.sections)
         : Array.isArray(lesson.sections)
-        ? lesson.sections
-        : [];
+          ? lesson.sections
+          : [];
 
     const normalized = this.normalizeLessonContent(rawSections);
 
@@ -561,8 +594,12 @@ export class LearningService {
         titleMg: lesson.track?.titleMg,
         color: lesson.track?.color,
       },
-      prevLesson: prevLesson ? { slug: prevLesson.slug, title: prevLesson.title } : null,
-      nextLesson: nextLesson ? { slug: nextLesson.slug, title: nextLesson.title } : null,
+      prevLesson: prevLesson
+        ? { slug: prevLesson.slug, title: prevLesson.title }
+        : null,
+      nextLesson: nextLesson
+        ? { slug: nextLesson.slug, title: nextLesson.title }
+        : null,
     };
   }
 
@@ -570,7 +607,11 @@ export class LearningService {
    * Valide la complétion d'une leçon par un utilisateur (idempotent),
    * met à jour la progression du parcours et insère les notions dans le système de révision.
    */
-  async completeLesson(slugOrId: string, userId: string, dto: CompleteLessonDto) {
+  async completeLesson(
+    slugOrId: string,
+    userId: string,
+    dto: CompleteLessonDto,
+  ) {
     let lesson: any = null;
 
     try {
@@ -611,7 +652,9 @@ export class LearningService {
 
     // Trouver la leçon suivante
     if (lesson.track?.lessons && Array.isArray(lesson.track.lessons)) {
-      const cIdx = lesson.track.lessons.findIndex((l: any) => l.slug === lesson.slug);
+      const cIdx = lesson.track.lessons.findIndex(
+        (l: any) => l.slug === lesson.slug,
+      );
       if (cIdx >= 0 && cIdx < lesson.track.lessons.length - 1) {
         nextLessonSlug = lesson.track.lessons[cIdx + 1].slug;
       }
@@ -649,7 +692,10 @@ export class LearningService {
           });
         }
       } catch (error) {
-        this.logger.warn(`Erreur lors de l'enregistrement de la tentative de leçon :`, error);
+        this.logger.warn(
+          `Erreur lors de l'enregistrement de la tentative de leçon :`,
+          error,
+        );
       }
 
       return {
@@ -663,7 +709,7 @@ export class LearningService {
         trackCompleted: false,
         trackProgressPercent: 0,
         nextLessonSlug: undefined,
-        message: 'Un score d\'au moins 60% est requis pour valider cette leçon.',
+        message: "Un score d'au moins 60% est requis pour valider cette leçon.",
       };
     }
 
@@ -703,9 +749,12 @@ export class LearningService {
           where: { trackId, isPublished: true },
         });
 
-        isTrackCompleted = completedCount >= totalLessonsInTrack && totalLessonsInTrack > 0;
+        isTrackCompleted =
+          completedCount >= totalLessonsInTrack && totalLessonsInTrack > 0;
         trackProgressPercent =
-          totalLessonsInTrack > 0 ? Math.round((completedCount / totalLessonsInTrack) * 100) : 100;
+          totalLessonsInTrack > 0
+            ? Math.round((completedCount / totalLessonsInTrack) * 100)
+            : 100;
 
         await this.prisma.userTrackProgress.upsert({
           where: {
@@ -733,8 +782,8 @@ export class LearningService {
         typeof lesson.sections === 'string'
           ? JSON.parse(lesson.sections)
           : Array.isArray(lesson.sections)
-          ? lesson.sections
-          : [];
+            ? lesson.sections
+            : [];
 
       for (const section of rawSections) {
         if (section.type === 'concept' && section.termMg && section.meaningFr) {
@@ -759,7 +808,10 @@ export class LearningService {
         }
       }
     } catch (error) {
-      this.logger.warn(`Erreur lors de l'enregistrement de la leçon complétée :`, error);
+      this.logger.warn(
+        `Erreur lors de l'enregistrement de la leçon complétée :`,
+        error,
+      );
     }
 
     return {
@@ -809,7 +861,9 @@ export class LearningService {
               questionFr: `Que signifie l'expression « ${s.termMg} » ?`,
               answerMg: s.termMg,
               answerFr: s.meaningFr,
-              contextMg: s.phonetic ? `Fanononana : [${s.phonetic}]` : undefined,
+              contextMg: s.phonetic
+                ? `Fanononana : [${s.phonetic}]`
+                : undefined,
               contextFr: s.explanation || undefined,
               level: 1,
               intervalDays: 1,
@@ -845,7 +899,11 @@ export class LearningService {
    * Soumission d'une action de révision (AGAIN, HARD, GOOD, EASY).
    * Implémente l'algorithme de répétition espacée Leitner / SuperMemo-2.
    */
-  async submitReviewAction(reviewId: string, userId: string, dto: ReviewActionDto) {
+  async submitReviewAction(
+    reviewId: string,
+    userId: string,
+    dto: ReviewActionDto,
+  ) {
     let nextIntervalDays = 1;
     let nextMasteryLevel = 1;
 
@@ -878,7 +936,9 @@ export class LearningService {
             break;
         }
 
-        const nextReviewDueDate = new Date(Date.now() + nextIntervalDays * 24 * 60 * 60 * 1000);
+        const nextReviewDueDate = new Date(
+          Date.now() + nextIntervalDays * 24 * 60 * 60 * 1000,
+        );
 
         await this.prisma.userReviewItem.update({
           where: { id: reviewId },
@@ -892,12 +952,17 @@ export class LearningService {
         });
       }
     } catch (err) {
-      this.logger.warn(`Erreur lors de la mise à jour de la révision ${reviewId} :`, err);
+      this.logger.warn(
+        `Erreur lors de la mise à jour de la révision ${reviewId} :`,
+        err,
+      );
     }
 
     return {
       success: true,
-      nextReviewDue: new Date(Date.now() + nextIntervalDays * 24 * 60 * 60 * 1000).toISOString(),
+      nextReviewDue: new Date(
+        Date.now() + nextIntervalDays * 24 * 60 * 60 * 1000,
+      ).toISOString(),
       intervalDays: nextIntervalDays,
       easeFactor: 2.5,
     };
@@ -916,10 +981,14 @@ export class LearningService {
 
       const trackProgressList = await this.prisma.userTrackProgress.findMany({
         where: { userId },
-        include: { track: { select: { id: true, title: true, slug: true, color: true } } },
+        include: {
+          track: { select: { id: true, title: true, slug: true, color: true } },
+        },
       });
 
-      const completedTracksCount = trackProgressList.filter((tp) => tp.isCompleted).length;
+      const completedTracksCount = trackProgressList.filter(
+        (tp) => tp.isCompleted,
+      ).length;
 
       return {
         completedLessonsCount: completedLessons.length,
@@ -936,7 +1005,9 @@ export class LearningService {
           totalLessons: tp.totalLessonsCount,
           progressPercent:
             tp.totalLessonsCount > 0
-              ? Math.round((tp.completedLessonsCount / tp.totalLessonsCount) * 100)
+              ? Math.round(
+                  (tp.completedLessonsCount / tp.totalLessonsCount) * 100,
+                )
               : 0,
           isCompleted: tp.isCompleted,
         })),

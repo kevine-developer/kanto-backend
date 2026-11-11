@@ -110,13 +110,15 @@ export class ThemesService {
       normalized === 'ohabolana'
     ) {
       const itemCategory =
-        normalized === 'proverbe' || normalized === 'proverb' || normalized === 'ohabolana'
+        normalized === 'proverbe' ||
+        normalized === 'proverb' ||
+        normalized === 'ohabolana'
           ? 'PROVERBE'
           : normalized === 'expression'
-          ? 'EXPRESSION'
-          : normalized === 'dicton'
-          ? 'DICTON'
-          : undefined;
+            ? 'EXPRESSION'
+            : normalized === 'dicton'
+              ? 'DICTON'
+              : undefined;
 
       // 1. Thèmes avec comptage
       const themes = await this.prisma.theme.findMany({
@@ -178,7 +180,10 @@ export class ThemesService {
           item.origins.forEach((o) => {
             const trimmed = o.trim();
             if (trimmed && trimmed.toLowerCase() !== 'tous') {
-              originCountMap.set(trimmed, (originCountMap.get(trimmed) || 0) + 1);
+              originCountMap.set(
+                trimmed,
+                (originCountMap.get(trimmed) || 0) + 1,
+              );
             }
           });
         }
@@ -206,12 +211,20 @@ export class ThemesService {
       groups.push({
         id: 'difficulty',
         title: 'Niveau de langue',
-        titleMg: 'Haavon\'ny fiteny',
+        titleMg: "Haavon'ny fiteny",
         type: 'single',
         options: [
-          { id: 'EASY', label: 'Courant / Débutant', labelMg: 'Mora / Fanombohana' },
+          {
+            id: 'EASY',
+            label: 'Courant / Débutant',
+            labelMg: 'Mora / Fanombohana',
+          },
           { id: 'MEDIUM', label: 'Intermédiaire', labelMg: 'Antonony' },
-          { id: 'HARD', label: 'Littéraire / Ancien', labelMg: 'Sarotra / Ntaolo' },
+          {
+            id: 'HARD',
+            label: 'Littéraire / Ancien',
+            labelMg: 'Sarotra / Ntaolo',
+          },
         ],
       });
     } else if (normalized === 'citation' || normalized === 'citations') {
@@ -293,7 +306,11 @@ export class ThemesService {
           })),
         });
       }
-    } else if (normalized === 'conte' || normalized === 'contes' || normalized === 'angano') {
+    } else if (
+      normalized === 'conte' ||
+      normalized === 'contes' ||
+      normalized === 'angano'
+    ) {
       // 1. Thèmes des contes
       const themes = await this.prisma.theme.findMany({
         where: {
@@ -343,7 +360,10 @@ export class ThemesService {
         select: { occasion: true, occasionFr: true },
       });
 
-      const occasionMap = new Map<string, { labelFr?: string; count: number }>();
+      const occasionMap = new Map<
+        string,
+        { labelFr?: string; count: number }
+      >();
       kabaryList.forEach((k) => {
         const occ = (k.occasion || '').trim();
         if (occ) {
@@ -351,7 +371,10 @@ export class ThemesService {
           if (existing) {
             existing.count += 1;
           } else {
-            occasionMap.set(occ, { labelFr: k.occasionFr || undefined, count: 1 });
+            occasionMap.set(occ, {
+              labelFr: k.occasionFr || undefined,
+              count: 1,
+            });
           }
         }
       });
@@ -447,7 +470,11 @@ export class ThemesService {
             })),
         });
       }
-    } else if (normalized === 'poesie' || normalized === 'poesies' || normalized === 'tononkalo') {
+    } else if (
+      normalized === 'poesie' ||
+      normalized === 'poesies' ||
+      normalized === 'tononkalo'
+    ) {
       // 1. Genres / Catégories de poésie
       const poesies = await this.prisma.poesie.findMany({
         where: { status: 'PUBLISHED' },
@@ -483,7 +510,12 @@ export class ThemesService {
             .sort((a, b) => b[1] - a[1])
             .map(([cat, count]) => ({
               id: cat,
-              label: cat === 'tononkalo' ? 'Tononkalo (Poésie)' : cat === 'hainteny' ? 'Hainteny' : cat,
+              label:
+                cat === 'tononkalo'
+                  ? 'Tononkalo (Poésie)'
+                  : cat === 'hainteny'
+                    ? 'Hainteny'
+                    : cat,
               count,
             })),
         });
@@ -520,7 +552,11 @@ export class ThemesService {
             })),
         });
       }
-    } else if (normalized === 'recitation' || normalized === 'recitations' || normalized === 'tsianjery') {
+    } else if (
+      normalized === 'recitation' ||
+      normalized === 'recitations' ||
+      normalized === 'tsianjery'
+    ) {
       const recitations = await this.prisma.recitation.findMany({
         where: { status: 'PUBLISHED' },
         select: { author: true, tags: true },
