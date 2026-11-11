@@ -6,93 +6,174 @@
 export const PAGE_FONT = `
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500;1,6..72,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 `;
 
 export const PAGE_CSS = `
   :root {
-    --bg: #F5F4F0;
-    --surface: #FEFEFC;
-    --border: #E8E6DF;
-    --text: #1A1A1A;
-    --text-muted: #5C584E;
-    --text-subtle: #8A8578;
-    --accent: #4A6741;
-    --accent-hover: #3A5333;
-    --accent-light: #EEF3ED;
-    --accent-border: #D5E2D2;
-    --terracotta: #C0392B;
-    --terracotta-light: #FDF2F0;
-    --btn-bg: #2C2A24;
-    --btn-hover: #1A1A1A;
-    --radius: 14px;
-    --radius-sm: 8px;
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --bg: #F8F6F0;
+    --bg-warm: #F2EFEB;
+    --surface: #FFFFFF;
+    --surface-elevated: #FFFFFF;
+    --border: #E8E5DC;
+    --border-light: #F0EDE5;
+    --text: #161513;
+    --text-muted: #545047;
+    --text-subtle: #888377;
+    --accent: #2B4426;
+    --accent-hover: #1F331B;
+    --accent-light: #EEF4ED;
+    --accent-border: #D1E0CE;
+    --terracotta: #B93826;
+    --terracotta-hover: #962B1C;
+    --terracotta-light: #FCF1EE;
+    --terracotta-border: #F3CEC6;
+    --amber: #C48833;
+    --amber-light: #FDF6EC;
+    --btn-bg: #161513;
+    --btn-hover: #2B4426;
+    --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --radius: 12px;
+    --radius-sm: 6px;
+    --shadow-sm: 0 1px 3px rgba(22, 21, 19, 0.04);
+    --shadow-md: 0 8px 24px rgba(22, 21, 19, 0.07);
+    --shadow-lg: 0 16px 40px rgba(22, 21, 19, 0.1);
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #0D0D0B;
-      --surface: #141412;
-      --border: #262521;
-      --text: #F0F0EC;
-      --text-muted: #A8A59C;
-      --text-subtle: #6E6B63;
-      --accent: #6B9E61;
-      --accent-hover: #82B378;
-      --accent-light: #162415;
-      --accent-border: #294427;
-      --terracotta: #E75A4D;
-      --terracotta-light: #2A1210;
-      --btn-bg: #262521;
-      --btn-hover: #3A3832;
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+      --bg: #0C0C0A;
+      --bg-warm: #131310;
+      --surface: #141411;
+      --surface-elevated: #1B1B17;
+      --border: #262520;
+      --border-light: #1E1D19;
+      --text: #F4F3EE;
+      --text-muted: #A6A399;
+      --text-subtle: #6D695F;
+      --accent: #7AA870;
+      --accent-hover: #92BE88;
+      --accent-light: #162414;
+      --accent-border: #294426;
+      --terracotta: #E65A48;
+      --terracotta-hover: #F07363;
+      --terracotta-light: #2A1310;
+      --terracotta-border: #4D1F1A;
+      --amber: #E0A24A;
+      --amber-light: #2A1F10;
+      --btn-bg: #F4F3EE;
+      --btn-hover: #FFFFFF;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
     }
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: var(--font-sans);
     background: var(--bg);
     color: var(--text);
-    line-height: 1.65;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     padding: 0;
     margin: 0;
   }
 
+  /* En-tête institutionnel & navigation éditoriale */
   .page-header {
     position: sticky;
     top: 0;
     z-index: 100;
     background: var(--surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
-    padding: 14px 20px;
+    padding: 14px 28px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    justify-content: space-between;
+    gap: 16px;
     box-shadow: var(--shadow-sm);
   }
 
-  .page-header .brand {
-    font-size: 11px;
+  .page-header .brand-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .page-header .brand-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  .page-header .brand-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page-header .brand-name {
+    font-family: var(--font-serif);
+    font-size: 19px;
     font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-
-  .page-header .page-title {
-    font-size: 14px;
-    font-weight: 600;
     color: var(--text);
-    flex: 1;
+    letter-spacing: -0.3px;
+    line-height: 1.1;
   }
 
-  .page-header .dot { color: var(--border); }
+  .page-header .brand-tag {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--terracotta);
+    font-weight: 700;
+  }
+
+  .page-header .header-nav {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .page-header .header-link {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .page-header .header-link:hover {
+    color: var(--terracotta);
+  }
+
+  .page-header .header-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: var(--terracotta);
+    color: #FFFFFF !important;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+
+  .page-header .header-cta:hover {
+    background: var(--terracotta-hover);
+    transform: translateY(-1px);
+    text-decoration: none;
+  }
 
   body.hide-header .page-header {
     display: none !important;
@@ -103,40 +184,45 @@ export const PAGE_CSS = `
   }
 
   .container {
-    max-width: 760px;
+    max-width: 820px;
     margin: 0 auto;
-    padding: 36px 20px 80px;
+    padding: 48px 24px 100px;
   }
 
   h1 {
-    font-size: 26px;
+    font-family: var(--font-serif);
+    font-size: 38px;
     font-weight: 700;
     color: var(--text);
-    letter-spacing: -0.5px;
-    margin-bottom: 8px;
-    line-height: 1.25;
+    letter-spacing: -0.8px;
+    margin-bottom: 12px;
+    line-height: 1.18;
   }
 
   .page-meta {
-    font-size: 12.5px;
+    font-size: 13px;
     color: var(--text-subtle);
-    margin-bottom: 28px;
+    margin-bottom: 36px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 18px;
   }
 
   .page-meta .badge-official {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    padding: 3px 8px;
+    gap: 5px;
+    padding: 4px 10px;
     font-size: 11px;
-    font-weight: 600;
-    background: var(--accent-light);
-    color: var(--accent);
-    border: 1px solid var(--accent-border);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    background: var(--terracotta-light);
+    color: var(--terracotta);
+    border: 1px solid var(--terracotta-border);
     border-radius: 9999px;
   }
 
@@ -145,109 +231,114 @@ export const PAGE_CSS = `
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 16px 20px;
-    margin-bottom: 32px;
+    padding: 22px 24px;
+    margin-bottom: 40px;
     box-shadow: var(--shadow-sm);
   }
 
   .toc-title {
-    font-size: 12.5px;
+    font-family: var(--font-sans);
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--text-subtle);
-    margin-bottom: 10px;
+    letter-spacing: 1.5px;
+    color: var(--terracotta);
+    margin-bottom: 14px;
   }
 
   .toc-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 6px 16px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 8px 20px;
     list-style: none;
     padding: 0;
     margin: 0;
   }
 
   .toc-list li a {
-    font-size: 12.5px;
+    font-size: 13px;
     color: var(--text-muted);
     text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 3px 0;
+    gap: 8px;
+    padding: 4px 0;
     transition: color 0.15s;
   }
 
   .toc-list li a:hover {
-    color: var(--accent);
-    text-decoration: underline;
+    color: var(--terracotta);
+    text-decoration: none;
   }
 
   h2 {
-    font-size: 17px;
+    font-family: var(--font-serif);
+    font-size: 24px;
     font-weight: 700;
     color: var(--text);
-    margin: 40px 0 14px;
-    padding-bottom: 8px;
+    margin: 48px 0 16px;
+    padding-bottom: 10px;
     border-bottom: 1px solid var(--border);
-    scroll-margin-top: 70px;
+    scroll-margin-top: 80px;
     display: flex;
     align-items: baseline;
-    gap: 8px;
+    gap: 10px;
+    letter-spacing: -0.3px;
   }
 
   h3 {
-    font-size: 14.5px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 700;
     color: var(--text);
-    margin: 24px 0 8px;
+    margin: 28px 0 10px;
+    letter-spacing: -0.2px;
   }
 
   p {
-    font-size: 14px;
+    font-size: 15px;
     color: var(--text-muted);
-    line-height: 1.8;
-    margin-bottom: 14px;
-  }
-
-  ul, ol {
-    padding-left: 22px;
+    line-height: 1.85;
     margin-bottom: 16px;
   }
 
+  ul, ol {
+    padding-left: 24px;
+    margin-bottom: 20px;
+  }
+
   li {
-    font-size: 14px;
+    font-size: 14.5px;
     color: var(--text-muted);
-    line-height: 1.75;
-    margin-bottom: 6px;
+    line-height: 1.8;
+    margin-bottom: 8px;
   }
 
   a {
-    color: var(--accent);
+    color: var(--terracotta);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
+    transition: color 0.15s ease;
   }
 
   a:hover {
-    color: var(--accent-hover);
+    color: var(--terracotta-hover);
     text-decoration: underline;
   }
 
   .callout {
     background: var(--surface);
-    border-left: 4px solid var(--accent);
+    border-left: 3px solid var(--terracotta);
     border-radius: var(--radius-sm);
-    padding: 16px 18px;
-    margin-bottom: 24px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
     box-shadow: var(--shadow-sm);
   }
 
   .callout p {
     margin: 0;
-    font-size: 13.5px;
+    font-size: 14px;
     color: var(--text);
-    line-height: 1.65;
+    line-height: 1.7;
   }
 
   .callout-beta {
@@ -663,29 +754,46 @@ export function pageShell(options: {
 </head>
 <body${bodyClass}>
   <header class="page-header">
-    <a href="/" style="text-decoration: none;" class="brand">Kanto<span style="opacity: 0.6;">.mg</span></a>
-    <span class="dot">·</span>
-    <span class="page-title">${pageTitle}</span>
+    <a href="/" class="brand-wrap" aria-label="Retour à l'accueil Kanto MG">
+      <img src="/logo.png" alt="Logo Kanto" class="brand-logo" width="32" height="32" onerror="this.onerror=null; this.src='/favicon.png';">
+      <div class="brand-text">
+        <span class="brand-name">kanto<span style="color: var(--terracotta);">.mg</span></span>
+        <span class="brand-tag">Lova sy Kolontsaina</span>
+      </div>
+    </a>
+    <nav class="header-nav">
+      <a href="/ohabolana" class="header-link">Ohabolana</a>
+      <a href="/angano" class="header-link">Angano</a>
+      <a href="/kabary" class="header-link">Kabary</a>
+      <a href="/" class="header-cta">
+        <span>Portail officiel</span>
+        <span aria-hidden="true">→</span>
+      </a>
+    </nav>
   </header>
 
   <main class="container">
     ${body}
 
     <div class="footer">
-      <div>© ${year} <strong>kanto.mg</strong> — Ny harena ara-kolontsaina malagasy</div>
+      <div style="font-family: var(--font-serif); font-size: 16px; color: var(--text); margin-bottom: 6px;">
+        « Ny hazo no vanon-ko lakana, ny tany naniriany no tsara. »
+      </div>
+      <div>© ${year} <strong>kanto.mg</strong> — Sauvegarde, rayonnement et transmission vivante du patrimoine malgache.</div>
       <div class="footer-links">
+        <a href="/">Accueil</a>
         <a href="/ohabolana">Ohabolana</a>
         <a href="/angano">Angano</a>
         <a href="/kabary">Kabary</a>
         <a href="/tononkalo">Tononkalo</a>
         <a href="/raki-teny">Raki-teny</a>
         <a href="/histoire">Tantara</a>
-        <a href="/pages/terms">Conditions d'utilisation (CGU)</a>
-        <a href="/pages/privacy">Confidentialité &amp; RGPD</a>
-        <a href="/pages/help">Aide &amp; FAQ</a>
         <a href="/pages/about">À propos</a>
+        <a href="/pages/help">Aide &amp; FAQ</a>
+        <a href="/pages/terms">Conditions d'utilisation (CGU)</a>
+        <a href="/pages/privacy">Confidentialité (RGPD)</a>
         <button type="button" class="footer-cookie-btn" id="btn-open-cookie-modal">Gestion des cookies</button>
-        <a href="mailto:${supportEmail}">Support (${supportEmail})</a>
+        <a href="mailto:${supportEmail}">Contact &amp; Support</a>
       </div>
     </div>
   </main>

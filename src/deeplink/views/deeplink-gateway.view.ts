@@ -150,7 +150,7 @@ export function renderDeeplinkGatewayPage(
   <link rel="icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     @font-face {
@@ -161,15 +161,17 @@ export function renderDeeplinkGatewayPage(
       font-display: swap;
     }
     :root {
-      --kanto-green: #16442A;
+      --kanto-green: #2B4426;
+      --kanto-font-serif: 'Newsreader', Georgia, serif;
+      --kanto-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --kanto-green-dark: #0D2B1A;
       --kanto-green-light: #245E3B;
       --kanto-green-subtle: rgba(22, 68, 42, 0.08);
-      --kanto-terracotta: #C85A32;
-      --kanto-bg: #F9F8F5;
+      --kanto-terracotta: #B93826;
+      --kanto-bg: #F8F6F0;
       --kanto-card-bg: #FFFFFF;
       --kanto-card-border: #E8E5DF;
-      --kanto-text: #191B1F;
+      --kanto-text: #141311;
       --kanto-text-secondary: #5E6573;
       --kanto-text-muted: #8E95A3;
       --radius-sm: 8px;
@@ -308,7 +310,8 @@ export function renderDeeplinkGatewayPage(
       color: var(--kanto-text);
       line-height: 1.4;
       margin-bottom: 14px;
-      letter-spacing: -0.3px;
+      font-family: var(--kanto-font-serif);
+      letter-spacing: -0.015em;
     }
 
     .quote-box {
@@ -322,7 +325,9 @@ export function renderDeeplinkGatewayPage(
     .quote-malagasy {
       font-size: 17px;
       font-weight: 600;
-      color: var(--kanto-green-dark);
+      font-family: var(--kanto-font-serif);
+      font-style: italic;
+      color: var(--kanto-text);
       line-height: 1.5;
       margin-bottom: 10px;
     }
@@ -421,7 +426,9 @@ export function renderDeeplinkGatewayPage(
       padding: 6px 12px;
       font-size: 12px;
       font-weight: 600;
-      color: var(--kanto-green-dark);
+      font-family: var(--kanto-font-serif);
+      font-style: italic;
+      color: var(--kanto-text);
     }
 
     /* Actions et Boutons */
