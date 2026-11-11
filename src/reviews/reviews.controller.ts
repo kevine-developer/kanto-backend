@@ -25,7 +25,10 @@ import {
   AdminReviewsQueryDto,
   PublicReviewsQueryDto,
 } from './dto/review-query.dto.js';
-import { ModerateReviewDto } from './dto/moderate-review.dto.js';
+import {
+  BatchModerateReviewsDto,
+  ModerateReviewDto,
+} from './dto/moderate-review.dto.js';
 import { UpdatePublicationConsentDto } from './dto/update-publication-consent.dto.js';
 
 @Controller('api/reviews')
@@ -118,6 +121,19 @@ export class AdminReviewsController {
   @Get()
   async getAdminReviews(@Query() query: AdminReviewsQueryDto) {
     return this.reviewsService.getAdminReviews(query);
+  }
+
+  /**
+   * Sélection groupée des avis à afficher (ou masquer) sur app-kanto.gastsar.fr
+   * Garantit au plus 1 avis affiché par personne.
+   */
+  @Patch('batch-visibility')
+  async batchModerateReviews(
+    @Body() dto: BatchModerateReviewsDto,
+    @Session() session?: UserSession,
+  ) {
+    const adminEmail = session?.user?.email || 'admin@kanto.mg';
+    return this.reviewsService.batchModerateReviews(dto, adminEmail);
   }
 
   /**

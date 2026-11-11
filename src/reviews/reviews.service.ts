@@ -14,7 +14,11 @@ import {
   AdminReviewsQueryDto,
   PublicReviewsQueryDto,
 } from './dto/review-query.dto.js';
-import { ModerateReviewDto } from './dto/moderate-review.dto.js';
+import {
+  BatchModerateReviewsDto,
+  ModerateReviewDto,
+  ReviewModerationAction,
+} from './dto/moderate-review.dto.js';
 
 export interface PublicReviewItem {
   id: string;
@@ -391,6 +395,104 @@ export class ReviewsService {
   // ─── PARTIE ADMINISTRATION & MODÉRATION ────────────────────────────────────
 
   /**
+   * Extrait l'identité d'auteur normalisée (userId et email en minuscules)
+   */
+  private resolveAuthorIdentity(review: {
+    id: string;
+    userId?: string | null;
+    authorEmail?: string | null;
+    user?: { email?: string | null } | null;
+  }) {
+    const userId = review.userId?.trim() || null;
+    const rawEmail = review.authorEmail || review.user?.email || null;
+    const email = rawEmail ? rawEmail.trim().toLowerCase() : null;
+    const authorKey = email
+      ? `email:${email}`
+      : userId
+        ? `user:${userId}`
+        : `review:${review.id}`;
+
+    return { userId, email, authorKey };
+  }
+
+  /**
+   * Construit les clauses Prisma OR permettant de retrouver d'autres avis du même auteur
+   */
+  private buildSameAuthorOrConditions(
+    identities: Array<{ userId: string | null; email: string | null }>,
+  ) {
+    const conditions: any[] = [];
+    const seenUserIds = new Set<string>();
+    const seenEmails = new Set<string>();
+
+    for (const identity of identities) {
+      if (identity.userId && !seenUserIds.has(identity.userId)) {
+        seenUserIds.add(identity.userId);
+        conditions.push({ userId: identity.userId });
+      }
+      if (identity.email && !seenEmails.has(identity.email)) {
+        seenEmails.add(identity.email);
+        conditions.push({
+          authorEmail: { equals: identity.email, mode: 'insensitive' },
+        });
+      }
+    }
+
+    return conditions;
+  }
+
+  /**
+   * Rétrograde en PENDING les autres avis actuellement APPROVED des mêmes auteurs
+   * afin de garantir au plus un avis affiché par personne sur app-kanto.gastsar.fr.
+   * Aucun avis ni note/commentaire utilisateur n'est supprimé.
+   */
+  private async demoteOtherApprovedReviews(
+    excludedReviewIds: string[],
+    identities: Array<{ userId: string | null; email: string | null }>,
+    adminEmail?: string,
+  ): Promise<string[]> {
+    const orConditions = this.buildSameAuthorOrConditions(identities);
+    if (orConditions.length === 0) {
+      return [];
+    }
+
+    const found = await this.prisma.appReview.findMany({
+      where: {
+        id: { notIn: excludedReviewIds },
+        moderationStatus: 'APPROVED',
+        OR: orConditions,
+      },
+      select: {
+        id: true,
+        moderatorNote: true,
+      },
+    });
+
+    const conflictingReviews = Array.isArray(found) ? found : [];
+    if (conflictingReviews.length === 0) {
+      return [];
+    }
+
+    const now = new Date();
+    const actor = adminEmail || 'admin';
+    for (const prev of conflictingReviews) {
+      await this.prisma.appReview.update({
+        where: { id: prev.id },
+        data: {
+          moderationStatus: 'PENDING',
+          moderatorNote:
+            prev.moderatorNote ||
+            'Masqué automatiquement : un autre avis du même auteur a été sélectionné pour app-kanto.',
+          moderatedAt: now,
+          moderatedBy: actor,
+        },
+      });
+    }
+
+    return conflictingReviews.map((prev) => prev.id);
+  }
+
+  /**
    * Liste complète des avis pour l'administration avec filtres avancés
    */
   async getAdminReviews(query: AdminReviewsQueryDto) {
@@ -418,7 +520,7 @@ export class ReviewsService {
       ];
     }
 
-    const [total, items] = await Promise.all([
+    const [total, items, approvedCount, pendingCount] = await Promise.all([
       this.prisma.appReview.count({ where }),
       this.prisma.appReview.findMany({
         where,
@@ -437,10 +539,73 @@ export class ReviewsService {
           },
         },
       }),
+      this.prisma.appReview.count({ where: { moderationStatus: 'APPROVED' } }),
+      this.prisma.appReview.count({ where: { moderationStatus: 'PENDING' } }),
     ]);
 
+    const authorIdentities = items.map((item) =>
+      this.resolveAuthorIdentity(item),
+    );
+    const sameAuthorOrConditions =
+      this.buildSameAuthorOrConditions(authorIdentities);
+
+    let relatedAuthorReviews: Array<{
+      id: string;
+      userId: string | null;
+      authorEmail: string | null;
+      moderationStatus: string;
+      user?: { email?: string | null } | null;
+    }> = [];
+
+    if (items.length > 0 && sameAuthorOrConditions.length > 0) {
+      const fetched = await this.prisma.appReview.findMany({
+        where: { OR: sameAuthorOrConditions },
+        select: {
+          id: true,
+          userId: true,
+          authorEmail: true,
+          moderationStatus: true,
+          user: { select: { email: true } },
+        },
+      });
+      relatedAuthorReviews = Array.isArray(fetched) ? fetched : [];
+    }
+
+    const enrichedItems = items.map((item, idx) => {
+      const identity = authorIdentities[idx];
+      const matches = relatedAuthorReviews.filter((candidate) => {
+        const candidateIdentity = this.resolveAuthorIdentity(candidate);
+        if (identity.userId && candidateIdentity.userId === identity.userId) {
+          return true;
+        }
+        if (identity.email && candidateIdentity.email === identity.email) {
+          return true;
+        }
+        return candidate.id === item.id;
+      });
+
+      const totalByAuthor = matches.length > 0 ? matches.length : 1;
+      const approvedByAuthor =
+        matches.length > 0
+          ? matches.filter((m) => m.moderationStatus === 'APPROVED').length
+          : item.moderationStatus === 'APPROVED'
+            ? 1
+            : 0;
+
+      return {
+        ...item,
+        authorKey: identity.authorKey,
+        authorTotalReviews: totalByAuthor,
+        authorApprovedReviewsCount: approvedByAuthor,
+      };
+    });
+
     return {
-      data: items,
+      data: enrichedItems,
+      summary: {
+        approvedCount,
+        pendingCount,
+      },
       pagination: {
         page,
         limit,
@@ -453,6 +618,8 @@ export class ReviewsService {
   /**
    * Modération d'un avis par l'administrateur
    * IMPORTANT : La note (rating) et le texte (comment) NE PEUVENT JAMAIS ÊTRE MODIFIÉS.
+   * Règle d'unicité par personne : lorsqu'un avis est approuvé, les éventuels autres avis
+   * déjà approuvés du même auteur sont automatiquement remis en attente (PENDING).
    */
   async moderateReview(
     reviewId: string,
@@ -468,9 +635,22 @@ export class ReviewsService {
     }
 
     // Si l'utilisateur n'a pas autorisé la publication, un modérateur ne peut pas forcer le statut APPROVED
-    if (!review.isPublicationAuthorized && dto.status === 'APPROVED') {
+    if (
+      !review.isPublicationAuthorized &&
+      dto.status === ReviewModerationAction.APPROVE
+    ) {
       throw new BadRequestException(
         'Impossible d’approuver publiquement un avis dont l’utilisateur n’a pas autorisé la publication.',
+      );
+    }
+
+    let replacedReviewIds: string[] = [];
+    if (dto.status === ReviewModerationAction.APPROVE) {
+      const identity = this.resolveAuthorIdentity(review);
+      replacedReviewIds = await this.demoteOtherApprovedReviews(
+        [reviewId],
+        [identity],
+        adminEmail,
       );
     }
 
@@ -485,7 +665,11 @@ export class ReviewsService {
     });
 
     this.logger.log(
-      `[Reviews] Modération avis #${reviewId} -> ${dto.status} par ${adminEmail || 'admin'}`,
+      `[Reviews] Modération avis #${reviewId} -> ${dto.status} par ${adminEmail || 'admin'}${
+        replacedReviewIds.length > 0
+          ? ` (${replacedReviewIds.length} précédent(s) avis du même auteur remis en attente)`
+          : ''
+      }`,
     );
 
     return {
@@ -494,6 +678,102 @@ export class ReviewsService {
       moderationStatus: updated.moderationStatus,
       moderatorNote: updated.moderatorNote,
       moderatedAt: updated.moderatedAt,
+      replacedReviewIds,
+    };
+  }
+
+  /**
+   * Sélection / modération par lot des avis à afficher sur app-kanto.gastsar.fr.
+   * Lors d'une mise en ligne (APPROVED), refuse les doublons d'auteur dans la même sélection
+   * et remet automatiquement en attente (PENDING) les anciens avis approuvés de ces auteurs.
+   */
+  async batchModerateReviews(
+    dto: BatchModerateReviewsDto,
+    adminEmail?: string,
+  ) {
+    const uniqueIds = Array.from(new Set(dto.reviewIds));
+    if (uniqueIds.length === 0) {
+      throw new BadRequestException('Aucun avis sélectionné.');
+    }
+
+    const foundReviews = await this.prisma.appReview.findMany({
+      where: { id: { in: uniqueIds } },
+      include: {
+        user: {
+          select: {
+            email: true,
+          },
+        },
+      },
+    });
+
+    const reviews = Array.isArray(foundReviews) ? foundReviews : [];
+    if (reviews.length !== uniqueIds.length) {
+      throw new NotFoundException(
+        'Un ou plusieurs avis sélectionnés sont introuvables.',
+      );
+    }
+
+    const isApproving = dto.status === ReviewModerationAction.APPROVE;
+    const identities = reviews.map((review) =>
+      this.resolveAuthorIdentity(review),
+    );
+
+    if (isApproving) {
+      const unauthorized = reviews.find((r) => !r.isPublicationAuthorized);
+      if (unauthorized) {
+        throw new BadRequestException(
+          'Impossible d’afficher sur app-kanto un avis dont l’auteur n’a pas autorisé la publication publique.',
+        );
+      }
+
+      const seenUserIds = new Set<string>();
+      const seenEmails = new Set<string>();
+      for (const identity of identities) {
+        if (
+          (identity.userId && seenUserIds.has(identity.userId)) ||
+          (identity.email && seenEmails.has(identity.email))
+        ) {
+          throw new BadRequestException(
+            'Vous ne pouvez pas sélectionner plusieurs avis d’une même personne pour app-kanto en même temps.',
+          );
+        }
+        if (identity.userId) seenUserIds.add(identity.userId);
+        if (identity.email) seenEmails.add(identity.email);
+      }
+    }
+
+    const replacedReviewIds = isApproving
+      ? await this.demoteOtherApprovedReviews(uniqueIds, identities, adminEmail)
+      : [];
+
+    const now = new Date();
+    const actor = adminEmail || 'admin';
+    for (const review of reviews) {
+      await this.prisma.appReview.update({
+        where: { id: review.id },
+        data: {
+          moderationStatus: dto.status as any,
+          moderatorNote: dto.moderatorNote || review.moderatorNote,
+          moderatedAt: now,
+          moderatedBy: actor,
+        },
+      });
+    }
+
+    this.logger.log(
+      `[Reviews] Lot de ${uniqueIds.length} avis -> ${dto.status} par ${actor}${
+        replacedReviewIds.length > 0
+          ? ` (${replacedReviewIds.length} doublon(s) auteur remis en attente)`
+          : ''
+      }`,
+    );
+
+    return {
+      success: true,
+      updatedCount: uniqueIds.length,
+      replacedReviewIds,
+      status: dto.status,
     };
   }
 }
