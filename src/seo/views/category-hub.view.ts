@@ -144,41 +144,41 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
       font-display: swap;
     }
     :root, [data-theme="dark"] {
-      --color-bg: #0C0C0A;
+      --color-bg: #0D0D0B;
       --color-surface: #141412;
-      --color-surface-hover: #1D1D19;
-      --color-border: #262520;
-      --color-divider: #1F1E1A;
-      --color-terracotta: #E65A48;
-      --color-terracotta-soft: rgba(230, 90, 72, 0.12);
-      --color-tanimbary: #7AA870;
-      --color-tanimbary-dark: #16442A;
+      --color-surface-hover: #1E1E1A;
+      --color-border: #242420;
+      --color-divider: #252E25;
+      --color-terracotta: #E75A4D;
+      --color-terracotta-soft: #2C1715;
+      --color-tanimbary: #6B9E61;
+      --color-tanimbary-dark: #374E30;
       --color-amber: #E0A24A;
-      --color-text: #F4F3EE;
-      --color-text-secondary: #A09E96;
-      --color-text-muted: #6E6D66;
-      --color-heading: #FCFBF7;
+      --color-text: #F0F0EC;
+      --color-text-secondary: #9C9C98;
+      --color-text-muted: #707070;
+      --color-heading: #F0F0EC;
       --font-serif: 'Newsreader', Georgia, serif;
       --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --radius-sm: 4px;
-      --radius-md: 8px;
-      --radius-lg: 12px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
     }
     [data-theme="light"] {
-      --color-bg: #F8F6F0;
-      --color-surface: #FFFFFF;
-      --color-surface-hover: #F2EFE8;
-      --color-border: #E5E1D7;
-      --color-divider: #ECE8DD;
-      --color-terracotta: #B93826;
-      --color-terracotta-soft: rgba(185, 56, 38, 0.08);
-      --color-tanimbary: #2B4426;
-      --color-tanimbary-dark: #16442A;
-      --color-amber: #C48833;
-      --color-text: #141311;
-      --color-text-secondary: #5C5A52;
-      --color-text-muted: #8C897E;
-      --color-heading: #141311;
+      --color-bg: #F5F4F0;
+      --color-surface: #FEFEFC;
+      --color-surface-hover: #F0EDE8;
+      --color-border: #E5E2DB;
+      --color-divider: #DCE1D7;
+      --color-terracotta: #C0392B;
+      --color-terracotta-soft: #FDF2F0;
+      --color-tanimbary: #4A6741;
+      --color-tanimbary-dark: #374E30;
+      --color-amber: #C58B38;
+      --color-text: #1A1A1A;
+      --color-text-secondary: #5C5C5C;
+      --color-text-muted: #8A8A8A;
+      --color-heading: #1A1A1A;
       --font-serif: 'Newsreader', Georgia, serif;
       --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
@@ -285,9 +285,9 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
     }
     .quote-box {
       background: var(--color-surface);
-      border-left: 3px solid var(--color-terracotta);
+      border: 1px solid var(--color-border);
       padding: 22px 26px;
-      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      border-radius: var(--radius-md);
       margin-bottom: 48px;
       border-top: 1px solid var(--color-border);
       border-right: 1px solid var(--color-border);
