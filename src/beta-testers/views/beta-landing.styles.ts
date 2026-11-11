@@ -193,6 +193,140 @@ export const BETA_LANDING_CSS = `
   }
 
   .brand-domain {
+    color: var(--color-terracotta);
+    font-weight: 700;
+  }
+
+  .brand-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--color-ink-subtle);
+  }
+
+  @media (max-width: 480px) {
+    .brand-tag {
+      display: none;
+    }
+  }
+
+  .header-nav {
+    display: none;
+    align-items: center;
+    gap: 20px;
+  }
+
+  @media (min-width: 960px) {
+    .header-nav {
+      display: flex;
+    }
+  }
+
+  .header-nav-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-ink-muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .header-nav-link:hover {
+    color: var(--color-terracotta);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  @media (min-width: 640px) {
+    .header-actions {
+      gap: 12px;
+    }
+  }
+
+  .theme-toggle-btn {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    color: var(--color-ink);
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle-btn:hover {
+    border-color: var(--color-terracotta);
+    color: var(--color-terracotta);
+  }
+
+  .header-login-btn {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-ink);
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header-login-btn:hover {
+    border-color: var(--color-ink);
+    background: var(--color-bg-alt);
+  }
+
+  @media (max-width: 520px) {
+    .header-login-btn {
+      display: none;
+    }
+  }
+
+  .header-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: var(--color-terracotta);
+    color: #FFFFFF !important;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+    box-shadow: 0 2px 8px rgba(192, 57, 43, 0.25);
+    white-space: nowrap;
+    min-height: 38px;
+  }
+
+  @media (min-width: 640px) {
+    .header-cta-btn {
+      padding: 8px 18px;
+      font-size: 13px;
+    }
+  }
+
+  .header-cta-btn:hover {
+    background: var(--color-terracotta-hover);
+    transform: translateY(-1px);
+  }
+
+  /* ─── CONTENEUR PRINCIPAL & HERO ─────────────────────────────────────────── */
+  main {
     flex: 1;
     width: 100%;
     max-width: 1200px;
@@ -887,6 +1021,115 @@ export const BETA_LANDING_CSS = `
   }
 
   /* ─── SECTION CONVERSION : TÉLÉCHARGEMENT & INSCRIPTION BÊTA ─────────────── */
+  
+  /* ─── AVANTAGES DE L'ADHÉSION KANTO (6 PILIERS) ─────────────────────────── */
+  .membership-benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  .benefit-card {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .benefit-card:hover {
+    border-color: var(--color-terracotta);
+    transform: translateY(-2px);
+  }
+
+  .benefit-number {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-terracotta);
+    line-height: 1;
+  }
+
+  .benefit-card h4 {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--color-heading);
+    margin: 0;
+  }
+
+  .benefit-card p {
+    font-size: 13px;
+    color: var(--color-ink-muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .field-badge-required {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-terracotta);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .field-badge-opt {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-ink-subtle);
+  }
+
+  .platform-status-badge {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--color-tanimbary-soft);
+    color: var(--color-tanimbary);
+  }
+
+  .platform-pill-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+
+  .platform-pill-badge.android {
+    background: rgba(15, 157, 88, 0.12);
+    color: #0F9D58;
+  }
+
+  .platform-pill-badge.ios {
+    background: rgba(0, 113, 227, 0.12);
+    color: #0071E3;
+  }
+
+  .download-meta-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .download-meta-tags span {
+    font-size: 11px;
+    color: var(--color-ink-subtle);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
   .conversion-section {
     background: var(--color-surface);
     border: 1px solid var(--color-border);

@@ -44,5 +44,524 @@
       "Tsy azo tononina intsony."
     ],
     "references": ["Ohabolana sy soatoavina Malagasy"]
+  },
+  {
+    "id": "recitation-3",
+    "title": "Mandihiza Rahitsikitsika",
+    "titleFr": "Danse, ô crécerelle (Comptine à gestes)",
+    "author": "Lovantsofina (Lalaon-jaza nentim-paharazana)",
+    "tags": ["Tsianjery", "Comptine", "Dihy", "Zaza", "Vorona"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Comptine à gestes et danse enfantine traditionnelle très populaire à Madagascar. Les enfants imitent le vol stationnaire et le battement rapide des ailes du faucon crécerelle (hitsikitsika) tout en rythmant des pieds et des mains.",
+    "durationMinutes": 2,
+    "content": [
+      "Mandihiza Rahitsikitsika,",
+      "Fa ny vadinao no maty ;",
+      "Maty tany an-dRovan-tompo,",
+      "Voatifitry ny varatra.",
+      "",
+      "Mitsangàna ianao ka mandihiza,",
+      "Asehoy ny dihy malagasy ;",
+      "Ahintsano ny tananao,",
+      "Ary ny tongotrao asio gadona !",
+      "",
+      "Mandihiza eny Mahamasina,",
+      "Hifalian'ny Manjakamiadana !"
+    ],
+    "references": [
+      "Fandaharam-pianarana Malagasy nentim-paharazana",
+      "Mbolatiana / ARB Music - Rondes, comptines et berceuses de Madagascar"
+    ]
+  },
+  {
+    "id": "recitation-4",
+    "title": "Iny hono izy Ravorombazaha",
+    "titleFr": "L'oiseau blanc venu d'ailleurs (Berceuse traditionnelle)",
+    "author": "Lovantsofina (Kalo sy fampatorian-jaza)",
+    "tags": ["Tsianjery", "Berceuse", "Fampatoriana", "Vorona", "Ankizy"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "La berceuse traditionnelle malgache la plus célèbre, chantée depuis des générations pour apaiser et endormir les nourrissons en invoquant l'oiseau migrateur blanc.",
+    "durationMinutes": 2,
+    "content": [
+      "Iny hono izy ravorom-bazaha,",
+      "Ento manaraka anao any an-tsaha ;",
+      "Ento misidina ambony dia ambony,",
+      "Raha mitomany izy dia ento,",
+      "Fa raha mangina dia avereno.",
+      "",
+      "Torimaso mamy, torimaso mandry,",
+      "Aza manahy fa eo i Neny miandry."
+    ],
+    "references": [
+      "Lovantsofina nentin-drazana Malagasy",
+      "Jean Paulhan - Les hain-teny merinas",
+      "Collection ARB Music"
+    ]
+  },
+  {
+    "id": "recitation-5",
+    "title": "Isa amontana (Fanisan'ny Ntaolo)",
+    "titleFr": "Comptine de comptage des Anciens (1 à 10)",
+    "author": "Ntaolo Malagasy",
+    "tags": ["Tsianjery", "Fanisana", "Hazo", "Fianarana", "Tontolo iainana"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Comptine mnémotechnique ancestrale permettant aux enfants d'apprendre à compter de un à dix tout en découvrant les arbres, plantes sacrées et objets du quotidien malgache.",
+    "durationMinutes": 2,
+    "content": [
+      "Isa ny amontana,",
+      "Roa aviavy,",
+      "Telo fangady,",
+      "Efa-drofia,",
+      "Dimy emboka,",
+      "Eni-mangamanga,",
+      "Fito paraky,",
+      "Valo tanantanana,",
+      "Sivy rongony,",
+      "Folo famolesana !"
+    ],
+    "references": [
+      "W. Cousins - Ny Ohabolan'ny Ntaolo (1885)",
+      "Fampianarana teny Malagasy fototra"
+    ]
+  },
+  {
+    "id": "recitation-6",
+    "title": "Nankaiza i Margerity ?",
+    "titleFr": "Où est Marguerite ? (Jeu de ronde)",
+    "author": "Lalaon'ankizy nentim-paharazana",
+    "tags": ["Tsianjery", "Lalao", "Boribory", "Ankizy", "Fifamaliana"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Jeu de ronde et de dialogue très populaire dans les cours d'école malgaches, où les enfants forment un cercle et dialoguent en rythme avant la phase de poursuite.",
+    "durationMinutes": 3,
+    "content": [
+      "– Nankaiza i Margerity ? (Ok, o ry sakaiza !)",
+      "– Ao anatin'ilay tranokely. (Ok, ok, ok !)",
+      "– Izaho izao mba te hitaiza. (Ok, ok, ok !)",
+      "– Avo loatra ny tamboho. (Ok, ok, ok !)",
+      "– Angalanay vato iray, roa, telo, efatra !",
+      "– Vato efatra ve dia mba ho aiza ?",
+      "",
+      "– Inona ny ao anatin'ity ?",
+      "– Atody !",
+      "– Inona ny ao anatin'ny atody ?",
+      "– Tapotsiny !",
+      "– Inona ny ao anatin'ny tapotsiny ?",
+      "– Tamenany !",
+      "– Inona ny ao anatin'ny tamenany ?",
+      "– Kofehy sy fanjaitra !"
+    ],
+    "references": [
+      "Lalaon'ankizy Malagasy",
+      "Mbolatiana - Rondes et comptines de Madagascar (ARB Music)"
+    ]
+  },
+  {
+    "id": "recitation-7",
+    "title": "Arendrina taratasy (Fetim-pirenena)",
+    "titleFr": "Le lampion de papier (Fête nationale)",
+    "author": "Lovantsofina an-tsekoly",
+    "tags": ["Tsianjery", "Arendrina", "Fety", "Tanindrazana", "Ankizy"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Comptine festive traditionnelle entonnée à la veille de la fête nationale (26 juin) par les enfants défilant à la tombée de la nuit avec leurs lampions illuminés.",
+    "durationMinutes": 2,
+    "content": [
+      "Arendrina o, arendrina o !",
+      "Arendrina taratasy,",
+      "May may may !",
+      "Izay tsy faly dia miady aminay !",
+      "",
+      "Hazavao ny lalana ry afo kely,",
+      "Hitondra fifaliana ho an'ny zaza madinika,",
+      "Mihira sy mandihy am-pifaliana,",
+      "Mirary soa ho an'i Madagasikara !"
+    ],
+    "references": [
+      "Fomba sy fanao Malagasy",
+      "Fankalazana ny 26 Jiona nentim-paharazana"
+    ]
+  },
+  {
+    "id": "recitation-8",
+    "title": "Iza iry ambony iry ?",
+    "titleFr": "Qui est là-haut sur la branche ?",
+    "author": "Lalaon-jaza nentim-paharazana",
+    "tags": ["Tsianjery", "Comptine", "Fifamaliana", "Atody", "Vorona"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Jeu de devinette et formulette dialoguée mimée, où un enfant debout répond aux questions des autres sur un ton espiègle.",
+    "durationMinutes": 2,
+    "content": [
+      "– Iza iry ambony iry ô ?",
+      "– Izaho ihany ity ô !",
+      "– Maninona eny in-dry ô ?",
+      "– Izaho mikotroka atody ô !",
+      "",
+      "– Firy ny atodin-dry ô ?",
+      "– Telo sy efatra ihany ô !",
+      "– Mba omeo iray aho hoe...",
+      "– Raha mba mikotroka in-dry ?",
+      "– Mikotroka ihany aho, fa tsy mahavanona !"
+    ],
+    "references": [
+      "Comptines populaires des Hauts-Plateaux",
+      "ARB Music - Madagascar Jeunesse"
+    ]
+  },
+  {
+    "id": "recitation-9",
+    "title": "Zaza madio (Fahadiovan'ny vatana)",
+    "titleFr": "L'enfant propre (Récitation éducative)",
+    "author": "Fampianarana Malagasy",
+    "tags": ["Tsianjery", "Fahadiovana", "Sekoly", "Fanabeazana", "Vatana"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Comptine éducative d'éveil corporel et d'hygiène quotidienne, mimant la toilette matinale des tout-petits.",
+    "durationMinutes": 2,
+    "content": [
+      "Zaza manasa tanana, manasa tanana,",
+      "Madio ny tananay !",
+      "Zaza manasa tongotra, manasa tongotra,",
+      "Madio ny tongotray !",
+      "",
+      "Zaza manasa tarehy sy sofina,",
+      "Mangarangarana ny tavaray !",
+      "Miborosy nify maraina sy hariva,",
+      "Mba ho zaza salama sy hendry lalandava !"
+    ],
+    "references": [
+      "Taranja Fanabeazana Fototra Malagasy",
+      "Sekoly Fanabeazana fototra"
+    ]
+  },
+  {
+    "id": "recitation-10",
+    "title": "Ilay bitro kely feno volo",
+    "titleFr": "Le petit lapin aux grandes oreilles",
+    "author": "Lovantsofina an-tsekoly",
+    "tags": ["Tsianjery", "Biby", "Fihetsika", "Zaza madinika"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Comptine à gestes où les enfants miment les longues oreilles du lapin et ses bonds vifs dans la prairie.",
+    "durationMinutes": 2,
+    "content": [
+      "Bitro kely feno volo,",
+      "Be dia be, be dia be !",
+      "Ao ambony, ao ambany,",
+      "Eo aloha, ao aoriana.",
+      "",
+      "Mitsambikimbikina eny an-tsaha,",
+      "Mihinam-bilona maitso mavana ;",
+      "Raha mandre feo kely izy,",
+      "Dia lasa mitsambikina any an-davaka !"
+    ],
+    "references": [
+      "Fampianarana amin'ny garabola Malagasy"
+    ]
+  },
+  {
+    "id": "recitation-11",
+    "title": "Mamaivay ny tongotro",
+    "titleFr": "Mes petits pieds sont fatigués",
+    "author": "Lalaon-jaza nentim-paharazana",
+    "tags": ["Tsianjery", "Lalao", "Fihetsika", "Tongotra", "Fampiononana"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Formulette chantée à la fin des courses et rondes d'enfants lorsque la fatigue se fait sentir, invitant au repos collectif.",
+    "durationMinutes": 2,
+    "content": [
+      "Mamaivay ny tongotray,",
+      "Mamaivay ny tongotro ;",
+      "Nihazakazaka tontolo andro,",
+      "Nilalao teny an-tokontany.",
+      "",
+      "Raha marary asiana fanafody,",
+      "Ipetraho eo amin'ny tsihy malefaka,",
+      "Aoka izay ny fihazakazahana,",
+      "Fa efa mody ny masoandro !"
+    ],
+    "references": [
+      "Lalaon'ny ankizy eny ambanivohitra",
+      "ARB Music"
+    ]
+  },
+  {
+    "id": "recitation-12",
+    "title": "Indreto voronkely ao an-tsaha",
+    "titleFr": "Les petits oiseaux de la plaine",
+    "author": "Lovantsofina nentim-paharazana",
+    "tags": ["Tsianjery", "Vorona", "Zavaboary", "Hira", "Tsiky"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Poésie enfantine rythmée célébrant les oiseaux qui s'envolent et jouent ensemble dans les rizières au lever du jour.",
+    "durationMinutes": 2,
+    "content": [
+      "Indreto voronkely,",
+      "Mifankahita ao an-tsaha ;",
+      "Somary mitosy kely,",
+      "Mifampitsiky, mifampiza.",
+      "",
+      "Manao fangalampiery,",
+      "Mifaninana mifampijery ;",
+      "Aiza ny elatrao ry namako,",
+      "Mba hisidinantsika mankany an-danitra ?"
+    ],
+    "references": [
+      "Tononkalo nentim-paharazana ho an'ny ankizy"
+    ]
+  },
+  {
+    "id": "recitation-13",
+    "title": "Ny andro fito amin'ny herinandro",
+    "titleFr": "Les sept jours de la semaine",
+    "author": "Fampianarana Malagasy",
+    "tags": ["Tsianjery", "Herinandro", "Andro", "Fianarana", "Fotoana"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Récitation mnémotechnique permettant aux élèves d'assimiler l'ordre et le rythme des sept jours de la semaine en malgache.",
+    "durationMinutes": 2,
+    "content": [
+      "Alatsinainy fanombohan'ny asa,",
+      "Talata fiezahana lalandava,",
+      "Alarobia antenatenan'ny herinandro,",
+      "Alakamisy fanohizana ny ezaka.",
+      "",
+      "Zoma mahafinaritra mialoha ny faran'ny herinandro,",
+      "Asabotsy fiantsenana sy fitsangatsanganana,",
+      "Alahady fitsaharana sy firaisankina,",
+      "Izany no andro fito mandrafitra ny herinandrontsika !"
+    ],
+    "references": [
+      "Fandaharam-pianarana Fanabeazana fototra Malagasy"
+    ]
+  },
+  {
+    "id": "recitation-14",
+    "title": "Mahaiza misaotra !",
+    "titleFr": "Sache dire merci ! (L'apprentissage du respect)",
+    "author": "Lovantsofina sy Fahendrena",
+    "tags": ["Tsianjery", "Fanajana", "Fisaorana", "Fahendrena", "Fitaizana"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Tsianjery classique inculquant aux enfants les règles sacrées de la gratitude et du respect envers les aînés et la communauté.",
+    "durationMinutes": 2,
+    "content": [
+      "Raha misy manome anao zavatra,",
+      "Aza adinoina ny misaotra ;",
+      "Misaotra tompoko amin'ny fo madio,",
+      "No mariky ny zaza voataiza tsara.",
+      "",
+      "Ny fisaorana tsy mampahantra,",
+      "Fa manokatra ny varavaran'ny fitahiana ;",
+      "Ny zaza mahay manaja sy misaotra,",
+      "Lalan-kizorany dia hasoavina !"
+    ],
+    "references": [
+      "Soatoavina Malagasy",
+      "Fahendren'ny Ntaolo"
+    ]
+  },
+  {
+    "id": "recitation-15",
+    "title": "Farimbona (Fisarihana lalao)",
+    "titleFr": "Farimbona (Formulette de tirage au sort)",
+    "author": "Lalaon'ankizy nentim-paharazana",
+    "tags": ["Tsianjery", "Lalao", "Fisarihana", "Ankizy", "Tokontany"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Formulette d'élimination rythmée scandée par les enfants pour désigner impartialement qui tiendra le rôle du chasseur ou du loup.",
+    "durationMinutes": 1,
+    "content": [
+      "Farimbona e, sari-tany !",
+      "Iza no hivoaka voalohany ?",
+      "Tsilopilopy ny kintana eny an-danitra,",
+      "Manondro ny iray amin'ireo milalao.",
+      "",
+      "Tonga teo aminao ny anjara,",
+      "Mivoaha ianao ka aza mitaraiky !"
+    ],
+    "references": [
+      "Lalaon-tokontany nentim-paharazana"
+    ]
+  },
+  {
+    "id": "recitation-16",
+    "title": "Tongo-bakana (Kilalao an-tsihy)",
+    "titleFr": "Tongo-bakana (Comptine des pieds alignés)",
+    "author": "Lalaon'ankizy an-trano",
+    "tags": ["Tsianjery", "Kilalao", "Tongotra", "Tsihy", "Fianakaviana"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Jeu traditionnel pratiqué sur la natte où les enfants étendent leurs jambes et replient une à une celle désignée par la comptine.",
+    "durationMinutes": 2,
+    "content": [
+      "Tongo-bakana, tongo-bakana,",
+      "Iray, roa, telo, efatra ;",
+      "Tano mafy ny lohalikao,",
+      "Sao lasan'ny amboa ny kiraronao !",
+      "",
+      "Aforeto ny tongotra iray,",
+      "Mijanona ny iray hafa ;",
+      "Izay mahatonga hatramin'ny farany,",
+      "No mpandresy am-pilaminana !"
+    ],
+    "references": [
+      "Lalaon-jaza an-tsihy Malagasy"
+    ]
+  },
+  {
+    "id": "recitation-17",
+    "title": "Sari-tany sy Tsatobato",
+    "titleFr": "La marelle et le jet de pierre",
+    "author": "Lalaon-tokontany Malagasy",
+    "tags": ["Tsianjery", "Lalao", "Tsatobato", "Sari-tany", "Hakingana"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Chant rythmé accompagnant le jeu traditionnel de marelle tracée sur la terre battue et l'adresse du lancer de pierre.",
+    "durationMinutes": 2,
+    "content": [
+      "Sariho ny tany amim-pahitsiana,",
+      "Asio efitra enina mifandimby ;",
+      "Atsipazo ny vato boribory,",
+      "Mba tsy hidona amin'ny tsipika.",
+      "",
+      "Mitsambikina amin'ny tongotra tokana,",
+      "Mihazona ny fifandanjana tsara ;",
+      "Lalao madio, lalao mirindra,",
+      "Mampatanjaka ny vatantsika !"
+    ],
+    "references": [
+      "Lalaon'ny ankizy tamin'ny Ntaolo"
+    ]
+  },
+  {
+    "id": "recitation-18",
+    "title": "O ry rano mangitsy !",
+    "titleFr": "Ô eau fraîche de la source (Chant Sakalava / Bara)",
+    "author": "Lovantsofina Tatsimo sy Andrefana",
+    "tags": ["Tsianjery", "Rano", "Zavaboary", "Sakalava", "Tsimo"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Comptine chantée au bord des rivières et sources d'eau de l'Ouest et du Sud malgache par les enfants venant puiser de l'eau.",
+    "durationMinutes": 2,
+    "content": [
+      "O ry rano, rano mangitsy e !",
+      "Avy any an-tendrombohitra mikoriana ;",
+      "Manome aina ny tany karankaina,",
+      "Mampitony ny hetahetan'ny mpandalo.",
+      "",
+      "Madio mangarangarana toy ny fitaratra,",
+      "Hanosoranay ny tavaranay vao maraina ;",
+      "Isaorana ny Razana nanome ny loharano,",
+      "Tsy ritra mandrakizay !"
+    ],
+    "references": [
+      "Haisoratra am-bava any amin'ny faritra Andrefana sy Atsimo"
+    ]
+  },
+  {
+    "id": "recitation-19",
+    "title": "Akoho kely vao maraina",
+    "titleFr": "Le petit poussin au point du jour",
+    "author": "Lovantsofina tontolo ambanivohitra",
+    "tags": ["Tsianjery", "Akoho", "Maraina", "Ambanivohitra", "Biby"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Comptine matinale décrivant le réveil de la cour de ferme avec le cri du coq et la quête de grains des poussins.",
+    "durationMinutes": 2,
+    "content": [
+      "Kokoriko ! hoy ny akoholahy,",
+      "Mifohaza ianareo fa maraina ny andro !",
+      "Mivoaka ny akoho kely mibitaka,",
+      "Mitady kankana sy vary amin'ny tany.",
+      "",
+      "Tsy misy kamo eo an-tokontany,",
+      "Samy miasa sy mikaroka ny anjarany ;",
+      "Ny zaza hendry mifoha maraina,",
+      "Miborosy nify sy miomana hianatra !"
+    ],
+    "references": [
+      "Fampianarana an-kira ho an'ny zaza madinika"
+    ]
+  },
+  {
+    "id": "recitation-20",
+    "title": "Bômbô sigarety (Tsingerin'ny vatomamy)",
+    "titleFr": "Bonbons cigarettes (Comptine des récréations)",
+    "author": "Lalaon'ankizy an-tsekoly",
+    "tags": ["Tsianjery", "Lalao", "Sekoly", "Vatomamy", "Fiarahana"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Comptine malicieuse et rythmée des cours de récréation, évoquant les petites friandises traditionnelles partagées entre camarades.",
+    "durationMinutes": 2,
+    "content": [
+      "Bômbô sigarety mamy ery,",
+      "Zaitra kely amidy eny an-dalana ;",
+      "Mifampizara amin'ny mpinamana,",
+      "Mba ho mamy ny fiarahana.",
+      "",
+      "Iray ho anao, iray ho ahy,",
+      "Tsy misy manao fitia kely ;",
+      "Rehefa tapitra ny fakan-drivotra,",
+      "Dia miverina mamonjy kilasy am-pifaliana !"
+    ],
+    "references": [
+      "Mbolatiana - Rondes et comptines de Madagascar",
+      "Fahatsiarovana ny kilalaon'ny ankizy"
+    ]
+  },
+  {
+    "id": "recitation-21",
+    "title": "Tsipatsipa-drano eny an-driaka",
+    "titleFr": "Bataille d'eau dans la rivière",
+    "author": "Lalaon-jaza eny ambanivohitra",
+    "tags": ["Tsianjery", "Rano", "Lalao", "Mifaly", "Fianakaviana"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Chant joyeux entonné lors des baignades collectives dans les rivières et canaux d'irrigation à la saison chaude.",
+    "durationMinutes": 2,
+    "content": [
+      "Tsipatsipa-drano mangatsika,",
+      "Mifampitsipitsipy rano madio ;",
+      "Mihomehy sy miriaria,",
+      "Tsy matahotra lena izahay !",
+      "",
+      "Ny rano mikoriana mitondra hafaliana,",
+      "Manasa ny havizanana rehetra ;",
+      "Rehefa milentika ny masoandro,",
+      "Dia miala amin'ny rano ka mody an-trano !"
+    ],
+    "references": [
+      "Fomban-drazana sy lalaon-jaza an-drano"
+    ]
+  },
+  {
+    "id": "recitation-22",
+    "title": "Lalana mankaiza ry zandry ?",
+    "titleFr": "Où mène ce sentier, cher cadet ?",
+    "author": "Lovantsofina Fahendrena sy Zokiolona",
+    "tags": ["Tsianjery", "Lalana", "Fanabeazana", "Fihavanana", "Zoky sy Zandry"],
+    "viewsCount": 0,
+    "likesCount": 0,
+    "description": "Dialogue rimé traditionnel entre un aîné et un cadet marchant sur les chemins de crête, métaphore du chemin de la vie et du discernement.",
+    "durationMinutes": 2,
+    "content": [
+      "– Lalana mankaiza ity lalan-kely ity ?",
+      "– Mankany an-tanàna misy ny fihavanana !",
+      "– Inona no entinao hamonjena azy ?",
+      "– Fo madio sy fitiavana marina !",
+      "",
+      "– Raha sendra vatovato sy sakana eny an-dalana ?",
+      "– Hifanampy sy hifandray tanana izahay !",
+      "– Mandehana amim-piadanana ry zandry,",
+      "Fa ny lalan'ny marina tsy mba mahavery !"
+    ],
+    "references": [
+      "Hain-teny sy fahendrena fitaizana ny zaza Malagasy"
+    ]
   }
 ]
