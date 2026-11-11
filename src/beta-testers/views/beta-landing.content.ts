@@ -71,8 +71,8 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
       </div>
 
       <!-- Bouton d'action direct Télécharger -->
-      <a href="#telechargement" class="header-cta-btn">
-        <span>Obtenir l'application</span>
+      <a href="#telechargement" class="header-cta-btn" id="header-btn-download">
+        <span>Installer l'app</span>
         <span aria-hidden="true">↓</span>
       </a>
     </div>
@@ -98,9 +98,39 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
           Kanto MG est un sanctuaire numérique d'exception dédié au rayonnement et à la transmission vivante du patrimoine de Madagascar. Proverbes ancestraux (<em>Ohabolana</em>), récits des veillées (<em>Angano</em>), éloquence oratoire (<em>Kabary</em>) et poésie des Hauts Plateaux réunis dans une expérience mobile sobre, exigeante et accessible à tous.
         </p>
 
-        <div class="hero-actions-group">
-          <a href="#telechargement" class="btn-hero-primary"><span>Rejoindre l'avant-première</span></a>
-          <a href="#univers" class="btn-hero-secondary"><span>Explorer les 6 univers</span></a>
+        <div class="hero-conversion-cluster">
+          <!-- Actions principales Bêta & Découverte -->
+          <div class="hero-actions-group">
+            <a href="#telechargement" class="btn-hero-primary" id="hero-btn-primary-action">
+              <span>Rejoindre la Bêta fermée</span>
+              <span aria-hidden="true">→</span>
+            </a>
+            <a href="#univers" class="btn-hero-secondary">
+              <span>Découvrir les 6 univers</span>
+            </a>
+          </div>
+
+          <!-- Accès directs Store (Google Play & Apple TestFlight) -->
+          <div class="hero-store-buttons" aria-label="Téléchargement direct sur les plateformes officielles">
+            <a href="https://play.google.com/apps/testing/com.devengalere.kantomg" class="store-badge-btn store-android" target="_blank" rel="noopener noreferrer">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-android);"><path d="M17 19H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2z"></path><circle cx="12" cy="12" r="2"></circle></svg>
+              <div class="store-badge-text">
+                <span class="store-badge-sub">Disponible sur</span>
+                <span class="store-badge-title">Google Play</span>
+              </div>
+            </a>
+            <a href="https://testflight.apple.com/join/TEAM_KANTO" class="store-badge-btn store-ios" target="_blank" rel="noopener noreferrer">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-ios);"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"></path><path d="M10 2c1 .5 2 2 2 5"></path></svg>
+              <div class="store-badge-text">
+                <span class="store-badge-sub">Télécharger sur</span>
+                <span class="store-badge-title">TestFlight iOS</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="hero-guarantee-note">
+            <span>Accès 100% gratuit • Zéro publicité intrusive • Mode hors-ligne</span>
+          </div>
         </div>
 
         <!-- Métriques réelles de réassurance -->
@@ -325,45 +355,6 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <!-- SECTION AVIS DE LA COMMUNAUTÉ (DONNÉES EN DIRECT DE L'API)            -->
-    <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <section class="reviews-section-editorial" id="section-community-reviews" aria-labelledby="reviews-section-title">
-      <div class="reviews-header-modern">
-        <div>
-          <span class="section-eyebrow">Retours d'expérience</span>
-          <h2 id="reviews-section-title" class="reviews-title">Ce que dit notre communauté</h2>
-          <p class="reviews-subtitle">
-            Retours authentiques partagés par nos membres et testeurs pionniers de Madagascar et de la diaspora.
-          </p>
-        </div>
-
-        <!-- Badge de confiance certifié -->
-        <div class="reviews-trust-pill" id="reviews-trust-badge">
-          <div class="trust-pill-score" id="reviews-avg-rating">5.0</div>
-          <div class="trust-pill-info">
-            <div class="trust-pill-stars" id="reviews-avg-stars">
-              ★★★★★
-            </div>
-            <div class="trust-pill-label" id="reviews-total-count">Avis certifiés</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Grille dynamique des avis certifiés (générée par /beta-waitlist.js) -->
-      <div class="reviews-list-grid" id="reviews-cards-list">
-        <div class="reviews-empty-state">Chargement des avis vérifiés de la communauté...</div>
-      </div>
-
-      <!-- Pagination AJAX fluide -->
-      <div class="reviews-pagination-box" id="reviews-pagination-box" style="display: none;">
-        <button type="button" class="btn-secondary" id="btn-load-more-reviews">
-          <span>Découvrir plus de témoignages</span>
-          <span aria-hidden="true">↓</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <!-- SECTION CONVERSION : TÉLÉCHARGEMENT & INSCRIPTION BÊTA                -->
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <section class="conversion-section" id="telechargement" aria-labelledby="conversion-title">
@@ -561,6 +552,45 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
         </div>
       </div>
     </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SECTION AVIS DE LA COMMUNAUTÉ (DONNÉES EN DIRECT DE L'API)            -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <section class="reviews-section-editorial" id="section-community-reviews" aria-labelledby="reviews-section-title">
+      <div class="reviews-header-modern">
+        <div>
+          <span class="section-eyebrow">Retours d'expérience</span>
+          <h2 id="reviews-section-title" class="reviews-title">Ce que dit notre communauté</h2>
+          <p class="reviews-subtitle">
+            Retours authentiques partagés par nos membres et testeurs pionniers de Madagascar et de la diaspora.
+          </p>
+        </div>
+
+        <!-- Badge de confiance certifié -->
+        <div class="reviews-trust-pill" id="reviews-trust-badge">
+          <div class="trust-pill-score" id="reviews-avg-rating">5.0</div>
+          <div class="trust-pill-info">
+            <div class="trust-pill-stars" id="reviews-avg-stars">
+              ★★★★★
+            </div>
+            <div class="trust-pill-label" id="reviews-total-count">Avis certifiés</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grille dynamique des avis certifiés (générée par /beta-waitlist.js) -->
+      <div class="reviews-list-grid" id="reviews-cards-list">
+        <div class="reviews-empty-state">Chargement des avis vérifiés de la communauté...</div>
+      </div>
+
+      <!-- Pagination AJAX fluide -->
+      <div class="reviews-pagination-box" id="reviews-pagination-box" style="display: none;">
+        <button type="button" class="btn-secondary" id="btn-load-more-reviews">
+          <span>Découvrir plus de témoignages</span>
+          <span aria-hidden="true">↓</span>
+        </button>
+      </div>
+    </section>
   </main>
 
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -661,6 +691,26 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
   <!-- PIED DE PAGE ÉDITORIAL & INSTITUTIONNEL                                -->
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  
+  <!-- Barre d'action d'installation permanente sur smartphone (Mobile Sticky Store Bar) -->
+  <div class="mobile-sticky-bar" id="mobile-sticky-bar" aria-label="Installation mobile">
+    <div class="mobile-sticky-info">
+      <img src="/logo.png" alt="Logo Kanto" width="28" height="28" class="mobile-sticky-logo" onerror="this.onerror=null; this.src='/favicon.png';">
+      <div class="mobile-sticky-text">
+        <strong>Kanto MG</strong>
+        <span>Android &amp; iOS</span>
+      </div>
+    </div>
+    <div class="mobile-sticky-actions">
+      <a href="https://play.google.com/apps/testing/com.devengalere.kantomg" class="btn-sticky-store android" target="_blank" rel="noopener noreferrer">
+        Google Play
+      </a>
+      <a href="https://testflight.apple.com/join/TEAM_KANTO" class="btn-sticky-store ios" target="_blank" rel="noopener noreferrer">
+        TestFlight
+      </a>
+    </div>
+  </div>
+
   <footer>
     <div class="footer-inner">
       <div class="footer-top-grid">
