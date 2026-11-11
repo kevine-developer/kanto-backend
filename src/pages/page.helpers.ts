@@ -327,7 +327,7 @@ export const PAGE_CSS = `
 
   .callout {
     background: var(--surface);
-    border-left: 3px solid var(--terracotta);
+    border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     padding: 18px 22px;
     margin-bottom: 28px;
@@ -342,7 +342,7 @@ export const PAGE_CSS = `
   }
 
   .callout-beta {
-    border-left-color: #C58B38;
+    
     background: var(--surface);
   }
 

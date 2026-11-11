@@ -84,10 +84,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <section class="hero-editorial" aria-labelledby="hero-main-title">
       <div class="hero-content">
-        <div class="eyebrow-pill">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-          <span>Édition Officielle • Madagascar</span>
-        </div>
+        <div class="eyebrow-pill"><span>Édition Officielle • Madagascar</span></div>
 
         <h1 id="hero-main-title" class="hero-title">
           La culture malgache, <em>autrement.</em>
@@ -102,14 +99,8 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
         </p>
 
         <div class="hero-actions-group">
-          <a href="#telechargement" class="btn-hero-primary">
-            <span>Rejoindre l'avant-première</span>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-          </a>
-          <a href="#univers" class="btn-hero-secondary">
-            <span>Explorer les 6 univers</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-          </a>
+          <a href="#telechargement" class="btn-hero-primary"><span>Rejoindre l'avant-première</span></a>
+          <a href="#univers" class="btn-hero-secondary"><span>Explorer les 6 univers</span></a>
         </div>
 
         <!-- Métriques réelles de réassurance -->
@@ -196,12 +187,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
         <!-- 1. Ohabolana (Majeur Heroic) -->
         <a href="/ohabolana" class="bento-card bento-card-heroic">
           <div>
-            <div class="bento-card-top">
-              <div class="bento-icon-box">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-              </div>
-              <span class="bento-number">01</span>
-            </div>
+            <div class="bento-card-top"><span class="bento-number">01</span></div>
             <div class="bento-card-body" style="margin-top: 18px;">
               <h3>Ohabolana sy Fahendrena</h3>
               <p>
@@ -221,12 +207,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
         <!-- 2. Angano (Side) -->
         <a href="/angano" class="bento-card bento-card-side">
           <div>
-            <div class="bento-card-top">
-              <div class="bento-icon-box" style="background: var(--color-tanimbary-soft); color: var(--color-tanimbary);">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-              </div>
-              <span class="bento-number">02</span>
-            </div>
+            <div class="bento-card-top"><span class="bento-number">02</span></div>
             <div class="bento-card-body" style="margin-top: 18px;">
               <h3>Angano sy Lovantsofina</h3>
               <p>
@@ -243,12 +224,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
         <!-- 3. Kabary (Third) -->
         <a href="/kabary" class="bento-card bento-card-third">
           <div>
-            <div class="bento-card-top">
-              <div class="bento-icon-box" style="background: var(--color-ochre-soft); color: var(--color-ochre);">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
-              </div>
-              <span class="bento-number">03</span>
-            </div>
+            <div class="bento-card-top"><span class="bento-number">03</span></div>
             <div class="bento-card-body" style="margin-top: 18px;">
               <h3>Kabary &amp; Art Oratoire</h3>
               <p>
@@ -265,12 +241,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
         <!-- 4. Tononkalo & Tsianjery (Third) -->
         <a href="/tononkalo" class="bento-card bento-card-third">
           <div>
-            <div class="bento-card-top">
-              <div class="bento-icon-box">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
-              </div>
-              <span class="bento-number">04</span>
-            </div>
+            <div class="bento-card-top"><span class="bento-number">04</span></div>
             <div class="bento-card-body" style="margin-top: 18px;">
               <h3>Tononkalo &amp; Haisoratra</h3>
               <p>
@@ -287,12 +258,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
         <!-- 5. Raki-teny (Third) -->
         <a href="/raki-teny" class="bento-card bento-card-third">
           <div>
-            <div class="bento-card-top">
-              <div class="bento-icon-box" style="background: var(--color-tanimbary-soft); color: var(--color-tanimbary);">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-              </div>
-              <span class="bento-number">05</span>
-            </div>
+            <div class="bento-card-top"><span class="bento-number">05</span></div>
             <div class="bento-card-body" style="margin-top: 18px;">
               <h3>Raki-teny &amp; Voambolana</h3>
               <p>
@@ -307,14 +273,9 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
         </a>
 
         <!-- 6. Tantara & Fomba (Half) -->
-        <a href="/histoire" class="bento-card bento-card-heroic" style="grid-column: span 12; background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-tanimbary-soft) 100%); border-left: 4px solid var(--color-tanimbary);">
+        <a href="/histoire" class="bento-card bento-card-heroic" style="grid-column: span 12; background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-tanimbary-soft) 100%); ">
           <div>
-            <div class="bento-card-top">
-              <div class="bento-icon-box" style="background: var(--color-tanimbary-soft); color: var(--color-tanimbary);">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-              </div>
-              <span class="bento-number">06</span>
-            </div>
+            <div class="bento-card-top"><span class="bento-number">06</span></div>
             <div class="bento-card-body" style="margin-top: 18px;">
               <h3>Tantara, Fomba Gasy &amp; Repères Civiques</h3>
               <p>
@@ -342,33 +303,21 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
 
       <div class="pillars-grid">
         <div class="pillar-item">
-          <div class="pillar-icon-wrap">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"></path><path d="M12 6v6l4 2"></path></svg>
-          </div>
           <h4>Sans distraction</h4>
           <p>Zéro publicité intrusive, zéro traçage commercial. Un sanctuaire apaisé dédié uniquement à la lecture, à la contemplation et au respect des textes.</p>
         </div>
 
         <div class="pillar-item">
-          <div class="pillar-icon-wrap" style="background: var(--color-terracotta-soft); color: var(--color-terracotta);">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 1l22 22"></path><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path><path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
-          </div>
           <h4>100% Hors-ligne</h4>
           <p>Voyagez sereinement. Vos contes, proverbes, dictionnaire et poésies restent entièrement accessibles même sans réseau mobile sur les routes de Madagascar.</p>
         </div>
 
         <div class="pillar-item">
-          <div class="pillar-icon-wrap" style="background: var(--color-ochre-soft); color: var(--color-ochre);">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-          </div>
           <h4>Audio &amp; Phonétique</h4>
           <p>Écoutez les prononciations authentiques enregistrées par des locuteurs natifs pour apprécier la musicalité et la nuance de chaque accent régional.</p>
         </div>
 
         <div class="pillar-item">
-          <div class="pillar-icon-wrap">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
-          </div>
           <h4>Révision &amp; Jeux</h4>
           <p>Ankamantatra (devinettes), mots croisés culturels, quiz civiques et répétition espacée pour ancrer les connaissances de manière ludique et durable.</p>
         </div>
@@ -428,27 +377,17 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
 
       <!-- Onglets interactifs -->
       <div class="tabs-nav" role="tablist">
-        <button type="button" class="tab-btn ${initialTab === 'register' && !isRegistered ? 'active' : ''}" id="tab-btn-register" role="tab" aria-selected="${initialTab === 'register' && !isRegistered}">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-          <span>Inscription Bêta</span>
-        </button>
-        <button type="button" class="tab-btn ${initialTab === 'download' ? 'active' : ''}" id="tab-btn-download" role="tab" aria-selected="${initialTab === 'download'}">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-          <span>Téléchargement</span>
-        </button>
+        <button type="button" class="tab-btn ${initialTab === 'register' && !isRegistered ? 'active' : ''}" id="tab-btn-register" role="tab" aria-selected="${initialTab === 'register' && !isRegistered}"><span>Inscription Bêta</span></button>
+        <button type="button" class="tab-btn ${initialTab === 'download' ? 'active' : ''}" id="tab-btn-download" role="tab" aria-selected="${initialTab === 'download'}"><span>Téléchargement</span></button>
         <button type="button" class="tab-btn ${initialTab === 'already_registered' || isRegistered ? 'active' : ''}" id="tab-btn-already" role="tab" style="display: none;">
           <span>Mon Espace</span>
         </button>
       </div>
 
       <!-- Bannières d'alerte et de confirmation -->
-      <div id="error-banner" class="banner error">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-        <span id="error-text">${errorVal}</span>
+      <div id="error-banner" class="banner error"><span id="error-text">${errorVal}</span>
       </div>
-      <div id="success-banner" class="banner success">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-        <span id="success-text"></span>
+      <div id="success-banner" class="banner success"><span id="success-text"></span>
       </div>
 
       <!-- ─── VOLET 1 : FORMULAIRE D'INSCRIPTION BÊTA ────────────────────────── -->
@@ -532,10 +471,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
             </div>
           </div>
 
-          <button type="submit" class="btn-submit-main" id="btn-submit-reg">
-            <span>Rejoindre le cercle des testeurs</span>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-          </button>
+          <button type="submit" class="btn-submit-main" id="btn-submit-reg"><span>Rejoindre le cercle des testeurs</span></button>
 
           <div class="already-link-box">
             Vous participez déjà au programme ? <a id="link-open-already">Consulter mon espace testeur</a>

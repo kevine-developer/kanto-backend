@@ -20,83 +20,87 @@ export const BETA_LANDING_CSS = `
   }
 
   /* ─── TOKENS DU DESIGN SYSTEM KANTO ────────────────────────────────────────── */
-  :root, [data-theme="light"] {
-    --color-bg: #F8F6F0;
-    --color-bg-alt: #F1EFEA;
-    --color-surface: #FFFFFF;
-    --color-surface-elevated: #FFFFFF;
+    :root, [data-theme="light"] {
+    --color-bg: #F5F4F0;
+    --color-bg-alt: #EFECE6;
+    --color-surface: #FEFEFC;
+    --color-surface-elevated: #FEFEFC;
     --color-surface-input: #FFFFFF;
-    --color-surface-hover: #FBF9F5;
-    --color-border: #E8E5DC;
-    --color-border-subtle: #F0EDE5;
-    --color-divider: #E4E0D6;
-    --color-ink: #141311;
-    --color-ink-muted: #524E45;
-    --color-ink-subtle: #858074;
-    --color-heading: #141311;
-    --color-brand-title: #141311;
-    --color-terracotta: #B93826;
-    --color-terracotta-hover: #962B1C;
-    --color-terracotta-soft: #FCF1EE;
-    --color-terracotta-border: #F3CEC6;
-    --color-tanimbary: #2B4426;
-    --color-tanimbary-dark: #1E331B;
-    --color-tanimbary-soft: #EEF4ED;
-    --color-ochre: #C48833;
-    --color-ochre-soft: #FDF6EC;
-    --color-card-shadow: 0 4px 20px rgba(20, 19, 17, 0.05);
-    --color-card-shadow-hover: 0 12px 36px rgba(20, 19, 17, 0.09);
-    --color-tab-active-bg: #141311;
+    --color-surface-hover: #F0EDE8;
+    --color-border: #E5E2DB;
+    --color-border-subtle: #E4E8DF;
+    --color-divider: #DCE1D7;
+    --color-ink: #1A1A1A;
+    --color-ink-muted: #5C5C5C;
+    --color-ink-subtle: #8A8A8A;
+    --color-heading: #1A1A1A;
+    --color-brand-title: #1A1A1A;
+    --color-terracotta: #C0392B;
+    --color-terracotta-hover: #9E2A28;
+    --color-terracotta-soft: #FDF2F0;
+    --color-terracotta-border: #F0CECA;
+    --color-tanimbary: #4A6741;
+    --color-tanimbary-dark: #374E30;
+    --color-tanimbary-soft: #E5ECE2;
+    --color-tanimbary-border: #CBD8C6;
+    --color-ochre: #C58B38;
+    --color-ochre-soft: #FDF6EB;
+    --color-ochre-border: #F3DEC0;
+    --color-card-shadow: 0 4px 20px rgba(26, 26, 26, 0.05);
+    --color-card-shadow-hover: 0 12px 36px rgba(26, 26, 26, 0.08);
+    --color-tab-active-bg: #4A6741;
     --color-tab-active-text: #FFFFFF;
-    --color-error: #B93826;
-    --color-error-bg: #FCF1EE;
-    --color-error-text: #962B1C;
-    --color-success: #2B4426;
-    --color-success-bg: #EEF4ED;
-    --color-success-text: #1E331B;
+    --color-error: #B84040;
+    --color-error-bg: #FDF0F0;
+    --color-error-text: #B84040;
+    --color-success: #4A6741;
+    --color-success-bg: #EFF7ED;
+    --color-success-text: #4A6741;
     --color-android: #2D9B5E;
     --color-ios: #0071E3;
     --radius-sm: 6px;
-    --radius-md: 12px;
-    --radius-lg: 20px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
     --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
     --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
-  [data-theme="dark"] {
-    --color-bg: #0C0C0A;
-    --color-bg-alt: #131310;
-    --color-surface: #141411;
-    --color-surface-elevated: #1B1B17;
-    --color-surface-input: #191915;
+    [data-theme="dark"] {
+    --color-bg: #0D0D0B;
+    --color-bg-alt: #131311;
+    --color-surface: #141412;
+    --color-surface-elevated: #1A1A18;
+    --color-surface-input: #171715;
     --color-surface-hover: #1E1E1A;
-    --color-border: #262520;
-    --color-border-subtle: #1F1E19;
-    --color-divider: #2C2B25;
-    --color-ink: #F4F3EE;
-    --color-ink-muted: #A6A399;
-    --color-ink-subtle: #6D695F;
-    --color-heading: #F4F3EE;
-    --color-brand-title: #F4F3EE;
-    --color-terracotta: #E65A48;
+    --color-border: #242420;
+    --color-border-subtle: #1B211B;
+    --color-divider: #252E25;
+    --color-ink: #F0F0EC;
+    --color-ink-muted: #9C9C98;
+    --color-ink-subtle: #707070;
+    --color-heading: #F0F0EC;
+    --color-brand-title: #F0F0EC;
+    --color-terracotta: #E75A4D;
     --color-terracotta-hover: #F07363;
-    --color-terracotta-soft: #2A1310;
-    --color-terracotta-border: #4D1F1A;
-    --color-tanimbary: #7AA870;
-    --color-tanimbary-dark: #92BE88;
-    --color-tanimbary-soft: #162414;
+    --color-terracotta-soft: #2C1715;
+    --color-terracotta-border: #522522;
+    --color-tanimbary: #6B9E61;
+    --color-tanimbary-dark: #82B378;
+    --color-tanimbary-soft: #1B221B;
+    --color-tanimbary-border: #2F3D2F;
     --color-ochre: #E0A24A;
-    --color-ochre-soft: #2A1F10;
+    --color-ochre-soft: #241B10;
+    --color-ochre-border: #47341D;
     --color-card-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
     --color-card-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.6);
-    --color-tab-active-bg: #F4F3EE;
-    --color-tab-active-text: #141311;
-    --color-error: #E65A48;
-    --color-error-bg: #2A1310;
-    --color-error-text: #FFB3A8;
-    --color-success: #7AA870;
-    --color-success-bg: #162414;
-    --color-success-text: #C3E6BB;
+    --color-tab-active-bg: #6B9E61;
+    --color-tab-active-text: #FFFFFF;
+    --color-error: #E05555;
+    --color-error-bg: #2B1616;
+    --color-error-text: #FFAAA0;
+    --color-success: #6B9E61;
+    --color-success-bg: #1B2B1B;
+    --color-success-text: #B5E8AC;
     --color-android: #3DDC84;
     --color-ios: #2997FF;
   }
@@ -666,7 +670,7 @@ export const BETA_LANDING_CSS = `
   .bento-card-heroic {
     grid-column: span 12;
     background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-bg-alt) 100%);
-    border-left: 4px solid var(--color-terracotta);
+    /* pas de border-left */
   }
 
   @media (min-width: 992px) {
@@ -705,10 +709,11 @@ export const BETA_LANDING_CSS = `
 
   .bento-number {
     font-family: var(--font-serif);
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--color-ink-subtle);
-    opacity: 0.5;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--color-terracotta);
+    letter-spacing: -0.02em;
+    line-height: 1;
   }
 
   .bento-card-body h3 {
@@ -732,7 +737,7 @@ export const BETA_LANDING_CSS = `
     padding: 12px 16px;
     border-radius: 8px;
     background: var(--color-bg);
-    border-left: 2px solid var(--color-tanimbary);
+    border: 1px solid var(--color-border);
     font-family: var(--font-serif);
     font-style: italic;
     font-size: 14.5px;
@@ -1461,7 +1466,7 @@ export const BETA_LANDING_CSS = `
 
   .cgu-highlight-box {
     background: var(--color-terracotta-soft);
-    border-left: 3px solid var(--color-terracotta);
+    border: 1px solid var(--color-border);
     border-radius: 6px;
     padding: 12px 16px;
     margin-bottom: 18px;

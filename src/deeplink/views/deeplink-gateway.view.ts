@@ -161,21 +161,22 @@ export function renderDeeplinkGatewayPage(
       font-display: swap;
     }
     :root {
-      --kanto-green: #2B4426;
+      --kanto-green: #4A6741;
+      --kanto-green-dark: #374E30;
+      --kanto-green-light: #5B7F50;
+      --kanto-green-subtle: #E5ECE2;
+      --kanto-terracotta: #C0392B;
+      --kanto-terracotta-soft: #FDF2F0;
+      --kanto-bg: #F5F4F0;
+      --kanto-card-bg: #FEFEFC;
+      --kanto-card-border: #E5E2DB;
+      --kanto-text: #1A1A1A;
+      --kanto-text-secondary: #5C5C5C;
+      --kanto-text-muted: #8A8A8A;
       --kanto-font-serif: 'Newsreader', Georgia, serif;
       --kanto-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --kanto-green-dark: #0D2B1A;
-      --kanto-green-light: #245E3B;
-      --kanto-green-subtle: rgba(22, 68, 42, 0.08);
-      --kanto-terracotta: #B93826;
-      --kanto-bg: #F8F6F0;
-      --kanto-card-bg: #FFFFFF;
-      --kanto-card-border: #E8E5DF;
-      --kanto-text: #141311;
-      --kanto-text-secondary: #5E6573;
-      --kanto-text-muted: #8E95A3;
-      --radius-sm: 8px;
-      --radius-md: 12px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
       --radius-lg: 16px;
       --radius-full: 9999px;
     }
