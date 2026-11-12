@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { RedisService } from '../redis/redis.service.js';
 import {
@@ -10,13 +10,102 @@ import {
 import { CompleteLessonDto, ReviewActionDto } from './dto/learning.dto.js';
 
 @Injectable()
-export class LearningService {
+export class LearningService implements OnModuleInit {
   private readonly logger = new Logger(LearningService.name);
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
   ) {}
+
+  async onModuleInit() {
+    await this.syncSeedTracksAndLessons();
+  }
+
+  /**
+   * Synchronise de manière idempotente les parcours et leçons de référence (SEED_LEARNING_TRACKS)
+   * dans la base de données PostgreSQL pour garantir l'intégrité relationnelle des progressions.
+   */
+  async syncSeedTracksAndLessons(): Promise<void> {
+    try {
+      this.logger.log('🌱 Synchronisation des parcours d’apprentissage Kanto MG...');
+      let createdTracks = 0;
+      let createdLessons = 0;
+
+      for (const t of SEED_LEARNING_TRACKS) {
+        const track = await this.prisma.learningTrack.upsert({
+          where: { slug: t.slug },
+          create: {
+            slug: t.slug,
+            title: t.title,
+            titleMg: t.titleMg,
+            description: t.description,
+            descriptionMg: t.descriptionMg,
+            level: t.level as any,
+            icon: t.icon,
+            color: t.color,
+            orderIndex: t.orderIndex,
+            estimatedMinutes: t.estimatedMinutes,
+            isPublished: true,
+          },
+          update: {
+            title: t.title,
+            titleMg: t.titleMg,
+            description: t.description,
+            descriptionMg: t.descriptionMg,
+            level: t.level as any,
+            icon: t.icon,
+            color: t.color,
+            orderIndex: t.orderIndex,
+            estimatedMinutes: t.estimatedMinutes,
+          },
+        });
+
+        if (track) {
+          createdTracks++;
+          for (const l of t.lessons) {
+            await this.prisma.learningLesson.upsert({
+              where: { slug: l.slug },
+              create: {
+                trackId: track.id,
+                slug: l.slug,
+                title: l.title,
+                titleMg: l.titleMg,
+                summary: l.summary,
+                summaryMg: l.summaryMg,
+                type: l.type as any,
+                orderIndex: l.orderIndex,
+                durationMinutes: l.durationMinutes,
+                isPublished: true,
+                sections: l.sections as any,
+              },
+              update: {
+                trackId: track.id,
+                title: l.title,
+                titleMg: l.titleMg,
+                summary: l.summary,
+                summaryMg: l.summaryMg,
+                type: l.type as any,
+                orderIndex: l.orderIndex,
+                durationMinutes: l.durationMinutes,
+                sections: l.sections as any,
+              },
+            });
+            createdLessons++;
+          }
+        }
+      }
+
+      this.logger.log(
+        `✅ Synchronisation terminée : ${createdTracks} parcours, ${createdLessons} leçons synchronisés en base.`,
+      );
+    } catch (error) {
+      this.logger.warn(
+        `⚠️ Impossible de synchroniser les parcours en base :`,
+        error,
+      );
+    }
+  }
 
   /**
    * Tableau de bord pédagogique principal.
@@ -229,6 +318,23 @@ export class LearningService {
     }
 
     if (!track) {
+      await this.syncSeedTracksAndLessons();
+      try {
+        track = await this.prisma.learningTrack.findUnique({
+          where: { slug },
+          include: {
+            lessons: {
+              where: { isPublished: true },
+              orderBy: { orderIndex: 'asc' },
+            },
+          },
+        });
+      } catch {
+        // Ignorer
+      }
+    }
+
+    if (!track) {
       const found = SEED_LEARNING_TRACKS.find((t) => t.slug === slug);
       if (found) {
         track = {
@@ -259,12 +365,21 @@ export class LearningService {
             userId,
             lesson: { trackId: track.id },
           },
+          include: {
+            lesson: true,
+          },
         });
         progressList.forEach((p) => {
           userLessonProgressMap.set(p.lessonId, {
             status: p.status,
             score: p.score,
           });
+          if (p.lesson?.slug) {
+            userLessonProgressMap.set(p.lesson.slug, {
+              status: p.status,
+              score: p.score,
+            });
+          }
         });
       } catch {
         // Ignorer
@@ -276,7 +391,9 @@ export class LearningService {
 
     const lessonsWithStatus = (track.lessons || []).map(
       (lesson: any, index: number) => {
-        const progress = userLessonProgressMap.get(lesson.id || lesson.slug);
+        const progress =
+          userLessonProgressMap.get(lesson.id) ||
+          userLessonProgressMap.get(lesson.slug);
         let status: 'completed' | 'in_progress' | 'available' | 'locked' =
           'locked';
 
@@ -474,6 +591,34 @@ export class LearningService {
     }
 
     if (!lesson) {
+      await this.syncSeedTracksAndLessons();
+      try {
+        lesson = await this.prisma.learningLesson.findUnique({
+          where: { slug },
+          include: {
+            track: {
+              include: {
+                lessons: {
+                  where: { isPublished: true },
+                  orderBy: { orderIndex: 'asc' },
+                  select: {
+                    id: true,
+                    slug: true,
+                    title: true,
+                    titleMg: true,
+                    orderIndex: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+      } catch {
+        // Ignorer
+      }
+    }
+
+    if (!lesson) {
       for (const track of SEED_LEARNING_TRACKS) {
         const found = track.lessons.find((l) => l.slug === slug);
         if (found) {
@@ -609,7 +754,7 @@ export class LearningService {
    */
   async completeLesson(
     slugOrId: string,
-    userId: string,
+    userId: string | undefined,
     dto: CompleteLessonDto,
   ) {
     let lesson: any = null;
@@ -630,6 +775,27 @@ export class LearningService {
       });
     } catch {
       // Ignorer
+    }
+
+    if (!lesson) {
+      await this.syncSeedTracksAndLessons();
+      try {
+        lesson = await this.prisma.learningLesson.findFirst({
+          where: { OR: [{ id: slugOrId }, { slug: slugOrId }] },
+          include: {
+            track: {
+              include: {
+                lessons: {
+                  where: { isPublished: true },
+                  orderBy: { orderIndex: 'asc' },
+                },
+              },
+            },
+          },
+        });
+      } catch {
+        // Ignorer
+      }
     }
 
     if (!lesson) {
@@ -667,6 +833,25 @@ export class LearningService {
     const MIN_PASSING_SCORE = 60;
     const score = dto.score ?? 100;
     const isPassed = score >= MIN_PASSING_SCORE;
+
+    if (!userId) {
+      return {
+        success: isPassed,
+        passed: isPassed,
+        alreadyCompleted: false,
+        score,
+        minRequiredScore: MIN_PASSING_SCORE,
+        earnedXp: isPassed ? 25 : 0,
+        totalUserXp: 0,
+        trackCompleted: false,
+        trackProgressPercent: 0,
+        nextLessonSlug,
+        isNextUnlocked: Boolean(nextLessonSlug),
+        message: isPassed
+          ? undefined
+          : "Un score d'au moins 60% est requis pour valider cette leçon.",
+      };
+    }
 
     // Vérifier l'état préalable pour l'idempotence des récompenses XP
     try {

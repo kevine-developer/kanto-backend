@@ -218,6 +218,27 @@ describe('LearningService', () => {
       expect(result.minRequiredScore).toBe(60);
       expect(result.isNextUnlocked).toBe(false);
     });
+
+    it('devrait valider la leçon pour un invité non connecté sans lever d’erreur', async () => {
+      prismaMock.learningLesson.findFirst.mockRejectedValue(
+        new Error('DB unreachable'),
+      );
+
+      const result = await service.completeLesson(
+        'salutations-et-politesse-aza-fady',
+        undefined as any,
+        {
+          score: 80,
+        },
+      );
+
+      expect(result).toBeDefined();
+      expect(result.success).toBe(true);
+      expect(result.passed).toBe(true);
+      expect(result.score).toBe(80);
+      expect(result.isNextUnlocked).toBe(true);
+      expect(result.nextLessonSlug).toBe('gratitude-et-remerciements-misaotra');
+    });
   });
 
   describe('getReviews (Mes révisions)', () => {
