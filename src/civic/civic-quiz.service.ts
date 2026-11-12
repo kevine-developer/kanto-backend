@@ -375,13 +375,25 @@ export class CivicQuizService {
     let selectedQuestions: { id: string }[];
 
     if (levelNumber !== undefined && levelNumber > 0) {
-      if (levelNumber > maxLevels) {
+      // Pour un niveau spécifique (mode progression par palier), le niveau est découpé sur le corpus
+      // de la catégorie sans filtre de difficulté restrictif (chaque palier mixe ses questions ordonnées).
+      const levelWhere: Prisma.CivicQuizQuestionWhereInput = {
+        status: 'PUBLISHED',
+        ...(category && category !== 'all' ? { category } : {}),
+      };
+
+      const totalAvailableInTheme = await this.prisma.civicQuizQuestion.count({
+        where: levelWhere,
+      });
+      const themeMaxLevels = Math.floor(totalAvailableInTheme / questionCount);
+
+      if (levelNumber > themeMaxLevels) {
         throw new NotFoundException(
-          `Le niveau ${levelNumber} n'est pas disponible (seuls ${maxLevels} niveau(x) complet(s) sont disponibles).`,
+          `Le niveau ${levelNumber} n'est pas disponible (seuls ${themeMaxLevels} niveau(x) complet(s) sont disponibles).`,
         );
       }
       selectedQuestions = await this.prisma.civicQuizQuestion.findMany({
-        where: whereClause,
+        where: levelWhere,
         orderBy: { id: 'asc' },
         skip: (levelNumber - 1) * questionCount,
         take: questionCount,
