@@ -857,10 +857,41 @@ export const BETA_LANDING_CSS = `
     text-decoration: underline;
   }
 
-  /* Volet 2 : Confirmation du statut */
-  .status-verification-box {
-    max-width: 620px;
+  /* ─── ESPACE TESTEURS DÉJÀ INSCRITS (AU-DESSUS DU FOOTER) ─────────────────── */
+  .section-status-check {
+    margin-bottom: 64px;
+    scroll-margin-top: 90px;
+  }
+
+  .status-verification-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 32px 24px;
+    max-width: 680px;
     margin: 0 auto;
+    box-shadow: var(--color-card-shadow);
+  }
+
+  @media (min-width: 768px) {
+    .status-verification-card {
+      padding: 40px 36px;
+    }
+  }
+
+  .status-box-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .status-box-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--color-terracotta);
+    display: inline-block;
+    margin-bottom: 6px;
   }
 
   .status-box-title {

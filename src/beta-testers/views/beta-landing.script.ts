@@ -4,11 +4,6 @@ export function renderBetaWaitlistScript(): string {
   'use strict';
 
   // ─── SÉLECTEURS PRINCIPAUX ────────────────────────────────────────────────
-  var tabReg = document.getElementById('tab-btn-register');
-  var tabAlr = document.getElementById('tab-btn-already');
-  var pnlReg = document.getElementById('panel-register');
-  var pnlAlr = document.getElementById('panel-already');
-
   var errBanner = document.getElementById('error-banner');
   var errText = document.getElementById('error-text');
   var succBanner = document.getElementById('success-banner');
@@ -38,51 +33,25 @@ export function renderBetaWaitlistScript(): string {
     }
   }
 
-  // ─── NAVIGATION PAR ONGLETS (ZONE 2 : TESTEURS) ───────────────────────────
-  function switchTab(target) {
-    hideBanners();
-    var isReg = (target === 'register');
-
-    if (tabReg) {
-      tabReg.classList.toggle('active', isReg);
-      tabReg.setAttribute('aria-selected', isReg ? 'true' : 'false');
+  // ─── TRANSITIONS ET SCROLL VERS L'ESPACE TESTEUR EXISTANT ───────────────
+  function scrollToStatusCheck(email) {
+    var el = document.getElementById('deja-inscrit');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-    if (tabAlr) {
-      tabAlr.classList.toggle('active', !isReg);
-      tabAlr.setAttribute('aria-selected', !isReg ? 'true' : 'false');
+    var chkInput = document.getElementById('check-email-input');
+    if (chkInput) {
+      if (email) chkInput.value = email;
+      setTimeout(function() { chkInput.focus(); }, 250);
     }
-
-    if (pnlReg) pnlReg.style.display = isReg ? 'block' : 'none';
-    if (pnlAlr) pnlAlr.style.display = !isReg ? 'block' : 'none';
-
-    try {
-      var url = new URL(window.location);
-      url.searchParams.set('tab', isReg ? 'register' : 'already_registered');
-      window.history.replaceState({}, '', url);
-    } catch (e) {}
   }
 
-  if (tabReg) tabReg.addEventListener('click', function() { switchTab('register'); });
-  if (tabAlr) tabAlr.addEventListener('click', function() { switchTab('already'); });
-
-  // Liens de transition rapide entre formulaires
+  // Clic sur « Déjà inscrit comme testeur ? Consulter ou confirmer mon statut ↓ »
   var linkOpenAlready = document.getElementById('link-open-already');
   if (linkOpenAlready) {
     linkOpenAlready.addEventListener('click', function(e) {
       if (e) e.preventDefault();
-      switchTab('already');
-      var chkInput = document.getElementById('check-email-input');
-      if (chkInput) setTimeout(function() { chkInput.focus(); }, 150);
-    });
-  }
-
-  var btnBackToRegister = document.getElementById('btn-back-to-register');
-  if (btnBackToRegister) {
-    btnBackToRegister.addEventListener('click', function(e) {
-      if (e) e.preventDefault();
-      switchTab('register');
-      var regInput = document.getElementById('reg-email');
-      if (regInput) setTimeout(function() { regInput.focus(); }, 150);
+      scrollToStatusCheck();
     });
   }
 
@@ -90,7 +59,6 @@ export function renderBetaWaitlistScript(): string {
   var headerBtnReg = document.getElementById('header-btn-register');
   if (headerBtnReg) {
     headerBtnReg.addEventListener('click', function() {
-      switchTab('register');
       var regInput = document.getElementById('reg-email');
       if (regInput) setTimeout(function() { regInput.focus(); }, 200);
     });
@@ -193,16 +161,12 @@ export function renderBetaWaitlistScript(): string {
             var m = countBadge.innerText.match(/[0-9]+/);
             if (m) countBadge.innerText = (parseInt(m[0], 10) + 1) + ' testeurs inscrits';
           }
-          // Bascule automatique vers le volet de vérification
-          switchTab('already');
-          var chkInput = document.getElementById('check-email-input');
-          if (chkInput) chkInput.value = email;
+          // Défilement automatique vers le formulaire en bas
+          scrollToStatusCheck(email);
           verifyEmail(email);
         } else if (data.alreadyRegistered) {
           showError('Cette adresse e-mail est déjà inscrite. Consultation de votre statut en cours...');
-          switchTab('already');
-          var chkInput2 = document.getElementById('check-email-input');
-          if (chkInput2) chkInput2.value = email;
+          scrollToStatusCheck(email);
           verifyEmail(email);
         } else {
           showError(data.message || 'Une erreur est survenue lors de l’inscription.');
