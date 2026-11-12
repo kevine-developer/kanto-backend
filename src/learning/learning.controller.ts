@@ -71,14 +71,14 @@ export class LearningController {
    * Idempotent : met à jour la progression du parcours et alimente les révisions.
    */
   @Post('lessons/:slug/complete')
-  @UseGuards(AuthGuard)
+  @OptionalAuth()
   @HttpCode(HttpStatus.OK)
   completeLesson(
     @Param('slug') slug: string,
     @Body() dto: CompleteLessonDto,
-    @Session() session: UserSession,
+    @Session() session?: UserSession,
   ) {
-    return this.learningService.completeLesson(slug, session.user.id, dto);
+    return this.learningService.completeLesson(slug, session?.user?.id, dto);
   }
 
   /**

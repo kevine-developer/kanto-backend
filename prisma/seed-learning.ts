@@ -178,6 +178,11 @@ async function main() {
   }
 }
 
-main();
+if (
+  process.argv[1]?.endsWith('seed-learning.ts') ||
+  process.argv[1]?.endsWith('seed-learning.js')
+) {
+  main();
+}
 
 

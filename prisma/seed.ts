@@ -30,6 +30,8 @@ import {
   SeedCategoryStats,
 } from './seeds/index.js';
 
+import { seedLearning } from './seed-learning.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -269,6 +271,19 @@ async function main() {
   console.log('\n📖 [6/6] Synchronisation des Devinettes (Ankamantatra)...');
   const riddlesStats = await seedRiddles(prisma, seedDataDir);
   reportStats.push(riddlesStats);
+
+  // Synchronisation du module Apprendre (Parcours & Lecons)
+  console.log('\n📖 [7] Synchronisation du module Apprendre (Parcours & Leçons)...');
+  const learningStats = await seedLearning(prisma);
+  reportStats.push({
+    category: 'Apprendre (Parcours & Leçons)',
+    totalInFile: learningStats.lessonsCreated + learningStats.lessonsUpdated,
+    created: learningStats.tracksCreated + learningStats.lessonsCreated,
+    updated: learningStats.tracksUpdated + learningStats.lessonsUpdated,
+    unchanged: 0,
+    skipped: 0,
+    errors: 0,
+  });
 
   // 9. Initialisation du Proverbe du jour si absent
   const dailyProverbCount = await prisma.dailyProverb.count();
