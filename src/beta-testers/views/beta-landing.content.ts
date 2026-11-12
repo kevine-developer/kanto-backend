@@ -509,10 +509,9 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
 
         <div class="footer-links-col">
           <span class="footer-col-title">Légal &amp; Contact</span>
-          <a href="${legalBaseUrl}/pages/privacy" id="footer-link-privacy">Confidentialité &amp; RGPD</a>
-          <a href="${legalBaseUrl}/pages/terms" id="footer-link-cgu">Conditions d'Utilisation (CGU)</a>
-          <button type="button" class="btn-cookie-link" id="btn-cookie-settings">Gestion des cookies</button>
-          <a href="mailto:${supportEmail}">Support : ${supportEmail}</a>
+          <a href="/pages/privacy">Confidentialité</a>
+          <a href="/pages/terms">Conditions d'utilisation</a>
+          <a href="mailto:${supportEmail}">Contact : ${supportEmail}</a>
         </div>
       </div>
 
@@ -524,76 +523,32 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
   </footer>
 
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
-  <!-- BANNIÈRE ET MODALES COOKIES & CONFIDENTIALITÉ RGPD                      -->
+  <!-- MODALS LÉGAUX CGU & CONFIDENTIALITÉ                                     -->
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
-  <aside id="kanto-cookie-banner" class="cookie-banner" role="region" aria-label="Gestion des cookies" style="display: none;">
-    <div class="cookie-banner-wrap">
-      <div class="cookie-banner-text">
-        <span class="cookie-banner-title">Respect de votre vie privée &amp; Cookies</span>
-        <p class="cookie-banner-desc">Traceurs strictement nécessaires et mémorisation de vos préférences d'affichage. Zéro profilage publicitaire.</p>
-      </div>
-      <div class="cookie-banner-actions">
-        <button type="button" id="cookie-btn-accept-all" class="btn-cookie-action primary">Tout accepter</button>
-        <button type="button" id="cookie-btn-reject-all" class="btn-cookie-action secondary">Continuer sans accepter</button>
-        <button type="button" id="cookie-btn-customize" class="btn-cookie-action outline">Personnaliser</button>
-      </div>
-    </div>
-  </aside>
-
-  <div id="kanto-cookie-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title" style="display: none;">
+  <div class="modal-overlay" id="modal-cgu" role="dialog" aria-modal="true" aria-labelledby="modal-cgu-title" style="display:none;">
     <div class="modal-dialog">
       <div class="modal-head">
-        <h3 id="cookie-modal-title">Préférences de confidentialité &amp; Cookies</h3>
-        <button type="button" class="btn-modal-close" id="cookie-modal-close" aria-label="Fermer la gestion des cookies">✕</button>
+        <h3 id="modal-cgu-title">Conditions Générales d'Utilisation</h3>
+        <button type="button" class="btn-modal-close" id="btn-close-cgu-modal" aria-label="Fermer">✕</button>
       </div>
       <div class="modal-body">
-        <p>Traceurs strictement nécessaires et mémorisation du thème (Sombre/Clair).</p>
-        <div class="cookie-pref-row">
-          <span>1. Nécessaires au fonctionnement</span>
-          <span class="badge-status-val">Toujours actif</span>
-        </div>
-        <div class="cookie-pref-row">
-          <span>2. Mémorisation du thème</span>
-          <input type="checkbox" id="cookie-opt-preferences" checked>
-        </div>
-      </div>
-      <div class="modal-foot">
-        <button type="button" id="cookie-modal-btn-reject" class="btn-cookie-action secondary">Tout refuser</button>
-        <button type="button" id="cookie-modal-btn-save" class="btn-cookie-action primary">Enregistrer mes choix</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="kanto-cgu-modal" role="dialog" aria-modal="true" aria-labelledby="modal-cgu-title" style="display:none;">
-    <div class="modal-dialog">
-      <div class="modal-head">
-        <h3 id="modal-cgu-title">Conditions Générales d'Utilisation • Bêta-Testeur Kanto</h3>
-        <button type="button" class="btn-modal-close" id="cgu-modal-close" aria-label="Fermer">✕</button>
-      </div>
-      <div class="modal-body">
-        <p>En rejoignant le programme de test de Kanto MG, vous devenez acteur d'un sanctuaire numérique dédié au patrimoine, aux contes (<em>Angano</em>), proverbes (<em>Ohabolana</em>) et traditions de Madagascar.</p>
+        <p>En rejoignant le programme de test de Kanto MG, vous acceptez d'accéder à une version préliminaire de l'application mobile conçue pour tester ses fonctionnalités, ses contes, ses proverbes et son apprentissage interactif.</p>
         <p>L'utilisation est strictement gratuite et bénévole. Vous pouvez vous désinscrire à tout moment.</p>
         <p><a href="/pages/terms" target="_blank">Consulter l'intégralité des CGU en pleine page ↗</a></p>
       </div>
-      <div class="modal-foot">
-        <button type="button" id="cgu-modal-btn-accept" class="btn-cookie-action primary">J'ai compris</button>
-      </div>
     </div>
   </div>
 
-  <div class="modal-overlay" id="kanto-privacy-modal" role="dialog" aria-modal="true" aria-labelledby="modal-privacy-title" style="display:none;">
+  <div class="modal-overlay" id="modal-privacy" role="dialog" aria-modal="true" aria-labelledby="modal-privacy-title" style="display:none;">
     <div class="modal-dialog">
       <div class="modal-head">
-        <h3 id="modal-privacy-title">Politique de Confidentialité • Bêta-Testeur Kanto</h3>
-        <button type="button" class="btn-modal-close" id="privacy-modal-close" aria-label="Fermer">✕</button>
+        <h3 id="modal-privacy-title">Politique de Confidentialité</h3>
+        <button type="button" class="btn-modal-close" id="btn-close-privacy-modal" aria-label="Fermer">✕</button>
       </div>
       <div class="modal-body">
-        <p>Vos identifiants sont protégés par chiffrement AES-256-GCM. Seul votre e-mail est conservé afin de synchroniser vos autorisations Google Play ou Apple TestFlight.</p>
-        <p>Aucune donnée personnelle n'est cédée, vendue ou partagée avec des tiers publicitaires.</p>
+        <p>Vos données sont protégées par chiffrement AES-256-GCM. Seul votre e-mail est conservé afin de synchroniser vos autorisations Google Play ou Apple TestFlight.</p>
+        <p>Aucune donnée personnelle n'est vendue, partagée avec des tiers publicitaires ou exploitée hors du cadre du test.</p>
         <p><a href="/pages/privacy" target="_blank">Consulter la politique de confidentialité complète ↗</a></p>
-      </div>
-      <div class="modal-foot">
-        <button type="button" id="privacy-modal-btn-accept" class="btn-cookie-action primary">Fermer</button>
       </div>
     </div>
   </div>
