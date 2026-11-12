@@ -1,0 +1,1397 @@
+{
+  "metadata": {
+    "project": "Kanto MG",
+    "themeSlug": "geographie-et-tresors-naturels",
+    "themeTitle": "Géographie et trésors naturels de Madagascar",
+    "version": "1.0.0",
+    "lastVerified": "2026-11-12",
+    "totalLevels": 5,
+    "questionsPerLevel": 10,
+    "totalQuestions": 50
+  },
+  "levels": [
+    {
+      "id": "kanto-geo-lvl-1",
+      "levelNumber": 1,
+      "title": "Niveau 1 : Repères fondamentaux de la Grande Île",
+      "description": "Introduction aux grands repères géographiques, hydrographiques et écologiques de Madagascar."
+    },
+    {
+      "id": "kanto-geo-lvl-2",
+      "levelNumber": 2,
+      "title": "Niveau 2 : Reliefs, fleuves et forêts humides",
+      "description": "Exploration des massifs montagneux, des grands bassins versants et des parcs de l'Est malgache."
+    },
+    {
+      "id": "kanto-geo-lvl-3",
+      "levelNumber": 3,
+      "title": "Niveau 3 : Karsts, littoral et biodiversité remarquable",
+      "description": "Découverte des paysages calcaires de l'Ouest, des îles côtières et des espèces emblématiques."
+    },
+    {
+      "id": "kanto-geo-lvl-4",
+      "levelNumber": 4,
+      "title": "Niveau 4 : Écorégions, géologie et endémisme",
+      "description": "Approfondissement sur les formations géologiques, les réserves de biosphère et la flore xerophile."
+    },
+    {
+      "id": "kanto-geo-lvl-5",
+      "levelNumber": 5,
+      "title": "Niveau 5 : Sanctuaires naturels et joyaux méconnus",
+      "description": "Maîtrise des écosystèmes rares, des espèces menacées et des trésors hydrologiques et marins."
+    }
+  ],
+  "questions": [
+    {
+      "id": "kanto-geo-nat-q01",
+      "levelId": "kanto-geo-lvl-1",
+      "levelNumber": 1,
+      "orderInLevel": 1,
+      "theme": "Géographie et trésors naturels",
+      "category": "Géographie générale de Madagascar",
+      "difficulty": "EASY",
+      "question": "Quel bras de mer sépare l'île de Madagascar du continent africain à l'ouest ?",
+      "options": {
+        "A": "Le détroit de Bab-el-Mandeb",
+        "B": "Le canal du Mozambique",
+        "C": "Le canal des Pangalanes",
+        "D": "Le détroit de Zanzibar"
+      },
+      "correctOption": "B",
+      "explanations": {
+        "correct": "Le canal du Mozambique est le bras de l'océan Indien occidental qui sépare Madagascar de l'Afrique du Sud-Est (notamment du Mozambique), sur une largeur minimale d'environ 400 km.",
+        "wrong": {
+          "A": "Le détroit de Bab-el-Mandeb relie la mer Rouge au golfe d'Aden, entre Djibouti et le Yémen.",
+          "C": "Le canal des Pangalanes est une voie d'eau intérieure aménagée le long de la côte orientale de Madagascar.",
+          "D": "Le canal ou détroit de Zanzibar sépare l'île d'Unguja (Zanzibar) de la côte continentale de la Tanzanie."
+        }
+      },
+      "hint": "Il porte le nom du pays côtier d'Afrique australe qui fait directement face à la côte ouest malgache.",
+      "sourceId": "SRC-01"
+    },
+    {
+      "id": "kanto-geo-nat-q02",
+      "levelId": "kanto-geo-lvl-1",
+      "levelNumber": 1,
+      "orderInLevel": 2,
+      "theme": "Géographie et trésors naturels",
+      "category": "Géographie générale de Madagascar",
+      "difficulty": "INTERMEDIATE",
+      "question": "Quel rang occupe Madagascar parmi les plus grandes îles du monde par sa superficie (environ 587 000 km²) ?",
+      "options": {
+        "A": "Le deuxième rang mondial",
+        "B": "Le troisième rang mondial",
+        "C": "Le quatrième rang mondial",
+        "D": "Le sixième rang mondial"
+      },
+      "correctOption": "C",
+      "explanations": {
+        "correct": "Avec environ 587 000 km², Madagascar est la quatrième plus grande île du monde, derrière le Groenland, la Nouvelle-Guinée et Bornéo.",
+        "wrong": {
+          "A": "Le deuxième rang mondial est occupé par la Nouvelle-Guinée (environ 785 000 km²).",
+          "B": "Le troisième rang mondial est occupé par l'île de Bornéo (environ 748 000 km²).",
+          "D": "Le sixième rang mondial est occupé par l'île de Sumatra en Indonésie (environ 443 000 km²), derrière l'île de Baffin (cinquième)."
+        }
+      },
+      "hint": "Trois îles seulement la dépassent en superficie : le Groenland, la Nouvelle-Guinée et Bornéo.",
+      "sourceId": "SRC-02"
+    },
+    {
+      "id": "kanto-geo-nat-q11",
+      "levelId": "kanto-geo-lvl-1",
+      "levelNumber": 1,
+      "orderInLevel": 3,
+      "theme": "Géographie et trésors naturels",
+      "category": "Fleuves, lacs et bassins hydrographiques",
+      "difficulty": "EASY",
+      "question": "Quel est le plus grand lac de Madagascar par sa superficie ?",
+      "options": {
+        "A": "Le lac Alaotra",
+        "B": "Le lac Itasy",
+        "C": "Le lac Tritriva",
+        "D": "Le lac Anosy"
+      },
+      "correctOption": "A",
+      "explanations": {
+        "correct": "Situé dans la région Alaotra-Mangoro, le lac Alaotra est le plus vaste lac de Madagascar (environ 200 km² d'eau libre entourés d'une vaste zone marécageuse classée site Ramsar) et le cœur du principal bassin rizicole du pays.",
+        "wrong": {
+          "B": "Le lac Itasy, d'origine volcanique à l'ouest d'Antananarivo, couvre environ 35 km².",
+          "C": "Le lac Tritriva est un petit lac de cratère volcanique très profond situé près d'Antsirabe dans le Vakinankaratra.",
+          "D": "Le lac Anosy est un lac artificiel urbain situé au cœur de la capitale Antananarivo."
+        }
+      },
+      "hint": "Ce lac donne son nom à une région de l'Est réputée pour être le premier grenier à riz de Madagascar.",
+      "sourceId": "SRC-03"
+    },
+    {
+      "id": "kanto-geo-nat-q12",
+      "levelId": "kanto-geo-lvl-1",
+      "levelNumber": 1,
+      "orderInLevel": 4,
+      "theme": "Géographie et trésors naturels",
+      "category": "Fleuves, lacs et bassins hydrographiques",
+      "difficulty": "INTERMEDIATE",
+      "question": "Quelle voie navigable, longue de plus de 600 kilomètres, relie une succession de lagunes et de cours d'eau le long de la côte est de Madagascar ?",
+      "options": {
+        "A": "Le canal de Dabara",
+        "B": "Le chenal de la Tsiribihina",
+        "C": "Le bassin du Sambirano",
+        "D": "Le canal des Pangalanes"
+      },
+      "correctOption": "D",
+      "explanations": {
+        "correct": "Le canal des Pangalanes longe le littoral oriental entre Foulpointe/Toamasina et Farafangana sur plus de 600 km en reliant des lagunes naturelles et des lacs côtiers séparés de l'océan Indien par un cordon dunaire.",
+        "wrong": {
+          "A": "Le canal de Dabara est un canal d'irrigation agricole alimenté par le fleuve Morondava dans la région du Menabe.",
+          "B": "La Tsiribihina est un grand fleuve naturel de l'Ouest malgache qui se jette dans le canal du Mozambique.",
+          "C": "Le Sambirano est un fleuve et un bassin hydrographique du nord-ouest de Madagascar, dans la région d'Ambanja."
+        }
+      },
+      "hint": "Aménagé en perçant les seuils sableux (les « pangalanes ») entre les lagunes orientales, il permet de naviguer à l'abri de la houle de l'océan Indien.",
+      "sourceId": "SRC-04"
+    },
+    {
+      "id": "kanto-geo-nat-q18",
+      "levelId": "kanto-geo-lvl-1",
+      "levelNumber": 1,
+      "orderInLevel": 5,
+      "theme": "Géographie et trésors naturels",
+      "category": "Montagnes, reliefs et paysages",
+      "difficulty": "INTERMEDIATE",
+      "question": "Quel est le point culminant de Madagascar, s'élevant à 2 876 mètres d'altitude dans le massif du Tsaratanana ?",
+      "options": {
+        "A": "Le pic Boby (Imarivolanitra)",
+        "B": "Le Tsiafajavona",
+        "C": "Le Maromokotro",
+        "D": "Le mont Amberombo"
+      },
+      "correctOption": "C",
+      "explanations": {
+        "correct": "Le Maromokotro, situé au nord de l'île dans le massif volcanique et cristallin du Tsaratanana, est le toit de Madagascar avec une altitude de 2 876 mètres.",
+        "wrong": {
+          "A": "Le pic Boby (Imarivolanitra), dans le massif de l'Andringitra, est le deuxième plus haut sommet de l'île avec 2 658 mètres.",
+          "B": "Le Tsiafajavona, point culminant du massif de l'Ankaratra sur les Hautes Terres centrales, atteint 2 642 à 2 643 mètres.",
+          "D": "Le mont Amberombo est un sommet du massif du Marojejy et des hautes terres du Nord, bien moins élevé que le Maromokotro."
+        }
+      },
+      "hint": "Situé dans le nord de l'île, son nom commençant par « Maro- » désigne le toit de Madagascar à près de 2 880 mètres.",
+      "sourceId": "SRC-05"
+    },
+    {
+      "id": "kanto-geo-nat-q25",
+      "levelId": "kanto-geo-lvl-1",
+      "levelNumber": 1,
+      "orderInLevel": 6,
+      "theme": "Géographie et trésors naturels",
+      "category": "Parcs nationaux et aires protégées",
+      "difficulty": "INTERMEDIATE",
+      "question": "Sous quel nom officiel l'UNESCO a-t-elle inscrit en 2007 un ensemble de six parcs nationaux de l'Est malgache sur la Liste du patrimoine mondial ?",
+      "options": {
+        "A": "Les Forêts humides de l'Atsinanana",
+        "B": "Les Forêts sèches de l'Andrefana",
+        "C": "Le Corridor forestier de Fandriana-Vondrozo",
+        "D": "La Réserve intégrale du Sambirano"
+      },
+      "correctOption": "A",
+      "explanations": {
+        "correct": "Inscrit en 2007 au patrimoine mondial de l'UNESCO (et retiré de la liste du patrimoine en péril en juillet 2025), le bien en série « Forêts humides de l'Atsinanana » regroupe six parcs nationaux de l'Est : Marojejy, Masoala, Zahamena, Ranomafana, Andringitra et Andohahela.",
+        "wrong": {
+          "B": "Les Forêts sèches de l'Andrefana constituent le bien du patrimoine mondial situé sur la façade ouest et sud-ouest de l'île (étendu en 2023).",
+          "C": "Le corridor forestier Ambositra-Vondrozo (COFAV) est une aire protégée majeure reliant Ranomafana et Andringitra, mais ce n'est pas l'intitulé du bien UNESCO.",
+          "D": "Le domaine du Sambirano est une région phytogéographique du Nord-Ouest et non le bien sériel oriental de l'UNESCO."
+        }
+      },
+      "hint": "Le mot malgache figurant dans ce titre signifie « l'Est », où se concentrent les forêts pluviales de l'île.",
+      "sourceId": "SRC-06"
+    },
+    {
+      "id": "kanto-geo-nat-q26",
+      "levelId": "kanto-geo-lvl-1",
+      "levelNumber": 1,
+      "orderInLevel": 7,
+      "theme": "Géographie et trésors naturels",
+      "category": "Parcs nationaux et aires protégées",
+      "difficulty": "DIFFICULT",
+      "question": "La découverte scientifique de quelle espèce de lémurien en 1986 a directement motivé la création du parc national de Ranomafana en 1991 ?",
+      "options": {
+        "A": "Le propithèque soyeux (Propithecus candidus)",
+        "B": "L'hapalémur doré (Hapalemur aureus)",
+        "C": "Le microcèbe de Madame Berthe (Microcebus berthae)",
+        "D": "Le maki vari roux (Varecia rubra)"
+      },
+      "correctOption": "B",
+      "explanations": {
+        "correct": "La découverte de l'hapalémur doré (Hapalemur aureus), un lémurien mangeur de bambou géant capable de tolérer de fortes doses de cyanure, en 1986 par l'équipe de Patricia Wright et Bernhard Meier, a conduit à la création du parc national de Ranomafana en 1991.",
+        "wrong": {
+          "A": "Le propithèque soyeux (Propithecus candidus) vit exclusivement dans les forêts humides de montagne du Nord-Est (Marojejy et Anjanaharibe-Sud).",
+          "C": "Le microcèbe de Madame Berthe (Microcebus berthae) est endémique de la forêt sèche de Kirindy dans le Menabe (Ouest).",
+          "D": "Le maki vari roux (Varecia rubra) est strictement endémique de la péninsule de Masoala dans le Nord-Est."
+        }
+      },
+      "hint": "Il s'agit d'un lémurien au pelage fauve doré spécialisé dans la consommation de bambou.",
+      "sourceId": "SRC-07"
+    },
+    {
+      "id": "kanto-geo-nat-q33",
+      "levelId": "kanto-geo-lvl-1",
+      "levelNumber": 1,
+      "orderInLevel": 8,
+      "theme": "Géographie et trésors naturels",
+      "category": "Faune et flore endémiques",
+      "difficulty": "INTERMEDIATE",
+      "question": "Sur les huit espèces de baobabs (genre Adansonia) classiquement recensées dans le monde, combien sont strictement endémiques de Madagascar ?",
+      "options": {
+        "A": "Deux espèces",
+        "B": "Quatre espèces",
+        "C": "Six espèces",
+        "D": "Huit espèces"
+      },
+      "correctOption": "C",
+      "explanations": {
+        "correct": "Madagascar abrite six espèces de baobabs strictement endémiques : Adansonia grandidieri, A. za, A. rubrostipa (fony), A. madagascariensis, A. suarezensis et A. perrieri (auxquelles s'ajoute sur l'île le baobab africain non endémique A. digitata).",
+        "wrong": {
+          "A": "Deux espèces correspond au nombre d'espèces situées hors de Madagascar (Adansonia digitata en Afrique continentale et Adansonia gregorii en Australie).",
+          "B": "Madagascar compte davantage que quatre espèces endémiques : six espèces n'existent à l'état naturel nulle part ailleurs.",
+          "D": "Toutes les espèces mondiales ne sont pas endémiques de Madagascar puisque l'Afrique continentale et le nord-ouest de l'Australie possèdent chacune leur espèce."
+        }
+      },
+      "hint": "Seules deux espèces de ce genre botanique ont leur berceau hors de Madagascar (l'une en Afrique continentale, l'autre en Australie).",
+      "sourceId": "SRC-08"
+    },
+    {
+      "id": "kanto-geo-nat-q34",
+      "levelId": "kanto-geo-lvl-1",
+      "levelNumber": 1,
+      "orderInLevel": 9,
+      "theme": "Géographie et trésors naturels",
+      "category": "Faune et flore endémiques",
+      "difficulty": "EASY",
+      "question": "Quel est le plus grand lémurien vivant actuel, célèbre pour ses puissants chants territoriaux et son absence presque totale de queue ?",
+      "options": {
+        "A": "Le maki catta (Lemur catta)",
+        "B": "L'aye-aye (Daubentonia madagascariensis)",
+        "C": "Le microcèbe mignon (Microcebus murinus)",
+        "D": "L'indri (Indri indri)"
+      },
+      "correctOption": "D",
+      "explanations": {
+        "correct": "Appelé localement « Babakoto », l'indri (Indri indri) est le plus grand des lémuriens actuels (pouvant atteindre 60 à 70 cm pour 6 à 9,5 kg). Il se distingue par sa queue vestigiale et ses vocalisations mélodieuses audibles à plusieurs kilomètres dans les forêts d'Andasibe-Mantadia.",
+        "wrong": {
+          "A": "Le maki catta est de taille moyenne et possède une très longue queue annelée noire et blanche.",
+          "B": "L'aye-aye est un lémurien nocturne doté d'une longue queue touffue et d'un troisième doigt très fin.",
+          "C": "Les microcèbes sont au contraire les plus petits primates du monde."
+        }
+      },
+      "hint": "Surnommé « Babakoto » dans la tradition malgache, on l'observe et on l'entend particulièrement dans la forêt d'Analamazaotra (Andasibe).",
+      "sourceId": "SRC-09"
+    },
+    {
+      "id": "kanto-geo-nat-q43",
+      "levelId": "kanto-geo-lvl-1",
+      "levelNumber": 1,
+      "orderInLevel": 10,
+      "theme": "Géographie et trésors naturels",
+      "category": "Îles, plages, littoraux et trésors naturels",
+      "difficulty": "DIFFICULT",
+      "question": "Sur quelle île côtière du nord-ouest de Madagascar se situe le parc national de Lokobe, dernier vestige de la forêt primaire du Sambirano sur cette île ?",
+      "options": {
+        "A": "Nosy Be",
+        "B": "Nosy Boraha (Sainte-Marie)",
+        "C": "Nosy Mangabe",
+        "D": "Nosy Ve"
+      },
+      "correctOption": "A",
+      "explanations": {
+        "correct": "Situé au sud-est de l'île de Nosy Be (région DIANA), le parc national de Lokobe protège 740 hectares de forêt dense humide de basse altitude typique du domaine du Sambirano, abritant notamment le lémur macaco (Eulemur macaco) et le caméléon panthère.",
+        "wrong": {
+          "B": "Nosy Boraha (île Sainte-Marie) se trouve au large de la côte nord-est de Madagascar et abrite notamment la forêt de Kalalao.",
+          "C": "Nosy Mangabe est une île forestière située au fond de la baie d'Antongil, sur la côte nord-est.",
+          "D": "Nosy Ve est un îlot corallien aride du sud-ouest de Madagascar, au large d'Anakao."
+        }
+      },
+      "hint": "C'est la plus célèbre île volcanique et touristique du nord-ouest malgache, surnommée « l'île aux parfums ».",
+      "sourceId": "SRC-10"
+    },
+    {
+      "id": "kanto-geo-nat-q03",
+      "levelId": "kanto-geo-lvl-2",
+      "levelNumber": 2,
+      "orderInLevel": 1,
+      "theme": "Géographie et trésors naturels",
+      "category": "Géographie générale de Madagascar",
+      "difficulty": "EASY",
+      "question": "Quelles sont les six provinces historiques (faritany) de Madagascar ?",
+      "options": {
+        "A": "Antananarivo, Antsirabe, Morondava, Sambava, Manakara, Taolagnaro",
+        "B": "Antananarivo, Antsiranana, Fianarantsoa, Mahajanga, Toamasina, Toliara",
+        "C": "Analamanga, Boeny, DIANA, Menabe, Atsinanana, Vakinankaratra",
+        "D": "Antananarivo, Nosy Be, Ambatondrazaka, Ambositra, Toliara, Toamasina"
+      },
+      "correctOption": "B",
+      "explanations": {
+        "correct": "Les six provinces historiques (faritany) qui structurent la géographie administrative de Madagascar sont Antananarivo, Antsiranana (Diego-Suarez), Fianarantsoa, Mahajanga (Majunga), Toamasina (Tamatave) et Toliara (Tuléar).",
+        "wrong": {
+          "A": "Antsirabe, Morondava, Sambava, Manakara et Taolagnaro sont des chefs-lieux de régions, mais pas des provinces historiques.",
+          "C": "Analamanga, Boeny, DIANA, Menabe, Atsinanana et Vakinankaratra sont des régions (faritra) et non des provinces.",
+          "D": "Nosy Be (district), Ambatondrazaka et Ambositra (chefs-lieux de régions) n'ont jamais constitué l'une des six provinces."
+        }
+      },
+      "hint": "Cette liste regroupe la capitale sur les Hautes Terres ainsi que les cinq grandes métropoles historiques du Nord, du Nord-Ouest, de l'Est, du Centre-Sud et du Sud-Ouest.",
+      "sourceId": "SRC-11"
+    },
+    {
+      "id": "kanto-geo-nat-q04",
+      "levelId": "kanto-geo-lvl-2",
+      "levelNumber": 2,
+      "orderInLevel": 2,
+      "theme": "Géographie et trésors naturels",
+      "category": "Géographie générale de Madagascar",
+      "difficulty": "INTERMEDIATE",
+      "question": "Quel parallèle géographique remarquable traverse le sud de Madagascar, à proximité immédiate de la ville de Toliara ?",
+      "options": {
+        "A": "L'Équateur",
+        "B": "Le tropique du Cancer",
+        "C": "Le tropique du Capricorne",
+        "D": "Le 40e parallèle sud"
+      },
+      "correctOption": "C",
+      "explanations": {
+        "correct": "Le tropique du Capricorne (situé vers 23°26' de latitude sud) traverse la partie méridionale de Madagascar, juste au sud de Toliara (province de Toliara, région Atsimo-Andrefana).",
+        "wrong": {
+          "A": "L'Équateur (0° de latitude) passe bien plus au nord, à travers le Kenya, l'Ouganda et le bassin du Congo.",
+          "B": "Le tropique du Cancer est situé dans l'hémisphère nord (vers 23°26' N) et traverse le désert du Sahara.",
+          "D": "Le 40e parallèle sud (« les Quarantièmes rugissants ») passe en plein océan austral, très loin au sud du cap Sainte-Marie."
+        }
+      },
+      "hint": "Il s'agit du tropique situé dans l'hémisphère sud.",
+      "sourceId": "SRC-01"
+    },
+    {
+      "id": "kanto-geo-nat-q13",
+      "levelId": "kanto-geo-lvl-2",
+      "levelNumber": 2,
+      "orderInLevel": 3,
+      "theme": "Géographie et trésors naturels",
+      "category": "Fleuves, lacs et bassins hydrographiques",
+      "difficulty": "INTERMEDIATE",
+      "question": "Quel est le plus long fleuve de Madagascar, qui draine le centre-sud de l'île avant de se jeter dans le canal du Mozambique par un vaste delta au nord de Morombe ?",
+      "options": {
+        "A": "Le Mangoky",
+        "B": "Le Mandrare",
+        "C": "La Mananara",
+        "D": "L'Ivondro"
+      },
+      "correctOption": "A",
+      "explanations": {
+        "correct": "Le Mangoky, formé notamment par la Matsiatra et la Mananantanana (et prenant sa source la plus lointaine avec l'Ihosy), est le plus long fleuve de Madagascar (environ 564 km pour le cours principal Matsiatra-Mangoky et jusqu'à 821 km avec ses affluents supérieurs) et possède un bassin versant d'environ 55 750 km².",
+        "wrong": {
+          "B": "Le Mandrare est un fleuve du Sud-Est/Sud (région Androy/Anosy) long d'environ 270 km.",
+          "C": "La Mananara du Sud est un fleuve du versant oriental long d'environ 418 km.",
+          "D": "L'Ivondro est un fleuve côtier du versant oriental qui se jette dans l'océan Indien près de Toamasina."
+        }
+      },
+      "hint": "Son vaste delta marécageux et de mangroves se situe sur la côte ouest, entre Morondava et Toliara.",
+      "sourceId": "SRC-12"
+    },
+    {
+      "id": "kanto-geo-nat-q19",
+      "levelId": "kanto-geo-lvl-2",
+      "levelNumber": 2,
+      "orderInLevel": 4,
+      "theme": "Géographie et trésors naturels",
+      "category": "Montagnes, reliefs et paysages",
+      "difficulty": "INTERMEDIATE",
+      "question": "Dans quel massif montagneux du sud-est des Hautes Terres se dresse le pic Boby (Imarivolanitra), deuxième plus haut sommet de Madagascar à 2 658 mètres ?",
+      "options": {
+        "A": "Le massif de l'Ankaratra",
+        "B": "Le massif de l'Isalo",
+        "C": "Le massif du Makay",
+        "D": "Le massif de l'Andringitra"
+      },
+      "correctOption": "D",
+      "explanations": {
+        "correct": "Le pic Boby, rebaptisé Imarivolanitra (« proche du ciel »), culmine à 2 658 mètres au cœur du massif granitique de l'Andringitra, protégé par le parc national d'Andringitra entre les régions Haute Matsiatra et Ihorombe.",
+        "wrong": {
+          "A": "Le massif volcanique de l'Ankaratra culmine au Tsiafajavona (2 643 m).",
+          "B": "Le massif gréseux de l'Isalo est beaucoup moins élevé, son point culminant avoisinant 1 268 mètres.",
+          "C": "Le massif gréseux du Makay culmine aux alentours de 1 000 mètres d'altitude."
+        }
+      },
+      "hint": "Situé au sud d'Ambalavao, ce massif granitique donne son nom à un célèbre parc national inscrit au patrimoine mondial de l'UNESCO.",
+      "sourceId": "SRC-13"
+    },
+    {
+      "id": "kanto-geo-nat-q20",
+      "levelId": "kanto-geo-lvl-2",
+      "levelNumber": 2,
+      "orderInLevel": 5,
+      "theme": "Géographie et trésors naturels",
+      "category": "Montagnes, reliefs et paysages",
+      "difficulty": "DIFFICULT",
+      "question": "Quel terme malgache, signifiant littéralement « là où l'on ne peut pas marcher pieds nus », désigne les reliefs karstiques de calcaires ciselés en aiguilles acérées ?",
+      "options": {
+        "A": "Lavaka",
+        "B": "Tampoketsa",
+        "C": "Tsingy",
+        "D": "Tanety"
+      },
+      "correctOption": "C",
+      "explanations": {
+        "correct": "Le mot « Tsingy » (lié à l'expression « mitsingitsingy », marcher sur la pointe des pieds) désigne les plateaux calcaires jurassiques dissous par l'érosion pluviale et souterraine en lames et cathédrales rocheuses tranchantes, comme à Bemaraha, Ankarana ou Namoroka.",
+        "wrong": {
+          "A": "Un « lavaka » est une profonde ravine d'érosion en forme d'entonnoir creusée dans les collines latéritiques des Hautes Terres.",
+          "B": "Un « tampoketsa » désigne une haute surface plane d'aplanissement (plateau résiduel) sur les Hautes Terres.",
+          "D": "Une « tanety » désigne une colline de terre sèche sur les Hautes Terres malgaches, par opposition aux bas-fonds rizicoles."
+        }
+      },
+      "hint": "Ce mot figure dans le nom du célèbre parc national de Bemaraha, classé au patrimoine mondial de l'UNESCO.",
+      "sourceId": "SRC-14"
+    },
+    {
+      "id": "kanto-geo-nat-q27",
+      "levelId": "kanto-geo-lvl-2",
+      "levelNumber": 2,
+      "orderInLevel": 6,
+      "theme": "Géographie et trésors naturels",
+      "category": "Parcs nationaux et aires protégées",
+      "difficulty": "EASY",
+      "question": "Quel parc national du centre-sud de Madagascar, traversé par la route nationale 7 près de Ranohira, est célèbre pour son massif gréseux ruiniforme datant du Jurassique et ses piscines naturelles ?",
+      "options": {
+        "A": "Le parc national de l'Isalo",
+        "B": "Le parc national de Zahamena",
+        "C": "Le parc national de la Montagne d'Ambre",
+        "D": "Le parc national de la Baie de Baly"
+      },
+      "correctOption": "A",
+      "explanations": {
+        "correct": "Créé en 1962 dans la région Ihorombe près de Ranohira, le parc national de l'Isalo couvre 81 540 hectares d'un massif de grès continental jurassique sculpté par l'érosion en canyons profonds (canyon des Makis, canyon des Rats) et oasis ombragées de palmiers.",
+        "wrong": {
+          "B": "Le parc national de Zahamena est un parc de forêt dense humide situé à l'est du lac Alaotra.",
+          "C": "Le parc national de la Montagne d'Ambre est un massif volcanique recouvert de forêt humide à l'extrême nord, près d'Antsiranana.",
+          "D": "Le parc national de la Baie de Baly est situé sur le littoral nord-ouest près de Soalala (région Boeny)."
+        }
+      },
+      "hint": "C'est l'un des parcs les plus visités le long de la RN7, célèbre pour sa « Fenêtre » rocheuse au coucher du soleil.",
+      "sourceId": "SRC-15"
+    },
+    {
+      "id": "kanto-geo-nat-q28",
+      "levelId": "kanto-geo-lvl-2",
+      "levelNumber": 2,
+      "orderInLevel": 7,
+      "theme": "Géographie et trésors naturels",
+      "category": "Parcs nationaux et aires protégées",
+      "difficulty": "INTERMEDIATE",
+      "question": "Quel parc national du nord-est de Madagascar est le plus vaste complexe protégé du réseau Madagascar National Parks, associant forêts pluviales littorales et trois parcs marins ?",
+      "options": {
+        "A": "Le parc national d'Analamazaotra",
+        "B": "Le parc national de Masoala",
+        "C": "Le parc national de Zombitse-Vohibasia",
+        "D": "Le parc national de Kirindy Mitea"
+      },
+      "correctOption": "B",
+      "explanations": {
+        "correct": "Situé sur la presqu'île du même nom au nord-est de la baie d'Antongil, le parc national de Masoala s'étend sur environ 230 000 hectares terrestres et 10 000 hectares répartis en trois parcs marins (Tampolo, Ambodilaitry et Ifaho), où la forêt primaire humide rejoint directement les récifs coralliens et les mangroves.",
+        "wrong": {
+          "A": "Le parc national d'Analamazaotra (Andasibe) est un petit parc forestier continental de 810 hectares sur le versant oriental.",
+          "C": "Le parc national de Zombitse-Vohibasia est un parc terrestre de forêt sèche situé dans le Sud-Ouest près de Sakaraha.",
+          "D": "Le parc national de Kirindy Mitea est situé sur la côte ouest (région Menabe), dans le domaine des forêts sèches."
+        }
+      },
+      "hint": "Il occupe une immense péninsule boisée qui ferme l'est de la baie d'Antongil, près de Maroantsetra.",
+      "sourceId": "SRC-16"
+    },
+    {
+      "id": "kanto-geo-nat-q35",
+      "levelId": "kanto-geo-lvl-2",
+      "levelNumber": 2,
+      "orderInLevel": 8,
+      "theme": "Géographie et trésors naturels",
+      "category": "Faune et flore endémiques",
+      "difficulty": "EASY",
+      "question": "Quel est le plus grand mammifère carnivore terrestre endémique de Madagascar, appartenant à la famille des Eupleridae ?",
+      "options": {
+        "A": "La civette malgache (Fossa fossana)",
+        "B": "La mangouste à queue annelée (Galidia elegans)",
+        "C": "Le fossa (Cryptoprocta ferox)",
+        "D": "Le tenrec commun (Tenrec ecaudatus)"
+      },
+      "correctOption": "C",
+      "explanations": {
+        "correct": "Le fossa (Cryptoprocta ferox) est le plus grand carnivore mammifère endémique de Madagascar. Agile dans les arbres comme au sol, il appartient à la famille endémique des Eupleridae et joue le rôle de prédateur suprême dans les forêts malgaches, notamment vis-à-vis des lémuriens.",
+        "wrong": {
+          "A": "La civette malgache ou fanaloka (Fossa fossana) est un carnivore beaucoup plus petit (environ 1,5 à 2 kg), malgré son nom scientifique trompeur.",
+          "B": "La mangouste à queue annelée ou vontsira (Galidia elegans) est un petit carnivore diurne ne dépassant pas un kilogramme.",
+          "D": "Le tenrec commun (tandrac) est un mammifère insectivore (famille des Tenrecidae) et non un carnivore de la famille des Eupleridae."
+        }
+      },
+      "hint": "Doté d'une allure féline et d'une longue queue qui l'aide à s'équilibrer dans les arbres, il est le principal prédateur naturel des lémuriens.",
+      "sourceId": "SRC-17"
+    },
+    {
+      "id": "kanto-geo-nat-q36",
+      "levelId": "kanto-geo-lvl-2",
+      "levelNumber": 2,
+      "orderInLevel": 9,
+      "theme": "Géographie et trésors naturels",
+      "category": "Faune et flore endémiques",
+      "difficulty": "DIFFICULT",
+      "question": "Quelle espèce de baobab géant, appelée localement « Renala » (mère de la forêt), borde la célèbre Allée des Baobabs au nord de Morondava ?",
+      "options": {
+        "A": "Adansonia suarezensis",
+        "B": "Adansonia rubrostipa",
+        "C": "Adansonia perrieri",
+        "D": "Adansonia grandidieri"
+      },
+      "correctOption": "D",
+      "explanations": {
+        "correct": "L'Allée des Baobabs (aire protégée classée Monument Naturel dans la région du Menabe) est bordée de majestueux baobabs de Grandidier (Adansonia grandidieri), la plus massive des espèces malgaches, au tronc cylindrique élancé pouvant atteindre 25 à 30 mètres de haut.",
+        "wrong": {
+          "A": "Adansonia suarezensis est endémique de l'extrême nord de Madagascar, autour de la baie d'Antsiranana (Diego-Suarez).",
+          "B": "Adansonia rubrostipa (baobab fony) est une espèce plus petite au tronc souvent renflé en bouteille et à l'écorce brun-rougeâtre.",
+          "C": "Adansonia perrieri est une espèce rare en danger critique d'extinction confinée au nord de Madagascar (Ankarana, Montagne d'Ambre, Andrafiamena)."
+        }
+      },
+      "hint": "Son nom scientifique rend hommage à Alfred Grandidier, célèbre naturaliste et explorateur de Madagascar au XIXe siècle.",
+      "sourceId": "SRC-08"
+    },
+    {
+      "id": "kanto-geo-nat-q44",
+      "levelId": "kanto-geo-lvl-2",
+      "levelNumber": 2,
+      "orderInLevel": 10,
+      "theme": "Géographie et trésors naturels",
+      "category": "Îles, plages, littoraux et trésors naturels",
+      "difficulty": "INTERMEDIATE",
+      "question": "Quel est le nom malgache de l'île Sainte-Marie, située au large de la côte nord-est et réputée pour l'observation des baleines à bosse ?",
+      "options": {
+        "A": "Nosy Alanana",
+        "B": "Nosy Boraha",
+        "C": "Nosy Komba",
+        "D": "Nosy Mitsio"
+      },
+      "correctOption": "B",
+      "explanations": {
+        "correct": "L'île Sainte-Marie est appelée Nosy Boraha en malgache. Longue d'environ 60 kilomètres face à Soanierana Ivongo (région Analanjirofo), son canal abrité accueille chaque année de juillet à septembre les baleines à bosse (Megaptera novaeangliae) venues mettre bas et se reproduire.",
+        "wrong": {
+          "A": "Nosy Alanana est le nom malgache de l'île aux Prunes, située au nord-est du port de Toamasina.",
+          "C": "Nosy Komba (« l'île aux lémuriens ») est une île volcanique située entre Nosy Be et la Grande Terre dans le Nord-Ouest.",
+          "D": "Nosy Mitsio est un archipel situé au nord-est de Nosy Be sur la côte nord-ouest."
+        }
+      },
+      "hint": "Cette île allongée de la côte est dépend de la région Analanjirofo et son nom malgache est associé à la figure d'Ibrahim (Boraha).",
+      "sourceId": "SRC-18"
+    },
+    {
+      "id": "kanto-geo-nat-q05",
+      "levelId": "kanto-geo-lvl-3",
+      "levelNumber": 3,
+      "orderInLevel": 1,
+      "theme": "Géographie et trésors naturels",
+      "category": "Géographie générale de Madagascar",
+      "difficulty": "INTERMEDIATE",
+      "question": "Que désigne l'acronyme de la région « SAVA », située dans le nord-est de Madagascar et mondialement réputée pour sa production de vanille ?",
+      "options": {
+        "A": "Soalala, Ambanja, Vohémar, Ambilobe",
+        "B": "Soanierana, Ambatondrazaka, Vatomandry, Andapa",
+        "C": "Sambava, Antalaha, Vohémar, Andapa",
+        "D": "Sakaraha, Ambovombe, Vangaindrano, Amboasary"
+      },
+      "correctOption": "C",
+      "explanations": {
+        "correct": "L'acronyme SAVA est formé par les initiales des quatre districts et villes principales qui composent cette région du Nord-Est : Sambava (chef-lieu de région), Antalaha, Vohémar (Iharana) et Andapa.",
+        "wrong": {
+          "A": "Soalala appartient à la région Boeny, tandis qu'Ambanja et Ambilobe font partie de la région DIANA.",
+          "B": "Soanierana Ivongo est dans l'Analanjirofo, Ambatondrazaka dans l'Alaotra-Mangoro et Vatomandry dans l'Atsinanana.",
+          "D": "Sakaraha, Ambovombe, Vangaindrano et Amboasary sont des villes situées dans le Sud et le Sud-Est de Madagascar."
+        }
+      },
+      "hint": "Il s'agit des quatre grandes villes du triangle de la vanille et de la cuvette rizicole du Nord-Est.",
+      "sourceId": "SRC-11"
+    },
+    {
+      "id": "kanto-geo-nat-q06",
+      "levelId": "kanto-geo-lvl-3",
+      "levelNumber": 3,
+      "orderInLevel": 2,
+      "theme": "Géographie et trésors naturels",
+      "category": "Géographie générale de Madagascar",
+      "difficulty": "DIFFICULT",
+      "question": "Comment se nomme le point le plus méridional de Madagascar, situé dans la région Androy et protégé par une réserve spéciale ?",
+      "options": {
+        "A": "Le cap d'Ambre (Tanjona Bobaomby)",
+        "B": "Le cap Saint-André (Tanjonailanjavibe)",
+        "C": "Le cap Masoala",
+        "D": "Le cap Sainte-Marie (Tanjona Vohimena)"
+      },
+      "correctOption": "D",
+      "explanations": {
+        "correct": "Le cap Sainte-Marie, appelé Tanjona Vohimena en malgache, constitue l'extrémité australe de Madagascar (vers 25°36' S). Sa réserve spéciale de 1 750 hectares protège une végétation épineuse naine façonnée par le vent, des tortues étoilées et des fragments d'œufs fossiles d'Aepyornis.",
+        "wrong": {
+          "A": "Le cap d'Ambre (Tanjona Bobaomby) est à l'inverse le point le plus septentrional de Madagascar, au nord d'Antsiranana.",
+          "B": "Le cap Saint-André est un grand promontoire sableux avançant dans le canal du Mozambique sur la côte nord-ouest (région Melaky/Boeny).",
+          "C": "Le cap Masoala (ou cap Est voisin) se situe sur la façade nord-est de l'île."
+        }
+      },
+      "hint": "En malgache, ce cap battu par les vents de l'océan Indien au sud de Tsihombe est appelé « Tanjona Vohimena ».",
+      "sourceId": "SRC-19"
+    },
+    {
+      "id": "kanto-geo-nat-q14",
+      "levelId": "kanto-geo-lvl-3",
+      "levelNumber": 3,
+      "orderInLevel": 3,
+      "theme": "Géographie et trésors naturels",
+      "category": "Fleuves, lacs et bassins hydrographiques",
+      "difficulty": "EASY",
+      "question": "Quel grand fleuve du nord-ouest de Madagascar, recevant les eaux de l'Ikopa, est célèbre pour son vaste estuaire de couleur rouge brique dans la baie de Bombetoka près de Mahajanga ?",
+      "options": {
+        "A": "La Betsiboka",
+        "B": "La Mananjary",
+        "C": "La Linta",
+        "D": "La Rianila"
+      },
+      "correctOption": "A",
+      "explanations": {
+        "correct": "Longue d'environ 525 km, la Betsiboka draine les Hautes Terres au nord d'Antananarivo (avec son principal affluent l'Ikopa) et se jette dans la baie de Bombetoka à Mahajanga. Ses eaux chargées de sédiments latéritiques témoignent de l'intense érosion des bassins versants.",
+        "wrong": {
+          "B": "La Mananjary est un fleuve du versant oriental qui se jette dans l'océan Indien.",
+          "C": "La Linta est un fleuve temporaire du Grand Sud aride qui traverse le plateau Mahafaly.",
+          "D": "La Rianila est un fleuve du versant est traversant la région de Brickaville."
+        }
+      },
+      "hint": "Il donne son nom à une région dont le chef-lieu est Maevatanana et son embouchure se situe à Mahajanga.",
+      "sourceId": "SRC-12"
+    },
+    {
+      "id": "kanto-geo-nat-q15",
+      "levelId": "kanto-geo-lvl-3",
+      "levelNumber": 3,
+      "orderInLevel": 4,
+      "theme": "Géographie et trésors naturels",
+      "category": "Fleuves, lacs et bassins hydrographiques",
+      "difficulty": "INTERMEDIATE",
+      "question": "Quelle est la particularité écologique majeure du lac Tsimanampetsotsa, situé dans le sud-ouest de Madagascar ?",
+      "options": {
+        "A": "C'est un lac glaciaire permanent d'altitude entouré de conifères",
+        "B": "C'est un lac peu profond saturé en sulfate de calcium où aucun poisson ne peut survivre, fréquenté par les flamants",
+        "C": "C'est le lac le plus profond d'Afrique avec plus de 500 mètres de profondeur",
+        "D": "C'est un réservoir hydroélectrique artificiel créé sous la monarchie Merina"
+      },
+      "correctOption": "B",
+      "explanations": {
+        "correct": "Situé au pied du plateau calcaire Mahafaly, le lac Tsimanampetsotsa est un lac alcalin peu profond saturé en sels minéraux (notamment en sulfate de calcium). Aucune espèce de poisson n'y survit, mais ses eaux abritent des algues et crustacés qui attirent des milliers de flamants roses et de flamants nains.",
+        "wrong": {
+          "A": "Madagascar ne possède aucun lac glaciaire et Tsimanampetsotsa se trouve à basse altitude dans le Sud-Ouest semi-aride.",
+          "C": "Sa profondeur dépasse rarement 2 mètres et fluctue fortement selon les saisons.",
+          "D": "C'est un lac naturel endoréique (classé site Ramsar), contrairement au lac artificiel de Mantasoa sur les Hautes Terres."
+        }
+      },
+      "hint": "Situé dans une région semi-aride, ses rives blanches crayeuses accueillent d'importantes colonies de flamants roses et nains.",
+      "sourceId": "SRC-20"
+    },
+    {
+      "id": "kanto-geo-nat-q21",
+      "levelId": "kanto-geo-lvl-3",
+      "levelNumber": 3,
+      "orderInLevel": 5,
+      "theme": "Géographie et trésors naturels",
+      "category": "Montagnes, reliefs et paysages",
+      "difficulty": "INTERMEDIATE",
+      "question": "Quel massif volcanique des Hautes Terres centrales, situé entre Antananarivo et Antsirabe, culmine au mont Tsiafajavona à 2 643 mètres d'altitude ?",
+      "options": {
+        "A": "Le massif du Marojejy",
+        "B": "Le massif du Kalambatritra",
+        "C": "Le massif de l'Ankaratra",
+        "D": "Le massif du Bongolava"
+      },
+      "correctOption": "C",
+      "explanations": {
+        "correct": "Le massif volcanique de l'Ankaratra s'étend au sud-ouest d'Antananarivo jusqu'à Antsirabe (région Vakinankaratra). Il culmine à 2 643 mètres au pic Tsiafajavona, dont le nom malgache signifie « jamais hors du brouillard ».",
+        "wrong": {
+          "A": "Le massif du Marojejy est un massif granitique et gneissique situé dans le Nord-Est (région SAVA).",
+          "B": "Le massif du Kalambatritra se trouve dans le sud de Madagascar, entre l'Ihorombe et l'Anosy.",
+          "D": "Le Bongolava est un rebord de plateau cristallin marquant la transition vers le Moyen-Ouest malgache."
+        }
+      },
+      "hint": "Son nom est intégré dans celui de la région « Vakinankaratra » dont le chef-lieu est Antsirabe.",
+      "sourceId": "SRC-21"
+    },
+    {
+      "id": "kanto-geo-nat-q29",
+      "levelId": "kanto-geo-lvl-3",
+      "levelNumber": 3,
+      "orderInLevel": 6,
+      "theme": "Géographie et trésors naturels",
+      "category": "Parcs nationaux et aires protégées",
+      "difficulty": "EASY",
+      "question": "En quelle année la Réserve naturelle intégrale du Tsingy de Bemaraha est-elle devenue le tout premier site de Madagascar inscrit au patrimoine mondial de l'UNESCO ?",
+      "options": {
+        "A": "En 1960",
+        "B": "En 1975",
+        "C": "En 1990",
+        "D": "En 2012"
+      },
+      "correctOption": "C",
+      "explanations": {
+        "correct": "Créée en tant que réserve naturelle intégrale dès 1927, le Tsingy de Bemaraha a été inscrit sur la Liste du patrimoine mondial de l'UNESCO en 1990 (avant d'être étendu en 2023 pour former le bien en série des Forêts sèches de l'Andrefana).",
+        "wrong": {
+          "A": "1960 est l'année de l'indépendance de Madagascar ; la Convention du patrimoine mondial de l'UNESCO n'a été adoptée qu'en 1972.",
+          "B": "En 1975, Madagascar ratifie la CITES, mais aucun site malgache n'était encore inscrit au patrimoine mondial.",
+          "D": "En 2012, les trois biens malgaches principaux (Bemaraha en 1990, Ambohimanga en 2001 et Atsinanana en 2007) étaient déjà inscrits depuis longtemps."
+        }
+      },
+      "hint": "Cette inscription historique au patrimoine naturel mondial a eu lieu à la toute fin du XXe siècle, exactement trente ans après l'indépendance.",
+      "sourceId": "SRC-14"
+    },
+    {
+      "id": "kanto-geo-nat-q30",
+      "levelId": "kanto-geo-lvl-3",
+      "levelNumber": 3,
+      "orderInLevel": 7,
+      "theme": "Géographie et trésors naturels",
+      "category": "Parcs nationaux et aires protégées",
+      "difficulty": "DIFFICULT",
+      "question": "Quel parc national du sud-est de Madagascar (région Anosy) protège une transition écologique unique entre la forêt dense humide de l'Est et le fourré épineux sec du Sud ?",
+      "options": {
+        "A": "Le parc national d'Andohahela",
+        "B": "Le parc national d'Ankarafantsika",
+        "C": "Le parc national de Sahamalaza",
+        "D": "Le parc national de Marolambo"
+      },
+      "correctOption": "A",
+      "explanations": {
+        "correct": "Situé près de Taolagnaro (Fort-Dauphin), le parc national d'Andohahela (76 020 ha) est composé de trois parcelles séparées par la chaîne anosyenne qui créent un effet de foehn spectaculaire : forêt pluviale à l'est (Malio), fourré xérophile à l'ouest (Ihazofotsy) et forêt de transition au centre (Tsimelahy).",
+        "wrong": {
+          "B": "Le parc national d'Ankarafantsika se trouve dans le Nord-Ouest (région Boeny) et protège une forêt dense sèche caducifoliée.",
+          "C": "Le parc national marin et terrestre de Sahamalaza-Îles Radama est situé dans le Nord-Ouest.",
+          "D": "Le parc national de Marolambo protège uniquement des forêts denses humides sur le versant oriental central."
+        }
+      },
+      "hint": "Ce parc proche de Taolagnaro (Fort-Dauphin) abrite dans sa zone de transition le célèbre palmier trièdre (Dypsis decaryi).",
+      "sourceId": "SRC-22"
+    },
+    {
+      "id": "kanto-geo-nat-q37",
+      "levelId": "kanto-geo-lvl-3",
+      "levelNumber": 3,
+      "orderInLevel": 8,
+      "theme": "Géographie et trésors naturels",
+      "category": "Faune et flore endémiques",
+      "difficulty": "EASY",
+      "question": "Quel arbre emblématique de Madagascar, appelé « Ravinala », est connu pour ses feuilles disposées en éventail et sa capacité à retenir l'eau de pluie à la base de ses pétioles ?",
+      "options": {
+        "A": "Le flamboyant (Delonix regia)",
+        "B": "Le palissandre de Madagascar (Dalbergia baroni)",
+        "C": "Le Katrafay (Cedrelopsis grevei)",
+        "D": "L'arbre du voyageur (Ravenala madagascariensis)"
+      },
+      "correctOption": "D",
+      "explanations": {
+        "correct": "Le Ravinala (Ravenala madagascariensis, famille des Strelitziaceae, où des études génétiques récentes distinguent d'ailleurs plusieurs espèces endémiques au sein du genre Ravenala) est surnommé « arbre du voyageur » car la base engainante de ses feuilles accumule de l'eau permettant aux marcheurs de se désaltérer.",
+        "wrong": {
+          "A": "Le flamboyant (Delonix regia) est un arbre de la famille des Fabaceae célèbre pour ses fleurs rouge orangé éclatantes.",
+          "B": "Le palissandre est un arbre forestier précieux de la famille des Fabaceae recherché pour son bois dense.",
+          "C": "Le Katrafay est un arbre aromatique et médicinal endémique des forêts sèches de Madagascar."
+        }
+      },
+      "hint": "Symbole national figurant sur de nombreux emblèmes malgaches, ce n'est pas un vrai palmier mais un parent de l'oiseau de paradis.",
+      "sourceId": "SRC-23"
+    },
+    {
+      "id": "kanto-geo-nat-q38",
+      "levelId": "kanto-geo-lvl-3",
+      "levelNumber": 3,
+      "orderInLevel": 9,
+      "theme": "Géographie et trésors naturels",
+      "category": "Faune et flore endémiques",
+      "difficulty": "INTERMEDIATE",
+      "question": "À quel genre scientifique appartiennent les caméléons nains terrestres de Madagascar, qui comptent parmi les plus petits reptiles vertébrés du monde ?",
+      "options": {
+        "A": "Furcifer",
+        "B": "Calumma",
+        "C": "Brookesia",
+        "D": "Uroplatus"
+      },
+      "correctOption": "C",
+      "explanations": {
+        "correct": "Le genre Brookesia regroupe une trentaine d'espèces de caméléons miniatures endémiques de Madagascar vivant dans la litière de feuilles mortes, dont Brookesia micra (sur l'îlot de Nosy Hara) et Brookesia nana (dans le massif du Sorata), qui mesurent moins de 3 centimètres à l'âge adulte.",
+        "wrong": {
+          "A": "Le genre Furcifer regroupe de grands caméléons arboricoles comme le caméléon panthère (Furcifer pardalis) ou le caméléon d'Oustalet.",
+          "B": "Le genre Calumma regroupe des caméléons arboricoles forestiers dont le célèbre caméléon de Parson (Calumma parsonii), le plus massif de l'île.",
+          "D": "Le genre Uroplatus désigne les geckos nocturnes à queue plate (geckos foliacés) endémiques de Madagascar, et non des caméléons."
+        }
+      },
+      "hint": "Contrairement aux grands caméléons arboricoles colorés, ces minuscules caméléons bruns imitent les feuilles mortes sur le sol forestier.",
+      "sourceId": "SRC-24"
+    },
+    {
+      "id": "kanto-geo-nat-q45",
+      "levelId": "kanto-geo-lvl-3",
+      "levelNumber": 3,
+      "orderInLevel": 10,
+      "theme": "Géographie et trésors naturels",
+      "category": "Îles, plages, littoraux et trésors naturels",
+      "difficulty": "INTERMEDIATE",
+      "question": "Sur quelle façade maritime de Madagascar se concentre la quasi-totalité (environ 98 %) des forêts de mangroves du pays ?",
+      "options": {
+        "A": "Sur la côte occidentale, le long du canal du Mozambique",
+        "B": "Sur la côte centrale orientale, autour de Vatomandry et Mahanoro",
+        "C": "Sur les falaises méridionales de l'Androy",
+        "D": "Autour des lacs de cratère des Hautes Terres centrales"
+      },
+      "correctOption": "A",
+      "explanations": {
+        "correct": "Près de 98 % des mangroves malgaches (plus de 300 000 hectares constitués de 8 espèces de palétuviers) bordent la côte ouest et nord-ouest le long du canal du Mozambique (baies d'Ambaro, de Mahajamba, de Bombetoka, deltas de la Tsiribihina et du Mangoky), grâce aux faibles pentes continentales, aux grands estuaires limoneux et au fort marnage des marées.",
+        "wrong": {
+          "B": "La côte est, rectiligne et battue par la houle avec un faible marnage, ne possède que de très petits îlots résiduels de mangroves.",
+          "C": "Le littoral de l'extrême sud est aride, rocheux ou dunaire et dépourvu de grands estuaires à mangroves.",
+          "D": "Les mangroves sont des écosystèmes strictement côtiers d'eau saumâtre soumis au balancement des marées marines."
+        }
+      },
+      "hint": "Les palétuviers ont besoin de vastes estuaires vaseux abrités de la grande houle océanique et soumis à d'importantes marées.",
+      "sourceId": "SRC-25"
+    },
+    {
+      "id": "kanto-geo-nat-q07",
+      "levelId": "kanto-geo-lvl-4",
+      "levelNumber": 4,
+      "orderInLevel": 1,
+      "theme": "Géographie et trésors naturels",
+      "category": "Géographie générale de Madagascar",
+      "difficulty": "EASY",
+      "question": "Pourquoi Madagascar est-elle fréquemment surnommée « l'Île Rouge » ?",
+      "options": {
+        "A": "En raison des sols ferrallitiques riches en oxydes de fer et d'aluminium (latérite) qui recouvrent une grande partie de l'île",
+        "B": "À cause des coulées de lave permanentes des volcans actifs de l'Itasy",
+        "C": "En référence aux récifs de corail rouge qui entourent la totalité des côtes",
+        "D": "En raison des forêts d'érables rouges qui dominent les Hautes Terres"
+      },
+      "correctOption": "A",
+      "explanations": {
+        "correct": "Le surnom d'« Île Rouge » provient de l'omniprésence des sols latéritiques (sols ferrallitiques) riches en oxydes de fer et d'aluminium sur les Hautes Terres centrales, dont la teinte ocre à rouge vif apparaît à nu sur les collines érodées et colore les fleuves.",
+        "wrong": {
+          "B": "Les volcans de Madagascar (Itasy, Ankaratra, Montagne d'Ambre) sont aujourd'hui éteints et ne produisent aucune coulée de lave active.",
+          "C": "Les récifs coralliens de Madagascar sont des récifs tropicaux classiques et non du corail rouge méditerranéen.",
+          "D": "Les érables rouges ne font pas partie de la flore indigène malgache."
+        }
+      },
+      "hint": "Cette couleur caractéristique provient de la nature géochimique de la terre qui sert aussi à fabriquer les briques traditionnelles des maisons des Hautes Terres.",
+      "sourceId": "SRC-01"
+    },
+    {
+      "id": "kanto-geo-nat-q08",
+      "levelId": "kanto-geo-lvl-4",
+      "levelNumber": 4,
+      "orderInLevel": 2,
+      "theme": "Géographie et trésors naturels",
+      "category": "Géographie générale de Madagascar",
+      "difficulty": "INTERMEDIATE",
+      "question": "Quel vent dominant, soufflant toute l'année depuis l'océan Indien vers le versant oriental de Madagascar, explique la forte humidité et les pluies abondantes de la côte est ?",
+      "options": {
+        "A": "L'harmattan",
+        "B": "Le mistral",
+        "C": "Le sirocco",
+        "D": "L'alizé du sud-est"
+      },
+      "correctOption": "D",
+      "explanations": {
+        "correct": "L'alizé du sud-est, issu de l'anticyclone des Mascareignes dans l'océan Indien, se charge d'humidité sur la mer et vient buter contre l'escarpement oriental de Madagascar, provoquant d'abondantes précipitations orographiques tout au long de l'année sur la côte est.",
+        "wrong": {
+          "A": "L'harmattan est un vent sec et poussiéreux qui souffle du Sahara vers le golfe de Guinée en Afrique de l'Ouest.",
+          "B": "Le mistral est un vent froid du couloir rhodanien en France méridionale.",
+          "C": "Le sirocco est un vent chaud et sec originaire du désert du Sahara soufflant vers la mer Méditerranée."
+        }
+      },
+      "hint": "C'est le vent régulier des régions intertropicales qui souffle depuis les Mascareignes vers l'escarpement oriental malgache.",
+      "sourceId": "SRC-12"
+    },
+    {
+      "id": "kanto-geo-nat-q09",
+      "levelId": "kanto-geo-lvl-4",
+      "levelNumber": 4,
+      "orderInLevel": 3,
+      "theme": "Géographie et trésors naturels",
+      "category": "Géographie générale de Madagascar",
+      "difficulty": "EASY",
+      "question": "Dans quelle région administrative de l'Ouest de Madagascar se situent la ville de Morondava, l'Allée des Baobabs et la forêt sèche de Kirindy ?",
+      "options": {
+        "A": "La région Menabe",
+        "B": "La région Sofia",
+        "C": "La région Alaotra-Mangoro",
+        "D": "La région Atsimo-Atsinanana"
+      },
+      "correctOption": "A",
+      "explanations": {
+        "correct": "La région du Menabe, dont le chef-lieu est Morondava sur le canal du Mozambique, abrite le paysage protégé de Menabe Antimena (incluant la forêt de Kirindy et l'Allée des Baobabs) ainsi que le parc national de Kirindy Mitea.",
+        "wrong": {
+          "B": "La région Sofia est située dans le Nord-Ouest, avec Antsohihy pour chef-lieu.",
+          "C": "La région Alaotra-Mangoro se trouve dans le Centre-Est, avec Ambatondrazaka pour chef-lieu.",
+          "D": "La région Atsimo-Atsinanana se situe sur la côte sud-est, avec Farafangana pour chef-lieu."
+        }
+      },
+      "hint": "Ce nom désigne également l'ancien grand royaume Sakalava du centre-ouest malgache.",
+      "sourceId": "SRC-11"
+    },
+    {
+      "id": "kanto-geo-nat-q16",
+      "levelId": "kanto-geo-lvl-4",
+      "levelNumber": 4,
+      "orderInLevel": 4,
+      "theme": "Géographie et trésors naturels",
+      "category": "Fleuves, lacs et bassins hydrographiques",
+      "difficulty": "INTERMEDIATE",
+      "question": "Quel grand fleuve de l'ouest de Madagascar creuse des gorges spectaculaires à l'entrée sud du parc national des Tsingy de Bemaraha, près du village de Bekopaka ?",
+      "options": {
+        "A": "La Sofia",
+        "B": "Le Manambolo",
+        "C": "La Namorona",
+        "D": "Le Fiherenana"
+      },
+      "correctOption": "B",
+      "explanations": {
+        "correct": "Le fleuve Manambolo (environ 370 km de long) prend sa source sur les Hautes Terres à l'ouest d'Antananarivo (région Bongolava) et entaille profondément le plateau calcaire du Bemaraha par des gorges bordées de falaises et de grottes sépulcrales Vazimba avant de traverser Bekopaka.",
+        "wrong": {
+          "A": "La Sofia est un grand fleuve du Nord-Ouest de Madagascar qui se jette dans la baie de la Mahajamba.",
+          "C": "La Namorona est une rivière du versant oriental qui traverse le parc national de Ranomafana.",
+          "D": "Le Fiherenana est un fleuve du Sud-Ouest qui rejoint le canal du Mozambique immédiatement au nord de Toliara."
+        }
+      },
+      "hint": "Les voyageurs traversent ce fleuve en bac pour entrer à Bekopaka et visitent ses célèbres gorges en pirogue au pied des Tsingy.",
+      "sourceId": "SRC-14"
+    },
+    {
+      "id": "kanto-geo-nat-q22",
+      "levelId": "kanto-geo-lvl-4",
+      "levelNumber": 4,
+      "orderInLevel": 5,
+      "theme": "Géographie et trésors naturels",
+      "category": "Montagnes, reliefs et paysages",
+      "difficulty": "DIFFICULT",
+      "question": "Quel terme géomorphologique malgache, adopté par la littérature scientifique internationale, désigne les profonds cirques d'érosion en entonnoir creusés dans les collines latéritiques des Hautes Terres ?",
+      "options": {
+        "A": "Horombe",
+        "B": "Betsimitatatra",
+        "C": "Lavaka",
+        "D": "Vavaranon'i Betsiboka"
+      },
+      "correctOption": "C",
+      "explanations": {
+        "correct": "Le terme malgache « lavaka » (« trou » ou « ravin ») est utilisé mondialement en géomorphologie tropicale pour désigner ces vastes excavations d'érosion à parois abruptes et sortie étroite qui entaillent l'épais manteau d'altération ferrallitique (saprolite) des collines malgaches.",
+        "wrong": {
+          "A": "L'Horombe est le nom d'un vaste plateau herbeux situé dans le centre-sud de Madagascar, près d'Ihosy.",
+          "B": "Le Betsimitatatra est le nom de la grande plaine rizicole aménagée autour d'Antananarivo.",
+          "D": "Vavaranon'i Betsiboka désigne simplement l'embouchure du fleuve Betsiboka."
+        }
+      },
+      "hint": "Ce mot malgache courant signifie littéralement « trou » et décrit les grandes cicatrices rouges en forme de goutte d'eau sur les flancs des collines.",
+      "sourceId": "SRC-12"
+    },
+    {
+      "id": "kanto-geo-nat-q23",
+      "levelId": "kanto-geo-lvl-4",
+      "levelNumber": 4,
+      "orderInLevel": 6,
+      "theme": "Géographie et trésors naturels",
+      "category": "Montagnes, reliefs et paysages",
+      "difficulty": "INTERMEDIATE",
+      "question": "Quel massif isolé du sud-ouest de Madagascar, situé au nord du fleuve Mangoky, est constitué d'un gigantesque labyrinthe de canyons de grès jaune profondément entaillés par l'érosion ?",
+      "options": {
+        "A": "Le massif du Makay",
+        "B": "Le massif de l'Ankarana",
+        "C": "Le massif du Daraina",
+        "D": "Le massif d'Ambohitantely"
+      },
+      "correctOption": "A",
+      "explanations": {
+        "correct": "Situé entre les régions Menabe et Atsimo-Andrefana au nord de Beroroha, le massif du Makay est un spectaculaire relief ruiniforme de grès s'étendant sur environ 4 000 km², découpé en centaines de canyons étroits au fond desquels survivent des forêts-galeries isolées.",
+        "wrong": {
+          "B": "Le massif de l'Ankarana, situé dans le Nord (région DIANA), est un massif karstique calcaire à tsingy et non un massif de grès du Sud-Ouest.",
+          "C": "Le massif de Daraina (Loky-Manambato) est situé dans le nord-est de Madagascar.",
+          "D": "Le plateau d'Ambohitantely, au nord-ouest d'Antananarivo, est un tampoketsa granitique abritant des lambeaux de forêt d'altitude."
+        }
+      },
+      "hint": "Longtemps resté l'une des régions les plus difficiles d'accès de Madagascar, ce massif gréseux porte un nom de cinq lettres commençant par M.",
+      "sourceId": "SRC-26"
+    },
+    {
+      "id": "kanto-geo-nat-q31",
+      "levelId": "kanto-geo-lvl-4",
+      "levelNumber": 4,
+      "orderInLevel": 7,
+      "theme": "Géographie et trésors naturels",
+      "category": "Parcs nationaux et aires protégées",
+      "difficulty": "DIFFICULT",
+      "question": "En 2023, l'UNESCO a approuvé l'extension du site du Tsingy de Bemaraha à cinq autres aires protégées de l'Ouest et du Sud-Ouest. Quel est le nouveau nom officiel de ce bien du patrimoine mondial ?",
+      "options": {
+        "A": "Les Sanctuaires karstiques du Canal du Mozambique",
+        "B": "Les Forêts sèches de l'Andrefana",
+        "C": "La Réserve intégrale du Menabe et du Melaky",
+        "D": "Le Grand Arc xérophile du Sud malgache"
+      },
+      "correctOption": "B",
+      "explanations": {
+        "correct": "Inscrit sous sa forme étendue en septembre 2023 par l'UNESCO, le bien en série « Les forêts sèches de l'Andrefana » regroupe désormais six aires protégées de la façade occidentale (Andrefana signifie l'Ouest en malgache) : Tsingy de Bemaraha, Ankarafantsika, Mikea, Tsimanampesotse, Ankarana et Analamerana.",
+        "wrong": {
+          "A": "Cet intitulé n'existe pas dans la liste officielle du Centre du patrimoine mondial de l'UNESCO.",
+          "C": "Le bien couvre bien plus que le Menabe et le Melaky puisqu'il s'étend de la région DIANA au nord jusqu'à l'Atsimo-Andrefana au sud.",
+          "D": "Le fourré épineux du Sud-Ouest est inclus via Mikea et Tsimanampesotse, mais le nom officiel choisi par l'UNESCO est « Les forêts sèches de l'Andrefana »."
+        }
+      },
+      "hint": "Ce nom fait écho aux « Forêts humides de l'Atsinanana » (l'Est), mais utilise le mot malgache qui désigne « l'Ouest ».",
+      "sourceId": "SRC-27"
+    },
+    {
+      "id": "kanto-geo-nat-q39",
+      "levelId": "kanto-geo-lvl-4",
+      "levelNumber": 4,
+      "orderInLevel": 8,
+      "theme": "Géographie et trésors naturels",
+      "category": "Faune et flore endémiques",
+      "difficulty": "EASY",
+      "question": "Quelle célèbre plante médicinale endémique de Madagascar (Catharanthus roseus) fournit des alcaloïdes majeurs, la vinblastine et la vincristine, utilisés dans le traitement de certains cancers ?",
+      "options": {
+        "A": "La pervenche de Madagascar",
+        "B": "L'ylang-ylang",
+        "C": "Le giroflier",
+        "D": "Le niaouli"
+      },
+      "correctOption": "A",
+      "explanations": {
+        "correct": "La pervenche de Madagascar (Catharanthus roseus, appelée « Vonenina » ou « Tonga » en malgache), originaire du sud et du sud-est de l'île, synthétise des alcaloïdes anticancéreux (vinblastine et vincristine) indispensables en chimiothérapie, notamment contre les leucémies infantiles et la maladie de Hodgkin.",
+        "wrong": {
+          "B": "L'ylang-ylang (Cananga odorata) est un arbre originaire d'Asie du Sud-Est introduit à Nosy Be pour la parfumerie.",
+          "C": "Le giroflier (Syzygium aromaticum) est originaire des îles Moluques en Indonésie, bien qu'abondamment cultivé sur la côte est malgache.",
+          "D": "Le niaouli (Melaleuca quinquenervia) est un arbre originaire d'Australie et de Nouvelle-Calédonie introduit à Madagascar."
+        }
+      },
+      "hint": "C'est une petite plante herbacée à fleurs roses ou blanches à cinq pétales, appelée « Vonenina » en malgache.",
+      "sourceId": "SRC-28"
+    },
+    {
+      "id": "kanto-geo-nat-q40",
+      "levelId": "kanto-geo-lvl-4",
+      "levelNumber": 4,
+      "orderInLevel": 9,
+      "theme": "Géographie et trésors naturels",
+      "category": "Faune et flore endémiques",
+      "difficulty": "INTERMEDIATE",
+      "question": "Quelle famille végétale à port épineux et cactiforme, comprenant l'Alluaudia procera (« arbre-pieuvre »), caractérise les fourrés xérophiles du Grand Sud malgache ?",
+      "options": {
+        "A": "Les Fagaceae",
+        "B": "Les Pinaceae",
+        "C": "Les Didiereaceae",
+        "D": "Les Betulaceae"
+      },
+      "correctOption": "C",
+      "explanations": {
+        "correct": "La sous-famille des Didiereoideae (famille des Didiereaceae, genres Alluaudia, Didierea, Alluaudiopsis et Decarya) est strictement endémique du sud et du sud-ouest de Madagascar. Ces plantes succulentes épineuses forment le célèbre « bush épineux » de l'Androy et du plateau Mahafaly.",
+        "wrong": {
+          "A": "Les Fagaceae regroupent les chênes et les hêtres des régions tempérées et sont absentes de la flore indigène malgache.",
+          "B": "Les Pinaceae (pins, sapins) sont des conifères de l'hémisphère nord ; seuls quelques pins ont été introduits par reboisement sur les Hautes Terres.",
+          "D": "Les Betulaceae (bouleaux, aulnes) sont des arbres des zones tempérées et boréales."
+        }
+      },
+      "hint": "Cette famille botanique tire son nom du naturaliste Alfred Grandidier (à travers son prénom ou la racine dédiée par Henri Baillon).",
+      "sourceId": "SRC-23"
+    },
+    {
+      "id": "kanto-geo-nat-q46",
+      "levelId": "kanto-geo-lvl-4",
+      "levelNumber": 4,
+      "orderInLevel": 10,
+      "theme": "Géographie et trésors naturels",
+      "category": "Îles, plages, littoraux et trésors naturels",
+      "difficulty": "INTERMEDIATE",
+      "question": "Au large de quelle grande ville du sud-ouest de Madagascar s'étend un « Grand Récif » barrière de 18 kilomètres de long, reconnu parmi les systèmes coralliens majeurs de l'océan Indien ?",
+      "options": {
+        "A": "Mahajanga",
+        "B": "Toamasina",
+        "C": "Manakara",
+        "D": "Toliara"
+      },
+      "correctOption": "D",
+      "explanations": {
+        "correct": "Le Grand Récif de Toliara (Tuléar), long d'environ 18 km et large de 1 à 3 km face à la ville de Toliara, fait partie d'un complexe récifal de plus de 400 km de long dans le sud-ouest de Madagascar (d'Androka à Morombe), abritant des milliers d'espèces marines.",
+        "wrong": {
+          "A": "Le littoral de Mahajanga est dominé par l'estuaire vaseux de la Betsiboka, peu propice au développement d'un grand récif barrière.",
+          "B": "Toamasina possède quelques récifs frangeants côtiers mais pas le « Grand Récif » barrière de 18 km.",
+          "C": "Le littoral de Manakara est constitué d'un cordon sableux rectiligne battu par la houle sans barrière corallienne au large."
+        }
+      },
+      "hint": "C'est la grande cité portuaire et universitaire du Sud-Ouest, chef-lieu de la région Atsimo-Andrefana.",
+      "sourceId": "SRC-29"
+    },
+    {
+      "id": "kanto-geo-nat-q10",
+      "levelId": "kanto-geo-lvl-5",
+      "levelNumber": 5,
+      "orderInLevel": 1,
+      "theme": "Géographie et trésors naturels",
+      "category": "Géographie générale de Madagascar",
+      "difficulty": "DIFFICULT",
+      "question": "Quelle nouvelle région (la 24e région de Madagascar) a été instituée par la loi n° 2023-012 en regroupant les districts de Maroantsetra et de Mananara-Nord autour de la baie d'Antongil ?",
+      "options": {
+        "A": "La région Fitovinany",
+        "B": "La région Ambatosoa",
+        "C": "La région Vatovavy",
+        "D": "La région Ihorombe"
+      },
+      "correctOption": "B",
+      "explanations": {
+        "correct": "La région Ambatosoa, ayant pour chef-lieu Maroantsetra, a été créée en 2023 (loi n° 2023-012) par détachement des districts de Maroantsetra et de Mananara-Nord, qui appartenaient auparavant à la région Analanjirofo.",
+        "wrong": {
+          "A": "La région Fitovinany (chef-lieu Manakara) est issue de la scission de l'ancienne région Vatovavy-Fitovinany dans le Sud-Est en 2021.",
+          "C": "La région Vatovavy (chef-lieu Mananjary) est également issue de la scission de 2021 dans le Sud-Est.",
+          "D": "La région Ihorombe (chef-lieu Ihosy) existe depuis la création des 22 premières régions en 2004."
+        }
+      },
+      "hint": "Son chef-lieu est la ville de Maroantsetra, porte d'entrée de la baie d'Antongil et du parc national de Masoala.",
+      "sourceId": "SRC-11"
+    },
+    {
+      "id": "kanto-geo-nat-q17",
+      "levelId": "kanto-geo-lvl-5",
+      "levelNumber": 5,
+      "orderInLevel": 2,
+      "theme": "Géographie et trésors naturels",
+      "category": "Fleuves, lacs et bassins hydrographiques",
+      "difficulty": "DIFFICULT",
+      "question": "Quel est le deuxième plus grand lac naturel permanent de Madagascar, situé dans la région Boeny (sud-ouest de Mitsinjo) et classé site Ramsar pour son avifaune aquatique ?",
+      "options": {
+        "A": "Le lac Kinkony",
+        "B": "Le lac Mantasoa",
+        "C": "Le lac Andraikiba",
+        "D": "Le lac Rasoabe"
+      },
+      "correctOption": "A",
+      "explanations": {
+        "correct": "Situé dans la région Boeny à proximité du delta de la Mahavavy du Sud, le lac Kinkony couvre environ 100 à 140 km² selon les saisons. Deuxième grand lac permanent de l'île après le lac Alaotra, il fait partie de l'aire protégée du complexe Mahavavy-Kinkony et constitue un site Ramsar essentiel pour les oiseaux d'eau endémiques.",
+        "wrong": {
+          "B": "Le lac Mantasoa est un lac de retenue artificiel situé à l'est d'Antananarivo.",
+          "C": "Le lac Andraikiba est un petit lac de maar volcanique situé à la sortie ouest d'Antsirabe.",
+          "D": "Le lac Rasoabe est un lac lagunaire côtier situé sur le canal des Pangalanes près de Manambato."
+        }
+      },
+      "hint": "Associé au fleuve Mahavavy du Sud dans la région Boeny, son nom commence par la lettre K.",
+      "sourceId": "SRC-30"
+    },
+    {
+      "id": "kanto-geo-nat-q24",
+      "levelId": "kanto-geo-lvl-5",
+      "levelNumber": 5,
+      "orderInLevel": 3,
+      "theme": "Géographie et trésors naturels",
+      "category": "Montagnes, reliefs et paysages",
+      "difficulty": "EASY",
+      "question": "Quel phénomène géologique original distingue les « Tsingy Rouges » d'Irodo, situés au sud-est d'Antsiranana (Diego-Suarez), des Tsingy classiques de Bemaraha ou d'Ankarana ?",
+      "options": {
+        "A": "Ils sont formés de glace fossile colorée par des algues microscopiques",
+        "B": "Ce sont des formations sédimentaires tendres de grès, de marne et de latérite sculptées par l'érosion hydrique, et non du calcaire dur",
+        "C": "Ils ont été taillés artificiellement par les mineurs d'or au XIXe siècle",
+        "D": "Ce sont des cheminées hydrothermales sous-marines émergées récemment"
+      },
+      "correctOption": "B",
+      "explanations": {
+        "correct": "Situés dans le bassin sédimentaire d'Irodo (région DIANA), les Tsingy Rouges ne sont pas des karsts calcaires durs mais des cheminées de fées éphémères et fragiles sculptées par le ruissellement des pluies dans des couches tendres de grès, de marnes et d'argiles latéritiques sous un épais manteau sableux.",
+        "wrong": {
+          "A": "Le climat tropical chaud de la région DIANA exclut toute présence de glace.",
+          "C": "C'est un phénomène d'érosion géomorphologique naturel (ravinement accéléré) et non un vestige minier humain.",
+          "D": "Il s'agit de dépôts sédimentaires continentaux et littoraux érodés par les eaux de pluie, sans lien avec l'hydrothermalisme marin."
+        }
+      },
+      "hint": "Contrairement à la roche grise et tranchante de Bemaraha, ces draperies ocre et vermeil sont constituées de sable gréseux et d'argile très friables.",
+      "sourceId": "SRC-31"
+    },
+    {
+      "id": "kanto-geo-nat-q32",
+      "levelId": "kanto-geo-lvl-5",
+      "levelNumber": 5,
+      "orderInLevel": 4,
+      "theme": "Géographie et trésors naturels",
+      "category": "Parcs nationaux et aires protégées",
+      "difficulty": "INTERMEDIATE",
+      "question": "Quel parc national du nord-est de Madagascar est devenue en 1990 la toute première Réserve de biosphère de l'île reconnue par le programme MAB de l'UNESCO ?",
+      "options": {
+        "A": "Le parc national d'Isalo",
+        "B": "Le parc national de Befotaka-Midongy",
+        "C": "Le parc national de Mananara-Nord",
+        "D": "Le parc national de Zombitse-Vohibasia"
+      },
+      "correctOption": "C",
+      "explanations": {
+        "correct": "Désignée en 1990 par le programme « L'Homme et la Biosphère » (MAB) de l'UNESCO, la réserve de biosphère de Mananara-Nord a été la première de Madagascar. Son cœur est constitué d'un parc national terrestre (forêt humide de basse altitude) et du premier parc national marin malgache (îlots de Nosy Atafana).",
+        "wrong": {
+          "A": "Le parc national de l'Isalo n'est pas classé comme réserve de biosphère du programme MAB de l'UNESCO.",
+          "B": "Le parc national de Befotaka-Midongy (Sud-Est) n'est pas une réserve de biosphère UNESCO.",
+          "D": "Le parc national de Zombitse-Vohibasia n'a pas le statut de réserve de biosphère de l'UNESCO."
+        }
+      },
+      "hint": "Située au sud de Maroantsetra à l'entrée de la baie d'Antongil, cette aire protégée associe une forêt pluviale et le parc marin de Nosy Atafana.",
+      "sourceId": "SRC-32"
+    },
+    {
+      "id": "kanto-geo-nat-q41",
+      "levelId": "kanto-geo-lvl-5",
+      "levelNumber": 5,
+      "orderInLevel": 5,
+      "theme": "Géographie et trésors naturels",
+      "category": "Faune et flore endémiques",
+      "difficulty": "INTERMEDIATE",
+      "question": "Dans quel parc national du nord-ouest de Madagascar (région Boeny) est protégée la seule population mondiale sauvage de la tortue à soc (Astrochelys yniphora), localement appelée « Angonoka » ?",
+      "options": {
+        "A": "Le parc national de la Baie de Baly",
+        "B": "Le parc national de Ranomafana",
+        "C": "Le parc national de Marojejy",
+        "D": "Le parc national de la Montagne d'Ambre"
+      },
+      "correctOption": "A",
+      "explanations": {
+        "correct": "Créé en 1997 près de Soalala (région Boeny), le parc national de la Baie de Baly est l'unique habitat naturel au monde de la tortue à soc ou Angonoka (Astrochelys yniphora), l'une des tortues terrestres les plus menacées de la planète (en danger critique d'extinction), qui vit dans les fourrés de bambous et de buissons côtiers.",
+        "wrong": {
+          "B": "Ranomafana est une forêt humide de moyenne altitude dans le Sud-Est où cette tortue de climat sec est absente.",
+          "C": "Marojejy est un massif forestier humide du Nord-Est.",
+          "D": "La Montagne d'Ambre est un massif volcanique humide du Nord où l'Angonoka ne vit pas."
+        }
+      },
+      "hint": "Ce parc côtier tire son nom d'une baie du canal du Mozambique située à proximité de la ville de Soalala, à l'ouest de Mahajanga.",
+      "sourceId": "SRC-33"
+    },
+    {
+      "id": "kanto-geo-nat-q42",
+      "levelId": "kanto-geo-lvl-5",
+      "levelNumber": 5,
+      "orderInLevel": 6,
+      "theme": "Géographie et trésors naturels",
+      "category": "Faune et flore endémiques",
+      "difficulty": "INTERMEDIATE",
+      "question": "Quelle particularité évolutive caractérise le poisson endémique Typhleotris madagascariensis, qui vit dans les eaux souterraines de la grotte de Mitoho (parc national de Tsimanampetsotsa) ?",
+      "options": {
+        "A": "Il est capable de voler hors de l'eau sur plusieurs dizaines de mètres",
+        "B": "Il produit des décharges électriques de haute tension pour chasser",
+        "C": "Il est totalement aveugle et dépigmenté en raison de sa vie cavernicole dans l'obscurité absolue",
+        "D": "Il respire uniquement de l'air sec grâce à des poumons semblables à ceux des reptiles"
+      },
+      "correctOption": "C",
+      "explanations": {
+        "correct": "Le poisson aveugle de Madagascar (Typhleotris madagascariensis, famille des Milyeringidae) est une espèce troglobie strictement endémique du réseau karstique souterrain du plateau Mahafaly (notamment l'aven-grotte de Mitoho). Adapté à l'obscurité totale, il est dépourvu d'yeux fonctionnels et de pigmentation cutanée.",
+        "wrong": {
+          "A": "Les poissons volants (Exocoetidae) sont des poissons marins pélagiques et non des poissons cavernicoles d'eau douce.",
+          "B": "Typhleotris madagascariensis ne possède aucun organe électrogène.",
+          "D": "Il respire dans l'eau souterraine par des branchies comme les autres poissons téléostéens."
+        }
+      },
+      "hint": "Le circuit touristique qui mène à la grotte de Mitoho s'appelle « Tsiamaso », un mot malgache qui évoque directement l'absence d'yeux.",
+      "sourceId": "SRC-20"
+    },
+    {
+      "id": "kanto-geo-nat-q47",
+      "levelId": "kanto-geo-lvl-5",
+      "levelNumber": 5,
+      "orderInLevel": 7,
+      "theme": "Géographie et trésors naturels",
+      "category": "Îles, plages, littoraux et trésors naturels",
+      "difficulty": "EASY",
+      "question": "Quelle île couverte de forêt dense humide, située au fond de la baie d'Antongil à 5 km au large de Maroantsetra, est un sanctuaire réputé pour l'aye-aye et la grenouille tomate ?",
+      "options": {
+        "A": "Nosy Iranja",
+        "B": "Nosy Tanikely",
+        "C": "Nosy Ve",
+        "D": "Nosy Mangabe"
+      },
+      "correctOption": "D",
+      "explanations": {
+        "correct": "Nosy Mangabe est une île montagneuse de 520 hectares située dans la baie d'Antongil et rattachée au complexe du parc national de Masoala. Entièrement recouverte de forêt tropicale humide, elle a servi de refuge de conservation dès les années 1960 pour l'aye-aye (Daubentonia madagascariensis) et abrite le gecko foliacé d'Henkel ainsi que le microcèbe.",
+        "wrong": {
+          "A": "Nosy Iranja est composée de deux îlots reliés par un banc de sable blanc sur la côte nord-ouest, au sud-ouest de Nosy Be.",
+          "B": "Nosy Tanikely est un parc national marin et un îlot corallien situé près de Nosy Be dans le Nord-Ouest.",
+          "C": "Nosy Ve est un îlot corallien sablonneux situé au large d'Anakao dans le Sud-Ouest."
+        }
+      },
+      "hint": "Située dans la baie d'Antongil face à Maroantsetra, cette île forestière est administrée conjointement avec le parc national de Masoala.",
+      "sourceId": "SRC-16"
+    },
+    {
+      "id": "kanto-geo-nat-q48",
+      "levelId": "kanto-geo-lvl-5",
+      "levelNumber": 5,
+      "orderInLevel": 8,
+      "theme": "Géographie et trésors naturels",
+      "category": "Îles, plages, littoraux et trésors naturels",
+      "difficulty": "INTERMEDIATE",
+      "question": "Quel archipel du nord-ouest de Madagascar, situé au large de la baie d'Ampasindava dans le canal du Mozambique, est constitué de pitons calcaires émergés (« tsingy marins ») classés en parc national marin ?",
+      "options": {
+        "A": "L'archipel des Barren (Nosy Barren)",
+        "B": "L'archipel de Nosy Hara",
+        "C": "L'archipel de Nosy Atafana",
+        "D": "Les îles Glorieuses"
+      },
+      "correctOption": "B",
+      "explanations": {
+        "correct": "Situé au nord-ouest de Madagascar (région DIANA, au large d'Ampasindava), le parc national marin de Nosy Hara regroupe une douzaine d'îlots karstiques aux falaises calcaires ciselées en tsingy qui plongent directement dans les eaux coralliennes. C'est aussi l'habitat exclusif du minuscule caméléon Brookesia micra.",
+        "wrong": {
+          "A": "L'archipel des îles Barren (Nosy Barren) est un ensemble d'îlots sablonneux et coralliens situé beaucoup plus au sud, au large de Maintirano (région Melaky).",
+          "C": "Nosy Atafana est un archipel corallien situé sur la côte est, dans le parc marin de Mananara-Nord.",
+          "D": "Les îles Glorieuses sont des îlots coralliens plats situés au nord du canal du Mozambique, hors du réseau des parcs karstiques de Madagascar National Parks."
+        }
+      },
+      "hint": "Situé à l'extrême nord-ouest non loin du cap Sébastien et d'Antsiranana, cet archipel calcaire abrite également le caméléon nain Brookesia micra.",
+      "sourceId": "SRC-34"
+    },
+    {
+      "id": "kanto-geo-nat-q49",
+      "levelId": "kanto-geo-lvl-5",
+      "levelNumber": 5,
+      "orderInLevel": 9,
+      "theme": "Géographie et trésors naturels",
+      "category": "Îles, plages, littoraux et trésors naturels",
+      "difficulty": "EASY",
+      "question": "Quelle vaste baie du nord de Madagascar, bordée par la ville d'Antsiranana, est considérée comme l'une des plus grandes rades naturelles du monde et abrite l'îlot conique du « Pain de Sucre » (Nosy Lonjo) ?",
+      "options": {
+        "A": "La baie de Saint-Augustin",
+        "B": "La baie de Narinda",
+        "C": "La baie de Diego-Suarez (baie d'Antsiranana)",
+        "D": "La baie de Sainte- Luce"
+      },
+      "correctOption": "C",
+      "explanations": {
+        "correct": "La baie de Diego-Suarez (ou baie d'Antsiranana), composée de quatre lobes principaux (baie du Tonnerre, baie des Cailloux Blancs, cul-de-sac Gallois et baie des Français) et reliée à l'océan Indien par une passe étroite, est l'une des plus vastes rades naturelles du monde. En son sein se dresse Nosy Lonjo (le Pain de Sucre), îlot volcanique sacré.",
+        "wrong": {
+          "A": "La baie de Saint-Augustin se trouve dans le Sud-Ouest, à l'embouchure du fleuve Onilahy au sud de Toliara.",
+          "B": "La baie de Narinda est située sur la côte nord-ouest, dans la région Sofia.",
+          "D": "La baie de Sainte-Luce (Manafiafy) est située dans le Sud-Est, au nord de Taolagnaro."
+        }
+      },
+      "hint": "Elle porte le nom historique et actuel de la grande métropole portuaire de l'extrême nord de Madagascar.",
+      "sourceId": "SRC-35"
+    },
+    {
+      "id": "kanto-geo-nat-q50",
+      "levelId": "kanto-geo-lvl-5",
+      "levelNumber": 5,
+      "orderInLevel": 10,
+      "theme": "Géographie et trésors naturels",
+      "category": "Îles, plages, littoraux et trésors naturels",
+      "difficulty": "INTERMEDIATE",
+      "question": "Quel îlot corallien du sud-ouest de Madagascar, situé en face d'Anakao au sein du parc national marin de Nosy Ve-Androka, abrite l'unique colonie nicheuse de phaétons à brins rouges (Phaethon rubricauda) du pays ?",
+      "options": {
+        "A": "Nosy Sakatia",
+        "B": "Nosy Nato",
+        "C": "Nosy Ve",
+        "D": "Nosy Faly"
+      },
+      "correctOption": "C",
+      "explanations": {
+        "correct": "Situé à quelques kilomètres au large d'Anakao au sud de Toliara, l'îlot corallien sacré de Nosy Ve fait partie du parc national marin de Nosy Ve-Androka (et de la réserve de biosphère de Tsimanampesotse - Nosy Ve Androka). Grâce à la protection coutumière (fady) des pêcheurs Vezo et au statut de parc national, des centaines de couples de phaétons à brins rouges (pailles-en-queue) y nichent au sol sous les buissons.",
+        "wrong": {
+          "A": "Nosy Sakatia (« l'île aux orchidées ») est située juste à l'ouest de Nosy Be, dans le Nord-Ouest.",
+          "B": "Nosy Nato (île aux Nattes) est située à la pointe sud de l'île Sainte-Marie (Nosy Boraha), sur la côte est.",
+          "C_note": "",
+          "D": "Nosy Faly est une île située au nord-ouest de Madagascar, près de la presqu'île d'Ankify (district d'Ambanja)."
+        }
+      },
+      "hint": "Son nom court de deux lettres figure directement dans l'intitulé officiel du parc national marin « Nosy ... - Androka ».",
+      "sourceId": "SRC-36"
+    }
+  ]
+}

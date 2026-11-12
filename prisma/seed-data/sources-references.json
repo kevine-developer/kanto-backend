@@ -1,0 +1,420 @@
+{
+  "metadata": {
+    "project": "Kanto MG",
+    "themeSlug": "geographie-et-tresors-naturels",
+    "totalSources": 36,
+    "verifiedDate": "2026-11-12"
+  },
+  "sources": [
+    {
+      "id": "SRC-01",
+      "organization": "Convention sur la Diversité Biologique (CDB) & Ministère de l'Environnement et du Développement Durable (MEDD)",
+      "title": "Cinquième rapport national de la Convention sur la Diversité Biologique – Madagascar",
+      "url": "https://www.cbd.int/doc/world/mg/mg-nr-05-fr.pdf",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Séparation de Madagascar et de l'Afrique par le canal du Mozambique (\\~400 km), passage du tropique du Capricorne au sud, sols ferrallitiques/latéritiques rouges couvrant les Hautes Terres.",
+      "associatedQuestions": [
+        "Q01",
+        "Q04",
+        "Q07"
+      ]
+    },
+    {
+      "id": "SRC-02",
+      "organization": "UICN / Jenkins, M. D. (Ed.)",
+      "title": "Madagascar : profil de l'environnement (Madagascar: An Environmental Profile)",
+      "url": "https://portals.iucn.org/library/node/6038",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Superficie d'environ 587 000 km² plaçant Madagascar au 4e rang mondial des plus grandes îles après le Groenland, la Nouvelle-Guinée et Bornéo.",
+      "associatedQuestions": [
+        "Q02"
+      ]
+    },
+    {
+      "id": "SRC-03",
+      "organization": "Secrétariat de la Convention de Ramsar",
+      "title": "Service d'information sur les Sites Ramsar (SIS) : Le Lac Alaotra : les zones humides et bassin versant (Site n° 1312)",
+      "url": "https://rsis.ramsar.org/ris/1312",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Le lac Alaotra est le plus vaste plan d'eau douce permanent de Madagascar (\\~20 000 ha d'eau libre dans un complexe humide de 722 500 ha) et le premier bassin rizicole du pays.",
+      "associatedQuestions": [
+        "Q11"
+      ]
+    },
+    {
+      "id": "SRC-04",
+      "organization": "UNESCO Centre du patrimoine mondial / UICN",
+      "title": "Profil de l'environnement de Madagascar & Voies d'eau de la côte orientale : Le Canal des Pangalanes",
+      "url": "https://portals.iucn.org/library/node/6038",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Canal aménagé le long de la côte est reliant chapelets de lagunes et embouchures fluviales sur plus de 600 km entre Foulpointe/Toamasina et Farafangana.",
+      "associatedQuestions": [
+        "Q12"
+      ]
+    },
+    {
+      "id": "SRC-05",
+      "organization": "Madagascar National Parks (MNP) / IRD",
+      "title": "Réserve Naturelle Intégrale de Tsaratanana & Monographie hydrologique ORSTOM",
+      "url": "https://www.parcs-madagascar.com",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Le Maromokotro, situé dans le massif du Tsaratanana au nord de l'île, est le point culminant de Madagascar à 2 876 mètres d'altitude.",
+      "associatedQuestions": [
+        "Q18"
+      ]
+    },
+    {
+      "id": "SRC-06",
+      "organization": "UNESCO Centre du patrimoine mondial & MEDD Madagascar",
+      "title": "Forêts humides de l'Atsinanana (Bien réf. 1257) – Liste du patrimoine mondial",
+      "url": "https://whc.unesco.org/fr/list/1257/",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Bien sériel inscrit en 2007 (et retiré de la liste en péril en juillet 2025) comprenant six parcs nationaux orientaux : Marojejy, Masoala, Zahamena, Ranomafana, Andringitra et Andohahela.",
+      "associatedQuestions": [
+        "Q25"
+      ]
+    },
+    {
+      "id": "SRC-07",
+      "organization": "Madagascar National Parks (MNP) / Meier, B., Albignac, R., Peyriéras, A., Rumpler, Y. & Wright, P. C. (1987)",
+      "title": "Parc National de Ranomafana & Description de Hapalemur aureus (Folia Primatologica)",
+      "url": "https://www.parcs-madagascar.com/aire-protegee/parc-national-ranomafana",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Découverte de l'hapalémur doré (*Hapalemur aureus*) en 1986 dans les forêts de bambous de Ranomafana ayant conduit à l'inauguration du parc national en mai 1991.",
+      "associatedQuestions": [
+        "Q26"
+      ]
+    },
+    {
+      "id": "SRC-08",
+      "organization": "Baum, D. A. (1995) / CIRAD & Université d'Antananarivo",
+      "title": "A Systematic Revision of Adansonia (Bombacaceae/Malvaceae) & Les baobabs de Madagascar : cadre réglementaire et conservation (Madagascar Conservation & Development)",
+      "url": "https://journalmcd.com/index.php/mcd/article/view/mcd.v9i1.7",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Présence de 6 espèces strictement endémiques de Madagascar (*A. grandidieri, A. za, A. rubrostipa, A. madagascariensis, A. suarezensis, A. perrieri*), *A. grandidieri* (« Renala ») peuplant l'Allée des Baobabs près de Morondava.",
+      "associatedQuestions": [
+        "Q33",
+        "Q36"
+      ]
+    },
+    {
+      "id": "SRC-09",
+      "organization": "UICN Red List / Mittermeier, R. A. et al.",
+      "title": "Lemurs of Madagascar (Conservation International) & Fiche Indri indri",
+      "url": "https://www.iucnredlist.org/species/10826/115565566",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "L'indri (*Indri indri*, Babakoto) est le plus grand lémurien vivant actuel, caractérisé par sa queue vestigiale et ses chants territoriaux puissants dans le complexe Andasibe-Mantadia.",
+      "associatedQuestions": [
+        "Q34"
+      ]
+    },
+    {
+      "id": "SRC-10",
+      "organization": "Madagascar National Parks (MNP)",
+      "title": "Parc National de Lokobe (Nosy Be)",
+      "url": "https://www.parcs-madagascar.com/aire-protegee/parc-national-lokobe",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Situé au sud-est de l'île de Nosy Be, Lokobe protège la forêt primaire humide résiduelle du domaine du Sambirano sur 740 ha.",
+      "associatedQuestions": [
+        "Q43"
+      ]
+    },
+    {
+      "id": "SRC-11",
+      "organization": "République de Madagascar (Ministère de l'Intérieur et de la Décentralisation)",
+      "title": "Loi n° 2014-020, Loi n° 2021-010 et Loi n° 2023-012 relatives aux Collectivités Territoriales Décentralisées (6 provinces et 24 régions)",
+      "url": "https://www.mid.gov.mg",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Organisation territoriale en 6 provinces historiques (Antananarivo, Antsiranana, Fianarantsoa, Mahajanga, Toamasina, Toliara) et 24 régions, dont SAVA (Sambava, Antalaha, Vohémar, Andapa), Menabe (Morondava) et la 24e région Ambatosoa créée en juin 2023 (Maroantsetra et Mananara-Nord).",
+      "associatedQuestions": [
+        "Q03",
+        "Q05",
+        "Q09",
+        "Q10"
+      ]
+    },
+    {
+      "id": "SRC-12",
+      "organization": "Chaperon, P., Danloux, J. & Ferry, L. (1993) – IRD / ORSTOM & DMH Madagascar",
+      "title": "Fleuves et rivières de Madagascar (Monographies hydrologiques ORSTOM n° 10)",
+      "url": "https://horizon.documentation.ird.fr/exl-doc/pleins_textes/divers16-06/37357.pdf",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Le Mangoky est le plus long fleuve malgache (bassin de 55 750 km²) ; la Betsiboka draine l'Ikopa vers la baie de Bombetoka avec un fort charriage sédimentaire lié aux *lavaka* ; rôle de l'alizé du sud-est sur la pluviométrie orientale.",
+      "associatedQuestions": [
+        "Q08",
+        "Q13",
+        "Q14",
+        "Q22"
+      ]
+    },
+    {
+      "id": "SRC-13",
+      "organization": "Madagascar National Parks (MNP) & UNESCO",
+      "title": "Parc National d'Andringitra",
+      "url": "https://www.parcs-madagascar.com/aire-protegee/parc-national-andringitra",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Le massif granitique de l'Andringitra abrite le pic Boby (Imarivolanitra), deuxième plus haut sommet de Madagascar à 2 658 mètres.",
+      "associatedQuestions": [
+        "Q19"
+      ]
+    },
+    {
+      "id": "SRC-14",
+      "organization": "Madagascar National Parks (MNP) & UNESCO Centre du patrimoine mondial",
+      "title": "Parc National et Réserve Naturelle Intégrale du Tsingy de Bemaraha (Bien réf. 494)",
+      "url": "https://whc.unesco.org/fr/list/494/",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Inscription à l'UNESCO en 1990 ; définition géomorphologique des « Tsingy » (relief karstique calcaire ciselé en aiguilles) et gorges du fleuve Manambolo en bordure sud du massif près de Bekopaka.",
+      "associatedQuestions": [
+        "Q20",
+        "Q29",
+        "Q16"
+      ]
+    },
+    {
+      "id": "SRC-15",
+      "organization": "Madagascar National Parks (MNP)",
+      "title": "Parc National de l'Isalo",
+      "url": "https://www.parcs-madagascar.com/aire-protegee/parc-national-isalo",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Parc national créé en 1962 près de Ranohira (RN7, région Ihorombe), protégeant 81 540 ha d'un massif gréseux continental d'âge jurassique sculpté en canyons et piscines naturelles.",
+      "associatedQuestions": [
+        "Q27"
+      ]
+    },
+    {
+      "id": "SRC-16",
+      "organization": "Madagascar National Parks (MNP)",
+      "title": "Parc National de Masoala et Réserve Spéciale de Nosy Mangabe",
+      "url": "https://www.parcs-madagascar.com/aire-protegee/parc-national-masoala",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Plus vaste complexe protégé géré par MNP (\\~230 000 ha terrestres et 10 000 ha marins) sur la presqu'île de Masoala, incluant l'île forestière de Nosy Mangabe au fond de la baie d'Antongil (refuge de l'aye-aye).",
+      "associatedQuestions": [
+        "Q28",
+        "Q47"
+      ]
+    },
+    {
+      "id": "SRC-17",
+      "organization": "UICN Red List / Hawkins, F.",
+      "title": "Cryptoprocta ferox (Fossa) – The IUCN Red List of Threatened Species",
+      "url": "https://www.iucnredlist.org/species/5760/45197189",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Le fossa (*Cryptoprocta ferox*) est le plus grand mammifère carnivore endémique de Madagascar (famille endémique des Eupleridae).",
+      "associatedQuestions": [
+        "Q35"
+      ]
+    },
+    {
+      "id": "SRC-18",
+      "organization": "Office National du Tourisme de Madagascar (ONTM) & Cetamada",
+      "title": "Île Sainte-Marie (Nosy Boraha) et migration des baleines à bosse",
+      "url": "https://madagascar-tourisme.com",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Nosy Boraha est le nom malgache de l'île Sainte-Marie (région Analanjirofo), lieu majeur de reproduction des baleines à bosse (*Megaptera novaeangliae*) durant l'hiver austral.",
+      "associatedQuestions": [
+        "Q44"
+      ]
+    },
+    {
+      "id": "SRC-19",
+      "organization": "Madagascar National Parks (MNP)",
+      "title": "Réserve Spéciale de Cap Sainte-Marie (Tanjona Vohimena)",
+      "url": "https://www.parcs-madagascar.com",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Le cap Sainte-Marie (Tanjona Vohimena) est le point le plus méridional de Madagascar dans la région Androy, protégé par une réserve spéciale de 1 750 ha.",
+      "associatedQuestions": [
+        "Q06"
+      ]
+    },
+    {
+      "id": "SRC-20",
+      "organization": "Madagascar National Parks (MNP) & Sparks, J. S. / Chakrabarty, P. (American Museum Novitates, 2012)",
+      "title": "Parc National de Tsimanampesotse & Revision of the Endemic Malagasy Cavefish Genus Typhleotris",
+      "url": "https://digitallibrary.amnh.org/items/c1b8608e-5295-4b11-8f57-f9f419e660c4",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Lac alcalin saturé en sulfate de calcium dépourvu de poissons mais fréquenté par les flamants ; présence dans la grotte souterraine de Mitoho du poisson cavernicole aveugle et dépigmenté *Typhleotris madagascariensis*.",
+      "associatedQuestions": [
+        "Q15",
+        "Q42"
+      ]
+    },
+    {
+      "id": "SRC-21",
+      "organization": "Association Vahatra / Goodman, S. M. et al. (2018)",
+      "title": "Les aires protégées terrestres de Madagascar : Leur histoire, description et biote (Massif de l'Ankaratra / Manjakatompo-Ankaratra)",
+      "url": "https://www.vahatra.mg",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Le massif volcanique de l'Ankaratra sur les Hautes Terres centrales culmine au pic Tsiafajavona à 2 643 mètres d'altitude.",
+      "associatedQuestions": [
+        "Q21"
+      ]
+    },
+    {
+      "id": "SRC-22",
+      "organization": "Madagascar National Parks (MNP)",
+      "title": "Parc National d'Andohahela",
+      "url": "https://www.parcs-madagascar.com/aire-protegee/parc-national-andohahela",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Parc du Sud-Est (région Anosy, 76 020 ha) protégeant un gradient écologique exceptionnel entre la forêt humide orientale, la forêt de transition (habitat du palmier *Dypsis decaryi*) et le fourré épineux sec.",
+      "associatedQuestions": [
+        "Q30"
+      ]
+    },
+    {
+      "id": "SRC-23",
+      "organization": "Missouri Botanical Garden / Royal Botanic Gardens, Kew (Moat, J. & Smith, P., 2007)",
+      "title": "Atlas de la végétation de Madagascar (Atlas of the Vegetation of Madagascar)",
+      "url": "https://www.kew.org",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Description du *Ravenala madagascariensis* (arbre du voyageur) et endémisme de la famille des Didiereaceae (*Alluaudia procera*) dans l'écorégion des fourrés épineux du Sud.",
+      "associatedQuestions": [
+        "Q37",
+        "Q40"
+      ]
+    },
+    {
+      "id": "SRC-24",
+      "organization": "Glaw, F., Köhler, J., Townsend, T. M. & Vences, M. (2012)",
+      "title": "Rivaling the World's Smallest Reptiles: Discovery of Miniaturized Leaf Chameleons (Brookesia) from Northern Madagascar (PLOS ONE)",
+      "url": "https://doi.org/10.1371/journal.pone.0031314",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Le genre *Brookesia* regroupe les caméléons nains terrestres endémiques de Madagascar, incluant *Brookesia micra* et *Brookesia nana*, parmi les plus petits amniotes du monde.",
+      "associatedQuestions": [
+        "Q38"
+      ]
+    },
+    {
+      "id": "SRC-25",
+      "organization": "Ministère de l'Environnement et du Développement Durable (MEDD) / WWF Madagascar",
+      "title": "Atlas des mangroves de Madagascar & Stratégie nationale de gestion durable des mangroves",
+      "url": "https://www.environnement.mg",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Environ 98 % des mangroves malgaches se trouvent sur la côte occidentale le long du canal du Mozambique, du nord-ouest jusqu'au sud-ouest.",
+      "associatedQuestions": [
+        "Q45"
+      ]
+    },
+    {
+      "id": "SRC-26",
+      "organization": "Ministère de l'Environnement et du Développement Durable (MEDD) / Association Naturevolution",
+      "title": "Nouvelle Aire Protégée du Massif du Makay",
+      "url": "https://www.makaynature.org",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Le massif du Makay, situé au nord du fleuve Mangoky, est un massif ruiniforme de grès jaune entaillé d'un réseau labyrinthique de profonds canyons.",
+      "associatedQuestions": [
+        "Q23"
+      ]
+    },
+    {
+      "id": "SRC-27",
+      "organization": "UNESCO Centre du patrimoine mondial",
+      "title": "Les forêts sèches de l'Andrefana (Bien réf. 494bis, extension 2023)",
+      "url": "https://whc.unesco.org/fr/list/494/",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Extension en série approuvée en septembre 2023 associant au Tsingy de Bemaraha cinq aires protégées de l'Ouest et du Sud-Ouest (Ankarafantsika, Ankarana, Analamerana, Mikea et Tsimanampesotse).",
+      "associatedQuestions": [
+        "Q31"
+      ]
+    },
+    {
+      "id": "SRC-28",
+      "organization": "Muséum national d'Histoire naturelle (MNHN) / CNRS",
+      "title": "La pervenche de Madagascar (Catharanthus roseus) et la synthèse de la vinblastine et de la vincristine",
+      "url": "https://www.mnhn.fr",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "*Catharanthus roseus*, plante endémique de Madagascar, est la source naturelle des alcaloïdes anticancéreux vinblastine et vincristine.",
+      "associatedQuestions": [
+        "Q39"
+      ]
+    },
+    {
+      "id": "SRC-29",
+      "organization": "Institut Halieutique et des Sciences Marines (IH.SM) de l'Université de Toliara / UNESCO",
+      "title": "Le Grand Récif de Toliara et les écosystèmes coralliens du Sud-Ouest de Madagascar",
+      "url": "https://www.ihsm.mg",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Le Grand Récif de Toliara s'étend sur 18 km de long au large de Toliara au sein du vaste système récifal du Sud-Ouest malgache.",
+      "associatedQuestions": [
+        "Q46"
+      ]
+    },
+    {
+      "id": "SRC-30",
+      "organization": "Secrétariat de la Convention de Ramsar",
+      "title": "Service d'information sur les Sites Ramsar (SIS) : Zones humides de Mahavavy-Kinkony (Site n° 2064)",
+      "url": "https://rsis.ramsar.org/ris/2064",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Le lac Kinkony, dans la région Boeny, est le deuxième plus grand lac naturel permanent de Madagascar et un site Ramsar majeur.",
+      "associatedQuestions": [
+        "Q17"
+      ]
+    },
+    {
+      "id": "SRC-31",
+      "organization": "Office Régional du Tourisme de Diego-Suarez (ORTDS) / BRGM",
+      "title": "Géologie du bassin sédimentaire du Nord de Madagascar : Les Tsingy Rouges d'Irodo",
+      "url": "https://www.office-tourisme-diego-suarez.com",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Les Tsingy Rouges d'Irodo sont des formations sédimentaires tendres de grès, marnes et latérites sculptées par l'érosion hydrique, distinctes des karsts calcaires.",
+      "associatedQuestions": [
+        "Q24"
+      ]
+    },
+    {
+      "id": "SRC-32",
+      "organization": "UNESCO Programme sur l'Homme et la Biosphère (MAB) & MEDD",
+      "title": "Réseau mondial des réserves de biosphère à Madagascar : Mananara-Nord (1990)",
+      "url": "https://www.unesco.org/fr/mab",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Désignée en 1990, la réserve de biosphère de Mananara-Nord est la première réserve de biosphère UNESCO de Madagascar, incluant le premier parc marin national (Nosy Atafana).",
+      "associatedQuestions": [
+        "Q32"
+      ]
+    },
+    {
+      "id": "SRC-33",
+      "organization": "Madagascar National Parks (MNP) & Durrell Wildlife Conservation Trust",
+      "title": "Parc National de la Baie de Baly et conservation de la tortue Angonoka (Astrochelys yniphora)",
+      "url": "https://www.parcs-madagascar.com/aire-protegee/parc-national-baie-de-baly",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Le parc national de la Baie de Baly (Soalala, région Boeny) abrite l'unique population sauvage au monde de la tortue à soc (*Astrochelys yniphora*).",
+      "associatedQuestions": [
+        "Q41"
+      ]
+    },
+    {
+      "id": "SRC-34",
+      "organization": "Madagascar National Parks (MNP)",
+      "title": "Parc National Marin de Nosy Hara",
+      "url": "https://www.parcs-madagascar.com/aire-protegee/parc-national-nosy-hara",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "Archipel d'îlots karstiques calcaires (« tsingy marins ») situé au nord-ouest de Madagascar (région DIANA) et abritant le caméléon nain *Brookesia micra*.",
+      "associatedQuestions": [
+        "Q48"
+      ]
+    },
+    {
+      "id": "SRC-35",
+      "organization": "Ministère du Tourisme de Madagascar / Service Hydrographique",
+      "title": "La baie d'Antsiranana (Diego-Suarez) et l'îlot sacré de Nosy Lonjo (Pain de Sucre)",
+      "url": "https://madagascar-tourisme.com",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "La baie d'Antsiranana (Diego-Suarez), au nord de Madagascar, est l'une des plus grandes rades naturelles du monde et abrite l'îlot volcanique conique de Nosy Lonjo (Pain de Sucre).",
+      "associatedQuestions": [
+        "Q49"
+      ]
+    },
+    {
+      "id": "SRC-36",
+      "organization": "Madagascar National Parks (MNP) & UNESCO MAB",
+      "title": "Parc National Marin de Nosy Ve-Androka (Réserve de biosphère de Tsimanampesotse - Nosy Ve Androka)",
+      "url": "https://www.parcs-madagascar.com/aire-protegee/parc-national-nosy-ve-androka",
+      "verifiedAt": "2026-11-12",
+      "verifiedFact": "L'îlot corallien de Nosy Ve, face à Anakao dans le Sud-Ouest, abrite l'unique colonie nicheuse de phaétons à brins rouges (*Phaethon rubricauda*) de Madagascar.",
+      "associatedQuestions": [
+        "Q50"
+      ]
+    }
+  ]
+}

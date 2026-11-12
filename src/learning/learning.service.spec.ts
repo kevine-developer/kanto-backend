@@ -38,6 +38,13 @@ describe('LearningService', () => {
         update: jest.fn(),
         count: jest.fn(),
       },
+      userProgress: {
+        findUnique: jest.fn().mockResolvedValue({ totalXp: 50 }),
+        upsert: jest.fn().mockResolvedValue({ totalXp: 75 }),
+      },
+      xpTransaction: {
+        create: jest.fn().mockResolvedValue({ id: 'tx-1' }),
+      },
       user: {
         update: jest.fn(),
       },
@@ -181,6 +188,8 @@ describe('LearningService', () => {
       expect(result.passed).toBe(true);
       expect(result.score).toBe(67);
       expect(result.earnedXp).toBeGreaterThan(0);
+      expect(result.totalUserXp).toBeGreaterThan(0);
+      expect(result.isNextUnlocked).toBe(true);
     });
 
     it('devrait refuser la validation lorsque le score est inférieur à 60%', async () => {
@@ -207,6 +216,36 @@ describe('LearningService', () => {
       expect(result.score).toBe(33);
       expect(result.earnedXp).toBe(0);
       expect(result.minRequiredScore).toBe(60);
+      expect(result.isNextUnlocked).toBe(false);
+    });
+  });
+
+  describe('getReviews (Mes révisions)', () => {
+    it('devrait retourner les fiches de révisions avec statut et leçons associées', async () => {
+      prismaMock.userReviewItem.findMany.mockRejectedValue(
+        new Error('DB unreachable'),
+      );
+
+      const reviews = await service.getReviews('user-1');
+
+      expect(reviews).toBeDefined();
+      expect(Array.isArray(reviews)).toBe(true);
+      expect(reviews.length).toBeGreaterThan(0);
+      expect(reviews[0]).toHaveProperty('termMg');
+      expect(reviews[0]).toHaveProperty('meaningFr');
+      expect(reviews[0]).toHaveProperty('status');
+      expect(reviews[0]).toHaveProperty('lessonTitle');
+    });
+
+    it('devrait filtrer les révisions dues lorsque le filtre "due" est demandé', async () => {
+      prismaMock.userReviewItem.findMany.mockRejectedValue(
+        new Error('DB unreachable'),
+      );
+
+      const dueReviews = await service.getReviews('user-1', 'due');
+
+      expect(dueReviews).toBeDefined();
+      expect(dueReviews.every((r) => r.isDue === true)).toBe(true);
     });
   });
 });
