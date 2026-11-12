@@ -24,8 +24,6 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
     legalBaseUrl,
     supportEmail,
     countBadgeText,
-    initialTab,
-    isRegistered,
     emailVal,
     errorVal,
     currentYear,
@@ -123,7 +121,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <!-- ZONE 2 — PROGRAMME DE TESTEURS (PRIORITÉ VISUELLE MAJEURE)              -->
+    <!-- ZONE 2 — PROGRAMME DE TESTEURS (INSCRIPTION DIRECTE AU PREMIER PLAN)    -->
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <section class="section-testers" id="testeurs" aria-labelledby="testers-main-title">
       <div class="testers-card">
@@ -133,18 +131,6 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
           <p class="testers-desc">
             Découvrez Kanto en avant-première, explorez ses fonctionnalités et participez à son amélioration en partageant vos retours.
           </p>
-        </div>
-
-        <!-- Bascule principale : Inscription vs Déjà inscrit / Confirmation -->
-        <div class="testers-tabs-nav" role="tablist">
-          <button type="button" class="tester-tab-btn ${initialTab !== 'already_registered' && !isRegistered ? 'active' : ''}" id="tab-btn-register" role="tab" aria-selected="${initialTab !== 'already_registered' && !isRegistered}">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
-            <span>Devenir testeur</span>
-          </button>
-          <button type="button" class="tester-tab-btn ${initialTab === 'already_registered' || isRegistered ? 'active' : ''}" id="tab-btn-already" role="tab" aria-selected="${initialTab === 'already_registered' || isRegistered}">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-            <span>Confirmer mon inscription</span>
-          </button>
         </div>
 
         <!-- Bannières d'alerte et de confirmation -->
@@ -157,180 +143,97 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
           <span id="success-text"></span>
         </div>
 
-        <!-- ─── VOLET 1 : FORMULAIRE D'INSCRIPTION ───────────────────────────── -->
-        <div id="panel-register" class="tester-panel" style="display: ${initialTab !== 'already_registered' && !isRegistered ? 'block' : 'none'};">
-          <form id="waitlist-form" class="testers-form">
-            <!-- Piège anti-spam invisible -->
-            <div class="hp-trap" aria-hidden="true" style="display:none;">
-              <input type="text" id="hp-website" name="website" tabindex="-1" autocomplete="off">
-            </div>
+        <!-- Formulaire d'inscription directe (sans onglets distrayants) -->
+        <form id="waitlist-form" class="testers-form">
+          <!-- Piège anti-spam invisible -->
+          <div class="hp-trap" aria-hidden="true" style="display:none;">
+            <input type="text" id="hp-website" name="website" tabindex="-1" autocomplete="off">
+          </div>
 
-            <div class="form-row">
-              <div class="field-wrap">
-                <label class="field-label" for="reg-email">
-                  <span>Votre adresse e-mail</span>
-                  <span class="label-badge-req">Requis</span>
-                </label>
-                <input 
-                  type="email" 
-                  id="reg-email" 
-                  class="field-input" 
-                  placeholder="nom@exemple.com" 
-                  required 
-                  value="${emailVal}"
-                  autocomplete="email"
-                >
-                <span class="field-help">Votre adresse permettra d'autoriser votre compte sur Google Play ou Apple TestFlight.</span>
-              </div>
-
-              <div class="field-wrap">
-                <label class="field-label" for="reg-name">
-                  <span>Prénom ou nom public</span>
-                  <span class="label-badge-opt">Optionnel</span>
-                </label>
-                <input 
-                  type="text" 
-                  id="reg-name" 
-                  class="field-input" 
-                  placeholder="ex: Faly, Rova, Eric..."
-                  autocomplete="name"
-                >
-              </div>
-            </div>
-
-            <!-- Choix tactile des plateformes -->
+          <div class="form-row">
             <div class="field-wrap">
-              <label class="field-label">
-                <span>Sur quel appareil souhaitez-vous tester ?</span>
+              <label class="field-label" for="reg-email">
+                <span>Votre adresse e-mail</span>
+                <span class="label-badge-req">Requis</span>
               </label>
-              <div class="platform-selection-grid">
-                <div class="platform-toggle-card checked" id="card-android">
-                  <div class="platform-toggle-head">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8533 8.125 12 8.125s-3.5902.286-5.1368.8257L4.8409 5.4477a.416.416 0 00-.5676-.1521.416.416 0 00-.1521.5676l1.9973 3.4592C2.6889 10.9997.426 14.5408.426 18.6667h23.148c0-4.1259-2.2629-7.667-5.6925-9.3453"/></svg>
-                    <span class="platform-toggle-name">Android</span>
-                    <span class="platform-toggle-status">Google Play</span>
-                  </div>
-                  <span class="platform-toggle-desc">Bêta ouverte &amp; accès console sécurisé.</span>
-                </div>
-
-                <div class="platform-toggle-card" id="card-ios">
-                  <div class="platform-toggle-head">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 0.92-2.87-.92.04-2.02.62-2.67 1.37-.56.64-1.05 1.71-.92 2.74 1.03.08 2.06-.49 2.67-1.24z"/></svg>
-                    <span class="platform-toggle-name">iPhone / iOS</span>
-                    <span class="platform-toggle-status">TestFlight</span>
-                  </div>
-                  <span class="platform-toggle-desc">Invitation officielle Apple TestFlight.</span>
-                </div>
-              </div>
+              <input 
+                type="email" 
+                id="reg-email" 
+                class="field-input" 
+                placeholder="nom@exemple.com" 
+                required 
+                value="${emailVal}"
+                autocomplete="email"
+              >
+              <span class="field-help">Votre adresse permettra d'autoriser votre compte sur Google Play ou Apple TestFlight.</span>
             </div>
 
-            <!-- Consentements légaux RGPD / CGU -->
-            <div class="consent-box">
-              <label class="consent-checkbox-label">
-                <input type="checkbox" id="consent-cgu" required checked>
-                <span>J'accepte les <button type="button" class="btn-legal-link" id="btn-open-cgu-modal">Conditions Générales d'Utilisation</button> de Kanto MG.</span>
+            <div class="field-wrap">
+              <label class="field-label" for="reg-name">
+                <span>Prénom ou nom public</span>
+                <span class="label-badge-opt">Optionnel</span>
               </label>
-              <label class="consent-checkbox-label">
-                <input type="checkbox" id="consent-privacy" required checked>
-                <span>J'accepte la <button type="button" class="btn-legal-link" id="btn-open-privacy-modal">Politique de Confidentialité</button> (identifiants chiffrés, aucune cession de données).</span>
-              </label>
-            </div>
-
-            <!-- Bouton d'action principal -->
-            <div class="submit-action-wrap">
-              <button type="submit" class="btn-submit-tester" id="btn-submit-reg">
-                <span>Devenir testeur</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-              </button>
-            </div>
-
-            <div class="already-switch-hint">
-              <span>Déjà inscrit comme testeur ?</span>
-              <button type="button" class="btn-switch-link" id="link-open-already">Confirmer mon inscription →</button>
-            </div>
-          </form>
-        </div>
-
-        <!-- ─── VOLET 2 : CONFIRMATION DU STATUT TESTEUR ─────────────────────── -->
-        <div id="panel-already" class="tester-panel" style="display: ${initialTab === 'already_registered' || isRegistered ? 'block' : 'none'};">
-          <div class="status-verification-box">
-            <h3 class="status-box-title">Retrouvez et confirmez votre participation</h3>
-            <p class="status-box-desc">
-              Saisissez l'adresse e-mail de votre inscription pour consulter votre statut en direct, valider votre accès et débloquer vos liens personnels de téléchargement.
-            </p>
-
-            <form id="check-status-form" class="status-check-form">
-              <div class="status-input-wrap">
-                <input 
-                  type="email" 
-                  id="check-email-input" 
-                  class="field-input" 
-                  placeholder="votre.email@domaine.com" 
-                  required 
-                  value="${emailVal}"
-                >
-                <button type="submit" class="btn-check-submit" id="btn-submit-check">
-                  <span>Vérifier mon statut</span>
-                </button>
-              </div>
-            </form>
-
-            <!-- Résultat de vérification dynamique -->
-            <div id="status-result-box" class="status-result-card" style="display: none;">
-              <div class="status-card-header">
-                <div>
-                  <span class="status-card-label">Compte testeur identifié</span>
-                  <div class="status-email-display" id="tester-email-lbl">—</div>
-                </div>
-                <span class="status-badge-verified" id="tester-status-badge">VÉRIFIÉ</span>
-              </div>
-
-              <!-- Bloc action de confirmation de participation -->
-              <div class="status-action-banner" id="status-action-banner">
-                <div class="action-banner-text">
-                  <h4 id="action-box-title">Confirmer votre participation au programme</h4>
-                  <p id="action-box-desc">Cliquez ci-dessous pour valider que vous avez rejoint le groupe de test.</p>
-                </div>
-                <div class="action-banner-btns">
-                  <button type="button" class="btn-confirm-action" id="btn-confirm-joined">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    <span>Confirmer ma participation</span>
-                  </button>
-                  <button type="button" class="btn-confirm-action" id="btn-confirm-installed" style="display: none;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    <span>J'ai installé l'application</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Liens personnels débloqués -->
-              <div class="unlocked-links-grid">
-                <div class="unlocked-card" id="card-status-android" style="display: none;">
-                  <span class="unlocked-platform-name">Android (Google Play)</span>
-                  <span class="badge-status-val" id="badge-status-android">Actif</span>
-                  <p class="unlocked-desc" id="desc-status-android">Accès autorisé sur le Play Store de test.</p>
-                  <a href="https://play.google.com/apps/testing/com.devengalere.kantomg" class="btn-unlocked-link" id="link-play-web" target="_blank" rel="noopener noreferrer">
-                    <span>Ouvrir sur Google Play ↗</span>
-                  </a>
-                </div>
-
-                <div class="unlocked-card" id="card-status-ios" style="display: none;">
-                  <span class="unlocked-platform-name">iPhone (TestFlight)</span>
-                  <span class="badge-status-val" id="badge-status-ios">Actif</span>
-                  <p class="unlocked-desc" id="desc-status-ios">Invitation active via Apple TestFlight.</p>
-                  <a href="https://testflight.apple.com/join/kantomg" class="btn-unlocked-link" id="link-testflight" target="_blank" rel="noopener noreferrer">
-                    <span>Ouvrir dans TestFlight ↗</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div class="return-to-reg-hint">
-              <span>Nouveau sur Kanto ?</span>
-              <button type="button" class="btn-switch-link" id="btn-back-to-register">Créer une inscription de testeur →</button>
+              <input 
+                type="text" 
+                id="reg-name" 
+                class="field-input" 
+                placeholder="ex: Faly, Rova, Eric..."
+                autocomplete="name"
+              >
             </div>
           </div>
-        </div>
+
+          <!-- Choix tactile des plateformes -->
+          <div class="field-wrap">
+            <label class="field-label">
+              <span>Sur quel appareil souhaitez-vous tester ?</span>
+            </label>
+            <div class="platform-selection-grid">
+              <div class="platform-toggle-card checked" id="card-android">
+                <div class="platform-toggle-head">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8533 8.125 12 8.125s-3.5902.286-5.1368.8257L4.8409 5.4477a.416.416 0 00-.5676-.1521.416.416 0 00-.1521.5676l1.9973 3.4592C2.6889 10.9997.426 14.5408.426 18.6667h23.148c0-4.1259-2.2629-7.667-5.6925-9.3453"/></svg>
+                  <span class="platform-toggle-name">Android</span>
+                  <span class="platform-toggle-status">Google Play</span>
+                </div>
+                <span class="platform-toggle-desc">Bêta ouverte &amp; accès console sécurisé.</span>
+              </div>
+
+              <div class="platform-toggle-card" id="card-ios">
+                <div class="platform-toggle-head">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 0.92-2.87-.92.04-2.02.62-2.67 1.37-.56.64-1.05 1.71-.92 2.74 1.03.08 2.06-.49 2.67-1.24z"/></svg>
+                  <span class="platform-toggle-name">iPhone / iOS</span>
+                  <span class="platform-toggle-status">TestFlight</span>
+                </div>
+                <span class="platform-toggle-desc">Invitation officielle Apple TestFlight.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Consentements légaux RGPD / CGU -->
+          <div class="consent-box">
+            <label class="consent-checkbox-label">
+              <input type="checkbox" id="consent-cgu" required checked>
+              <span>J'accepte les <button type="button" class="btn-legal-link" id="btn-open-cgu-modal">Conditions Générales d'Utilisation</button> de Kanto MG.</span>
+            </label>
+            <label class="consent-checkbox-label">
+              <input type="checkbox" id="consent-privacy" required checked>
+              <span>J'accepte la <button type="button" class="btn-legal-link" id="btn-open-privacy-modal">Politique de Confidentialité</button> (identifiants chiffrés, aucune cession de données).</span>
+            </label>
+          </div>
+
+          <!-- Bouton d'action principal -->
+          <div class="submit-action-wrap">
+            <button type="submit" class="btn-submit-tester" id="btn-submit-reg">
+              <span>Devenir testeur</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+            </button>
+          </div>
+
+          <div class="already-switch-hint">
+            <span>Déjà inscrit comme testeur ?</span>
+            <a href="#deja-inscrit" class="btn-switch-link" id="link-open-already">Consulter ou confirmer mon statut ↓</a>
+          </div>
+        </form>
       </div>
     </section>
 
@@ -478,6 +381,88 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
               <p>Vos identifiants et e-mails sont chiffrés selon le standard militaire AES-256-GCM. Kanto MG applique une stricte conformité RGPD : aucune donnée n'est cédée ni exploitée commercialement.</p>
             </div>
           </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- ESPACE TESTEURS DÉJÀ INSCRITS (VÉRIFICATION & CONFIRMATION DU STATUT)   -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <section class="section-status-check" id="deja-inscrit" aria-labelledby="status-box-title">
+      <div class="status-verification-card">
+        <div class="status-box-header">
+          <span class="status-box-eyebrow">Espace Testeur</span>
+          <h2 id="status-box-title" class="status-box-title">Déjà inscrit comme testeur ?</h2>
+          <p class="status-box-desc">
+            Saisissez votre adresse e-mail pour consulter votre statut en direct, valider votre participation et débloquer vos accès.
+          </p>
+        </div>
+
+        <form id="check-status-form" class="status-check-form">
+          <div class="status-input-wrap">
+            <input 
+              type="email" 
+              id="check-email-input" 
+              class="field-input" 
+              placeholder="votre.email@domaine.com" 
+              required 
+              value="${emailVal}"
+              autocomplete="email"
+            >
+            <button type="submit" class="btn-check-submit" id="btn-submit-check">
+              <span>Vérifier mon statut</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Résultat de vérification dynamique -->
+        <div id="status-result-box" class="status-result-card" style="display: none;">
+          <div class="status-card-header">
+            <div>
+              <span class="status-card-label">Compte testeur identifié</span>
+              <div class="status-email-display" id="tester-email-lbl">—</div>
+            </div>
+            <span class="status-badge-verified" id="tester-status-badge">VÉRIFIÉ</span>
+          </div>
+
+          <!-- Bloc action de confirmation de participation -->
+          <div class="status-action-banner" id="status-action-banner">
+            <div class="action-banner-text">
+              <h4 id="action-box-title">Confirmer votre participation au programme</h4>
+              <p id="action-box-desc">Cliquez ci-dessous pour valider que vous avez rejoint le groupe de test.</p>
+            </div>
+            <div class="action-banner-btns">
+              <button type="button" class="btn-confirm-action" id="btn-confirm-joined">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Confirmer ma participation</span>
+              </button>
+              <button type="button" class="btn-confirm-action" id="btn-confirm-installed" style="display: none;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>J'ai installé l'application</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Liens personnels débloqués -->
+          <div class="unlocked-links-grid">
+            <div class="unlocked-card" id="card-status-android" style="display: none;">
+              <span class="unlocked-platform-name">Android (Google Play)</span>
+              <span class="badge-status-val" id="badge-status-android">Actif</span>
+              <p class="unlocked-desc" id="desc-status-android">Accès autorisé sur le Play Store de test.</p>
+              <a href="https://play.google.com/apps/testing/com.devengalere.kantomg" class="btn-unlocked-link" id="link-play-web" target="_blank" rel="noopener noreferrer">
+                <span>Ouvrir sur Google Play ↗</span>
+              </a>
+            </div>
+
+            <div class="unlocked-card" id="card-status-ios" style="display: none;">
+              <span class="unlocked-platform-name">iPhone (TestFlight)</span>
+              <span class="badge-status-val" id="badge-status-ios">Actif</span>
+              <p class="unlocked-desc" id="desc-status-ios">Invitation active via Apple TestFlight.</p>
+              <a href="https://testflight.apple.com/join/kantomg" class="btn-unlocked-link" id="link-testflight" target="_blank" rel="noopener noreferrer">
+                <span>Ouvrir dans TestFlight ↗</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
