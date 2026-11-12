@@ -82,12 +82,15 @@ export class LearningController {
   }
 
   /**
-   * Liste des notions en attente de révision espacée (spaced repetition).
+   * Liste des notions en attente de révision espacée (spaced repetition) ou filtrées.
    */
   @Get('reviews')
   @UseGuards(AuthGuard)
-  getReviews(@Session() session: UserSession) {
-    return this.learningService.getReviews(session.user.id);
+  getReviews(
+    @Query('filter') filter: string | undefined,
+    @Session() session: UserSession,
+  ) {
+    return this.learningService.getReviews(session.user.id, filter);
   }
 
   /**

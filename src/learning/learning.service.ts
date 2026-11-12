@@ -662,19 +662,25 @@ export class LearningService {
 
     let trackProgressPercent = 100;
     let isTrackCompleted = false;
+    let wasAlreadyCompleted = false;
+    let totalUserXp = 0;
     const MIN_PASSING_SCORE = 60;
     const score = dto.score ?? 100;
     const isPassed = score >= MIN_PASSING_SCORE;
 
+    // Vérifier l'état préalable pour l'idempotence des récompenses XP
+    try {
+      const existing = await this.prisma.userLessonProgress.findUnique({
+        where: { userId_lessonId: { userId, lessonId } },
+      });
+      wasAlreadyCompleted = existing?.status === 'COMPLETED';
+    } catch {
+      // Ignorer si indisponible
+    }
+
     if (!isPassed) {
       // Score insuffisant (< 60%) : la leçon n'est pas validée
       try {
-        const existing = await this.prisma.userLessonProgress.findUnique({
-          where: { userId_lessonId: { userId, lessonId } },
-        });
-
-        const wasAlreadyCompleted = existing?.status === 'COMPLETED';
-
         if (!wasAlreadyCompleted) {
           await this.prisma.userLessonProgress.upsert({
             where: { userId_lessonId: { userId, lessonId } },
@@ -686,7 +692,7 @@ export class LearningService {
               timeSpentSeconds: dto.timeSpentSeconds ?? 0,
             },
             update: {
-              score: Math.max(score, existing?.score ?? 0),
+              score: Math.max(score, 0),
               timeSpentSeconds: { increment: dto.timeSpentSeconds ?? 0 },
             },
           });
@@ -701,17 +707,20 @@ export class LearningService {
       return {
         success: false,
         passed: false,
-        alreadyCompleted: false,
+        alreadyCompleted: wasAlreadyCompleted,
         score,
         minRequiredScore: MIN_PASSING_SCORE,
         earnedXp: 0,
-        totalUserXp: 0,
+        totalUserXp,
         trackCompleted: false,
         trackProgressPercent: 0,
         nextLessonSlug: undefined,
+        isNextUnlocked: false,
         message: "Un score d'au moins 60% est requis pour valider cette leçon.",
       };
     }
+
+    const earnedXp = wasAlreadyCompleted ? 0 : (lesson.xpReward || 25);
 
     try {
       // 1. Enregistrement idempotent de la validation de la leçon (>= 60%)
@@ -735,7 +744,45 @@ export class LearningService {
         },
       });
 
-      // 2. Mise à jour de la progression globale du parcours
+      // 2. Crédit réel d'XP utilisateur et historique de transaction
+      if (earnedXp > 0) {
+        try {
+          const up = await this.prisma.userProgress.upsert({
+            where: { userId },
+            create: {
+              userId,
+              totalXp: earnedXp,
+              level: 1,
+            },
+            update: {
+              totalXp: { increment: earnedXp },
+            },
+          });
+          totalUserXp = Math.round(Number(up.totalXp));
+
+          await this.prisma.xpTransaction.create({
+            data: {
+              userId,
+              amount: earnedXp,
+              source: `learning_lesson_${lesson.slug}`,
+              description: `Validation de la leçon : ${lesson.title}`,
+            },
+          });
+        } catch (xpErr) {
+          this.logger.warn(`Erreur lors du crédit d'XP :`, xpErr);
+        }
+      } else {
+        try {
+          const currentUp = await this.prisma.userProgress.findUnique({
+            where: { userId },
+          });
+          if (currentUp) {
+            totalUserXp = Math.round(Number(currentUp.totalXp));
+          }
+        } catch {}
+      }
+
+      // 3. Mise à jour de la progression globale du parcours
       if (trackId) {
         const completedCount = await this.prisma.userLessonProgress.count({
           where: {
@@ -777,7 +824,7 @@ export class LearningService {
         });
       }
 
-      // 3. Alimentation automatique du système de répétition espacée (SRS)
+      // 4. Alimentation automatique du système de répétition espacée (SRS)
       const rawSections =
         typeof lesson.sections === 'string'
           ? JSON.parse(lesson.sections)
@@ -817,82 +864,154 @@ export class LearningService {
     return {
       success: true,
       passed: true,
-      alreadyCompleted: false,
+      alreadyCompleted: wasAlreadyCompleted,
       score,
       minRequiredScore: MIN_PASSING_SCORE,
-      earnedXp: lesson.xpReward || 25,
-      totalUserXp: 0,
+      earnedXp,
+      totalUserXp,
       trackCompleted: isTrackCompleted,
       trackProgressPercent,
       nextLessonSlug,
+      isNextUnlocked: Boolean(nextLessonSlug),
     };
   }
 
   /**
-   * Récupère les fiches de révision de l'utilisateur (notions apprises).
+   * Récupère la liste structurée des notions apprises pour les révisions (« Mes révisions »).
+   * Supporte le filtrage (all, due, in_progress, mastered) et inclut les métadonnées de parcours.
    */
-  async getReviews(userId: string) {
-    let reviewsDue: any[] = [];
+  async getReviews(userId: string, filter?: string) {
+    let reviewsList: any[] = [];
+    const now = new Date();
 
     try {
-      reviewsDue = await this.prisma.userReviewItem.findMany({
-        where: {
-          userId,
+      const whereClause: any = { userId };
+      if (filter === 'due') {
+        whereClause.nextReviewDue = { lte: now };
+      } else if (filter === 'mastered') {
+        whereClause.masteryLevel = { gte: 5 };
+      } else if (filter === 'in_progress') {
+        whereClause.masteryLevel = { lt: 5 };
+      }
+
+      reviewsList = await this.prisma.userReviewItem.findMany({
+        where: whereClause,
+        include: {
+          lesson: {
+            select: {
+              id: true,
+              title: true,
+              titleMg: true,
+              slug: true,
+              track: {
+                select: {
+                  title: true,
+                  titleMg: true,
+                  color: true,
+                  slug: true,
+                },
+              },
+            },
+          },
         },
-        orderBy: { nextReviewDue: 'asc' },
-        take: 30,
+        orderBy: [{ nextReviewDue: 'asc' }, { masteryLevel: 'asc' }],
+        take: 60,
       });
     } catch {
-      // Ignorer
+      // Ignorer si indisponible
     }
 
-    // Si aucune révision en base pour cet utilisateur, proposer les concepts de base du premier parcours
-    if (reviewsDue.length === 0) {
+    // Fallback éducatif si la base ne contient pas encore d'items
+    if (reviewsList.length === 0) {
       const firstTrack = SEED_LEARNING_TRACKS[0];
       const sampleReviews: any[] = [];
 
       firstTrack.lessons.forEach((l, lIdx) => {
         l.sections.forEach((s, sIdx) => {
           if (s.type === 'concept' && s.termMg && s.meaningFr) {
+            const isSampleDue = (lIdx + sIdx) % 2 === 0;
+            const sampleLevel = ((lIdx + sIdx) % 5) + 1;
             sampleReviews.push({
               id: `seed_review_${lIdx}_${sIdx}`,
               conceptKey: s.termMg,
+              termMg: s.termMg,
+              meaningFr: s.meaningFr,
+              phonetic: s.phonetic || null,
+              contextMg: s.explanation || null,
+              contextFr: s.meaningFr || null,
               questionMg: `Inona no dikan'ny hoe « ${s.termMg} » ?`,
               questionFr: `Que signifie l'expression « ${s.termMg} » ?`,
               answerMg: s.termMg,
               answerFr: s.meaningFr,
-              contextMg: s.phonetic
-                ? `Fanononana : [${s.phonetic}]`
-                : undefined,
-              contextFr: s.explanation || undefined,
-              level: 1,
-              intervalDays: 1,
-              nextReviewDue: new Date().toISOString(),
-              reviewCount: 0,
+              level: sampleLevel,
+              masteryLevel: sampleLevel,
+              intervalDays: sampleLevel * 2,
+              nextReviewDue: isSampleDue
+                ? new Date(now.getTime() - 1000).toISOString()
+                : new Date(now.getTime() + 48 * 3600 * 1000).toISOString(),
+              reviewCount: sampleLevel,
               easeFactor: 2.5,
+              isDue: isSampleDue,
+              status:
+                sampleLevel >= 5
+                  ? 'mastered'
+                  : isSampleDue
+                    ? 'due'
+                    : 'in_progress',
+              lessonTitle: l.title,
+              lessonTitleMg: l.titleMg,
+              lessonSlug: l.slug,
+              trackTitle: firstTrack.title,
+              trackTitleMg: firstTrack.titleMg,
+              trackColor: firstTrack.color || '#4A6741',
             });
           }
         });
       });
 
-      return sampleReviews.slice(0, 10);
+      const filteredSamples = sampleReviews.filter((item) => {
+        if (filter === 'due') return item.isDue;
+        if (filter === 'mastered') return item.masteryLevel >= 5;
+        if (filter === 'in_progress') return item.masteryLevel < 5;
+        return true;
+      });
+
+      return filteredSamples.slice(0, 20);
     }
 
-    return reviewsDue.map((r) => ({
-      id: r.id,
-      conceptKey: r.termMg,
-      questionMg: `Inona no dikan'ny hoe « ${r.termMg} » ?`,
-      questionFr: `Que signifie l'expression « ${r.termMg} » ?`,
-      answerMg: r.termMg,
-      answerFr: r.meaningFr,
-      contextMg: r.phonetic ? `Fanononana : [${r.phonetic}]` : r.contextMg,
-      contextFr: r.contextFr,
-      level: r.masteryLevel,
-      intervalDays: r.intervalDays,
-      nextReviewDue: r.nextReviewDue.toISOString(),
-      reviewCount: r.reviewCount,
-      easeFactor: 2.5,
-    }));
+    return reviewsList.map((r) => {
+      const isDue = new Date(r.nextReviewDue) <= now;
+      const status =
+        r.masteryLevel >= 5 ? 'mastered' : isDue ? 'due' : 'in_progress';
+
+      return {
+        id: r.id,
+        conceptKey: r.termMg,
+        termMg: r.termMg,
+        meaningFr: r.meaningFr,
+        phonetic: r.phonetic || null,
+        contextMg: r.contextMg || null,
+        contextFr: r.contextFr || null,
+        questionMg: `Inona no dikan'ny hoe « ${r.termMg} » ?`,
+        questionFr: `Que signifie l'expression « ${r.termMg} » ?`,
+        answerMg: r.termMg,
+        answerFr: r.meaningFr,
+        level: r.masteryLevel,
+        masteryLevel: r.masteryLevel,
+        intervalDays: r.intervalDays,
+        nextReviewDue: r.nextReviewDue.toISOString(),
+        reviewCount: r.reviewCount,
+        easeFactor: 2.5,
+        isDue,
+        status,
+        lessonTitle: r.lesson?.title || 'Leçon culturelle',
+        lessonTitleMg: r.lesson?.titleMg || 'Lesona',
+        lessonSlug: r.lesson?.slug || undefined,
+        trackTitle: r.lesson?.track?.title || 'Fondamentaux',
+        trackTitleMg: r.lesson?.track?.titleMg || 'Fototra',
+        trackColor: r.lesson?.track?.color || '#4A6741',
+      };
+    });
   }
 
   /**
