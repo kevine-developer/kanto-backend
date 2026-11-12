@@ -573,7 +573,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
       <div class="modal-body">
         <p>En rejoignant le programme de test de Kanto MG, vous devenez acteur d'un sanctuaire numérique dédié au patrimoine, aux contes (<em>Angano</em>), proverbes (<em>Ohabolana</em>) et traditions de Madagascar.</p>
         <p>L'utilisation est strictement gratuite et bénévole. Vous pouvez vous désinscrire à tout moment.</p>
-        <p><a href="/pages/terms" target="_blank">Consulter l'intégralité des CGU en pleine page ↗</a></p>
+        <p><a href="${legalBaseUrl}/pages/terms" target="_blank">Consulter l'intégralité des CGU en pleine page ↗</a></p>
       </div>
       <div class="modal-foot">
         <button type="button" id="cgu-modal-btn-accept" class="btn-cookie-action primary">J'ai compris</button>
@@ -590,7 +590,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
       <div class="modal-body">
         <p>Vos identifiants sont protégés par chiffrement AES-256-GCM. Seul votre e-mail est conservé afin de synchroniser vos autorisations Google Play ou Apple TestFlight.</p>
         <p>Aucune donnée personnelle n'est cédée, vendue ou partagée avec des tiers publicitaires.</p>
-        <p><a href="/pages/privacy" target="_blank">Consulter la politique de confidentialité complète ↗</a></p>
+        <p><a href="${legalBaseUrl}/pages/privacy" target="_blank">Consulter la politique de confidentialité complète ↗</a></p>
       </div>
       <div class="modal-foot">
         <button type="button" id="privacy-modal-btn-accept" class="btn-cookie-action primary">Fermer</button>
