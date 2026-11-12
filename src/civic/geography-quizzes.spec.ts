@@ -109,3 +109,4 @@ describe('Corpus de référence : Géographie et trésors naturels de Madagascar
     expect(report.issues.length).toBe(0);
   });
 });
+
