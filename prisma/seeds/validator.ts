@@ -267,3 +267,123 @@ export function validateRiddlesBatch(data: unknown): ValidationReport {
     issues,
   };
 }
+
+/**
+ * Validation spécifique des 12 points de contrôle du jeu de données :
+ * « Géographie et trésors naturels de Madagascar » (50 questions, 5 niveaux de 10)
+ */
+export function validateGeographyQuizBatch(payload: unknown): ValidationReport {
+  const issues: ValidationIssue[] = [];
+
+  const rawObj = payload as Record<string, unknown> | unknown[];
+  const questions: unknown[] = Array.isArray(rawObj)
+    ? rawObj
+    : Array.isArray((rawObj as any)?.questions)
+      ? (rawObj as any).questions
+      : [];
+
+  if (questions.length !== 50) {
+    issues.push({
+      itemIndex: -1,
+      message: `Contrôle 1 échoué : Attendu exactement 50 questions, reçu ${questions.length}.`,
+    });
+  }
+
+  const questionsPerLevel: Record<number, number> = {};
+  const diffCounts: Record<string, number> = { EASY: 0, INTERMEDIATE: 0, DIFFICULT: 0 };
+  const seenIds = new Set<string>();
+  const seenPrompts = new Set<string>();
+
+  questions.forEach((item, index) => {
+    if (!item || typeof item !== 'object') {
+      issues.push({ itemIndex: index, message: 'La question doit être un objet JSON valide.' });
+      return;
+    }
+
+    const q = item as Record<string, any>;
+    const id = q.id || `index_${index}`;
+
+    // Contrôle unicité ID
+    if (seenIds.has(id)) {
+      issues.push({ itemIndex: index, identifier: id, field: 'id', message: `ID en doublon détecté : ${id}` });
+    }
+    seenIds.add(id);
+
+    // Contrôle question/prompt
+    const prompt = q.question || q.prompt;
+    if (!prompt || typeof prompt !== 'string' || !prompt.trim()) {
+      issues.push({ itemIndex: index, identifier: id, field: 'question', message: 'Énoncé de la question manquant.' });
+    } else {
+      const normPrompt = prompt.trim().toLowerCase();
+      if (seenPrompts.has(normPrompt)) {
+        issues.push({ itemIndex: index, identifier: id, field: 'question', message: `Question en doublon textuel : ${prompt}` });
+      }
+      seenPrompts.add(normPrompt);
+    }
+
+    // Contrôle niveau
+    const lvl = typeof q.levelNumber === 'number' ? q.levelNumber : 0;
+    if (lvl < 1 || lvl > 5) {
+      issues.push({ itemIndex: index, identifier: id, field: 'levelNumber', message: `Niveau invalide : ${lvl} (doit être compris entre 1 et 5)` });
+    } else {
+      questionsPerLevel[lvl] = (questionsPerLevel[lvl] || 0) + 1;
+    }
+
+    // Contrôle difficulté
+    const diff = (q.difficulty || '').toUpperCase();
+    if (diff === 'EASY' || diff === 'INTERMEDIATE' || diff === 'DIFFICULT') {
+      diffCounts[diff]++;
+    } else {
+      issues.push({ itemIndex: index, identifier: id, field: 'difficulty', message: `Difficulté non reconnue : ${diff}` });
+    }
+
+    // Contrôle options et réponse correcte
+    const opts = q.options ? [q.options.A, q.options.B, q.options.C, q.options.D] : q.choices;
+    if (!Array.isArray(opts) || opts.length !== 4) {
+      issues.push({ itemIndex: index, identifier: id, field: 'options', message: 'La question doit comporter exactement 4 options A, B, C, D.' });
+    } else {
+      const uniqueOpts = new Set(opts.map((o: any) => String(o).trim().toLowerCase()));
+      if (uniqueOpts.size !== 4) {
+        issues.push({ itemIndex: index, identifier: id, field: 'options', message: 'Les 4 choix de réponse doivent être strictement distincts.' });
+      }
+    }
+
+    const correct = q.correctOption;
+    if (!['A', 'B', 'C', 'D'].includes(correct)) {
+      issues.push({ itemIndex: index, identifier: id, field: 'correctOption', message: `Option correcte invalide : ${correct} (attendu A, B, C ou D)` });
+    }
+
+    // Contrôle source
+    if (!q.sourceId || typeof q.sourceId !== 'string' || !q.sourceId.startsWith('SRC-')) {
+      issues.push({ itemIndex: index, identifier: id, field: 'sourceId', message: 'Identifiant de source vérifiable (ex: SRC-01) manquant.' });
+    }
+
+    // Contrôle explications
+    if (!q.explanations || !q.explanations.correct || q.explanations.correct.trim().length < 20) {
+      issues.push({ itemIndex: index, identifier: id, field: 'explanations', message: 'Explication pédagogique de la bonne réponse manquante ou insuffisante.' });
+    }
+  });
+
+  // Contrôle répartition par niveau (10 questions par niveau)
+  for (let l = 1; l <= 5; l++) {
+    if (questionsPerLevel[l] !== 10) {
+      issues.push({
+        itemIndex: -1,
+        message: `Contrôle 2 échoué : Le niveau ${l} contient ${questionsPerLevel[l] || 0} questions (attendu 10).`,
+      });
+    }
+  }
+
+  // Contrôle répartition globale difficultés (15 EASY, 25 INTERMEDIATE, 10 DIFFICULT)
+  if (diffCounts.EASY !== 15 || diffCounts.INTERMEDIATE !== 25 || diffCounts.DIFFICULT !== 10) {
+    issues.push({
+      itemIndex: -1,
+      message: `Contrôle 8 échoué : Répartition des difficultés non conforme (EASY: ${diffCounts.EASY}/15, INTERMEDIATE: ${diffCounts.INTERMEDIATE}/25, DIFFICULT: ${diffCounts.DIFFICULT}/10).`,
+    });
+  }
+
+  return {
+    isValid: issues.length === 0,
+    issues,
+  };
+}

@@ -8,6 +8,7 @@ import {
   validateQuizBatch,
   validateTrueFalseBatch,
   validateRiddlesBatch,
+  validateGeographyQuizBatch,
 } from './validator.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -70,6 +71,7 @@ checkFile('tf-histoire.data.json', validateTrueFalseBatch);
 checkFile('tf-litterature.data.json', validateTrueFalseBatch);
 checkFile('tf-proverbes.data.json', validateTrueFalseBatch);
 checkFile('riddles.data.json', validateRiddlesBatch);
+checkFile('madagascar-geography-nature-quizzes.json', validateGeographyQuizBatch);
 
 console.log('\n────────────────────────────────────────────────────────────────────────');
 if (totalErrors === 0) {

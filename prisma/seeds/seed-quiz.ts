@@ -182,5 +182,134 @@ export async function seedQuiz(
     }
   }
 
+  // 3. Quiz Géographie & Trésors Naturels (50 questions vérifiées sur 5 niveaux)
+  const geoPath = path.join(seedDataDir, 'madagascar-geography-nature-quizzes.json');
+  const sourcesPath = path.join(seedDataDir, 'sources-references.json');
+  if (fs.existsSync(geoPath)) {
+    try {
+      const geoPayload = JSON.parse(fs.readFileSync(geoPath, 'utf-8'));
+      const rawGeoQuestions = geoPayload.questions || [];
+
+      // Dictionnaire des sources vérifiées (traçabilité documentaire)
+      const sourcesMap = new Map<string, any>();
+      if (fs.existsSync(sourcesPath)) {
+        try {
+          const sourcesPayload = JSON.parse(fs.readFileSync(sourcesPath, 'utf-8'));
+          if (Array.isArray(sourcesPayload.sources)) {
+            for (const s of sourcesPayload.sources) {
+              sourcesMap.set(s.id, s);
+            }
+          }
+        } catch (srcErr) {
+          console.warn('⚠️ [Seed Quiz] Impossible de lire sources-references.json:', srcErr);
+        }
+      }
+
+      stats.totalInFile += rawGeoQuestions.length;
+
+      for (const q of rawGeoQuestions) {
+        const prompt = (q.question || q.prompt)?.trim();
+        if (!prompt) {
+          stats.skipped++;
+          continue;
+        }
+
+        const normKey = prompt.toLowerCase();
+        if (processedPrompts.has(normKey)) {
+          stats.skipped++;
+          continue;
+        }
+        processedPrompts.add(normKey);
+
+        const diff: DifficultyLevel =
+          q.difficulty?.toUpperCase() === 'DIFFICULT' || q.difficulty?.toUpperCase() === 'HARD'
+            ? DifficultyLevel.HARD
+            : q.difficulty?.toUpperCase() === 'INTERMEDIATE' || q.difficulty?.toUpperCase() === 'MEDIUM'
+              ? DifficultyLevel.MEDIUM
+              : DifficultyLevel.EASY;
+
+        const choices = q.options
+          ? [q.options.A, q.options.B, q.options.C, q.options.D]
+          : q.choices || [];
+
+        let answerIndex = 0;
+        if (typeof q.answerIndex === 'number') {
+          answerIndex = q.answerIndex;
+        } else if (q.correctOption) {
+          const mapOpt: Record<string, number> = { A: 0, B: 1, C: 2, D: 3 };
+          answerIndex = mapOpt[q.correctOption] ?? 0;
+        }
+
+        const source = q.sourceId ? sourcesMap.get(q.sourceId) : null;
+        const sourceRef = source
+          ? `${source.organization} — ${source.title}`
+          : q.sourceId || null;
+        const sourceUrl = source?.url || null;
+
+        const explanationText = q.explanations?.correct
+          ? `${q.explanations.correct}${q.hint ? `\n\n💡 Indice : ${q.hint}` : ''}`
+          : q.explanation || '';
+
+        const quizData = {
+          category: 'geographie_regions',
+          prompt,
+          choices,
+          answerIndex,
+          explanation: explanationText,
+          explanationMg: q.hint ? `Toro-lalana: ${q.hint}` : null,
+          difficulty: diff,
+          tags: [
+            'geographie_regions',
+            q.category,
+            q.theme,
+            q.sourceId,
+            q.levelId,
+          ].filter((t): t is string => Boolean(t)),
+          imageUrl: q.imageUrl || null,
+          imageAlt: q.imageAlt || null,
+          sourceReference: sourceRef,
+          sourceUrl: sourceUrl,
+          contentSourceType: 'GEOGRAPHY_NATURE',
+          contentSourceId: q.sourceId || null,
+          levelNumber: typeof q.levelNumber === 'number' ? q.levelNumber : 1,
+          status: 'PUBLISHED' as const,
+        };
+
+        try {
+          const existing = await prisma.civicQuizQuestion.findFirst({
+            where: {
+              OR: [
+                ...(q.id ? [{ id: q.id }] : []),
+                { prompt: { equals: prompt, mode: 'insensitive' as const } },
+              ],
+            },
+          });
+
+          if (existing) {
+            await prisma.civicQuizQuestion.update({
+              where: { id: existing.id },
+              data: quizData,
+            });
+            stats.updated++;
+          } else {
+            await prisma.civicQuizQuestion.create({
+              data: {
+                ...(q.id ? { id: q.id } : {}),
+                ...quizData,
+              },
+            });
+            stats.created++;
+          }
+        } catch (err) {
+          console.error(`⚠️ [Seed Quiz] Erreur sur la question géographie "${prompt.substring(0, 30)}..." :`, err);
+          stats.errors++;
+        }
+      }
+    } catch (err) {
+      console.error('❌ [Seed Quiz] Erreur de lecture de madagascar-geography-nature-quizzes.json:', err);
+      stats.errors++;
+    }
+  }
+
   return stats;
 }
