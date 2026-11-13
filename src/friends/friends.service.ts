@@ -241,11 +241,11 @@ export class FriendsService {
       }),
       this.prisma.user.findUnique({
         where: { id: targetUserId },
-        select: { id: true, name: true },
+        select: { id: true, name: true, role: true },
       }),
     ]);
 
-    if (!targetUser) {
+    if (!targetUser || targetUser.role === 'ADMIN') {
       throw new NotFoundException('Utilisateur introuvable.');
     }
 
@@ -463,6 +463,8 @@ export class FriendsService {
     const users = await this.prisma.user.findMany({
       where: {
         id: { not: userId },
+        // 🔒 Sécurité & Confidentialité : Les comptes administrateurs ne peuvent jamais être recherchés en ami
+        role: { not: 'ADMIN' },
         OR: [
           { name: { contains: cleanQuery, mode: 'insensitive' } },
           { username: { contains: cleanQuery, mode: 'insensitive' } },

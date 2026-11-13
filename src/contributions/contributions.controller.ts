@@ -120,12 +120,14 @@ export class ContributionsController {
   findCommunity(
     @Query('category') category?: string,
     @Query('limit') limit?: number,
+    @Query('status') status?: string,
     @Session() session?: UserSession,
   ) {
     return this.contributionsService.findCommunity(
       category,
       session?.user?.id,
       limit,
+      status,
     );
   }
 

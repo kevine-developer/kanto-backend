@@ -361,6 +361,7 @@ describe('ContributionsService - Deadlines & Permissions', () => {
             }),
           },
           malagasyItem: {
+            findFirst: (jest.fn as any)().mockResolvedValue(null),
             findUnique: (jest.fn as any)().mockResolvedValue(null),
             create: (jest.fn as any)().mockResolvedValue({ id: 'item-1' }),
           },
