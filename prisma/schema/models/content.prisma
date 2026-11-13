@@ -36,6 +36,12 @@ model MalagasyItem {
   shareCount  Int @default(0)
   reportCount Int @default(0)
 
+    // Attribution communautaire (si issu d une contribution validee)
+  contributorId           String?
+  contributorName         String?
+  contributionId          String?
+  isCommunityContribution Boolean @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -52,7 +58,8 @@ model MalagasyItem {
   @@index([difficulty])
   @@index([isFeatured])
   @@index([createdAt])
-  @@map("malagasy_items")
+    @@index([isCommunityContribution])
+@@map("malagasy_items")
 }
 
 model MalagasyItemTheme {
@@ -117,6 +124,12 @@ model Citation {
   shareCount  Int @default(0)
   reportCount Int @default(0)
 
+    // Attribution communautaire (si issu d une contribution validee)
+  contributorId           String?
+  contributorName         String?
+  contributionId          String?
+  isCommunityContribution Boolean @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -132,7 +145,8 @@ model Citation {
   @@index([authorId])
   @@index([status])
   @@index([createdAt])
-  @@map("citations")
+    @@index([isCommunityContribution])
+@@map("citations")
 }
 
 model CitationTheme {
@@ -197,6 +211,12 @@ model Conte {
   shareCount  Int @default(0)
   reportCount Int @default(0)
 
+    // Attribution communautaire (si issu d une contribution validee)
+  contributorId           String?
+  contributorName         String?
+  contributionId          String?
+  isCommunityContribution Boolean @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -212,7 +232,8 @@ model Conte {
   @@index([status])
   @@index([isFeatured])
   @@index([createdAt])
-  @@map("contes")
+    @@index([isCommunityContribution])
+@@map("contes")
 }
 
 model ConteParagraph {
@@ -277,6 +298,12 @@ model Kabary {
   shareCount  Int @default(0)
   reportCount Int @default(0)
 
+    // Attribution communautaire (si issu d une contribution validee)
+  contributorId           String?
+  contributorName         String?
+  contributionId          String?
+  isCommunityContribution Boolean @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -292,7 +319,8 @@ model Kabary {
   @@index([status])
   @@index([occasion])
   @@index([createdAt])
-  @@map("kabaries")
+    @@index([isCommunityContribution])
+@@map("kabaries")
 }
 
 model KabaryStep {
@@ -347,6 +375,12 @@ model Poesie {
   shareCount  Int @default(0)
   reportCount Int @default(0)
 
+    // Attribution communautaire (si issu d une contribution validee)
+  contributorId           String?
+  contributorName         String?
+  contributionId          String?
+  isCommunityContribution Boolean @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -361,7 +395,8 @@ model Poesie {
   @@index([status])
   @@index([isFeatured])
   @@index([createdAt])
-  @@map("poesies")
+    @@index([isCommunityContribution])
+@@map("poesies")
 }
 
 model PoesieStanza {
@@ -403,6 +438,12 @@ model Recitation {
   shareCount  Int @default(0)
   reportCount Int @default(0)
 
+    // Attribution communautaire (si issu d une contribution validee)
+  contributorId           String?
+  contributorName         String?
+  contributionId          String?
+  isCommunityContribution Boolean @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -415,5 +456,6 @@ model Recitation {
   @@index([status])
   @@index([isFeatured])
   @@index([createdAt])
-  @@map("recitations")
+    @@index([isCommunityContribution])
+@@map("recitations")
 }

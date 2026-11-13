@@ -33,6 +33,12 @@ model Contribution {
   isDuplicateConfirmed  Boolean   @default(false)
   markedForDeletionAt   DateTime? // Fin du compte à rebours 24h
 
+  // Rattachement au contenu officiel validé & publié
+  officialItemId        String?
+  officialItemType      String?   // MALAGASY_ITEM | CITATION | CONTE | KABARY | POESIE | RECITATION
+  officialItemSlug      String?
+  publishedAt           DateTime?
+
   // Réclamation et contestation du contributeur
   disputeMessage        String?   @db.Text
   disputeStatus         DisputeStatus @default(NONE)
@@ -51,6 +57,7 @@ model Contribution {
 
   @@index([userId])
   @@index([status])
+  @@index([officialItemId])
   @@index([moderationFlagged])
   @@index([isDuplicateConfirmed])
   @@index([markedForDeletionAt])
