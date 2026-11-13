@@ -139,6 +139,7 @@ export class UsersService {
       badgesCount,
       approvedContributions,
       badges,
+      sharedDecks,
     ] = await Promise.all([
       this.prisma.user.findUnique({
         where: { id: targetUserId },
@@ -199,6 +200,22 @@ export class UsersService {
         },
         orderBy: { unlockedAt: 'desc' },
         take: 12,
+      }),
+      this.prisma.userQuizSet.findMany({
+        where: {
+          authorId: targetUserId,
+          OR: [{ visibility: 'PUBLIC' }, { isPublic: true }],
+        },
+        include: {
+          author: {
+            select: { id: true, name: true, image: true },
+          },
+          _count: {
+            select: { questions: true },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 20,
       }),
     ]);
 
@@ -347,6 +364,7 @@ export class UsersService {
       h2h,
       badges,
       approvedContributions,
+      sharedDecks,
     };
   }
 
