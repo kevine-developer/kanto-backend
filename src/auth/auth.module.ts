@@ -7,6 +7,7 @@ import {
 import { AuthModule as BetterAuthModule } from '@thallesp/nestjs-better-auth';
 import { auth } from './auth.js';
 import { PasswordResetSecurityMiddleware } from './middlewares/password-reset-security.middleware.js';
+import { MobileAdminAccessMiddleware } from './middlewares/mobile-admin-access.middleware.js';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { PasswordResetSecurityMiddleware } from './middlewares/password-reset-se
       },
     }),
   ],
-  providers: [PasswordResetSecurityMiddleware],
+  providers: [PasswordResetSecurityMiddleware, MobileAdminAccessMiddleware],
   exports: [BetterAuthModule],
 })
 export class AuthModule implements NestModule {
@@ -32,6 +33,16 @@ export class AuthModule implements NestModule {
         { path: 'api/auth/reset-password', method: RequestMethod.POST },
         { path: 'auth/reset-password', method: RequestMethod.POST },
         { path: 'reset-password', method: RequestMethod.POST },
+      );
+
+    consumer
+      .apply(MobileAdminAccessMiddleware)
+      .forRoutes(
+        { path: 'api/auth/sign-in/*', method: RequestMethod.POST },
+        { path: 'auth/sign-in/*', method: RequestMethod.POST },
+        { path: 'api/auth/sign-in', method: RequestMethod.POST },
+        { path: 'auth/sign-in', method: RequestMethod.POST },
+        { path: 'sign-in/*', method: RequestMethod.POST },
       );
   }
 }
