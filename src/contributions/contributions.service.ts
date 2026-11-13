@@ -767,15 +767,27 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
   }
 
   // ───────────────────────────────────────────────────────────────────────────
-  // GET /contributions/community — Contenus publics approuvés UNIQUEMENT
+  // GET /contributions/community — Propositions communautaires en cours de revue / vote
   // ───────────────────────────────────────────────────────────────────────────
-  async findCommunity(category?: string, userId?: string, limit: number = 50) {
+  async findCommunity(
+    category?: string,
+    userId?: string,
+    limit: number = 50,
+    statusFilter?: string,
+  ) {
     const safeLimit = Math.min(Math.max(1, Number(limit) || 50), 100);
+
+    // Les contributions validées (APPROVED) sont automatiquement transférées
+    // au catalogue officiel et sortent de la liste des propositions communautaires.
+    const statusCondition =
+      statusFilter && statusFilter !== 'ALL'
+        ? (statusFilter as any)
+        : { in: ['PENDING_REVIEW', 'CHANGES_REQUESTED'] };
+
     const items = await this.prisma.contribution.findMany({
       where: {
-        status: 'APPROVED', // Règle stricte : Seuls les contenus approuvés sont visibles du public
-
-        ...(category && { category: category as any }),
+        status: statusCondition,
+        ...(category && category !== 'all' ? { category: category as any } : {}),
       },
       take: safeLimit,
       select: {
@@ -1331,7 +1343,7 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
   }
 
   // ───────────────────────────────────────────────────────────────────────────
-  // PATCH /contributions/:id/validate (Admin)
+  // PATCH /contributions/:id/validate (Admin) — Validation & Transfert officiel
   // ───────────────────────────────────────────────────────────────────────────
   async validate(
     id: string,
@@ -1352,6 +1364,19 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       );
     }
 
+    // ── Idempotence stricte : Si déjà validée et transférée, ne pas dupliquer
+    if (approve && contribution.status === 'APPROVED' && contribution.officialItemId) {
+      this.logger.log(
+        `[validate] Contribution ${id} déjà approuvée et intégrée au contenu officiel ${contribution.officialItemId}`,
+      );
+      return {
+        success: true,
+        status: 'APPROVED',
+        contribution,
+        alreadyProcessed: true,
+      };
+    }
+
     // ── Cas 1 : Demande de modifications au contributeur ─────────────────────
     if (!approve && requestChanges) {
       const feedback =
@@ -1366,7 +1391,12 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
           adminReviewedBy: adminUserId || null,
           adminReviewedAt: new Date(),
         },
-        select: CONTRIBUTION_BASE_SELECT,
+        select: {
+          ...CONTRIBUTION_BASE_SELECT,
+          textMg: true,
+          textFr: true,
+          meaning: true,
+        },
       });
 
       await this.logAudit({
@@ -1419,7 +1449,12 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
           adminReviewedBy: adminUserId || null,
           adminReviewedAt: new Date(),
         },
-        select: CONTRIBUTION_BASE_SELECT,
+        select: {
+          ...CONTRIBUTION_BASE_SELECT,
+          textMg: true,
+          textFr: true,
+          meaning: true,
+        },
       });
 
       await this.logAudit({
@@ -1452,141 +1487,388 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       return { success: true, status: 'REJECTED', contribution: updated };
     }
 
-    // ── Cas 3 : Approbation + intégration au catalogue officiel ───────────────
-    const updated = await this.prisma.$transaction(async (prisma) => {
+    // ── Cas 3 : Approbation + intégration transactionnelle au catalogue officiel ──
+    let contributorUser: {
+      name: string;
+      image: string | null;
+      email: string | null;
+    } | null = null;
+    try {
+      contributorUser = await this.prisma.user.findUnique({
+        where: { id: contribution.userId },
+        select: { name: true, image: true, email: true },
+      });
+    } catch (userErr) {
+      this.logger.warn(
+        `Impossible de récupérer les infos de l utilisateur ${contribution.userId}: ${userErr}`,
+      );
+    }
+
+    const contributorDisplayName =
+      contributorUser?.name || 'Contributeur Kanto MG';
+
+    const transactionResult = await this.prisma.$transaction(async (prisma) => {
+      const baseSlug =
+        generateSlug(contribution.textMg.slice(0, 80)) ||
+        `contrib-${contribution.id.slice(-6)}`;
+
+      let officialItemId: string | null = null;
+      let officialItemType: string | null = null;
+      let officialItemSlug: string | null = null;
+
+      const cat = contribution.category;
+
+      if (
+        cat === 'PROVERBE' ||
+        cat === 'EXPRESSION' ||
+        cat === 'DICTON' ||
+        (cat as string) === 'MOT_RARE'
+      ) {
+        // Vérification de sécurité anti-doublon au sein de la transaction
+        const existingItem = await prisma.malagasyItem.findFirst({
+          where: { contributionId: contribution.id },
+        });
+
+        if (existingItem) {
+          officialItemId = existingItem.id;
+          officialItemType = 'MalagasyItem';
+          officialItemSlug = existingItem.slug;
+        } else {
+          const slug = await this.ensureUniqueSlug(baseSlug, async (s) => {
+            const r = await prisma.malagasyItem.findUnique({
+              where: { slug: s },
+            });
+            return !!r;
+          });
+
+          const officialCategory =
+            cat === 'PROVERBE'
+              ? 'PROVERBE'
+              : cat === 'DICTON'
+              ? 'DICTON'
+              : 'EXPRESSION';
+
+          const created = await prisma.malagasyItem.create({
+            data: {
+              slug,
+              malagasy: contribution.textMg,
+              french: contribution.textFr,
+              meaning: contribution.meaning,
+              category: officialCategory as any,
+              status: 'PUBLISHED',
+              origins: contribution.region ? [contribution.region] : [],
+              contributorId: contribution.userId,
+              contributorName: contributorDisplayName,
+              contributionId: contribution.id,
+              isCommunityContribution: true,
+            },
+          });
+          officialItemId = created.id;
+          officialItemType = 'MalagasyItem';
+          officialItemSlug = created.slug;
+        }
+      } else if (cat === 'CITATION') {
+        const existingCitation = await prisma.citation.findFirst({
+          where: { contributionId: contribution.id },
+        });
+
+        if (existingCitation) {
+          officialItemId = existingCitation.id;
+          officialItemType = 'Citation';
+          officialItemSlug = existingCitation.id;
+        } else {
+          const created = await prisma.citation.create({
+            data: {
+              citationMg: contribution.textMg,
+              citationFr: contribution.textFr,
+              sourceName: contribution.region ?? 'Communauté Kanto MG',
+              contexte: contribution.meaning,
+              status: 'PUBLISHED',
+              contributorId: contribution.userId,
+              contributorName: contributorDisplayName,
+              contributionId: contribution.id,
+              isCommunityContribution: true,
+            },
+          });
+          officialItemId = created.id;
+          officialItemType = 'Citation';
+          officialItemSlug = created.id;
+        }
+      } else if (cat === 'CONTE') {
+        const existingConte = await prisma.conte.findFirst({
+          where: { contributionId: contribution.id },
+        });
+
+        if (existingConte) {
+          officialItemId = existingConte.id;
+          officialItemType = 'Conte';
+          officialItemSlug = existingConte.slug;
+        } else {
+          let parsedConte: CreateConteContributionDto | null = null;
+          try {
+            parsedConte = JSON.parse(
+              contribution.textMg,
+            ) as CreateConteContributionDto;
+          } catch {
+            // textMg n'est pas un JSON valide — champs bruts
+          }
+
+          const rawTitle =
+            parsedConte?.title ??
+            contribution.textMg.split('\n')[0].slice(0, 80);
+          const slug = await this.ensureUniqueSlug(
+            generateSlug(rawTitle || baseSlug),
+            async (s) => {
+              const r = await prisma.conte.findUnique({ where: { slug: s } });
+              return !!r;
+            },
+          );
+
+          const conte = await prisma.conte.create({
+            data: {
+              slug,
+              title: parsedConte?.title ?? rawTitle,
+              titleFr:
+                parsedConte?.titleFr ??
+                (contribution.textFr
+                  ? contribution.textFr.split('\n')[0].slice(0, 80)
+                  : 'Conte traditionnel'),
+              moralMg: parsedConte?.moralMg ?? contribution.meaning,
+              moralFr: parsedConte?.moralFr,
+              source:
+                parsedConte?.source ??
+                contribution.region ??
+                'Communauté Kanto MG',
+              status: 'PUBLISHED',
+              contributorId: contribution.userId,
+              contributorName: contributorDisplayName,
+              contributionId: contribution.id,
+              isCommunityContribution: true,
+            },
+          });
+
+          if (parsedConte?.paragraphs?.length) {
+            await prisma.conteParagraph.createMany({
+              data: parsedConte.paragraphs.map((p) => ({
+                conteId: conte.id,
+                paragraphNumber: p.paragraphNumber,
+                textMg: p.textMg,
+                textFr: p.textFr,
+              })),
+            });
+          }
+
+          officialItemId = conte.id;
+          officialItemType = 'Conte';
+          officialItemSlug = conte.slug;
+        }
+      } else if (cat === 'KABARY') {
+        const existingKabary = await prisma.kabary.findFirst({
+          where: { contributionId: contribution.id },
+        });
+
+        if (existingKabary) {
+          officialItemId = existingKabary.id;
+          officialItemType = 'Kabary';
+          officialItemSlug = existingKabary.slug;
+        } else {
+          let parsedKabary: CreateKabaryContributionDto | null = null;
+          try {
+            parsedKabary = JSON.parse(
+              contribution.textMg,
+            ) as CreateKabaryContributionDto;
+          } catch {
+            // textMg n'est pas un JSON valide — champs bruts
+          }
+
+          const rawTitle =
+            parsedKabary?.title ??
+            contribution.textMg.split('\n')[0].slice(0, 80);
+          const slug = await this.ensureUniqueSlug(
+            generateSlug(rawTitle || baseSlug),
+            async (s) => {
+              const r = await prisma.kabary.findUnique({ where: { slug: s } });
+              return !!r;
+            },
+          );
+
+          const kabary = await prisma.kabary.create({
+            data: {
+              slug,
+              title: parsedKabary?.title ?? rawTitle,
+              titleFr:
+                parsedKabary?.titleFr ??
+                (contribution.textFr
+                  ? contribution.textFr.split('\n')[0].slice(0, 80)
+                  : 'Discours rituel'),
+              occasion:
+                parsedKabary?.occasion ??
+                contribution.meaning ??
+                'Kabary iombonana',
+              occasionFr: parsedKabary?.occasionFr,
+              speakerRoleMg: parsedKabary?.speakerRoleMg,
+              speakerRoleFr: parsedKabary?.speakerRoleFr,
+              recipientRoleMg: parsedKabary?.recipientRoleMg,
+              recipientRoleFr: parsedKabary?.recipientRoleFr,
+              region: parsedKabary?.region ?? contribution.region,
+              concludingProverbMg: parsedKabary?.concludingProverbMg,
+              status: 'PUBLISHED',
+              contributorId: contribution.userId,
+              contributorName: contributorDisplayName,
+              contributionId: contribution.id,
+              isCommunityContribution: true,
+            },
+          });
+
+          if (parsedKabary?.steps?.length) {
+            await prisma.kabaryStep.createMany({
+              data: parsedKabary.steps.map((s) => ({
+                kabaryId: kabary.id,
+                stepNumber: s.stepNumber,
+                stepNameMg: s.stepNameMg,
+                stepNameFr: s.stepNameFr,
+                textMg: s.textMg,
+                textFr: s.textFr,
+                explanationFr: s.explanationFr,
+              })),
+            });
+          }
+
+          officialItemId = kabary.id;
+          officialItemType = 'Kabary';
+          officialItemSlug = kabary.slug;
+        }
+      } else if (cat === 'POESIE' || (cat as string) === 'TONONKALO') {
+        const existingPoesie = await prisma.poesie.findFirst({
+          where: { contributionId: contribution.id },
+        });
+
+        if (existingPoesie) {
+          officialItemId = existingPoesie.id;
+          officialItemType = 'Poesie';
+          officialItemSlug = existingPoesie.slug;
+        } else {
+          const titleMg =
+            contribution.textMg.split('\n')[0].slice(0, 80) || 'Tononkalo';
+          const titleFr = contribution.textFr
+            ? contribution.textFr.split('\n')[0].slice(0, 80)
+            : 'Poésie';
+          const slug = await this.ensureUniqueSlug(
+            generateSlug(titleMg || baseSlug),
+            async (s) => {
+              const r = await prisma.poesie.findUnique({ where: { slug: s } });
+              return !!r;
+            },
+          );
+
+          const poesie = await prisma.poesie.create({
+            data: {
+              slug,
+              title: titleMg,
+              titleFr: titleFr,
+              author: contributorDisplayName,
+              category: 'tononkalo',
+              explanationMg: contribution.meaning,
+              explanationFr: contribution.meaning,
+              status: 'PUBLISHED',
+              contributorId: contribution.userId,
+              contributorName: contributorDisplayName,
+              contributionId: contribution.id,
+              isCommunityContribution: true,
+            },
+          });
+
+          const versesMg = contribution.textMg
+            .split('\n')
+            .filter((l) => l.trim().length > 0);
+          const versesFr = contribution.textFr
+            ? contribution.textFr.split('\n').filter((l) => l.trim().length > 0)
+            : [];
+
+          await prisma.poesieStanza.create({
+            data: {
+              poesieId: poesie.id,
+              stanzaNumber: 1,
+              versesMg,
+              versesFr,
+            },
+          });
+
+          officialItemId = poesie.id;
+          officialItemType = 'Poesie';
+          officialItemSlug = poesie.slug;
+        }
+      } else if (cat === 'RECITATION' || (cat as string) === 'TSIANJERY') {
+        const existingRecitation = await prisma.recitation.findFirst({
+          where: { contributionId: contribution.id },
+        });
+
+        if (existingRecitation) {
+          officialItemId = existingRecitation.id;
+          officialItemType = 'Recitation';
+          officialItemSlug = existingRecitation.slug;
+        } else {
+          const titleMg =
+            contribution.textMg.split('\n')[0].slice(0, 80) || 'Tsianjery';
+          const titleFr = contribution.textFr
+            ? contribution.textFr.split('\n')[0].slice(0, 80)
+            : 'Récitation';
+          const slug = await this.ensureUniqueSlug(
+            generateSlug(titleMg || baseSlug),
+            async (s) => {
+              const r = await prisma.recitation.findUnique({
+                where: { slug: s },
+              });
+              return !!r;
+            },
+          );
+
+          const recitation = await prisma.recitation.create({
+            data: {
+              slug,
+              title: titleMg,
+              titleFr: titleFr,
+              author: contributorDisplayName,
+              description: contribution.meaning,
+              contentLines: contribution.textMg
+                .split('\n')
+                .filter((l) => l.trim().length > 0),
+              references: contribution.region
+                ? [contribution.region]
+                : ['Lovantsofina'],
+              status: 'PUBLISHED',
+              contributorId: contribution.userId,
+              contributorName: contributorDisplayName,
+              contributionId: contribution.id,
+              isCommunityContribution: true,
+            },
+          });
+
+          officialItemId = recitation.id;
+          officialItemType = 'Recitation';
+          officialItemSlug = recitation.slug;
+        }
+      }
+
+      // Mise à jour de la contribution en APPROVED avec références officielles
       const validated = await prisma.contribution.update({
         where: { id },
         data: {
           status: 'APPROVED',
+          officialItemId,
+          officialItemType,
+          officialItemSlug,
+          publishedAt: new Date(),
           adminReviewedBy: adminUserId || null,
           adminReviewedAt: new Date(),
         },
-        select: CONTRIBUTION_BASE_SELECT,
+        select: {
+          ...CONTRIBUTION_BASE_SELECT,
+          textMg: true,
+          textFr: true,
+          meaning: true,
+        },
       });
-
-      const baseSlug = generateSlug(validated.textMg.slice(0, 80));
-
-      if (
-        validated.category === 'PROVERBE' ||
-        validated.category === 'EXPRESSION' ||
-        validated.category === 'DICTON'
-      ) {
-        const slug = await this.ensureUniqueSlug(baseSlug, async (s) => {
-          const r = await prisma.malagasyItem.findUnique({
-            where: { slug: s },
-          });
-          return !!r;
-        });
-        await prisma.malagasyItem.create({
-          data: {
-            slug,
-            malagasy: validated.textMg,
-            french: validated.textFr,
-            meaning: validated.meaning,
-            category: validated.category,
-            status: 'PUBLISHED',
-            origins: validated.region ? [validated.region] : [],
-          },
-        });
-      } else if (validated.category === 'CITATION') {
-        await prisma.citation.create({
-          data: {
-            citationMg: validated.textMg,
-            citationFr: validated.textFr,
-            sourceName: validated.region ?? 'Communauté',
-            contexte: validated.meaning,
-            status: 'PUBLISHED',
-          },
-        });
-      } else if (validated.category === 'CONTE') {
-        let parsedConte: CreateConteContributionDto | null = null;
-        try {
-          parsedConte = JSON.parse(
-            validated.textMg,
-          ) as CreateConteContributionDto;
-        } catch {
-          // textMg n'est pas un JSON valide — on utilise les champs bruts
-        }
-
-        const slug = await this.ensureUniqueSlug(
-          generateSlug(parsedConte?.title ?? baseSlug),
-          async (s) => {
-            const r = await prisma.conte.findUnique({ where: { slug: s } });
-            return !!r;
-          },
-        );
-
-        const conte = await prisma.conte.create({
-          data: {
-            slug,
-            title: parsedConte?.title ?? validated.textMg,
-            titleFr: parsedConte?.titleFr ?? validated.textFr,
-            moralMg: parsedConte?.moralMg ?? validated.meaning,
-            moralFr: parsedConte?.moralFr,
-            source: parsedConte?.source ?? validated.region ?? 'Communauté',
-            status: 'PUBLISHED',
-          },
-        });
-
-        if (parsedConte?.paragraphs?.length) {
-          await prisma.conteParagraph.createMany({
-            data: parsedConte.paragraphs.map((p) => ({
-              conteId: conte.id,
-              paragraphNumber: p.paragraphNumber,
-              textMg: p.textMg,
-              textFr: p.textFr,
-            })),
-          });
-        }
-      } else if (validated.category === 'KABARY') {
-        let parsedKabary: CreateKabaryContributionDto | null = null;
-        try {
-          parsedKabary = JSON.parse(
-            validated.textMg,
-          ) as CreateKabaryContributionDto;
-        } catch {
-          // textMg n'est pas un JSON valide — on utilise les champs bruts
-        }
-
-        const slug = await this.ensureUniqueSlug(
-          generateSlug(parsedKabary?.title ?? baseSlug),
-          async (s) => {
-            const r = await prisma.kabary.findUnique({ where: { slug: s } });
-            return !!r;
-          },
-        );
-
-        const kabary = await prisma.kabary.create({
-          data: {
-            slug,
-            title: parsedKabary?.title ?? validated.textMg,
-            titleFr: parsedKabary?.titleFr ?? validated.textFr,
-            occasion: parsedKabary?.occasion ?? validated.meaning ?? 'Autre',
-            occasionFr: parsedKabary?.occasionFr,
-            speakerRoleMg: parsedKabary?.speakerRoleMg,
-            speakerRoleFr: parsedKabary?.speakerRoleFr,
-            recipientRoleMg: parsedKabary?.recipientRoleMg,
-            recipientRoleFr: parsedKabary?.recipientRoleFr,
-            region: parsedKabary?.region ?? validated.region,
-            concludingProverbMg: parsedKabary?.concludingProverbMg,
-            status: 'PUBLISHED',
-          },
-        });
-
-        if (parsedKabary?.steps?.length) {
-          await prisma.kabaryStep.createMany({
-            data: parsedKabary.steps.map((s) => ({
-              kabaryId: kabary.id,
-              stepNumber: s.stepNumber,
-              stepNameMg: s.stepNameMg,
-              stepNameFr: s.stepNameFr,
-              textMg: s.textMg,
-              textFr: s.textFr,
-              explanationFr: s.explanationFr,
-            })),
-          });
-        }
-      }
 
       // +50 XP au contributeur
       const updatedProgress = await prisma.userProgress.upsert({
@@ -1595,7 +1877,13 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
         create: { userId: validated.userId, totalXp: 50 },
       });
 
-      return { validated, updatedProgress };
+      return {
+        validated,
+        updatedProgress,
+        officialItemId,
+        officialItemType,
+        officialItemSlug,
+      };
     });
 
     // Enregistrement de l'audit log d'approbation
@@ -1607,34 +1895,37 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       fromStatus: contribution.status,
       toStatus: 'APPROVED',
       reason:
-        reason || 'Contribution validée et intégrée au catalogue officiel',
+        reason ||
+        `Contribution validée et intégrée au catalogue officiel (${transactionResult.officialItemType || 'Contenu'})`,
     });
 
-    // Profil contributeur pour leaderboard, notification et email
-    let contributorUser: {
-      name: string;
-      image: string | null;
-      email: string | null;
-    } | null = null;
+    // Invalidation immédiate des caches Redis du catalogue officiel
     try {
-      contributorUser = await this.prisma.user.findUnique({
-        where: { id: updated.validated.userId },
-        select: { name: true, image: true, email: true },
-      });
-    } catch (userErr) {
-      this.logger.warn(
-        `Impossible de récupérer les infos de l utilisateur ${updated.validated.userId}: ${userErr}`,
+      await Promise.allSettled([
+        this.redisService.delByPattern('items:*'),
+        this.redisService.delByPattern('citations:*'),
+        this.redisService.delByPattern('contes:*'),
+        this.redisService.delByPattern('kabaries:*'),
+        this.redisService.delByPattern('poesies:*'),
+        this.redisService.delByPattern('recitations:*'),
+        this.redisService.delByPattern('categories:*'),
+        this.redisService.delByPattern('search:*'),
+      ]);
+      this.logger.log(
+        `[validate] Caches Redis du catalogue officiel invalidés avec succès suite à la publication de la contribution ${id}`,
       );
+    } catch (cacheErr) {
+      this.logger.warn(`Échec invalidation cache Redis après validation : ${cacheErr}`);
     }
 
     // 1. Notification temps réel du classement
     try {
       const payload: LeaderboardRealtimePayload = {
-        userId: updated.validated.userId,
-        totalXp: Number(updated.updatedProgress.totalXp),
-        level: updated.updatedProgress.level || 1,
-        streakDays: updated.updatedProgress.streakDays || 0,
-        name: contributorUser?.name || 'Contributeur',
+        userId: transactionResult.validated.userId,
+        totalXp: Number(transactionResult.updatedProgress.totalXp),
+        level: transactionResult.updatedProgress.level || 1,
+        streakDays: transactionResult.updatedProgress.streakDays || 0,
+        name: contributorDisplayName,
         image: contributorUser?.image || null,
         xpDelta: 50,
         source: 'contribution_approved',
@@ -1643,31 +1934,34 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
       await this.redisService.publish(REALTIME_CHANNELS.LEADERBOARD, payload);
     } catch (err) {
       this.logger.warn(
-        `⚠️ Impossible de publier la mise à jour leaderboard pour le contributeur ${updated.validated.userId}: ${err}`,
+        `⚠️ Impossible de publier la mise à jour leaderboard pour le contributeur ${transactionResult.validated.userId}: ${err}`,
       );
     }
 
-    // 2. Notification in-app, push et e-mail de félicitations centralisés via EventNotificationService
-    const textPreview = updated.validated.textMg.slice(0, 45);
+    // 2. Notification in-app, push et e-mail de félicitations
+    const textPreview = transactionResult.validated.textMg.slice(0, 45);
     void this.eventNotificationService
       .dispatchNotificationEvent({
         type: 'CONTRIBUTION_APPROVED',
-        recipientUserId: updated.validated.userId,
-        contributionId: updated.validated.id,
+        recipientUserId: transactionResult.validated.userId,
+        contributionId: transactionResult.validated.id,
         contributionTitle: textPreview,
-        category: updated.validated.category,
+        category: transactionResult.validated.category,
         xpReward: 50,
       })
       .catch((notifErr) => {
         this.logger.warn(
-          `⚠️ [Contributions] Échec dispatch CONTRIBUTION_APPROVED pour ${updated.validated.userId} : ${notifErr}`,
+          `⚠️ [Contributions] Échec dispatch CONTRIBUTION_APPROVED pour ${transactionResult.validated.userId} : ${notifErr}`,
         );
       });
 
     return {
       success: true,
       status: 'APPROVED',
-      contribution: updated.validated,
+      contribution: transactionResult.validated,
+      officialItemId: transactionResult.officialItemId,
+      officialItemType: transactionResult.officialItemType,
+      officialItemSlug: transactionResult.officialItemSlug,
     };
   }
 

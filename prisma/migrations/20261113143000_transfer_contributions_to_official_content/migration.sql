@@ -57,3 +57,4 @@ ALTER TABLE "recitations" ADD COLUMN IF NOT EXISTS "contributorName" TEXT;
 ALTER TABLE "recitations" ADD COLUMN IF NOT EXISTS "contributionId" TEXT;
 ALTER TABLE "recitations" ADD COLUMN IF NOT EXISTS "isCommunityContribution" BOOLEAN NOT NULL DEFAULT false;
 CREATE INDEX IF NOT EXISTS "recitations_isCommunityContribution_idx" ON "recitations"("isCommunityContribution");
+
