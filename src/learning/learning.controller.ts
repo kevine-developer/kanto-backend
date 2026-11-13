@@ -23,6 +23,7 @@ import {
 } from '../auth/index.js';
 
 @Controller('learning')
+@UseGuards(AuthGuard)
 export class LearningController {
   constructor(private readonly learningService: LearningService) {}
 

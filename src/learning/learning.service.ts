@@ -363,7 +363,6 @@ export class LearningService implements OnModuleInit {
         const progressList = await this.prisma.userLessonProgress.findMany({
           where: {
             userId,
-            lesson: { trackId: track.id },
           },
           include: {
             lesson: true,
@@ -520,17 +519,42 @@ export class LearningService implements OnModuleInit {
         // Note : On ne pousse PAS dans sections[] pour supprimer le premier doublon
         // et réserver l'affichage complet à la carte culturelle dédiée.
       } else if (s.type === 'quiz') {
-        const choices: string[] = s.choices || [];
+        const rawChoices: string[] = s.choices || [];
+        const correctIndex = typeof s.correctIndex === 'number' ? s.correctIndex : 0;
+
+        // Préparer les choix avec indication de la bonne réponse
+        const indexedChoices = rawChoices.map((choice: string, cIdx: number) => ({
+          text: choice,
+          isCorrect: cIdx === correctIndex,
+        }));
+
+        // Mélange aléatoire (Fisher-Yates) pour que la réponse ne soit jamais systématiquement à la même position
+        for (let i = indexedChoices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const temp = indexedChoices[i];
+          indexedChoices[i] = indexedChoices[j];
+          indexedChoices[j] = temp;
+        }
+
+        let correctOptionId = 'opt_0';
+        const options = indexedChoices.map((item, optIdx) => {
+          const optId = `opt_${optIdx}`;
+          if (item.isCorrect) {
+            correctOptionId = optId;
+          }
+          return {
+            id: optId,
+            textFr: item.text,
+            textMg: item.text,
+          };
+        });
+
         microQuiz.push({
           id: `quiz_${idx}`,
           questionFr: s.question || '',
           questionMg: s.questionMg || s.question || '',
-          options: choices.map((choice: string, cIdx: number) => ({
-            id: `opt_${cIdx}`,
-            textFr: choice,
-            textMg: choice,
-          })),
-          correctOptionId: `opt_${s.correctIndex ?? 0}`,
+          options,
+          correctOptionId,
           explanationFr: s.explanation || undefined,
           explanationMg: s.explanation || undefined,
         });
