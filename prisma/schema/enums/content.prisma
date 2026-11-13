@@ -9,6 +9,8 @@ enum CategoryType {
   CITATION
   CONTE
   KABARY
+  POESIE      // Tononkalo / Hainteny
+  RECITATION  // Tsianjery
 }
 
 enum ContentStatus {
