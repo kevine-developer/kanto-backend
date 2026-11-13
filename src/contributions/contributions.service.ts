@@ -1525,9 +1525,11 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
         (cat as string) === 'MOT_RARE'
       ) {
         // Vérification de sécurité anti-doublon au sein de la transaction
-        const existingItem = await prisma.malagasyItem.findFirst({
-          where: { contributionId: contribution.id },
-        });
+        const existingItem = prisma.malagasyItem.findFirst
+          ? await prisma.malagasyItem.findFirst({
+              where: { contributionId: contribution.id },
+            })
+          : null;
 
         if (existingItem) {
           officialItemId = existingItem.id;
@@ -1568,9 +1570,11 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
           officialItemSlug = created.slug;
         }
       } else if (cat === 'CITATION') {
-        const existingCitation = await prisma.citation.findFirst({
-          where: { contributionId: contribution.id },
-        });
+        const existingCitation = prisma.citation.findFirst
+          ? await prisma.citation.findFirst({
+              where: { contributionId: contribution.id },
+            })
+          : null;
 
         if (existingCitation) {
           officialItemId = existingCitation.id;
@@ -1595,9 +1599,11 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
           officialItemSlug = created.id;
         }
       } else if (cat === 'CONTE') {
-        const existingConte = await prisma.conte.findFirst({
-          where: { contributionId: contribution.id },
-        });
+        const existingConte = prisma.conte.findFirst
+          ? await prisma.conte.findFirst({
+              where: { contributionId: contribution.id },
+            })
+          : null;
 
         if (existingConte) {
           officialItemId = existingConte.id;
@@ -1663,9 +1669,11 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
           officialItemSlug = conte.slug;
         }
       } else if (cat === 'KABARY') {
-        const existingKabary = await prisma.kabary.findFirst({
-          where: { contributionId: contribution.id },
-        });
+        const existingKabary = prisma.kabary.findFirst
+          ? await prisma.kabary.findFirst({
+              where: { contributionId: contribution.id },
+            })
+          : null;
 
         if (existingKabary) {
           officialItemId = existingKabary.id;
@@ -1739,9 +1747,11 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
           officialItemSlug = kabary.slug;
         }
       } else if (cat === 'POESIE' || (cat as string) === 'TONONKALO') {
-        const existingPoesie = await prisma.poesie.findFirst({
-          where: { contributionId: contribution.id },
-        });
+        const existingPoesie = prisma.poesie.findFirst
+          ? await prisma.poesie.findFirst({
+              where: { contributionId: contribution.id },
+            })
+          : null;
 
         if (existingPoesie) {
           officialItemId = existingPoesie.id;
@@ -1799,9 +1809,11 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
           officialItemSlug = poesie.slug;
         }
       } else if (cat === 'RECITATION' || (cat as string) === 'TSIANJERY') {
-        const existingRecitation = await prisma.recitation.findFirst({
-          where: { contributionId: contribution.id },
-        });
+        const existingRecitation = prisma.recitation.findFirst
+          ? await prisma.recitation.findFirst({
+              where: { contributionId: contribution.id },
+            })
+          : null;
 
         if (existingRecitation) {
           officialItemId = existingRecitation.id;
