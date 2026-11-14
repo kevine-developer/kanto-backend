@@ -409,9 +409,24 @@ export class FriendsService {
   async cancelFriendRequest(senderId: string, targetUserId: string) {
     const friendship = await this.prisma.friendship.findFirst({
       where: {
-        senderId,
-        receiverId: targetUserId,
-        status: FriendshipStatus.PENDING,
+        OR: [
+          {
+            senderId,
+            receiverId: targetUserId,
+            status: FriendshipStatus.PENDING,
+          },
+          {
+            id: targetUserId,
+            senderId,
+            status: FriendshipStatus.PENDING,
+          },
+          // Sécurisation : si la demande était dans l'autre sens
+          {
+            receiverId: senderId,
+            senderId: targetUserId,
+            status: FriendshipStatus.PENDING,
+          },
+        ],
       },
     });
 
@@ -427,7 +442,7 @@ export class FriendsService {
   }
 
   /**
-   * Supprime un ami de sa liste (retrait mutuel).
+   * Supprime un ami de sa liste (retrait mutuel) ou annule une demande d'ami en attente.
    */
   async removeFriend(userId: string, friendUserId: string) {
     const friendship = await this.prisma.friendship.findFirst({
@@ -435,8 +450,9 @@ export class FriendsService {
         OR: [
           { senderId: userId, receiverId: friendUserId },
           { senderId: friendUserId, receiverId: userId },
+          { id: friendUserId, OR: [{ senderId: userId }, { receiverId: userId }] },
         ],
-        status: FriendshipStatus.ACCEPTED,
+        status: { in: [FriendshipStatus.ACCEPTED, FriendshipStatus.PENDING] },
       },
     });
 
@@ -450,7 +466,13 @@ export class FriendsService {
       where: { id: friendship.id },
     });
 
-    return { success: true, message: 'Ami retiré de votre liste.' };
+    return {
+      success: true,
+      message:
+        friendship.status === FriendshipStatus.ACCEPTED
+          ? 'Ami retiré de votre liste.'
+          : 'Demande d’ami annulée.',
+    };
   }
 
   /**
