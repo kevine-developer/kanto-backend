@@ -69,6 +69,21 @@ export function renderBetaWaitlistScript(): string {
   var cardIos = document.getElementById('card-ios');
   var selectedPlatforms = ['ANDROID'];
 
+  function highlightConfirmButtons(platforms) {
+    var playBtn = document.getElementById('confirm-link-google-play');
+    var tfBtn = document.getElementById('confirm-link-testflight');
+    if (playBtn) playBtn.classList.remove('active-target');
+    if (tfBtn) tfBtn.classList.remove('active-target');
+
+    var list = platforms || selectedPlatforms;
+    if (list.indexOf('ANDROID') !== -1 && playBtn) {
+      playBtn.classList.add('active-target');
+    }
+    if (list.indexOf('IOS') !== -1 && tfBtn) {
+      tfBtn.classList.add('active-target');
+    }
+  }
+
   function updatePlatformCards() {
     if (cardAndroid) {
       cardAndroid.classList.toggle('checked', selectedPlatforms.indexOf('ANDROID') !== -1);
@@ -76,7 +91,11 @@ export function renderBetaWaitlistScript(): string {
     if (cardIos) {
       cardIos.classList.toggle('checked', selectedPlatforms.indexOf('IOS') !== -1);
     }
+    highlightConfirmButtons(selectedPlatforms);
   }
+
+  // Initialisation de la mise en valeur des liens de confirmation selon la plateforme par défaut
+  highlightConfirmButtons(selectedPlatforms);
 
   if (cardAndroid) {
     cardAndroid.addEventListener('click', function() {
@@ -289,6 +308,17 @@ export function renderBetaWaitlistScript(): string {
         }
       }
 
+      // Synchronisation et mise en exergue des boutons directs de confirmation supérieure
+      var topPlayBtn = document.getElementById('confirm-link-google-play');
+      var topTfBtn = document.getElementById('confirm-link-testflight');
+      if (topPlayBtn && data.links && data.links.androidWeb) {
+        topPlayBtn.href = data.links.androidWeb;
+      }
+      if (topTfBtn && data.links && data.links.testFlight) {
+        topTfBtn.href = data.links.testFlight;
+      }
+      highlightConfirmButtons(platforms);
+
     } catch (err) {
       showError('Erreur lors de la vérification de votre espace personnel.');
     } finally {
@@ -378,8 +408,12 @@ export function renderBetaWaitlistScript(): string {
       if (data.android) {
         var aBtn = document.getElementById('dl-btn-android-main');
         var aBadge = document.getElementById('dl-android-badge');
+        var aConfirmBtn = document.getElementById('confirm-link-google-play');
         if (aBtn && data.android.playStoreWebLink) {
           aBtn.href = data.android.playStoreWebLink;
+        }
+        if (aConfirmBtn && data.android.playStoreWebLink) {
+          aConfirmBtn.href = data.android.playStoreWebLink;
         }
         if (aBadge && data.android.availability) {
           aBadge.innerText = (data.android.availability === 'PUBLIC') ? 'Version Publique' : 'Programme Bêta Ouvert';
@@ -389,8 +423,12 @@ export function renderBetaWaitlistScript(): string {
       if (data.ios) {
         var iBtn = document.getElementById('dl-btn-ios-main');
         var iBadge = document.getElementById('dl-ios-badge');
+        var iConfirmBtn = document.getElementById('confirm-link-testflight');
         if (iBtn && data.ios.testFlightLink) {
           iBtn.href = data.ios.testFlightLink;
+        }
+        if (iConfirmBtn && data.ios.testFlightLink) {
+          iConfirmBtn.href = data.ios.testFlightLink;
         }
         if (iBadge && data.ios.availability) {
           iBadge.innerText = (data.ios.availability === 'PUBLIC') ? 'App Store' : 'Apple TestFlight';

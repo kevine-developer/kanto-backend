@@ -143,6 +143,71 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
           <span id="success-text"></span>
         </div>
 
+        <!-- ── LIENS OFFICIELS DE CONFIRMATION DU STATUT TESTEUR GOOGLE PLAY & TESTFLIGHT ── -->
+        <div class="testers-status-confirm-panel" id="testers-status-confirm-panel">
+          <div class="status-confirm-header">
+            <span class="status-confirm-badge">Validation du Statut Bêta</span>
+            <h3 class="status-confirm-title">Confirmer votre statut de testeur</h3>
+            <p class="status-confirm-subtitle">
+              Vous avez soumis votre e-mail ou reçu une invitation ? Confirmez directement votre statut de testeur pour autoriser vos téléchargements :
+            </p>
+          </div>
+
+          <div class="status-confirm-grid">
+            <!-- Lien Google Play Closed Testing -->
+            <a 
+              href="https://play.google.com/apps/testing/com.devengalere.kantomg" 
+              class="status-confirm-btn android" 
+              id="confirm-link-google-play"
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label="Confirmer mon statut testeur sur Google Play"
+            >
+              <div class="status-confirm-icon android">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8533 8.125 12 8.125s-3.5902.286-5.1368.8257L4.8409 5.4477a.416.416 0 00-.5676-.1521.416.416 0 00-.1521.5676l1.9973 3.4592C2.6889 10.9997.426 14.5408.426 18.6667h23.148c0-4.1259-2.2629-7.667-5.6925-9.3453"/>
+                </svg>
+              </div>
+              <div class="status-confirm-details">
+                <div class="status-confirm-tags">
+                  <span class="tag-platform android">Google Play</span>
+                  <span class="tag-status">Closed Testing</span>
+                </div>
+                <span class="status-confirm-action-text">Confirmer statut Google Play ↗</span>
+                <span class="status-confirm-hint">Accepter de devenir testeur officiel Android</span>
+              </div>
+            </a>
+
+            <!-- Lien Apple TestFlight iOS -->
+            <a 
+              href="https://testflight.apple.com/join/kantomg" 
+              class="status-confirm-btn ios" 
+              id="confirm-link-testflight"
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label="Confirmer mon statut testeur sur Apple TestFlight"
+            >
+              <div class="status-confirm-icon ios">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 0.92-2.87-.92.04-2.02.62-2.67 1.37-.56.64-1.05 1.71-.92 2.74 1.03.08 2.06-.49 2.67-1.24z"/>
+                </svg>
+              </div>
+              <div class="status-confirm-details">
+                <div class="status-confirm-tags">
+                  <span class="tag-platform ios">Apple iOS</span>
+                  <span class="tag-status">Invitation TestFlight</span>
+                </div>
+                <span class="status-confirm-action-text">Confirmer statut TestFlight iOS ↗</span>
+                <span class="status-confirm-hint">Rejoindre la bêta sur iPhone et iPad</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="testers-divider-row">
+          <span class="testers-divider-text">ou inscrivez-vous pour rejoindre le programme</span>
+        </div>
+
         <!-- Formulaire d'inscription directe (sans onglets distrayants) -->
         <form id="waitlist-form" class="testers-form">
           <!-- Piège anti-spam invisible -->
