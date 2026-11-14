@@ -24,7 +24,7 @@ export class CreateMultiplayerGameDto {
   @IsInt()
   @Min(5)
   @Max(15)
-  totalQuestions?: number = 5;
+  totalQuestions?: number = 10;
 
   @IsOptional()
   @IsInt()

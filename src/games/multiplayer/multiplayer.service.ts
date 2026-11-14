@@ -265,7 +265,7 @@ export class MultiplayerService {
   private async pickQuestions(
     gameType: MultiplayerGameTypeEnum | string,
     theme: string = 'ALL',
-    totalQuestions: number = 5,
+    totalQuestions: number = MULTIPLAYER_CONFIG.DEFAULT_QUESTIONS_COUNT,
     customQuizSetId?: string,
   ): Promise<string[]> {
     if (customQuizSetId) {
@@ -418,7 +418,10 @@ export class MultiplayerService {
     }
 
     const gameType = dto.gameType || MultiplayerGameTypeEnum.TRUE_FALSE;
-    const totalQuestions = Math.min(Math.max(dto.totalQuestions || 5, 5), 15);
+    const totalQuestions =
+      dto.totalQuestions && dto.totalQuestions >= 10
+        ? Math.min(dto.totalQuestions, 15)
+        : MULTIPLAYER_CONFIG.DEFAULT_QUESTIONS_COUNT;
     const timePerQuestion = dto.timePerQuestion || 15;
 
     // Récupérer le profil utilisateur connecté
