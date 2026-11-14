@@ -26,6 +26,9 @@ describe('UsersController', () => {
     deleteAvatar: jest.Mock<(...args: any[]) => Promise<any>>;
     deleteAccount: jest.Mock<(...args: any[]) => Promise<any>>;
     changePassword: jest.Mock<(...args: any[]) => Promise<any>>;
+    getAccountDeletionStatus: jest.Mock<(...args: any[]) => Promise<any>>;
+    reactivateAccount: jest.Mock<(...args: any[]) => Promise<any>>;
+    cancelReactivation: jest.Mock<(...args: any[]) => Promise<any>>;
   };
 
   beforeEach(async () => {
@@ -37,6 +40,9 @@ describe('UsersController', () => {
       deleteAvatar: jest.fn<(...args: any[]) => Promise<any>>(),
       deleteAccount: jest.fn<(...args: any[]) => Promise<any>>(),
       changePassword: jest.fn<(...args: any[]) => Promise<any>>(),
+      getAccountDeletionStatus: jest.fn<(...args: any[]) => Promise<any>>(),
+      reactivateAccount: jest.fn<(...args: any[]) => Promise<any>>(),
+      cancelReactivation: jest.fn<(...args: any[]) => Promise<any>>(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -272,6 +278,57 @@ describe('UsersController', () => {
         dto.revokeOtherSessions,
       );
       expect(result).toBe(expectedResponse);
+    });
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // getDeletionStatus
+  // ─────────────────────────────────────────────────────────────────────────
+
+  describe('getDeletionStatus', () => {
+    it('transmet userId au service pour obtenir le statut de rétractation', async () => {
+      const user = buildUser({ id: 'user-del' });
+      const { session } = buildUserSession(user);
+      const expected = { isPendingDeletion: false, status: 'ACTIVE' };
+      usersServiceMock.getAccountDeletionStatus.mockResolvedValue(expected);
+
+      const res = await controller.getDeletionStatus({ user, session } as any);
+      expect(usersServiceMock.getAccountDeletionStatus).toHaveBeenCalledWith('user-del');
+      expect(res).toBe(expected);
+    });
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // reactivateAccount
+  // ─────────────────────────────────────────────────────────────────────────
+
+  describe('reactivateAccount', () => {
+    it('transmet userId au service pour annuler la suppression programmée', async () => {
+      const user = buildUser({ id: 'user-react' });
+      const { session } = buildUserSession(user);
+      const expected = { success: true, message: 'Compte réactivé' };
+      usersServiceMock.reactivateAccount.mockResolvedValue(expected);
+
+      const res = await controller.reactivateAccount({ user, session } as any);
+      expect(usersServiceMock.reactivateAccount).toHaveBeenCalledWith('user-react');
+      expect(res).toBe(expected);
+    });
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // cancelReactivation
+  // ─────────────────────────────────────────────────────────────────────────
+
+  describe('cancelReactivation', () => {
+    it('transmet userId au service pour confirmer la déconnexion et suppression', async () => {
+      const user = buildUser({ id: 'user-cancel' });
+      const { session } = buildUserSession(user);
+      const expected = { success: true, message: 'Sessions révoquées' };
+      usersServiceMock.cancelReactivation.mockResolvedValue(expected);
+
+      const res = await controller.cancelReactivation({ user, session } as any);
+      expect(usersServiceMock.cancelReactivation).toHaveBeenCalledWith('user-cancel');
+      expect(res).toBe(expected);
     });
   });
 });

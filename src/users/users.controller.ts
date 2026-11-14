@@ -145,4 +145,31 @@ export class UsersController {
   ) {
     return this.usersService.deleteAccount(session.user.id, body);
   }
+
+  /**
+   * Récupère le statut de suppression / rétractation du compte connecté.
+   */
+  @Get('me/deletion-status')
+  @UseGuards(AuthGuard)
+  getDeletionStatus(@Session() session: UserSession) {
+    return this.usersService.getAccountDeletionStatus(session.user.id);
+  }
+
+  /**
+   * Réactive un compte en période de rétractation (annule la suppression programmée).
+   */
+  @Post('me/reactivate')
+  @UseGuards(AuthGuard)
+  reactivateAccount(@Session() session: UserSession) {
+    return this.usersService.reactivateAccount(session.user.id);
+  }
+
+  /**
+   * Confirme le maintien de la suppression et révoque les sessions actives.
+   */
+  @Post('me/cancel-reactivation')
+  @UseGuards(AuthGuard)
+  cancelReactivation(@Session() session: UserSession) {
+    return this.usersService.cancelReactivation(session.user.id);
+  }
 }

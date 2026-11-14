@@ -1,6 +1,9 @@
 import { jest } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
+import { validate } from 'class-validator';
+import { plainToInstance } from 'class-transformer';
 import { LeaderboardService } from './leaderboard.service.js';
+import { LeaderboardQueryDto } from './dto/leaderboard-query.dto.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { RedisService } from '../redis/redis.service.js';
 import { createPrismaMock } from '../test-utils/mock-prisma.factory.js';
@@ -296,6 +299,17 @@ describe('LeaderboardService', () => {
       expect(result.entries[0]).not.toHaveProperty('pushToken');
       expect(result.entries[0]).not.toHaveProperty('password');
       expect(result.entries[0]).not.toHaveProperty('banReason');
+    });
+
+    it('accepte level = 0 dans LeaderboardQueryDto pour les utilisateurs débutants', async () => {
+      const dto = plainToInstance(LeaderboardQueryDto, {
+        limit: 50,
+        period: 'alltime',
+        level: 0,
+      });
+      const errors = await validate(dto);
+      expect(errors.length).toBe(0);
+      expect(dto.level).toBe(0);
     });
   });
 });

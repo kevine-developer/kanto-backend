@@ -389,4 +389,14 @@ describe('AppController', () => {
       expect(mockRes.sendFile).toHaveBeenCalled();
     });
   });
+
+  describe('system/languages (GET /system/languages)', () => {
+    it('should return available languages array and default flags', async () => {
+      const result = await appController.getSystemLanguages();
+      expect(result).toHaveProperty('activeLanguages');
+      expect(Array.isArray(result.activeLanguages)).toBe(true);
+      expect(result.activeLanguages).toContain('fr');
+      expect(result.activeLanguages).toContain('mg');
+    });
+  });
 });

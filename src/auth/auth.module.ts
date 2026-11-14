@@ -38,11 +38,11 @@ export class AuthModule implements NestModule {
     consumer
       .apply(MobileAdminAccessMiddleware)
       .forRoutes(
-        { path: 'api/auth/sign-in/*', method: RequestMethod.POST },
-        { path: 'auth/sign-in/*', method: RequestMethod.POST },
+        { path: 'api/auth/sign-in/{*path}', method: RequestMethod.POST },
+        { path: 'auth/sign-in/{*path}', method: RequestMethod.POST },
         { path: 'api/auth/sign-in', method: RequestMethod.POST },
         { path: 'auth/sign-in', method: RequestMethod.POST },
-        { path: 'sign-in/*', method: RequestMethod.POST },
+        { path: 'sign-in/{*path}', method: RequestMethod.POST },
       );
   }
 }

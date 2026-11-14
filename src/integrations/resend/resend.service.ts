@@ -292,10 +292,43 @@ export class ResendService {
   }
 
   /**
+   * Normalise et valide le champ expéditeur 'from' au format strict RFC 5322 :
+   * - "Nom" <email@domaine.com> ou email@domaine.com
+   * - Élimine les doubles chevrons et les caractères non conformes
+   */
+  public formatValidFrom(fromCandidate?: string): string {
+    const raw = (fromCandidate || this.defaultFrom || '').trim().replace(/^["']|["']$/g, '');
+    if (!raw) return 'Kanto <onboarding@resend.dev>';
+
+    // Extraire l'adresse email pure avec un regex strict pour éviter d'embarquer des chevrons parasites
+    const emailMatch = raw.match(
+      /([a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/,
+    );
+    const pureEmail = emailMatch ? emailMatch[1].trim() : '';
+
+    if (!pureEmail || !pureEmail.includes('@')) {
+      return this.defaultFrom || 'Kanto <onboarding@resend.dev>';
+    }
+
+    // Extraire le nom d'affichage s'il existe (tout ce qui précède le premier '<')
+    let displayName = raw.split('<')[0]?.trim();
+    if (displayName) {
+      displayName = displayName.replace(/["']/g, '').trim();
+    }
+
+    if (!displayName || displayName === pureEmail) {
+      return pureEmail;
+    }
+
+    // Protection RFC 5322 : entourer le nom de guillemets pour supporter les caractères accentués ou spéciaux
+    return `"${displayName}" <${pureEmail}>`;
+  }
+
+  /**
    * Envoi d'email générique centralisé et tracé avec Resend.
    */
   async sendEmail(options: SendEmailOptions): Promise<SendEmailResult> {
-    const from = options.from || this.defaultFrom;
+    const from = this.formatValidFrom(options.from);
     const rawTo = Array.isArray(options.to) ? options.to : [options.to];
     const to = rawTo.map((e) => e.trim().toLowerCase());
 
