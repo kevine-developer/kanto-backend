@@ -33,6 +33,11 @@ export const MULTIPLAYER_CONFIG = {
   MAX_PLAYERS_DUEL: 2,
 
   /**
+   * Nombre de questions par défaut pour les parties multijoueurs et défis.
+   */
+  DEFAULT_QUESTIONS_COUNT: 10,
+
+  /**
    * Nombre minimum de vrais joueurs requis pour démarrer la partie.
    */
   MIN_PLAYERS_TO_START: 2,
