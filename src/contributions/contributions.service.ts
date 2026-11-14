@@ -1524,6 +1524,35 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
         cat === 'DICTON' ||
         (cat as string) === 'MOT_RARE'
       ) {
+        // Extraction et assainissement défensif du texte malgache si sérialisé en JSON
+        let cleanMalagasy = contribution.textMg || '';
+        let cleanFrench = contribution.textFr || '';
+        let cleanMeaning = contribution.meaning || '';
+
+        if (cleanMalagasy.trim().startsWith('{')) {
+          try {
+            const parsed = JSON.parse(cleanMalagasy.trim());
+            if (parsed.textMg && typeof parsed.textMg === 'string') {
+              cleanMalagasy = parsed.textMg.trim();
+            } else if (parsed.malagasy && typeof parsed.malagasy === 'string') {
+              cleanMalagasy = parsed.malagasy.trim();
+            }
+            if (parsed.textFr && typeof parsed.textFr === 'string' && !cleanFrench) {
+              cleanFrench = parsed.textFr.trim();
+            }
+            if (parsed.meaning && typeof parsed.meaning === 'string' && !cleanMeaning) {
+              cleanMeaning = parsed.meaning.trim();
+            }
+          } catch {
+            // textMg n'est pas un JSON valide
+          }
+        }
+
+        const prefixMatch = cleanMalagasy.match(/^textmg\s*:\s*(.+)$/i);
+        if (prefixMatch && prefixMatch[1]) {
+          cleanMalagasy = prefixMatch[1].trim();
+        }
+
         // Vérification de sécurité anti-doublon au sein de la transaction
         const existingItem = prisma.malagasyItem.findFirst
           ? await prisma.malagasyItem.findFirst({
@@ -1536,7 +1565,9 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
           officialItemType = 'MalagasyItem';
           officialItemSlug = existingItem.slug;
         } else {
-          const slug = await this.ensureUniqueSlug(baseSlug, async (s) => {
+          const itemBaseSlug =
+            generateSlug(cleanMalagasy.slice(0, 80)) || baseSlug;
+          const slug = await this.ensureUniqueSlug(itemBaseSlug, async (s) => {
             const r = await prisma.malagasyItem.findUnique({
               where: { slug: s },
             });
@@ -1553,9 +1584,9 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
           const created = await prisma.malagasyItem.create({
             data: {
               slug,
-              malagasy: contribution.textMg,
-              french: contribution.textFr,
-              meaning: contribution.meaning,
+              malagasy: cleanMalagasy,
+              french: cleanFrench,
+              meaning: cleanMeaning,
               category: officialCategory as any,
               status: 'PUBLISHED',
               origins: contribution.region ? [contribution.region] : [],
