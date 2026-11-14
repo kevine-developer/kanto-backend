@@ -27,6 +27,6 @@ export class LeaderboardQueryDto {
   @IsOptional()
   @Type(() => Number)
   @IsInt()
-  @Min(1)
+  @Min(0)
   level?: number;
 }

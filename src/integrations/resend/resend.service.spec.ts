@@ -240,4 +240,28 @@ describe('ResendService', () => {
       );
     });
   });
+
+  describe('Normalisation et conformité RFC 5322 du champ from (formatValidFrom)', () => {
+    it('doit corriger les doubles chevrons accidentels', () => {
+      const result = service.formatValidFrom(
+        'Kanto MG • Bêta Test <Kanto <noreply@contact.gastsar.fr>>',
+      );
+      expect(result).toBe('"Kanto MG • Bêta Test" <noreply@contact.gastsar.fr>');
+    });
+
+    it('doit formater correctement un email simple sans chevrons', () => {
+      const result = service.formatValidFrom('contact@kanto.mg');
+      expect(result).toBe('contact@kanto.mg');
+    });
+
+    it('doit entourer le nom de guillemets pour conformité RFC', () => {
+      const result = service.formatValidFrom('Kanto MG <contact@kanto.mg>');
+      expect(result).toBe('"Kanto MG" <contact@kanto.mg>');
+    });
+
+    it('doit utiliser le fallback propre si champ vide ou invalide', () => {
+      const result = service.formatValidFrom('');
+      expect(result).toMatch(/<[^>]+@.+>/);
+    });
+  });
 });

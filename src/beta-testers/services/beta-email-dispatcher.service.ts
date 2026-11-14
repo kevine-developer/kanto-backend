@@ -190,8 +190,13 @@ export class BetaEmailDispatcherService {
 
     // 6. Expédition via Resend
     try {
-      const fromAddress = process.env.RESEND_FROM_EMAIL || 'contact@gastsar.fr';
-      const from = `${senderName} <${fromAddress}>`;
+      const rawFromEnv = process.env.RESEND_FROM_EMAIL || 'contact@gastsar.fr';
+      const emailMatch =
+        rawFromEnv.match(/<([^>]+)>/) ||
+        rawFromEnv.match(/([a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
+      const pureEmail = emailMatch ? emailMatch[1].trim() : rawFromEnv.replace(/^["']|["']$/g, '').trim();
+      const cleanSenderName = (senderName || 'Kanto MG • Bêta Test').replace(/[<>\r\n]/g, '').trim();
+      const from = `"${cleanSenderName}" <${pureEmail}>`;
 
       await this.resendService.sendEmail({
         to,

@@ -589,4 +589,20 @@ export class AppController {
       message: 'Feedback reçu. Merci pour votre retour !',
     };
   }
+
+  /**
+   * Endpoint public retournant l'état d'activation des langues de l'application mobile.
+   * Alias de compatibilité pour le client mobile Kanto (LanguageContext).
+   */
+  @Get('system/languages')
+  async getSystemLanguages() {
+    if (this.locksService) {
+      return this.locksService.getAppLanguages();
+    }
+    return {
+      fr: true,
+      mg: true,
+      activeLanguages: ['fr', 'mg'],
+    };
+  }
 }
