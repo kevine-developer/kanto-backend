@@ -628,6 +628,210 @@ export const BETA_LANDING_CSS = `
     color: var(--color-success-text);
   }
 
+  /* ─── Panneau de confirmation directe du statut testeur ─────────────────── */
+  .testers-status-confirm-panel {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 24px 20px;
+    margin: 0 auto 24px;
+    max-width: 600px;
+    box-sizing: border-box;
+    transition: all 0.25s ease;
+  }
+
+  @media (min-width: 768px) {
+    .testers-status-confirm-panel {
+      padding: 28px 24px;
+    }
+  }
+
+  .status-confirm-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .status-confirm-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--color-tanimbary);
+    background: var(--color-tanimbary-soft);
+    border: 1px solid var(--color-tanimbary-border);
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    margin-bottom: 10px;
+  }
+
+  .status-confirm-title {
+    font-family: var(--font-serif);
+    font-size: clamp(19px, 2.5vw, 22px);
+    font-weight: 700;
+    color: var(--color-heading);
+    margin: 0 0 6px;
+    letter-spacing: -0.3px;
+  }
+
+  .status-confirm-subtitle {
+    font-size: 13.5px;
+    color: var(--color-ink-muted);
+    line-height: 1.5;
+    margin: 0 auto;
+    max-width: 500px;
+  }
+
+  .status-confirm-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    text-align: left;
+  }
+
+  @media (min-width: 560px) {
+    .status-confirm-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+  }
+
+  .status-confirm-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    background: var(--color-surface);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    cursor: pointer;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .status-confirm-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--color-card-shadow);
+    background: var(--color-surface-hover);
+  }
+
+  .status-confirm-btn.android:hover {
+    border-color: var(--color-android);
+  }
+
+  .status-confirm-btn.ios:hover {
+    border-color: var(--color-ios);
+  }
+
+  .status-confirm-btn.active-target {
+    border-color: var(--color-ochre);
+    box-shadow: 0 0 0 3px rgba(197, 139, 56, 0.25);
+    background: var(--color-ochre-soft);
+  }
+
+  .status-confirm-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+  }
+
+  .status-confirm-btn:hover .status-confirm-icon {
+    transform: scale(1.06);
+  }
+
+  .status-confirm-icon.android {
+    background: rgba(45, 155, 94, 0.12);
+    color: var(--color-android);
+  }
+
+  .status-confirm-icon.ios {
+    background: rgba(0, 113, 227, 0.12);
+    color: var(--color-ios);
+  }
+
+  .status-confirm-details {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .status-confirm-tags {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tag-platform {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .tag-platform.android {
+    color: var(--color-android);
+  }
+
+  .tag-platform.ios {
+    color: var(--color-ios);
+  }
+
+  .tag-status {
+    font-size: 10.5px;
+    color: var(--color-ink-subtle);
+    font-weight: 500;
+  }
+
+  .status-confirm-action-text {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--color-heading);
+    line-height: 1.25;
+  }
+
+  .status-confirm-hint {
+    font-size: 11.5px;
+    color: var(--color-ink-muted);
+    line-height: 1.3;
+    white-space: normal;
+  }
+
+  .testers-divider-row {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 24px auto 28px;
+    max-width: 580px;
+  }
+
+  .testers-divider-row::before,
+  .testers-divider-row::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .testers-divider-text {
+    padding: 0 16px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-ink-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
   /* Formulaire d'inscription */
   .testers-form {
     max-width: 580px;
