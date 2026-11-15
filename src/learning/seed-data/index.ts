@@ -12,6 +12,7 @@ import { folkloreAnganoTrack } from './folklore-angano.track.js';
 import { geographyTrack } from './geography.track.js';
 import { civicsInstitutionsTrack } from './civics-institutions.track.js';
 import { medicinalPlantsTrack } from './medicinal-plants.track.js';
+import { heritageRepublicainTrack } from './heritage-republicain.track.js';
 
 export * from './seed.types.js';
 export {
@@ -28,6 +29,7 @@ export {
   geographyTrack,
   civicsInstitutionsTrack,
   medicinalPlantsTrack,
+  heritageRepublicainTrack,
 };
 
 export const SEED_LEARNING_TRACKS: SeedTrack[] = [
@@ -44,4 +46,5 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
   geographyTrack,
   civicsInstitutionsTrack,
   medicinalPlantsTrack,
+  heritageRepublicainTrack,
 ];
