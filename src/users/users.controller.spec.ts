@@ -293,7 +293,9 @@ describe('UsersController', () => {
       usersServiceMock.getAccountDeletionStatus.mockResolvedValue(expected);
 
       const res = await controller.getDeletionStatus({ user, session } as any);
-      expect(usersServiceMock.getAccountDeletionStatus).toHaveBeenCalledWith('user-del');
+      expect(usersServiceMock.getAccountDeletionStatus).toHaveBeenCalledWith(
+        'user-del',
+      );
       expect(res).toBe(expected);
     });
   });
@@ -310,7 +312,9 @@ describe('UsersController', () => {
       usersServiceMock.reactivateAccount.mockResolvedValue(expected);
 
       const res = await controller.reactivateAccount({ user, session } as any);
-      expect(usersServiceMock.reactivateAccount).toHaveBeenCalledWith('user-react');
+      expect(usersServiceMock.reactivateAccount).toHaveBeenCalledWith(
+        'user-react',
+      );
       expect(res).toBe(expected);
     });
   });
@@ -327,7 +331,9 @@ describe('UsersController', () => {
       usersServiceMock.cancelReactivation.mockResolvedValue(expected);
 
       const res = await controller.cancelReactivation({ user, session } as any);
-      expect(usersServiceMock.cancelReactivation).toHaveBeenCalledWith('user-cancel');
+      expect(usersServiceMock.cancelReactivation).toHaveBeenCalledWith(
+        'user-cancel',
+      );
       expect(res).toBe(expected);
     });
   });

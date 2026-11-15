@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NestMiddleware,
-  Logger,
-} from '@nestjs/common';
+import { Injectable, NestMiddleware, Logger } from '@nestjs/common';
 import type { Request, Response, NextFunction } from 'express';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
 
@@ -52,7 +48,9 @@ export class MobileAdminAccessMiddleware implements NestMiddleware {
     }
 
     // Extraction de l'email depuis le body de la requête
-    const email = (req.body?.email as string | undefined)?.trim()?.toLowerCase();
+    const email = (req.body?.email as string | undefined)
+      ?.trim()
+      ?.toLowerCase();
     if (!email) {
       return next();
     }

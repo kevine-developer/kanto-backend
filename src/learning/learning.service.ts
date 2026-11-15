@@ -1,4 +1,9 @@
-import { Injectable, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  OnModuleInit,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { RedisService } from '../redis/redis.service.js';
 import {
@@ -28,7 +33,9 @@ export class LearningService implements OnModuleInit {
    */
   async syncSeedTracksAndLessons(): Promise<void> {
     try {
-      this.logger.log('🌱 Synchronisation des parcours d’apprentissage Kanto MG...');
+      this.logger.log(
+        '🌱 Synchronisation des parcours d’apprentissage Kanto MG...',
+      );
       let createdTracks = 0;
       let createdLessons = 0;
 
@@ -543,13 +550,16 @@ export class LearningService implements OnModuleInit {
         // et réserver l'affichage complet à la carte culturelle dédiée.
       } else if (s.type === 'quiz') {
         const rawChoices: string[] = s.choices || [];
-        const correctIndex = typeof s.correctIndex === 'number' ? s.correctIndex : 0;
+        const correctIndex =
+          typeof s.correctIndex === 'number' ? s.correctIndex : 0;
 
         // Préparer les choix avec indication de la bonne réponse
-        const indexedChoices = rawChoices.map((choice: string, cIdx: number) => ({
-          text: choice,
-          isCorrect: cIdx === correctIndex,
-        }));
+        const indexedChoices = rawChoices.map(
+          (choice: string, cIdx: number) => ({
+            text: choice,
+            isCorrect: cIdx === correctIndex,
+          }),
+        );
 
         // Mélange aléatoire (Fisher-Yates) pour que la réponse ne soit jamais systématiquement à la même position
         for (let i = indexedChoices.length - 1; i > 0; i--) {
@@ -952,7 +962,7 @@ export class LearningService implements OnModuleInit {
       };
     }
 
-    const earnedXp = wasAlreadyCompleted ? 0 : (lesson.xpReward || 25);
+    const earnedXp = wasAlreadyCompleted ? 0 : lesson.xpReward || 25;
 
     try {
       // 1. Enregistrement idempotent de la validation de la leçon (>= 60%)

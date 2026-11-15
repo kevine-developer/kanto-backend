@@ -226,7 +226,7 @@ describe('LearningService', () => {
 
       const result = await service.completeLesson(
         'salutations-et-politesse-aza-fady',
-        undefined as any,
+        undefined,
         {
           score: 80,
         },
