@@ -7,6 +7,11 @@ import { dialectsTrack } from './dialects.track.js';
 import { hiddenTreasuresTrack } from './hidden-treasures.track.js';
 import { philosophyTrack } from './philosophy.track.js';
 import { diasporaTrack } from './diaspora.track.js';
+import { biodiversityTrack } from './biodiversity.track.js';
+import { folkloreAnganoTrack } from './folklore-angano.track.js';
+import { geographyTrack } from './geography.track.js';
+import { civicsInstitutionsTrack } from './civics-institutions.track.js';
+import { medicinalPlantsTrack } from './medicinal-plants.track.js';
 
 export * from './seed.types.js';
 export {
@@ -18,6 +23,11 @@ export {
   hiddenTreasuresTrack,
   philosophyTrack,
   diasporaTrack,
+  biodiversityTrack,
+  folkloreAnganoTrack,
+  geographyTrack,
+  civicsInstitutionsTrack,
+  medicinalPlantsTrack,
 };
 
 export const SEED_LEARNING_TRACKS: SeedTrack[] = [
@@ -29,4 +39,9 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
   hiddenTreasuresTrack,
   philosophyTrack,
   diasporaTrack,
+  biodiversityTrack,
+  folkloreAnganoTrack,
+  geographyTrack,
+  civicsInstitutionsTrack,
+  medicinalPlantsTrack,
 ];
