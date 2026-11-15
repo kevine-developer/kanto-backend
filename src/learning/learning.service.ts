@@ -32,6 +32,16 @@ export class LearningService implements OnModuleInit {
       let createdTracks = 0;
       let createdLessons = 0;
 
+      // Dépublier l'ancien parcours fusionné s'il existait déjà en base
+      try {
+        await this.prisma.learningTrack.updateMany({
+          where: { slug: 'tantara-sy-fitenim-paritra' },
+          data: { isPublished: false },
+        });
+      } catch {
+        // Ignorer si la base est inaccessible
+      }
+
       for (const t of SEED_LEARNING_TRACKS) {
         const track = await this.prisma.learningTrack.upsert({
           where: { slug: t.slug },
@@ -301,11 +311,13 @@ export class LearningService implements OnModuleInit {
    * Détail d'un parcours avec ses leçons ordonnées et statut (available, in_progress, completed, locked).
    */
   async getTrackBySlug(slug: string, userId?: string) {
+    const effectiveSlug =
+      slug === 'tantara-sy-fitenim-paritra' ? 'histoire-de-madagascar' : slug;
     let track: any = null;
 
     try {
       track = await this.prisma.learningTrack.findUnique({
-        where: { slug },
+        where: { slug: effectiveSlug },
         include: {
           lessons: {
             where: { isPublished: true },
@@ -321,7 +333,7 @@ export class LearningService implements OnModuleInit {
       await this.syncSeedTracksAndLessons();
       try {
         track = await this.prisma.learningTrack.findUnique({
-          where: { slug },
+          where: { slug: effectiveSlug },
           include: {
             lessons: {
               where: { isPublished: true },
@@ -335,7 +347,7 @@ export class LearningService implements OnModuleInit {
     }
 
     if (!track) {
-      const found = SEED_LEARNING_TRACKS.find((t) => t.slug === slug);
+      const found = SEED_LEARNING_TRACKS.find((t) => t.slug === effectiveSlug);
       if (found) {
         track = {
           ...found,
