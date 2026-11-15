@@ -12,7 +12,7 @@ export const philosophyTrack: SeedTrack = {
   icon: 'Flame',
   color: '#0D9488',
   orderIndex: 7,
-  estimatedMinutes: 50,
+  estimatedMinutes: 85,
   lessons: [
     {
       slug: 'astronomie-et-cosmologie-du-trano-gasy',
@@ -941,6 +941,764 @@ export const philosophyTrack: SeedTrack = {
           correctIndex: 0,
           explanation:
             "Le Fihavanana est la manifestation fraternelle du Hasina : respecter l'énergie sacrée d'autrui scelle la paix sociale.",
+        },
+      ],
+    },
+    // ─── LEÇON 7 : LE TROMBA & LA COMMUNION TRANSCENDANTE ───
+    {
+      slug: 'le-tromba-et-la-possession-rituelle',
+      title:
+        'Le Tromba : médiumnité sacrée et dialogue avec les esprits royaux',
+      titleMg: 'Ny Tromba : fifandraisana masina amin’ny fanahin’ireo Mpanjaka',
+      summary:
+        'Comprenez la transe rituelle du Tromba dans la spiritualité côtière : la descente des esprits royaux pour guider la communauté et guérir les maux.',
+      summaryMg:
+        "Fantaro ny fombafomba amin'ny Tromba : fidinan'ny fanahin'ny Mpanjaka hanoro hevitra sy hanasitrana ny vahoaka.",
+      type: 'TRADITION',
+      orderIndex: 7,
+      durationMinutes: 8,
+      sections: [
+        {
+          type: 'intro',
+          textFr:
+            "Dans les sociétés côtières malgaches (notamment Sakalava, Tsimihety et Antakarana), le Tromba est une pratique spirituelle majeure de médiumnité sacrée. Lors de cérémonies solennelles au son de l'accordéon et des battements de mains rythmés, l'esprit d'un roi ou d'une reine défunte prend possession d'un médium choisi (Saha). Le souverain s'exprime alors avec l'autorité d'antan pour trancher les litiges, prescrire des remèdes et bénir les vivants.",
+          textMg:
+            "Amin'ny foko maro amorontsiraka, ny Tromba dia fomba masina fidinan'ny fanahin'ireo Mpanjaka nanjaka fahiny amin'ny alalan'ny olona voafidy (Saha). Mitondra teny fananarana, fanasitranana ary tso-drano ho an'ny fiarahamonina ny fanahy tonga.",
+        },
+        {
+          type: 'phonetic',
+          letterOrSound: 'TROM / BA',
+          phonetic: 'troum-ba',
+          frenchEquivalent:
+            "Le mot « Tromba » se prononce avec un 'R' roulé sonore et un 'O' fermé.",
+          sampleWordMg: 'Saha',
+          sampleTranslationFr: 'Le médium récepteur de l’esprit royal',
+        },
+        {
+          type: 'concept',
+          termMg: 'Tromba sy Fanahy Masina',
+          phonetic: 'troum-ba si fa-na-hi ma-si-na',
+          meaningFr: 'La manifestation des esprits ancestraux royaux',
+          explanation:
+            "L'esprit royal ne vient pas pour hanter mais pour veiller sur le bien-être de ses descendants et maintenir l'ordre moral et coutumier de la région.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Sobahy sy Lamba mena',
+          phonetic: 'sou-ba-hi si lam-ba me-na',
+          meaningFr: 'Costume d’apparat et étoffe rouge du souverain réincarné',
+          explanation:
+            'Dès que la possession a lieu, les assistants revêtent le médium du costume traditionnel du monarque défunt (sobahy, chapeau, canne royale) selon son époque historique.',
+        },
+        {
+          type: 'concept',
+          termMg: 'Fanasitranana sy Fampihavanana',
+          phonetic: 'fa-na-si-tra-na-na si fam-pi-ha-va-na-na',
+          meaningFr: 'Guérison holistique et réconciliation communautaire',
+          explanation:
+            'Le Tromba est consulté comme un tribunal bienveillant et un dispensaire traditionnel où les conflits de famille et les maladies inexplicables trouvent résolution.',
+        },
+        {
+          type: 'example',
+          textMg:
+            "Ny Tromba dia fanehoana fa ny fifamatorana eo amin'ny velona sy ny razana dia tsy tapaka na oviana na oviana eo amin'ny fiainana malagasy.",
+          textFr:
+            'Le Tromba démontre que le cordon ombilical entre les vivants et les ancêtres ne se rompt jamais dans la conception malgache du monde.',
+        },
+        {
+          type: 'didYouKnow',
+          textFr:
+            "Chaque esprit royal du Tromba parle le dialecte ancien de son époque et respecte les goûts de son vivant (tabac à priser, boissons spécifiques). Les historiens et linguistes étudient le Tromba comme une archive orale vivante de la langue malgache d'il y a trois siècles.",
+          textMg:
+            "Mitentina amin'ny fiteny tranainy nisy tamin'ny androny ny fanahin'ny Mpanjaka tonga amin'ny Tromba, ka lasa tahirin-tsoratra velona mampita ny tantara marina.",
+        },
+        // ─── 5 Quiz ───
+        {
+          type: 'quiz',
+          question:
+            'Quel est le rôle spirituel et social principal de la cérémonie du Tromba à Madagascar ?',
+          questionMg:
+            'Inona ny anjara toeran’ny Tromba eo amin’ny fiarahamonina sy ny fomba nentin-drazana ?',
+          choices: [
+            'Permettre aux esprits des rois défunts de conseiller, guérir et bénir la communauté vivante',
+            'Effrayer les enfants du village',
+            'Organiser une vente aux enchères de bétail',
+            'Apprendre des langues étrangères modernes',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Le Tromba est une communion où les anciens rois guident leurs descendants avec sagesse, prodiguent des soins et rétablissent l'harmonie morale.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Comment appelle-t-on la personne choisie pour servir d’intermédiaire récepteur à l’esprit royal ?',
+          questionMg:
+            'Ahoana no iantsoana ilay olona ipetrahan’ny fanahin’ny Mpanjaka amin’ny Tromba ?',
+          choices: [
+            'Le Saha (ou médium traditionnel)',
+            'Le Mpikabary',
+            'Le Dokotera',
+            'Le Mpiandry omby',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Le 'Saha' est la personne consacrée qui prête son corps et sa voix à l'esprit royal le temps de la cérémonie rituelle.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Pourquoi les linguistes considèrent-ils les séances de Tromba comme des archives vivantes ?',
+          questionMg:
+            'Nahoana no heverin’ny mpikaroka ho tahiry velona amin’ny teny malagasy ny Tromba ?',
+          choices: [
+            'Parce que le médium en transe emploie un vocabulaire royal ancien et des dialectes d’il y a plusieurs siècles',
+            'Parce qu’on y lit des journaux récents',
+            'Parce qu’on y écrit sur des ordinateurs',
+            'Parce que les esprits parlent latin',
+          ],
+          correctIndex: 0,
+          explanation:
+            "L'esprit s'exprime dans la langue vernaculaire précise de son règne (XVIIIe ou XIXe siècle), préservant des tournures grammaticales disparues ailleurs.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Dans quelles grandes régions de Madagascar le culte du Tromba est-il le plus vivace et honoré ?',
+          questionMg:
+            'Faritra aiza eto Madagasikara no tena ahitana sy anajana fatratra ny Tromba ?',
+          choices: [
+            'Sur les côtes Ouest et Nord (Sakalava, Antakarana, Tsimihety)',
+            'Exclusivement dans le désert du Sud',
+            'Uniquement dans les îles lointaines',
+            'Dans les bureaux administratifs de la capitale',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Le Tromba est profondément enraciné dans les provinces côtières occidentales et septentrionales de la Grande Île.',
+        },
+        {
+          type: 'quiz',
+          question:
+            'Comment les assistants reconnaissent-ils l’identité de l’esprit qui vient de se manifester ?',
+          questionMg:
+            'Ahoana no hahafantarana ilay Mpanjaka tonga ao amin’ny fivoriana ?',
+          choices: [
+            'Par son nom royal prononcé, sa démarche, ses interdits (fady) et ses demandes vestimentaires spécifiques',
+            'En regardant sa carte d’identité',
+            'Par un tirage au sort',
+            'En lui demandant son mot de passe',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Chaque monarque possède un protocole strict : ses chants d'appel favoris, ses couleurs d'étoffes, sa façon de marcher et ses fady rigoureux.",
+        },
+      ],
+    },
+    // ─── LEÇON 8 : LE FADY : ÉTHIQUE & ÉCOLOGIE ANCESTRALE ───
+    {
+      slug: 'le-fady-ethique-et-ecologie-ancestrale',
+      title:
+        'Le Fady : éthique sacrée, protection de la vie et écologie ancestrale',
+      titleMg:
+        'Ny Fady : fitsipika masina, fiarovana ny aina ary tontolo iainana',
+      summary:
+        "Dépassez la vision superficielle du tabou : comprenez le Fady comme un code d'honneur civique et un système écologique préservant la nature malgache.",
+      summaryMg:
+        "Halalino ny dikan'ny Fady : fitsipi-pitondran-tena mampirindra ny fiarahamonina sy miaro ny biby sy ny ala sarobidy.",
+      type: 'TRADITION',
+      orderIndex: 8,
+      durationMinutes: 8,
+      sections: [
+        {
+          type: 'intro',
+          textFr:
+            "Trop souvent traduit hâtivement par 'interdit' ou 'tabou', le Fady est en réalité le socle éthique et environnemental de Madagascar. Bien avant l'invention des parcs nationaux modernes, les anciens ont institué des Fady pour sanctuariser les forêts d'altitude (Ala Masina), protéger les sources d'eau potable et interdire la chasse des lémuriens sacrés comme l'Indri (Babakoto). Respecter le Fady, c'est préserver l'équilibre invisible entre l'homme et son écosystème.",
+          textMg:
+            "Tsy fady manakantsakana fotsiny ny Fady malagasy, fa fahendrena miaro ny tontolo iainana sy ny firindran'ny fiarahamonina. Nisy fady tsy mahazo mandoto loharano, tsy mahazo mikapa ala masina, ary tsy mahazo mamono ny Babakoto satria heverina ho havana.",
+        },
+        {
+          type: 'phonetic',
+          letterOrSound: 'FA / DY',
+          phonetic: 'fa-di',
+          frenchEquivalent:
+            "Le mot « Fady » se prononce avec un 'D' ferme et un 'Y' doux équivalent à 'I'.",
+          sampleWordMg: 'Masina',
+          sampleTranslationFr: 'Sacré / Intouchable / Porteur d’énergie vitale',
+        },
+        {
+          type: 'concept',
+          termMg: 'Ala Masina sy Fady mikapa hazo',
+          phonetic: 'a-la ma-si-na si fa-di mi-ka-pa ha-zou',
+          meaningFr:
+            'La forêt sacrée et la sanctuarisation écologique par le fady',
+          explanation:
+            "Forêts primaires entourant les sépultures royales et les bassins versants : y couper du bois ou y allumer du feu était puni d'exclusion sociale par le Dina.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Fady mamono Babakoto (Indri indri)',
+          phonetic: 'fa-di ma-mou-nou ba-ba-kou-tou',
+          meaningFr:
+            'L’interdiction sacrée de tuer ou chasser le grand lémurien Indri',
+          explanation:
+            "Selon la légende, le Babakoto est le frère originel de l'homme ayant choisi la canopée : le chasser est considéré comme un crime fratricide apportant malédiction.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Fady loharano sy fahadiovana',
+          phonetic: 'fa-di lou-ha-ra-nou si fa-ha-di-ou-va-na',
+          meaningFr: 'La protection hygiénique et sacrée des sources d’eau',
+          explanation:
+            'Interdiction formelle de laver du linge souillé ou de déposer des ordures près des sources alimentant les villages en eau de boisson.',
+        },
+        {
+          type: 'example',
+          textMg:
+            'Ny fady nentin-drazana no nampaharitra ny zava-boahary teto Madagasikara nandritra ny taonjato maro : fanajana ny tany sy ny aina.',
+          textFr:
+            'Les interdits ancestraux ont préservé la biodiversité unique de Madagascar durant des siècles : une leçon vivante de respect de la terre et de la vie.',
+        },
+        {
+          type: 'didYouKnow',
+          textFr:
+            'Les biologistes modernes reconnaissent que les plus belles parcelles de forêts primaires préservées à Madagascar coïncident exactement avec les zones autrefois protégées par des Fady coutumiers institués par les ancêtres.',
+          textMg:
+            "Ireo faritra ala mbola tsara indrindra eto Madagasikara ankehitriny dia ireo toerana nisy fady nentin-drazana niarovan'ny Ntaolo azy.",
+        },
+        // ─── 5 Quiz ───
+        {
+          type: 'quiz',
+          question:
+            'Quelle est la fonction écologique essentielle du concept de « Fady » dans la tradition malgache ?',
+          questionMg:
+            'Inona ny soa lehibe nentin’ny Fady teo amin’ny fiarovana ny tontolo iainana malagasy ?',
+          choices: [
+            'Protéger durablement les forêts primaires, les sources d’eau et les espèces animales menacées',
+            'Empêcher les gens d’aller à l’école',
+            'Interdire toute forme de commerce',
+            'Rendre la vie quotidienne triste et difficile',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Le Fady agissait comme une charte écologique ancestrale protégeant la biodiversité et les ressources vitales bien avant les lois écologiques modernes.',
+        },
+        {
+          type: 'quiz',
+          question:
+            'Pourquoi le lémurien « Babakoto » (Indri indri) fait-il l’objet d’un fady absolu de chasse ?',
+          questionMg:
+            'Nahoana no fady vonoina na hazaina ny lémurien « Babakoto » ?',
+          choices: [
+            'Car une légende sacrée le considère comme le frère aîné de l’homme dans la forêt',
+            'Parce que sa viande est trop dure',
+            'Parce qu’il vole dans le ciel',
+            'Parce qu’il vit sous l’eau',
+          ],
+          correctIndex: 0,
+          explanation:
+            "« Babakoto » signifie le 'père de Koto' : la mythologie enseigne une parenté directe entre l'humain et ce lémurien majestueux.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que désignent les « Ala Masina » sanctuarisées par les anciens à Madagascar ?',
+          questionMg:
+            'Inona no hevitry ny hoe « Ala Masina » tany amin’ny Ntaolo ?',
+          choices: [
+            'Des forêts sacrées protégées où toute coupe de bois et tout feu sont rigoureusement prohibés',
+            'Des champs de maïs artificiels',
+            'Des jardins de fleurs en ville',
+            'Des forêts réservées à la vente de charbon',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Les Ala Masina étaient des sanctuaires forestiers inviolables protégeant les sources, les tombeaux et la faune sylvestre.',
+        },
+        {
+          type: 'quiz',
+          question:
+            'Quel geste traditionnel doit-on accomplir si l’on a enfreint involontairement un fady ?',
+          questionMg: 'Inona no fomba atao raha sendra nandika fady tsy nahy ?',
+          choices: [
+            'Le rituel de purification de l’Ala-fady pour réparer la faute et apaiser le blâme',
+            'Payer une amende à la banque centrale',
+            'Partir en voyage à l’étranger immédiatement',
+            'Changer de prénom à la mairie',
+          ],
+          correctIndex: 0,
+          explanation:
+            "L'« Ala-fady » est la cérémonie de rédemption et de purification menée avec les anciens pour lever la souillure morale et restaurer l'harmonie.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Comment les anciens protégeaient-ils les sources d’eau potable des villages ?',
+          questionMg:
+            'Ahoana no niarovan’ny Ntaolo ny loharano fisotro madio tamin’ny fady ?',
+          choices: [
+            'En déclarant fady tout dépôt d’ordures et tout lavage de linges souillés à proximité de la source',
+            'En mettant des cadenas en métal sur l’eau',
+            'En faisant bouillir toute la rivière',
+            'En vidant la source chaque semaine',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Les règles d'hygiène étaient sacralisées par le fady pour garantir une eau pure à toute la communauté villageoise.",
+        },
+      ],
+    },
+    // ─── LEÇON 9 : LA NOTION DE L'AINA : LE SOUFFLE VITAL ───
+    {
+      slug: 'la-notion-de-l-aina-souffle-vital',
+      title:
+        'La notion de l’Aina : souffle sacré, respect de la vie et dignité humaine',
+      titleMg: 'Ny Hasin’ny Aina : fofonaina masina sy fanajana ny maha-olona',
+      summary:
+        "Explorez le concept philosophique de l'Aina : pourquoi la vie est considérée comme un bien inaliénable et sacré reliant l'univers à chaque être.",
+      summaryMg:
+        "Diniho ny hevitra lalina fonosin'ny Aina : fanomezana masina tsy azo amidy vola mampitovy lanja ny olombelona rehetra.",
+      type: 'CULTURE',
+      orderIndex: 9,
+      durationMinutes: 7,
+      sections: [
+        {
+          type: 'intro',
+          textFr:
+            "Au sommet de la philosophie malgache trône le concept de l'Aina (la vie, le souffle vital). Pour les anciens, l'Aina n'appartient pas à l'homme : c'est une étincelle sacrée confiée temporairement par le Créateur (Andriananahary). C'est pourquoi un proverbe solennel affirme : « Ny aina tsy mba hanin-kotrana ka hoe lany androany dia vidina rahampitso » (La vie n'est pas un légume du marché qu'on rachète le lendemain). Respecter l'Aina, c'est fonder toute la morale du Fihavanana.",
+          textMg:
+            "Ny Aina no harena lehibe indrindra amin'ny fahendrena malagasy. Tsy fananan'ny olombelona manokana ny aina fa fanomezana avy amin'Andriamanitra Andriananahary. 'Ny aina tsy mba hanin-kotrana' ka tokony hajaina sy tandremana lalandava.",
+        },
+        {
+          type: 'phonetic',
+          letterOrSound: 'AI / NA',
+          phonetic: 'ai-na',
+          frenchEquivalent:
+            "Le mot « Aina » s'articule comme 'Aille-na' : souffle clair, doux et porteur d'énergie.",
+          sampleWordMg: 'Velona',
+          sampleTranslationFr: 'Vivant / Prospère / Rayonnant d’énergie vitale',
+        },
+        {
+          type: 'concept',
+          termMg: 'Ny aina tsy mba hanin-kotrana',
+          phonetic: 'ni ai-na tsi mba ha-nin-kou-tra-na',
+          meaningFr:
+            'La vie n’est pas un légume qu’on rachète au marché le lendemain',
+          explanation:
+            "Proverbe fondamental rappelant l'unicité et le caractère irremplaçable de toute vie humaine : nul ne peut réparer la mort par de l'argent.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Mamelon-kavana',
+          phonetic: 'ma-me-loun-ka-va-na',
+          meaningFr:
+            'Nourrir et préserver la vie de ses proches et de son prochain',
+          explanation:
+            "Vertu suprême de solidarité : soutenir activement ceux qui faiblissent pour que leur souffle vital (aina) ne s'éteigne pas.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Fofonaina avy amin’ny Nahary',
+          phonetic: 'fou-fou-nai-na a-vi a-min-ni na-ha-ri',
+          meaningFr: 'Le souffle d’existence accordé par le Créateur souverain',
+          explanation:
+            'Principe cosmologique : tous les êtres vivants partagent le même souffle universel, ce qui exige respect et compassion envers la Création.',
+        },
+        {
+          type: 'example',
+          textMg:
+            "Ny fihavanana marina dia miorina amin'ny fanajana ny ain'ny hafa : rehefa voaaro ny aina vao afaka manorina fandrosoana.",
+          textFr:
+            "Le véritable Fihavanana est fondé sur le respect absolu de la vie d'autrui : c'est en protégeant l'Aina que l'on bâtit une communauté prospère.",
+        },
+        {
+          type: 'didYouKnow',
+          textFr:
+            "Dans les salutations traditionnelles malgaches, lorsqu'on demande des nouvelles d'un nouveau-né ou d'un malade, la première question posée est : « Misy aina tsara ve ? » (Y a-t-il un souffle vital vigoureux ?), témoignant de la primauté de l'énergie vitale sur tout bien matériel.",
+          textMg:
+            "Rehefa mamangy marary na zazakely ny Ntaolo dia manontany voalohany hoe : 'Tonga soa ve ny aina ?', satria ny aina no ambony indrindra amin'ny zavatra rehetra.",
+        },
+        // ─── 5 Quiz ───
+        {
+          type: 'quiz',
+          question:
+            'Que signifie le proverbe malgache universel « Ny aina tsy mba hanin-kotrana » ?',
+          questionMg:
+            'Inona no hevitry ny ohabolana hoe « Ny aina tsy mba hanin-kotrana » ?',
+          choices: [
+            'La vie est unique, sacrée et irremplaçable, elle ne s’achète pas avec de l’argent',
+            'La nourriture du marché est trop chère',
+            'Il faut manger des légumes tous les matins',
+            'La vie dure éternellement sans effort',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Ce proverbe proclame la dignité inaliénable de la vie humaine : rien sur terre ne peut remplacer une vie perdue.',
+        },
+        {
+          type: 'quiz',
+          question:
+            'Selon la cosmogonie malgache, à qui appartient originellement le souffle de vie (Aina) ?',
+          questionMg:
+            'Araka ny fahendrena malagasy, avy amin’iza ny fofonaina iainantsika ?',
+          choices: [
+            'Du Créateur souverain (Zanahary / Andriananahary) qui l’a confié à l’homme',
+            'Du roi de la région uniquement',
+            'Des marchands de la ville',
+            'De la poussière du chemin',
+          ],
+          correctIndex: 0,
+          explanation:
+            "L'Aina est le don céleste primordial accordé par Zanahary, liant l'homme à la transcendance.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que désigne l’expression bienveillante « Mamelon-kavana » dans l’éthique de tous les jours ?',
+          questionMg:
+            'Inona ny atao hoe « Mamelon-kavana » eo amin’ny fiainana andavanandro ?',
+          choices: [
+            'Nourrir, secourir et soutenir solidairement ses proches dans le besoin pour protéger leur vie',
+            'Acheter des terres pour soi seul',
+            'Voyager sans prévenir sa famille',
+            'Écrire des lettres sans réponse',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Mamelon-kavana incarne la charité active : faire vivre ses proches pour faire triompher l'Aina sur la détresse.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Pourquoi le respect de l’Aina est-il considéré comme le fondement direct du Fihavanana ?',
+          questionMg: 'Nahoana no fototry ny Fihavanana ny fanajana ny Aina ?',
+          choices: [
+            'Parce que sans respect mutuel de la vie et de la dignité d’autrui, aucune fraternité ne peut exister',
+            'Parce que le mot Aina rime avec Fihavanana',
+            'Parce que les lois politiques l’exigent',
+            'Uniquement pour éviter les querelles de voisinage',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Le Fihavanana repose sur la reconnaissance que chaque être humain partage le même souffle vital précieux que soi-même.',
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que répond-on traditionnellement à quelqu’un qui s’inquiète de la santé d’un proche malade en disant « Velona soa aman-tsara » ?',
+          questionMg: 'Inona no hevitry ny hoe « Velona soa aman-tsara » ?',
+          choices: [
+            'Il est bien vivant, en sécurité et son énergie vitale s’est rétablie avec succès',
+            'Il est parti très loin sans donner de nouvelles',
+            'Il a perdu tous ses biens matériels',
+            'Il dort sans vouloir manger',
+          ],
+          correctIndex: 0,
+          explanation:
+            '« Velona soa aman-tsara » célèbre le triomphe de la vie et le soulagement apporté à toute la famille.',
+        },
+      ],
+    },
+    // ─── LEÇON 10 : LE TANGENA & L'ORDALIE HISTORIQUE ───
+    {
+      slug: 'le-tangena-et-l-ordalie-sacree',
+      title:
+        'Le Tangena et l’ordalie sacrée : justice divine et vérité dans l’histoire',
+      titleMg: 'Ny Tangena sy ny Fitsaran’Andriamanitra tamin’ny Tantara',
+      summary:
+        "Analysez l'histoire et la métaphysique du Tangena : l'épreuve par le poison comme croyance en l'infaillibilité de la justice divine face au crime.",
+      summaryMg:
+        "Diniho ny tantara sy ny hevitra tamin'ny fitsarana tamin'ny Tangena : finoana ny fitsaran'Andriamanitra manadio ny marina.",
+      type: 'CULTURE',
+      orderIndex: 10,
+      durationMinutes: 7,
+      sections: [
+        {
+          type: 'intro',
+          textFr:
+            "Dans le système judiciaire traditionnel malgache jusqu'au milieu du XIXe siècle, le Tangena (arbuste Cerbera venenifera produisant une graine toxique) occupait une place redoutable. Utilisé comme épreuve d'ordalie (jugement de Dieu), le breuvage de Tangena était administré à l'accusé de crime grave ou de sorcellerie malfaisante (mpamosavy). La croyance populaire postulait que la vérité divine était souveraine : l'innocent vomirait le poison et survivrait, tandis que le coupable périrait.",
+          textMg:
+            "Fahiny, nampiasaina tamin'ny fitsarana teto Madagasikara ny voan-kazo Tangena. Rehefa nisy heloka lehibe na fiahiahiana fanaovana ody ratsy, dia nisotro Tangena ilay voampanga : ninoana fa ny marina dia mandoa ilay poizina ka velona, fa ny meloka kosa maty.",
+        },
+        {
+          type: 'phonetic',
+          letterOrSound: 'TAN / GE / NA',
+          phonetic: 'tan-ge-na',
+          frenchEquivalent:
+            "Le 'G' de « Tangena » est occlusif dur comme dans 'gâteau' (tan-gué-na).",
+          sampleWordMg: 'Fitsaran-dratsy',
+          sampleTranslationFr: 'Le jugement solennel de la vérité',
+        },
+        {
+          type: 'concept',
+          termMg: 'Tangena (Cerbera venenifera)',
+          phonetic: 'tan-ge-na',
+          meaningFr: 'Arbuste côtier toxique utilisé pour l’ordalie royale',
+          explanation:
+            'Plante vénéneuse dont la graine râpée dans du jus de banane ou de riz servait de test biologique de culpabilité mystique.',
+        },
+        {
+          type: 'concept',
+          termMg: 'Mpandona sy Hoditr’akoholahy',
+          phonetic: 'mpan-dou-na si hou-di-tra-kou-hou-la-hi',
+          meaningFr: 'Le rituel des trois morceaux de peau de poulet avalés',
+          explanation:
+            "L'accusé avalait trois morceaux de peau de coq avant de boire le breuvage : son innocence était proclamée s'il régurgitait intacts les trois morceaux.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Fanafoanana ny Tangena (Radama II tamin’ny 1861)',
+          phonetic: 'fa-na-fou-a-na-na ni tan-ge-na',
+          meaningFr: 'L’abolition définitive de l’ordalie par le roi Radama II',
+          explanation:
+            "Tournant humaniste de l'histoire malgache : dès son accession au trône en 1861, Radama II abolit définitivement le poison du Tangena, instaurant la justice par les tribunaux civils.",
+        },
+        {
+          type: 'example',
+          textMg:
+            "Ny tantaran'ny Tangena dia maneho ny fitadiavana fatratra ny marina sy ny fahatahorana an'Andriamanitra, na dia fomba mahery vaika aza no nampiasaina.",
+          textFr:
+            "L'histoire du Tangena témoigne de la quête ardente de vérité et de justice divine dans la pensée malgache, bien que ce fût une méthode implacable abolie au XIXe siècle.",
+        },
+        {
+          type: 'didYouKnow',
+          textFr:
+            'Sous le règne de Ranavalona Ire, le Tangena fut abondamment utilisé pour démasquer les conspirateurs et traîtres au royaume, avant que Radama II ne proclame son interdiction totale au nom de la modernité et du respect de la vie.',
+          textMg:
+            "Tamin'ny andron'ny Mpanjakavavy Ranavalona I no nampiasaina be ny Tangena, ary Radama II no nandrava azy tanteraka tamin'ny taona 1861 mba hanajana ny aina.",
+        },
+        // ─── 5 Quiz ───
+        {
+          type: 'quiz',
+          question:
+            'Qu’était le « Tangena » dans le système juridique traditionnel de Madagascar ?',
+          questionMg:
+            'Inona ny Tangena teo amin’ny fitsarana teto Madagasikara fahiny ?',
+          choices: [
+            'Une ordalie (jugement de Dieu par le poison) pour déterminer la culpabilité ou l’innocence d’un accusé',
+            'Un impôt sur le bétail',
+            'Un traité commercial avec l’étranger',
+            'Un chant de louange à la reine',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Le Tangena était l'épreuve ordalique suprême où l'on croyait que les puissances divines feraient vomir l'innocent et puniraient le coupable.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Quel test rituel précis accompagnait l’administration du breuvage de Tangena ?',
+          questionMg:
+            'Inona ilay fomba niaraka tamin’ny fisotroana Tangena hanaporofoana ny fahamarinana ?',
+          choices: [
+            'L’accusé devait avaler puis régurgiter intacts trois morceaux de peau de coq',
+            'Il devait courir 10 kilomètres sans s’arrêter',
+            'Il devait nager au milieu des crocodiles',
+            'Il devait réciter un livre par cœur',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Vomir les trois morceaux de peau de poulet intacts constituait la preuve physique et irréfutable de l'innocence aux yeux des juges.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Quel roi réformateur a aboli définitivement le poison du Tangena dès son couronnement en 1861 ?',
+          questionMg:
+            'Iza ilay Mpanjaka nandrava tanteraka ny fitsarana tamin’ny Tangena tamin’ny taona 1861 ?',
+          choices: [
+            'Radama II',
+            'Andrianampoinimerina',
+            'Radama Ier',
+            'Andrianjaka',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Radama II abolit immédiatement le Tangena à la mort de Ranavalona Ire, marquant l'entrée de la justice malgache dans l'ère moderne sans ordalie corporelle.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'De quelle partie de la plante provenait le principe actif toxique du Tangena ?',
+          questionMg:
+            'Avy amin’inona amin’ilay hazo Tangena no hakana ilay poizina ?',
+          choices: [
+            'De la graine râpée du fruit toxique',
+            'Des fleurs parfumées',
+            'De la racine sèche',
+            'De la résine du tronc',
+          ],
+          correctIndex: 0,
+          explanation:
+            "C'est la graine contenue dans le noyau du fruit du Cerbera venenifera qui contient les hétérosides cardiotoxiques puissants.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Quelle croyance spirituelle sous-tendait le recours à cette justice ordalique ?',
+          questionMg:
+            'Inona ny finoana fototra nampiasana ny fitsarana tamin’ny Tangena ?',
+          choices: [
+            'La conviction absolue que le Créateur et les ancêtres ne permettraient jamais qu’un innocent périsse injustement',
+            'Le plaisir de punir tout le monde',
+            'Une invention venue des marchands arabes',
+            'Une fête de réjouissance villageoise',
+          ],
+          correctIndex: 0,
+          explanation:
+            "La société croyait en la souveraineté omnisciente d'Andriamanitra et des ancêtres capables de discerner le fond des cœurs.",
+        },
+      ],
+    },
+    // ─── LEÇON 11 : ANDRIAMANITRA ANDRIANANAHARY : LA THÉOLOGIE ORIGINELLE ───
+    {
+      slug: 'andriamanitra-andriananahary-theologie-originelle',
+      title:
+        'Andriamanitra Andriananahary : la théologie monothéiste originelle malgache',
+      titleMg: 'Andriamanitra Andriananahary : finoana tokana nentin-drazana',
+      summary:
+        "Découvrez la conception théologique ancestrale de Dieu chez les Malgaches : Zanahary le Créateur suprême, bien avant l'arrivée des religions étrangères.",
+      summaryMg:
+        "Diniho ny finoan'ny Ntaolo an'Andriamanitra Andriananahary Mpamorona ny lanitra sy ny tany talohan'ny fahatongavan'ny fivavahana hafa.",
+      type: 'CULTURE',
+      orderIndex: 11,
+      durationMinutes: 8,
+      sections: [
+        {
+          type: 'intro',
+          textFr:
+            "Contrairement à une idée reçue, la religion traditionnelle malgache n'était ni polythéiste ni idolâtre : elle professait une foi pure en un Dieu unique, souverain et transcendant, nommé 'Andriamanitra' (le Seigneur suave et parfumé) et 'Andriananahary' (le Seigneur Créateur de toute chose). Ce Dieu n'avait aucune représentation sculptée, ni idole, ni temple : on s'adressait à lui en levant les mains vers le ciel lors des prières solennelles (joro), en prenant à témoin la pureté de la création.",
+          textMg:
+            "Tsy fivavahana tamin'ny sampy ny fivavahan'ny Ntaolo fa finoana Andriamanitra Tokana Mpamorona : Andriananahary nanao ny lanitra sy ny tany. Tsy nisy sary sokitra na trano vato niankohofana fa nanandratra tanana teny an-kalamanjana rehefa nivavaka tamin'ny joro.",
+        },
+        {
+          type: 'phonetic',
+          letterOrSound: 'AN / DRIAN / A / NA / HA / RY',
+          phonetic: 'an-dri-a-na-na-ha-ri',
+          frenchEquivalent:
+            "Le nom « Andriananahary » dérive de 'Andriana' (noble souverain) et 'Nahary' (celui qui a conçu et créé).",
+          sampleWordMg: 'Andriananahary',
+          sampleTranslationFr: 'Le Seigneur Créateur céleste suprême',
+        },
+        {
+          type: 'concept',
+          termMg: 'Andriamanitra (Andriana manitra)',
+          phonetic: 'an-dri-a-ma-ni-tra',
+          meaningFr: 'Le Souverain céleste embaumé de parfum suave',
+          explanation:
+            'Nom le plus répandu de Dieu en malgache, évoquant la perfection morale, la douceur, la pureté et la majesté invisible.',
+        },
+        {
+          type: 'concept',
+          termMg: 'Zanahary (Nahary)',
+          phonetic: 'za-na-ha-ri',
+          meaningFr: 'Le Créateur primordial de l’Univers',
+          explanation:
+            "Attribut divin marquant l'acte créateur qui a façonné le ciel (lanitra), la terre (tany) et accordé le souffle de vie (aina) aux créatures.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Ny Joro sy ny Fitsofan-drano',
+          phonetic: 'ni dzu-rou si ni fi-tsou-fan-dra-nou',
+          meaningFr:
+            'La prière propitiatoire en plein air et la bénédiction divine',
+          explanation:
+            "Rituel où l'officiant se tourne vers l'Est (Atsinanana), tenant une corne de zébu avec de l'eau claire et des épis de riz pour implorer la grâce de Zanahary sur la lignée.",
+        },
+        {
+          type: 'example',
+          textMg:
+            "Andriamanitra tsy andrin'ny sarotra, fa Izy no tompon'ny zavatra rehetra : manome tso-drano ho an'izay madio fo sy marina.",
+          textFr:
+            "Dieu n'attend pas les crises pour agir, Il est le maître absolu de toutes choses : Il bénit ceux qui gardent le cœur pur et la droiture morale.",
+        },
+        {
+          type: 'didYouKnow',
+          textFr:
+            "Lorsque les missionnaires britanniques traduisirent la Bible en langue malgache en 1835, ils choisirent unanimement de conserver le nom ancestral 'Andriamanitra' pour désigner Dieu, reconnaissant la noblesse et l'exactitude de la théologie malgache originelle.",
+          textMg:
+            "Rehefa nandika ny Baiboly tamin'ny teny malagasy ireo misionera tamin'ny 1835, dia ny teny hoe 'Andriamanitra' nampiasain'ny Ntaolo ihany no nampiasainy satria efa nino Andriamanitra Tokana ny Malagasy.",
+        },
+        // ─── 5 Quiz ───
+        {
+          type: 'quiz',
+          question:
+            'Quelle est la nature originelle de la foi religieuse des Ntaolo malgaches ?',
+          questionMg:
+            'Ahoana ny endrika marina nisy tamin’ny finoan’ny Ntaolo an’Andriamanitra ?',
+          choices: [
+            'Une foi monothéiste en un Créateur suprême unique (Andriananahary), sans statues ni idoles sculptées',
+            'Le culte de dizaines de dieux rivaux',
+            'Une absence totale de croyance spirituelle',
+            'L’adoration du soleil uniquement',
+          ],
+          correctIndex: 0,
+          explanation:
+            'La théologie malgache primitive était un monothéisme pur : un Dieu souverain unique créateur du ciel et de la terre sans représentation matérielle.',
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que signifie étymologiquement le terme malgache « Andriananahary » ?',
+          questionMg:
+            'Inona no hevitra marina fonosin’ny anarana hoe « Andriananahary » ?',
+          choices: [
+            'Le Seigneur Souverain qui a tout créé (« Andriana » + « Nahary »)',
+            'Le roi de la montagne rouge',
+            'Le maître de la mer',
+            'Le guerrier victorieux',
+          ],
+          correctIndex: 0,
+          explanation:
+            "« Andriananahary » associe la royauté suprême (*Andriana*) à l'acte de création originelle de l'univers (*Nahary*).",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Comment les anciens s’adressaient-ils solennellement à Dieu lors des prières du Joro ?',
+          questionMg:
+            'Ahoana ny fomba fitodika amin’Andriamanitra rehefa manao Joro an-kalamanjana ?',
+          choices: [
+            'En levant les deux mains ouvertes vers le ciel en direction de l’Est (Atsinanana)',
+            'En se cachant sous une couverture noire',
+            'En se tournant vers l’Ouest dans le noir',
+            'En tapant sur des casseroles',
+          ],
+          correctIndex: 0,
+          explanation:
+            "L'officiant levait les mains vers les cieux face au soleil levant (l'Est, source de vie et de lumière) pour invoquer le Créateur bienfaisant.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Quel fait historique marquant atteste de la reconnaissance de ce monothéisme lors de la traduction de la Bible en 1835 ?',
+          questionMg:
+            'Inona no porofo ara-tantara tamin’ny 1835 nanaporofo fa efa nisy ny teny hoe Andriamanitra ?',
+          choices: [
+            'Les traducteurs ont adopté le terme ancestral « Andriamanitra » pour désigner Dieu dans la première Bible en malgache',
+            'Ils ont inventé un mot anglais',
+            'Ils ont interdit la langue malgache',
+            'Ils ont refusé d’écrire le livre',
+          ],
+          correctIndex: 0,
+          explanation:
+            "La Bible malgache de 1835 a consacré le nom d'Andriamanitra, prouvant que la notion d'un Dieu suprême et bon était déjà ancrée dans la conscience populaire.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que dit le proverbe malgache sur la justice et la présence constante d’Andriamanitra ?',
+          questionMg:
+            'Inona no lazain’ny ohabolana momba ny fahitana ataon’Andriamanitra ny olona ?',
+          choices: [
+            '« Aza ny lohasaha mangina no jerena, fa Andriamanitra ao an-tampon’ny loha »',
+            '« Izay kely tsy mba lehibe »',
+            '« Ny omby maro tsy mifanary »',
+            '« Ny vary masaka tsy manana elatra »',
+          ],
+          correctIndex: 0,
+          explanation:
+            '« Ne croyez pas être seuls dans la vallée déserte, car Dieu est au-dessus de vos têtes » : proverbe immortel rappelant que la conscience morale est sous le regard divin.',
         },
       ],
     },

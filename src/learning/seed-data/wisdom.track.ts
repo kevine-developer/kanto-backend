@@ -1103,5 +1103,774 @@ export const wisdomTrack: SeedTrack = {
         },
       ],
     },
+    // ─── LEÇON 8 : L'ART DU SILENCE ET DE LA PAROLE MESURÉE ───
+    {
+      slug: 'l-art-du-silence-et-parole-mesuree',
+      title:
+        'L’art du silence et de la parole mesurée : Ny fahanginana volamena',
+      titleMg:
+        'Ny Fahanginana sy ny Teny voalanjalanja : Fahendrena amin’ny fitenenana',
+      summary:
+        "Découvrez la puissance du silence et de la retenue verbale dans la sagesse malgache : savoir écouter l'assemblée avant de parler avec gravité.",
+      summaryMg:
+        "Fantaro ny herin'ny fahanginana sy ny lanjan'ny teny : fahaizana mihaino alohan'ny hiteny eo anatrehan'ny fokonolona.",
+      type: 'VOCABULARY',
+      orderIndex: 8,
+      durationMinutes: 7,
+      sections: [
+        {
+          type: 'intro',
+          textFr:
+            "Pour les Malgaches, la parole n'est pas un souffle anodin : elle est créatrice de liens ou destructrice d'harmonie. Les anciens enseignaient que 'Celui qui sait se taire est celui qui sait parler' (Izay mahay mangina no mahay miteny). Dans les assemblées villageoises (Fokonolona), la parole hâtive est signe d'immaturité, tandis que le silence attentif prépare la formule juste qui rassemble et apaise les cœurs.",
+          textMg:
+            "Amin'ny Ntaolo, zava-masina ny teny ka tsy azo atao maimaika. 'Izay mahay mangina no mahay miteny' : ny fahanginana no manomana ny teny marina mampitony sy mampiray ny fokonolona.",
+        },
+        {
+          type: 'phonetic',
+          letterOrSound: 'FA / HA / NGI / NA / NA',
+          phonetic: 'fa-han-gi-na-na',
+          frenchEquivalent:
+            "Le mot « Fahanginana » (silence recueilli) s'articule doucement avec un 'H' légèrement expiré et un son 'NGI' nasal fluide.",
+          sampleWordMg: 'Fahanginana',
+          sampleTranslationFr: 'Le silence / La paix intérieure',
+        },
+        {
+          type: 'concept',
+          termMg:
+            'Ny teny toy ny atody, ka raha latsaka tsy azo raofina intsony',
+          phonetic:
+            'ni te-ni toui ni a-tou-di, ka ra-ha la-tsa-ka tsi a-zou ra-ou-fi-na in-tsou-ni',
+          meaningFr:
+            'La parole est comme un œuf : tombée par terre, on ne peut plus la ramasser',
+          explanation:
+            'Proverbe immortel rappelant le caractère irréversible de la parole prononcée : une parole blessante brise la confiance à jamais.',
+        },
+        {
+          type: 'concept',
+          termMg: 'Ny fahanginana volamena',
+          phonetic: 'ni fa-han-gi-na-na vou-la-me-na',
+          meaningFr: 'Le silence d’or et la réserve bienveillante',
+          explanation:
+            "Savoir retenir sa colère, écouter l'avis des aînés et ne pas répondre aux provocations pour préserver le Fihavanana.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Teny zato, kabary arivo : iray ihany no fotony',
+          phonetic:
+            'te-ni za-tou, ka-ba-ri a-ri-vou : i-rai i-ha-ni nou fou-tou-ni',
+          meaningFr:
+            'Cent mots, mille discours : une seule vérité en est la racine',
+          explanation:
+            "Éloge de la concision et de la droiture morale : l'éloquence véritable ne réside pas dans le bavardage interminable mais dans la vérité du cœur.",
+        },
+        {
+          type: 'example',
+          textMg:
+            'Rehefa misy ady hevitra dia aleo mihaino tsara aloha vao miteny, mba ho teny mampihavana no hivoaka ny vava.',
+          textFr:
+            "Lorsqu'un désaccord survient, il est plus sage d'écouter attentivement avant de s'exprimer, afin que la parole qui sorte de la bouche soit réconciliatrice.",
+        },
+        {
+          type: 'didYouKnow',
+          textFr:
+            "Dans les délibérations traditionnelles du Fokonolona, les jeunes écoutent en silence les anciens pendant des heures sans interrompre. Ce n'est qu'après l'intervention des sages qu'ils sont invités avec bienveillance à apporter leur vision neuve.",
+          textMg:
+            "Amin'ny fivorian'ny fokonolona, mihaino am-panajana ny tenin'ny zokiolona ny tanora alohan'ny handraisana anjara am-pahendrena.",
+        },
+        // ─── 5 Quiz ───
+        {
+          type: 'quiz',
+          question:
+            'À quoi le proverbe malgache compare-t-il la parole imprudente qu’on ne peut plus rattraper ?',
+          questionMg:
+            'Amin’inona no ampitahan’ny ohabolana ny teny efa naloaky ny vava ?',
+          choices: [
+            'À un œuf tombé par terre qu’on ne peut plus ramasser (toy ny atody latsaka)',
+            'À une flèche tirée dans le ciel',
+            'À une pierre jetée dans la rizière',
+            'À un oiseau qui s’envole',
+          ],
+          correctIndex: 0,
+          explanation:
+            "« Ny teny toy ny atody » : une fois lâchée, la parole blessante casse le lien de confiance comme une coquille d'œuf brisée.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que signifie la maxime « Izay mahay mangina no mahay miteny » ?',
+          questionMg:
+            'Inona no hevitry ny hoe « Izay mahay mangina no mahay miteny » ?',
+          choices: [
+            'Celui qui sait écouter avec discernement est celui qui parlera avec le plus de justesse',
+            'Il est interdit de parler pour toujours',
+            'Seuls les sourds ont de la sagesse',
+            'Parler beaucoup est toujours une bonne chose',
+          ],
+          correctIndex: 0,
+          explanation:
+            "La maîtrise de la parole commence par la maîtrise de l'écoute silencieuse et du recueillement intérieur.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Quelle attitude doit adopter un participant lors d’une assemblée villageoise (Fokonolona) ?',
+          questionMg:
+            'Inona no fihetsika mendrika eo anivon’ny fivorian’ny Fokonolona ?',
+          choices: [
+            'Écouter attentivement sans couper la parole aux autres et peser ses mots avec respect',
+            'Crier plus fort que tout le monde',
+            'Interrompre le doyen du village',
+            'Partir avant la conclusion',
+          ],
+          correctIndex: 0,
+          explanation:
+            "L'étiquette du Fokonolona repose sur la bienséance, le respect du tour de parole et l'écoute scrupuleuse des arguments de chacun.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que préconise la sagesse populaire lorsqu’on ressent une vive colère passagère ?',
+          questionMg:
+            'Inona no torohevitry ny fahendrena malagasy rehefa tezitra mafy ?',
+          choices: [
+            'Garder le silence et respirer calmement avant de répondre afin d’éviter les regrets irréparables',
+            'Insulter son voisin immédiatement',
+            'Casser les meubles de la maison',
+            'Prendre les armes',
+          ],
+          correctIndex: 0,
+          explanation:
+            '« Ny hatezerana toy ny rivotra mandalo » : retenir sa langue sous la colère protège du remords éternel.',
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que signifie « Teny zato, kabary arivo : iray ihany no fotony » ?',
+          questionMg:
+            'Inona ny hevitry ny hoe « Teny zato, kabary arivo : iray ihany no fotony » ?',
+          choices: [
+            'Toutes les longues paroles doivent finalement converger vers une seule vérité essentielle : l’harmonie',
+            'Il faut parler mille fois par jour',
+            'Les discours sont inutiles',
+            'Seul le roi a le droit de parler',
+          ],
+          correctIndex: 0,
+          explanation:
+            'La multiplicité des arguments ne doit jamais perdre de vue le but suprême : la vérité qui réunit les hommes dans la paix.',
+        },
+      ],
+    },
+    // ─── LEÇON 9 : L'HOSPITALITÉ SACRÉE (FANDRAISAM-BAHINY) ───
+    {
+      slug: 'l-hospitalite-sacree-fandraisam-bahiny',
+      title: 'L’hospitalité sacrée envers l’étranger : Ny Fandraisam-bahiny',
+      titleMg:
+        'Ny Fandraisam-bahiny sy ny Hasin’ny Mpandalo : Fon’ny Fihavanana',
+      summary:
+        "Explorez la noblesse de l'hospitalité malgache : pourquoi l'étranger de passage est accueilli comme un envoyé sacré de Zanahary.",
+      summaryMg:
+        "Diniho ny hatsaran'ny fandraisam-bahiny malagasy : fandraisana am-pitiavana ny vahiny toy ny irak'Andriamanitra.",
+      type: 'CULTURE',
+      orderIndex: 9,
+      durationMinutes: 7,
+      sections: [
+        {
+          type: 'intro',
+          textFr:
+            "À Madagascar, l'étranger (vahiny) ou le voyageur de passage n'est jamais vu comme une menace mais comme une bénédiction divine. La tradition du 'Lapa-mivoha' (le palais aux portes ouvertes) stipule que quiconque frappe à la porte à la tombée de la nuit doit recevoir de l'eau claire pour se désaltérer, une natte propre pour reposer ses membres et une part du riz familial, sans demander son nom ni son origine.",
+          textMg:
+            "Tsy mba raisina ho fahavalo ny vahiny na ny mpandalo amin'ny kolontsaina malagasy, fa heverina ho fitahiana. Ny fomba lapa-mivoha dia mampianatra hanome rano madio, tsihy madio hipetrahana ary anjara vary mafana ho an'izay mandalo.",
+        },
+        {
+          type: 'phonetic',
+          letterOrSound: 'VA / HI / NY',
+          phonetic: 'va-hi-ni',
+          frenchEquivalent:
+            "Le mot « Vahiny » (étranger / invité bienvenu) se prononce avec un 'H' très doux et fluide.",
+          sampleWordMg: 'Vahiny',
+          sampleTranslationFr: 'L’hôte / L’étranger bienvenu',
+        },
+        {
+          type: 'concept',
+          termMg: 'Tsy misy vahiny eto an-tany fa samy mpandalo',
+          phonetic: 'tsi mi-si va-hi-ni e-tou an-ta-ni fa sa-mi mpan-da-lou',
+          meaningFr:
+            'Nul n’est étranger sur cette terre, nous ne sommes tous que de passage',
+          explanation:
+            "Philosophie universelle d'humilité : la terre appartient à Dieu et aux ancêtres, tous les humains sont des frères en pèlerinage éphémère.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Mamelatra tsihy madio sy manome rano mangatsiaka',
+          phonetic:
+            'ma-me-la-tra tsi-hi ma-di-ou si ma-nou-me ra-nou man-ga-tsi-a-ka',
+          meaningFr:
+            'Dérouler une natte propre et offrir de l’eau fraîche de source',
+          explanation:
+            'Gestes rituels obligatoires marquant le respect et le soin immédiat prodigué au voyageur fatigué avant toute conversation.',
+        },
+        {
+          type: 'concept',
+          termMg: 'Ny vary iray lovia, ifampizarana amin’ny fihavanana',
+          phonetic:
+            'ni va-ri i-rai lou-vi-a, i-fam-pi-za-ra-na a-min-ni fi-ha-va-na-na',
+          meaningFr: 'Le plat de riz unique partagé dans la fraternité',
+          explanation:
+            "Même si le foyer est pauvre, on divise la ration du soir pour nourrir l'invité : la générosité surpasse l'abondance matérielle.",
+        },
+        {
+          type: 'example',
+          textMg:
+            'Mandrosoa tompoko, mamelara tsihy ary sotroy ity rano madio ity : ny trano kely fa ny fo madio feno fitiavana.',
+          textFr:
+            'Entrez chez nous, prenez place sur la natte et buvez cette eau fraîche : notre demeure est humble mais nos cœurs vous sont grand ouverts.',
+        },
+        {
+          type: 'didYouKnow',
+          textFr:
+            "Les voyageurs européens qui traversèrent Madagascar au XIXe siècle (comme Alfred Grandidier) témoignèrent avec émotion qu'ils avaient pu traverser l'île d'un océan à l'autre sans emporter d'argent, logés et nourris gracieusement dans chaque village au nom du Fihavanana.",
+          textMg:
+            "Gaga ireo mpikaroka vahiny tamin'ny taonjato faha-19 fa afaka nandeha eran'i Madagasikara tsy nandoa vola satria nampiantranoan'ny vahoaka maimaimpoana tamin'ny fandraisam-bahiny.",
+        },
+        // ─── 5 Quiz ───
+        {
+          type: 'quiz',
+          question:
+            'Que proclame la maxime humaniste malgache « Tsy misy vahiny eto an-tany fa samy mpandalo » ?',
+          questionMg:
+            'Inona no hevitry ny ohabolana hoe « Tsy misy vahiny eto an-tany fa samy mpandalo » ?',
+          choices: [
+            'Tous les êtres humains sont frères et hôtes temporaires sur cette terre sacrée',
+            'Chacun doit rester enfermé chez soi',
+            'La terre n’appartient à personne',
+            'Les étrangers doivent payer une taxe pour entrer',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Ce proverbe universel abolit les barrières de nationalité ou d'origine : l'humanité entière partage la même condition de passage sur terre.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Quels sont les premiers gestes rituels accomplis dès qu’un voyageur franchit le seuil d’une maison traditionnelle ?',
+          questionMg:
+            'Inona avy ireo fomba voalohany raisina rehefa misy mpandalo miditra ao an-trano ?',
+          choices: [
+            'Dérouler une natte propre pour l’inviter à s’asseoir et lui offrir de l’eau fraîche pour étancher sa soif',
+            'Lui demander son passeport et fouiller son sac',
+            'Lui faire payer son droit d’entrée',
+            'Lui demander de réparer le toit',
+          ],
+          correctIndex: 0,
+          explanation:
+            "La natte propre (*tsihy*) et l'eau fraîche sont les symboles d'apaisement et d'accueil immédiat au sein du foyer.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que désigne l’expression traditionnelle du « Lapa-mivoha » ?',
+          questionMg: 'Inona no hevitry ny fomba atao hoe « Lapa-mivoha » ?',
+          choices: [
+            'La maison ou le village dont la porte reste toujours ouverte pour accueillir et secourir le prochain',
+            'Une porte cassée par le vent',
+            'Un marché sans surveillance',
+            'Une fête réservée aux nobles',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Le 'Lapa-mivoha' désigne la politique de la porte ouverte et du cœur généreux qui fait la fierté des foyers malgaches.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Comment un foyer malgache réagit-il si la nourriture est modeste lors de l’arrivée imprévue d’un visiteur ?',
+          questionMg:
+            'Ahoana no ataon’ny fianakaviana malagasy raha vitsy ny sakafo nefa misy vahiny tonga tampoka ?',
+          choices: [
+            'On partage immédiatement la part de riz disponible pour que chacun mange dignement',
+            'On cache la marmite pour manger en secret',
+            'On demande à l’invité de repartir',
+            'On attend qu’il s’endorme pour manger',
+          ],
+          correctIndex: 0,
+          explanation:
+            '« Ny vary kely ifampizarana » : le Fihavanana commande de diviser son repas même frugal plutôt que de laisser un convive avoir faim.',
+        },
+        {
+          type: 'quiz',
+          question:
+            'Quelle bénédiction l’hôte adresse-t-il traditionnellement au voyageur lorsqu’il reprend sa route au matin ?',
+          questionMg:
+            'Inona no tso-drano omena ny vahiny rehefa handeha hanohy ny diany maraina ?',
+          choices: [
+            '« Soa soa mandra-pihaona, ho tahina anie ny dianao » (Bonne route et que tes pas soient bénis)',
+            '« Aza miverina intsony »',
+            '« Mandoava vola »',
+            '« Haingana fa tara ianao »',
+          ],
+          correctIndex: 0,
+          explanation:
+            'On accompagne le partant de prières bienveillantes pour que la route lui soit douce et sans danger.',
+        },
+      ],
+    },
+    // ─── LEÇON 10 : L'HUMILITÉ DANS LE SUCCÈS (FIETRENA) ───
+    {
+      slug: 'l-humilite-dans-le-succes-fahaiza-mietry',
+      title:
+        'L’humilité dans le succès : Ny fahaiza-mietry eo amin’ny fahombiazana',
+      titleMg: 'Ny Fahamaotinana sy ny Fahaiza-mietry : Voninahitra marina',
+      summary:
+        "Comprenez la vertu suprême de la modestie (fietrena) : pourquoi l'arrogance et l'orgueil sont condamnés par la sagesse des ancêtres.",
+      summaryMg:
+        "Halalino ny hasin'ny fietrena : nahoana ny fieboeboana no fahotana lehibe manimba ny fihavanana sy mitondra faharavana.",
+      type: 'VOCABULARY',
+      orderIndex: 10,
+      durationMinutes: 7,
+      sections: [
+        {
+          type: 'intro',
+          textFr:
+            "Dans la morale malgache, le succès matériel ou la gloire ne donne aucun droit d'écraser autrui. Au contraire, plus une personne s'élève, plus elle doit courber la tête avec humilité (fietrena). Les ancêtres ont forgé de magnifiques paraboles pour avertir les orgueilleux : « Aza manao vorom-potsy manidina, ka ny tenan'ny tena ihany no deraina » (Ne faites pas l'aigrette blanche en vol qui s'extasie sur son propre plumage). L'humilité est le bouclier protecteur contre la jalousie et la rupture du lien social.",
+          textMg:
+            "Ny voninahitra marina amin'ny Malagasy dia ny fahaiza-mietry. Rehefa mahomby dia vao mainka tokony hanetry tena : 'Aza manao vorom-potsy manidina ka ny tenan'ny tena ihany no deraina'. Ny fieboeboana mantsy dia miteraka fialonana sy faharavana.",
+        },
+        {
+          type: 'phonetic',
+          letterOrSound: 'FIE / TRE / NA',
+          phonetic: 'fi-e-tre-na',
+          frenchEquivalent:
+            "Le mot « Fietrena » (humilité / modestie profonde) dérive de 'midina / mietry' (s'abaisser par respect et décence).",
+          sampleWordMg: 'Fietrena',
+          sampleTranslationFr: 'L’humilité / La retenue modeste',
+        },
+        {
+          type: 'concept',
+          termMg: 'Ny vary be koba manondrika ny lohany',
+          phonetic: 'ni va-ri be kou-ba ma-noun-dri-ka ni lou-ha-ni',
+          meaningFr:
+            'L’épi de riz lourd de grains mûrs s’incline humblement vers la terre',
+          explanation:
+            "Métaphore naturelle splendide : l'épi plein et fertile plie vers le sol par son poids de bienfaits, tandis que l'épi vide et stérile reste dressé avec arrogance.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Aza manao vorom-potsy manidina',
+          phonetic: 'a-za ma-na-ou vou-roum-pou-tsi ma-ni-di-na',
+          meaningFr: 'Ne faites pas l’aigrette blanche qui s’admire en volant',
+          explanation:
+            "Mise en garde contre l'autocélébration vaniteuse : ce sont les autres qui doivent reconnaître votre valeur, jamais vous-même.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Izay manetry tena ho asandratra',
+          phonetic: 'i-zai ma-ne-tri te-na hou a-san-dra-tra',
+          meaningFr:
+            'Celui qui s’abaisse avec humilité sera élevé par la communauté',
+          explanation:
+            "Règle de vie commune : la société malgache élève spontanément au rang de notable respecté l'homme humble et serviable.",
+        },
+        {
+          type: 'example',
+          textMg:
+            'Na manana harena na fahefana aza, ny fanajana ny madinika sy ny fitenenana am-pahatsorana no tena mampiseho olom-banona.',
+          textFr:
+            "Même parvenu à la fortune ou au pouvoir, c'est le respect des humbles et la parole simple qui révèlent un citoyen digne et accompli.",
+        },
+        {
+          type: 'didYouKnow',
+          textFr:
+            "Lorsqu'un artisan ou un orateur malgache réalise un chef-d'œuvre, il ne dit jamais 'Regardez comme je suis doué', mais 'Ce n'est qu'une humble contribution, pardonnez mes imperfections' (Aza omena tsiny amin'ny kilema). Cette humilité cérémonielle préserve l'équilibre moral.",
+          textMg:
+            "Ny mpanao sokitra sy ny mpikabary malagasy rehefa mahavita asa kanto dia manetry tena foana milaza hoe : 'Tsy fahaizana manokana fa tso-dranon'ny zokiolona'.",
+        },
+        // ─── 5 Quiz ───
+        {
+          type: 'quiz',
+          question:
+            'À quoi la sagesse malgache compare-t-elle l’homme véritablement sage et accompli qui reste humble ?',
+          questionMg:
+            'Amin’inona no ampitahan’ny ohabolana ny olona feno fahendrena mahay manetry tena ?',
+          choices: [
+            'À l’épi de riz plein de grains mûrs qui s’incline doucement vers la terre',
+            'À un lion qui rugit dans la savane',
+            'À un tambour qui fait du bruit',
+            'À une montagne inaccessible',
+          ],
+          correctIndex: 0,
+          explanation:
+            "L'épi de riz bien mûr ploie sous le poids nourricier de ses graines : plus on possède de savoir et de vertu, plus on s'incline avec douceur.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que condamne le proverbe « Aza manao vorom-potsy manidina, ka ny tenan’ny tena ihany no deraina » ?',
+          questionMg:
+            'Inona no fahalemena melohin’ny ohabolana momba ny vorom-potsy ?',
+          choices: [
+            'L’autosatisfaction vaniteuse et le fait de chanter ses propres louanges en public',
+            'Le fait d’apprendre à piloter un avion',
+            'La couleur blanche des vêtements',
+            'La protection des oiseaux sauvages',
+          ],
+          correctIndex: 0,
+          explanation:
+            "L'aigrette qui s'admire elle-même incarne l'orgueil ridicule de celui qui fait étalage de ses réussites devant les autres.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Pourquoi l’arrogance (fieboeboana) est-elle particulièrement redoutée dans la société malgache ?',
+          questionMg:
+            'Nahoana no fady ary atahorana ny fieboeboana amin’ny fiarahamonina malagasy ?',
+          choices: [
+            'Parce qu’elle brise le Fihavanana, suscite la jalousie et attire le blâme moral (tsiny)',
+            'Parce qu’elle coûte cher en argent',
+            'Parce qu’elle fait perdre la voix',
+            'Parce qu’elle empêche de dormir la nuit',
+          ],
+          correctIndex: 0,
+          explanation:
+            "L'arrogance détruit le tissu fraternel en créant des rancœurs et en brisant l'égalité bienveillante entre membres du clan.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que signifie le terme fondamental « Fietrena » dans le vocabulaire moral malgache ?',
+          questionMg:
+            'Inona ny dikan’ny teny hoe « Fietrena » eo amin’ny fitsipi-pitondran-tena ?',
+          choices: [
+            'L’abaissement volontaire par modestie, déférence et respect envers son prochain',
+            'La fatigue physique après le sport',
+            'La colère rentrée',
+            'Le voyage sans retour',
+          ],
+          correctIndex: 0,
+          explanation:
+            "« Fietrena » est la modestie consentie qui refuse de s'enorgueillir pour honorer la communauté.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Comment un orateur ou un artiste accompli conclut-il traditionnellement sa prestation ?',
+          questionMg:
+            'Ahoana no famaranan’ny mpikabary na ny mpanakanto ny asany am-panajana ?',
+          choices: [
+            'En excusant humblement ses maladresses et en remerciant la bienveillance du public',
+            'En exigeant des applaudissements obligatoires',
+            'En déclarant qu’il est le meilleur de l’île',
+            'En critiquant les artistes précédents',
+          ],
+          correctIndex: 0,
+          explanation:
+            "L'artiste malgache demande toujours pardon pour les éventuelles imperfections (« Azafady indrindra »), signe de haute distinction d'esprit.",
+        },
+      ],
+    },
+    // ─── LEÇON 11 : LA TRANSMISSION INTERGÉNÉRATIONNELLE ───
+    {
+      slug: 'la-transmission-intergenerationnelle-fitaizana',
+      title:
+        'La transmission intergénérationnelle : Ny Fitaizana sy ny Tso-drano',
+      titleMg: 'Ny Fanabeazana iombonana sy ny Tso-dranon’ny Ray aman-dreny',
+      summary:
+        "Découvrez la conception éducative partagée de la communauté malgache : l'enfant élevé par tout le village et la bénédiction sacrée des aînés.",
+      summaryMg:
+        "Fantaro ny fanabeazana iombonana amin'ny fokonolona : ny zaza iombonan'ny rehetra ary ny herin'ny tso-drano mampahomby.",
+      type: 'CULTURE',
+      orderIndex: 11,
+      durationMinutes: 8,
+      sections: [
+        {
+          type: 'intro',
+          textFr:
+            "Chez les Malgaches, l'éducation d'un enfant n'est pas confinée à la cellule parentale étroite : elle est l'affaire sacrée de toute la communauté. Le dicton traditionnel rappelle : « Ny zaza tsy an'ny ray aman-dreny niteraka fotsiny fa an'ny fokonolona » (L'enfant n'appartient pas seulement à ceux qui l'ont enfanté, mais à tout le village). Tout adulte a le devoir bienveillant de corriger, guider et encourager un jeune, tandis que le respect du 'Tso-drano' (bénédiction des aînés) ouvre les chemins du futur.",
+          textMg:
+            "Tsy ny ray aman-dreny niteraka ihany no manabe ny zanaka fa ny fiarahamonina iray manontolo. Ny zaza dia harenan'ny fokonolona, ka ny tso-dranon'ny zokiolona no fanalahidy manokatra ny varavaran'ny fahombiazana.",
+        },
+        {
+          type: 'phonetic',
+          letterOrSound: 'FI / TAI / ZA / NA',
+          phonetic: 'fi-tai-za-na',
+          frenchEquivalent:
+            "Le mot « Fitaizana » dérive de 'mitaiza' (élever avec tendresse, nourrir l'âme et le corps).",
+          sampleWordMg: 'Fitaizana',
+          sampleTranslationFr: 'L’éducation bienveillante / L’élevage de l’âme',
+        },
+        {
+          type: 'concept',
+          termMg: 'Ny zaza haren’ny fokonolona',
+          phonetic: 'ni za-za ha-ren-ni fou-kou-nou-lou-na',
+          meaningFr:
+            'L’enfant est le trésor et la responsabilité partagée du village',
+          explanation:
+            "Principe communautaire : chaque membre du village veille sur la sécurité et la bonne conduite des enfants comme s'ils étaient les siens.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Tso-drano zava-mahery',
+          phonetic: 'tsou-dra-nou za-va-ma-he-ri',
+          meaningFr: 'La bénédiction des aînés est une force toute-puissante',
+          explanation:
+            "L'eau sacrée soufflée par les parents et grands-parents (tso-drano) protège des embûches et garantit la réussite dans les études et le travail.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Tsy misy hendry teraka fa samy nitaizana',
+          phonetic: 'tsi mi-si hen-dri te-ra-ka fa sa-mi ni-tai-za-na',
+          meaningFr:
+            'Nul ne naît sage, chacun le devient par l’éducation reçue',
+          explanation:
+            "Reconnaissance de la dette morale envers les éducateurs, maîtres et anciens qui ont façonné le caractère et la droiture de l'individu.",
+        },
+        {
+          type: 'example',
+          textMg:
+            "Mandehana am-piadanana, mahazoa tso-drano ho lava andro iainana sy hahavita be ho an'ny tanindrazana.",
+          textFr:
+            'Pars en paix, reçois notre pleine bénédiction pour une longue vie féconde et pour accomplir de grandes choses pour notre patrie.',
+        },
+        {
+          type: 'didYouKnow',
+          textFr:
+            "Dans les villages des Hautes Terres et des côtes, si un enfant commet une incivilité dans la rue, n'importe quel passant âgé a le droit et le devoir de le réprimander calmement, et les parents remercieront chaleureusement ce passant pour avoir protégé l'honneur familial.",
+          textMg:
+            'Raha sendra manao hadalana eny an-dalana ny ankizy fahiny, dia afaka mananatra azy ny olon-dehibe rehetra, ary misaotra ny ray aman-dreniny noho izany fitaizana iombonana izany.',
+        },
+        // ─── 5 Quiz ───
+        {
+          type: 'quiz',
+          question:
+            'Que proclame le principe éducatif malgache sur la responsabilité envers l’enfant ?',
+          questionMg:
+            'Inona no hevitry ny fahendrena malagasy momba ny fitaizana zaza ?',
+          choices: [
+            'L’enfant est la responsabilité bienveillante de tout le village et de la communauté élargie',
+            'Seul le maire du village a le droit de parler aux enfants',
+            'L’enfant ne doit jamais écouter personne',
+            'L’éducation est interdite avant l’âge de 18 ans',
+          ],
+          correctIndex: 0,
+          explanation:
+            "L'enfant appartient moralement à toute la communauté (*fokonolona*) qui l'entoure d'affection et de repères éthiques.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Quelle valeur spirituelle accorde-t-on au « Tso-drano » donné par les parents lors d’un départ ou d’un projet ?',
+          questionMg:
+            'Inona no lanjan’ny « Tso-drano » omen’ny ray aman-dreny eo amin’ny fiainana ?',
+          choices: [
+            'Une bénédiction sacrée protectrice indispensable qui ouvre la voie de la réussite et du bonheur',
+            'Un simple geste d’adieu sans importance',
+            'Une obligation légale avec signature de contrat',
+            'Un jeu d’enfants amusant',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Le Tso-drano est considéré comme le viatique le plus précieux qu'un être humain puisse emporter dans sa vie.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que signifie le proverbe pédagogique « Tsy misy hendry teraka fa samy nitaizana » ?',
+          questionMg:
+            'Inona no ambaran’ny ohabolana hoe « Tsy misy hendry teraka fa samy nitaizana » ?',
+          choices: [
+            'La sagesse n’est pas innée mais s’acquiert patiemment grâce à l’éducation et aux conseils d’autrui',
+            'Les bébés savent déjà tout',
+            'Il est inutile d’apprendre à l’école',
+            'Seuls les vieux peuvent apprendre',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Nul ne vient au monde parfait : c'est l'écoute et l'apprentissage auprès des aînés qui forgent l'homme intègre.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Quel geste traditionnel accompagne souvent l’octroi du Tso-drano par un grand-parent ?',
+          questionMg:
+            'Inona no fihetsika matetika miaraka amin’ny fanomezana tso-drano ?',
+          choices: [
+            'Souffler légèrement de l’eau claire ou poser les deux mains sur la tête avec des paroles de paix',
+            'Fermer les yeux et partir en courant',
+            'Donner un coup de bâton sur l’épaule',
+            'Allumer une lampe torche',
+          ],
+          correctIndex: 0,
+          explanation:
+            "L'aîné souffle de l'eau claire (*mitsoka rano*) ou impose doucement ses mains en prononçant des vœux de prospérité.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Comment un jeune adulte reconnaissant exprime-t-il sa gratitude envers ses éducateurs ?',
+          questionMg:
+            'Ahoana no anehoan’ny tanora ny fankasitrahana ireo nitaiza azy ?',
+          choices: [
+            'Par le respect constant, les visites régulières et le soutien moral et matériel tout au long de la vie',
+            'En oubliant leur nom une fois parti',
+            'En ne leur écrivant jamais',
+            'En leur envoyant des lettres de reproches',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Le devoir de mémoire et de soin filial honore ceux qui ont consacré leur énergie à former la jeune génération.',
+        },
+      ],
+    },
+    // ─── LEÇON 12 : LA PATIENCE & LA RÉSILIENCE (FAHARETANA) ───
+    {
+      slug: 'la-patience-et-perseverance-faharetana',
+      title: 'La patience et la résilience face aux épreuves : Ny Faharetana',
+      titleMg:
+        'Ny Faharetana sy ny Fikirizana amin’ny andro sarotra : Hery anaty',
+      summary:
+        'Découvrez la force tranquille de la résilience malgache : maîtriser le temps avec douceur (mora mora) pour surmonter les tempêtes de la vie.',
+      summaryMg:
+        "Diniho ny herin'ny faharetana sy ny fahatoniana malagasy : fahaizana miatrika ny rivo-doza amim-pahendrena sy fahatokiana.",
+      type: 'VOCABULARY',
+      orderIndex: 12,
+      durationMinutes: 7,
+      sections: [
+        {
+          type: 'intro',
+          textFr:
+            "Face aux aléas de la météo, aux cyclones dévastateurs et aux difficultés économiques, le peuple malgache puise sa force dans une vertu cardinale : la patience persévérante (Faharetana). Loin d'être de la passivité ou de la résignation, le fameux 'Mora mora' est une philosophie de maîtrise intérieure du temps : 'Mora mora fa lava andro' (Doucement car les jours sont longs). La sérénité permet de reconstruire patiemment ce que la tempête a brisé.",
+          textMg:
+            "Manoloana ny rivo-doza sy ny fahasarotan'ny fiainana, ny vahoaka malagasy dia manana hery lehibe antsoina hoe Faharetana. Ny 'mora mora' dia tsy hakamoana velively, fa fahaiza-miaina miatrika ny fotoana : 'Mora mora fa lava andro'.",
+        },
+        {
+          type: 'phonetic',
+          letterOrSound: 'FA / HA / RE / TA / NA',
+          phonetic: 'fa-ha-re-ta-na',
+          frenchEquivalent:
+            "Le mot « Faharetana » dérive du verbe 'maharitra' (endurer avec noblesse, durer dans le temps).",
+          sampleWordMg: 'Maharitra',
+          sampleTranslationFr: 'Endurant / Résilient / Patient',
+        },
+        {
+          type: 'concept',
+          termMg: 'Ny faharetana no lova tsara indrindra',
+          phonetic: 'ni fa-ha-re-ta-na nou lou-va tsa-ra in-drin-dra',
+          meaningFr: 'La patience persévérante est le plus bel héritage moral',
+          explanation:
+            "Proverbe enseignant que les biens matériels peuvent disparaître, mais que la capacité d'endurance face aux coups durs ne se perd jamais.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Mora mora fa lava andro',
+          phonetic: 'mou-ra mou-ra fa la-va an-drou',
+          meaningFr: 'Agissons avec calme et mesure car la journée est longue',
+          explanation:
+            "Véritable art de vivre : la précipitation et la panique provoquent les erreurs, tandis que le calme méthodique mène à l'achèvement serein du travail.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Ny rano mahery tsy manasa lamba',
+          phonetic: 'ni ra-nou ma-he-ri tsi ma-na-sa lam-ba',
+          meaningFr:
+            'L’eau trop tumultueuse ne permet pas de laver le linge proprement',
+          explanation:
+            "Métaphore frappante : la colère ou l'agitation désordonnée n'a jamais résolu aucun problème, seule la sérénité nettoie les difficultés.",
+        },
+        {
+          type: 'example',
+          textMg:
+            "Na sarotra aza ny lalana dia aza kivy : mitondra faharetana sy finoana fa hiposaka indray ny masoandro aorian'ny orana.",
+          textFr:
+            "Même si le sentier est ardu ne désespère pas : garde la patience et la foi que le soleil brillera de nouveau après l'orage.",
+        },
+        {
+          type: 'didYouKnow',
+          textFr:
+            "Après chaque passage de cyclone tropical, les communautés malgaches se mobilisent immédiatement par le 'Valin-tanana' pour relever ensemble les toits de chaume et replanter les digues de rizières sans lamentation, incarnant une leçon mondiale de résilience collective.",
+          textMg:
+            "Rehefa avy ny rivo-doza dia mifanome tanana avy hatrany ny fokonolona hanangana indray ny trano nihorona sy ny tanimbary tamin'ny alalan'ny valin-tanana.",
+        },
+        // ─── 5 Quiz ───
+        {
+          type: 'quiz',
+          question:
+            'Quelle est la signification profonde de l’expression populaire « Mora mora » dans la philosophie malgache ?',
+          questionMg:
+            'Inona ny hevitra lalina marina fonosin’ny teny hoe « Mora mora » ?',
+          choices: [
+            'Une maîtrise calme du temps et du stress pour agir avec mesure, sans précipitation aveugle',
+            'L’interdiction de travailler',
+            'Dormir toute la journée',
+            'Partir en retard exprès',
+          ],
+          correctIndex: 0,
+          explanation:
+            '« Mora mora » est la sagesse de la lenteur constructive : garder son sang-froid pour agir avec précision sans gâcher ses forces.',
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que signifie le proverbe « Ny rano mahery tsy manasa lamba » ?',
+          questionMg:
+            'Inona no hevitry ny ohabolana hoe « Ny rano mahery tsy manasa lamba » ?',
+          choices: [
+            'L’agitation violente et la colère ne résolvent rien : seul le calme permet d’apaiser les difficultés',
+            'L’eau des rivières est trop froide',
+            'Il faut laver le linge sans eau',
+            'Les fleuves sont trop profonds',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Un torrent furieux emporte le linge au lieu de le laver : la colère brouille le jugement au lieu d'apporter la paix.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que proclame l’adage « Ny faharetana no lova tsara indrindra » ?',
+          questionMg:
+            'Inona no dikan’ny hoe « Ny faharetana no lova tsara indrindra » ?',
+          choices: [
+            'La patience persévérante est le trésor moral le plus précieux qu’on puisse posséder face aux épreuves',
+            'Seul l’argent liquide est un héritage',
+            'Il faut attendre sans jamais agir',
+            'La paresse est une qualité',
+          ],
+          correctIndex: 0,
+          explanation:
+            'La résilience intérieure permet de surmonter toutes les crises économiques et personnelles avec dignité.',
+        },
+        {
+          type: 'quiz',
+          question:
+            'Comment les villageois réagissent-ils solidairement après les destructions causées par un cyclone ?',
+          questionMg:
+            'Ahoana no ataon’ny mpiara-monina rehefa avy nandalo ny rivo-doza nandrava tanàna ?',
+          choices: [
+            'Ils s’unissent par le Valin-tanana pour reconstruire immédiatement les toitures et rizières dans la fraternité',
+            'Chacun déménage sans aider personne',
+            'Ils attendent en pleurant sans bouger',
+            'Ils s’accusent mutuellement',
+          ],
+          correctIndex: 0,
+          explanation:
+            "L'entraide immédiate et le courage partagé effacent rapidement les stigmates des catastrophes naturelles.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que rappelle le proverbe d’espérance « Aorian’ny orana dia miposaka indray ny masoandro » ?',
+          questionMg:
+            'Inona no fampaherezana entin’ny ohabolana momba ny masoandro aorian’ny orana ?',
+          choices: [
+            'L’épreuve est toujours passagère, la joie et le renouveau finissent toujours par revenir',
+            'La météo ne change jamais',
+            'Il faut acheter un parapluie neuf',
+            'La nuit dure toute l’année',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Cet adage réconforte les cœurs meurtris en rappelant que la lumière et la paix succèdent inéluctablement aux ténèbres.',
+        },
+      ],
+    },
   ],
 };
