@@ -55,7 +55,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
     icon: 'GraduationCap',
     color: '#4A6741',
     orderIndex: 1,
-    estimatedMinutes: 50,
+    estimatedMinutes: 90,
     lessons: [
       {
         slug: 'salutations-et-politesse-aza-fady',
@@ -1543,6 +1543,965 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
         ],
       },
+  // ─── LEÇON 11 : LA MAISON & HOSPITALITÉ ───
+  {
+    slug: 'la-maison-espace-et-fandraisam-bahiny',
+    title: "La maison, l'espace domestique et l'art d'accueillir (Ny Trano & Fandraisam-bahiny)",
+    titleMg: 'Ny Trano sy ny Fandraisam-bahiny Malagasy',
+    summary:
+      "Découvrez le vocabulaire de la maison, l'orientation sacrée de l'habitat et les formules d'hospitalité chaleureuse.",
+    summaryMg:
+      "Fantaro ny voambolan'ny trano, ny zoro firarazana ary ny fomba fandraisam-bahiny am-pitiavana.",
+    type: 'VOCABULARY',
+    orderIndex: 11,
+    durationMinutes: 7,
+    sections: [
+      {
+        type: 'intro',
+        textFr:
+          "Chez les Malgaches, la maison (*Trano*) n'est pas seulement un abri physique : c'est un microcosme cosmique orienté selon les points cardinaux. Le coin Nord-Est (*Zoro Firarazana*) est le sanctuaire des ancêtres et de la prière. L'accueil d'un visiteur (*Fandraisam-bahiny*) est sacré : un proverbe rappelle que « Ny vahiny toy ny rano indray mandeha » (l'invité est comme l'eau qui ne passe qu'une fois), invitant à lui réserver le meilleur accueil.",
+        textMg:
+          "Eo amin'ny fiainana malagasy, ny trano dia tsy fialofana fotsiny fa toerana masina mifamatotra amin'ny tontolo iainana. Ny Zoro Firarazana (Avaratra-Atsinanana) no toeram-bavaka sy fanajana ny Razana. Masina ny fandraisam-bahiny : « Ny vahiny toy ny rano indray mandeha », koa mendrika fandraisana am-pitiavana sy am-panajana lalandava.",
+      },
+      {
+        type: 'phonetic',
+        letterOrSound: 'TR / DR',
+        phonetic: 'tr / dr (affriquées rétroflexes)',
+        frenchEquivalent:
+          "Se prononcent comme un 't' ou 'd' suivi d'un 'r' roulé très claqué, la langue appuyée contre le palais (ex: Trano = maison, Draindraik'izay = parfois).",
+        sampleWordMg: 'Trano',
+        sampleTranslationFr: 'Maison / Habitat familial',
+      },
+      {
+        type: 'concept',
+        termMg: 'Tsihy',
+        phonetic: 'tsi-hi',
+        meaningFr: 'La natte végétale tressée',
+        explanation:
+          "Élément central de la convivialité malgache. Posée au sol, elle sert d'espace pour s'asseoir, discuter, partager le repas et dormir en toute simplicité.",
+      },
+      {
+        type: 'concept',
+        termMg: 'Mandehana miditra / Midira tompoko',
+        phonetic: 'man-de-ha-na mi-di-tra',
+        meaningFr: 'Entrez donc / Soyez le bienvenu chez nous',
+        explanation:
+          "Formule d'hospitalité chaleureuse adressée à toute personne se présentant au seuil de la maison.",
+      },
+      {
+        type: 'concept',
+        termMg: 'Zoro Firarazana',
+        phonetic: 'zou-rou fi-ra-ra-za-na',
+        meaningFr: 'Le coin Nord-Est / Angle des ancêtres',
+        explanation:
+          "L'angle sacré de la maison traditionnelle malgache où l'on dépose les offrandes, où l'on bénit les enfants et où l'on invoque Zanahary et les aïeux.",
+      },
+      {
+        type: 'concept',
+        termMg: 'Fatapera sy Vilany',
+        phonetic: 'fa-ta-pe-ra si vi-la-ni',
+        meaningFr: 'Le réchaud à braises et la marmite',
+        explanation:
+          "Ustensiles indispensables de la cuisine quotidienne au charbon de bois pour faire cuire le riz et les plats mijotés (*Laoka*).",
+      },
+      {
+        type: 'example',
+        textMg:
+          "Mandrosoa tompoko, mipetraha eto amin'ny tsihy fa hety hisotro rano mafana isika.",
+        textFr:
+          'Entrez donc Monsieur/Madame, asseyez-vous ici sur la natte, nous allons partager une boisson chaude.',
+      },
+      {
+        type: 'example',
+        textMg:
+          "Azafady tompoko, aiza no ametrahana ny kiraro alohan'ny hidirana ao an-trano ?",
+        textFr:
+          'Excusez-moi, où dépose-t-on les chaussures avant de pénétrer dans la maison ?',
+      },
+      {
+        type: 'didYouKnow',
+        textFr:
+          "Dans l'architecture traditionnelle des Hautes Terres et de l'Imerina, la porte et les fenêtres s'ouvraient toujours vers l'Ouest afin de se protéger des vents froids venant de l'Est et pour capter la lumière chaleureuse du soleil couchant (*Masoandro mody*).",
+        textMg:
+          "Amin'ny trano gasy nentin-drazana, ny varavarana sy ny varavarankely dia mitodika miankandrefana foana mba hiarovana amin'ny rivotra mangatsiaka avy any atsinanana sy handraisana ny tara-pahazavana amin'ny hariva.",
+      },
+      {
+        type: 'quiz',
+        question:
+          'Quel angle de la maison traditionnelle malgache est dédié aux ancêtres et à la prière ?',
+        questionMg:
+          'Inona no zoro masina ao an-trano fanaovana vavaka sy fanajana ny Razana ?',
+        choices: [
+          'Le coin Nord-Est (Zoro Firarazana)',
+          'Le coin Sud-Ouest',
+          'Le centre du toit',
+          'Le seuil de la porte',
+        ],
+        correctIndex: 0,
+        explanation:
+          "Le 'Zoro Firarazana' (Nord-Est) est l'orientation la plus sacrée de la cosmologie malgache, où s'accomplissent les bénédictions et prières rituelles.",
+      },
+      {
+        type: 'quiz',
+        question:
+          'Que symbolise la natte tressée (« Tsihy ») dans le foyer malgache ?',
+        questionMg:
+          "Inona no hevitra fonosin'ny « Tsihy » eo amin'ny tokantrano malagasy ?",
+        choices: [
+          'La fraternité, le partage et la simplicité conviviale',
+          'Une simple décoration murale',
+          'Une barrière pour repousser les visiteurs',
+          'Un objet réservé uniquement aux rois',
+        ],
+        correctIndex: 0,
+        explanation:
+          "S'asseoir ensemble sur le 'tsihy' efface les distances sociales et scelle la convivialité, l'égalité et l'écoute mutuelle.",
+      },
+      {
+        type: 'quiz',
+        question:
+          "Quelle phrase prononce-t-on pour inviter chaleureusement quelqu'un à entrer chez soi ?",
+        questionMg:
+          'Inona no teny enti-mandray vahiny am-pitiavana mba hiditra ao an-trano ?',
+        choices: [
+          'Mandrosoa tompoko / Midira ao an-trano',
+          'Mandehana mody',
+          'Azafady fa mikatona ny trano',
+          'Mijanona eny ivelany',
+        ],
+        correctIndex: 0,
+        explanation:
+          "« Mandrosoa tompoko » (Avancez donc) ou « Midira ao an-trano » exprime un accueil généreux et bienveillant.",
+      },
+      {
+        type: 'quiz',
+        question:
+          'Comment se prononce le digraphe « TR » en langue malgache (ex: Trano) ?',
+        questionMg:
+          "Ahoana no fanononana ny litera « TR » amin'ny teny malagasy ?",
+        choices: [
+          "Comme un 't' suivi d'un 'r' claqué et roulé contre le palais",
+          "Comme un 'ch' doux français",
+          "Comme un simple 't' muet",
+          "Comme un 'z' sifflant",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Le son 'TR' malgache est une consonne affriquée alvéolaire où le 't' et le 'r' roulé fusionnent énergiquement.",
+      },
+      {
+        type: 'quiz',
+        question:
+          "Pourquoi les ouvertures de la maison traditionnelle malgache étaient-elles orientées vers l'Ouest ?",
+        questionMg:
+          "Nahoana no niankandrefana ny varavaran'ny trano gasy nentin-drazana ?",
+        choices: [
+          "Pour se protéger du vent froid d'Est et profiter de la chaleur du soleil couchant",
+          'Parce que le bois ne poussait que vers l’Ouest',
+          'Pour cacher la maison aux voisins',
+          'Pour éviter la lumière du jour',
+        ],
+        correctIndex: 0,
+        explanation:
+          "Cette orientation bioclimatique ancestrale protégeait du vent d'alizé de l'Est et emmagasinait la douce chaleur vespérale.",
+      },
+    ],
+  },
+
+  // ─── LEÇON 12 : LE CORPS HUMAIN & SANTÉ ───
+  {
+    slug: 'le-corps-humain-sante-et-bien-etre',
+    title:
+      'Le corps humain, la santé et le bien-être (Ny Vatan\'olombelona sy ny Fahasalamana)',
+    titleMg: "Ny Vatan'olombelona sy ny Fahasalamana",
+    summary:
+      'Apprenez à nommer les parties du corps, à exprimer vos sensations physiques et à demander ou donner des nouvelles de santé.',
+    summaryMg:
+      "Ianaro ny anaran'ny rantsam-batana, ny fitenenana rehefa marary ary ny fifampiarahana fahasalamana.",
+    type: 'VOCABULARY',
+    orderIndex: 12,
+    durationMinutes: 7,
+    sections: [
+      {
+        type: 'intro',
+        textFr:
+          "En langue malgache, les parties du corps sont intimement associées aux métaphores de l'âme et des émotions. Le cœur (*Fo*) est le siège des sentiments profonds, le ventre (*Kibo*) celui de la sincérité (*Madio kibo* = avoir le cœur pur, sans rancune). Savoir exprimer sa santé ou s'enquérir avec délicatesse de celle d'autrui est un devoir élémentaire de politesse.",
+        textMg:
+          "Amin'ny teny malagasy, ny anaran'ny taova sy ny rantsam-batana dia misy hevitra lalina mifandray amin'ny fanahy sy ny fihetseham-po. Ny Fo no toeran'ny fitiavana, ny Kibo no fitaratry ny fahatsoram-po (« Madio kibo »). Ny fiheverana ny fahasalaman'ny hafa dia adidy lehibe amin'ny fifanajana andavanandro.",
+      },
+      {
+        type: 'phonetic',
+        letterOrSound: 'Voyelles finales atones',
+        phonetic: 'a / y (assourdies)',
+        frenchEquivalent:
+          "En fin de mot, les voyelles malgaches 'a' et 'y' ne sont pas accentuées : elles s'assourdissent et se chuchotent presque (ex: Loha se prononce 'lou-h(a)', Tanana se prononce 'ta-na-n(a)').",
+        sampleWordMg: 'Tanana',
+        sampleTranslationFr: 'Main / Bras',
+      },
+      {
+        type: 'concept',
+        termMg: 'Loha sy Maso',
+        phonetic: 'lou-ha si ma-sou',
+        meaningFr: 'La tête et les yeux',
+        explanation:
+          "Parties supérieures du corps. 'Maso' (l'œil) entre dans la composition du mot 'Masoandro' (le soleil, littéralement « l'œil du jour »).",
+      },
+      {
+        type: 'concept',
+        termMg: 'Tanana sy Tongotra',
+        phonetic: 'ta-na-na si toun-gou-tra',
+        meaningFr: 'La main et le pied / la jambe',
+        explanation:
+          "Membres du travail, de la marche et de l'entraide communautaire. 'Tanana' symbolise le geste solidaire (*Valin-tanana*).",
+      },
+      {
+        type: 'concept',
+        termMg: 'Marary / Salama',
+        phonetic: 'ma-ra-ri / sa-la-ma',
+        meaningFr: 'Être malade, souffrant / Être en bonne santé, bien portant',
+        explanation:
+          "Les deux états fondamentaux du corps. Pour exprimer une douleur : 'Marary ny...' (ex: *Marary loha aho* = J'ai mal à la tête).",
+      },
+      {
+        type: 'concept',
+        termMg: 'Tambavy',
+        phonetic: 'tam-ba-vi',
+        meaningFr: 'Infusion traditionnelle bienfaisante',
+        explanation:
+          'Décoction de plantes et feuilles médicinales préparée pour revigorer le corps, apaiser la fièvre et purifier l’organisme.',
+      },
+      {
+        type: 'example',
+        textMg:
+          'Mba manao ahoana ny fahasalamana tompoko ? Salama tsara fa misaotra indrindra.',
+        textFr:
+          'Comment va votre santé s’il vous plaît ? Elle est excellente, merci infiniment.',
+      },
+      {
+        type: 'example',
+        textMg:
+          'Marary kibo kely ny ankizy ka mila tambavy mafana sy fitsaharana.',
+        textFr:
+          'L’enfant a un peu mal au ventre, il a besoin d’une infusion chaude et de repos.',
+      },
+      {
+        type: 'didYouKnow',
+        textFr:
+          "Le mot malgache « Tsara tarehy » (beau, jolie) est composé de « Tsara » (bon, beau) et « Tarehy » (le visage, les traits). De même, pour dire que quelqu'un est généreux, on dit qu'il a la « main ouverte » (*Malalaka tanana*).",
+        textMg:
+          "Ny hoe « Tsara tarehy » dia avy amin'ny « Tsara » sy « Tarehy ». Rehefa olona tsara fanahy sy mpanome kosa dia lazaina hoe « Malalaka tanana ».",
+      },
+      {
+        type: 'quiz',
+        question: 'Comment dit-on « J’ai mal à la tête » en malgache ?',
+        questionMg: "Ahoana no filazana hoe « Marary loha aho » amin'ny teny malagasy ?",
+        choices: [
+          'Marary loha aho',
+          'Marary tongotra aho',
+          'Salama tsara aho',
+          'Noana aho',
+        ],
+        correctIndex: 0,
+        explanation:
+          "« Marary » (souffrant) + « loha » (tête) + « aho » (je/moi) : « Marary loha aho » exprime le mal de tête.",
+      },
+      {
+        type: 'quiz',
+        question:
+          "Quel mot malgache désigne l'œil et entre dans la composition du mot « Masoandro » (le soleil) ?",
+        questionMg:
+          "Inona no teny malagasy midika hoe « œil » ka manome ny teny hoe « Masoandro » ?",
+        choices: ['Maso', 'Loha', 'Sofina', 'Vava'],
+        correctIndex: 0,
+        explanation:
+          "« Maso » signifie 'œil'. Le soleil est poétiquement appelé 'Masoandro', c'est-à-dire l'œil du jour.",
+      },
+      {
+        type: 'quiz',
+        question:
+          "Qu'est-ce que le « Tambavy » dans la culture traditionnelle malgache ?",
+        questionMg: "Inona no atao hoe « Tambavy » amin'ny fitsaboana nentin-drazana malagasy ?",
+        choices: [
+          'Une tisane ou décoction de plantes médicinales bienfaisantes',
+          'Une danse de fête',
+          'Un vêtement d’hiver',
+          'Un plat de viande séchée',
+        ],
+        correctIndex: 0,
+        explanation:
+          "Le Tambavy est une tisane médicinale traditionnelle à base de feuilles, racines et écorces aromatiques préparée pour soigner le corps.",
+      },
+      {
+        type: 'quiz',
+        question:
+          'Que signifie métaphoriquement l’expression malgache « Madio kibo » ?',
+        questionMg:
+          "Inona no hevitra fonosin'ny ohabolana na fitenenana hoe « Madio kibo » ?",
+        choices: [
+          'Avoir le cœur pur, sans rancune ni duplicité',
+          'Avoir très faim',
+          'Avoir mal au ventre',
+          'Avoir fini de manger',
+        ],
+        correctIndex: 0,
+        explanation:
+          "« Madio kibo » (avoir le ventre propre) signifie au sens figuré n'abriter aucune animosité ni méchanceté envers autrui.",
+      },
+      {
+        type: 'quiz',
+        question:
+          "Comment se prononcent généralement les voyelles finales 'a' et 'y' en malgache ?",
+        questionMg:
+          "Ahoana no fanononana ny zanatsoratra 'a' sy 'y' any amin'ny faran'ny teny malagasy ?",
+        choices: [
+          "Elles sont atones et s'assourdissent presque en chuchotement",
+          "Elles sont fortement accentuées et traînantes",
+          "Elles se transforment toujours en 'O'",
+          "Elles se prononcent comme un 'R' roulé",
+        ],
+        correctIndex: 0,
+        explanation:
+          "En malgache, l'accent tonique tombe sur l'avant-dernière syllabe (pénultième) ; la voyelle finale est donc très douce et à peine articulée.",
+      },
+    ],
+  },
+
+  // ─── LEÇON 13 : NATURE, SAISONS & MÉTÉO ───
+  {
+    slug: 'la-nature-les-saisons-et-le-climat',
+    title:
+      'La nature, les saisons et la météo (Ny Zavaboary sy ny Toetrandro)',
+    titleMg: 'Ny Zavaboary, ny Toetrandro sy ny Fizaran-taona',
+    summary:
+      "Explorez le vocabulaire des éléments naturels, les saisons de l'île Rouge et les expressions pour décrire le temps.",
+    summaryMg:
+      'Fantaro ny voambolan’ny zavaboary, ny toetrandro ary ny fizaran-taona eto Madagasikara.',
+    type: 'CULTURE',
+    orderIndex: 13,
+    durationMinutes: 7,
+    sections: [
+      {
+        type: 'intro',
+        textFr:
+          "Madagascar vit au rythme de la nature et de ses contrastes climatiques. Les deux grandes saisons sont le **Fahavaratra** (saison chaude et pluvieuse, propice au riz) et le **Ririnina** (l'hiver austral, sec et frais sur les Hautes Terres). Entre elles s'intercalent le **Fararano** (temps des moissons et de l'abondance) et l'**Asotry**. L'harmonie entre l'homme et les éléments naturels (*Zavaboary*) est au cœur de la spiritualité insulaire.",
+        textMg:
+          "Madagasikara dia miaina mifanaraka amin'ny fiovan'ny toetrandro sy ny vanim-potoana. Misy ny **Fahavaratra** (mafana sy be orana, maniry ny vary) sy ny **Ririnina** (mangatsiaka sy maina). Eo anelanelany ny **Fararano** fotoam-piotazana sy fahavokarana. Ny fifandraisana mirindra amin'ny Zavaboary no fototry ny fahendren-drazana.",
+      },
+      {
+        type: 'phonetic',
+        letterOrSound: 'V',
+        phonetic: 'v (labio-dentale douce)',
+        frenchEquivalent:
+          "Se prononce comme le 'v' français de 'vent' ou 'vie', mais avec une vibration très douce des lèvres (ex: Vava = bouche, Vary = riz, Vintana = destin).",
+        sampleWordMg: 'Vary',
+        sampleTranslationFr: 'Riz (aliment sacré)',
+      },
+      {
+        type: 'concept',
+        termMg: 'Fahavaratra sy Ririnina',
+        phonetic: 'fa-ha-va-ra-tra / ri-ri-ni-na',
+        meaningFr: "L'été pluvieux et l'hiver austral frais",
+        explanation:
+          'Les deux saisons maîtresses qui gouvernent le calendrier agricole, les fêtes coutumières et les activités quotidiennes.',
+      },
+      {
+        type: 'concept',
+        termMg: 'Fararano',
+        phonetic: 'fa-ra-ra-nou',
+        meaningFr: "La saison d'automne et des récoltes (mars à mai)",
+        explanation:
+          "Littéralement « la fin des pluies ». Saison bénie de réjouissances, où les greniers sont pleins et où s'organisent mariages et fêtes traditionnelles.",
+      },
+      {
+        type: 'concept',
+        termMg: 'Masoandro sy Orana',
+        phonetic: 'ma-sou-an-drou / ou-ra-na',
+        meaningFr: 'Le soleil et la pluie',
+        explanation:
+          "Les deux forces célestes indispensables à la vie : l'eau qui nourrit la terre et la lumière qui fait mûrir les épis.",
+      },
+      {
+        type: 'concept',
+        termMg: 'Mangatsiaka / Mafana',
+        phonetic: 'man-ga-tsi-ka / ma-fa-na',
+        meaningFr: 'Il fait froid / Il fait chaud',
+        explanation:
+          "Expressions usuelles de la météo : 'Mangatsiaka ny andro' (il fait froid), 'Mafana ny andro' (il fait chaud).",
+      },
+      {
+        type: 'example',
+        textMg: 'Avy ny orana ka mangatsiaka ny andro anio tompoko.',
+        textFr: 'La pluie arrive et il fait froid aujourd’hui Monsieur/Madame.',
+      },
+      {
+        type: 'example',
+        textMg:
+          "Mamirapiratra ny masoandro amin'ny fararano ka faly ny mpamboly.",
+        textFr:
+          'Le soleil resplendit en cette saison des récoltes et les cultivateurs se réjouissent.',
+      },
+      {
+        type: 'didYouKnow',
+        textFr:
+          "Un proverbe célèbre dit : « Tsy misy mamy toy ny fararano » (Rien n'est plus doux que la saison des récoltes). C'est à ce moment de l'année que le riz nouveau (*Vary vao*) est goûté en famille dans une communion de gratitude envers la terre.",
+        textMg:
+          "Heverina ho fotoana mamy indrindra ny Fararano : « Tsy misy mamy toy ny fararano », satria eo no hanina ny vary vao sy ifampizarana ny vokatra be tamin'ny asa mafy.",
+      },
+      {
+        type: 'quiz',
+        question:
+          'Quelle est la saison des pluies et de la chaleur à Madagascar ?',
+        questionMg:
+          "Inona no vanim-potoana mafana sy be orana eto Madagasikara ?",
+        choices: [
+          'Ny Fahavaratra',
+          'Ny Ririnina',
+          'Ny Lohataona',
+          'Ny Asotry',
+        ],
+        correctIndex: 0,
+        explanation:
+          "Le 'Fahavaratra' (de novembre à avril) est la saison chaude et pluvieuse qui permet le développement luxuriant de la végétation et des rizières.",
+      },
+      {
+        type: 'quiz',
+        question:
+          "Que signifie littéralement le mot « Fararano » (la saison des moissons) ?",
+        questionMg:
+          "Inona no hevitra ara-pitenenana fonosin'ny teny hoe « Fararano » ?",
+        choices: [
+          'La fin des eaux / La fin des pluies',
+          'Le grand fleuve',
+          'Le début de l’hiver',
+          'La terre sèche',
+        ],
+        correctIndex: 0,
+        explanation:
+          "« Fara » (fin, terme) + « rano » (eau) : c'est la période où les pluies cessent pour laisser place aux moissons dorées.",
+      },
+      {
+        type: 'quiz',
+        question: 'Comment dit-on « Il fait froid aujourd’hui » en malgache ?',
+        questionMg: "Ahoana no filazana hoe « Mangatsiaka ny andro anio » ?",
+        choices: [
+          'Mangatsiaka ny andro anio',
+          'Mafana be ny andro',
+          'Misy orana be',
+          'Maizina ny andro',
+        ],
+        correctIndex: 0,
+        explanation:
+          "« Mangatsiaka » (froid) + « ny andro » (le temps / le jour) + « anio » (aujourd'hui) exprime la sensation de fraîcheur.",
+      },
+      {
+        type: 'quiz',
+        question:
+          "Quelle est la saison fraîche de l’hiver austral à Madagascar ?",
+        questionMg:
+          "Inona no anaran'ny vanim-potoana mangatsiaka indrindra (hiver austral) ?",
+        choices: [
+          'Ny Ririnina',
+          'Ny Fahavaratra',
+          'Ny Fararano',
+          'Ny Asombola',
+        ],
+        correctIndex: 0,
+        explanation:
+          "Le 'Ririnina' (de juin à août) correspond à l'hiver austral, caractérisé par des températures fraîches sur les plateaux centraux.",
+      },
+      {
+        type: 'quiz',
+        question:
+          'Que célèbre-t-on traditionnellement à la saison du Fararano ?',
+        questionMg:
+          "Inona no fotoam-pifaliana ankalazaina mandritra ny Fararano ?",
+        choices: [
+          "La récolte du riz, l'abondance et les cérémonies familiales joyeuses",
+          'La plantation des premiers grains de maïs',
+          'Le jeûne obligatoire de toute la communauté',
+          'Le départ en exil des troupeaux',
+        ],
+        correctIndex: 0,
+        explanation:
+          "Le Fararano est le temps de la plénitude : les greniers à riz sont remplis, les familles se réunissent et partagent le 'Vary vao'.",
+      },
+    ],
+  },
+
+  // ─── LEÇON 14 : COULEURS, FORMES & DESCRIPTIONS ───
+  {
+    slug: 'les-couleurs-les-formes-et-descriptions',
+    title:
+      'Couleurs, formes et description des choses (Ny Loko sy ny Toetra)',
+    titleMg: 'Ny Loko, ny Endrika ary ny Toetran-javatra',
+    summary:
+      "Maîtrisez les nuances des couleurs, les formes géométriques et la place fondamentale de l'adjectif qualificatif.",
+    summaryMg:
+      'Ianaro ny loko rehetra, ny endrika ary ny fomba filazana ny toetran’ny zava-misy.',
+    type: 'GRAMMAR',
+    orderIndex: 14,
+    durationMinutes: 7,
+    sections: [
+      {
+        type: 'intro',
+        textFr:
+          "En langue malgache, les couleurs possèdent une symbolique profonde. Le rouge (*Mena*) est la couleur royale, de la terre nourricière et du courage. Le bleu (*Manga*) évoque le ciel pur et l'excellence humaine. Règle d'or grammaticale : l'adjectif qualificatif se place **toujours après** le nom qu'il qualifie (ex: *Trano lehibe* = une grande maison, *Lamba fotsy* = un lamba blanc).",
+        textMg:
+          "Ny loko eo amin'ny teny malagasy dia manana hevitra lehibe. Ny Mena dia lokon'andriana sy tanindrazana. Ny Manga dia maneho ny hatsarana sy ny fahamboniana. Fitsipika tsotra nefa lehibe : ny mpamari-toetra dia apetraka **aorian'ny anarana** foana (oh: *Trano lehibe*, *Lamba fotsy*).",
+      },
+      {
+        type: 'phonetic',
+        letterOrSound: 'TS',
+        phonetic: 'ts (affriquée alvéolaire)',
+        frenchEquivalent:
+          "Se prononce comme 'ts' dans 'tsar' ou 'tsunami', très net et franc (ex: Tsara = bon/bien, Maitso = vert, Tsihy = natte).",
+        sampleWordMg: 'Maitso',
+        sampleTranslationFr: 'Vert (couleur de la vie et des rizières)',
+      },
+      {
+        type: 'concept',
+        termMg: 'Mena sy Fotsy sy Mainty',
+        phonetic: 'me-na / fou-tsi / main-ti',
+        meaningFr: 'Rouge, Blanc et Noir',
+        explanation:
+          'Les trois couleurs fondamentales de la tradition. Le blanc symbolise la pureté et la bénédiction (*Hasina*), le rouge la souveraineté, le noir la terre et la profondeur.',
+      },
+      {
+        type: 'concept',
+        termMg: 'Maitso sy Manga sy Mavo',
+        phonetic: 'mai-tsou / man-ga / ma-vou',
+        meaningFr: 'Vert, Bleu et Jaune',
+        explanation:
+          'Le vert des rizières fertiles, le bleu du ciel azur et le jaune doré des récoltes de riz mûr.',
+      },
+      {
+        type: 'concept',
+        termMg: 'Lehibe sy Kely',
+        phonetic: 'le-hi-be / ke-li',
+        meaningFr: 'Grand et Petit',
+        explanation:
+          "Adjectifs de dimension les plus utilisés. Exemples : *Omby lehibe* (un grand zébu), *Zaza kely* (un petit enfant).",
+      },
+      {
+        type: 'concept',
+        termMg: 'Vaovao sy Antitra / Madio sy Maloto',
+        phonetic: 'vow-vow / an-ti-tra | ma-diou / ma-lou-tou',
+        meaningFr: 'Nouveau et Vieux / Propre et Sale',
+        explanation:
+          "Couples d'adjectifs descriptifs essentiels pour qualifier l'état des objets, des vêtements et des lieux.",
+      },
+      {
+        type: 'example',
+        textMg:
+          'Manana lamba landy fotsy madio sy tsara tarehy ny renibe.',
+        textFr:
+          'La grand-mère possède un lamba de soie blanche, propre et d’une grande beauté.',
+      },
+      {
+        type: 'example',
+        textMg:
+          "Misy omby mena lehibe telo miandry eny amin'ny kijana maitso.",
+        textFr:
+          'Il y a trois grands zébus rouges qui paissent dans le pré verdoyant.',
+      },
+      {
+        type: 'didYouKnow',
+        textFr:
+          "En malgache, le mot « Manga » désigne la couleur bleue, mais il signifie aussi au figuré « remarquable, d'élite, prestigieux ». Une personne éminente de la communauté est appelée un « Olona manga » (un esprit brillant, une fierté nationale).",
+        textMg:
+          "Ny teny hoe « Manga » dia sady milaza loko manga no midika hoe « sangany, tsara indrindra ». Ny olo-malaza nahavita be ho an'ny firenena dia antsoina hoe « Olona manga ».",
+      },
+      {
+        type: 'quiz',
+        question:
+          "Où se place l'adjectif qualificatif par rapport au nom en langue malgache ?",
+        questionMg:
+          "Aiza no toerana misy ny mpamari-toetra raha oharina amin'ny anarana ?",
+        choices: [
+          'Toujours après le nom (ex: Trano lehibe)',
+          'Toujours avant le nom',
+          'Au tout début de la phrase uniquement',
+          'À la fin du paragraphe',
+        ],
+        correctIndex: 0,
+        explanation:
+          "En malgache, le déterminé précède le déterminant : on dit 'Trano' (maison) + 'lehibe' (grande), jamais l'inverse.",
+      },
+      {
+        type: 'quiz',
+        question:
+          'Que symbolise la couleur rouge (« Mena ») dans la tradition malgache ?',
+        questionMg:
+          "Inona no hevitra lehibe fonosin'ny loko « Mena » amin'ny kolontsaina malagasy ?",
+        choices: [
+          'La souveraineté royale, la terre nourricière et le courage',
+          'La peur et la défaite',
+          'Le silence absolu',
+          'La nuit et le sommeil',
+        ],
+        correctIndex: 0,
+        explanation:
+          "Le rouge est la couleur des souverains d'autrefois, de la latérite sacrée de l'île et des ornements d'honneur.",
+      },
+      {
+        type: 'quiz',
+        question:
+          'Comment traduit-on « Un petit zébu blanc » en respectant l’ordre des mots malgaches ?',
+        questionMg:
+          "Ahoana no filazana marina hoe « un petit zébu blanc » amin'ny teny malagasy ?",
+        choices: [
+          'Omby fotsy kely',
+          'Kely fotsy omby',
+          'Fotsy omby kely',
+          'Omby kely lehibe',
+        ],
+        correctIndex: 0,
+        explanation:
+          "On place le nom en tête : 'Omby' (zébu) suivi des adjectifs 'fotsy' (blanc) et 'kely' (petit).",
+      },
+      {
+        type: 'quiz',
+        question:
+          'Que signifie l’expression honorifique « Olona manga » en malgache ?',
+        questionMg:
+          "Inona no hevitry ny fiantsoana hoe « Olona manga » eo amin'ny fiarahamonina ?",
+        choices: [
+          'Une personnalité remarquable, éminente et exemplaire',
+          'Une personne habillée tout en bleu',
+          'Un marchand de fruits',
+          'Un voyageur étranger',
+        ],
+        correctIndex: 0,
+        explanation:
+          "Au-delà de la couleur, 'Manga' désigne l'excellence. Un 'Olona manga' est une figure émérite honorée par le peuple.",
+      },
+      {
+        type: 'quiz',
+        question: 'Comment dit-on « Vert » en malgache ?',
+        questionMg: "Inona no teny malagasy midika hoe « Vert » ?",
+        choices: ['Maitso', 'Mavo', 'Mainty', 'Mena'],
+        correctIndex: 0,
+        explanation:
+          "« Maitso » est la couleur verte, emblème de la nature florissante et des jeunes pousses de riz.",
+      },
+    ],
+  },
+
+  // ─── LEÇON 15 : VÊTEMENTS & LE LAMBA TRADITIONNEL ───
+  {
+    slug: 'les-vetements-et-le-lamba-traditionnel',
+    title:
+      'Vêtements traditionnels et l’élégance du Lamba (Ny Fitafiana sy ny Lamba)',
+    titleMg: 'Ny Fitafiana nentin-drazana sy ny Lamba Malagasy',
+    summary:
+      'Plongez dans l’art vestimentaire malgache : le port du Lamba, les étoffes de soie et les tenues de fête.',
+    summaryMg:
+      'Fantaro ny haikanto amin’ny fitafiana malagasy, ny lanjan’ny lamba ary ny fanajana eo amin’ny fiarahamonina.',
+    type: 'CULTURE',
+    orderIndex: 15,
+    durationMinutes: 7,
+    sections: [
+      {
+        type: 'intro',
+        textFr:
+          "Le **Lamba** est bien plus qu'un vêtement : c'est l'âme visible du peuple malgache, un insigne de dignité, de pudeur et d'honneur (*Fahamendrehana*). Porté avec distinction drapé sur les épaules, il accompagne chaque étape de la vie humaine. On distingue la prestigieuse soie sauvage (*Lamba landy*), le coton blanc solennel (*Lamba arindrano*) et le *Lambahoany* chatoyant des régions côtières, qui arbore toujours un proverbe philosophique imprimé en son centre.",
+        textMg:
+          "Ny **Lamba** dia taratry ny fahamendrehana sy ny hasin'ny Malagasy. Tsy fitafy tsotra izy fa mariky ny fanajana sy ny fihavanana. Misy ny **Lamba landy** vita amin'ny landy natoraly sarobidy, ny **Lamba arindrano** fotsy manetriketrika, ary ny **Lambahoany** marevaka misy ohabolana eny amin'ny morontsiraka.",
+      },
+      {
+        type: 'phonetic',
+        letterOrSound: 'Y final',
+        phonetic: 'i (bref et doux)',
+        frenchEquivalent:
+          "La lettre 'y' n'apparaît qu'à la toute fin des mots malgaches et se prononce comme un 'i' très court et discret (ex: Landy = soie, Malagasy = malgache, Fady = tabou).",
+        sampleWordMg: 'Landy',
+        sampleTranslationFr: 'Soie naturelle tissée à la main',
+      },
+      {
+        type: 'concept',
+        termMg: 'Lamba landy',
+        phonetic: 'lam-ba lan-di',
+        meaningFr: 'Le lamba de soie sauvage',
+        explanation:
+          "Tissu noble tissé à la main à partir des cocons du ver à soie sauvage (*Landibe*). Porté lors des mariages, des discours officiels (*Kabary*) et des cérémonies sacrées.",
+      },
+      {
+        type: 'concept',
+        termMg: 'Lambahoany',
+        phonetic: 'lam-ba-hou-a-ni',
+        meaningFr: 'Le pagne de coton imprimé côtier',
+        explanation:
+          "Étoffe souple et colorée très prisée sur les côtes de Madagascar, portant toujours un proverbe (*Ohabolana*) au centre qui inspire et conseille la communauté.",
+      },
+      {
+        type: 'concept',
+        termMg: 'Satroka bory / Satroka bakoly',
+        phonetic: 'sa-trou-ka bou-ri / sa-trou-ka ba-kou-li',
+        meaningFr: 'Le chapeau traditionnel en paille tressée',
+        explanation:
+          "Chapeau élégant tressé en fibres végétales (sisal, raphia ou paille de riz), accessoire masculin et féminin par excellence lors des rassemblements.",
+      },
+      {
+        type: 'concept',
+        termMg: 'Mitafy / Miakanjo',
+        phonetic: 'mi-ta-fi / mi-a-kan-dzou',
+        meaningFr: 'Porter le lamba / S’habiller',
+        explanation:
+          "On utilise 'Mitafy' spécifiquement pour l'acte de se draper dans un lamba, et 'Miakanjo' pour mettre des habits.",
+      },
+      {
+        type: 'example',
+        textMg:
+          'Mitafy lamba landy madio ny mpikabary rehefa manomboka ny teny fanajana.',
+        textFr:
+          'L’orateur traditionnel est drapé d’un noble lamba de soie lorsqu’il entame les paroles de respect.',
+      },
+      {
+        type: 'example',
+        textMg:
+          "Tena milamina sy tsara tarehy ity lambahoany misy ohabolana ity.",
+        textFr:
+          'Ce lambahoany orné d’un proverbe est particulièrement harmonieux et magnifique.',
+      },
+      {
+        type: 'didYouKnow',
+        textFr:
+          "Un proverbe célèbre dit : « Ny lamba lany fanjaitra, ny fihavanana tsy mba lany » (Le tissu finit par s'user sous les aiguilles, mais le lien de fraternité ne s'use jamais). Offrir un lamba à un aîné ou à un invité d'honneur est le présent le plus noble qui soit.",
+        textMg:
+          "Misy ohabolana malaza manao hoe : « Ny lamba lany fanjaitra, ny fihavanana tsy mba lany ». Ny fanolorana lamba dia mariky ny fanomezam-boninahitra ambony indrindra.",
+      },
+      {
+        type: 'quiz',
+        question:
+          'Que représente le « Lamba » dans la culture et la vie quotidienne malgache ?',
+        questionMg:
+          "Inona no hevitra amam-panahy fonosin'ny « Lamba » eo amin'ny fiainana malagasy ?",
+        choices: [
+          "Un symbole suprême de dignité, d'honneur et de lien social",
+          'Un simple morceau de tissu pour s’essuyer les mains',
+          'Un uniforme scolaire moderne',
+          'Un drap de lit uniquement',
+        ],
+        correctIndex: 0,
+        explanation:
+          "Le Lamba est la parure identitaire de Madagascar, porté avec respect pour marquer la dignité de la personne.",
+      },
+      {
+        type: 'quiz',
+        question:
+          "Quelle matière précieuse est utilisée pour tisser le « Lamba landy » ?",
+        questionMg:
+          "Inona no akora voajanahary sarobidy anenomana ny « Lamba landy » ?",
+        choices: [
+          'La soie sauvage issue des cocons traditionnels (Landibe)',
+          'La laine de mouton d’Écosse',
+          'Le plastique recyclé',
+          'Le cuir de zébu séché',
+        ],
+        correctIndex: 0,
+        explanation:
+          "Le 'Lamba landy' est tissé artisanalement à partir des cocons de soie sauvage de Madagascar, réputée pour sa robustesse et sa texture noble.",
+      },
+      {
+        type: 'quiz',
+        question:
+          'Quelle est la particularité du « Lambahoany » porté sur les régions côtières ?',
+        questionMg:
+          "Inona no mampiavaka ny « Lambahoany » fampiasa eny amin'ny morontsiraka ?",
+        choices: [
+          'Il comporte un proverbe (*Ohabolana*) philosophique imprimé en son centre',
+          'Il est entièrement noir sans motif',
+          'Il est fait de métal tressé',
+          'Il ne se porte que la nuit',
+        ],
+        correctIndex: 0,
+        explanation:
+          "Chaque Lambahoany présente un proverbe central en malgache portant une leçon de sagesse, un mot d'amour ou une parole de paix.",
+      },
+      {
+        type: 'quiz',
+        question:
+          "Quel couvre-chef traditionnel en fibres végétales complète avec élégance la tenue malgache ?",
+        questionMg:
+          "Inona no satroka nentin-drazana vita amin'ny rary zava-maniry mampiseho fahamendrehana ?",
+        choices: [
+          'Ny Satroka bory / Satroka bakoly',
+          'Le béret basque',
+          'Le casque de chantier',
+          'La casquette de baseball',
+        ],
+        correctIndex: 0,
+        explanation:
+          "Le 'Satroka bory' ou 'Satroka bakoly' en paille finement tressée est le chapeau emblématique des réunions et fêtes malgaches.",
+      },
+      {
+        type: 'quiz',
+        question:
+          "Que rappelle le proverbe « Ny lamba lany fanjaitra, ny fihavanana tsy mba lany » ?",
+        questionMg:
+          "Inona no fampianarana lehibe ao anatin'ny ohabolana hoe « Ny lamba lany fanjaitra, ny fihavanana tsy mba lany » ?",
+        choices: [
+          'Les biens matériels périssent, mais la fraternité et l’amour demeurent éternels',
+          'Qu’il faut changer de tailleur rapidement',
+          'Que les aiguilles coûtent trop cher au marché',
+          'Qu’il ne faut jamais réparer un vêtement',
+        ],
+        correctIndex: 0,
+        explanation:
+          "Ce proverbe sublime enseigne que les vêtements s'usent avec le temps, tandis que les liens du cœur et la solidarité ne s'éteignent jamais.",
+      },
+    ],
+  },
+
+  // ─── LEÇON 16 : NÉGATION, REFUS POLI & MISES EN GARDE ───
+  {
+    slug: 'la-negation-le-refus-poli-et-interdictions',
+    title:
+      'La négation, le refus poli et les interdictions (Ny Mandà sy ny Mandrara am-panajana)',
+    titleMg: 'Ny Mandà am-panajana, ny Tsy sy ny Aza',
+    summary:
+      'Apprenez à formuler la négation avec nuance, à refuser poliment sans offenser et à exprimer une mise en garde bienveillante.',
+    summaryMg:
+      'Ianaro ny fampiasana ny « Tsy », ny « Aza », ny fandavana am-pahendrena ary ny fahalalam-pomba.',
+    type: 'GRAMMAR',
+    orderIndex: 16,
+    durationMinutes: 7,
+    sections: [
+      {
+        type: 'intro',
+        textFr:
+          "Dans la culture malgache où l'harmonie des relations (*Fihavanana*) est souveraine, opposer un « non » direct et tranchant est considéré comme maladroit. On privilégie toujours des tournures empreintes de tact et de déférence. Sur le plan grammatical, deux mots clés gouvernent la négation : **Tsy** (pour nier un fait ou une action : *ne... pas*) et **Aza** (pour exprimer un impératif négatif, une défense ou une recommandation bienveillante : *ne... pas !*).",
+        textMg:
+          "Eo amin'ny fifampitondrana malagasy, ny fandavana mivantana sy henjana dia manafintohina. Ny fahaiza-mandà am-pahalalam-pomba no mampaharitra ny fihavanana. Ao amin'ny fitsipiky ny teny, misy teny roa lehibe : ny **Tsy** (fandavana tsotra) sy ny **Aza** (fandrarana am-pitiavana na fampitandremana).",
+      },
+      {
+        type: 'phonetic',
+        letterOrSound: 'GN / Ñ',
+        phonetic: 'gn (nasale palatale)',
+        frenchEquivalent:
+          "Dans plusieurs dialectes côtiers et dans des expressions courantes, se prononce comme 'gn' dans 'montagne' ou 'vigne' (ex: Managnana = avoir, possession).",
+        sampleWordMg: 'Manangana',
+        sampleTranslationFr: 'Élever / Fonder une famille',
+      },
+      {
+        type: 'concept',
+        termMg: 'Tsy (Négation déclarative)',
+        phonetic: 'tsi',
+        meaningFr: 'Ne... pas (négation du verbe et de la phrase)',
+        explanation:
+          "Se place directement devant le verbe ou l'adjectif. Exemples : *Tsy fantatro* (Je ne sais pas), *Tsy manana aho* (Je n'ai pas), *Tsy mety* (Ce n'est pas possible / convenable).",
+      },
+      {
+        type: 'concept',
+        termMg: 'Aza (Impératif de défense / Recommandation)',
+        phonetic: 'a-za',
+        meaningFr: 'Ne... pas ! (défense bienveillante)',
+        explanation:
+          "Utilisé pour demander de ne pas faire une action. Exemples célèbres : *Aza manahy* (Ne vous inquiétez pas), *Aza matahotra* (N'ayez pas peur), *Aza omena tsiny* (Ne m'en veuillez point).",
+      },
+      {
+        type: 'concept',
+        termMg: 'Tsy misy',
+        phonetic: 'tsi mi-si',
+        meaningFr: "Il n'y en a pas / Il n'y a rien / C'est épuisé",
+        explanation:
+          "Négation d'existence indispensable dans les échanges au marché et dans la conversation quotidienne.",
+      },
+      {
+        type: 'concept',
+        termMg: 'Tsy maninona',
+        phonetic: 'tsi ma-ni-nou-na',
+        meaningFr: 'Ce n’est rien / Pas de problème / Ne vous en faites pas',
+        explanation:
+          "Expression de réassurance absolue et d'apaisement lorsque quelqu'un s'excuse auprès de vous.",
+      },
+      {
+        type: 'example',
+        textMg:
+          'Azafady tompoko fa tsy afaka mandeha aho anio satria misy raharaha.',
+        textFr:
+          'Excusez-moi humblement mais je ne peux pas venir aujourd’hui car j’ai une obligation.',
+      },
+      {
+        type: 'example',
+        textMg: 'Aza manahy tompoko, tsy maninona mihitsy izany.',
+        textFr:
+          'Ne vous inquiétez pas Monsieur/Madame, cela ne fait absolument rien / aucun problème.',
+      },
+      {
+        type: 'didYouKnow',
+        textFr:
+          "Pour refuser une invitation sans froisser son hôte, le Malgache commence toujours par remercier chaleureusement avant d'énoncer son empêchement : « Misaotra indrindra tompoko, saingy... » (Merci infiniment, seulement...). C'est ce qu'on appelle l'art de « mandà am-pahendrena » (refuser avec sagesse).",
+        textMg:
+          "Mba tsy handratrana ny fon'ny mpiara-belona, ny fandavana dia ialohavan'ny fisaorana sy fialan-tsiny hatrany : « Misaotra tompoko, saingy misy antony tsy azo ialana... ». Izany no fahalalam-pomba malagasy.",
+      },
+      {
+        type: 'quiz',
+        question:
+          "Quel mot utilise-t-on pour nier une action ou un fait (« ne... pas ») en malgache ?",
+        questionMg:
+          "Inona no teny fampiasa amin'ny fandavana tsotra ny matoanteny hoe « ne... pas » ?",
+        choices: ['Tsy', 'Eny', 'Aza', 'Ary'],
+        correctIndex: 0,
+        explanation:
+          "« Tsy » est la particule de négation universelle qui précède le verbe (ex: *Tsy fantatro* = Je ne sais pas).",
+      },
+      {
+        type: 'quiz',
+        question:
+          "Quel mot utilise-t-on pour formuler un impératif négatif bienveillant (« Ne vous inquiétez pas ! ») ?",
+        questionMg:
+          "Inona no teny fandrarana am-pitiavana ampiasaina amin'ny hoe « Aza manahy ! » ?",
+        choices: ['Aza', 'Tsy', 'Aiza', 'Inona'],
+        correctIndex: 0,
+        explanation:
+          "« Aza » s'emploie avec un verbe pour exprimer une défense ou un conseil prévenant : *Aza manahy* = Ne vous inquiétez pas.",
+      },
+      {
+        type: 'quiz',
+        question:
+          "Que répondez-vous avec douceur à quelqu’un qui s’excuse en disant « Azafady » ?",
+        questionMg:
+          "Inona no teny fiteny enti-mampitony olona miala tsiny hoe « Azafady » ?",
+        choices: [
+          'Tsy maninona tompoko (Ce n’est rien / Pas de souci)',
+          'Tsy te hahita anao intsony aho',
+          'Mialà eto',
+          'Mandoava vola',
+        ],
+        correctIndex: 0,
+        explanation:
+          "« Tsy maninona tompoko » apaise instantanément l'interlocuteur en lui assurant qu'il n'y a aucun tort.",
+      },
+      {
+        type: 'quiz',
+        question:
+          "Comment dit-on « Il n'y en a pas » au marché lorsqu'un article est épuisé ?",
+        questionMg:
+          "Ahoana no filazana hoe « Il n'y en a pas / C'est épuisé » eny an-tsena ?",
+        choices: ['Tsy misy', 'Misy be dia be', 'Tonga soa', 'Mazotoa homana'],
+        correctIndex: 0,
+        explanation:
+          "« Tsy misy » (littéralement « il n'existe pas ») indique la rupture de stock ou l'absence d'un bien.",
+      },
+      {
+        type: 'quiz',
+        question:
+          "Comment refuse-t-on poliment une proposition dans la pure étiquette malgache ?",
+        questionMg:
+          "Ahoana no fomba fahalalam-pomba fandavana fanasana mba tsy hanimba fihavanana ?",
+        choices: [
+          "En remerciant chaleureusement d'abord, puis en formulant son empêchement avec modestie",
+          'En criant un grand « NON » sec et catégorique',
+          'En tournant le dos sans répondre',
+          'En se fâchant immédiatement',
+        ],
+        correctIndex: 0,
+        explanation:
+          "L'étiquette du Fihavanana enseigne de valoriser l'attention de l'invitant par la gratitude avant d'excuser humblement son absence.",
+      },
+    ],
+  },
     ],
   },
   {
