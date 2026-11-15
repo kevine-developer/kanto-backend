@@ -12,7 +12,7 @@ export const diasporaTrack: SeedTrack = {
   icon: 'HeartHandshake',
   color: '#B93826',
   orderIndex: 8,
-  estimatedMinutes: 45,
+  estimatedMinutes: 65,
   lessons: [
     // ─── LEÇON 1 : RETOUR AU PAYS & VOYAGE ───
     {
@@ -825,6 +825,491 @@ export const diasporaTrack: SeedTrack = {
           correctIndex: 0,
           explanation:
             "« Ny teny toy ny fary » : comme la canne à sucre, la parole mesurée, bienveillante et sincère nourrit l'esprit de douceur.",
+        },
+      ],
+    },
+    // ─── LEÇON 6 : L'ÉTIQUETTE DE TABLE & LE RESPECT DU RIZ ───
+    {
+      slug: 'l-etiquette-de-table-et-l-honneur-du-riz',
+      title:
+        "L'étiquette de table et l'honneur du riz : partager le repas familial",
+      titleMg: "Ny Fombam-pisakafoanana sy ny Hasin'ny Vary : fiaraha-misakafo",
+      summary:
+        "Apprenez les règles d'or de la table malgache, le respect sacré du riz et l'ordre traditionnel de déférence envers les aînés.",
+      summaryMg:
+        "Ianaro ireo fitsipika amin'ny latabatra malagasy, ny hasin'ny vary mpanome aina ary ny fanajana ny zokiolona.",
+      type: 'CULTURE',
+      orderIndex: 6,
+      durationMinutes: 7,
+      sections: [
+        {
+          type: 'intro',
+          textFr:
+            "Chez les Malgaches, le repas n'est pas un simple acte nutritif mais une véritable communion du Fihavanana. Le riz (vary) est considéré comme le don sacré de la vie. Autour de la nappe ou de la natte (tsihy), chacun respecte une étiquette chaleureuse où les aînés sont honorés et où le partage est roi.",
+          textMg:
+            "Amin'ny Malagasy, ny sakafo dia fiombonana sy fanamafisana ny fihavanana. Ny vary no fototry ny aina sy fanomezana masina. Eo am-pisakafoanana, manaja ny zokiolona ny rehetra ary zaraina am-pitiavana ny sakafo misy.",
+        },
+        {
+          type: 'phonetic',
+          letterOrSound: 'TR',
+          phonetic: 't-r (explosif alvéolaire)',
+          frenchEquivalent:
+            "Le groupe « TR » se prononce d'un bloc en posant la pointe de la langue sur le palais (ex: Antitra, Matsiro, Mitrotro).",
+          sampleWordMg: 'Matsiro',
+          sampleTranslationFr: 'Délicieux / Savoureux',
+        },
+        {
+          type: 'concept',
+          termMg: 'Ny hena malefaka an’ny antitra, ny taolana an’ny tanora',
+          phonetic:
+            'ni he-na ma-le-fa-ka an-ni an-ti-tra, ni ta-ou-la-na an-ni ta-nou-ra',
+          meaningFr: 'La viande tendre aux aînés, les os à ronger aux jeunes',
+          explanation:
+            'Règle de bienséance fondamentale qui enseigne aux jeunes générations à réserver spontanément les morceaux les plus tendres aux personnes âgées par égarement et respect pour leurs dents fatiguées.',
+        },
+        {
+          type: 'concept',
+          termMg: 'Mandrosoa tompoko / Mazotoa homana',
+          phonetic: 'man-drou-sou-a toum-pou-kou / ma-zou-tou-a hou-ma-na',
+          meaningFr: 'Approchez et prenez part au repas / Bon appétit',
+          explanation:
+            "Formule d'invitation obligatoire prononcée par les maîtres de maison pour convier solennellement les convives à entamer le repas avec bénédiction.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Ranovola / Ranompango',
+          phonetic: 'ra-nou-vou-la / ra-noum-pan-gou',
+          meaningFr: 'Infusion dorée de riz roussi au fond de la marmite',
+          explanation:
+            "Boisson chaude traditionnelle obtenue en faisant bouillir de l'eau sur le riz doré au fond de la marmite (apango). Elle est servie à la fin du repas pour faciliter la digestion et symboliser la chaleur du foyer.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Aza manao kibo kely',
+          phonetic: 'a-za ma-na-ou ki-bou ke-li',
+          meaningFr: 'Ne faites pas d’aparté / Ne gardez pas de retenue timide',
+          explanation:
+            "Encouragement bienveillant adressé aux invités et aux membres de la famille de la diaspora pour qu'ils mangent à leur faim sans fausse modestie.",
+        },
+        {
+          type: 'example',
+          textMg:
+            "Mazotoa homana tompoko ! Misaotra betsaka tamin'ny fandraisana am-pitiavana sy ity sakafo matsiro nandrahoina ho anay ity.",
+          textFr:
+            'Bon appétit à tous ! Merci du fond du cœur pour cet accueil chaleureux et pour ce délicieux repas préparé pour nous.',
+        },
+        {
+          type: 'didYouKnow',
+          textFr:
+            'Gaspiller ou jeter du riz est perçu comme une offense morale à Madagascar. La tradition enseigne : « Ny vary manana aina » (le riz a une âme). Les anciens disent que laisser du riz dans son assiette sans raison attire le tsiny (le blâme rituel) et appauvrit le foyer.',
+          textMg:
+            "Hatsarana sy fahamasinana lehibe ny vary amin'ny Malagasy. Tsy azo ariana na lany raraka ny vary satria fady izany ary mitondra tsiny araka ny fampianaran'ny Ntaolo.",
+        },
+        // ─── 5 Quiz ───
+        {
+          type: 'quiz',
+          question:
+            'Que préconise le proverbe culinaire « Ny hena malefaka an’ny antitra, ny taolana an’ny tanora » ?',
+          questionMg:
+            'Inona no hevitry ny ohabolana hoe « Ny hena malefaka an’ny antitra, ny taolana an’ny tanora » ?',
+          choices: [
+            'Réserver les morceaux les plus tendres aux personnes âgées par respect filial',
+            'Donner toute la viande aux enfants',
+            'Ne manger que des légumes sans viande',
+            'Vendre la viande tendre au marché',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Ce proverbe traduit la déférence sacrée envers les aînés, à qui l'on offre toujours les meilleures parts faciles à mâcher.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Qu’est-ce que le « Ranovola » (ou « Ranompango ») servi traditionnellement à la fin du repas malgache ?',
+          questionMg:
+            'Inona ny Ranovola (na Ranompango) aroso aorian’ny sakafo malagasy ?',
+          choices: [
+            'Une infusion chaude d’eau bouillie sur le riz doré au fond de la marmite',
+            'Un jus de fruits frais pressés',
+            'Un thé noir importé d’Asie',
+            'Une soupe de légumes salée',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Le Ranovola est l'eau bouillie sur le riz légèrement caramélisé au fond du chaudron (apango), boisson réputée saine, digestive et réconfortante.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Qui commence traditionnellement à se servir en premier à table ?',
+          questionMg:
+            'Iza no mandray sakafo voalohany eo am-pisakafoanana ara-pomba ?',
+          choices: [
+            'L’aîné de la famille ou l’invité d’honneur après la formule d’invitation',
+            'Le plus jeune enfant',
+            'La personne qui a cuisiné',
+            'Le premier arrivé sans attendre les autres',
+          ],
+          correctIndex: 0,
+          explanation:
+            "La hiérarchie bienveillante du Fihavanana accorde la préséance aux anciens et aux invités d'honneur pour entamer le plat commun.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que répond-on poliment lorsqu’un hôte vous invite à table en disant « Mandrosoa tompoko » ?',
+          questionMg:
+            'Inona no valinteny maotina rehefa asaina hoe « Mandrosoa tompoko » ?',
+          choices: [
+            '« Misaotra tompoko, mazotoa homana »',
+            '« Tsy te hihinana aho »',
+            '« Izao dia izao »',
+            '« Miala tsiny fa maika aho »',
+          ],
+          correctIndex: 0,
+          explanation:
+            "On remercie humblement et l'on souhaite un bon repas à toute l'assemblée (« Misaotra tompoko, mazotoa homana »).",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Pourquoi le fait de gaspiller du riz est-il réprouvé dans la tradition malgache ?',
+          questionMg:
+            'Nahoana no fady ny mandany raraka na manary vary amin’ny fomba malagasy ?',
+          choices: [
+            'Car le riz est considéré comme le don sacré de la vie liant la communauté',
+            'Parce qu’il n’y a plus d’eau pour faire la vaisselle',
+            'Parce que le riz est trop salé',
+            'Uniquement pour des raisons de coût financier',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Le riz est le pivot spirituel et vital de Madagascar : jeter du riz équivaut à mépriser le labeur de la rizière et la bénédiction ancestrale.',
+        },
+      ],
+    },
+    // ─── LEÇON 7 : LE DEUIL, LA CONSOLATION & LE DEVOIR FILIAL ───
+    {
+      slug: 'le-deuil-la-consolation-et-le-devoir-filial',
+      title:
+        'Le deuil, la consolation et le devoir filial : Fampiononana et Valim-babena',
+      titleMg: 'Ny Fahoriana, ny Fampiononana ary ny Valim-babena',
+      summary:
+        "Apprenez à exprimer vos condoléances avec dignité, soutenir la famille depuis l'étranger et honorer le devoir filial sacré du Valim-babena.",
+      summaryMg:
+        'Mahaiza maneho fiaraha-miory am-panajana, manohana ny fianakaviana nidonam-pahoriana ary manatanteraka ny valim-babena.',
+      type: 'TRADITION',
+      orderIndex: 7,
+      durationMinutes: 8,
+      sections: [
+        {
+          type: 'intro',
+          textFr:
+            "Le deuil (fahoriana) est l'épreuve où le Fihavanana révèle toute sa grandeur. Pour les familles de la diaspora, savoir présenter ses condoléances, déléguer un représentant ou envoyer une marque de solidarité financière (fati-drano) est un devoir fondamental pour apaiser les cœurs et honorer la mémoire des disparus.",
+          textMg:
+            "Ny fotoan-tsarotra amin'ny fahoriana no tena mampiseho ny fihavanana marina. Ho an'ny am-pielezana, zava-dehibe ny fahaizana mampionona, ny fiaraha-miory ary ny fanomezana fati-drano hanamaivanana ny vesatry ny fianakaviana.",
+        },
+        {
+          type: 'phonetic',
+          letterOrSound: 'MP',
+          phonetic: 'm-p (labiale douce)',
+          frenchEquivalent:
+            "Le groupe « MP » lie un 'M' doux suivi d'un 'P' sans interruption (ex: Mampionona, Mpikabary, Mpianatra).",
+          sampleWordMg: 'Mampionona',
+          sampleTranslationFr: 'Consoler / Réconforter dans le deuil',
+        },
+        {
+          type: 'concept',
+          termMg: 'Mandria am-piadanana',
+          phonetic: 'man-dri-a am-pi-a-da-na-na',
+          meaningFr: 'Reposez en paix',
+          explanation:
+            "Formule sacrée et digne pour souhaiter le repos éternel et la sérénité céleste à l'âme du cher défunt rejoignant les ancêtres.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Mirary fampiononana feno ho an’ny fianakaviana',
+          phonetic:
+            'mi-ra-ri fam-pi-ou-nou-na fe-nou hou an-ni fi-a-na-ka-vi-a-na',
+          meaningFr:
+            'Nous souhaitons plein réconfort et consolation à la famille',
+          explanation:
+            "La formulation la plus respectueuse et classique pour adresser ses condoléances à la famille éplorée lors d'un décès.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Fati-drano / Lolom-paty',
+          phonetic: 'fa-ti-dra-nou / lou-loum-pa-ti',
+          meaningFr: 'Contribution solidaire d’entraide pour les obsèques',
+          explanation:
+            "Somme d'argent déposée dans une enveloppe par chaque famille, clan ou association de la diaspora pour partager les lourdes charges des funérailles et de la veillée.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Valim-babena',
+          phonetic: 'va-lim-ba-be-na',
+          meaningFr:
+            'Le devoir filial sacré de reconnaissance envers les parents',
+          explanation:
+            "Issu de 'babena' (porter sur le dos durant l'enfance), c'est l'obligation morale et affective de soutenir matériellement, moralement et spirituellement ses parents vieillissants.",
+        },
+        {
+          type: 'example',
+          textMg:
+            'Mankahery anareo mianakavy manoloana izao fahoriana manjo izao. Mandria am-piadanana ny havantsika ary mankahery anareo ny foko manontolo.',
+          textFr:
+            'Nous apportons tout notre soutien à la famille face à cette cruelle épreuve. Que notre cher proche repose en paix et que nos pensées les plus douces vous fortifient.',
+        },
+        {
+          type: 'didYouKnow',
+          textFr:
+            'Durant la veillée funèbre (fiandrasam-paty), il est coutumier que les voisins, amis et membres de la communauté chantent ensemble toute la nuit pour que les personnes endeuillées ne se sentent jamais seules dans le silence de la nuit.',
+          textMg:
+            "Amin'ny fiandrasam-paty, miara-mihira sy miara-miari-tory ny mpiara-monina sy ny fianakaviana mba tsy hahatsiaro ho manirery ireo manana fahoriana ao anatin'ny alina.",
+        },
+        // ─── 5 Quiz ───
+        {
+          type: 'quiz',
+          question:
+            'Quelle formule malgache est la plus appropriée pour souhaiter le repos éternel à un défunt ?',
+          questionMg:
+            'Inona ny teny maotina indrindra ilazana ny fitsaharana mandrakizay amin’ny maty ?',
+          choices: [
+            '« Mandria am-piadanana »',
+            '« Mirary soa »',
+            '« Veloma finaritra »',
+            '« Mazotoa miasa »',
+          ],
+          correctIndex: 0,
+          explanation:
+            "« Mandria am-piadanana » est la formule consacrée pour souhaiter à l'esprit du défunt de reposer en paix.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que désigne le devoir filial sacré appelé « Valim-babena » dans la morale malgache ?',
+          questionMg:
+            'Inona no dikan’ny hoe « Valim-babena » amin’ny fahendrena malagasy ?',
+          choices: [
+            'L’obligation morale et bienveillante d’honorer et choyer ses parents âgés qui vous ont porté enfant',
+            'Un impôt payable auprès de la commune',
+            'Un cadeau de mariage offert aux invités',
+            'Une fête de naissance pour le premier-né',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Le Valim-babena est la dette d'amour et de soin que les enfants remboursent à leurs parents qui les ont portés ('babena') sur leur dos dans leur jeune âge.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Quel est le rôle du « Fati-drano » (ou « Lolom-paty ») apporté lors des obsèques ?',
+          questionMg:
+            'Inona no asan’ny « Fati-drano » (na « Lolom-paty ») amin’ny fandevenana ?',
+          choices: [
+            'Apporter une aide financière solidaire pour soulager les frais d’obsèques supportés par la famille',
+            'Acheter des fleurs décoratives uniquement',
+            'Payer le banquet des invités',
+            'Rembourser une dette personnelle du défunt',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Le fati-drano est la contribution de secours mutuel apportée par les proches pour ne pas laisser la famille crouler seule sous les charges matérielles du deuil.',
+        },
+        {
+          type: 'quiz',
+          question:
+            'Comment se déroule la coutume du « Fiandrasam-paty » lors d’un décès ?',
+          questionMg:
+            'Ahoana ny fomba fanatanterahana ny « Fiandrasam-paty » ?',
+          choices: [
+            'La communauté veille et chante solidairement toute la nuit pour entourer la famille éprouvée',
+            'Chacun rentre chez soi dès le coucher du soleil',
+            'La maison reste fermée dans le noir absolu',
+            'Seuls les enfants restent réveillés',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Le fiandrasam-paty empêche la solitude dans l'épreuve : parents, amis et voisins se relaient pour chanter et veiller jusqu'à l'aube aux côtés des endeuillés.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que dit le proverbe malgache sur la solidarité fraternelle dans l’épreuve ?',
+          questionMg:
+            'Inona no ambaran’ny ohabolana momba ny fihavanana amin’ny andro sarotra ?',
+          choices: [
+            '« Ny fihavanana tsy amin’ny soa ihany, fa amin’ny andro manahirana »',
+            '« Izay maika aloha mandeha »',
+            '« Aleo very tsikalakalam-bola toy izay very tsikalakalam-pihavanana »',
+            '« Ny omby maro tsy mifanary »',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Le Fihavanana authentique ne se limite pas aux jours de fête, mais se prouve avant tout dans l'adversité et la compassion mutuelle.",
+        },
+      ],
+    },
+    // ─── LEÇON 8 : L'ART VOCAL & MUSICAL MALGACHE ───
+    {
+      slug: 'l-art-vocal-et-musical-malgache',
+      title:
+        "L'art vocal et musical malgache : Kalony fahiny, Ba Gasy et chants rassembleurs",
+      titleMg:
+        'Ny Hira sy Mozika Malagasy : Kalony fahiny, Ba Gasy ary Hira faneva',
+      summary:
+        "Plongez dans l'univers musical malgache : la poésie nostalgique du Ba Gasy, la clarté de la Valiha et l'opéra moral du Hira Gasy.",
+      summaryMg:
+        "Midira ao anatin'ny tontolon'ny hira malagasy : ny kalon'ny fahiny, ny feon'ny valiha ary ny teatra an-kalamanjana Hira Gasy.",
+      type: 'LITERATURE',
+      orderIndex: 8,
+      durationMinutes: 7,
+      sections: [
+        {
+          type: 'intro',
+          textFr:
+            "La musique est la respiration poétique de Madagascar. Du murmure de la valiha en bambou aux envolées lyriques du Ba Gasy et aux joutes oratoires théâtrales du Hira Gasy, les chants traditionnels (kalony fahiny) portent la mémoire, l'amour du pays (hira manina) et l'espérance fraternelle des générations.",
+          textMg:
+            "Ny mozika sy ny hira no mamelona ny fanahin'i Madagasikara. Manomboka amin'ny kalon'ny valiha ka hatramin'ny hira gasy an-kalamanjana, mampita ny fahendrena sy ny fitiavan-tanindrazana amin'ny taranaka ny hira malagasy.",
+        },
+        {
+          type: 'phonetic',
+          letterOrSound: 'KA / LO',
+          phonetic: 'ka-lou',
+          frenchEquivalent:
+            "Le mot « Kalo » (mélodie / chant poétique) se prononce avec un 'O' final fermé et doux.",
+          sampleWordMg: 'Kalony fahiny',
+          sampleTranslationFr: 'Mélodies et romances d’autrefois',
+        },
+        {
+          type: 'concept',
+          termMg: 'Ba Gasy',
+          phonetic: 'ba ga-si',
+          meaningFr:
+            'Genre musical vocal et acoustique classique des Hautes Terres',
+          explanation:
+            'Né de la fusion entre mélodies traditionnelles et harmonies polyphoniques, le Ba Gasy se joue au piano acoustique ou à la guitare kabosy, chantant la romance et la nostalgie du terroir.',
+        },
+        {
+          type: 'concept',
+          termMg: 'Hira Gasy',
+          phonetic: 'hi-ra ga-si',
+          meaningFr:
+            'Opéra populaire en plein air et joute morale traditionnelle',
+          explanation:
+            "Spectacle complet mêlant kabary, danseurs virtuoses, chœurs éclatants, tambours et cuivres rutilants. Deux troupes s'affrontent amicalement pour transmettre des leçons de civisme et de sagesse.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Valiha',
+          phonetic: 'va-li-ha',
+          meaningFr:
+            'Cithare tubulaire en bambou, instrument national de Madagascar',
+          explanation:
+            "Composée d'un entre-nœud de bambou monté de cordes métalliques, la valiha produit un son cristallin rappelant le ruissellement de l'eau claire des rizières.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Hira manina',
+          phonetic: 'hi-ra ma-ni-na',
+          meaningFr: 'Chant exprimant la nostalgie et le mal du pays natal',
+          explanation:
+            "Répertoire particulièrement cher à la diaspora, où les paroles évoquent les collines natales, le parfum de la terre rouge après la pluie et l'attente du retour.",
+        },
+        {
+          type: 'example',
+          textMg:
+            "Ny hira malagasy dia fatorana mampiray antsika na aiza na aiza misy antsika : feo iray, fo iray ho an'ny tanindrazana.",
+          textFr:
+            'La musique malgache est un lien vivant qui nous unit où que nous soyons dans le monde : une seule voix, un seul cœur pour notre patrie.',
+        },
+        {
+          type: 'didYouKnow',
+          textFr:
+            'Pour les enfants de la diaspora nés hors de Madagascar, les chorales paroissiales ou laïques (amboaram-peo) constituent souvent le premier sanctuaire où ils apprennent à prononcer le malgache avec justesse tout en assimilant les harmonies polyphoniques à 4 voix.',
+          textMg:
+            "Manana anjara toerana lehibe ny amboaram-peo sy ny fikambanana mozika ho an'ny tanora any am-pielezana mba hianarany tsara ny teny malagasy sy ny fihirana amin'ny feo efatra mirindra.",
+        },
+        // ─── 5 Quiz ───
+        {
+          type: 'quiz',
+          question:
+            'Quel instrument traditionnel en bambou est considéré comme l’instrument national par excellence de Madagascar ?',
+          questionMg:
+            'Inona ilay zavamaneno nentim-paharazana vita amin’ny volotsangana malaza indrindra eto Madagasikara ?',
+          choices: [
+            'La Valiha',
+            'La guitare électrique',
+            'L’accordéon diatonique',
+            'Le djembé',
+          ],
+          correctIndex: 0,
+          explanation:
+            'La Valiha est la cithare tubulaire en bambou emblématique de la Grande Île, reconnue mondialement pour sa pureté sonore.',
+        },
+        {
+          type: 'quiz',
+          question:
+            'Qu’est-ce qui caractérise le spectacle populaire du « Hira Gasy » ?',
+          questionMg:
+            'Inona no mampiavaka ny seho an-kalamanjana « Hira Gasy » ?',
+          choices: [
+            'Une joute populaire en costumes d’apparat combinant discours rituels, danses et chants moraux',
+            'Un concert de rock moderne sans paroles',
+            'Une pièce de théâtre silencieuse',
+            'Une simple lecture de poèmes sans musique',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Le Hira Gasy est l'opéra du peuple malgache où deux troupes rivalisent de talent, de costumes vifs et de proverbes édifiants.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que désigne l’expression « Hira manina » si chère à la diaspora malgache ?',
+          questionMg:
+            'Inona no hevitry ny hoe « Hira manina » eo amin’ny Malagasy am-pielezana ?',
+          choices: [
+            'Un chant empreint de nostalgie et de souvenir affectueux pour la terre natale',
+            'Une chanson rapide pour faire du sport',
+            'Un chant de guerre guerrier',
+            'Une comptine pour compter l’argent',
+          ],
+          correctIndex: 0,
+          explanation:
+            '« Manina » signifie avoir la nostalgie, regretter tendrement une personne ou son pays : les chants manina soulagent le cœur des exilés.',
+        },
+        {
+          type: 'quiz',
+          question:
+            'Quel instrument à cordes pincées est souvent associé au Ba Gasy acoustique aux côtés du piano ?',
+          questionMg:
+            'Inona ilay zavamaneno misy tadiny matetika miaraka amin’ny Ba Gasy ?',
+          choices: [
+            'La guitare acoustique ou le kabosy',
+            'Le synthétiseur électronique',
+            'La trompette bouchée',
+            'La batterie lourde',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Le jeu de guitare acoustique malgache, avec son doigté fluide inspiré de la valiha, est la colonne vertébrale du Ba Gasy traditionnel.',
+        },
+        {
+          type: 'quiz',
+          question:
+            'Quel rôle fondamental les chorales (amboaram-peo) jouent-elles pour les jeunes de la diaspora ?',
+          questionMg:
+            'Inona ny anjara toeran’ny amboaram-peo ho an’ny tanora malagasy any ivelany ?',
+          choices: [
+            'Transmettre la prononciation vivante de la langue et le sens de l’harmonie communautaire',
+            'Remplacer les cours d’école obligatoire',
+            'Apprendre uniquement des danses modernes',
+            'Organiser des compétitions sportives',
+          ],
+          correctIndex: 0,
+          explanation:
+            "La chorale est un lieu d'immersion linguistique, où la maîtrise du vocabulaire malgache se fait naturellement à travers le plaisir du chant polyphonique.",
         },
       ],
     },

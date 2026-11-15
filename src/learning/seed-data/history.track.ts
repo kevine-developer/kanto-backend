@@ -12,7 +12,7 @@ export const historyTrack: SeedTrack = {
   icon: 'BookOpen',
   color: '#C0392B',
   orderIndex: 4,
-  estimatedMinutes: 40,
+  estimatedMinutes: 60,
   lessons: [
     {
       slug: 'les-origines-et-le-peuplement-de-madagascar',
@@ -803,6 +803,326 @@ export const historyTrack: SeedTrack = {
           correctIndex: 0,
           explanation:
             "Andrianampoinimerina régna d'abord à Ambohimanga avant de conquérir Antananarivo et d'œuvrer pour l'unité de toute l'île.",
+        },
+      ],
+    },
+    // ─── LEÇON 6 : LES GRANDS ROYAUMES CÔTIERS SAKALAVA & BETSIMISARAKA ───
+    {
+      slug: 'les-grands-royaumes-cotiers-sakalava-et-betsimisaraka',
+      title:
+        'Les grands royaumes des côtes : Sakalava (Menabe & Boina) et la confédération Betsimisaraka',
+      titleMg:
+        'Ireo Fanjakana lehibe amorontsiraka : Sakalava sy Betsimisaraka',
+      summary:
+        "Découvrez l'épopée des puissantes dynasties côtières : les conquêtes Sakalava de l'Ouest et l'union historique des clans Betsimisaraka par Ratsimilaho.",
+      summaryMg:
+        "Fantaro ny herin'ny fanjakana Sakalava tany Menabe sy Boina ary ny firaisankina naorin-dRatsimilaho tao Betsimisaraka.",
+      type: 'CULTURE',
+      orderIndex: 6,
+      durationMinutes: 8,
+      sections: [
+        {
+          type: 'intro',
+          textFr:
+            "L'histoire de Madagascar ne s'est pas écrite uniquement sur les Hautes Terres. Dès le XVIIe siècle, de remarquables civilisations politiques ont prospéré sur les côtes : à l'Ouest, la redoutable dynastie des Maroseranana a fondé les royaumes Sakalava du Menabe et du Boina ; à l'Est, le prince réformateur Ratsimilaho a fédéré les peuples de la côte orientale sous la bannière des Betsimisaraka (« Les nombreux inséparables »).",
+          textMg:
+            "Tsy tany amin'ny afovoan-tany ihany no nisy tantara miezinezina teto Madagasikara. Nanomboka tamin'ny taonjato faha-17, niorina tany Andrefana ny Fanjakana Sakalava mahery (Menabe sy Boina) teo ambany fitarihan'ny tarana-mpanjaka Maroseranana ; tany Atsinanana kosa, nampiray ireo foko maro ho lasa Betsimisaraka i Ratsimilaho.",
+        },
+        {
+          type: 'phonetic',
+          letterOrSound: 'DRA / NDRI',
+          phonetic: 'n-dri (dentale sonore)',
+          frenchEquivalent:
+            "Le groupe « NDRI » dans les patronymes princiers (ex: Andriandahifotsy, Andriamandisoarivo) exprime la noblesse sacrée et se prononce en liant un 'N' doux au 'DRI'.",
+          sampleWordMg: 'Andriana',
+          sampleTranslationFr: 'Noble / Souverain bienfaiteur',
+        },
+        {
+          type: 'concept',
+          termMg: 'Fanjakana Sakalava (Menabe sy Boina)',
+          phonetic: 'fan-dza-ka-na sa-ka-la-va me-na-be si boui-na',
+          meaningFr: 'Les grands royaumes Sakalava du Menabe et du Boina',
+          explanation:
+            "Fondé d'abord dans le Menabe par Andriandahifotsy, puis étendu au nord dans le Boina par son fils Andriamandisoarivo. Ces royaumes contrôlaient le commerce maritime international à Mahajanga.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Ny Dady sy ny Fitampoha',
+          phonetic: 'ni da-di si ni fi-tam-pou-ha',
+          meaningFr: 'Les reliques royales et la cérémonie du bain sacré',
+          explanation:
+            'Culte commémoratif grandiose où les reliques sacrées des rois Sakalava défunts (dady) sont solennellement baignées dans le fleuve Tsiribihina pour revivifier la bénédiction ancestrale.',
+        },
+        {
+          type: 'concept',
+          termMg: 'Ratsimilaho sy ny Fanjakana Betsimisaraka',
+          phonetic: 'rat-si-mi-la-hou si ni fan-dza-ka-na bet-si-mi-sa-ra-ka',
+          meaningFr: 'Ratsimilaho et la confédération unie des Betsimisaraka',
+          explanation:
+            'Fils de la princesse malgache Rahena et du navigateur Thomas White, Ratsimilaho réunit vers 1712 les tribus rivales de la côte orientale sous un pacte solennel de paix perpétuelle.',
+        },
+        {
+          type: 'concept',
+          termMg: 'Betsimisaraka : « Tsy misaraka »',
+          phonetic: 'bet-si-mi-sa-ra-ka : tsi mi-sa-ra-ka',
+          meaningFr: 'Les nombreux qui ne se séparent jamais',
+          explanation:
+            "Nom éminemment politique et fraternel proclamé par Ratsimilaho pour consacrer l'indivisibilité et la fin définitive des querelles intestines entre clans de l'Est.",
+        },
+        {
+          type: 'example',
+          textMg:
+            "Ny tantaran'i Madagasikara dia firaisan'ny fahendrena avy amin'ny lafy valon'ny Nosy : ny hery Sakalava, ny firaisankina Betsimisaraka ary ny fahaiza-mandamina.",
+          textFr:
+            "L'histoire de Madagascar est l'union harmonieuse des sagesses venues des quatre coins de l'Île : la vaillance Sakalava, la solidarité Betsimisaraka et l'art d'organiser la communauté.",
+        },
+        {
+          type: 'didYouKnow',
+          textFr:
+            "L'île Sainte-Marie (Nosy Boraha) fut le cœur battant du commerce maritime de Ratsimilaho. Le prince y avait établi son quartier général pour négocier pacifiquement avec les navires marchands de l'océan Indien tout en protégeant les populations côtières contre les razzias.",
+          textMg:
+            "Nosy Boraha no toerana stratejika nampiroboroboan-dRatsimilaho ny varotra an-dranomasina tamin'ireo sambo vahiny nifamezivezy teo amin'ny Ranomasimbe Indiana.",
+        },
+        // ─── 5 Quiz ───
+        {
+          type: 'quiz',
+          question:
+            'Qui fut le grand souverain fondateur du royaume Sakalava du Boina au nord-ouest de Madagascar ?',
+          questionMg:
+            'Iza ilay Mpanjaka lehibe nanorina ny Fanjakana Sakalavan’i Boina tany avaratra andrefana ?',
+          choices: [
+            'Andriamandisoarivo',
+            'Radama II',
+            'Andrianjaka',
+            'Ralambo',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Fils d'Andriandahifotsy, Andriamandisoarivo monta vers le nord et fonda le prestigieux royaume du Boina avec Mahajanga comme grand débouché maritime.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que signifie littéralement le nom « Betsimisaraka » donné par Ratsimilaho à la confédération de l’Est ?',
+          questionMg:
+            'Inona no hevitra marina fonosin’ny anarana hoe « Betsimisaraka » nofidian-dRatsimilaho ?',
+          choices: [
+            '« Les nombreux qui ne se séparent jamais » (l’union perpétuelle des clans)',
+            '« Ceux qui vivent au bord de la mer »',
+            '« Les guerriers invincibles »',
+            '« Les marchands de vanille »',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Betsimisaraka signifie « Be tsy misaraka » : les nombreux clans rassemblés qui font le serment de ne plus jamais se diviser.',
+        },
+        {
+          type: 'quiz',
+          question:
+            'Quel grand rituel purificateur perpétue le culte des reliques royales Sakalava au bord du fleuve Tsiribihina ?',
+          questionMg:
+            'Inona ilay fomban-drazana lehibe anasan-damba ny taolambalon’ireo Mpanjaka Sakalava amoron’ny Tsiribihina ?',
+          choices: [
+            'Le Fitampoha',
+            'Le Sambatra',
+            'Le Famadihana',
+            'Le Tsaboraha',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Le Fitampoha (le bain des reliques royales dady) est le rituel royal d'immersion sacré de la dynastie Sakalava du Menabe.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Quels étaient les parents illustres du rassembleur Betsimisaraka Ratsimilaho ?',
+          questionMg:
+            'Iza ireo ray aman-drenin’ilay mpitarika malaza Ratsimilaho ?',
+          choices: [
+            'La princesse malgache Rahena et le navigateur Thomas White',
+            'La reine Ranavalona et Radama Ier',
+            'Le roi Andrianampoinimerina et Rambolamasoandro',
+            'Le chef Ramaromanompo et une reine Sakalava',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Ratsimilaho était issu de l'union entre la princesse Rahena de la côte Est et le navigateur anglais Thomas White, incarnant le métissage et l'ouverture maritime.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Quelle grande ville portuaire de l’Ouest était le cœur économique du royaume Sakalava du Boina ?',
+          questionMg:
+            'Inona ilay tanàn-dehibe seranana tany Andrefana no fototry ny Fanjakana Boina ?',
+          choices: [
+            'Mahajanga (Majunga)',
+            'Toamasina (Tamatave)',
+            'Fianarantsoa',
+            'Antsirabe',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Mahajanga devint sous le règne d'Andriamandisoarivo un carrefour commercial cosmopolite de premier plan pour les échanges dans le canal du Mozambique.",
+        },
+      ],
+    },
+    // ─── LEÇON 7 : L'INDÉPENDANCE RETROUVÉE & LES SYMBOLES RÉPUBLICAINS ───
+    {
+      slug: 'l-independance-retrouvee-et-les-symboles-de-la-republique',
+      title:
+        "L'Indépendance retrouvée (26 juin 1960) et les symboles de la République malgache",
+      titleMg:
+        'Ny Fahaleovantena tafaverina (26 Jona 1960) sy ireo Mariky ny Repoblika',
+      summary:
+        "Revivez l'instant solennel de la renaissance nationale le 26 juin 1960, le sens du drapeau tricolore et la ferveur de l'hymne national malgache.",
+      summaryMg:
+        "Tsarovy ny andro manan-tantara tamin'ny 26 Jona 1960 niverenan'ny fahaleovantena, ny sainam-pirenena ary ny hiram-pirenena malagasy.",
+      type: 'CULTURE',
+      orderIndex: 7,
+      durationMinutes: 8,
+      sections: [
+        {
+          type: 'intro',
+          textFr:
+            "Après soixante-quatre années de domination coloniale et le sacrifice héroïque des patriotes de 1947, Madagascar proclame d'abord sa République le 14 octobre 1958, puis recouvre officiellement sa pleine indépendance le 26 juin 1960 au stade de Mahamasina. Cette date est devenue la Fête Nationale de tous les Malgaches, symbole de fierté et de souveraineté.",
+          textMg:
+            "Taorian'ny vanim-potoana naha-zanatany sy ny tolona mahery fo tamin'ny 1947, nambara ny Repoblika Malagasy tamin'ny 14 Oktobra 1958, ary tafaverina tanteraka ny Fahaleovantena tamin'ny 26 Jona 1960 tao Mahamasina. Io no Androm-pirenena ankalazain'ny Malagasy rehetra.",
+        },
+        {
+          type: 'phonetic',
+          letterOrSound: 'TS / NA',
+          phonetic: 'tsi-ra-na-na',
+          frenchEquivalent:
+            "L'attaque du 'TS' est affriquée et vigoureuse (ex: Tsiranana, Tanindrazana, Tsena).",
+          sampleWordMg: 'Tanindrazana',
+          sampleTranslationFr: 'La terre des ancêtres / La Patrie',
+        },
+        {
+          type: 'concept',
+          termMg: 'Ny 26 Jona : Fetin’ny Fahaleovantena',
+          phonetic: 'ni 26 dzu-na : fe-tin-ni fa-ha-le-ou-van-te-na',
+          meaningFr: 'Le 26 Juin : Fête Nationale de l’Indépendance',
+          explanation:
+            "Jour férié et fête suprême célébrée partout à Madagascar et au sein de la diaspora par des défilés militaires, feux d'artifice et réunions de famille.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Ny Sainam-pirenena (Fotsy, Mena, Maitso)',
+          phonetic: 'ni sai-nam-pi-re-ne-na : fou-tsi, me-na, mai-tsou',
+          meaningFr: 'Le drapeau national : Blanc, Rouge, Vert',
+          explanation:
+            "Les trois couleurs sacrées : le Blanc évoque la pureté morale et le riz nourricier ; le Rouge symbolise la souveraineté et le sang des souverains ; le Vert incarne l'espérance et la luxuriance des forêts.",
+        },
+        {
+          type: 'concept',
+          termMg: '« Ry Tanindrazanay Malala ô »',
+          phonetic: 'ri ta-nin-dra-za-nai ma-la-la ou',
+          meaningFr: '« Ô notre Patrie bien-aimée » (Hymne national)',
+          explanation:
+            "Composé sur une musique majestueuse de Norbert Raharisoa et des paroles inspirées du Pasteur Rahajason. C'est une prière républicaine pour la fraternité et le progrès du pays.",
+        },
+        {
+          type: 'concept',
+          termMg: 'Arendrina taratasy',
+          phonetic: 'a-ren-dri-na ta-ra-ta-si',
+          meaningFr: 'Lampion en papier illuminé par les enfants',
+          explanation:
+            'Coutume féerique célébrée chaque 25 juin au crépuscule : les enfants défilent dans les rues avec des lanternes colorées en chantant « Arendrina taratasy, may may may ! », allumant la flamme de la liberté.',
+        },
+        {
+          type: 'example',
+          textMg:
+            'Ry Tanindrazanay Malala ô, ry Madagasikara soa ! Ho tahian’ny Nahary anie ianao ka ho tany sambatra.',
+          textFr:
+            'Ô notre Patrie bien-aimée, ô beau Madagascar ! Que le Créateur te bénisse et fasse de toi une terre comblée de félicité.',
+        },
+        {
+          type: 'didYouKnow',
+          textFr:
+            "Lors de la proclamation de l'Indépendance en 1960, le premier Président Philibert Tsiranana prononça son discours en malgache et en français devant une foule immense réunie à Mahamasina, sanctuaire historique où les monarques étaient jadis couronnés.",
+          textMg:
+            "Tao Mahamasina, kianja manan-tantara nametrahana ireo Mpanjaka tany aloha, no nanambarana tamin'ny fomba ofisialy ny fahafahan'i Madagasikara teo anatrehan'ny vahoaka marobe tamin'ny 1960.",
+        },
+        // ─── 5 Quiz ───
+        {
+          type: 'quiz',
+          question:
+            'Quelle est la date historique exacte marquant le retour officiel de l’Indépendance de Madagascar ?',
+          questionMg:
+            'Inona ny daty manan-tantara niverenan’ny Fahaleovantenan’i Madagasikara amin’ny fomba ofisialy ?',
+          choices: [
+            'Le 26 juin 1960',
+            'Le 14 juillet 1789',
+            'Le 29 mars 1947',
+            'Le 1er janvier 1950',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Madagascar a proclamé son indépendance recouvrée le 26 juin 1960, jour commémoré chaque année comme Fête Nationale.',
+        },
+        {
+          type: 'quiz',
+          question:
+            'Que représentent traditionnellement les trois couleurs du drapeau malgache (Blanc, Rouge, Vert) ?',
+          questionMg:
+            'Inona no hevitry ny loko telo amin’ny sainam-pirenena malagasy (Fotsy, Mena, Maitso) ?',
+          choices: [
+            'Le blanc pour la pureté/le riz, le rouge pour la souveraineté, le vert pour l’espérance/la nature',
+            'Le ciel, la mer et le désert',
+            'L’or, l’argent et le cuivre',
+            'Trois partis politiques différents',
+          ],
+          correctIndex: 0,
+          explanation:
+            "Le Blanc évoque la pureté (*fahadiovana*) et le riz ; le Rouge rappelle les anciens royaumes ; le Vert symbolise la fertilité et l'espérance de la terre malgache.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Qui sont les auteurs illustres de l’hymne national « Ry Tanindrazanay Malala ô » ?',
+          questionMg:
+            'Iza avy ireo olomalaza nanoratra ny tonony sy namorona ny feon’ny hiram-pirenena ?',
+          choices: [
+            'Paroles du Pasteur Rahajason et musique de Norbert Raharisoa',
+            'Paroles de Jean-Joseph Rabearivelo et musique d’Andrianary Ratianarivo',
+            'Paroles de Philibert Tsiranana et musique de Rakoto Frah',
+            'Paroles de Dox et musique de Naka Rabemanantsoa',
+          ],
+          correctIndex: 0,
+          explanation:
+            "L'hymne national malgache est l'œuvre magistrale du Pasteur Rahajason pour les paroles et du compositeur Norbert Raharisoa pour la musique.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Quelle tradition lumineuse et populaire les enfants malgaches perpétuent-ils la veille du 26 juin ?',
+          questionMg:
+            'Inona ilay fety fanaon’ny ankizy mitondra jiro taratasy ny alin’ny 25 Jona ?',
+          choices: [
+            'Le défilé joyeux des lampions colorés appelés « Arendrina »',
+            'Une chasse au trésor dans la forêt',
+            'Un concours de cerf-volant nocturne',
+            'Un combat de toupies en bois',
+          ],
+          correctIndex: 0,
+          explanation:
+            "L'« Arendrina » est le défilé des lanternes de papier illuminées par une bougie, symbole de la lumière et de la joie de l'indépendance apportée aux enfants.",
+        },
+        {
+          type: 'quiz',
+          question:
+            'Qui fut le premier Président de la République malgache lors du recouvrement de l’Indépendance en 1960 ?',
+          questionMg:
+            'Iza no Filohan’ny Repoblika Malagasy voalohany tamin’ny taona 1960 ?',
+          choices: [
+            'Philibert Tsiranana',
+            'Gabriel Ramanantsoa',
+            'Didier Ratsiraka',
+            'Albert Zafy',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Philibert Tsiranana fut le premier Président de la Première République malgache à conduire la nation vers sa pleine souveraineté en 1960.',
         },
       ],
     },
