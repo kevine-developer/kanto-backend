@@ -32,10 +32,17 @@ export class LearningService implements OnModuleInit {
       let createdTracks = 0;
       let createdLessons = 0;
 
-      // Dépublier l'ancien parcours fusionné s'il existait déjà en base
+      // Dépublier les anciens parcours fusionnés s'ils existaient déjà en base
       try {
         await this.prisma.learningTrack.updateMany({
-          where: { slug: 'tantara-sy-fitenim-paritra' },
+          where: {
+            slug: {
+              in: [
+                'tantara-sy-fitenim-paritra',
+                'harena-miafina-sy-fahendrena-lalina',
+              ],
+            },
+          },
           data: { isPublished: false },
         });
       } catch {
@@ -312,7 +319,11 @@ export class LearningService implements OnModuleInit {
    */
   async getTrackBySlug(slug: string, userId?: string) {
     const effectiveSlug =
-      slug === 'tantara-sy-fitenim-paritra' ? 'histoire-de-madagascar' : slug;
+      slug === 'tantara-sy-fitenim-paritra'
+        ? 'histoire-de-madagascar'
+        : slug === 'harena-miafina-sy-fahendrena-lalina'
+          ? 'tresors-caches-de-madagascar'
+          : slug;
     let track: any = null;
 
     try {
