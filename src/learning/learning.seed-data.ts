@@ -794,10 +794,13 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       },
       {
         slug: 'la-structure-de-la-phrase-et-pronoms',
-        title: 'La structure de la phrase et les pronoms (Ny Firafitry ny Fehezanteny)',
+        title:
+          'La structure de la phrase et les pronoms (Ny Firafitry ny Fehezanteny)',
         titleMg: 'Ny Firafitry ny Fehezanteny sy ny Mpisolo Tena',
-        summary: "Découvrez l'ordre unique Verbe-Objet-Sujet et les pronoms personnels malgaches.",
-        summaryMg: 'Fantaro ny fomba fandrafetana fehezanteny (Matoanteny-Fameno-Lazaina) sy ireo mpisolo tena.',
+        summary:
+          "Découvrez l'ordre unique Verbe-Objet-Sujet et les pronoms personnels malgaches.",
+        summaryMg:
+          'Fantaro ny fomba fandrafetana fehezanteny (Matoanteny-Fameno-Lazaina) sy ireo mpisolo tena.',
         type: 'GRAMMAR',
         orderIndex: 6,
         durationMinutes: 5,
@@ -863,8 +866,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             termMg: 'Ianareo',
             phonetic: 'i-a-na-re-ou',
             meaningFr: 'Vous (pluriel)',
-            explanation:
-              'S’adresse à plusieurs personnes réunies.',
+            explanation: 'S’adresse à plusieurs personnes réunies.',
           },
           {
             type: 'concept',
@@ -877,7 +879,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'example',
             textMg: 'Mianatra teny gasy isika anio.',
-            textFr: 'Nous apprenons tous ensemble le malgache aujourd’hui (inclusif).',
+            textFr:
+              'Nous apprenons tous ensemble le malgache aujourd’hui (inclusif).',
           },
           {
             type: 'example',
@@ -887,15 +890,17 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'didYouKnow',
             textFr:
-              "La distinction entre « Isika » (inclusif) et « Izahay » (exclusif) évite tout malentendu dans les prises de décision communautaires malgaches. Elle garantit que personne ne se sente indûment engagé ou involontairement exclu.",
+              'La distinction entre « Isika » (inclusif) et « Izahay » (exclusif) évite tout malentendu dans les prises de décision communautaires malgaches. Elle garantit que personne ne se sente indûment engagé ou involontairement exclu.',
             textMg:
               "Ny fahasamihafan'ny « Isika » (mpandahateny sy mpihaino miaraka) sy « Izahay » (mpandahateny tsy manisy ny mpihaino) dia mampiseho ny fahaiza-miaina sy ny fanajana ny hafa eo amin'ny fiarahamonina malagasy.",
           },
           // ─── 5 Micro-Quiz ───
           {
             type: 'quiz',
-            question: "Quel est l'ordre habituel des mots dans une phrase simple en malgache ?",
-            questionMg: "Ahoana ny lamin'ny teny ao amin'ny fehezanteny tsotra amin'ny teny malagasy ?",
+            question:
+              "Quel est l'ordre habituel des mots dans une phrase simple en malgache ?",
+            questionMg:
+              "Ahoana ny lamin'ny teny ao amin'ny fehezanteny tsotra amin'ny teny malagasy ?",
             choices: [
               'Verbe - Complément - Sujet (VOS)',
               'Sujet - Verbe - Complément (SVO)',
@@ -908,8 +913,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Quelle est la différence fondamentale entre « Isika » et « Izahay » ?",
-            questionMg: "Inona no tena mampiavaka ny « Isika » sy ny « Izahay » ?",
+            question:
+              'Quelle est la différence fondamentale entre « Isika » et « Izahay » ?',
+            questionMg:
+              'Inona no tena mampiavaka ny « Isika » sy ny « Izahay » ?',
             choices: [
               '« Isika » inclut l’interlocuteur, « Izahay » l’exclut poliment',
               '« Isika » est réservé aux aînés, « Izahay » aux enfants',
@@ -922,8 +929,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Quel pronom personnel correspond à « Il » ou « Elle » au singulier ?",
-            questionMg: "Inona no mpisolo tena milaza ny lahy na vavy tokana (3e personne) ?",
+            question:
+              'Quel pronom personnel correspond à « Il » ou « Elle » au singulier ?',
+            questionMg:
+              'Inona no mpisolo tena milaza ny lahy na vavy tokana (3e personne) ?',
             choices: ['Izy', 'Aho', 'Ianao', 'Ianareo'],
             correctIndex: 0,
             explanation:
@@ -931,8 +940,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Comment se prononce la lettre « Y » à la fin d'un mot malgache (ex: Vary, Faly) ?",
-            questionMg: "Ahoana no fanononana ny litera « Y » amin'ny faran'ny teny malagasy ?",
+            question:
+              "Comment se prononce la lettre « Y » à la fin d'un mot malgache (ex: Vary, Faly) ?",
+            questionMg:
+              "Ahoana no fanononana ny litera « Y » amin'ny faran'ny teny malagasy ?",
             choices: [
               'Comme un « i » court et doux',
               'Comme un « u » français',
@@ -941,13 +952,20 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             ],
             correctIndex: 0,
             explanation:
-              "Le « Y » final malgache équivaut au son « i », articulé avec brièveté et douceur.",
+              'Le « Y » final malgache équivaut au son « i », articulé avec brièveté et douceur.',
           },
           {
             type: 'quiz',
-            question: "Dans la phrase « Mianatra teny gasy aho », quel mot représente le sujet ?",
-            questionMg: "Ao amin'ny fehezanteny « Mianatra teny gasy aho », iza no lazaina ?",
-            choices: ['Aho (Je/Moi)', 'Mianatra (Apprendre)', 'Teny (Langue)', 'Gasy (Malgache)'],
+            question:
+              'Dans la phrase « Mianatra teny gasy aho », quel mot représente le sujet ?',
+            questionMg:
+              "Ao amin'ny fehezanteny « Mianatra teny gasy aho », iza no lazaina ?",
+            choices: [
+              'Aho (Je/Moi)',
+              'Mianatra (Apprendre)',
+              'Teny (Langue)',
+              'Gasy (Malgache)',
+            ],
             correctIndex: 0,
             explanation:
               "« Aho » (je) est le sujet (lazaina) placé en fin de phrase, après l'action (mianatra) et le complément (teny gasy).",
@@ -956,10 +974,13 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       },
       {
         slug: 'poser-des-questions-et-s-orienter',
-        title: "Poser des questions et s'orienter dans l'espace (Fanontaniana sy Toerana)",
+        title:
+          "Poser des questions et s'orienter dans l'espace (Fanontaniana sy Toerana)",
         titleMg: 'Fametrahana Fanontaniana sy Fanamarihan-toerana',
-        summary: "Apprenez à interroger votre interlocuteur et à vous repérer selon les points cardinaux sacrés.",
-        summaryMg: "Ianaro ny fomba fanontanian-javatra sy ny fanondroana toerana araka ny vazan-tany.",
+        summary:
+          'Apprenez à interroger votre interlocuteur et à vous repérer selon les points cardinaux sacrés.',
+        summaryMg:
+          'Ianaro ny fomba fanontanian-javatra sy ny fanondroana toerana araka ny vazan-tany.',
         type: 'VOCABULARY',
         orderIndex: 7,
         durationMinutes: 5,
@@ -1031,12 +1052,15 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'example',
             textMg: 'Azafady tompoko, aiza ny lalana mankany an-tsena ?',
-            textFr: 'Pardon monsieur/madame, où se trouve le chemin qui mène au marché ?',
+            textFr:
+              'Pardon monsieur/madame, où se trouve le chemin qui mène au marché ?',
           },
           {
             type: 'example',
-            textMg: 'Inona ny vaovao any aminareo ? — Tsara ny vaovao, misaotra tompoko.',
-            textFr: 'Quelles sont les nouvelles chez vous ? — Les nouvelles sont bonnes, merci beaucoup.',
+            textMg:
+              'Inona ny vaovao any aminareo ? — Tsara ny vaovao, misaotra tompoko.',
+            textFr:
+              'Quelles sont les nouvelles chez vous ? — Les nouvelles sont bonnes, merci beaucoup.',
           },
           {
             type: 'didYouKnow',
@@ -1048,34 +1072,39 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           // ─── 5 Micro-Quiz ───
           {
             type: 'quiz',
-            question: "Quel mot malgache signifie « Où ? » pour demander un lieu ?",
-            questionMg: "Inona no teny fanontaniana manontany toerana ?",
+            question:
+              'Quel mot malgache signifie « Où ? » pour demander un lieu ?',
+            questionMg: 'Inona no teny fanontaniana manontany toerana ?',
             choices: ['Aiza ?', 'Inona ?', 'Iza ?', 'Rahoviana ?'],
             correctIndex: 0,
             explanation:
-              "« Aiza ? » est le mot interrogatif pour demander « Où ? » (ex: Aiza ny lalana ? = Où est le chemin ?).",
+              '« Aiza ? » est le mot interrogatif pour demander « Où ? » (ex: Aiza ny lalana ? = Où est le chemin ?).',
           },
           {
             type: 'quiz',
-            question: "Quel mot signifie « Quoi ? » ou « Qu'est-ce que ? » (ex: Inona ny vaovao ?)",
-            questionMg: "Inona no teny manontany ny anton-javatra hoe « Quoi / Qu'est-ce que » ?",
+            question:
+              "Quel mot signifie « Quoi ? » ou « Qu'est-ce que ? » (ex: Inona ny vaovao ?)",
+            questionMg:
+              "Inona no teny manontany ny anton-javatra hoe « Quoi / Qu'est-ce que » ?",
             choices: ['Inona ?', 'Iza ?', 'Aiza ?', 'Ahoana ?'],
             correctIndex: 0,
-            explanation:
-              "« Inona ? » signifie « quoi » ou « qu'est-ce que ».",
+            explanation: "« Inona ? » signifie « quoi » ou « qu'est-ce que ».",
           },
           {
             type: 'quiz',
-            question: "Dans l'orientation traditionnelle malgache, quel point cardinal désigne « Avaratra » ?",
-            questionMg: "Amin'ny vazan-tany, inona no tondroin'ny teny hoe « Avaratra » ?",
+            question:
+              "Dans l'orientation traditionnelle malgache, quel point cardinal désigne « Avaratra » ?",
+            questionMg:
+              "Amin'ny vazan-tany, inona no tondroin'ny teny hoe « Avaratra » ?",
             choices: ['Le Nord', 'Le Sud', 'L’Est', 'L’Ouest'],
             correctIndex: 0,
             explanation:
-              "« Avaratra » désigne le Nord, place sacrée et noble des aînés.",
+              '« Avaratra » désigne le Nord, place sacrée et noble des aînés.',
           },
           {
             type: 'quiz',
-            question: "Quel terme correspond à « L'Est » (le lever du soleil) ?",
+            question:
+              "Quel terme correspond à « L'Est » (le lever du soleil) ?",
             questionMg: "Inona no vazan-tany ipoiran'ny masoandro ?",
             choices: ['Atsinanana', 'Andrefana', 'Atsimo', 'Avaratra'],
             correctIndex: 0,
@@ -1084,8 +1113,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Comment demande-t-on poliment « Qui êtes-vous ? » en malgache ?",
-            questionMg: "Ahoana no fomba fanontaniana am-panajana hoe « Qui êtes-vous ? » ?",
+            question:
+              'Comment demande-t-on poliment « Qui êtes-vous ? » en malgache ?',
+            questionMg:
+              'Ahoana no fomba fanontaniana am-panajana hoe « Qui êtes-vous ? » ?',
             choices: [
               'Iza ianao tompoko ?',
               'Aiza ianao tompoko ?',
@@ -1094,16 +1125,19 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             ],
             correctIndex: 0,
             explanation:
-              "« Iza ianao tompoko ? » utilise « Iza » (qui) et « tompoko » pour une formule respectueuse.",
+              '« Iza ianao tompoko ? » utilise « Iza » (qui) et « tompoko » pour une formule respectueuse.',
           },
         ],
       },
       {
         slug: 'les-verbes-du-quotidien-et-les-trois-temps',
-        title: 'Les verbes indispensables et les 3 temps (Matoanteny sy ny Fotoana)',
+        title:
+          'Les verbes indispensables et les 3 temps (Matoanteny sy ny Fotoana)',
         titleMg: 'Ireo Matoanteny Fampiasa sy ny Fotoana Telo',
-        summary: 'Comprenez le mécanisme simple des temps (Passé, Présent, Futur) grâce aux préfixes N-, M-, H-.',
-        summaryMg: "Fantaro ny zava-miafina amin'ny fanovana fotoana (Lasa, Ankehitriny, Ho avy) amin'ny litera N, M, H.",
+        summary:
+          'Comprenez le mécanisme simple des temps (Passé, Présent, Futur) grâce aux préfixes N-, M-, H-.',
+        summaryMg:
+          "Fantaro ny zava-miafina amin'ny fanovana fotoana (Lasa, Ankehitriny, Ho avy) amin'ny litera N, M, H.",
         type: 'GRAMMAR',
         orderIndex: 8,
         durationMinutes: 5,
@@ -1130,7 +1164,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             phonetic: 'm / n / h',
             meaningFr: 'La clé magique des 3 temps',
             explanation:
-              "• M = Présent (Ankehitriny)\n• N = Passé (Lasa)\n• H = Futur (Ho avy).\nExemple : Mandeha (part) → Nandeha (est parti) → Handeha (partira).",
+              '• M = Présent (Ankehitriny)\n• N = Passé (Lasa)\n• H = Futur (Ho avy).\nExemple : Mandeha (part) → Nandeha (est parti) → Handeha (partira).',
           },
           {
             type: 'concept',
@@ -1180,38 +1214,54 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'example',
             textMg: 'Nihinana vary matsiro izahay omaly hariva.',
-            textFr: 'Nous avons mangé un riz délicieux hier soir (passé avec le préfixe N-).',
+            textFr:
+              'Nous avons mangé un riz délicieux hier soir (passé avec le préfixe N-).',
           },
           {
             type: 'didYouKnow',
             textFr:
-              "Puisque le verbe ne change pas avec la personne, la phrase « Miteny gasy izy » signifie « Il/Elle parle malgache » et « Miteny gasy isika » signifie « Nous parlons malgache ». Seul le pronom final indique qui agit !",
+              'Puisque le verbe ne change pas avec la personne, la phrase « Miteny gasy izy » signifie « Il/Elle parle malgache » et « Miteny gasy isika » signifie « Nous parlons malgache ». Seul le pronom final indique qui agit !',
             textMg:
               "Tsy misy fahasamihafana amin'ny matoanteny ny olona tokana sy ny maro : « Miteny izy » sy « Miteny izahay » dia mitovy tanteraka ny matoanteny hoe « miteny ».",
           },
           // ─── 5 Micro-Quiz ───
           {
             type: 'quiz',
-            question: "Quelle consonne préfixée indique généralement le temps Passé (Lasa) en malgache ?",
-            questionMg: "Inona no litera fiandohana manondro ny fotoana Lasa matetika ?",
-            choices: ['La lettre N (ex: Nandeha)', 'La lettre M (ex: Mandeha)', 'La lettre H (ex: Handeha)', 'La lettre V'],
+            question:
+              'Quelle consonne préfixée indique généralement le temps Passé (Lasa) en malgache ?',
+            questionMg:
+              'Inona no litera fiandohana manondro ny fotoana Lasa matetika ?',
+            choices: [
+              'La lettre N (ex: Nandeha)',
+              'La lettre M (ex: Mandeha)',
+              'La lettre H (ex: Handeha)',
+              'La lettre V',
+            ],
             correctIndex: 0,
             explanation:
-              "La lettre « N » marque le temps passé : Mandeha (présent) devient Nandeha (passé).",
+              'La lettre « N » marque le temps passé : Mandeha (présent) devient Nandeha (passé).',
           },
           {
             type: 'quiz',
-            question: "Quelle consonne préfixée annonce une action au Futur (Ho avy) ?",
-            questionMg: "Inona no litera fiandohana manondro ny fotoana Ho avy ?",
-            choices: ['La lettre H (ex: Handeha)', 'La lettre N (ex: Nandeha)', 'La lettre M (ex: Mandeha)', 'La lettre T'],
+            question:
+              'Quelle consonne préfixée annonce une action au Futur (Ho avy) ?',
+            questionMg:
+              'Inona no litera fiandohana manondro ny fotoana Ho avy ?',
+            choices: [
+              'La lettre H (ex: Handeha)',
+              'La lettre N (ex: Nandeha)',
+              'La lettre M (ex: Mandeha)',
+              'La lettre T',
+            ],
             correctIndex: 0,
             explanation:
-              "La lettre « H » est la marque universelle du futur : Mihinana → Hihinana (mangera).",
+              'La lettre « H » est la marque universelle du futur : Mihinana → Hihinana (mangera).',
           },
           {
             type: 'quiz',
-            question: "Que signifie la phrase « Miteny gasy aho » ?",
-            questionMg: "Inona no dikan'ny fehezanteny hoe « Miteny gasy aho » ?",
+            question: 'Que signifie la phrase « Miteny gasy aho » ?',
+            questionMg:
+              "Inona no dikan'ny fehezanteny hoe « Miteny gasy aho » ?",
             choices: [
               'Je parle malgache',
               'J’écoute de la musique',
@@ -1220,34 +1270,45 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             ],
             correctIndex: 0,
             explanation:
-              "« Miteny » = parler, « gasy » = malgache, « aho » = je/moi.",
+              '« Miteny » = parler, « gasy » = malgache, « aho » = je/moi.',
           },
           {
             type: 'quiz',
-            question: "Comment dit-on « Nous avons mangé » au passé avec le verbe « Mihinana » ?",
-            questionMg: "Ahoana ny filazana ny hoe « Nihinana » amin'ny fotoana lasa ?",
-            choices: ['Nihinana izahay', 'Hihinana izahay', 'Mihinana izahay', 'Mihinanana izahay'],
+            question:
+              'Comment dit-on « Nous avons mangé » au passé avec le verbe « Mihinana » ?',
+            questionMg:
+              "Ahoana ny filazana ny hoe « Nihinana » amin'ny fotoana lasa ?",
+            choices: [
+              'Nihinana izahay',
+              'Hihinana izahay',
+              'Mihinana izahay',
+              'Mihinanana izahay',
+            ],
             correctIndex: 0,
             explanation:
-              "Au passé, le verbe prend le préfixe « N- » : Nihinana.",
+              'Au passé, le verbe prend le préfixe « N- » : Nihinana.',
           },
           {
             type: 'quiz',
-            question: "Quel verbe signifie « Marcher » ou « Partir » en malgache ?",
-            questionMg: "Inona no matoanteny midika hoe mandeha an-tongotra na miainga ?",
+            question:
+              'Quel verbe signifie « Marcher » ou « Partir » en malgache ?',
+            questionMg:
+              'Inona no matoanteny midika hoe mandeha an-tongotra na miainga ?',
             choices: ['Mandeha', 'Misotro', 'Matory', 'Mahita'],
             correctIndex: 0,
-            explanation:
-              "« Mandeha » signifie marcher, aller ou partir.",
+            explanation: '« Mandeha » signifie marcher, aller ou partir.',
           },
         ],
       },
       {
         slug: 'exprimer-ses-emotions-accord-et-besoins',
-        title: 'Émotions, accord et expressions du quotidien (Fihetseham-po sy Filàna)',
+        title:
+          'Émotions, accord et expressions du quotidien (Fihetseham-po sy Filàna)',
         titleMg: 'Fihetseham-po, Fifanarahana ary Filàna Andavanandro',
-        summary: 'Exprimez vos ressentis, votre accord bienveillant et vos besoins avec délicatesse.',
-        summaryMg: 'Mianara maneho ny fihetseham-po, ny fanekena ary ny filàna andavanandro amim-panajana.',
+        summary:
+          'Exprimez vos ressentis, votre accord bienveillant et vos besoins avec délicatesse.',
+        summaryMg:
+          'Mianara maneho ny fihetseham-po, ny fanekena ary ny filàna andavanandro amim-panajana.',
         type: 'VOCABULARY',
         orderIndex: 9,
         durationMinutes: 5,
@@ -1257,7 +1318,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             textFr:
               "La courtoisie malgache accorde une importance primordiale à l'expression bienveillante des émotions. Savoir dire « oui », relativiser un souci avec « Tsy maninona » et encourager autrui avec « Mazotoa ! » fortifie le lien fraternel.",
             textMg:
-              "Ny fahalalam-pomba malagasy dia manome lanja lehibe ny fanehoana hatsaram-panahy. Ny fahaizana mampahery sy milaza hoe « Tsy maninona » dia manamafy ny fihavanana.",
+              'Ny fahalalam-pomba malagasy dia manome lanja lehibe ny fanehoana hatsaram-panahy. Ny fahaizana mampahery sy milaza hoe « Tsy maninona » dia manamafy ny fihavanana.',
           },
           {
             type: 'phonetic',
@@ -1336,17 +1397,25 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           // ─── 5 Micro-Quiz ───
           {
             type: 'quiz',
-            question: "Que répond-on pour rassurer quelqu'un en disant « Ce n'est rien / Pas de souci » ?",
-            questionMg: "Inona no teny fiteny mba hampitony hoe « Pas de souci / Ce n'est rien » ?",
-            choices: ['Tsy maninona', 'Misaotra betsaka', 'Azafady tompoko', 'Veloma finaritra'],
+            question:
+              "Que répond-on pour rassurer quelqu'un en disant « Ce n'est rien / Pas de souci » ?",
+            questionMg:
+              "Inona no teny fiteny mba hampitony hoe « Pas de souci / Ce n'est rien » ?",
+            choices: [
+              'Tsy maninona',
+              'Misaotra betsaka',
+              'Azafady tompoko',
+              'Veloma finaritra',
+            ],
             correctIndex: 0,
             explanation:
               "« Tsy maninona » est la formule d'apaisement par excellence (« ça ne fait rien »).",
           },
           {
             type: 'quiz',
-            question: "Que signifie l'encouragement bienveillant « Mazotoa ! » ?",
-            questionMg: "Inona no hevitry ny fampaherezana hoe « Mazotoa ! » ?",
+            question:
+              "Que signifie l'encouragement bienveillant « Mazotoa ! » ?",
+            questionMg: 'Inona no hevitry ny fampaherezana hoe « Mazotoa ! » ?',
             choices: [
               'Bon courage / Soyez plein de zèle !',
               'Bonne nuit et doux rêves',
@@ -1359,17 +1428,18 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Comment exprime-t-on le sentiment d'être « heureux » ou « joyeux » en malgache ?",
-            questionMg: "Inona no teny ilazana ny fahatsapana fifaliana ?",
+            question:
+              "Comment exprime-t-on le sentiment d'être « heureux » ou « joyeux » en malgache ?",
+            questionMg: 'Inona no teny ilazana ny fahatsapana fifaliana ?',
             choices: ['Faly', 'Malahelo', 'Noana', 'Vizana'],
             correctIndex: 0,
             explanation:
-              "« Faly » signifie joyeux, content ou heureux (ex: Faly aho = Je suis heureux).",
+              '« Faly » signifie joyeux, content ou heureux (ex: Faly aho = Je suis heureux).',
           },
           {
             type: 'quiz',
             question: "Comment dit-on « J'ai soif » en langue malgache ?",
-            questionMg: "Ahoana no filazana ny hoe mila rano hosotroina ?",
+            questionMg: 'Ahoana no filazana ny hoe mila rano hosotroina ?',
             choices: ['Mangetaheta aho', 'Noana aho', 'Faly aho', 'Matory aho'],
             correctIndex: 0,
             explanation:
@@ -1377,8 +1447,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Sur quelle syllabe porte généralement l'accent tonique d'un mot malgache ?",
-            questionMg: "Aiza ho aiza matetika no misy ny tsindrim-peo amin'ny teny malagasy ?",
+            question:
+              "Sur quelle syllabe porte généralement l'accent tonique d'un mot malgache ?",
+            questionMg:
+              "Aiza ho aiza matetika no misy ny tsindrim-peo amin'ny teny malagasy ?",
             choices: [
               'Sur l’avant-dernière syllabe',
               'Sur la toute première syllabe',
@@ -1393,10 +1465,13 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       },
       {
         slug: 'la-nourriture-les-saveurs-et-le-repas',
-        title: 'La nourriture, les saveurs et le repas malgache (Ny Sakafo sy ny Hanina)',
+        title:
+          'La nourriture, les saveurs et le repas malgache (Ny Sakafo sy ny Hanina)',
         titleMg: 'Ny Sakafo, ny Tsiro ary ny Fihinanana Malagasy',
-        summary: "Découvrez le vocabulaire culinaire, les saveurs traditionnelles et l'étiquette de la table.",
-        summaryMg: 'Ianaro ny voambolan’ny sakafo, ny tsiro samihafa ary ny fomba amam-panao eo am-pisakafoana.',
+        summary:
+          "Découvrez le vocabulaire culinaire, les saveurs traditionnelles et l'étiquette de la table.",
+        summaryMg:
+          'Ianaro ny voambolan’ny sakafo, ny tsiro samihafa ary ny fomba amam-panao eo am-pisakafoana.',
         type: 'CULTURE',
         orderIndex: 10,
         durationMinutes: 5,
@@ -1475,13 +1550,16 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'example',
-            textMg: 'Mazotoa homana daholo tompoko ! — Misaotra tompoko, mazotoa koa ianao.',
-            textFr: 'Bon appétit à tous ! — Merci beaucoup, bon appétit à vous également.',
+            textMg:
+              'Mazotoa homana daholo tompoko ! — Misaotra tompoko, mazotoa koa ianao.',
+            textFr:
+              'Bon appétit à tous ! — Merci beaucoup, bon appétit à vous également.',
           },
           {
             type: 'example',
             textMg: 'Mamy be ity voankazo ity, ary matsiro ny laoka.',
-            textFr: 'Ce fruit est très sucré, et le plat d’accompagnement est délicieux.',
+            textFr:
+              'Ce fruit est très sucré, et le plat d’accompagnement est délicieux.',
           },
           {
             type: 'didYouKnow',
@@ -1493,8 +1571,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           // ─── 5 Micro-Quiz ───
           {
             type: 'quiz',
-            question: "Quel proverbe illustre la place suprême du riz dans la vie des Malgaches ?",
-            questionMg: "Inona no ohabolana mampiseho ny lanjan'ny vary amin'ny fiainan'ny Malagasy ?",
+            question:
+              'Quel proverbe illustre la place suprême du riz dans la vie des Malgaches ?',
+            questionMg:
+              "Inona no ohabolana mampiseho ny lanjan'ny vary amin'ny fiainan'ny Malagasy ?",
             choices: [
               '« Ny vary no aina » (Le riz est la vie)',
               '« Ny vola no aina »',
@@ -1503,1005 +1583,1039 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             ],
             correctIndex: 0,
             explanation:
-              "« Ny vary no aina » (Le riz est la vie) exprime le caractère sacré et vital de cette céréale à Madagascar.",
+              '« Ny vary no aina » (Le riz est la vie) exprime le caractère sacré et vital de cette céréale à Madagascar.',
           },
           {
             type: 'quiz',
-            question: "Comment appelle-t-on le plat ou la viande qui accompagne le riz ?",
-            questionMg: "Inona no anaran'ny hena na anana ampiarahina amin'ny vary ?",
+            question:
+              'Comment appelle-t-on le plat ou la viande qui accompagne le riz ?',
+            questionMg:
+              "Inona no anaran'ny hena na anana ampiarahina amin'ny vary ?",
             choices: ['Ny Laoka', 'Ny Ampango', 'Ny Rano', 'Ny Sakafo'],
             correctIndex: 0,
             explanation:
-              "Le « Laoka » désigne tout mets (viande, poisson, brèdes, haricots) accompagnant le riz blanc ou rouge.",
+              'Le « Laoka » désigne tout mets (viande, poisson, brèdes, haricots) accompagnant le riz blanc ou rouge.',
           },
           {
             type: 'quiz',
-            question: "Comment souhaite-t-on « Bon appétit ! » en malgache ?",
-            questionMg: "Ahoana no firariana fahazotoana homana amin'ny teny malagasy ?",
-            choices: ['Mazotoa homana !', 'Mandra-pihaona !', 'Azafady tompoko !', 'Tonga soa !'],
+            question: 'Comment souhaite-t-on « Bon appétit ! » en malgache ?',
+            questionMg:
+              "Ahoana no firariana fahazotoana homana amin'ny teny malagasy ?",
+            choices: [
+              'Mazotoa homana !',
+              'Mandra-pihaona !',
+              'Azafady tompoko !',
+              'Tonga soa !',
+            ],
             correctIndex: 0,
             explanation:
               "« Mazotoa homana ! » signifie littéralement « Soyez plein d'entrain pour manger ».",
           },
           {
             type: 'quiz',
-            question: "Quelle est la boisson traditionnelle préparée à base de croûte de riz bouillie ?",
-            questionMg: "Inona no zava-pisotro nentin-drazana avy amin'ny ampangon-bary nandrahoina ?",
-            choices: ["Ranon'ampango", 'Ranom-boankazo', 'Ranom-boanio', 'Kafe'],
+            question:
+              'Quelle est la boisson traditionnelle préparée à base de croûte de riz bouillie ?',
+            questionMg:
+              "Inona no zava-pisotro nentin-drazana avy amin'ny ampangon-bary nandrahoina ?",
+            choices: [
+              "Ranon'ampango",
+              'Ranom-boankazo',
+              'Ranom-boanio',
+              'Kafe',
+            ],
             correctIndex: 0,
             explanation:
               "Le « Ranon'ampango » (ou ranovola) est l'eau bouillie versée sur le riz doré au fond de la marmite.",
           },
           {
             type: 'quiz',
-            question: "Que répond poliment un invité rassasié à la fin du repas ?",
-            questionMg: "Inona no teny fanehoana fankasitrahana rehefa voky tsara ?",
-            choices: ['Voky tsara, misaotra tompoko', 'Mbola noana aho', 'Tsy maninona', 'Veloma tompoko'],
+            question:
+              'Que répond poliment un invité rassasié à la fin du repas ?',
+            questionMg:
+              'Inona no teny fanehoana fankasitrahana rehefa voky tsara ?',
+            choices: [
+              'Voky tsara, misaotra tompoko',
+              'Mbola noana aho',
+              'Tsy maninona',
+              'Veloma tompoko',
+            ],
             correctIndex: 0,
             explanation:
               "« Voky tsara, misaotra tompoko » affirme que l'on est copieusement et délicieusement rassasié avec reconnaissance.",
           },
         ],
       },
-  // ─── LEÇON 11 : LA MAISON & HOSPITALITÉ ───
-  {
-    slug: 'la-maison-espace-et-fandraisam-bahiny',
-    title: "La maison, l'espace domestique et l'art d'accueillir (Ny Trano & Fandraisam-bahiny)",
-    titleMg: 'Ny Trano sy ny Fandraisam-bahiny Malagasy',
-    summary:
-      "Découvrez le vocabulaire de la maison, l'orientation sacrée de l'habitat et les formules d'hospitalité chaleureuse.",
-    summaryMg:
-      "Fantaro ny voambolan'ny trano, ny zoro firarazana ary ny fomba fandraisam-bahiny am-pitiavana.",
-    type: 'VOCABULARY',
-    orderIndex: 11,
-    durationMinutes: 7,
-    sections: [
+      // ─── LEÇON 11 : LA MAISON & HOSPITALITÉ ───
       {
-        type: 'intro',
-        textFr:
-          "Chez les Malgaches, la maison (*Trano*) n'est pas seulement un abri physique : c'est un microcosme cosmique orienté selon les points cardinaux. Le coin Nord-Est (*Zoro Firarazana*) est le sanctuaire des ancêtres et de la prière. L'accueil d'un visiteur (*Fandraisam-bahiny*) est sacré : un proverbe rappelle que « Ny vahiny toy ny rano indray mandeha » (l'invité est comme l'eau qui ne passe qu'une fois), invitant à lui réserver le meilleur accueil.",
-        textMg:
-          "Eo amin'ny fiainana malagasy, ny trano dia tsy fialofana fotsiny fa toerana masina mifamatotra amin'ny tontolo iainana. Ny Zoro Firarazana (Avaratra-Atsinanana) no toeram-bavaka sy fanajana ny Razana. Masina ny fandraisam-bahiny : « Ny vahiny toy ny rano indray mandeha », koa mendrika fandraisana am-pitiavana sy am-panajana lalandava.",
-      },
-      {
-        type: 'phonetic',
-        letterOrSound: 'TR / DR',
-        phonetic: 'tr / dr (affriquées rétroflexes)',
-        frenchEquivalent:
-          "Se prononcent comme un 't' ou 'd' suivi d'un 'r' roulé très claqué, la langue appuyée contre le palais (ex: Trano = maison, Draindraik'izay = parfois).",
-        sampleWordMg: 'Trano',
-        sampleTranslationFr: 'Maison / Habitat familial',
-      },
-      {
-        type: 'concept',
-        termMg: 'Tsihy',
-        phonetic: 'tsi-hi',
-        meaningFr: 'La natte végétale tressée',
-        explanation:
-          "Élément central de la convivialité malgache. Posée au sol, elle sert d'espace pour s'asseoir, discuter, partager le repas et dormir en toute simplicité.",
-      },
-      {
-        type: 'concept',
-        termMg: 'Mandehana miditra / Midira tompoko',
-        phonetic: 'man-de-ha-na mi-di-tra',
-        meaningFr: 'Entrez donc / Soyez le bienvenu chez nous',
-        explanation:
-          "Formule d'hospitalité chaleureuse adressée à toute personne se présentant au seuil de la maison.",
-      },
-      {
-        type: 'concept',
-        termMg: 'Zoro Firarazana',
-        phonetic: 'zou-rou fi-ra-ra-za-na',
-        meaningFr: 'Le coin Nord-Est / Angle des ancêtres',
-        explanation:
-          "L'angle sacré de la maison traditionnelle malgache où l'on dépose les offrandes, où l'on bénit les enfants et où l'on invoque Zanahary et les aïeux.",
-      },
-      {
-        type: 'concept',
-        termMg: 'Fatapera sy Vilany',
-        phonetic: 'fa-ta-pe-ra si vi-la-ni',
-        meaningFr: 'Le réchaud à braises et la marmite',
-        explanation:
-          "Ustensiles indispensables de la cuisine quotidienne au charbon de bois pour faire cuire le riz et les plats mijotés (*Laoka*).",
-      },
-      {
-        type: 'example',
-        textMg:
-          "Mandrosoa tompoko, mipetraha eto amin'ny tsihy fa hety hisotro rano mafana isika.",
-        textFr:
-          'Entrez donc Monsieur/Madame, asseyez-vous ici sur la natte, nous allons partager une boisson chaude.',
-      },
-      {
-        type: 'example',
-        textMg:
-          "Azafady tompoko, aiza no ametrahana ny kiraro alohan'ny hidirana ao an-trano ?",
-        textFr:
-          'Excusez-moi, où dépose-t-on les chaussures avant de pénétrer dans la maison ?',
-      },
-      {
-        type: 'didYouKnow',
-        textFr:
-          "Dans l'architecture traditionnelle des Hautes Terres et de l'Imerina, la porte et les fenêtres s'ouvraient toujours vers l'Ouest afin de se protéger des vents froids venant de l'Est et pour capter la lumière chaleureuse du soleil couchant (*Masoandro mody*).",
-        textMg:
-          "Amin'ny trano gasy nentin-drazana, ny varavarana sy ny varavarankely dia mitodika miankandrefana foana mba hiarovana amin'ny rivotra mangatsiaka avy any atsinanana sy handraisana ny tara-pahazavana amin'ny hariva.",
-      },
-      {
-        type: 'quiz',
-        question:
-          'Quel angle de la maison traditionnelle malgache est dédié aux ancêtres et à la prière ?',
-        questionMg:
-          'Inona no zoro masina ao an-trano fanaovana vavaka sy fanajana ny Razana ?',
-        choices: [
-          'Le coin Nord-Est (Zoro Firarazana)',
-          'Le coin Sud-Ouest',
-          'Le centre du toit',
-          'Le seuil de la porte',
+        slug: 'la-maison-espace-et-fandraisam-bahiny',
+        title:
+          "La maison, l'espace domestique et l'art d'accueillir (Ny Trano & Fandraisam-bahiny)",
+        titleMg: 'Ny Trano sy ny Fandraisam-bahiny Malagasy',
+        summary:
+          "Découvrez le vocabulaire de la maison, l'orientation sacrée de l'habitat et les formules d'hospitalité chaleureuse.",
+        summaryMg:
+          "Fantaro ny voambolan'ny trano, ny zoro firarazana ary ny fomba fandraisam-bahiny am-pitiavana.",
+        type: 'VOCABULARY',
+        orderIndex: 11,
+        durationMinutes: 7,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Chez les Malgaches, la maison (*Trano*) n'est pas seulement un abri physique : c'est un microcosme cosmique orienté selon les points cardinaux. Le coin Nord-Est (*Zoro Firarazana*) est le sanctuaire des ancêtres et de la prière. L'accueil d'un visiteur (*Fandraisam-bahiny*) est sacré : un proverbe rappelle que « Ny vahiny toy ny rano indray mandeha » (l'invité est comme l'eau qui ne passe qu'une fois), invitant à lui réserver le meilleur accueil.",
+            textMg:
+              "Eo amin'ny fiainana malagasy, ny trano dia tsy fialofana fotsiny fa toerana masina mifamatotra amin'ny tontolo iainana. Ny Zoro Firarazana (Avaratra-Atsinanana) no toeram-bavaka sy fanajana ny Razana. Masina ny fandraisam-bahiny : « Ny vahiny toy ny rano indray mandeha », koa mendrika fandraisana am-pitiavana sy am-panajana lalandava.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'TR / DR',
+            phonetic: 'tr / dr (affriquées rétroflexes)',
+            frenchEquivalent:
+              "Se prononcent comme un 't' ou 'd' suivi d'un 'r' roulé très claqué, la langue appuyée contre le palais (ex: Trano = maison, Draindraik'izay = parfois).",
+            sampleWordMg: 'Trano',
+            sampleTranslationFr: 'Maison / Habitat familial',
+          },
+          {
+            type: 'concept',
+            termMg: 'Tsihy',
+            phonetic: 'tsi-hi',
+            meaningFr: 'La natte végétale tressée',
+            explanation:
+              "Élément central de la convivialité malgache. Posée au sol, elle sert d'espace pour s'asseoir, discuter, partager le repas et dormir en toute simplicité.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Mandehana miditra / Midira tompoko',
+            phonetic: 'man-de-ha-na mi-di-tra',
+            meaningFr: 'Entrez donc / Soyez le bienvenu chez nous',
+            explanation:
+              "Formule d'hospitalité chaleureuse adressée à toute personne se présentant au seuil de la maison.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Zoro Firarazana',
+            phonetic: 'zou-rou fi-ra-ra-za-na',
+            meaningFr: 'Le coin Nord-Est / Angle des ancêtres',
+            explanation:
+              "L'angle sacré de la maison traditionnelle malgache où l'on dépose les offrandes, où l'on bénit les enfants et où l'on invoque Zanahary et les aïeux.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Fatapera sy Vilany',
+            phonetic: 'fa-ta-pe-ra si vi-la-ni',
+            meaningFr: 'Le réchaud à braises et la marmite',
+            explanation:
+              'Ustensiles indispensables de la cuisine quotidienne au charbon de bois pour faire cuire le riz et les plats mijotés (*Laoka*).',
+          },
+          {
+            type: 'example',
+            textMg:
+              "Mandrosoa tompoko, mipetraha eto amin'ny tsihy fa hety hisotro rano mafana isika.",
+            textFr:
+              'Entrez donc Monsieur/Madame, asseyez-vous ici sur la natte, nous allons partager une boisson chaude.',
+          },
+          {
+            type: 'example',
+            textMg:
+              "Azafady tompoko, aiza no ametrahana ny kiraro alohan'ny hidirana ao an-trano ?",
+            textFr:
+              'Excusez-moi, où dépose-t-on les chaussures avant de pénétrer dans la maison ?',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Dans l'architecture traditionnelle des Hautes Terres et de l'Imerina, la porte et les fenêtres s'ouvraient toujours vers l'Ouest afin de se protéger des vents froids venant de l'Est et pour capter la lumière chaleureuse du soleil couchant (*Masoandro mody*).",
+            textMg:
+              "Amin'ny trano gasy nentin-drazana, ny varavarana sy ny varavarankely dia mitodika miankandrefana foana mba hiarovana amin'ny rivotra mangatsiaka avy any atsinanana sy handraisana ny tara-pahazavana amin'ny hariva.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quel angle de la maison traditionnelle malgache est dédié aux ancêtres et à la prière ?',
+            questionMg:
+              'Inona no zoro masina ao an-trano fanaovana vavaka sy fanajana ny Razana ?',
+            choices: [
+              'Le coin Nord-Est (Zoro Firarazana)',
+              'Le coin Sud-Ouest',
+              'Le centre du toit',
+              'Le seuil de la porte',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le 'Zoro Firarazana' (Nord-Est) est l'orientation la plus sacrée de la cosmologie malgache, où s'accomplissent les bénédictions et prières rituelles.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Que symbolise la natte tressée (« Tsihy ») dans le foyer malgache ?',
+            questionMg:
+              "Inona no hevitra fonosin'ny « Tsihy » eo amin'ny tokantrano malagasy ?",
+            choices: [
+              'La fraternité, le partage et la simplicité conviviale',
+              'Une simple décoration murale',
+              'Une barrière pour repousser les visiteurs',
+              'Un objet réservé uniquement aux rois',
+            ],
+            correctIndex: 0,
+            explanation:
+              "S'asseoir ensemble sur le 'tsihy' efface les distances sociales et scelle la convivialité, l'égalité et l'écoute mutuelle.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quelle phrase prononce-t-on pour inviter chaleureusement quelqu'un à entrer chez soi ?",
+            questionMg:
+              'Inona no teny enti-mandray vahiny am-pitiavana mba hiditra ao an-trano ?',
+            choices: [
+              'Mandrosoa tompoko / Midira ao an-trano',
+              'Mandehana mody',
+              'Azafady fa mikatona ny trano',
+              'Mijanona eny ivelany',
+            ],
+            correctIndex: 0,
+            explanation:
+              '« Mandrosoa tompoko » (Avancez donc) ou « Midira ao an-trano » exprime un accueil généreux et bienveillant.',
+          },
+          {
+            type: 'quiz',
+            question:
+              'Comment se prononce le digraphe « TR » en langue malgache (ex: Trano) ?',
+            questionMg:
+              "Ahoana no fanononana ny litera « TR » amin'ny teny malagasy ?",
+            choices: [
+              "Comme un 't' suivi d'un 'r' claqué et roulé contre le palais",
+              "Comme un 'ch' doux français",
+              "Comme un simple 't' muet",
+              "Comme un 'z' sifflant",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le son 'TR' malgache est une consonne affriquée alvéolaire où le 't' et le 'r' roulé fusionnent énergiquement.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Pourquoi les ouvertures de la maison traditionnelle malgache étaient-elles orientées vers l'Ouest ?",
+            questionMg:
+              "Nahoana no niankandrefana ny varavaran'ny trano gasy nentin-drazana ?",
+            choices: [
+              "Pour se protéger du vent froid d'Est et profiter de la chaleur du soleil couchant",
+              'Parce que le bois ne poussait que vers l’Ouest',
+              'Pour cacher la maison aux voisins',
+              'Pour éviter la lumière du jour',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Cette orientation bioclimatique ancestrale protégeait du vent d'alizé de l'Est et emmagasinait la douce chaleur vespérale.",
+          },
         ],
-        correctIndex: 0,
-        explanation:
-          "Le 'Zoro Firarazana' (Nord-Est) est l'orientation la plus sacrée de la cosmologie malgache, où s'accomplissent les bénédictions et prières rituelles.",
       },
-      {
-        type: 'quiz',
-        question:
-          'Que symbolise la natte tressée (« Tsihy ») dans le foyer malgache ?',
-        questionMg:
-          "Inona no hevitra fonosin'ny « Tsihy » eo amin'ny tokantrano malagasy ?",
-        choices: [
-          'La fraternité, le partage et la simplicité conviviale',
-          'Une simple décoration murale',
-          'Une barrière pour repousser les visiteurs',
-          'Un objet réservé uniquement aux rois',
-        ],
-        correctIndex: 0,
-        explanation:
-          "S'asseoir ensemble sur le 'tsihy' efface les distances sociales et scelle la convivialité, l'égalité et l'écoute mutuelle.",
-      },
-      {
-        type: 'quiz',
-        question:
-          "Quelle phrase prononce-t-on pour inviter chaleureusement quelqu'un à entrer chez soi ?",
-        questionMg:
-          'Inona no teny enti-mandray vahiny am-pitiavana mba hiditra ao an-trano ?',
-        choices: [
-          'Mandrosoa tompoko / Midira ao an-trano',
-          'Mandehana mody',
-          'Azafady fa mikatona ny trano',
-          'Mijanona eny ivelany',
-        ],
-        correctIndex: 0,
-        explanation:
-          "« Mandrosoa tompoko » (Avancez donc) ou « Midira ao an-trano » exprime un accueil généreux et bienveillant.",
-      },
-      {
-        type: 'quiz',
-        question:
-          'Comment se prononce le digraphe « TR » en langue malgache (ex: Trano) ?',
-        questionMg:
-          "Ahoana no fanononana ny litera « TR » amin'ny teny malagasy ?",
-        choices: [
-          "Comme un 't' suivi d'un 'r' claqué et roulé contre le palais",
-          "Comme un 'ch' doux français",
-          "Comme un simple 't' muet",
-          "Comme un 'z' sifflant",
-        ],
-        correctIndex: 0,
-        explanation:
-          "Le son 'TR' malgache est une consonne affriquée alvéolaire où le 't' et le 'r' roulé fusionnent énergiquement.",
-      },
-      {
-        type: 'quiz',
-        question:
-          "Pourquoi les ouvertures de la maison traditionnelle malgache étaient-elles orientées vers l'Ouest ?",
-        questionMg:
-          "Nahoana no niankandrefana ny varavaran'ny trano gasy nentin-drazana ?",
-        choices: [
-          "Pour se protéger du vent froid d'Est et profiter de la chaleur du soleil couchant",
-          'Parce que le bois ne poussait que vers l’Ouest',
-          'Pour cacher la maison aux voisins',
-          'Pour éviter la lumière du jour',
-        ],
-        correctIndex: 0,
-        explanation:
-          "Cette orientation bioclimatique ancestrale protégeait du vent d'alizé de l'Est et emmagasinait la douce chaleur vespérale.",
-      },
-    ],
-  },
 
-  // ─── LEÇON 12 : LE CORPS HUMAIN & SANTÉ ───
-  {
-    slug: 'le-corps-humain-sante-et-bien-etre',
-    title:
-      'Le corps humain, la santé et le bien-être (Ny Vatan\'olombelona sy ny Fahasalamana)',
-    titleMg: "Ny Vatan'olombelona sy ny Fahasalamana",
-    summary:
-      'Apprenez à nommer les parties du corps, à exprimer vos sensations physiques et à demander ou donner des nouvelles de santé.',
-    summaryMg:
-      "Ianaro ny anaran'ny rantsam-batana, ny fitenenana rehefa marary ary ny fifampiarahana fahasalamana.",
-    type: 'VOCABULARY',
-    orderIndex: 12,
-    durationMinutes: 7,
-    sections: [
+      // ─── LEÇON 12 : LE CORPS HUMAIN & SANTÉ ───
       {
-        type: 'intro',
-        textFr:
-          "En langue malgache, les parties du corps sont intimement associées aux métaphores de l'âme et des émotions. Le cœur (*Fo*) est le siège des sentiments profonds, le ventre (*Kibo*) celui de la sincérité (*Madio kibo* = avoir le cœur pur, sans rancune). Savoir exprimer sa santé ou s'enquérir avec délicatesse de celle d'autrui est un devoir élémentaire de politesse.",
-        textMg:
-          "Amin'ny teny malagasy, ny anaran'ny taova sy ny rantsam-batana dia misy hevitra lalina mifandray amin'ny fanahy sy ny fihetseham-po. Ny Fo no toeran'ny fitiavana, ny Kibo no fitaratry ny fahatsoram-po (« Madio kibo »). Ny fiheverana ny fahasalaman'ny hafa dia adidy lehibe amin'ny fifanajana andavanandro.",
-      },
-      {
-        type: 'phonetic',
-        letterOrSound: 'Voyelles finales atones',
-        phonetic: 'a / y (assourdies)',
-        frenchEquivalent:
-          "En fin de mot, les voyelles malgaches 'a' et 'y' ne sont pas accentuées : elles s'assourdissent et se chuchotent presque (ex: Loha se prononce 'lou-h(a)', Tanana se prononce 'ta-na-n(a)').",
-        sampleWordMg: 'Tanana',
-        sampleTranslationFr: 'Main / Bras',
-      },
-      {
-        type: 'concept',
-        termMg: 'Loha sy Maso',
-        phonetic: 'lou-ha si ma-sou',
-        meaningFr: 'La tête et les yeux',
-        explanation:
-          "Parties supérieures du corps. 'Maso' (l'œil) entre dans la composition du mot 'Masoandro' (le soleil, littéralement « l'œil du jour »).",
-      },
-      {
-        type: 'concept',
-        termMg: 'Tanana sy Tongotra',
-        phonetic: 'ta-na-na si toun-gou-tra',
-        meaningFr: 'La main et le pied / la jambe',
-        explanation:
-          "Membres du travail, de la marche et de l'entraide communautaire. 'Tanana' symbolise le geste solidaire (*Valin-tanana*).",
-      },
-      {
-        type: 'concept',
-        termMg: 'Marary / Salama',
-        phonetic: 'ma-ra-ri / sa-la-ma',
-        meaningFr: 'Être malade, souffrant / Être en bonne santé, bien portant',
-        explanation:
-          "Les deux états fondamentaux du corps. Pour exprimer une douleur : 'Marary ny...' (ex: *Marary loha aho* = J'ai mal à la tête).",
-      },
-      {
-        type: 'concept',
-        termMg: 'Tambavy',
-        phonetic: 'tam-ba-vi',
-        meaningFr: 'Infusion traditionnelle bienfaisante',
-        explanation:
-          'Décoction de plantes et feuilles médicinales préparée pour revigorer le corps, apaiser la fièvre et purifier l’organisme.',
-      },
-      {
-        type: 'example',
-        textMg:
-          'Mba manao ahoana ny fahasalamana tompoko ? Salama tsara fa misaotra indrindra.',
-        textFr:
-          'Comment va votre santé s’il vous plaît ? Elle est excellente, merci infiniment.',
-      },
-      {
-        type: 'example',
-        textMg:
-          'Marary kibo kely ny ankizy ka mila tambavy mafana sy fitsaharana.',
-        textFr:
-          'L’enfant a un peu mal au ventre, il a besoin d’une infusion chaude et de repos.',
-      },
-      {
-        type: 'didYouKnow',
-        textFr:
-          "Le mot malgache « Tsara tarehy » (beau, jolie) est composé de « Tsara » (bon, beau) et « Tarehy » (le visage, les traits). De même, pour dire que quelqu'un est généreux, on dit qu'il a la « main ouverte » (*Malalaka tanana*).",
-        textMg:
-          "Ny hoe « Tsara tarehy » dia avy amin'ny « Tsara » sy « Tarehy ». Rehefa olona tsara fanahy sy mpanome kosa dia lazaina hoe « Malalaka tanana ».",
-      },
-      {
-        type: 'quiz',
-        question: 'Comment dit-on « J’ai mal à la tête » en malgache ?',
-        questionMg: "Ahoana no filazana hoe « Marary loha aho » amin'ny teny malagasy ?",
-        choices: [
-          'Marary loha aho',
-          'Marary tongotra aho',
-          'Salama tsara aho',
-          'Noana aho',
+        slug: 'le-corps-humain-sante-et-bien-etre',
+        title:
+          "Le corps humain, la santé et le bien-être (Ny Vatan'olombelona sy ny Fahasalamana)",
+        titleMg: "Ny Vatan'olombelona sy ny Fahasalamana",
+        summary:
+          'Apprenez à nommer les parties du corps, à exprimer vos sensations physiques et à demander ou donner des nouvelles de santé.',
+        summaryMg:
+          "Ianaro ny anaran'ny rantsam-batana, ny fitenenana rehefa marary ary ny fifampiarahana fahasalamana.",
+        type: 'VOCABULARY',
+        orderIndex: 12,
+        durationMinutes: 7,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "En langue malgache, les parties du corps sont intimement associées aux métaphores de l'âme et des émotions. Le cœur (*Fo*) est le siège des sentiments profonds, le ventre (*Kibo*) celui de la sincérité (*Madio kibo* = avoir le cœur pur, sans rancune). Savoir exprimer sa santé ou s'enquérir avec délicatesse de celle d'autrui est un devoir élémentaire de politesse.",
+            textMg:
+              "Amin'ny teny malagasy, ny anaran'ny taova sy ny rantsam-batana dia misy hevitra lalina mifandray amin'ny fanahy sy ny fihetseham-po. Ny Fo no toeran'ny fitiavana, ny Kibo no fitaratry ny fahatsoram-po (« Madio kibo »). Ny fiheverana ny fahasalaman'ny hafa dia adidy lehibe amin'ny fifanajana andavanandro.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'Voyelles finales atones',
+            phonetic: 'a / y (assourdies)',
+            frenchEquivalent:
+              "En fin de mot, les voyelles malgaches 'a' et 'y' ne sont pas accentuées : elles s'assourdissent et se chuchotent presque (ex: Loha se prononce 'lou-h(a)', Tanana se prononce 'ta-na-n(a)').",
+            sampleWordMg: 'Tanana',
+            sampleTranslationFr: 'Main / Bras',
+          },
+          {
+            type: 'concept',
+            termMg: 'Loha sy Maso',
+            phonetic: 'lou-ha si ma-sou',
+            meaningFr: 'La tête et les yeux',
+            explanation:
+              "Parties supérieures du corps. 'Maso' (l'œil) entre dans la composition du mot 'Masoandro' (le soleil, littéralement « l'œil du jour »).",
+          },
+          {
+            type: 'concept',
+            termMg: 'Tanana sy Tongotra',
+            phonetic: 'ta-na-na si toun-gou-tra',
+            meaningFr: 'La main et le pied / la jambe',
+            explanation:
+              "Membres du travail, de la marche et de l'entraide communautaire. 'Tanana' symbolise le geste solidaire (*Valin-tanana*).",
+          },
+          {
+            type: 'concept',
+            termMg: 'Marary / Salama',
+            phonetic: 'ma-ra-ri / sa-la-ma',
+            meaningFr:
+              'Être malade, souffrant / Être en bonne santé, bien portant',
+            explanation:
+              "Les deux états fondamentaux du corps. Pour exprimer une douleur : 'Marary ny...' (ex: *Marary loha aho* = J'ai mal à la tête).",
+          },
+          {
+            type: 'concept',
+            termMg: 'Tambavy',
+            phonetic: 'tam-ba-vi',
+            meaningFr: 'Infusion traditionnelle bienfaisante',
+            explanation:
+              'Décoction de plantes et feuilles médicinales préparée pour revigorer le corps, apaiser la fièvre et purifier l’organisme.',
+          },
+          {
+            type: 'example',
+            textMg:
+              'Mba manao ahoana ny fahasalamana tompoko ? Salama tsara fa misaotra indrindra.',
+            textFr:
+              'Comment va votre santé s’il vous plaît ? Elle est excellente, merci infiniment.',
+          },
+          {
+            type: 'example',
+            textMg:
+              'Marary kibo kely ny ankizy ka mila tambavy mafana sy fitsaharana.',
+            textFr:
+              'L’enfant a un peu mal au ventre, il a besoin d’une infusion chaude et de repos.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Le mot malgache « Tsara tarehy » (beau, jolie) est composé de « Tsara » (bon, beau) et « Tarehy » (le visage, les traits). De même, pour dire que quelqu'un est généreux, on dit qu'il a la « main ouverte » (*Malalaka tanana*).",
+            textMg:
+              "Ny hoe « Tsara tarehy » dia avy amin'ny « Tsara » sy « Tarehy ». Rehefa olona tsara fanahy sy mpanome kosa dia lazaina hoe « Malalaka tanana ».",
+          },
+          {
+            type: 'quiz',
+            question: 'Comment dit-on « J’ai mal à la tête » en malgache ?',
+            questionMg:
+              "Ahoana no filazana hoe « Marary loha aho » amin'ny teny malagasy ?",
+            choices: [
+              'Marary loha aho',
+              'Marary tongotra aho',
+              'Salama tsara aho',
+              'Noana aho',
+            ],
+            correctIndex: 0,
+            explanation:
+              '« Marary » (souffrant) + « loha » (tête) + « aho » (je/moi) : « Marary loha aho » exprime le mal de tête.',
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel mot malgache désigne l'œil et entre dans la composition du mot « Masoandro » (le soleil) ?",
+            questionMg:
+              'Inona no teny malagasy midika hoe « œil » ka manome ny teny hoe « Masoandro » ?',
+            choices: ['Maso', 'Loha', 'Sofina', 'Vava'],
+            correctIndex: 0,
+            explanation:
+              "« Maso » signifie 'œil'. Le soleil est poétiquement appelé 'Masoandro', c'est-à-dire l'œil du jour.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Qu'est-ce que le « Tambavy » dans la culture traditionnelle malgache ?",
+            questionMg:
+              "Inona no atao hoe « Tambavy » amin'ny fitsaboana nentin-drazana malagasy ?",
+            choices: [
+              'Une tisane ou décoction de plantes médicinales bienfaisantes',
+              'Une danse de fête',
+              'Un vêtement d’hiver',
+              'Un plat de viande séchée',
+            ],
+            correctIndex: 0,
+            explanation:
+              'Le Tambavy est une tisane médicinale traditionnelle à base de feuilles, racines et écorces aromatiques préparée pour soigner le corps.',
+          },
+          {
+            type: 'quiz',
+            question:
+              'Que signifie métaphoriquement l’expression malgache « Madio kibo » ?',
+            questionMg:
+              "Inona no hevitra fonosin'ny ohabolana na fitenenana hoe « Madio kibo » ?",
+            choices: [
+              'Avoir le cœur pur, sans rancune ni duplicité',
+              'Avoir très faim',
+              'Avoir mal au ventre',
+              'Avoir fini de manger',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Madio kibo » (avoir le ventre propre) signifie au sens figuré n'abriter aucune animosité ni méchanceté envers autrui.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Comment se prononcent généralement les voyelles finales 'a' et 'y' en malgache ?",
+            questionMg:
+              "Ahoana no fanononana ny zanatsoratra 'a' sy 'y' any amin'ny faran'ny teny malagasy ?",
+            choices: [
+              "Elles sont atones et s'assourdissent presque en chuchotement",
+              'Elles sont fortement accentuées et traînantes',
+              "Elles se transforment toujours en 'O'",
+              "Elles se prononcent comme un 'R' roulé",
+            ],
+            correctIndex: 0,
+            explanation:
+              "En malgache, l'accent tonique tombe sur l'avant-dernière syllabe (pénultième) ; la voyelle finale est donc très douce et à peine articulée.",
+          },
         ],
-        correctIndex: 0,
-        explanation:
-          "« Marary » (souffrant) + « loha » (tête) + « aho » (je/moi) : « Marary loha aho » exprime le mal de tête.",
       },
-      {
-        type: 'quiz',
-        question:
-          "Quel mot malgache désigne l'œil et entre dans la composition du mot « Masoandro » (le soleil) ?",
-        questionMg:
-          "Inona no teny malagasy midika hoe « œil » ka manome ny teny hoe « Masoandro » ?",
-        choices: ['Maso', 'Loha', 'Sofina', 'Vava'],
-        correctIndex: 0,
-        explanation:
-          "« Maso » signifie 'œil'. Le soleil est poétiquement appelé 'Masoandro', c'est-à-dire l'œil du jour.",
-      },
-      {
-        type: 'quiz',
-        question:
-          "Qu'est-ce que le « Tambavy » dans la culture traditionnelle malgache ?",
-        questionMg: "Inona no atao hoe « Tambavy » amin'ny fitsaboana nentin-drazana malagasy ?",
-        choices: [
-          'Une tisane ou décoction de plantes médicinales bienfaisantes',
-          'Une danse de fête',
-          'Un vêtement d’hiver',
-          'Un plat de viande séchée',
-        ],
-        correctIndex: 0,
-        explanation:
-          "Le Tambavy est une tisane médicinale traditionnelle à base de feuilles, racines et écorces aromatiques préparée pour soigner le corps.",
-      },
-      {
-        type: 'quiz',
-        question:
-          'Que signifie métaphoriquement l’expression malgache « Madio kibo » ?',
-        questionMg:
-          "Inona no hevitra fonosin'ny ohabolana na fitenenana hoe « Madio kibo » ?",
-        choices: [
-          'Avoir le cœur pur, sans rancune ni duplicité',
-          'Avoir très faim',
-          'Avoir mal au ventre',
-          'Avoir fini de manger',
-        ],
-        correctIndex: 0,
-        explanation:
-          "« Madio kibo » (avoir le ventre propre) signifie au sens figuré n'abriter aucune animosité ni méchanceté envers autrui.",
-      },
-      {
-        type: 'quiz',
-        question:
-          "Comment se prononcent généralement les voyelles finales 'a' et 'y' en malgache ?",
-        questionMg:
-          "Ahoana no fanononana ny zanatsoratra 'a' sy 'y' any amin'ny faran'ny teny malagasy ?",
-        choices: [
-          "Elles sont atones et s'assourdissent presque en chuchotement",
-          "Elles sont fortement accentuées et traînantes",
-          "Elles se transforment toujours en 'O'",
-          "Elles se prononcent comme un 'R' roulé",
-        ],
-        correctIndex: 0,
-        explanation:
-          "En malgache, l'accent tonique tombe sur l'avant-dernière syllabe (pénultième) ; la voyelle finale est donc très douce et à peine articulée.",
-      },
-    ],
-  },
 
-  // ─── LEÇON 13 : NATURE, SAISONS & MÉTÉO ───
-  {
-    slug: 'la-nature-les-saisons-et-le-climat',
-    title:
-      'La nature, les saisons et la météo (Ny Zavaboary sy ny Toetrandro)',
-    titleMg: 'Ny Zavaboary, ny Toetrandro sy ny Fizaran-taona',
-    summary:
-      "Explorez le vocabulaire des éléments naturels, les saisons de l'île Rouge et les expressions pour décrire le temps.",
-    summaryMg:
-      'Fantaro ny voambolan’ny zavaboary, ny toetrandro ary ny fizaran-taona eto Madagasikara.',
-    type: 'CULTURE',
-    orderIndex: 13,
-    durationMinutes: 7,
-    sections: [
+      // ─── LEÇON 13 : NATURE, SAISONS & MÉTÉO ───
       {
-        type: 'intro',
-        textFr:
-          "Madagascar vit au rythme de la nature et de ses contrastes climatiques. Les deux grandes saisons sont le **Fahavaratra** (saison chaude et pluvieuse, propice au riz) et le **Ririnina** (l'hiver austral, sec et frais sur les Hautes Terres). Entre elles s'intercalent le **Fararano** (temps des moissons et de l'abondance) et l'**Asotry**. L'harmonie entre l'homme et les éléments naturels (*Zavaboary*) est au cœur de la spiritualité insulaire.",
-        textMg:
-          "Madagasikara dia miaina mifanaraka amin'ny fiovan'ny toetrandro sy ny vanim-potoana. Misy ny **Fahavaratra** (mafana sy be orana, maniry ny vary) sy ny **Ririnina** (mangatsiaka sy maina). Eo anelanelany ny **Fararano** fotoam-piotazana sy fahavokarana. Ny fifandraisana mirindra amin'ny Zavaboary no fototry ny fahendren-drazana.",
-      },
-      {
-        type: 'phonetic',
-        letterOrSound: 'V',
-        phonetic: 'v (labio-dentale douce)',
-        frenchEquivalent:
-          "Se prononce comme le 'v' français de 'vent' ou 'vie', mais avec une vibration très douce des lèvres (ex: Vava = bouche, Vary = riz, Vintana = destin).",
-        sampleWordMg: 'Vary',
-        sampleTranslationFr: 'Riz (aliment sacré)',
-      },
-      {
-        type: 'concept',
-        termMg: 'Fahavaratra sy Ririnina',
-        phonetic: 'fa-ha-va-ra-tra / ri-ri-ni-na',
-        meaningFr: "L'été pluvieux et l'hiver austral frais",
-        explanation:
-          'Les deux saisons maîtresses qui gouvernent le calendrier agricole, les fêtes coutumières et les activités quotidiennes.',
-      },
-      {
-        type: 'concept',
-        termMg: 'Fararano',
-        phonetic: 'fa-ra-ra-nou',
-        meaningFr: "La saison d'automne et des récoltes (mars à mai)",
-        explanation:
-          "Littéralement « la fin des pluies ». Saison bénie de réjouissances, où les greniers sont pleins et où s'organisent mariages et fêtes traditionnelles.",
-      },
-      {
-        type: 'concept',
-        termMg: 'Masoandro sy Orana',
-        phonetic: 'ma-sou-an-drou / ou-ra-na',
-        meaningFr: 'Le soleil et la pluie',
-        explanation:
-          "Les deux forces célestes indispensables à la vie : l'eau qui nourrit la terre et la lumière qui fait mûrir les épis.",
-      },
-      {
-        type: 'concept',
-        termMg: 'Mangatsiaka / Mafana',
-        phonetic: 'man-ga-tsi-ka / ma-fa-na',
-        meaningFr: 'Il fait froid / Il fait chaud',
-        explanation:
-          "Expressions usuelles de la météo : 'Mangatsiaka ny andro' (il fait froid), 'Mafana ny andro' (il fait chaud).",
-      },
-      {
-        type: 'example',
-        textMg: 'Avy ny orana ka mangatsiaka ny andro anio tompoko.',
-        textFr: 'La pluie arrive et il fait froid aujourd’hui Monsieur/Madame.',
-      },
-      {
-        type: 'example',
-        textMg:
-          "Mamirapiratra ny masoandro amin'ny fararano ka faly ny mpamboly.",
-        textFr:
-          'Le soleil resplendit en cette saison des récoltes et les cultivateurs se réjouissent.',
-      },
-      {
-        type: 'didYouKnow',
-        textFr:
-          "Un proverbe célèbre dit : « Tsy misy mamy toy ny fararano » (Rien n'est plus doux que la saison des récoltes). C'est à ce moment de l'année que le riz nouveau (*Vary vao*) est goûté en famille dans une communion de gratitude envers la terre.",
-        textMg:
-          "Heverina ho fotoana mamy indrindra ny Fararano : « Tsy misy mamy toy ny fararano », satria eo no hanina ny vary vao sy ifampizarana ny vokatra be tamin'ny asa mafy.",
-      },
-      {
-        type: 'quiz',
-        question:
-          'Quelle est la saison des pluies et de la chaleur à Madagascar ?',
-        questionMg:
-          "Inona no vanim-potoana mafana sy be orana eto Madagasikara ?",
-        choices: [
-          'Ny Fahavaratra',
-          'Ny Ririnina',
-          'Ny Lohataona',
-          'Ny Asotry',
+        slug: 'la-nature-les-saisons-et-le-climat',
+        title:
+          'La nature, les saisons et la météo (Ny Zavaboary sy ny Toetrandro)',
+        titleMg: 'Ny Zavaboary, ny Toetrandro sy ny Fizaran-taona',
+        summary:
+          "Explorez le vocabulaire des éléments naturels, les saisons de l'île Rouge et les expressions pour décrire le temps.",
+        summaryMg:
+          'Fantaro ny voambolan’ny zavaboary, ny toetrandro ary ny fizaran-taona eto Madagasikara.',
+        type: 'CULTURE',
+        orderIndex: 13,
+        durationMinutes: 7,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Madagascar vit au rythme de la nature et de ses contrastes climatiques. Les deux grandes saisons sont le **Fahavaratra** (saison chaude et pluvieuse, propice au riz) et le **Ririnina** (l'hiver austral, sec et frais sur les Hautes Terres). Entre elles s'intercalent le **Fararano** (temps des moissons et de l'abondance) et l'**Asotry**. L'harmonie entre l'homme et les éléments naturels (*Zavaboary*) est au cœur de la spiritualité insulaire.",
+            textMg:
+              "Madagasikara dia miaina mifanaraka amin'ny fiovan'ny toetrandro sy ny vanim-potoana. Misy ny **Fahavaratra** (mafana sy be orana, maniry ny vary) sy ny **Ririnina** (mangatsiaka sy maina). Eo anelanelany ny **Fararano** fotoam-piotazana sy fahavokarana. Ny fifandraisana mirindra amin'ny Zavaboary no fototry ny fahendren-drazana.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'V',
+            phonetic: 'v (labio-dentale douce)',
+            frenchEquivalent:
+              "Se prononce comme le 'v' français de 'vent' ou 'vie', mais avec une vibration très douce des lèvres (ex: Vava = bouche, Vary = riz, Vintana = destin).",
+            sampleWordMg: 'Vary',
+            sampleTranslationFr: 'Riz (aliment sacré)',
+          },
+          {
+            type: 'concept',
+            termMg: 'Fahavaratra sy Ririnina',
+            phonetic: 'fa-ha-va-ra-tra / ri-ri-ni-na',
+            meaningFr: "L'été pluvieux et l'hiver austral frais",
+            explanation:
+              'Les deux saisons maîtresses qui gouvernent le calendrier agricole, les fêtes coutumières et les activités quotidiennes.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Fararano',
+            phonetic: 'fa-ra-ra-nou',
+            meaningFr: "La saison d'automne et des récoltes (mars à mai)",
+            explanation:
+              "Littéralement « la fin des pluies ». Saison bénie de réjouissances, où les greniers sont pleins et où s'organisent mariages et fêtes traditionnelles.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Masoandro sy Orana',
+            phonetic: 'ma-sou-an-drou / ou-ra-na',
+            meaningFr: 'Le soleil et la pluie',
+            explanation:
+              "Les deux forces célestes indispensables à la vie : l'eau qui nourrit la terre et la lumière qui fait mûrir les épis.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Mangatsiaka / Mafana',
+            phonetic: 'man-ga-tsi-ka / ma-fa-na',
+            meaningFr: 'Il fait froid / Il fait chaud',
+            explanation:
+              "Expressions usuelles de la météo : 'Mangatsiaka ny andro' (il fait froid), 'Mafana ny andro' (il fait chaud).",
+          },
+          {
+            type: 'example',
+            textMg: 'Avy ny orana ka mangatsiaka ny andro anio tompoko.',
+            textFr:
+              'La pluie arrive et il fait froid aujourd’hui Monsieur/Madame.',
+          },
+          {
+            type: 'example',
+            textMg:
+              "Mamirapiratra ny masoandro amin'ny fararano ka faly ny mpamboly.",
+            textFr:
+              'Le soleil resplendit en cette saison des récoltes et les cultivateurs se réjouissent.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Un proverbe célèbre dit : « Tsy misy mamy toy ny fararano » (Rien n'est plus doux que la saison des récoltes). C'est à ce moment de l'année que le riz nouveau (*Vary vao*) est goûté en famille dans une communion de gratitude envers la terre.",
+            textMg:
+              "Heverina ho fotoana mamy indrindra ny Fararano : « Tsy misy mamy toy ny fararano », satria eo no hanina ny vary vao sy ifampizarana ny vokatra be tamin'ny asa mafy.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quelle est la saison des pluies et de la chaleur à Madagascar ?',
+            questionMg:
+              'Inona no vanim-potoana mafana sy be orana eto Madagasikara ?',
+            choices: [
+              'Ny Fahavaratra',
+              'Ny Ririnina',
+              'Ny Lohataona',
+              'Ny Asotry',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le 'Fahavaratra' (de novembre à avril) est la saison chaude et pluvieuse qui permet le développement luxuriant de la végétation et des rizières.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Que signifie littéralement le mot « Fararano » (la saison des moissons) ?',
+            questionMg:
+              "Inona no hevitra ara-pitenenana fonosin'ny teny hoe « Fararano » ?",
+            choices: [
+              'La fin des eaux / La fin des pluies',
+              'Le grand fleuve',
+              'Le début de l’hiver',
+              'La terre sèche',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Fara » (fin, terme) + « rano » (eau) : c'est la période où les pluies cessent pour laisser place aux moissons dorées.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Comment dit-on « Il fait froid aujourd’hui » en malgache ?',
+            questionMg:
+              'Ahoana no filazana hoe « Mangatsiaka ny andro anio » ?',
+            choices: [
+              'Mangatsiaka ny andro anio',
+              'Mafana be ny andro',
+              'Misy orana be',
+              'Maizina ny andro',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Mangatsiaka » (froid) + « ny andro » (le temps / le jour) + « anio » (aujourd'hui) exprime la sensation de fraîcheur.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quelle est la saison fraîche de l’hiver austral à Madagascar ?',
+            questionMg:
+              "Inona no anaran'ny vanim-potoana mangatsiaka indrindra (hiver austral) ?",
+            choices: [
+              'Ny Ririnina',
+              'Ny Fahavaratra',
+              'Ny Fararano',
+              'Ny Asombola',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le 'Ririnina' (de juin à août) correspond à l'hiver austral, caractérisé par des températures fraîches sur les plateaux centraux.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Que célèbre-t-on traditionnellement à la saison du Fararano ?',
+            questionMg:
+              'Inona no fotoam-pifaliana ankalazaina mandritra ny Fararano ?',
+            choices: [
+              "La récolte du riz, l'abondance et les cérémonies familiales joyeuses",
+              'La plantation des premiers grains de maïs',
+              'Le jeûne obligatoire de toute la communauté',
+              'Le départ en exil des troupeaux',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le Fararano est le temps de la plénitude : les greniers à riz sont remplis, les familles se réunissent et partagent le 'Vary vao'.",
+          },
         ],
-        correctIndex: 0,
-        explanation:
-          "Le 'Fahavaratra' (de novembre à avril) est la saison chaude et pluvieuse qui permet le développement luxuriant de la végétation et des rizières.",
       },
-      {
-        type: 'quiz',
-        question:
-          "Que signifie littéralement le mot « Fararano » (la saison des moissons) ?",
-        questionMg:
-          "Inona no hevitra ara-pitenenana fonosin'ny teny hoe « Fararano » ?",
-        choices: [
-          'La fin des eaux / La fin des pluies',
-          'Le grand fleuve',
-          'Le début de l’hiver',
-          'La terre sèche',
-        ],
-        correctIndex: 0,
-        explanation:
-          "« Fara » (fin, terme) + « rano » (eau) : c'est la période où les pluies cessent pour laisser place aux moissons dorées.",
-      },
-      {
-        type: 'quiz',
-        question: 'Comment dit-on « Il fait froid aujourd’hui » en malgache ?',
-        questionMg: "Ahoana no filazana hoe « Mangatsiaka ny andro anio » ?",
-        choices: [
-          'Mangatsiaka ny andro anio',
-          'Mafana be ny andro',
-          'Misy orana be',
-          'Maizina ny andro',
-        ],
-        correctIndex: 0,
-        explanation:
-          "« Mangatsiaka » (froid) + « ny andro » (le temps / le jour) + « anio » (aujourd'hui) exprime la sensation de fraîcheur.",
-      },
-      {
-        type: 'quiz',
-        question:
-          "Quelle est la saison fraîche de l’hiver austral à Madagascar ?",
-        questionMg:
-          "Inona no anaran'ny vanim-potoana mangatsiaka indrindra (hiver austral) ?",
-        choices: [
-          'Ny Ririnina',
-          'Ny Fahavaratra',
-          'Ny Fararano',
-          'Ny Asombola',
-        ],
-        correctIndex: 0,
-        explanation:
-          "Le 'Ririnina' (de juin à août) correspond à l'hiver austral, caractérisé par des températures fraîches sur les plateaux centraux.",
-      },
-      {
-        type: 'quiz',
-        question:
-          'Que célèbre-t-on traditionnellement à la saison du Fararano ?',
-        questionMg:
-          "Inona no fotoam-pifaliana ankalazaina mandritra ny Fararano ?",
-        choices: [
-          "La récolte du riz, l'abondance et les cérémonies familiales joyeuses",
-          'La plantation des premiers grains de maïs',
-          'Le jeûne obligatoire de toute la communauté',
-          'Le départ en exil des troupeaux',
-        ],
-        correctIndex: 0,
-        explanation:
-          "Le Fararano est le temps de la plénitude : les greniers à riz sont remplis, les familles se réunissent et partagent le 'Vary vao'.",
-      },
-    ],
-  },
 
-  // ─── LEÇON 14 : COULEURS, FORMES & DESCRIPTIONS ───
-  {
-    slug: 'les-couleurs-les-formes-et-descriptions',
-    title:
-      'Couleurs, formes et description des choses (Ny Loko sy ny Toetra)',
-    titleMg: 'Ny Loko, ny Endrika ary ny Toetran-javatra',
-    summary:
-      "Maîtrisez les nuances des couleurs, les formes géométriques et la place fondamentale de l'adjectif qualificatif.",
-    summaryMg:
-      'Ianaro ny loko rehetra, ny endrika ary ny fomba filazana ny toetran’ny zava-misy.',
-    type: 'GRAMMAR',
-    orderIndex: 14,
-    durationMinutes: 7,
-    sections: [
+      // ─── LEÇON 14 : COULEURS, FORMES & DESCRIPTIONS ───
       {
-        type: 'intro',
-        textFr:
-          "En langue malgache, les couleurs possèdent une symbolique profonde. Le rouge (*Mena*) est la couleur royale, de la terre nourricière et du courage. Le bleu (*Manga*) évoque le ciel pur et l'excellence humaine. Règle d'or grammaticale : l'adjectif qualificatif se place **toujours après** le nom qu'il qualifie (ex: *Trano lehibe* = une grande maison, *Lamba fotsy* = un lamba blanc).",
-        textMg:
-          "Ny loko eo amin'ny teny malagasy dia manana hevitra lehibe. Ny Mena dia lokon'andriana sy tanindrazana. Ny Manga dia maneho ny hatsarana sy ny fahamboniana. Fitsipika tsotra nefa lehibe : ny mpamari-toetra dia apetraka **aorian'ny anarana** foana (oh: *Trano lehibe*, *Lamba fotsy*).",
-      },
-      {
-        type: 'phonetic',
-        letterOrSound: 'TS',
-        phonetic: 'ts (affriquée alvéolaire)',
-        frenchEquivalent:
-          "Se prononce comme 'ts' dans 'tsar' ou 'tsunami', très net et franc (ex: Tsara = bon/bien, Maitso = vert, Tsihy = natte).",
-        sampleWordMg: 'Maitso',
-        sampleTranslationFr: 'Vert (couleur de la vie et des rizières)',
-      },
-      {
-        type: 'concept',
-        termMg: 'Mena sy Fotsy sy Mainty',
-        phonetic: 'me-na / fou-tsi / main-ti',
-        meaningFr: 'Rouge, Blanc et Noir',
-        explanation:
-          'Les trois couleurs fondamentales de la tradition. Le blanc symbolise la pureté et la bénédiction (*Hasina*), le rouge la souveraineté, le noir la terre et la profondeur.',
-      },
-      {
-        type: 'concept',
-        termMg: 'Maitso sy Manga sy Mavo',
-        phonetic: 'mai-tsou / man-ga / ma-vou',
-        meaningFr: 'Vert, Bleu et Jaune',
-        explanation:
-          'Le vert des rizières fertiles, le bleu du ciel azur et le jaune doré des récoltes de riz mûr.',
-      },
-      {
-        type: 'concept',
-        termMg: 'Lehibe sy Kely',
-        phonetic: 'le-hi-be / ke-li',
-        meaningFr: 'Grand et Petit',
-        explanation:
-          "Adjectifs de dimension les plus utilisés. Exemples : *Omby lehibe* (un grand zébu), *Zaza kely* (un petit enfant).",
-      },
-      {
-        type: 'concept',
-        termMg: 'Vaovao sy Antitra / Madio sy Maloto',
-        phonetic: 'vow-vow / an-ti-tra | ma-diou / ma-lou-tou',
-        meaningFr: 'Nouveau et Vieux / Propre et Sale',
-        explanation:
-          "Couples d'adjectifs descriptifs essentiels pour qualifier l'état des objets, des vêtements et des lieux.",
-      },
-      {
-        type: 'example',
-        textMg:
-          'Manana lamba landy fotsy madio sy tsara tarehy ny renibe.',
-        textFr:
-          'La grand-mère possède un lamba de soie blanche, propre et d’une grande beauté.',
-      },
-      {
-        type: 'example',
-        textMg:
-          "Misy omby mena lehibe telo miandry eny amin'ny kijana maitso.",
-        textFr:
-          'Il y a trois grands zébus rouges qui paissent dans le pré verdoyant.',
-      },
-      {
-        type: 'didYouKnow',
-        textFr:
-          "En malgache, le mot « Manga » désigne la couleur bleue, mais il signifie aussi au figuré « remarquable, d'élite, prestigieux ». Une personne éminente de la communauté est appelée un « Olona manga » (un esprit brillant, une fierté nationale).",
-        textMg:
-          "Ny teny hoe « Manga » dia sady milaza loko manga no midika hoe « sangany, tsara indrindra ». Ny olo-malaza nahavita be ho an'ny firenena dia antsoina hoe « Olona manga ».",
-      },
-      {
-        type: 'quiz',
-        question:
-          "Où se place l'adjectif qualificatif par rapport au nom en langue malgache ?",
-        questionMg:
-          "Aiza no toerana misy ny mpamari-toetra raha oharina amin'ny anarana ?",
-        choices: [
-          'Toujours après le nom (ex: Trano lehibe)',
-          'Toujours avant le nom',
-          'Au tout début de la phrase uniquement',
-          'À la fin du paragraphe',
+        slug: 'les-couleurs-les-formes-et-descriptions',
+        title:
+          'Couleurs, formes et description des choses (Ny Loko sy ny Toetra)',
+        titleMg: 'Ny Loko, ny Endrika ary ny Toetran-javatra',
+        summary:
+          "Maîtrisez les nuances des couleurs, les formes géométriques et la place fondamentale de l'adjectif qualificatif.",
+        summaryMg:
+          'Ianaro ny loko rehetra, ny endrika ary ny fomba filazana ny toetran’ny zava-misy.',
+        type: 'GRAMMAR',
+        orderIndex: 14,
+        durationMinutes: 7,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "En langue malgache, les couleurs possèdent une symbolique profonde. Le rouge (*Mena*) est la couleur royale, de la terre nourricière et du courage. Le bleu (*Manga*) évoque le ciel pur et l'excellence humaine. Règle d'or grammaticale : l'adjectif qualificatif se place **toujours après** le nom qu'il qualifie (ex: *Trano lehibe* = une grande maison, *Lamba fotsy* = un lamba blanc).",
+            textMg:
+              "Ny loko eo amin'ny teny malagasy dia manana hevitra lehibe. Ny Mena dia lokon'andriana sy tanindrazana. Ny Manga dia maneho ny hatsarana sy ny fahamboniana. Fitsipika tsotra nefa lehibe : ny mpamari-toetra dia apetraka **aorian'ny anarana** foana (oh: *Trano lehibe*, *Lamba fotsy*).",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'TS',
+            phonetic: 'ts (affriquée alvéolaire)',
+            frenchEquivalent:
+              "Se prononce comme 'ts' dans 'tsar' ou 'tsunami', très net et franc (ex: Tsara = bon/bien, Maitso = vert, Tsihy = natte).",
+            sampleWordMg: 'Maitso',
+            sampleTranslationFr: 'Vert (couleur de la vie et des rizières)',
+          },
+          {
+            type: 'concept',
+            termMg: 'Mena sy Fotsy sy Mainty',
+            phonetic: 'me-na / fou-tsi / main-ti',
+            meaningFr: 'Rouge, Blanc et Noir',
+            explanation:
+              'Les trois couleurs fondamentales de la tradition. Le blanc symbolise la pureté et la bénédiction (*Hasina*), le rouge la souveraineté, le noir la terre et la profondeur.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Maitso sy Manga sy Mavo',
+            phonetic: 'mai-tsou / man-ga / ma-vou',
+            meaningFr: 'Vert, Bleu et Jaune',
+            explanation:
+              'Le vert des rizières fertiles, le bleu du ciel azur et le jaune doré des récoltes de riz mûr.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Lehibe sy Kely',
+            phonetic: 'le-hi-be / ke-li',
+            meaningFr: 'Grand et Petit',
+            explanation:
+              'Adjectifs de dimension les plus utilisés. Exemples : *Omby lehibe* (un grand zébu), *Zaza kely* (un petit enfant).',
+          },
+          {
+            type: 'concept',
+            termMg: 'Vaovao sy Antitra / Madio sy Maloto',
+            phonetic: 'vow-vow / an-ti-tra | ma-diou / ma-lou-tou',
+            meaningFr: 'Nouveau et Vieux / Propre et Sale',
+            explanation:
+              "Couples d'adjectifs descriptifs essentiels pour qualifier l'état des objets, des vêtements et des lieux.",
+          },
+          {
+            type: 'example',
+            textMg: 'Manana lamba landy fotsy madio sy tsara tarehy ny renibe.',
+            textFr:
+              'La grand-mère possède un lamba de soie blanche, propre et d’une grande beauté.',
+          },
+          {
+            type: 'example',
+            textMg:
+              "Misy omby mena lehibe telo miandry eny amin'ny kijana maitso.",
+            textFr:
+              'Il y a trois grands zébus rouges qui paissent dans le pré verdoyant.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "En malgache, le mot « Manga » désigne la couleur bleue, mais il signifie aussi au figuré « remarquable, d'élite, prestigieux ». Une personne éminente de la communauté est appelée un « Olona manga » (un esprit brillant, une fierté nationale).",
+            textMg:
+              "Ny teny hoe « Manga » dia sady milaza loko manga no midika hoe « sangany, tsara indrindra ». Ny olo-malaza nahavita be ho an'ny firenena dia antsoina hoe « Olona manga ».",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Où se place l'adjectif qualificatif par rapport au nom en langue malgache ?",
+            questionMg:
+              "Aiza no toerana misy ny mpamari-toetra raha oharina amin'ny anarana ?",
+            choices: [
+              'Toujours après le nom (ex: Trano lehibe)',
+              'Toujours avant le nom',
+              'Au tout début de la phrase uniquement',
+              'À la fin du paragraphe',
+            ],
+            correctIndex: 0,
+            explanation:
+              "En malgache, le déterminé précède le déterminant : on dit 'Trano' (maison) + 'lehibe' (grande), jamais l'inverse.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Que symbolise la couleur rouge (« Mena ») dans la tradition malgache ?',
+            questionMg:
+              "Inona no hevitra lehibe fonosin'ny loko « Mena » amin'ny kolontsaina malagasy ?",
+            choices: [
+              'La souveraineté royale, la terre nourricière et le courage',
+              'La peur et la défaite',
+              'Le silence absolu',
+              'La nuit et le sommeil',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le rouge est la couleur des souverains d'autrefois, de la latérite sacrée de l'île et des ornements d'honneur.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Comment traduit-on « Un petit zébu blanc » en respectant l’ordre des mots malgaches ?',
+            questionMg:
+              "Ahoana no filazana marina hoe « un petit zébu blanc » amin'ny teny malagasy ?",
+            choices: [
+              'Omby fotsy kely',
+              'Kely fotsy omby',
+              'Fotsy omby kely',
+              'Omby kely lehibe',
+            ],
+            correctIndex: 0,
+            explanation:
+              "On place le nom en tête : 'Omby' (zébu) suivi des adjectifs 'fotsy' (blanc) et 'kely' (petit).",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Que signifie l’expression honorifique « Olona manga » en malgache ?',
+            questionMg:
+              "Inona no hevitry ny fiantsoana hoe « Olona manga » eo amin'ny fiarahamonina ?",
+            choices: [
+              'Une personnalité remarquable, éminente et exemplaire',
+              'Une personne habillée tout en bleu',
+              'Un marchand de fruits',
+              'Un voyageur étranger',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Au-delà de la couleur, 'Manga' désigne l'excellence. Un 'Olona manga' est une figure émérite honorée par le peuple.",
+          },
+          {
+            type: 'quiz',
+            question: 'Comment dit-on « Vert » en malgache ?',
+            questionMg: 'Inona no teny malagasy midika hoe « Vert » ?',
+            choices: ['Maitso', 'Mavo', 'Mainty', 'Mena'],
+            correctIndex: 0,
+            explanation:
+              '« Maitso » est la couleur verte, emblème de la nature florissante et des jeunes pousses de riz.',
+          },
         ],
-        correctIndex: 0,
-        explanation:
-          "En malgache, le déterminé précède le déterminant : on dit 'Trano' (maison) + 'lehibe' (grande), jamais l'inverse.",
       },
-      {
-        type: 'quiz',
-        question:
-          'Que symbolise la couleur rouge (« Mena ») dans la tradition malgache ?',
-        questionMg:
-          "Inona no hevitra lehibe fonosin'ny loko « Mena » amin'ny kolontsaina malagasy ?",
-        choices: [
-          'La souveraineté royale, la terre nourricière et le courage',
-          'La peur et la défaite',
-          'Le silence absolu',
-          'La nuit et le sommeil',
-        ],
-        correctIndex: 0,
-        explanation:
-          "Le rouge est la couleur des souverains d'autrefois, de la latérite sacrée de l'île et des ornements d'honneur.",
-      },
-      {
-        type: 'quiz',
-        question:
-          'Comment traduit-on « Un petit zébu blanc » en respectant l’ordre des mots malgaches ?',
-        questionMg:
-          "Ahoana no filazana marina hoe « un petit zébu blanc » amin'ny teny malagasy ?",
-        choices: [
-          'Omby fotsy kely',
-          'Kely fotsy omby',
-          'Fotsy omby kely',
-          'Omby kely lehibe',
-        ],
-        correctIndex: 0,
-        explanation:
-          "On place le nom en tête : 'Omby' (zébu) suivi des adjectifs 'fotsy' (blanc) et 'kely' (petit).",
-      },
-      {
-        type: 'quiz',
-        question:
-          'Que signifie l’expression honorifique « Olona manga » en malgache ?',
-        questionMg:
-          "Inona no hevitry ny fiantsoana hoe « Olona manga » eo amin'ny fiarahamonina ?",
-        choices: [
-          'Une personnalité remarquable, éminente et exemplaire',
-          'Une personne habillée tout en bleu',
-          'Un marchand de fruits',
-          'Un voyageur étranger',
-        ],
-        correctIndex: 0,
-        explanation:
-          "Au-delà de la couleur, 'Manga' désigne l'excellence. Un 'Olona manga' est une figure émérite honorée par le peuple.",
-      },
-      {
-        type: 'quiz',
-        question: 'Comment dit-on « Vert » en malgache ?',
-        questionMg: "Inona no teny malagasy midika hoe « Vert » ?",
-        choices: ['Maitso', 'Mavo', 'Mainty', 'Mena'],
-        correctIndex: 0,
-        explanation:
-          "« Maitso » est la couleur verte, emblème de la nature florissante et des jeunes pousses de riz.",
-      },
-    ],
-  },
 
-  // ─── LEÇON 15 : VÊTEMENTS & LE LAMBA TRADITIONNEL ───
-  {
-    slug: 'les-vetements-et-le-lamba-traditionnel',
-    title:
-      'Vêtements traditionnels et l’élégance du Lamba (Ny Fitafiana sy ny Lamba)',
-    titleMg: 'Ny Fitafiana nentin-drazana sy ny Lamba Malagasy',
-    summary:
-      'Plongez dans l’art vestimentaire malgache : le port du Lamba, les étoffes de soie et les tenues de fête.',
-    summaryMg:
-      'Fantaro ny haikanto amin’ny fitafiana malagasy, ny lanjan’ny lamba ary ny fanajana eo amin’ny fiarahamonina.',
-    type: 'CULTURE',
-    orderIndex: 15,
-    durationMinutes: 7,
-    sections: [
+      // ─── LEÇON 15 : VÊTEMENTS & LE LAMBA TRADITIONNEL ───
       {
-        type: 'intro',
-        textFr:
-          "Le **Lamba** est bien plus qu'un vêtement : c'est l'âme visible du peuple malgache, un insigne de dignité, de pudeur et d'honneur (*Fahamendrehana*). Porté avec distinction drapé sur les épaules, il accompagne chaque étape de la vie humaine. On distingue la prestigieuse soie sauvage (*Lamba landy*), le coton blanc solennel (*Lamba arindrano*) et le *Lambahoany* chatoyant des régions côtières, qui arbore toujours un proverbe philosophique imprimé en son centre.",
-        textMg:
-          "Ny **Lamba** dia taratry ny fahamendrehana sy ny hasin'ny Malagasy. Tsy fitafy tsotra izy fa mariky ny fanajana sy ny fihavanana. Misy ny **Lamba landy** vita amin'ny landy natoraly sarobidy, ny **Lamba arindrano** fotsy manetriketrika, ary ny **Lambahoany** marevaka misy ohabolana eny amin'ny morontsiraka.",
-      },
-      {
-        type: 'phonetic',
-        letterOrSound: 'Y final',
-        phonetic: 'i (bref et doux)',
-        frenchEquivalent:
-          "La lettre 'y' n'apparaît qu'à la toute fin des mots malgaches et se prononce comme un 'i' très court et discret (ex: Landy = soie, Malagasy = malgache, Fady = tabou).",
-        sampleWordMg: 'Landy',
-        sampleTranslationFr: 'Soie naturelle tissée à la main',
-      },
-      {
-        type: 'concept',
-        termMg: 'Lamba landy',
-        phonetic: 'lam-ba lan-di',
-        meaningFr: 'Le lamba de soie sauvage',
-        explanation:
-          "Tissu noble tissé à la main à partir des cocons du ver à soie sauvage (*Landibe*). Porté lors des mariages, des discours officiels (*Kabary*) et des cérémonies sacrées.",
-      },
-      {
-        type: 'concept',
-        termMg: 'Lambahoany',
-        phonetic: 'lam-ba-hou-a-ni',
-        meaningFr: 'Le pagne de coton imprimé côtier',
-        explanation:
-          "Étoffe souple et colorée très prisée sur les côtes de Madagascar, portant toujours un proverbe (*Ohabolana*) au centre qui inspire et conseille la communauté.",
-      },
-      {
-        type: 'concept',
-        termMg: 'Satroka bory / Satroka bakoly',
-        phonetic: 'sa-trou-ka bou-ri / sa-trou-ka ba-kou-li',
-        meaningFr: 'Le chapeau traditionnel en paille tressée',
-        explanation:
-          "Chapeau élégant tressé en fibres végétales (sisal, raphia ou paille de riz), accessoire masculin et féminin par excellence lors des rassemblements.",
-      },
-      {
-        type: 'concept',
-        termMg: 'Mitafy / Miakanjo',
-        phonetic: 'mi-ta-fi / mi-a-kan-dzou',
-        meaningFr: 'Porter le lamba / S’habiller',
-        explanation:
-          "On utilise 'Mitafy' spécifiquement pour l'acte de se draper dans un lamba, et 'Miakanjo' pour mettre des habits.",
-      },
-      {
-        type: 'example',
-        textMg:
-          'Mitafy lamba landy madio ny mpikabary rehefa manomboka ny teny fanajana.',
-        textFr:
-          'L’orateur traditionnel est drapé d’un noble lamba de soie lorsqu’il entame les paroles de respect.',
-      },
-      {
-        type: 'example',
-        textMg:
-          "Tena milamina sy tsara tarehy ity lambahoany misy ohabolana ity.",
-        textFr:
-          'Ce lambahoany orné d’un proverbe est particulièrement harmonieux et magnifique.',
-      },
-      {
-        type: 'didYouKnow',
-        textFr:
-          "Un proverbe célèbre dit : « Ny lamba lany fanjaitra, ny fihavanana tsy mba lany » (Le tissu finit par s'user sous les aiguilles, mais le lien de fraternité ne s'use jamais). Offrir un lamba à un aîné ou à un invité d'honneur est le présent le plus noble qui soit.",
-        textMg:
-          "Misy ohabolana malaza manao hoe : « Ny lamba lany fanjaitra, ny fihavanana tsy mba lany ». Ny fanolorana lamba dia mariky ny fanomezam-boninahitra ambony indrindra.",
-      },
-      {
-        type: 'quiz',
-        question:
-          'Que représente le « Lamba » dans la culture et la vie quotidienne malgache ?',
-        questionMg:
-          "Inona no hevitra amam-panahy fonosin'ny « Lamba » eo amin'ny fiainana malagasy ?",
-        choices: [
-          "Un symbole suprême de dignité, d'honneur et de lien social",
-          'Un simple morceau de tissu pour s’essuyer les mains',
-          'Un uniforme scolaire moderne',
-          'Un drap de lit uniquement',
+        slug: 'les-vetements-et-le-lamba-traditionnel',
+        title:
+          'Vêtements traditionnels et l’élégance du Lamba (Ny Fitafiana sy ny Lamba)',
+        titleMg: 'Ny Fitafiana nentin-drazana sy ny Lamba Malagasy',
+        summary:
+          'Plongez dans l’art vestimentaire malgache : le port du Lamba, les étoffes de soie et les tenues de fête.',
+        summaryMg:
+          'Fantaro ny haikanto amin’ny fitafiana malagasy, ny lanjan’ny lamba ary ny fanajana eo amin’ny fiarahamonina.',
+        type: 'CULTURE',
+        orderIndex: 15,
+        durationMinutes: 7,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Le **Lamba** est bien plus qu'un vêtement : c'est l'âme visible du peuple malgache, un insigne de dignité, de pudeur et d'honneur (*Fahamendrehana*). Porté avec distinction drapé sur les épaules, il accompagne chaque étape de la vie humaine. On distingue la prestigieuse soie sauvage (*Lamba landy*), le coton blanc solennel (*Lamba arindrano*) et le *Lambahoany* chatoyant des régions côtières, qui arbore toujours un proverbe philosophique imprimé en son centre.",
+            textMg:
+              "Ny **Lamba** dia taratry ny fahamendrehana sy ny hasin'ny Malagasy. Tsy fitafy tsotra izy fa mariky ny fanajana sy ny fihavanana. Misy ny **Lamba landy** vita amin'ny landy natoraly sarobidy, ny **Lamba arindrano** fotsy manetriketrika, ary ny **Lambahoany** marevaka misy ohabolana eny amin'ny morontsiraka.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'Y final',
+            phonetic: 'i (bref et doux)',
+            frenchEquivalent:
+              "La lettre 'y' n'apparaît qu'à la toute fin des mots malgaches et se prononce comme un 'i' très court et discret (ex: Landy = soie, Malagasy = malgache, Fady = tabou).",
+            sampleWordMg: 'Landy',
+            sampleTranslationFr: 'Soie naturelle tissée à la main',
+          },
+          {
+            type: 'concept',
+            termMg: 'Lamba landy',
+            phonetic: 'lam-ba lan-di',
+            meaningFr: 'Le lamba de soie sauvage',
+            explanation:
+              'Tissu noble tissé à la main à partir des cocons du ver à soie sauvage (*Landibe*). Porté lors des mariages, des discours officiels (*Kabary*) et des cérémonies sacrées.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Lambahoany',
+            phonetic: 'lam-ba-hou-a-ni',
+            meaningFr: 'Le pagne de coton imprimé côtier',
+            explanation:
+              'Étoffe souple et colorée très prisée sur les côtes de Madagascar, portant toujours un proverbe (*Ohabolana*) au centre qui inspire et conseille la communauté.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Satroka bory / Satroka bakoly',
+            phonetic: 'sa-trou-ka bou-ri / sa-trou-ka ba-kou-li',
+            meaningFr: 'Le chapeau traditionnel en paille tressée',
+            explanation:
+              'Chapeau élégant tressé en fibres végétales (sisal, raphia ou paille de riz), accessoire masculin et féminin par excellence lors des rassemblements.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Mitafy / Miakanjo',
+            phonetic: 'mi-ta-fi / mi-a-kan-dzou',
+            meaningFr: 'Porter le lamba / S’habiller',
+            explanation:
+              "On utilise 'Mitafy' spécifiquement pour l'acte de se draper dans un lamba, et 'Miakanjo' pour mettre des habits.",
+          },
+          {
+            type: 'example',
+            textMg:
+              'Mitafy lamba landy madio ny mpikabary rehefa manomboka ny teny fanajana.',
+            textFr:
+              'L’orateur traditionnel est drapé d’un noble lamba de soie lorsqu’il entame les paroles de respect.',
+          },
+          {
+            type: 'example',
+            textMg:
+              'Tena milamina sy tsara tarehy ity lambahoany misy ohabolana ity.',
+            textFr:
+              'Ce lambahoany orné d’un proverbe est particulièrement harmonieux et magnifique.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Un proverbe célèbre dit : « Ny lamba lany fanjaitra, ny fihavanana tsy mba lany » (Le tissu finit par s'user sous les aiguilles, mais le lien de fraternité ne s'use jamais). Offrir un lamba à un aîné ou à un invité d'honneur est le présent le plus noble qui soit.",
+            textMg:
+              'Misy ohabolana malaza manao hoe : « Ny lamba lany fanjaitra, ny fihavanana tsy mba lany ». Ny fanolorana lamba dia mariky ny fanomezam-boninahitra ambony indrindra.',
+          },
+          {
+            type: 'quiz',
+            question:
+              'Que représente le « Lamba » dans la culture et la vie quotidienne malgache ?',
+            questionMg:
+              "Inona no hevitra amam-panahy fonosin'ny « Lamba » eo amin'ny fiainana malagasy ?",
+            choices: [
+              "Un symbole suprême de dignité, d'honneur et de lien social",
+              'Un simple morceau de tissu pour s’essuyer les mains',
+              'Un uniforme scolaire moderne',
+              'Un drap de lit uniquement',
+            ],
+            correctIndex: 0,
+            explanation:
+              'Le Lamba est la parure identitaire de Madagascar, porté avec respect pour marquer la dignité de la personne.',
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quelle matière précieuse est utilisée pour tisser le « Lamba landy » ?',
+            questionMg:
+              'Inona no akora voajanahary sarobidy anenomana ny « Lamba landy » ?',
+            choices: [
+              'La soie sauvage issue des cocons traditionnels (Landibe)',
+              'La laine de mouton d’Écosse',
+              'Le plastique recyclé',
+              'Le cuir de zébu séché',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le 'Lamba landy' est tissé artisanalement à partir des cocons de soie sauvage de Madagascar, réputée pour sa robustesse et sa texture noble.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quelle est la particularité du « Lambahoany » porté sur les régions côtières ?',
+            questionMg:
+              "Inona no mampiavaka ny « Lambahoany » fampiasa eny amin'ny morontsiraka ?",
+            choices: [
+              'Il comporte un proverbe (*Ohabolana*) philosophique imprimé en son centre',
+              'Il est entièrement noir sans motif',
+              'Il est fait de métal tressé',
+              'Il ne se porte que la nuit',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Chaque Lambahoany présente un proverbe central en malgache portant une leçon de sagesse, un mot d'amour ou une parole de paix.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quel couvre-chef traditionnel en fibres végétales complète avec élégance la tenue malgache ?',
+            questionMg:
+              "Inona no satroka nentin-drazana vita amin'ny rary zava-maniry mampiseho fahamendrehana ?",
+            choices: [
+              'Ny Satroka bory / Satroka bakoly',
+              'Le béret basque',
+              'Le casque de chantier',
+              'La casquette de baseball',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le 'Satroka bory' ou 'Satroka bakoly' en paille finement tressée est le chapeau emblématique des réunions et fêtes malgaches.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Que rappelle le proverbe « Ny lamba lany fanjaitra, ny fihavanana tsy mba lany » ?',
+            questionMg:
+              "Inona no fampianarana lehibe ao anatin'ny ohabolana hoe « Ny lamba lany fanjaitra, ny fihavanana tsy mba lany » ?",
+            choices: [
+              'Les biens matériels périssent, mais la fraternité et l’amour demeurent éternels',
+              'Qu’il faut changer de tailleur rapidement',
+              'Que les aiguilles coûtent trop cher au marché',
+              'Qu’il ne faut jamais réparer un vêtement',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Ce proverbe sublime enseigne que les vêtements s'usent avec le temps, tandis que les liens du cœur et la solidarité ne s'éteignent jamais.",
+          },
         ],
-        correctIndex: 0,
-        explanation:
-          "Le Lamba est la parure identitaire de Madagascar, porté avec respect pour marquer la dignité de la personne.",
       },
-      {
-        type: 'quiz',
-        question:
-          "Quelle matière précieuse est utilisée pour tisser le « Lamba landy » ?",
-        questionMg:
-          "Inona no akora voajanahary sarobidy anenomana ny « Lamba landy » ?",
-        choices: [
-          'La soie sauvage issue des cocons traditionnels (Landibe)',
-          'La laine de mouton d’Écosse',
-          'Le plastique recyclé',
-          'Le cuir de zébu séché',
-        ],
-        correctIndex: 0,
-        explanation:
-          "Le 'Lamba landy' est tissé artisanalement à partir des cocons de soie sauvage de Madagascar, réputée pour sa robustesse et sa texture noble.",
-      },
-      {
-        type: 'quiz',
-        question:
-          'Quelle est la particularité du « Lambahoany » porté sur les régions côtières ?',
-        questionMg:
-          "Inona no mampiavaka ny « Lambahoany » fampiasa eny amin'ny morontsiraka ?",
-        choices: [
-          'Il comporte un proverbe (*Ohabolana*) philosophique imprimé en son centre',
-          'Il est entièrement noir sans motif',
-          'Il est fait de métal tressé',
-          'Il ne se porte que la nuit',
-        ],
-        correctIndex: 0,
-        explanation:
-          "Chaque Lambahoany présente un proverbe central en malgache portant une leçon de sagesse, un mot d'amour ou une parole de paix.",
-      },
-      {
-        type: 'quiz',
-        question:
-          "Quel couvre-chef traditionnel en fibres végétales complète avec élégance la tenue malgache ?",
-        questionMg:
-          "Inona no satroka nentin-drazana vita amin'ny rary zava-maniry mampiseho fahamendrehana ?",
-        choices: [
-          'Ny Satroka bory / Satroka bakoly',
-          'Le béret basque',
-          'Le casque de chantier',
-          'La casquette de baseball',
-        ],
-        correctIndex: 0,
-        explanation:
-          "Le 'Satroka bory' ou 'Satroka bakoly' en paille finement tressée est le chapeau emblématique des réunions et fêtes malgaches.",
-      },
-      {
-        type: 'quiz',
-        question:
-          "Que rappelle le proverbe « Ny lamba lany fanjaitra, ny fihavanana tsy mba lany » ?",
-        questionMg:
-          "Inona no fampianarana lehibe ao anatin'ny ohabolana hoe « Ny lamba lany fanjaitra, ny fihavanana tsy mba lany » ?",
-        choices: [
-          'Les biens matériels périssent, mais la fraternité et l’amour demeurent éternels',
-          'Qu’il faut changer de tailleur rapidement',
-          'Que les aiguilles coûtent trop cher au marché',
-          'Qu’il ne faut jamais réparer un vêtement',
-        ],
-        correctIndex: 0,
-        explanation:
-          "Ce proverbe sublime enseigne que les vêtements s'usent avec le temps, tandis que les liens du cœur et la solidarité ne s'éteignent jamais.",
-      },
-    ],
-  },
 
-  // ─── LEÇON 16 : NÉGATION, REFUS POLI & MISES EN GARDE ───
-  {
-    slug: 'la-negation-le-refus-poli-et-interdictions',
-    title:
-      'La négation, le refus poli et les interdictions (Ny Mandà sy ny Mandrara am-panajana)',
-    titleMg: 'Ny Mandà am-panajana, ny Tsy sy ny Aza',
-    summary:
-      'Apprenez à formuler la négation avec nuance, à refuser poliment sans offenser et à exprimer une mise en garde bienveillante.',
-    summaryMg:
-      'Ianaro ny fampiasana ny « Tsy », ny « Aza », ny fandavana am-pahendrena ary ny fahalalam-pomba.',
-    type: 'GRAMMAR',
-    orderIndex: 16,
-    durationMinutes: 7,
-    sections: [
+      // ─── LEÇON 16 : NÉGATION, REFUS POLI & MISES EN GARDE ───
       {
-        type: 'intro',
-        textFr:
-          "Dans la culture malgache où l'harmonie des relations (*Fihavanana*) est souveraine, opposer un « non » direct et tranchant est considéré comme maladroit. On privilégie toujours des tournures empreintes de tact et de déférence. Sur le plan grammatical, deux mots clés gouvernent la négation : **Tsy** (pour nier un fait ou une action : *ne... pas*) et **Aza** (pour exprimer un impératif négatif, une défense ou une recommandation bienveillante : *ne... pas !*).",
-        textMg:
-          "Eo amin'ny fifampitondrana malagasy, ny fandavana mivantana sy henjana dia manafintohina. Ny fahaiza-mandà am-pahalalam-pomba no mampaharitra ny fihavanana. Ao amin'ny fitsipiky ny teny, misy teny roa lehibe : ny **Tsy** (fandavana tsotra) sy ny **Aza** (fandrarana am-pitiavana na fampitandremana).",
-      },
-      {
-        type: 'phonetic',
-        letterOrSound: 'GN / Ñ',
-        phonetic: 'gn (nasale palatale)',
-        frenchEquivalent:
-          "Dans plusieurs dialectes côtiers et dans des expressions courantes, se prononce comme 'gn' dans 'montagne' ou 'vigne' (ex: Managnana = avoir, possession).",
-        sampleWordMg: 'Manangana',
-        sampleTranslationFr: 'Élever / Fonder une famille',
-      },
-      {
-        type: 'concept',
-        termMg: 'Tsy (Négation déclarative)',
-        phonetic: 'tsi',
-        meaningFr: 'Ne... pas (négation du verbe et de la phrase)',
-        explanation:
-          "Se place directement devant le verbe ou l'adjectif. Exemples : *Tsy fantatro* (Je ne sais pas), *Tsy manana aho* (Je n'ai pas), *Tsy mety* (Ce n'est pas possible / convenable).",
-      },
-      {
-        type: 'concept',
-        termMg: 'Aza (Impératif de défense / Recommandation)',
-        phonetic: 'a-za',
-        meaningFr: 'Ne... pas ! (défense bienveillante)',
-        explanation:
-          "Utilisé pour demander de ne pas faire une action. Exemples célèbres : *Aza manahy* (Ne vous inquiétez pas), *Aza matahotra* (N'ayez pas peur), *Aza omena tsiny* (Ne m'en veuillez point).",
-      },
-      {
-        type: 'concept',
-        termMg: 'Tsy misy',
-        phonetic: 'tsi mi-si',
-        meaningFr: "Il n'y en a pas / Il n'y a rien / C'est épuisé",
-        explanation:
-          "Négation d'existence indispensable dans les échanges au marché et dans la conversation quotidienne.",
-      },
-      {
-        type: 'concept',
-        termMg: 'Tsy maninona',
-        phonetic: 'tsi ma-ni-nou-na',
-        meaningFr: 'Ce n’est rien / Pas de problème / Ne vous en faites pas',
-        explanation:
-          "Expression de réassurance absolue et d'apaisement lorsque quelqu'un s'excuse auprès de vous.",
-      },
-      {
-        type: 'example',
-        textMg:
-          'Azafady tompoko fa tsy afaka mandeha aho anio satria misy raharaha.',
-        textFr:
-          'Excusez-moi humblement mais je ne peux pas venir aujourd’hui car j’ai une obligation.',
-      },
-      {
-        type: 'example',
-        textMg: 'Aza manahy tompoko, tsy maninona mihitsy izany.',
-        textFr:
-          'Ne vous inquiétez pas Monsieur/Madame, cela ne fait absolument rien / aucun problème.',
-      },
-      {
-        type: 'didYouKnow',
-        textFr:
-          "Pour refuser une invitation sans froisser son hôte, le Malgache commence toujours par remercier chaleureusement avant d'énoncer son empêchement : « Misaotra indrindra tompoko, saingy... » (Merci infiniment, seulement...). C'est ce qu'on appelle l'art de « mandà am-pahendrena » (refuser avec sagesse).",
-        textMg:
-          "Mba tsy handratrana ny fon'ny mpiara-belona, ny fandavana dia ialohavan'ny fisaorana sy fialan-tsiny hatrany : « Misaotra tompoko, saingy misy antony tsy azo ialana... ». Izany no fahalalam-pomba malagasy.",
-      },
-      {
-        type: 'quiz',
-        question:
-          "Quel mot utilise-t-on pour nier une action ou un fait (« ne... pas ») en malgache ?",
-        questionMg:
-          "Inona no teny fampiasa amin'ny fandavana tsotra ny matoanteny hoe « ne... pas » ?",
-        choices: ['Tsy', 'Eny', 'Aza', 'Ary'],
-        correctIndex: 0,
-        explanation:
-          "« Tsy » est la particule de négation universelle qui précède le verbe (ex: *Tsy fantatro* = Je ne sais pas).",
-      },
-      {
-        type: 'quiz',
-        question:
-          "Quel mot utilise-t-on pour formuler un impératif négatif bienveillant (« Ne vous inquiétez pas ! ») ?",
-        questionMg:
-          "Inona no teny fandrarana am-pitiavana ampiasaina amin'ny hoe « Aza manahy ! » ?",
-        choices: ['Aza', 'Tsy', 'Aiza', 'Inona'],
-        correctIndex: 0,
-        explanation:
-          "« Aza » s'emploie avec un verbe pour exprimer une défense ou un conseil prévenant : *Aza manahy* = Ne vous inquiétez pas.",
-      },
-      {
-        type: 'quiz',
-        question:
-          "Que répondez-vous avec douceur à quelqu’un qui s’excuse en disant « Azafady » ?",
-        questionMg:
-          "Inona no teny fiteny enti-mampitony olona miala tsiny hoe « Azafady » ?",
-        choices: [
-          'Tsy maninona tompoko (Ce n’est rien / Pas de souci)',
-          'Tsy te hahita anao intsony aho',
-          'Mialà eto',
-          'Mandoava vola',
+        slug: 'la-negation-le-refus-poli-et-interdictions',
+        title:
+          'La négation, le refus poli et les interdictions (Ny Mandà sy ny Mandrara am-panajana)',
+        titleMg: 'Ny Mandà am-panajana, ny Tsy sy ny Aza',
+        summary:
+          'Apprenez à formuler la négation avec nuance, à refuser poliment sans offenser et à exprimer une mise en garde bienveillante.',
+        summaryMg:
+          'Ianaro ny fampiasana ny « Tsy », ny « Aza », ny fandavana am-pahendrena ary ny fahalalam-pomba.',
+        type: 'GRAMMAR',
+        orderIndex: 16,
+        durationMinutes: 7,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Dans la culture malgache où l'harmonie des relations (*Fihavanana*) est souveraine, opposer un « non » direct et tranchant est considéré comme maladroit. On privilégie toujours des tournures empreintes de tact et de déférence. Sur le plan grammatical, deux mots clés gouvernent la négation : **Tsy** (pour nier un fait ou une action : *ne... pas*) et **Aza** (pour exprimer un impératif négatif, une défense ou une recommandation bienveillante : *ne... pas !*).",
+            textMg:
+              "Eo amin'ny fifampitondrana malagasy, ny fandavana mivantana sy henjana dia manafintohina. Ny fahaiza-mandà am-pahalalam-pomba no mampaharitra ny fihavanana. Ao amin'ny fitsipiky ny teny, misy teny roa lehibe : ny **Tsy** (fandavana tsotra) sy ny **Aza** (fandrarana am-pitiavana na fampitandremana).",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'GN / Ñ',
+            phonetic: 'gn (nasale palatale)',
+            frenchEquivalent:
+              "Dans plusieurs dialectes côtiers et dans des expressions courantes, se prononce comme 'gn' dans 'montagne' ou 'vigne' (ex: Managnana = avoir, possession).",
+            sampleWordMg: 'Manangana',
+            sampleTranslationFr: 'Élever / Fonder une famille',
+          },
+          {
+            type: 'concept',
+            termMg: 'Tsy (Négation déclarative)',
+            phonetic: 'tsi',
+            meaningFr: 'Ne... pas (négation du verbe et de la phrase)',
+            explanation:
+              "Se place directement devant le verbe ou l'adjectif. Exemples : *Tsy fantatro* (Je ne sais pas), *Tsy manana aho* (Je n'ai pas), *Tsy mety* (Ce n'est pas possible / convenable).",
+          },
+          {
+            type: 'concept',
+            termMg: 'Aza (Impératif de défense / Recommandation)',
+            phonetic: 'a-za',
+            meaningFr: 'Ne... pas ! (défense bienveillante)',
+            explanation:
+              "Utilisé pour demander de ne pas faire une action. Exemples célèbres : *Aza manahy* (Ne vous inquiétez pas), *Aza matahotra* (N'ayez pas peur), *Aza omena tsiny* (Ne m'en veuillez point).",
+          },
+          {
+            type: 'concept',
+            termMg: 'Tsy misy',
+            phonetic: 'tsi mi-si',
+            meaningFr: "Il n'y en a pas / Il n'y a rien / C'est épuisé",
+            explanation:
+              "Négation d'existence indispensable dans les échanges au marché et dans la conversation quotidienne.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Tsy maninona',
+            phonetic: 'tsi ma-ni-nou-na',
+            meaningFr:
+              'Ce n’est rien / Pas de problème / Ne vous en faites pas',
+            explanation:
+              "Expression de réassurance absolue et d'apaisement lorsque quelqu'un s'excuse auprès de vous.",
+          },
+          {
+            type: 'example',
+            textMg:
+              'Azafady tompoko fa tsy afaka mandeha aho anio satria misy raharaha.',
+            textFr:
+              'Excusez-moi humblement mais je ne peux pas venir aujourd’hui car j’ai une obligation.',
+          },
+          {
+            type: 'example',
+            textMg: 'Aza manahy tompoko, tsy maninona mihitsy izany.',
+            textFr:
+              'Ne vous inquiétez pas Monsieur/Madame, cela ne fait absolument rien / aucun problème.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Pour refuser une invitation sans froisser son hôte, le Malgache commence toujours par remercier chaleureusement avant d'énoncer son empêchement : « Misaotra indrindra tompoko, saingy... » (Merci infiniment, seulement...). C'est ce qu'on appelle l'art de « mandà am-pahendrena » (refuser avec sagesse).",
+            textMg:
+              "Mba tsy handratrana ny fon'ny mpiara-belona, ny fandavana dia ialohavan'ny fisaorana sy fialan-tsiny hatrany : « Misaotra tompoko, saingy misy antony tsy azo ialana... ». Izany no fahalalam-pomba malagasy.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quel mot utilise-t-on pour nier une action ou un fait (« ne... pas ») en malgache ?',
+            questionMg:
+              "Inona no teny fampiasa amin'ny fandavana tsotra ny matoanteny hoe « ne... pas » ?",
+            choices: ['Tsy', 'Eny', 'Aza', 'Ary'],
+            correctIndex: 0,
+            explanation:
+              '« Tsy » est la particule de négation universelle qui précède le verbe (ex: *Tsy fantatro* = Je ne sais pas).',
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quel mot utilise-t-on pour formuler un impératif négatif bienveillant (« Ne vous inquiétez pas ! ») ?',
+            questionMg:
+              "Inona no teny fandrarana am-pitiavana ampiasaina amin'ny hoe « Aza manahy ! » ?",
+            choices: ['Aza', 'Tsy', 'Aiza', 'Inona'],
+            correctIndex: 0,
+            explanation:
+              "« Aza » s'emploie avec un verbe pour exprimer une défense ou un conseil prévenant : *Aza manahy* = Ne vous inquiétez pas.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Que répondez-vous avec douceur à quelqu’un qui s’excuse en disant « Azafady » ?',
+            questionMg:
+              'Inona no teny fiteny enti-mampitony olona miala tsiny hoe « Azafady » ?',
+            choices: [
+              'Tsy maninona tompoko (Ce n’est rien / Pas de souci)',
+              'Tsy te hahita anao intsony aho',
+              'Mialà eto',
+              'Mandoava vola',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Tsy maninona tompoko » apaise instantanément l'interlocuteur en lui assurant qu'il n'y a aucun tort.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Comment dit-on « Il n'y en a pas » au marché lorsqu'un article est épuisé ?",
+            questionMg:
+              "Ahoana no filazana hoe « Il n'y en a pas / C'est épuisé » eny an-tsena ?",
+            choices: [
+              'Tsy misy',
+              'Misy be dia be',
+              'Tonga soa',
+              'Mazotoa homana',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Tsy misy » (littéralement « il n'existe pas ») indique la rupture de stock ou l'absence d'un bien.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Comment refuse-t-on poliment une proposition dans la pure étiquette malgache ?',
+            questionMg:
+              'Ahoana no fomba fahalalam-pomba fandavana fanasana mba tsy hanimba fihavanana ?',
+            choices: [
+              "En remerciant chaleureusement d'abord, puis en formulant son empêchement avec modestie",
+              'En criant un grand « NON » sec et catégorique',
+              'En tournant le dos sans répondre',
+              'En se fâchant immédiatement',
+            ],
+            correctIndex: 0,
+            explanation:
+              "L'étiquette du Fihavanana enseigne de valoriser l'attention de l'invitant par la gratitude avant d'excuser humblement son absence.",
+          },
         ],
-        correctIndex: 0,
-        explanation:
-          "« Tsy maninona tompoko » apaise instantanément l'interlocuteur en lui assurant qu'il n'y a aucun tort.",
       },
-      {
-        type: 'quiz',
-        question:
-          "Comment dit-on « Il n'y en a pas » au marché lorsqu'un article est épuisé ?",
-        questionMg:
-          "Ahoana no filazana hoe « Il n'y en a pas / C'est épuisé » eny an-tsena ?",
-        choices: ['Tsy misy', 'Misy be dia be', 'Tonga soa', 'Mazotoa homana'],
-        correctIndex: 0,
-        explanation:
-          "« Tsy misy » (littéralement « il n'existe pas ») indique la rupture de stock ou l'absence d'un bien.",
-      },
-      {
-        type: 'quiz',
-        question:
-          "Comment refuse-t-on poliment une proposition dans la pure étiquette malgache ?",
-        questionMg:
-          "Ahoana no fomba fahalalam-pomba fandavana fanasana mba tsy hanimba fihavanana ?",
-        choices: [
-          "En remerciant chaleureusement d'abord, puis en formulant son empêchement avec modestie",
-          'En criant un grand « NON » sec et catégorique',
-          'En tournant le dos sans répondre',
-          'En se fâchant immédiatement',
-        ],
-        correctIndex: 0,
-        explanation:
-          "L'étiquette du Fihavanana enseigne de valoriser l'attention de l'invitant par la gratitude avant d'excuser humblement son absence.",
-      },
-    ],
-  },
     ],
   },
   {
@@ -2952,10 +3066,11 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       },
       {
         slug: 'le-haja-et-le-dina-pacte-communautaire',
-        title: 'Le Haja et le Dina : respect mutuel et pacte solidaire (Ny Haja sy ny Dina)',
+        title:
+          'Le Haja et le Dina : respect mutuel et pacte solidaire (Ny Haja sy ny Dina)',
         titleMg: 'Ny Haja sy ny Dina : Fanajana sy Fifanekem-piarahamonina',
         summary:
-          "Découvrez comment le Haja (déférence sacrée) et le Dina (convention communautaire) cimentent la paix villageoise.",
+          'Découvrez comment le Haja (déférence sacrée) et le Dina (convention communautaire) cimentent la paix villageoise.',
         summaryMg:
           "Fantaro ny lanjan'ny Haja mifehy ny fiainana sy ny Dina mampandry fahalemana ny Fokonolona.",
         type: 'CULTURE',
@@ -3021,12 +3136,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'example',
             textMg: 'Manaja ny Dina ny Fokonolona ka mandry feizay ny tanàna.',
-            textFr: 'La communauté villageoise respecte le Dina, ainsi la paix et la quiétude règnent sur le village.',
+            textFr:
+              'La communauté villageoise respecte le Dina, ainsi la paix et la quiétude règnent sur le village.',
           },
           {
             type: 'example',
             textMg: 'Ny haja omena ny hafa no haja iverenana aminao.',
-            textFr: 'Le respect que vous offrez aux autres est celui qui vous reviendra en retour.',
+            textFr:
+              'Le respect que vous offrez aux autres est celui qui vous reviendra en retour.',
           },
           {
             type: 'didYouKnow',
@@ -3038,8 +3155,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           // ─── 5 Micro-Quiz ───
           {
             type: 'quiz',
-            question: "Que désigne le concept de « Dina » dans la société traditionnelle malgache ?",
-            questionMg: "Inona no hevitry ny « Dina » eo amin'ny fiarahamonina malagasy ?",
+            question:
+              'Que désigne le concept de « Dina » dans la société traditionnelle malgache ?',
+            questionMg:
+              "Inona no hevitry ny « Dina » eo amin'ny fiarahamonina malagasy ?",
             choices: [
               'Un pacte social ou une convention communautaire adoptée ensemble',
               'Un instrument de musique traditionnel à cordes',
@@ -3052,8 +3171,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Comment se prononce la lettre « J » en langue malgache (ex: Haja) ?",
-            questionMg: "Ahoana no fanononana ny litera « J » amin'ny teny malagasy ?",
+            question:
+              'Comment se prononce la lettre « J » en langue malgache (ex: Haja) ?',
+            questionMg:
+              "Ahoana no fanononana ny litera « J » amin'ny teny malagasy ?",
             choices: [
               'Comme le son « dz » (ex: ha-dza)',
               'Comme le « j » doux français de « jardin »',
@@ -3062,12 +3183,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             ],
             correctIndex: 0,
             explanation:
-              "En malgache, le « J » correspond systématiquement au son affriqué « dz ».",
+              'En malgache, le « J » correspond systématiquement au son affriqué « dz ».',
           },
           {
             type: 'quiz',
-            question: "Quelle institution traditionnelle représente l'assemblée des villageois délibérant ensemble ?",
-            questionMg: "Inona no rafitra nentin-drazana ivorian'ny vahoaka rehetra handray fanapahan-kevitra ?",
+            question:
+              "Quelle institution traditionnelle représente l'assemblée des villageois délibérant ensemble ?",
+            questionMg:
+              "Inona no rafitra nentin-drazana ivorian'ny vahoaka rehetra handray fanapahan-kevitra ?",
             choices: ['Ny Fokonolona', 'Ny Kabary', 'Ny Lova', 'Ny Tsena'],
             correctIndex: 0,
             explanation:
@@ -3075,8 +3198,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Quel célèbre proverbe illustre la force de l'union fraternelle ?",
-            questionMg: "Inona no ohabolana mampiseho fa herin'ny vahoaka ny firaisana ?",
+            question:
+              "Quel célèbre proverbe illustre la force de l'union fraternelle ?",
+            questionMg:
+              "Inona no ohabolana mampiseho fa herin'ny vahoaka ny firaisana ?",
             choices: [
               '« Ny firaisankina no hery » (L’union fait la force)',
               '« Ny vola no hery »',
@@ -3089,7 +3214,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Que signifie le terme fondamental « Haja » ?",
+            question: 'Que signifie le terme fondamental « Haja » ?',
             questionMg: "Inona no dikan'ny teny fototra hoe « Haja » ?",
             choices: [
               'Le respect, la dignité et la déférence',
@@ -3099,16 +3224,17 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             ],
             correctIndex: 0,
             explanation:
-              "« Haja » est le respect et la déférence sacrée accordée à chaque être humain et aux traditions.",
+              '« Haja » est le respect et la déférence sacrée accordée à chaque être humain et aux traditions.',
           },
         ],
       },
       {
         slug: 'le-tsiny-et-le-tody-boussole-morale',
-        title: 'Le Tsiny et le Tody : blâme cosmique et justice immanente (Ny Tsiny sy ny Tody)',
+        title:
+          'Le Tsiny et le Tody : blâme cosmique et justice immanente (Ny Tsiny sy ny Tody)',
         titleMg: 'Ny Tsiny sy ny Tody : Lalàm-panahy sy Fitsaran-tena',
         summary:
-          "Comprenez la crainte du Tsiny (le blâme moral) et la certitude du Tody (la loi cosmique du retour des actes).",
+          'Comprenez la crainte du Tsiny (le blâme moral) et la certitude du Tody (la loi cosmique du retour des actes).',
         summaryMg:
           "Iantohan'ny tahotra ny Tsiny sy ny fahalalana ny Tody ny fahitsiana sy ny fahamendrehana Malagasy.",
         type: 'CULTURE',
@@ -3129,7 +3255,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             frenchEquivalent:
               'Le digraphe « TS » (ex: Tsiny) se prononce d’un seul bloc énergique et sifflant comme dans « tsar » ou « tsunami ».',
             sampleWordMg: 'Tsiny',
-            sampleTranslationFr: 'Le blâme / Le reproche moral / La faute d’étiquette',
+            sampleTranslationFr:
+              'Le blâme / Le reproche moral / La faute d’étiquette',
           },
           {
             type: 'concept',
@@ -3165,13 +3292,16 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'example',
-            textMg: 'Miala tsiny tompoko raha misy ny teny tafahoatra na tsy voalaza am-pahendrena.',
-            textFr: 'Je m’excuse humblement s’il y a eu un mot de trop ou une parole maladroite dans mon propos.',
+            textMg:
+              'Miala tsiny tompoko raha misy ny teny tafahoatra na tsy voalaza am-pahendrena.',
+            textFr:
+              'Je m’excuse humblement s’il y a eu un mot de trop ou une parole maladroite dans mon propos.',
           },
           {
             type: 'example',
             textMg: 'Aza manao ratsy olona fandrao tratry ny tody.',
-            textFr: 'Ne faites pas de tort à autrui de peur que la loi du retour ne vous frappe.',
+            textFr:
+              'Ne faites pas de tort à autrui de peur que la loi du retour ne vous frappe.',
           },
           {
             type: 'didYouKnow',
@@ -3183,8 +3313,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           // ─── 5 Micro-Quiz ───
           {
             type: 'quiz',
-            question: "Que représente le concept de « Tody » dans la philosophie malgache ?",
-            questionMg: "Inona no hevitry ny hoe « Tody » eo amin'ny finoana nentin-drazana ?",
+            question:
+              'Que représente le concept de « Tody » dans la philosophie malgache ?',
+            questionMg:
+              "Inona no hevitry ny hoe « Tody » eo amin'ny finoana nentin-drazana ?",
             choices: [
               'La loi du retour inéluctable : chaque acte commis revient vers son auteur',
               'Un plat traditionnel de poisson séché',
@@ -3197,8 +3329,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Que signifie littéralement l'expression de politesse « Miala tsiny » ?",
-            questionMg: "Inona no dikan'ny teny hoe « Miala tsiny » ara-bakiteny ?",
+            question:
+              "Que signifie littéralement l'expression de politesse « Miala tsiny » ?",
+            questionMg:
+              "Inona no dikan'ny teny hoe « Miala tsiny » ara-bakiteny ?",
             choices: [
               'Écarter / ôter le blâme (s’excuser avec déférence)',
               'Partir en voyage loin du village',
@@ -3211,8 +3345,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Quel proverbe célèbre résume la nature invisible et subtile du Tsiny ?",
-            questionMg: "Inona no ohabolana mampitaha ny tsiny amin'ny zavaboary ?",
+            question:
+              'Quel proverbe célèbre résume la nature invisible et subtile du Tsiny ?',
+            questionMg:
+              "Inona no ohabolana mampitaha ny tsiny amin'ny zavaboary ?",
             choices: [
               '« Ny tsiny toy ny rivotra, tsy hita fa mahamay » (Le blâme est comme le vent, invisible mais brûlant)',
               '« Ny tsiny toy ny vato »',
@@ -3225,8 +3361,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Dans le discours traditionnel du Kabary, comment appelle-t-on le passage où l'orateur s'excuse préventivement ?",
-            questionMg: "Inona no anaran'ilay dingana fialan-tsiny mialoha ataon'ny mpikabary ?",
+            question:
+              "Dans le discours traditionnel du Kabary, comment appelle-t-on le passage où l'orateur s'excuse préventivement ?",
+            questionMg:
+              "Inona no anaran'ilay dingana fialan-tsiny mialoha ataon'ny mpikabary ?",
             choices: [
               'Ny Fanalana tsiny',
               'Ny Fisaorana',
@@ -3239,8 +3377,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Pourquoi les anciens disent-ils « Ny tody tsy miady fa ny atao no miverina » ?",
-            questionMg: "Nahoana no lazaina fa « Ny tody tsy miady fa ny atao no miverina » ?",
+            question:
+              'Pourquoi les anciens disent-ils « Ny tody tsy miady fa ny atao no miverina » ?',
+            questionMg:
+              'Nahoana no lazaina fa « Ny tody tsy miady fa ny atao no miverina » ?',
             choices: [
               'Parce que la justice du destin n’a pas besoin d’arme : ce sont nos propres actes qui nous reviennent',
               'Parce qu’il faut toujours se battre en duel',
@@ -3255,8 +3395,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       },
       {
         slug: 'le-valin-tanana-et-le-fampihavanana',
-        title: 'Le Valin-tanana et le Fampihavanana : entraide paysanne et réconciliation (Ny Valin-tanana)',
-        titleMg: 'Ny Valin-tanana sy ny Fampihavanana : Fifanampiana sy Fihavanana Vaovao',
+        title:
+          'Le Valin-tanana et le Fampihavanana : entraide paysanne et réconciliation (Ny Valin-tanana)',
+        titleMg:
+          'Ny Valin-tanana sy ny Fampihavanana : Fifanampiana sy Fihavanana Vaovao',
         summary:
           "Explorez la puissance de l'entraide gratuite sans argent et les rituels de paix pour éteindre les conflits.",
         summaryMg:
@@ -3315,26 +3457,32 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'example',
-            textMg: 'Nanao valin-tanana tamin’ny vadi-bainga izahay omaly ka vita haingana ny asa.',
-            textFr: 'Nous avons fait du Valin-tanana pour retourner la terre hier, ainsi le travail a été achevé promptement.',
+            textMg:
+              'Nanao valin-tanana tamin’ny vadi-bainga izahay omaly ka vita haingana ny asa.',
+            textFr:
+              'Nous avons fait du Valin-tanana pour retourner la terre hier, ainsi le travail a été achevé promptement.',
           },
           {
             type: 'example',
-            textMg: 'Nampihavana ny mpirahalahy niady ny Raiamandreny teo an-tanàna.',
-            textFr: 'Les aînés du village ont réconcilié avec sagesse les deux frères en conflit.',
+            textMg:
+              'Nampihavana ny mpirahalahy niady ny Raiamandreny teo an-tanàna.',
+            textFr:
+              'Les aînés du village ont réconcilié avec sagesse les deux frères en conflit.',
           },
           {
             type: 'didYouKnow',
             textFr:
               "Dans la tradition du Fampihavanana, la réconciliation ne s'achève jamais par la désignation d'un perdant humilié. Au contraire, les deux parties partagent un repas symbolique (souvent un poulet ou du zébu avec du riz) et prononcent le pardon mutuel pour que le Fihavanana renaisse plus fort.",
             textMg:
-              "Rehefa vita ny Fampihavanana malagasy, tsy misy resy na mpandresy manambany : miara-mihinana sy mifamela heloka ny roa tonta mba tsy hisy lolompo tavela ao am-po.",
+              'Rehefa vita ny Fampihavanana malagasy, tsy misy resy na mpandresy manambany : miara-mihinana sy mifamela heloka ny roa tonta mba tsy hisy lolompo tavela ao am-po.',
           },
           // ─── 5 Micro-Quiz ───
           {
             type: 'quiz',
-            question: "Que signifie littéralement la formule solidaire « Valin-tanana » ?",
-            questionMg: "Inona no dikan'ny teny hoe « Valin-tanana » ara-bakiteny ?",
+            question:
+              'Que signifie littéralement la formule solidaire « Valin-tanana » ?',
+            questionMg:
+              "Inona no dikan'ny teny hoe « Valin-tanana » ara-bakiteny ?",
             choices: [
               'Le retour de la main (l’échange de travail solidaire sans argent)',
               'Une poignée de main rapide',
@@ -3347,8 +3495,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Quel rôle jouent les « Raiamandreny » lors d'une dispute dans le village ?",
-            questionMg: "Inona no andraikitry ny Raiamandreny rehefa misy fifanolanana eo an-tanàna ?",
+            question:
+              "Quel rôle jouent les « Raiamandreny » lors d'une dispute dans le village ?",
+            questionMg:
+              'Inona no andraikitry ny Raiamandreny rehefa misy fifanolanana eo an-tanàna ?',
             choices: [
               'Médiateurs sages qui réconcilient les parties par le Fampihavanana',
               'Gardiens de prison qui enferment les coupables',
@@ -3357,12 +3507,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             ],
             correctIndex: 0,
             explanation:
-              "Les Raiamandreny (sages et aînés) interviennent avec déférence pour écouter, conseiller et réconcilier durablement les esprits.",
+              'Les Raiamandreny (sages et aînés) interviennent avec déférence pour écouter, conseiller et réconcilier durablement les esprits.',
           },
           {
             type: 'quiz',
-            question: "Comment se termine traditionnellement un rituel de Fampihavanana réussi ?",
-            questionMg: "Ahoana no famaranana ny fampihavanana vita soa aman-tsara ?",
+            question:
+              'Comment se termine traditionnellement un rituel de Fampihavanana réussi ?',
+            questionMg:
+              'Ahoana no famaranana ny fampihavanana vita soa aman-tsara ?',
             choices: [
               'Par un repas fraternel partagé et le pardon mutuel scellé',
               'Par l’expulsion de l’une des familles hors du village',
@@ -3375,8 +3527,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Que désigne l'expression « Asa vadi-drano » chez les paysans malgaches ?",
-            questionMg: "Inona no atao hoe « Asa vadi-drano » eo amin'ny tantsaha ?",
+            question:
+              "Que désigne l'expression « Asa vadi-drano » chez les paysans malgaches ?",
+            questionMg:
+              "Inona no atao hoe « Asa vadi-drano » eo amin'ny tantsaha ?",
             choices: [
               'Le travail collectif solidaire de repiquage du riz dans l’eau des rizières',
               'La pêche nocturne en pirogue',
@@ -3389,8 +3543,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Pourquoi le Valin-tanana est-il considéré comme supérieur au salariat dans les rizières traditionnelles ?",
-            questionMg: "Nahoana no sarobidy lavitra noho ny karama ny Valin-tanana amin'ny fambolena ?",
+            question:
+              'Pourquoi le Valin-tanana est-il considéré comme supérieur au salariat dans les rizières traditionnelles ?',
+            questionMg:
+              "Nahoana no sarobidy lavitra noho ny karama ny Valin-tanana amin'ny fambolena ?",
             choices: [
               'Parce qu’il resserre le lien humain et l’amitié fraternelle au lieu de diviser par l’argent',
               'Parce que cela ne coûte absolument rien en riz',
@@ -3405,7 +3561,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       },
       {
         slug: 'le-ziva-alliance-et-plaisanterie-sacree',
-        title: 'Le Ziva : l\'alliance sacrée et le devoir d\'humour pacificateur (Ny Ziva sy ny Fihavanana)',
+        title:
+          "Le Ziva : l'alliance sacrée et le devoir d'humour pacificateur (Ny Ziva sy ny Fihavanana)",
         titleMg: 'Ny Ziva : Fifamatorana Masina sy Firahalahiana Mandrakizay',
         summary:
           "Plongez dans l'un des rituels les plus originaux de Madagascar : le Ziva, alliance d'immunité et de fraternité indéfectible.",
@@ -3429,7 +3586,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             frenchEquivalent:
               'Le « Z » malgache est doux et voisé, vibrant comme dans « zèbre » ou « horizon » (ex: Ziva, Zanaka, Zoky).',
             sampleWordMg: 'Ziva',
-            sampleTranslationFr: 'Allié de parenté à plaisanterie / Pacte fraternel sacré',
+            sampleTranslationFr:
+              'Allié de parenté à plaisanterie / Pacte fraternel sacré',
           },
           {
             type: 'concept',
@@ -3465,26 +3623,32 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'example',
-            textMg: 'Mpi-ziva izahay sy ry zareo ka tsy misy fahatezerana mahazo mitoetra eo aminay.',
-            textFr: 'Nous sommes liés par le Ziva avec eux, ainsi aucune rancœur ni animosité ne peut subsister entre nous.',
+            textMg:
+              'Mpi-ziva izahay sy ry zareo ka tsy misy fahatezerana mahazo mitoetra eo aminay.',
+            textFr:
+              'Nous sommes liés par le Ziva avec eux, ainsi aucune rancœur ni animosité ne peut subsister entre nous.',
           },
           {
             type: 'example',
-            textMg: 'Ny fihomehezan’ny mpi-ziva dia mandevona ny disadisa rehetra.',
-            textFr: 'L’humour bienveillant entre alliés de Ziva dissout instantanément tous les malentendus.',
+            textMg:
+              'Ny fihomehezan’ny mpi-ziva dia mandevona ny disadisa rehetra.',
+            textFr:
+              'L’humour bienveillant entre alliés de Ziva dissout instantanément tous les malentendus.',
           },
           {
             type: 'didYouKnow',
             textFr:
               "Lors des funérailles traditionnelles, c'est souvent l'allié de Ziva qui a le privilège de monter sur le tombeau pour raconter des anecdotes joyeuses, faire sourire les endeuillés et les aider à traverser la douleur par la chaleur du rire.",
             textMg:
-              "Mandritra ny fandevenana, ny mpi-ziva dia afaka mananihany sy mampihomehy ny mpisaona eo am-pasan-drazana mba hanamaivanana ny alahelo sy hampahery ny fianakaviana.",
+              'Mandritra ny fandevenana, ny mpi-ziva dia afaka mananihany sy mampihomehy ny mpisaona eo am-pasan-drazana mba hanamaivanana ny alahelo sy hampahery ny fianakaviana.',
           },
           // ─── 5 Micro-Quiz ───
           {
             type: 'quiz',
-            question: "Quelle est la règle suprême entre deux clans ou personnes liés par le « Ziva » ?",
-            questionMg: "Inona no fitsipika masina tsy azo dikaina eo amin'ny mpi-ziva ?",
+            question:
+              'Quelle est la règle suprême entre deux clans ou personnes liés par le « Ziva » ?',
+            questionMg:
+              "Inona no fitsipika masina tsy azo dikaina eo amin'ny mpi-ziva ?",
             choices: [
               'Toute querelle, guerre ou violence est strictement interdite pour l’éternité',
               'Ils doivent obligatoirement habiter dans la même maison',
@@ -3493,12 +3657,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             ],
             correctIndex: 0,
             explanation:
-              "Le Ziva est une alliance sacrée de paix absolue : toute haine ou effusion de sang entre alliés est un interdit suprême (Fady).",
+              'Le Ziva est une alliance sacrée de paix absolue : toute haine ou effusion de sang entre alliés est un interdit suprême (Fady).',
           },
           {
             type: 'quiz',
-            question: "Quel rôle bienveillant l'humour et la plaisanterie jouent-ils entre alliés de Ziva ?",
-            questionMg: "Inona no antony ampiasan'ny mpi-ziva ny sangisangy sy ny fihomehezana ?",
+            question:
+              "Quel rôle bienveillant l'humour et la plaisanterie jouent-ils entre alliés de Ziva ?",
+            questionMg:
+              "Inona no antony ampiasan'ny mpi-ziva ny sangisangy sy ny fihomehezana ?",
             choices: [
               'Désamorcer les tensions et maintenir la fraternité sans orgueil ni rancœur',
               'Humilier les pauvres devant le village',
@@ -3512,7 +3678,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question: "Que désigne l'expression « Lova tsy mifamono » ?",
-            questionMg: "Inona no hevitry ny hoe « Lova tsy mifamono » ?",
+            questionMg: 'Inona no hevitry ny hoe « Lova tsy mifamono » ?',
             choices: [
               'L’héritage ancestral sacré qui interdit de s’entretuer entre frères et alliés',
               'Un testament écrit sur une feuille de papier',
@@ -3525,8 +3691,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Lors des funérailles traditionnelles, quelle mission spéciale revient souvent à l'allié de Ziva ?",
-            questionMg: "Inona no ataon'ny mpi-ziva mandritra ny fisaonana sy ny fandevenana ?",
+            question:
+              "Lors des funérailles traditionnelles, quelle mission spéciale revient souvent à l'allié de Ziva ?",
+            questionMg:
+              "Inona no ataon'ny mpi-ziva mandritra ny fisaonana sy ny fandevenana ?",
             choices: [
               'Apporter la consolation par le réconfort chaleureux et dédramatiser la douleur par des paroles vivifiantes',
               'Pleurer plus fort que tout le monde pendant sept jours',
@@ -3539,9 +3707,16 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Comment appelle-t-on le rituel traditionnel du serment scellé par le sang créant une fraternité éternelle ?",
-            questionMg: "Inona no anaran'ny fianianana masina ifamatorana ho mpirahalahy mandrakizay ?",
-            choices: ['Ny Fatidra', 'Ny Famadihana', 'Ny Fitampoha', 'Ny Tsaboraha'],
+            question:
+              'Comment appelle-t-on le rituel traditionnel du serment scellé par le sang créant une fraternité éternelle ?',
+            questionMg:
+              "Inona no anaran'ny fianianana masina ifamatorana ho mpirahalahy mandrakizay ?",
+            choices: [
+              'Ny Fatidra',
+              'Ny Famadihana',
+              'Ny Fitampoha',
+              'Ny Tsaboraha',
+            ],
             correctIndex: 0,
             explanation:
               "Le « Fatidra » (serment du sang) est l'alliance suprême d'adoption mutuelle qui transforme deux étrangers en frères de sang inviolables.",
@@ -4003,7 +4178,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       },
       {
         slug: 'le-fitampoha-et-le-bain-des-reliques',
-        title: "Le Fitampoha : le bain sacré des reliques royales Sakalava",
+        title: 'Le Fitampoha : le bain sacré des reliques royales Sakalava',
         titleMg: "Ny Fitampoha : Fandroan-Dady any amin'ny Menabe",
         summary:
           "Découvrez le plus grand rassemblement rituel du Menabe : l'immersion sacrée des reliques des rois Sakalava dans le fleuve Tsiribihina.",
@@ -4025,15 +4200,17 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             letterOrSound: 'DADY',
             phonetic: 'da-di',
             frenchEquivalent:
-              "Terme sacré prononcé nettement, désignant les reliques royales vénérées conservées dans le sanctuaire du Doany.",
+              'Terme sacré prononcé nettement, désignant les reliques royales vénérées conservées dans le sanctuaire du Doany.',
             sampleWordMg: 'Dady',
-            sampleTranslationFr: 'Reliques sacrées des souverains royaux Sakalava',
+            sampleTranslationFr:
+              'Reliques sacrées des souverains royaux Sakalava',
           },
           {
             type: 'concept',
             termMg: 'Dady',
             phonetic: 'da-di',
-            meaningFr: "Les reliques corporelles sacrées des anciens rois du Menabe",
+            meaningFr:
+              'Les reliques corporelles sacrées des anciens rois du Menabe',
             explanation:
               "Objets hautement sacrés (dents, ossements, vertèbres) enveloppés d'étoffes royales et conservés au Doany (sanctuaire royal).",
           },
@@ -4041,7 +4218,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Fitampoha',
             phonetic: 'fi-tam-pou-ha',
-            meaningFr: "« Le bain des reliques » / La grande ablution royale",
+            meaningFr: '« Le bain des reliques » / La grande ablution royale',
             explanation:
               "Rite de purification et de revivification au cours duquel les reliques sont immergées avec solennité dans l'eau vive du fleuve.",
           },
@@ -4049,15 +4226,17 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Mpibasy sy Mpitoka',
             phonetic: 'mpi-ba-si si mpi-tou-ka',
-            meaningFr: "Gardiens de la tradition armés de fusils et déclamateurs d'invocations",
+            meaningFr:
+              "Gardiens de la tradition armés de fusils et déclamateurs d'invocations",
             explanation:
-              "Dignitaires traditionnels qui escortent le cortège royal et invoquent la bienveillance des esprits ancestraux.",
+              'Dignitaires traditionnels qui escortent le cortège royal et invoquent la bienveillance des esprits ancestraux.',
           },
           {
             type: 'concept',
             termMg: 'Tromba',
             phonetic: 'troum-ba',
-            meaningFr: "Possession spirituelle rituelle par l'esprit d'un roi défunt",
+            meaningFr:
+              "Possession spirituelle rituelle par l'esprit d'un roi défunt",
             explanation:
               "État mystique durant lequel l'esprit du souverain s'exprime à travers un médium (*mpiantse*) pour conseiller et guider le peuple.",
           },
@@ -4079,45 +4258,45 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Dans quelle grande région et sur quel fleuve emblématique est célébré le Fitampoha ?",
+              'Dans quelle grande région et sur quel fleuve emblématique est célébré le Fitampoha ?',
             questionMg:
               "Any amin'ny faritra aiza sy amin'ny renirano inona no anatanterahana ny Fitampoha ?",
             choices: [
-              "Dans le Menabe, sur les rives du fleuve Tsiribihina",
-              "Dans les Hautes Terres, sur la rivière Ikopa",
+              'Dans le Menabe, sur les rives du fleuve Tsiribihina',
+              'Dans les Hautes Terres, sur la rivière Ikopa',
               "Sur l'île de Sainte-Marie dans l'océan Indien",
-              "Au sommet du mont Maromokotro",
+              'Au sommet du mont Maromokotro',
             ],
             correctIndex: 0,
             explanation:
-              "Le Fitampoha est célébré par le peuple Sakalava du Menabe sur un banc de sable sacré du fleuve Tsiribihina.",
+              'Le Fitampoha est célébré par le peuple Sakalava du Menabe sur un banc de sable sacré du fleuve Tsiribihina.',
           },
           {
             type: 'quiz',
             question:
-              "Que désignent précisément les « Dady » immergés rituellement lors du Fitampoha ?",
+              'Que désignent précisément les « Dady » immergés rituellement lors du Fitampoha ?',
             questionMg:
-              "Inona marina moa ireo antsoina hoe « Dady » sasana mandritra ny Fitampoha ?",
+              'Inona marina moa ireo antsoina hoe « Dady » sasana mandritra ny Fitampoha ?',
             choices: [
-              "Les reliques sacrées des anciens souverains royaux du Menabe",
-              "Des statuettes en argile cuite",
-              "Des parchemins écrits en Sorabe",
-              "Des instruments de musique en cuivre",
+              'Les reliques sacrées des anciens souverains royaux du Menabe',
+              'Des statuettes en argile cuite',
+              'Des parchemins écrits en Sorabe',
+              'Des instruments de musique en cuivre',
             ],
             correctIndex: 0,
             explanation:
-              "Les Dady sont les reliques corporelles sacrées des rois fondateurs, conservées au sanctuaire du Doany.",
+              'Les Dady sont les reliques corporelles sacrées des rois fondateurs, conservées au sanctuaire du Doany.',
           },
           {
             type: 'quiz',
             question:
-              "Quelle est la signification spirituelle majeure de cette immersion rituelle ?",
+              'Quelle est la signification spirituelle majeure de cette immersion rituelle ?',
             questionMg:
               "Inona no hevitra ara-panahy lehibe fonosin'ny fandroana ny Dady ?",
             choices: [
-              "Purifier les reliques, renouveler la fertilité de la terre et sceller la bénédiction royale",
-              "Célébrer la fin des récoltes de riz uniquement",
-              "Préparer une expédition maritime militaire",
+              'Purifier les reliques, renouveler la fertilité de la terre et sceller la bénédiction royale',
+              'Célébrer la fin des récoltes de riz uniquement',
+              'Préparer une expédition maritime militaire',
               "Désigner le vainqueur d'un tournoi sportif",
             ],
             correctIndex: 0,
@@ -4127,10 +4306,15 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Comment appelle-t-on la transe rituelle au cours de laquelle un esprit royal parle à travers un médium ?",
+              'Comment appelle-t-on la transe rituelle au cours de laquelle un esprit royal parle à travers un médium ?',
             questionMg:
               "Ahoana no iantsoana ny fisehoan'ny fanahin'ny mpanjaka amin'ny alalan'ny mpiantse ?",
-            choices: ['Le Tromba', 'Le Kabary', 'Le Hira Gasy', 'Le Famadihana'],
+            choices: [
+              'Le Tromba',
+              'Le Kabary',
+              'Le Hira Gasy',
+              'Le Famadihana',
+            ],
             correctIndex: 0,
             explanation:
               "Le Tromba est l'institution spirituelle par laquelle l'esprit d'un grand roi défunt s'exprime pour guider sa communauté.",
@@ -4144,21 +4328,22 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             choices: [
               "La concorde absolue, la paix et l'interdiction totale de disputes (Fady)",
               "Le port d'armes à feu pour tous les enfants",
-              "Le jeûne total sans eau pendant sept jours",
+              'Le jeûne total sans eau pendant sept jours',
               "L'interdiction de parler à ses voisins",
             ],
             correctIndex: 0,
             explanation:
-              "Le site sacré du Fitampoha est un sanctuaire de paix où toute animosité ou querelle est rigoureusement bannie.",
+              'Le site sacré du Fitampoha est un sanctuaire de paix où toute animosité ou querelle est rigoureusement bannie.',
           },
         ],
       },
       {
         slug: 'le-tsaboraha-et-le-sacrifice-du-zebe',
-        title: "Le Tsaboraha et le sacrifice du zébu : alliance, prière et partage",
-        titleMg: "Ny Tsaboraha sy ny Sorona Omby : Fanolorana sy Fifampizarana",
+        title:
+          'Le Tsaboraha et le sacrifice du zébu : alliance, prière et partage',
+        titleMg: 'Ny Tsaboraha sy ny Sorona Omby : Fanolorana sy Fifampizarana',
         summary:
-          "Comprenez la dimension sacrée du sacrifice du zébu : prières aux ancêtres (Joro), répartition rituelle et solidarité.",
+          'Comprenez la dimension sacrée du sacrifice du zébu : prières aux ancêtres (Joro), répartition rituelle et solidarité.',
         summaryMg:
           "Ianaro ny lanjan'ny sorona omby sy ny Tsaboraha : ny joro, ny hasina ary ny fizarana nofon-kena mitam-pihavanana.",
         type: 'TRADITION',
@@ -4177,15 +4362,17 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             letterOrSound: 'JORO',
             phonetic: 'dzou-rou',
             frenchEquivalent:
-              "Le « J » malgache se prononce « DZ » appuyé (ex: Joro, Zanahary).",
+              'Le « J » malgache se prononce « DZ » appuyé (ex: Joro, Zanahary).',
             sampleWordMg: 'Joro',
-            sampleTranslationFr: 'Invocation rituelle solennelle et prière sacrificielle',
+            sampleTranslationFr:
+              'Invocation rituelle solennelle et prière sacrificielle',
           },
           {
             type: 'concept',
             termMg: 'Tsaboraha',
             phonetic: 'tsa-bou-ra-ha',
-            meaningFr: "Grande fête rituelle et cérémonielle familiale et villageoise",
+            meaningFr:
+              'Grande fête rituelle et cérémonielle familiale et villageoise',
             explanation:
               "Célébration traditionnelle (notamment à l'Est) marquant l'accomplissement d'un vœu, un deuil ou une réunion de famille.",
           },
@@ -4193,7 +4380,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Joro',
             phonetic: 'dzou-rou',
-            meaningFr: "Prière d'invocation solennelle adressée à Zanahary et aux Razana",
+            meaningFr:
+              "Prière d'invocation solennelle adressée à Zanahary et aux Razana",
             explanation:
               "Prière prononcée devant le poteau sacrificiel avant l'immolation du zébu pour solliciter la bénédiction et la paix.",
           },
@@ -4201,17 +4389,17 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Hazomanga',
             phonetic: 'ha-zou-man-ga',
-            meaningFr: "Le poteau sacrificiel sacré du clan ou de la lignée",
+            meaningFr: 'Le poteau sacrificiel sacré du clan ou de la lignée',
             explanation:
-              "Pieu en bois noble érigé au village où le patriarche (mpitoka hazomanga) célèbre les rituels et bénit la descendance.",
+              'Pieu en bois noble érigé au village où le patriarche (mpitoka hazomanga) célèbre les rituels et bénit la descendance.',
           },
           {
             type: 'concept',
             termMg: 'Nofon-kena mitam-pihavanana',
             phonetic: 'nou-foun ke-na mi-tam-pi-ha-va-na-na',
-            meaningFr: "La part de viande qui consolide le lien fraternel",
+            meaningFr: 'La part de viande qui consolide le lien fraternel',
             explanation:
-              "Règle séculaire selon laquelle chaque morceau de viande est distribué selon un ordre hiérarchique strict (vodivena pour les aînés), nourrissant tout le village sans exception.",
+              'Règle séculaire selon laquelle chaque morceau de viande est distribué selon un ordre hiérarchique strict (vodivena pour les aînés), nourrissant tout le village sans exception.',
           },
           {
             type: 'example',
@@ -4236,9 +4424,9 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
               "Inona no atao hoe « Joro » eo amin'ny fomban-drazana malagasy ?",
             choices: [
               "Une prière rituelle d'invocation adressée à Zanahary et aux Ancêtres",
-              "Un instrument de percussion en peau de zébu",
-              "Une danse guerrière exécutée avant le combat",
-              "Une boisson fermentée à base de miel",
+              'Un instrument de percussion en peau de zébu',
+              'Une danse guerrière exécutée avant le combat',
+              'Une boisson fermentée à base de miel',
             ],
             correctIndex: 0,
             explanation:
@@ -4249,28 +4437,28 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             question:
               "Quel monument sacré du village sert d'autel pour le sacrifice du zébu et les bénédictions ?",
             questionMg:
-              "Inona ilay tsangambato hazo masina eo an-tanàna anaovana ny sorona sy ny tsodrano ?",
+              'Inona ilay tsangambato hazo masina eo an-tanàna anaovana ny sorona sy ny tsodrano ?',
             choices: [
-              "Le Hazomanga (poteau sacré du clan)",
-              "Le Hadivory (fossé circulaire)",
-              "Ny Tranovola",
-              "Ny Valam-parihy",
+              'Le Hazomanga (poteau sacré du clan)',
+              'Le Hadivory (fossé circulaire)',
+              'Ny Tranovola',
+              'Ny Valam-parihy',
             ],
             correctIndex: 0,
             explanation:
-              "Le « Hazomanga » est le poteau sacrificiel en bois noble autour duquel se réunit la famille sous la conduite du patriarche.",
+              'Le « Hazomanga » est le poteau sacrificiel en bois noble autour duquel se réunit la famille sous la conduite du patriarche.',
           },
           {
             type: 'quiz',
             question:
-              "Quelle expression célèbre illustre le partage de la viande qui resserre la solidarité ?",
+              'Quelle expression célèbre illustre le partage de la viande qui resserre la solidarité ?',
             questionMg:
-              "Inona ilay ohabolana na fomba fiteny milaza ny fizarana hena mampiray ny fianakaviana ?",
+              'Inona ilay ohabolana na fomba fiteny milaza ny fizarana hena mampiray ny fianakaviana ?',
             choices: [
-              "« Nofon-kena mitam-pihavanana »",
-              "« Tsy misy hena tsy misy taolana »",
-              "« Vola latsaka an-kady »",
-              "« Lasa rano nisasana »",
+              '« Nofon-kena mitam-pihavanana »',
+              '« Tsy misy hena tsy misy taolana »',
+              '« Vola latsaka an-kady »',
+              '« Lasa rano nisasana »',
             ],
             correctIndex: 0,
             explanation:
@@ -4279,14 +4467,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quelle part du zébu sacrificiel est traditionnellement offerte aux aînés et aux parents en signe de respect ?",
+              'Quelle part du zébu sacrificiel est traditionnellement offerte aux aînés et aux parents en signe de respect ?',
             questionMg:
-              "Inona ilay anjara hena omena ny raiamandreny ho mariky ny fanajana sy ny haja ?",
+              'Inona ilay anjara hena omena ny raiamandreny ho mariky ny fanajana sy ny haja ?',
             choices: [
-              "Le Vodi-kena (la croupe sacrée)",
-              "Les sabots du zébu",
-              "La corne gauche uniquement",
-              "La peau brute",
+              'Le Vodi-kena (la croupe sacrée)',
+              'Les sabots du zébu',
+              'La corne gauche uniquement',
+              'La peau brute',
             ],
             correctIndex: 0,
             explanation:
@@ -4295,22 +4483,23 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quelle fête rituelle commémorative est particulièrement réputée chez les Betsimisaraka ?",
+              'Quelle fête rituelle commémorative est particulièrement réputée chez les Betsimisaraka ?',
             questionMg:
               "Inona ilay fety nentim-paharazana malaza indrindra any amin'ny faritra Betsimisaraka ?",
             choices: ['Le Tsaboraha', 'Le Fanorona', 'Le Moraingy', 'Le Ringa'],
             correctIndex: 0,
             explanation:
-              "Le Tsaboraha est la fête rituelle emblématique de rassemblement et de sacrifices chez les Betsimisaraka.",
+              'Le Tsaboraha est la fête rituelle emblématique de rassemblement et de sacrifices chez les Betsimisaraka.',
           },
         ],
       },
       {
         slug: 'le-sambatra-et-la-circoncision-rituelle',
-        title: "Le Sambatra : la grande fête septennale de la circoncision à Mananjary",
-        titleMg: "Ny Sambatra : Fankalazana Isaky ny Fito Taona ao Mananjary",
+        title:
+          'Le Sambatra : la grande fête septennale de la circoncision à Mananjary',
+        titleMg: 'Ny Sambatra : Fankalazana Isaky ny Fito Taona ao Mananjary',
         summary:
-          "Explorez la grandiose fête du Sambatra chez les Antambahoaka : rite de passage, dignité masculine et ferveur collective.",
+          'Explorez la grandiose fête du Sambatra chez les Antambahoaka : rite de passage, dignité masculine et ferveur collective.',
         summaryMg:
           "Fantaro ny fety miezinezina fanaon'ny Antambahoaka : fampidirana ny zazalahy ho lehilahy vanona sy tompon'andraikitra.",
         type: 'TRADITION',
@@ -4329,15 +4518,17 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             letterOrSound: 'SAMBATRA',
             phonetic: 'sam-ba-tsa',
             frenchEquivalent:
-              "Le mot « Sambatra » signifie étymologiquement « Heureux / Béni » en langue malgache.",
+              'Le mot « Sambatra » signifie étymologiquement « Heureux / Béni » en langue malgache.',
             sampleWordMg: 'Sambatra',
-            sampleTranslationFr: 'Fête septennale sacrée / Félicité et bénédiction',
+            sampleTranslationFr:
+              'Fête septennale sacrée / Félicité et bénédiction',
           },
           {
             type: 'concept',
             termMg: 'Sambatra',
             phonetic: 'sam-ba-tsa',
-            meaningFr: "La fête septennale sacrée de la circoncision collective",
+            meaningFr:
+              'La fête septennale sacrée de la circoncision collective',
             explanation:
               "Célébration historique fondée selon la tradition par Raminia, ancêtre fondateur des Antambahoaka venu d'outre-mer.",
           },
@@ -4353,7 +4544,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Lamba mena sy Malabary',
             phonetic: 'lam-ba me-na si ma-la-ba-ri',
-            meaningFr: "Les tuniques écarlates et coiffes traditionnelles des pèlerins",
+            meaningFr:
+              'Les tuniques écarlates et coiffes traditionnelles des pèlerins',
             explanation:
               "Tenue de fête flamboyante portée par les pères et les enfants lors de la descente solennelle vers l'embouchure du fleuve.",
           },
@@ -4361,16 +4553,16 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Trano fandraiky',
             phonetic: 'tsa-nou fan-drye-ki',
-            meaningFr: "La case royale traditionnelle du village de Mananjary",
+            meaningFr: 'La case royale traditionnelle du village de Mananjary',
             explanation:
-              "Lieu sacré où sont conservés les étendards, les tambours rituels et les généalogies des douze clans Antambahoaka.",
+              'Lieu sacré où sont conservés les étendards, les tambours rituels et les généalogies des douze clans Antambahoaka.',
           },
           {
             type: 'example',
             textMg:
               "Feno hafaliana ny tanànan'i Mananjary nandritra ny fankalazana ny Sambatra.",
             textFr:
-              "La ville de Mananjary a vibré de joie et de ferveur tout au long de la célébration du Sambatra.",
+              'La ville de Mananjary a vibré de joie et de ferveur tout au long de la célébration du Sambatra.',
           },
           {
             type: 'didYouKnow',
@@ -4383,77 +4575,77 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "À quelle fréquence périodique est célébrée la grande fête du Sambatra à Mananjary ?",
+              'À quelle fréquence périodique est célébrée la grande fête du Sambatra à Mananjary ?',
             questionMg:
-              "Isaky ny firy taona no anatanterahana ny fankalazana ny Sambatra ao Mananjary ?",
+              'Isaky ny firy taona no anatanterahana ny fankalazana ny Sambatra ao Mananjary ?',
             choices: [
-              "Tous les sept ans (fête septennale)",
-              "Chaque année au mois de janvier",
-              "Tous les cinquante ans",
-              "Tous les deux ans",
+              'Tous les sept ans (fête septennale)',
+              'Chaque année au mois de janvier',
+              'Tous les cinquante ans',
+              'Tous les deux ans',
             ],
             correctIndex: 0,
             explanation:
-              "Le Sambatra est une célébration septennale qui a lieu fidèlement tous les sept ans selon le calendrier coutumier.",
+              'Le Sambatra est une célébration septennale qui a lieu fidèlement tous les sept ans selon le calendrier coutumier.',
           },
           {
             type: 'quiz',
             question:
-              "Quel peuple du sud-est de Madagascar est le gardien historique de la tradition du Sambatra ?",
+              'Quel peuple du sud-est de Madagascar est le gardien historique de la tradition du Sambatra ?',
             questionMg:
               "Iza ilay foko tompon'ny fomban-drazana Sambatra any atsimo atsinanana ?",
             choices: [
-              "Le peuple Antambahoaka",
-              "Le peuple Merina",
-              "Le peuple Bara",
-              "Le peuple Mahafaly",
+              'Le peuple Antambahoaka',
+              'Le peuple Merina',
+              'Le peuple Bara',
+              'Le peuple Mahafaly',
             ],
             correctIndex: 0,
             explanation:
-              "Le Sambatra est la tradition la plus sacrée et prestigieuse du peuple Antambahoaka de Mananjary.",
+              'Le Sambatra est la tradition la plus sacrée et prestigieuse du peuple Antambahoaka de Mananjary.',
           },
           {
             type: 'quiz',
             question:
-              "Quel est le rôle social et spirituel fondamental de cette circoncision rituelle ?",
+              'Quel est le rôle social et spirituel fondamental de cette circoncision rituelle ?',
             questionMg:
               "Inona no tanjona ara-tsosialy sy ara-panahy amin'ity hasoavan-jaza ity ?",
             choices: [
               "Faire accéder les jeunes garçons au rang d'hommes intègres (Lehilahy vanona) bénis par les ancêtres",
-              "Préparer les enfants à quitter définitivement leur région",
-              "Organiser un concours de danse moderne",
-              "Remplacer les études scolaires obligatoires",
+              'Préparer les enfants à quitter définitivement leur région',
+              'Organiser un concours de danse moderne',
+              'Remplacer les études scolaires obligatoires',
             ],
             correctIndex: 0,
             explanation:
-              "La circoncision fait du garçon un « lehilahy vanona », membre à part entière de la famille spirituelle et sociale.",
+              'La circoncision fait du garçon un « lehilahy vanona », membre à part entière de la famille spirituelle et sociale.',
           },
           {
             type: 'quiz',
             question:
-              "Quelle couleur vestimentaire spectaculaire domine le cortège lors des processions du Sambatra ?",
+              'Quelle couleur vestimentaire spectaculaire domine le cortège lors des processions du Sambatra ?',
             questionMg:
               "Inona ilay loko marevaka iombonan'ireo mpilahatra mandritra ny Sambatra ?",
             choices: [
-              "Le rouge écarlate (Lamba mena sy Malabary)",
-              "Le vert pomme",
-              "Le bleu marine uniquement",
-              "Le noir complet de deuil",
+              'Le rouge écarlate (Lamba mena sy Malabary)',
+              'Le vert pomme',
+              'Le bleu marine uniquement',
+              'Le noir complet de deuil',
             ],
             correctIndex: 0,
             explanation:
-              "Les tuniques écarlates (malabary mena) symbolisent la vie, le courage royal et la force spirituelle.",
+              'Les tuniques écarlates (malabary mena) symbolisent la vie, le courage royal et la force spirituelle.',
           },
           {
             type: 'quiz',
             question:
-              "Vers quel lieu naturel sacré convergent les pèlerins pour le dénouement de la cérémonie ?",
+              'Vers quel lieu naturel sacré convergent les pèlerins pour le dénouement de la cérémonie ?',
             questionMg:
               "Mankany amin'ny toerana voajanahary aiza no iombonan'ny filaharana lehibe ?",
             choices: [
               "L'embouchure où le fleuve rencontre la mer (Vinany)",
               "Au fond d'une grotte souterraine",
-              "Dans un désert de sel",
+              'Dans un désert de sel',
               "Au sommet d'un baobab géant",
             ],
             correctIndex: 0,
@@ -4464,10 +4656,12 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       },
       {
         slug: 'le-taom-baovao-malagasy-et-l-alahamady',
-        title: "Le Taom-baovao Malagasy et l'Alahamady : renouveau, pardon et concorde",
-        titleMg: "Ny Taom-baovao Malagasy sy ny Alahamady : Famelan-keloka sy Fihavanana",
+        title:
+          "Le Taom-baovao Malagasy et l'Alahamady : renouveau, pardon et concorde",
+        titleMg:
+          'Ny Taom-baovao Malagasy sy ny Alahamady : Famelan-keloka sy Fihavanana',
         summary:
-          "Revivez les rituels du Nouvel An malgache : le feu perpétuel (Afo tsy maty), le bain de purification (Fandroana) et le pardon mutuel.",
+          'Revivez les rituels du Nouvel An malgache : le feu perpétuel (Afo tsy maty), le bain de purification (Fandroana) et le pardon mutuel.',
         summaryMg:
           "Tsarovy ireo fomba amam-panao amin'ny Taom-baovao : ny Afo tsy maty, ny Fandroana ary ny fihavanana amin'ny vary amin-dronono tondrahana tantely.",
         type: 'TRADITION',
@@ -4488,13 +4682,15 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             frenchEquivalent:
               "Dérive du verbe « mandro » (se laver, se purifier dans l'eau sacrée).",
             sampleWordMg: 'Fandroana',
-            sampleTranslationFr: 'Bain sacré de purification / Fête royale du Nouvel An',
+            sampleTranslationFr:
+              'Bain sacré de purification / Fête royale du Nouvel An',
           },
           {
             type: 'concept',
             termMg: 'Alahamady',
             phonetic: 'a-la-ha-ma-di',
-            meaningFr: "Le premier signe astrologique du Vintana malgache / Mois royal",
+            meaningFr:
+              'Le premier signe astrologique du Vintana malgache / Mois royal',
             explanation:
               "Signe de la royauté, de la noblesse d'âme et du commencement, associé au point cardinal Nord-Est.",
           },
@@ -4502,9 +4698,9 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Afo tsy maty',
             phonetic: 'a-fou tsi ma-ti',
-            meaningFr: "« Le feu perpétuel » allumé la veille du Nouvel An",
+            meaningFr: '« Le feu perpétuel » allumé la veille du Nouvel An',
             explanation:
-              "Brasier allumé dans la nuit pour dissiper les ténèbres et symboliser la vitalité continue du peuple et de la descendance.",
+              'Brasier allumé dans la nuit pour dissiper les ténèbres et symboliser la vitalité continue du peuple et de la descendance.',
           },
           {
             type: 'concept',
@@ -4518,16 +4714,16 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Vary amin-dronono tondrahana tantely',
             phonetic: 'va-ri a-min drou-nou-nou toun-dra-ha-na tan-te-li',
-            meaningFr: "Riz au lait nappé de miel sauvage",
+            meaningFr: 'Riz au lait nappé de miel sauvage',
             explanation:
               "Mets sacré de concorde partagé par tous, symbolisant la douceur de vivre, la pureté et l'abondance partagée.",
           },
           {
             type: 'example',
             textMg:
-              "Tratry ny taona vaovao, samy ho velon-ko taiza ka ho tahin-Janahary sy ny Razana !",
+              'Tratry ny taona vaovao, samy ho velon-ko taiza ka ho tahin-Janahary sy ny Razana !',
             textFr:
-              "Joyeux Nouvel An à tous, que chacun vive dans la paix, la santé et la bénédiction de Dieu et des Ancêtres !",
+              'Joyeux Nouvel An à tous, que chacun vive dans la paix, la santé et la bénédiction de Dieu et des Ancêtres !',
           },
           {
             type: 'didYouKnow',
@@ -4540,7 +4736,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Sous quel signe astrologique lunaire ancestral est traditionnellement célébré le Taom-baovao Malagasy ?",
+              'Sous quel signe astrologique lunaire ancestral est traditionnellement célébré le Taom-baovao Malagasy ?',
             questionMg:
               "Amin'ny volana vintana inona no ankalazana ny Taom-baovao Malagasy ?",
             choices: [
@@ -4556,14 +4752,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quel plat rituel hautement symbolique est partagé lors du Nouvel An malgache ?",
+              'Quel plat rituel hautement symbolique est partagé lors du Nouvel An malgache ?',
             questionMg:
               "Inona ilay hanim-py masina ifampizarana amin'ny Taom-baovao ?",
             choices: [
-              "Le Vary amin-dronono tondrahana tantely (riz au lait au miel)",
-              "Le Koba ravina froid",
-              "Des beignets salés uniquement",
-              "Du poisson séché au piment fort",
+              'Le Vary amin-dronono tondrahana tantely (riz au lait au miel)',
+              'Le Koba ravina froid',
+              'Des beignets salés uniquement',
+              'Du poisson séché au piment fort',
             ],
             correctIndex: 0,
             explanation:
@@ -4572,29 +4768,29 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quelle obligation morale majeure précède le passage à la nouvelle année dans la tradition malgache ?",
+              'Quelle obligation morale majeure précède le passage à la nouvelle année dans la tradition malgache ?',
             questionMg:
               "Inona ilay adidy ara-pitondran-tena lehibe takina amin'ny rehetra alohan'ny taona vaovao ?",
             choices: [
               "Le pardon réciproque sincère et l'apaisement de toutes les rancœurs",
               "L'achat de vêtements neufs importés",
-              "La fermeture complète de toutes les maisons",
+              'La fermeture complète de toutes les maisons',
               "L'exil temporaire des jeunes hors du village",
             ],
             correctIndex: 0,
             explanation:
-              "Le pardon mutuel (famelan-keloka) est au cœur du rite : nul ne peut accueillir le Nouvel An sans être réconcilié.",
+              'Le pardon mutuel (famelan-keloka) est au cœur du rite : nul ne peut accueillir le Nouvel An sans être réconcilié.',
           },
           {
             type: 'quiz',
             question:
-              "Que symbolise le « Fandroana » (bain sacré) pratiqué lors du Nouvel An ?",
+              'Que symbolise le « Fandroana » (bain sacré) pratiqué lors du Nouvel An ?',
             questionMg:
               "Inona no hevitra fonosin'ny « Fandroana » amin'ny fiandohan'ny taona ?",
             choices: [
               "La purification des souillures de l'année écoulée et la renaissance de la vie",
-              "Une simple épreuve de natation sportive",
-              "Un concours de beauté villageois",
+              'Une simple épreuve de natation sportive',
+              'Un concours de beauté villageois',
               "L'apprentissage de la pêche pour les enfants",
             ],
             correctIndex: 0,
@@ -4604,14 +4800,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quel symbole nocturne représente la pérennité de la descendance et de la patrie ?",
+              'Quel symbole nocturne représente la pérennité de la descendance et de la patrie ?',
             questionMg:
               "Inona ilay marika mirehitra amin'ny alina maneho ny fitohizan'ny aina sy ny taranaka ?",
             choices: [
               "L'« Afo tsy maty » (le feu perpétuel)",
               "Un feu d'artifice moderne",
-              "Une lanterne chinoise volante",
-              "Une bougie parfumée",
+              'Une lanterne chinoise volante',
+              'Une bougie parfumée',
             ],
             correctIndex: 0,
             explanation:
@@ -4626,7 +4822,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
     title: 'Histoire de Madagascar',
     titleMg: "Tantaran'i Madagasikara",
     description:
-      "Explorez la grande fresque historique de la Grande Île : les origines austronésiennes et bantoues, les souverains réformateurs, les reines illustres, les luttes patriotiques et les collines sacrées.",
+      'Explorez la grande fresque historique de la Grande Île : les origines austronésiennes et bantoues, les souverains réformateurs, les reines illustres, les luttes patriotiques et les collines sacrées.',
     descriptionMg:
       "Diniho ny tantara miezinezina nampiray an'i Madagasikara : ny fiavian'ny vahoaka, ireo Mpanjaka sy Mpanjakavavy, ny fanoherana tia tanindrazana ary ireo tendrombohitra masina.",
     level: 'INTERMEDIATE',
@@ -4638,7 +4834,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       {
         slug: 'les-origines-et-le-peuplement-de-madagascar',
         title:
-          "Les origines et le peuplement : la double racine austronésienne et africaine",
+          'Les origines et le peuplement : la double racine austronésienne et africaine',
         titleMg: "Ny Fiavian'ny Malagasy : ny Fototra Aotroneziana sy Afrikana",
         summary:
           "Explorez l'épopée des navigateurs austronésiens et des migrants bantous qui ont forgé le peuple malgache.",
@@ -4660,7 +4856,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             letterOrSound: 'AO',
             phonetic: 'o',
             frenchEquivalent:
-              "Le groupe « AO » se prononce comme un « O » ouvert et clair en malgache standard (ex: Ntaolo, Aotroneziana).",
+              'Le groupe « AO » se prononce comme un « O » ouvert et clair en malgache standard (ex: Ntaolo, Aotroneziana).',
             sampleWordMg: 'Ntaolo',
             sampleTranslationFr: 'Les Anciens / Les ancêtres premiers',
           },
@@ -4668,15 +4864,16 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Vahoaka Ntaolo',
             phonetic: 'va-houa-ka n-ta-ou-lou',
-            meaningFr: "Les premiers habitants et ancêtres pionniers de la Grande Île",
+            meaningFr:
+              'Les premiers habitants et ancêtres pionniers de la Grande Île',
             explanation:
-              "Désigne avec déférence les premières générations de navigateurs et de pionniers qui ont défriché et nommé la terre malgache.",
+              'Désigne avec déférence les premières générations de navigateurs et de pionniers qui ont défriché et nommé la terre malgache.',
           },
           {
             type: 'concept',
             termMg: 'Lakana misy vava',
             phonetic: 'la-ka-na mi-si va-va',
-            meaningFr: "La pirogue à balancier océanique",
+            meaningFr: 'La pirogue à balancier océanique',
             explanation:
               "Chef-d'œuvre de la technologie maritime austronésienne qui a permis de braver les houles de l'océan Indien sur plus de 6 000 kilomètres.",
           },
@@ -4684,7 +4881,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Vary sy Tanimbary',
             phonetic: 'va-ri si ta-nim-ba-ri',
-            meaningFr: "Le riz irrigué et la rizière aménagée",
+            meaningFr: 'Le riz irrigué et la rizière aménagée',
             explanation:
               "Technique agricole magistrale importée d'Asie du Sud-Est, devenue le pilier économique, alimentaire et rituel de la société malgache.",
           },
@@ -4692,7 +4889,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Fitaovana vy sy Omby',
             phonetic: 'fi-ta-ou-va-na vi si oum-bi',
-            meaningFr: "La métallurgie du fer et le cheptel de zébus",
+            meaningFr: 'La métallurgie du fer et le cheptel de zébus',
             explanation:
               "Apports technologiques et pastoraux fondamentaux issus des migrations bantoues d'Afrique orientale, complétant harmonieusement la culture du riz.",
           },
@@ -4714,14 +4911,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quelles sont les deux grandes vagues migratoires fondatrices du peuple malgache ?",
+              'Quelles sont les deux grandes vagues migratoires fondatrices du peuple malgache ?',
             questionMg:
-              "Inona ireo onjam-pifindran-monina lehibe roa nanorina ny vahoaka malagasy ?",
+              'Inona ireo onjam-pifindran-monina lehibe roa nanorina ny vahoaka malagasy ?',
             choices: [
               "Les navigateurs austronésiens (Asie du Sud-Est) et les populations bantoues (Afrique de l'Est)",
-              "Uniquement des explorateurs européens au XIXe siècle",
-              "Des tribus nomades de Sibérie boréale",
-              "Des marins marchands uniquement venus de Méditerranée",
+              'Uniquement des explorateurs européens au XIXe siècle',
+              'Des tribus nomades de Sibérie boréale',
+              'Des marins marchands uniquement venus de Méditerranée',
             ],
             correctIndex: 0,
             explanation:
@@ -4730,14 +4927,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "À quelle grande famille linguistique appartient la langue malgache ?",
+              'À quelle grande famille linguistique appartient la langue malgache ?',
             questionMg:
               "Ao amin'ny fianakaviam-piteny inona no misy ny teny malagasy ?",
             choices: [
-              "La famille des langues austronésiennes (malayo-polynésiennes)",
-              "La famille des langues indo-européennes",
-              "La famille des langues sémitiques",
-              "La famille des langues sino-tibétaines",
+              'La famille des langues austronésiennes (malayo-polynésiennes)',
+              'La famille des langues indo-européennes',
+              'La famille des langues sémitiques',
+              'La famille des langues sino-tibétaines',
             ],
             correctIndex: 0,
             explanation:
@@ -4746,14 +4943,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quelle culture vivrière essentielle a été introduite par les navigateurs austronésiens ?",
+              'Quelle culture vivrière essentielle a été introduite par les navigateurs austronésiens ?',
             questionMg:
               "Inona ilay fambolena fototra nentin'ireo tantsambo aotroneziana teto Madagasikara ?",
             choices: [
-              "La culture du riz irrigué en rizières aménagées (Tanimbary)",
+              'La culture du riz irrigué en rizières aménagées (Tanimbary)',
               "La culture du blé d'hiver",
               "La plantation d'oliviers",
-              "La culture exclusive du maïs",
+              'La culture exclusive du maïs',
             ],
             correctIndex: 0,
             explanation:
@@ -4762,13 +4959,13 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quel apport pastoral et matériel majeur provient des migrations bantoues africaines ?",
+              'Quel apport pastoral et matériel majeur provient des migrations bantoues africaines ?',
             questionMg:
               "Inona ny harena lehibe teo amin'ny fiompiana sy ny asa vy nentin'ny fifindran-monina banto ?",
             choices: [
               "L'élevage du zébu (omby) et la métallurgie du fer",
               "L'élevage des rennes polaires",
-              "La construction de bateaux à vapeur",
+              'La construction de bateaux à vapeur',
               "L'usage exclusif de la pierre taillée",
             ],
             correctIndex: 0,
@@ -4782,10 +4979,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             questionMg:
               "Inona ilay fitaovam-pitaterana an-dranomasina nentin'ireo razana nita ny Ranomasimbe Indiana ?",
             choices: [
-              "La pirogue à balancier (lakana misy vava)",
-              "Une galère romaine en bois de chêne",
-              "Un canot pneumatique moderne",
-              "Un grand paquebot métallique",
+              'La pirogue à balancier (lakana misy vava)',
+              'Une galère romaine en bois de chêne',
+              'Un canot pneumatique moderne',
+              'Un grand paquebot métallique',
             ],
             correctIndex: 0,
             explanation:
@@ -4793,7 +4990,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
         ],
       },
-{
+      {
         slug: 'histoire-et-souverains-andrianampoinimerina-radama',
         title:
           "Les repères de l'histoire malgache : Andrianampoinimerina & Radama Ier",
@@ -4956,8 +5153,9 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       {
         slug: 'les-reines-illustres-ranavalona',
         title:
-          "Les Reines illustres de Madagascar : souveraineté, diplomatie et résistance",
-        titleMg: "Ireo Mpanjakavavy Malagasy : Ranavalona I, Rasoherina sy Ranavalona III",
+          'Les Reines illustres de Madagascar : souveraineté, diplomatie et résistance',
+        titleMg:
+          'Ireo Mpanjakavavy Malagasy : Ranavalona I, Rasoherina sy Ranavalona III',
         summary:
           "Découvrez le règne et le courage des souveraines malgaches dans la défense de l'indépendance nationale.",
         summaryMg:
@@ -4978,15 +5176,16 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             letterOrSound: 'V',
             phonetic: 'v',
             frenchEquivalent:
-              "Le « V » malgache se prononce nettement comme en français (ex: Vohitra, Vahoaka, Ranavalona).",
+              'Le « V » malgache se prononce nettement comme en français (ex: Vohitra, Vahoaka, Ranavalona).',
             sampleWordMg: 'Ranavalona',
-            sampleTranslationFr: "Nom des illustres souveraines malgaches",
+            sampleTranslationFr: 'Nom des illustres souveraines malgaches',
           },
           {
             type: 'concept',
             termMg: 'Fiandrianam-pirenena',
             phonetic: 'fi-an-dri-a-nam-pi-re-ne-na',
-            meaningFr: "La souveraineté nationale / L'indépendance sacrée de la patrie",
+            meaningFr:
+              "La souveraineté nationale / L'indépendance sacrée de la patrie",
             explanation:
               "Principe fondamental défendu avec ferveur par la monarchie malgache, affirmant qu'aucune puissance étrangère ne peut asservir le sol des ancêtres.",
           },
@@ -4994,7 +5193,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Ranavalona Ire (1828-1861)',
             phonetic: 'ra-na-va-lou-na vo-a-lou-ha-ni',
-            meaningFr: "Souveraine intraitable, gardienne des traditions et de l'indépendance",
+            meaningFr:
+              "Souveraine intraitable, gardienne des traditions et de l'indépendance",
             explanation:
               "Elle développa l'artisanat national, les forges d'armes de Mantasoa avec Jean Laborde et refusa fermement toute ingérence étrangère.",
           },
@@ -5002,7 +5202,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Ranavalona III (1883-1897)',
             phonetic: 'ra-na-va-lou-na fa-ha-te-lou',
-            meaningFr: "Dernière reine de Madagascar, icône de dignité et de résistance morale",
+            meaningFr:
+              'Dernière reine de Madagascar, icône de dignité et de résistance morale',
             explanation:
               "Déportée injustement par les autorités coloniales à La Réunion puis à Alger, elle conserva l'admiration et l'amour inconditionnel de son peuple.",
           },
@@ -5017,7 +5218,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'example',
             textMg:
-              "Ranavalona III dia naneho fahamendrehana sy fitiavan-tanindrazana lehibe manoloana ny fisedrana.",
+              'Ranavalona III dia naneho fahamendrehana sy fitiavan-tanindrazana lehibe manoloana ny fisedrana.',
             textFr:
               "Ranavalona III a manifesté une dignité et un patriotisme exemplaires face aux épreuves de l'histoire.",
           },
@@ -5032,14 +5233,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quelle souveraine malgache a défendu vigoureusement la souveraineté nationale de 1828 à 1861 ?",
+              'Quelle souveraine malgache a défendu vigoureusement la souveraineté nationale de 1828 à 1861 ?',
             questionMg:
               "Iza ilay Mpanjakavavy niaro mafy ny fiandrianam-pirenena tamin'ny taona 1828 ka hatramin'ny 1861 ?",
             choices: [
-              "Ranavalona Ire",
-              "Marie-Antoinette",
-              "La reine Victoria",
-              "Cléopâtre",
+              'Ranavalona Ire',
+              'Marie-Antoinette',
+              'La reine Victoria',
+              'Cléopâtre',
             ],
             correctIndex: 0,
             explanation:
@@ -5048,14 +5249,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Qui fut la dernière reine souveraine de Madagascar avant la colonisation en 1897 ?",
+              'Qui fut la dernière reine souveraine de Madagascar avant la colonisation en 1897 ?',
             questionMg:
               "Iza no Mpanjakavavy farany nanjaka teto Madagasikara talohan'ny fanjanahan-tany ?",
             choices: [
-              "Ranavalona III",
-              "Ranavalona Ire",
-              "Rasoherina",
-              "Ranavalona II",
+              'Ranavalona III',
+              'Ranavalona Ire',
+              'Rasoherina',
+              'Ranavalona II',
             ],
             correctIndex: 0,
             explanation:
@@ -5064,14 +5265,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quel mot malgache fondamental désigne « la souveraineté nationale » ?",
+              'Quel mot malgache fondamental désigne « la souveraineté nationale » ?',
             questionMg:
-              "Inona ilay teny malagasy manan-danja milaza ny « fiandrianam-pirenena » ?",
+              'Inona ilay teny malagasy manan-danja milaza ny « fiandrianam-pirenena » ?',
             choices: [
-              "Fiandrianam-pirenena",
-              "Fananana manokana",
-              "Fivarotana fananana",
-              "Fiaraha-monina tsotra",
+              'Fiandrianam-pirenena',
+              'Fananana manokana',
+              'Fivarotana fananana',
+              'Fiaraha-monina tsotra',
             ],
             correctIndex: 0,
             explanation:
@@ -5080,14 +5281,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Dans quelle ville la reine Ranavalona III a-t-elle vécu ses dernières années en exil ?",
+              'Dans quelle ville la reine Ranavalona III a-t-elle vécu ses dernières années en exil ?',
             questionMg:
               "Taiza no nasesitany ary nahafatesan'ny Mpanjakavavy Ranavalona III ?",
             choices: [
-              "À Alger (après un passage à La Réunion)",
-              "À Londres en Angleterre",
-              "À Rome en Italie",
-              "Au Caire en Égypte",
+              'À Alger (après un passage à La Réunion)',
+              'À Londres en Angleterre',
+              'À Rome en Italie',
+              'Au Caire en Égypte',
             ],
             correctIndex: 0,
             explanation:
@@ -5101,9 +5302,9 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
               "Inona ilay toerana manan-tantara teo an-drenivohitra nisy ny lapan'ireo Mpanjakavavy ?",
             choices: [
               "Le Rova d'Antananarivo (Anatirova)",
-              "Le port de Toamasina",
+              'Le port de Toamasina',
               "Le marché d'Analakely",
-              "La gare de Soarano",
+              'La gare de Soarano',
             ],
             correctIndex: 0,
             explanation:
@@ -5115,7 +5316,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
         slug: 'les-resistances-et-la-lutte-de-1947',
         title:
           "Les résistances patriotiques et l'insurrection héroïque de 1947",
-        titleMg: "Ny Tolom-Panafahana : Ny Menalamba, ny VVS ary ny 29 Martsa 1947",
+        titleMg:
+          'Ny Tolom-Panafahana : Ny Menalamba, ny VVS ary ny 29 Martsa 1947',
         summary:
           "Revivez l'épopée des patriotes malgaches pour la liberté, des Menalamba au soulèvement national du 29 mars 1947.",
         summaryMg:
@@ -5136,9 +5338,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             letterOrSound: 'TS',
             phonetic: 'ts',
             frenchEquivalent:
-              "Le groupe « TS » se prononce comme dans « tsar » ou « mouche » appuyée (ex: Martsa, Tanindrazana).",
+              'Le groupe « TS » se prononce comme dans « tsar » ou « mouche » appuyée (ex: Martsa, Tanindrazana).',
             sampleWordMg: 'Martsa',
-            sampleTranslationFr: 'Mars (le mois du soulèvement patriotique de 1947)',
+            sampleTranslationFr:
+              'Mars (le mois du soulèvement patriotique de 1947)',
           },
           {
             type: 'concept',
@@ -5146,13 +5349,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             phonetic: 'fa-ha-fa-ha-na',
             meaningFr: "La Liberté / L'émancipation / L'Indépendance",
             explanation:
-              "Aspiration suprême pour laquelle des dizaines de milliers de patriotes malgaches ont offert leur vie avec abnégation.",
+              'Aspiration suprême pour laquelle des dizaines de milliers de patriotes malgaches ont offert leur vie avec abnégation.',
           },
           {
             type: 'concept',
             termMg: 'Menalamba',
             phonetic: 'me-na-lam-ba',
-            meaningFr: "« Les toges rouges » : résistants de la première heure (1895-1898)",
+            meaningFr:
+              '« Les toges rouges » : résistants de la première heure (1895-1898)',
             explanation:
               "Insurgés vêtus du lamba traditionnel teint à l'argile rouge, qui ont mené la guérilla pour protéger les coutumes et les tombeaux des ancêtres.",
           },
@@ -5160,7 +5364,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Vy Vato Sakelika (V.V.S.)',
             phonetic: 'vi va-tou sa-ke-li-ka',
-            meaningFr: "« Fer, Pierre, Ramification » (Mouvement patriotique fondé en 1913)",
+            meaningFr:
+              '« Fer, Pierre, Ramification » (Mouvement patriotique fondé en 1913)',
             explanation:
               "Organisation secrète d'étudiants en médecine et de lettrés malgaches plaidant pour l'égalité citoyenne et la souveraineté nationale.",
           },
@@ -5168,7 +5373,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: '29 Martsa 1947',
             phonetic: 'roam-bi-ny si-vi mar-tsa',
-            meaningFr: "L'insurrection nationale pour la liberté / Journée des Martyrs",
+            meaningFr:
+              "L'insurrection nationale pour la liberté / Journée des Martyrs",
             explanation:
               "Soulèvement généralisé contre l'oppression coloniale, durement réprimé mais ayant scellé l'inévitable marche vers l'indépendance de 1960.",
           },
@@ -5177,7 +5383,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             textMg:
               "Ny 29 Martsa dia andro masina ahatsiarovana ireo Maherifo nahafoy ny ainy ho an'ny Tanindrazana.",
             textFr:
-              "Le 29 mars est un jour sacré du souvenir pour honorer les Héros ayant sacrifié leur vie pour la Patrie.",
+              'Le 29 mars est un jour sacré du souvenir pour honorer les Héros ayant sacrifié leur vie pour la Patrie.',
           },
           {
             type: 'didYouKnow',
@@ -5194,26 +5400,26 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             questionMg:
               "Inona ilay hetsika tia tanindrazana tamin'ny 1895 nisalotra lamba miloko mena tany ?",
             choices: [
-              "Les Menalamba",
-              "Les V.V.S.",
-              "Les marins Vezo",
-              "Les marchands arabes",
+              'Les Menalamba',
+              'Les V.V.S.',
+              'Les marins Vezo',
+              'Les marchands arabes',
             ],
             correctIndex: 0,
             explanation:
-              "Les Menalamba (« toges rouges ») ont combattu avec ferveur pour protéger la terre ancestrale et les coutumes malgaches.",
+              'Les Menalamba (« toges rouges ») ont combattu avec ferveur pour protéger la terre ancestrale et les coutumes malgaches.',
           },
           {
             type: 'quiz',
             question:
-              "Que signifiait le nom du mouvement nationaliste secret « V.V.S. » fondé en 1913 ?",
+              'Que signifiait le nom du mouvement nationaliste secret « V.V.S. » fondé en 1913 ?',
             questionMg:
               "Inona no hevitry ny fanafohezana hoe « V.V.S. » niorina tamin'ny 1913 ?",
             choices: [
-              "Vy Vato Sakelika (Fer, Pierre, Ramification)",
-              "Vahoaka Vonona Saika",
-              "Vola Vitsy Sambatra",
-              "Vato Vao Sombintsombiny",
+              'Vy Vato Sakelika (Fer, Pierre, Ramification)',
+              'Vahoaka Vonona Saika',
+              'Vola Vitsy Sambatra',
+              'Vato Vao Sombintsombiny',
             ],
             correctIndex: 0,
             explanation:
@@ -5224,24 +5430,24 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             question:
               "Quelle date célèbre commémore officiellement l'insurrection nationale pour la liberté à Madagascar ?",
             questionMg:
-              "Inona ilay daty manan-tantara ahatsiarovana ny tolom-panafahana teto Madagasikara ?",
+              'Inona ilay daty manan-tantara ahatsiarovana ny tolom-panafahana teto Madagasikara ?',
             choices: [
-              "Le 29 mars (1947)",
-              "Le 1er janvier",
-              "Le 14 juillet",
-              "Le 25 décembre",
+              'Le 29 mars (1947)',
+              'Le 1er janvier',
+              'Le 14 juillet',
+              'Le 25 décembre',
             ],
             correctIndex: 0,
             explanation:
-              "Le 29 mars 1947 marque le grand soulèvement populaire malgache et la commémoration des martyrs de la liberté.",
+              'Le 29 mars 1947 marque le grand soulèvement populaire malgache et la commémoration des martyrs de la liberté.',
           },
           {
             type: 'quiz',
             question:
               "Quel mot malgache fondamental désigne « la Liberté » et l'indépendance du peuple ?",
             questionMg:
-              "Inona ilay teny malagasy midika hoe « Fahaleovantena sy Fahafahana » ?",
-            choices: ["Fahafahana", "Fananana", "Fahantrana", "Fahatsiarovana"],
+              'Inona ilay teny malagasy midika hoe « Fahaleovantena sy Fahafahana » ?',
+            choices: ['Fahafahana', 'Fananana', 'Fahantrana', 'Fahatsiarovana'],
             correctIndex: 0,
             explanation:
               "« Fahafahana » signifie la liberté, l'affranchissement et l'indépendance légitime du peuple malgache.",
@@ -5249,18 +5455,13 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "En quelle année Madagascar a-t-il finalement proclamé le retour de son Indépendance nationale ?",
+              'En quelle année Madagascar a-t-il finalement proclamé le retour de son Indépendance nationale ?',
             questionMg:
               "Tamin'ny taona firy no niverina tamin'ny fomba ôfisialy ny Fahaleovantenan'i Madagasikara ?",
-            choices: [
-              "1960 (le 26 juin)",
-              "1947",
-              "1914",
-              "1989",
-            ],
+            choices: ['1960 (le 26 juin)', '1947', '1914', '1989'],
             correctIndex: 0,
             explanation:
-              "Madagascar a retrouvé sa pleine indépendance nationale le 26 juin 1960, couronnant des décennies de luttes patriotiques.",
+              'Madagascar a retrouvé sa pleine indépendance nationale le 26 juin 1960, couronnant des décennies de luttes patriotiques.',
           },
         ],
       },
@@ -5288,7 +5489,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             letterOrSound: 'DR',
             phonetic: 'dr',
             frenchEquivalent:
-              "Le groupe consonantique « DR » est alvéolaire et dynamique (ex: Tendrombohitra, Andrianampoinimerina).",
+              'Le groupe consonantique « DR » est alvéolaire et dynamique (ex: Tendrombohitra, Andrianampoinimerina).',
             sampleWordMg: 'Tendrombohitra',
             sampleTranslationFr: 'Montagne / Colline sacrée',
           },
@@ -5304,7 +5505,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: "Rovan'Ambohimanga",
             phonetic: 'rou-van am-bou-hi-man-ga',
-            meaningFr: "La colline bleue royale, sanctuaire classé au patrimoine mondial UNESCO",
+            meaningFr:
+              'La colline bleue royale, sanctuaire classé au patrimoine mondial UNESCO',
             explanation:
               "Cité royale intacte avec la case d'Andrianampoinimerina (Mahandrihono), le pavillon de Ranavalona II et les bassins d'ablutions royales.",
           },
@@ -5312,22 +5514,23 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Aviavy sy Amontana',
             phonetic: 'a-vi-a-vi si a-moun-ta-na',
-            meaningFr: "Ficus royaux sacrés plantés aux portes des enceintes",
+            meaningFr: 'Ficus royaux sacrés plantés aux portes des enceintes',
             explanation:
-              "Arbres vénérés symbolisant la majesté royale, la descendance ininterrompue et la bienveillance des ancêtres protecteurs.",
+              'Arbres vénérés symbolisant la majesté royale, la descendance ininterrompue et la bienveillance des ancêtres protecteurs.',
           },
           {
             type: 'concept',
             termMg: 'Hadivory sy Vavahady vato',
             phonetic: 'ha-di-vou-ri si va-va-ha-di va-tou',
-            meaningFr: "Fossés circulaires profonds et portes en disques de pierre monolithiques",
+            meaningFr:
+              'Fossés circulaires profonds et portes en disques de pierre monolithiques',
             explanation:
               "Ingénieux système défensif entourant les collines sacrées, fermé chaque soir par d'immenses dalles de granit roulées à bras d'hommes.",
           },
           {
             type: 'example',
             textMg:
-              "Ambohimanga dia vohitra masina mampahatsiaro ny hasina sy ny fomba nentin-drazana malagasy.",
+              'Ambohimanga dia vohitra masina mampahatsiaro ny hasina sy ny fomba nentin-drazana malagasy.',
             textFr:
               "Ambohimanga est une cité sacrée qui témoigne de l'énergie spirituelle (hasina) et des traditions ancestrales malgaches.",
           },
@@ -5346,24 +5549,24 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             questionMg:
               "Firy ny isan'ireo tendrombohitra masina manan-tantara manodidina an'Imerina ?",
             choices: [
-              "Douze (Tendrombohitra Roambinifolo)",
-              "Sept",
-              "Trois seulement",
-              "Vingt-quatre",
+              'Douze (Tendrombohitra Roambinifolo)',
+              'Sept',
+              'Trois seulement',
+              'Vingt-quatre',
             ],
             correctIndex: 0,
             explanation:
-              "Les douze collines sacrées (Tendrombohitra Roambinifolo) formaient le maillage spirituel, stratégique et dynastique du royaume.",
+              'Les douze collines sacrées (Tendrombohitra Roambinifolo) formaient le maillage spirituel, stratégique et dynastique du royaume.',
           },
           {
             type: 'quiz',
             question:
               "Quel site historique et royal malgache est classé au patrimoine mondial de l'Humanité par l'UNESCO ?",
             questionMg:
-              "Inona ilay toerana masina malagasy voasokajy ho Lova Iraisam-pirenena UNESCO ?",
+              'Inona ilay toerana masina malagasy voasokajy ho Lova Iraisam-pirenena UNESCO ?',
             choices: [
               "La colline royale d'Ambohimanga",
-              "Le canal des Pangalanes",
+              'Le canal des Pangalanes',
               "L'avenue de l'Indépendance",
               "Le marché d'Isotry",
             ],
@@ -5374,14 +5577,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quels arbres sacrés majestueux étaient traditionnellement plantés pour marquer la présence royale ?",
+              'Quels arbres sacrés majestueux étaient traditionnellement plantés pour marquer la présence royale ?',
             questionMg:
               "Inona ireo hazo masina famboly teo amin'ny rova sy ny tanàna nisy mpanjaka ?",
             choices: [
               "L'Aviavy et l'Amontana (ficus royaux)",
-              "Le pommier et le poirier",
-              "Le sapin de Noël",
-              "Le peuplier blanc",
+              'Le pommier et le poirier',
+              'Le sapin de Noël',
+              'Le peuplier blanc',
             ],
             correctIndex: 0,
             explanation:
@@ -5390,13 +5593,18 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Comment appelle-t-on le grand fossé circulaire défensif protégeant les cités fortifiées royales ?",
+              'Comment appelle-t-on le grand fossé circulaire défensif protégeant les cités fortifiées royales ?',
             questionMg:
-              "Inona no iantsoana ilay hady boribory lalina manodidina ny vohitra masina ?",
-            choices: ["Le Hadivory", "Le Valam-parihy", "Ny Tany mena", "Ny Kianja"],
+              'Inona no iantsoana ilay hady boribory lalina manodidina ny vohitra masina ?',
+            choices: [
+              'Le Hadivory',
+              'Le Valam-parihy',
+              'Ny Tany mena',
+              'Ny Kianja',
+            ],
             correctIndex: 0,
             explanation:
-              "Le « Hadivory » est le fossé défensif circulaire creusé autour des collines royales pour empêcher les assauts ennemis.",
+              'Le « Hadivory » est le fossé défensif circulaire creusé autour des collines royales pour empêcher les assauts ennemis.',
           },
           {
             type: 'quiz',
@@ -5405,10 +5613,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             questionMg:
               "Iza ilay Mpanjaka lehibe niainga tao Ambohimanga nampiray an'i Madagasikara ?",
             choices: [
-              "Andrianampoinimerina",
-              "Radama II",
-              "Andrianjaka",
-              "Ralambo",
+              'Andrianampoinimerina',
+              'Radama II',
+              'Andrianjaka',
+              'Ralambo',
             ],
             correctIndex: 0,
             explanation:
@@ -5430,9 +5638,9 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
     icon: 'Compass',
     color: '#1E88E5',
     orderIndex: 5,
-    estimatedMinutes: 40,
+    estimatedMinutes: 70,
     lessons: [
-{
+      {
         slug: 'les-dialectes-regionaux-sakalava-betsimisaraka-antandroy',
         title:
           'Les dialectes régionaux : voyage linguistique à travers Madagascar',
@@ -5582,7 +5790,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
         ],
       },
-{
+      {
         slug: 'eloquence-cotiere-rasavolagna-et-tokatoka',
         title: "L'art poétique côtier : le Rasavôlana et le Tôkatôka",
         titleMg: 'Ny Haikanto am-Bava : Rasavôlana sy Tôkatôka Betsimisaraka',
@@ -5735,7 +5943,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
         title: 'Les parlers du Grand Sud : Antandroy, Mahafaly et Bara',
         titleMg: "Ny Fitenin'ny Faritra Atsimo : Antandroy, Mahafaly ary Bara",
         summary:
-          "Plongez dans les sonorités vigoureuses du Sud malgache, les salutations pastorales et la poésie des troupeaux.",
+          'Plongez dans les sonorités vigoureuses du Sud malgache, les salutations pastorales et la poésie des troupeaux.',
         summaryMg:
           "Fantaro ny fiteny sy ny fomba fitenin'ny mponina any Atsimo, eo amin'ny tontolon'ny omby sy ny roy.",
         type: 'VOCABULARY',
@@ -5756,7 +5964,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             frenchEquivalent:
               "En dialecte du Sud, « Ty » sert d'article ou démonstratif courant à la place de « Ity » ou « Ny » (ex: Akore ty tantara ?).",
             sampleWordMg: 'Akore ty tantara ?',
-            sampleTranslationFr: 'Quelles sont les nouvelles ? (Salutation emblématique du Sud)',
+            sampleTranslationFr:
+              'Quelles sont les nouvelles ? (Salutation emblématique du Sud)',
           },
           {
             type: 'concept',
@@ -5764,7 +5973,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             phonetic: 'a-kou-re ti tan-ta-ra',
             meaningFr: 'Comment vont les nouvelles ? / Bonjour à vous',
             explanation:
-              "Formule de salutation universelle et chaleureuse dans tout le Sud malgache (Antandroy, Mahafaly, Bara).",
+              'Formule de salutation universelle et chaleureuse dans tout le Sud malgache (Antandroy, Mahafaly, Bara).',
           },
           {
             type: 'concept',
@@ -5780,7 +5989,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             phonetic: 'va-la / fa-hi-tsa',
             meaningFr: "L'enclos à zébus familial et communautaire",
             explanation:
-              "Cœur battant du village dans le Sud, symbole de prospérité, de bénédiction ancestrale et de sécurité des troupeaux.",
+              'Cœur battant du village dans le Sud, symbole de prospérité, de bénédiction ancestrale et de sécurité des troupeaux.',
           },
           {
             type: 'concept',
@@ -5793,7 +6002,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'example',
             textMg:
-              "Akore ty tantara lahy ? — Soa soa rahavana, tomombana ty omby am-bala !",
+              'Akore ty tantara lahy ? — Soa soa rahavana, tomombana ty omby am-bala !',
             textFr:
               "Quelles sont les nouvelles, mon ami ? — Excellentes nouvelles, mon frère, les zébus sont sains et saufs dans l'enclos !",
           },
@@ -5810,48 +6019,47 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             question:
               'Quelle est la célèbre salutation traditionnelle emblématique du Grand Sud malgache ?',
             questionMg:
-              "Inona ilay fiarahabana nentim-paharazana fanta-daza indrindra any Atsimo ?",
+              'Inona ilay fiarahabana nentim-paharazana fanta-daza indrindra any Atsimo ?',
             choices: [
-              "« Akore ty tantara ? » (Quelles sont les nouvelles ?)",
-              "« Veloma finaritra »",
-              "« Misaotra betsaka »",
-              "« Azafady tompoko »",
+              '« Akore ty tantara ? » (Quelles sont les nouvelles ?)',
+              '« Veloma finaritra »',
+              '« Misaotra betsaka »',
+              '« Azafady tompoko »',
             ],
             correctIndex: 0,
             explanation:
-              "« Akore ty tantara ? » est la formule de salutation rituelle incontournable chez les Antandroy, Mahafaly et Bara.",
+              '« Akore ty tantara ? » est la formule de salutation rituelle incontournable chez les Antandroy, Mahafaly et Bara.',
           },
           {
             type: 'quiz',
             question:
-              "Comment répond-on couramment et poliment à la salutation « Akore ty tantara ? » ?",
+              'Comment répond-on couramment et poliment à la salutation « Akore ty tantara ? » ?',
             questionMg:
-              "Ahoana no famaliana am-panajana ny fiarahabana hoe « Akore ty tantara ? » ?",
+              'Ahoana no famaliana am-panajana ny fiarahabana hoe « Akore ty tantara ? » ?',
             choices: [
-              "« Soa soa » (Très bien / Tout va bien)",
-              "« Tsy misy hena »",
-              "« Lasa nody aho »",
-              "« Vaky ny vilany »",
+              '« Soa soa » (Très bien / Tout va bien)',
+              '« Tsy misy hena »',
+              '« Lasa nody aho »',
+              '« Vaky ny vilany »',
             ],
             correctIndex: 0,
             explanation:
-              "On répond traditionnellement « Soa soa » ou « Soa soa, tsy manin-draho » pour signifier que la paix règne.",
+              'On répond traditionnellement « Soa soa » ou « Soa soa, tsy manin-draho » pour signifier que la paix règne.',
           },
           {
             type: 'quiz',
             question:
-              "Que signifie littéralement le nom du peuple du Sud « Antandroy » ?",
-            questionMg:
-              "Inona no dikan'ny anaran'ny foko hoe « Antandroy » ?",
+              'Que signifie littéralement le nom du peuple du Sud « Antandroy » ?',
+            questionMg: "Inona no dikan'ny anaran'ny foko hoe « Antandroy » ?",
             choices: [
               "Ceux de la forêt d'épineux (Roy)",
               "Ceux des grandes rizières d'eau",
-              "Les habitants des montagnes enneigées",
-              "Les marins des îles lointaines",
+              'Les habitants des montagnes enneigées',
+              'Les marins des îles lointaines',
             ],
             correctIndex: 0,
             explanation:
-              "« An-tandro-roy » signifie littéralement « ceux du pays des épineux » (roy), faisant référence au bush xérophile du Sud.",
+              '« An-tandro-roy » signifie littéralement « ceux du pays des épineux » (roy), faisant référence au bush xérophile du Sud.',
           },
           {
             type: 'quiz',
@@ -5859,7 +6067,12 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
               "Quel mot désigne l'enclos sacré protégeant les troupeaux de zébus dans les villages du Sud ?",
             questionMg:
               "Inona ny teny iantsoana ny valan'omby fiarovana ny biby fiompy any Atsimo ?",
-            choices: ["Le Vala (ou Fahitra)", "Ny Tranokely", "Ny Lapa", "Ny Tsena"],
+            choices: [
+              'Le Vala (ou Fahitra)',
+              'Ny Tranokely',
+              'Ny Lapa',
+              'Ny Tsena',
+            ],
             correctIndex: 0,
             explanation:
               "Le « Vala » (ou « Fahitra ») est l'enclos traditionnel à bétail en rondins de bois, symbole de vie et de sécurité.",
@@ -5871,23 +6084,24 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             questionMg:
               "Inona ilay biby manan-kaja mibaiko ny voambolana sy ny fiainan'ny olona any Atsimo ?",
             choices: [
-              "Le zébu (Omby)",
-              "Le dromadaire",
-              "Le cheval de trait",
-              "Le lama des Andes",
+              'Le zébu (Omby)',
+              'Le dromadaire',
+              'Le cheval de trait',
+              'Le lama des Andes',
             ],
             correctIndex: 0,
             explanation:
-              "Le zébu (omby) est la richesse suprême, le lien avec les ancêtres et le cœur linguistique de la culture du Sud.",
+              'Le zébu (omby) est la richesse suprême, le lien avec les ancêtres et le cœur linguistique de la culture du Sud.',
           },
         ],
       },
       {
         slug: 'le-vocabulaire-maritime-vezo-et-pecheurs',
-        title: "Le vocabulaire maritime : l'épopée des Vezo et des gens de la mer",
+        title:
+          "Le vocabulaire maritime : l'épopée des Vezo et des gens de la mer",
         titleMg: "Ny Voambolan'ny Ranomasina sy ny Fiteny Vezo",
         summary:
-          "Explorez le lexique maritime des nomades marins Vezo, les vents et la navigation en pirogue à balancier.",
+          'Explorez le lexique maritime des nomades marins Vezo, les vents et la navigation en pirogue à balancier.',
         summaryMg:
           "Fantaro ireo tenin'ny ranomasina fampiasan'ny foko Vezo sy ireo mpanjono amoron-tsiraka.",
         type: 'VOCABULARY',
@@ -5906,15 +6120,17 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             letterOrSound: 'RIA',
             phonetic: 'ri-a',
             frenchEquivalent:
-              "Sonorité fluide et coulante évoquant le mouvement des vagues (ex: Riaka).",
+              'Sonorité fluide et coulante évoquant le mouvement des vagues (ex: Riaka).',
             sampleWordMg: 'Riaka',
-            sampleTranslationFr: "La mer / L'océan (en vocabulaire maritime et côtier)",
+            sampleTranslationFr:
+              "La mer / L'océan (en vocabulaire maritime et côtier)",
           },
           {
             type: 'concept',
             termMg: 'Vezo',
             phonetic: 've-zou',
-            meaningFr: "« Ceux qui rament et défient la mer » / Peuple marin du littoral",
+            meaningFr:
+              '« Ceux qui rament et défient la mer » / Peuple marin du littoral',
             explanation:
               "Plus qu'une ethnie, être Vezo définit une philosophie de vie fondée sur la liberté marine, la pêche et le savoir des marées.",
           },
@@ -5922,7 +6138,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Lakam-biha (Lakana Vezo)',
             phonetic: 'la-kam-bi-ha',
-            meaningFr: "La pirogue à balancier monoxyle traditionnelle",
+            meaningFr: 'La pirogue à balancier monoxyle traditionnelle',
             explanation:
               "Embarcation taillée dans un tronc d'arbre léger (farafatsy), équipée d'un balancier stabilisateur et d'une voile carrée.",
           },
@@ -5947,7 +6163,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             textMg:
               "Nandeha natsapa riaka maraina ny Vezo tamin'ny lakam-bihany.",
             textFr:
-              "Les pêcheurs Vezo sont partis sonder la mer au petit matin à bord de leur pirogue à balancier.",
+              'Les pêcheurs Vezo sont partis sonder la mer au petit matin à bord de leur pirogue à balancier.',
           },
           {
             type: 'didYouKnow',
@@ -5959,19 +6175,18 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           // ─── 5 Micro-Quiz de validation ───
           {
             type: 'quiz',
-            question:
-              "Qui sont les « Vezo » dans la culture malgache ?",
+            question: 'Qui sont les « Vezo » dans la culture malgache ?',
             questionMg:
               "Iza moa ny foko Vezo eo amin'ny kolontsaina malagasy ?",
             choices: [
-              "Les marins, navigateurs et pêcheurs nomades du littoral sud-ouest",
-              "Des forgerons des hautes montagnes",
+              'Les marins, navigateurs et pêcheurs nomades du littoral sud-ouest',
+              'Des forgerons des hautes montagnes',
               "Des cultivateurs de thé de l'est",
-              "Des éleveurs de rennes des plateaux",
+              'Des éleveurs de rennes des plateaux',
             ],
             correctIndex: 0,
             explanation:
-              "Les Vezo sont les réputés navigateurs et pêcheurs traditionnels du canal de Mozambique (Tuléar, Morombe, etc.).",
+              'Les Vezo sont les réputés navigateurs et pêcheurs traditionnels du canal de Mozambique (Tuléar, Morombe, etc.).',
           },
           {
             type: 'quiz',
@@ -5980,10 +6195,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             questionMg:
               "Ahoana no iantsoana ny lakan'ny Vezo misy vava enti-manjono ?",
             choices: [
-              "Le Lakam-biha (Lakana Vezo)",
-              "Le Sambofiara",
-              "Le Kalesa",
-              "Le Trano hazo",
+              'Le Lakam-biha (Lakana Vezo)',
+              'Le Sambofiara',
+              'Le Kalesa',
+              'Le Trano hazo',
             ],
             correctIndex: 0,
             explanation:
@@ -5992,51 +6207,51 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quel mot poétique et traditionnel désigne la mer dans le vocabulaire côtier Vezo ?",
+              'Quel mot poétique et traditionnel désigne la mer dans le vocabulaire côtier Vezo ?',
             questionMg:
               "Inona ilay teny mampiavaka ny ranomasina amin'ny fitenin'ny mpanjono amoron-tsiraka ?",
-            choices: ["Riaka", "Hady", "Tanety", "Lalana"],
+            choices: ['Riaka', 'Hady', 'Tanety', 'Lalana'],
             correctIndex: 0,
             explanation:
-              "« Riaka » est le mot traditionnel employé sur les côtes pour désigner la mer et les flots marins.",
+              '« Riaka » est le mot traditionnel employé sur les côtes pour désigner la mer et les flots marins.',
           },
           {
             type: 'quiz',
             question:
               "Comment appelle-t-on l'alizé marin puissant et régulier qui souffle sur les côtes ?",
             questionMg:
-              "Inona no iantsoana ilay rivotra mahery mitsoka avy an-dranomasina ?",
+              'Inona no iantsoana ilay rivotra mahery mitsoka avy an-dranomasina ?',
             choices: [
-              "Le Varatraza",
-              "Le Rano mafana",
-              "Ny Zavona",
-              "Ny Orana mikija",
+              'Le Varatraza',
+              'Le Rano mafana',
+              'Ny Zavona',
+              'Ny Orana mikija',
             ],
             correctIndex: 0,
             explanation:
-              "Le « Varatraza » est le vent alizé régulier et soutenu qui gonfle les voiles des pêcheurs côtiers.",
+              'Le « Varatraza » est le vent alizé régulier et soutenu qui gonfle les voiles des pêcheurs côtiers.',
           },
           {
             type: 'quiz',
             question:
-              "Quelle pratique traditionnelle écologique est respectée par les pêcheurs Vezo ?",
+              'Quelle pratique traditionnelle écologique est respectée par les pêcheurs Vezo ?',
             questionMg:
               "Inona ilay fomba nentin-drazana miaro ny tontolo iainana hajain'ny mpanjono Vezo ?",
             choices: [
               "Le respect des jours d'interdiction de pêche (Fady riaka) pour préserver le repos de la mer",
-              "La pêche avec des filets industriels destructeurs",
+              'La pêche avec des filets industriels destructeurs',
               "L'assèchement complet des lagons",
-              "La destruction systématique des coraux",
+              'La destruction systématique des coraux',
             ],
             correctIndex: 0,
             explanation:
-              "Les interdits traditionnels (fady riaka) permettent aux espèces marines de se reproduire et protègent la ressource halieutique.",
+              'Les interdits traditionnels (fady riaka) permettent aux espèces marines de se reproduire et protègent la ressource halieutique.',
           },
         ],
       },
       {
         slug: 'variations-de-vocabulaire-et-unite-linguistique',
-        title: "Variations régionales et unité profonde de la langue malgache",
+        title: 'Variations régionales et unité profonde de la langue malgache',
         titleMg: "Fahasamihafan'ny Voambolana sy Firaisan'ny Teny Malagasy",
         summary:
           "Comprenez comment la diversité des parlers régionaux s'enracine dans une même structure grammaticale et unie.",
@@ -6060,7 +6275,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             frenchEquivalent:
               "Ordre habituel des phrases malgaches : Verbe + Complément d'objet + Sujet (ex: Mihinana vary aho).",
             sampleWordMg: 'Mihinana vary aho',
-            sampleTranslationFr: 'Je mange du riz (littéralement : Mange du riz moi)',
+            sampleTranslationFr:
+              'Je mange du riz (littéralement : Mange du riz moi)',
           },
           {
             type: 'concept',
@@ -6068,15 +6284,15 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             phonetic: 'ma-tou-an-te-ni fa-me-nou la-zeye-na',
             meaningFr: "L'ordre syntaxique universel de la langue malgache",
             explanation:
-              "Contrairement au français qui place le Sujet en tête (SVO), le malgache débute traditionnellement par le verbe dans tous ses dialectes.",
+              'Contrairement au français qui place le Sujet en tête (SVO), le malgache débute traditionnellement par le verbe dans tous ses dialectes.',
           },
           {
             type: 'concept',
             termMg: 'Mihinana / Komana / Homana / Mihinagne',
             phonetic: 'mi-hi-na-na / kou-ma-na / hou-ma-na / mi-hi-nang-e',
-            meaningFr: "Variations régionales du verbe « Manger »",
+            meaningFr: 'Variations régionales du verbe « Manger »',
             explanation:
-              "Démontre que les variantes lexicales partagent la même racine ou expriment une simple évolution phonétique locale parfaitement intelligible.",
+              'Démontre que les variantes lexicales partagent la même racine ou expriment une simple évolution phonétique locale parfaitement intelligible.',
           },
           {
             type: 'concept',
@@ -6090,9 +6306,9 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Ny Teny Malagasy dia Iray',
             phonetic: 'ni te-ni ma-la-ga-si di-a i-rye',
-            meaningFr: "La langue malgache est une et indivisible",
+            meaningFr: 'La langue malgache est une et indivisible',
             explanation:
-              "Principe linguistique et culturel soulignant que les dialectes ne divisent pas, mais enrichissent le patrimoine commun de la nation.",
+              'Principe linguistique et culturel soulignant que les dialectes ne divisent pas, mais enrichissent le patrimoine commun de la nation.',
           },
           {
             type: 'example',
@@ -6123,23 +6339,23 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             ],
             correctIndex: 0,
             explanation:
-              "Le malgache structure ses phrases avec le verbe en tête (VOS), par exemple : « Mahandro vary i Soa » (Cuisine du riz Soa).",
+              'Le malgache structure ses phrases avec le verbe en tête (VOS), par exemple : « Mahandro vary i Soa » (Cuisine du riz Soa).',
           },
           {
             type: 'quiz',
             question:
-              "Quels termes côtiers correspondent au verbe standard « Mihinana » (Manger) ?",
+              'Quels termes côtiers correspondent au verbe standard « Mihinana » (Manger) ?',
             questionMg:
               "Inona ireo tenim-paritra mitovy hevitra amin'ny hoe « Mihinana » ?",
             choices: [
-              "Komana, Homana na Mihinagne",
-              "Matory na Mandry",
-              "Mandeha na Mamindra",
-              "Milalao na Mikorana",
+              'Komana, Homana na Mihinagne',
+              'Matory na Mandry',
+              'Mandeha na Mamindra',
+              'Milalao na Mikorana',
             ],
             correctIndex: 0,
             explanation:
-              "Selon les régions, « manger » se dit couramment « komana », « homana » ou « mihinagne », toutes issues de racines proches.",
+              'Selon les régions, « manger » se dit couramment « komana », « homana » ou « mihinagne », toutes issues de racines proches.',
           },
           {
             type: 'quiz',
@@ -6147,10 +6363,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
               "Quel mot des dialectes du Nord et de l'Ouest équivaut au terme « Zaza » (Enfant) ?",
             questionMg:
               "Inona ny tenim-paritra any Avaratra sy Andrefana mitovy hevitra amin'ny teny hoe « Zaza » ?",
-            choices: ["Tsaiky", "Raiamandreny", "Zoky", "Mpanjaka"],
+            choices: ['Tsaiky', 'Raiamandreny', 'Zoky', 'Mpanjaka'],
             correctIndex: 0,
             explanation:
-              "« Tsaiky » est le mot très populaire et affectueux des côtes nord et ouest pour désigner un enfant.",
+              '« Tsaiky » est le mot très populaire et affectueux des côtes nord et ouest pour désigner un enfant.',
           },
           {
             type: 'quiz',
@@ -6159,7 +6375,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             questionMg:
               "Inona no manaporofo ny firaisana lalina misy eo amin'ny fitenim-paritra malagasy rehetra ?",
             choices: [
-              "Une grammaire identique, une syntaxe VOS commune et un même fonds de racines",
+              'Une grammaire identique, une syntaxe VOS commune et un même fonds de racines',
               "L'obligation d'utiliser des mots étrangers",
               "L'absence de communication entre les provinces",
               "Le fait qu'il n'y ait aucun mot similaire",
@@ -6171,18 +6387,666 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quelle valeur culturelle suprême est renforcée par cette unité linguistique à Madagascar ?",
+              'Quelle valeur culturelle suprême est renforcée par cette unité linguistique à Madagascar ?',
             questionMg:
               "Inona ilay soatoavina lehibe malagasy hamafisin'izany firaisan'ny teny izany ?",
             choices: [
-              "Le Fihavanana (solidarité, fraternité et concorde nationale)",
+              'Le Fihavanana (solidarité, fraternité et concorde nationale)',
               "La division et l'isolement des clans",
               "L'oubli des traditions des ancêtres",
-              "La rivalité permanente entre les régions",
+              'La rivalité permanente entre les régions',
             ],
             correctIndex: 0,
             explanation:
               "L'unité de la langue malgache est le pilier vivant du Fihavanana, liant fraternellement tous les habitants de la Grande Île.",
+          },
+        ],
+      },
+
+      // ─── LEÇON 6 : LE NORD FLAMBOYANT (ANTAKARANA & TSIMIHETY) ───
+      {
+        slug: 'le-nord-flamboyant-parlers-antakarana-et-tsimihety',
+        title:
+          'Le Nord flamboyant : parlers Antakarana et Tsimihety (Ny Avaratra & ny Fiteny any)',
+        titleMg: 'Ny Fiteny Antakarana sy Tsimihety any Avaratra',
+        summary:
+          'Explorez l’énergie des parlers du Nord : salutations vives (Karakory, Akory kabary), le vocabulaire royal de l’Ankarana et la fierté insoumise des Tsimihety.',
+        summaryMg:
+          'Fantaro ny haren’ny teny avaratra : Karakory, Akory kabary, ny fomba amam-panao any Ankarana sy ny fari-tanin’ny Sofia.',
+        type: 'CULTURE',
+        orderIndex: 6,
+        durationMinutes: 8,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Le Nord de Madagascar réunit deux identités fortes : les **Antakarana** (« ceux des falaises et des rochers », royaume des Tsingy et des grottes sacrées d'Ankarana) et les **Tsimihety** (« ceux qui ne coupent pas leurs cheveux », symbole d'indépendance historique face à la soumission féodale). Leurs parlers sont caractérisés par une musicalité vive, rythmée, où les voyelles s'élèvent et où les salutations respirent la franchise et la chaleur.",
+            textMg:
+              "Ny Faritra Avaratra eto Madagasikara dia ahitana kolontsaina roa lehibe sy mafonja : ny **Antakarana** (ireo mponina amin'ny vatolampy sy ny zohy masin'Ankarana) sy ny **Tsimihety** (mariky ny fahafahana sy ny fandavana fanandevozana). Ny fiteniny dia mampiavaka azy amin'ny fomba fiteny mafonja, mivantana ary feno hafanana sy fanajana.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'Ñ / NG',
+            phonetic: 'ñ (nasale palatale chantante)',
+            frenchEquivalent:
+              "Dans le Nord, la nasalisation est très mélodieuse, semblable au 'ñ' espagnol ou au 'gn' doux français (ex: Zagnahary = Dieu créateur, Karakory = comment ça va).",
+            sampleWordMg: 'Zagnahary',
+            sampleTranslationFr: 'Dieu Créateur suprême en parler du Nord',
+          },
+          {
+            type: 'concept',
+            termMg: 'Karakory / Akory kabary ?',
+            phonetic: 'ka-ra-kou-ri / a-kou-ri ka-ba-ri',
+            meaningFr: 'Comment allez-vous ? / Quelles sont les nouvelles ?',
+            explanation:
+              'La formule de salutation reine de tout le Nord de Madagascar. On y répond traditionnellement avec vivacité : *Tsara be tompoko !* (Très bien !) ou *Tsisy kabary !* (Rien à signaler, tout est paisible).',
+          },
+          {
+            type: 'concept',
+            termMg: 'Ampanjaka',
+            phonetic: 'am-pan-dza-ka',
+            meaningFr: 'Le roi ou souverain coutumier du Nord',
+            explanation:
+              "Chez les Antakarana et les Sakalava, l'Ampanjaka est le garant spirituel de la paix, des traditions sacrées (*Fomba*) et de la mémoire royale.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Jiaby / Aby',
+            phonetic: 'dzi-a-bi / a-bi',
+            meaningFr: 'Tous / Tout le monde / L’ensemble',
+            explanation:
+              "Terme omniprésent dans le Nord pour exprimer l'inclusion totale et l'égalité fraternelle : *Tsika jiaby* (Nous tous ensemble).",
+          },
+          {
+            type: 'concept',
+            termMg: 'Tsimihety',
+            phonetic: 'tsi-mi-he-ti',
+            meaningFr: 'Ceux qui ne coupent pas leurs cheveux (les insoumis)',
+            explanation:
+              "Nom historique héroïque du peuple de la région Sofia qui refusa de se couper les cheveux lors du deuil imposé par les rois d'antan, proclamant son amour sacré de la liberté.",
+          },
+          {
+            type: 'example',
+            textMg: 'Karakory anareo jiaby ? Tsara be tompoko, tsisy kabary !',
+            textFr:
+              'Comment allez-vous tous ? Très bien s’il vous plaît, tout est paisible !',
+          },
+          {
+            type: 'example',
+            textMg:
+              'Misaotra an’i Zagnahary fa nilamina tsara ny dia nankany Antsiranana.',
+            textFr:
+              'Grâce soit rendue à Dieu car le voyage vers Antsiranana s’est déroulé dans une parfaite sérénité.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Dans le dialecte Antakarana, le mot « Tany » (la terre) est souvent prononcé « Tagny » ou « Tandraza ». La célèbre baie de Diégo-Suarez abrite le Pain de Sucre marin sacré appelé « Nosy Lonjo », où les rites coutumiers d’action de grâce sont encore accomplis sous la bénédiction de l'Ampanjaka.",
+            textMg:
+              "Ao amin'ny fiteny Antakarana, ny tany dia antsoina hoe « Tagny ». Ny Nosy Lonjo ao amin'ny Helodranon'Antsiranana dia toerana masina fanaovana joro sy fisaorana ny Razana eo ambany fitarihan'ny Ampanjaka.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quelle est la salutation la plus courante et emblématique dans tout le Nord de Madagascar ?',
+            questionMg:
+              "Inona no fiarahabana malaza sy fampiasa indrindra any amin'ny Faritra Avaratra ?",
+            choices: [
+              'Karakory / Akory kabary ?',
+              'Bonjour mon cher ami',
+              'Veloma tompoko',
+              'Azafady tompoko',
+            ],
+            correctIndex: 0,
+            explanation:
+              '« Karakory » (ou « Akory kabary ») est la salutation proverbiale chaleureuse du Nord, appelant la réplique joyeuse « Tsara be ! ».',
+          },
+          {
+            type: 'quiz',
+            question:
+              'Que signifie littéralement le nom du peuple « Tsimihety » dans la région de la Sofia ?',
+            questionMg:
+              "Inona no hevitra ara-tantara fonosin'ny anarana hoe « Tsimihety » ?",
+            choices: [
+              'Ceux qui ne coupent pas leurs cheveux, symbole d’indépendance et de liberté',
+              'Ceux qui cultivent la vanille',
+              'Les marins de haute mer',
+              'Les bâtisseurs de ponts de pierre',
+            ],
+            correctIndex: 0,
+            explanation:
+              'Les Tsimihety refusèrent de couper leurs cheveux en signe de deuil forcé, affirmant ainsi leur liberté politique inaliénable.',
+          },
+          {
+            type: 'quiz',
+            question:
+              'Comment désigne-t-on le roi coutumier chez les Antakarana du Nord ?',
+            questionMg:
+              'Ahoana no iantsoana ny mpanjaka nentin-drazana any Ankarana ?',
+            choices: [
+              'Ny Ampanjaka',
+              'Le Président',
+              'Ny Mpikabary',
+              'Ny Katibo',
+            ],
+            correctIndex: 0,
+            explanation:
+              "L'Ampanjaka est l'autorité coutumière royale respectée qui préside aux rituels et veille sur la communauté.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quel mot du Nord utilise-t-on pour dire « tous ensemble / tout le monde » ?',
+            questionMg:
+              'Inona no teny avaratra midika hoe « tous / tout le monde » ?',
+            choices: ['Jiaby / Aby', 'Kely', 'Iray', 'Tsy misy'],
+            correctIndex: 0,
+            explanation:
+              "« Jiaby » (ou « aby ») signifie 'tous' : « Tsika jiaby » = Nous tous ensemble dans la concorde.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quelle est la réponse traditionnelle quand quelqu'un vous demande « Akory kabary ? » dans le Nord ?",
+            questionMg:
+              'Inona no avaly rehefa misy manontany hoe « Akory kabary ? » ?',
+            choices: [
+              'Tsisy kabary ! / Tsara be !',
+              'Tsy fantatro',
+              'Miala tsiny',
+              'Mandehana mody',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Tsisy kabary » (Il n'y a pas de problème / Tout va bien) exprime que la paix et la tranquillité règnent.",
+          },
+        ],
+      },
+
+      // ─── LEÇON 7 : LA CÔTE EST (BETSIMISARAKA & SORABE ANTEMORO) ───
+      {
+        slug: 'la-cote-est-betsimisaraka-et-sorabe-antemoro',
+        title:
+          'La côte Est : trésors Betsimisaraka et le Sorabe Antemoro (Ny Atsinanana sy ny Sorabe)',
+        titleMg: 'Ny Teny Betsimisaraka sy ny Sorabe Antemoro',
+        summary:
+          'Découvrez la poésie marine et forestière des Betsimisaraka et la tradition des manuscrits sacrés du Sorabe chez les Antemoro.',
+        summaryMg:
+          'Ianaro ny teny Betsimisaraka, ny fiarahabana amin’ny akory ary ny Sorabe soratana amin’ny taratasy dinitra.',
+        type: 'CULTURE',
+        orderIndex: 7,
+        durationMinutes: 8,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "La côte orientale de Madagascar, baignée par les alizés de l'océan Indien et bordée de forêts denses et de girofliers, abrite le grand peuple **Betsimisaraka** (« les nombreux inséparables », fédérés jadis par Ratsimilaho) et plus au Sud, le peuple **Antemoro** à Manakara et Vohipeno. C'est chez les Antemoro qu'est née l'unique écriture traditionnelle malgache : le **Sorabe** (littéralement « la grande écriture »), rédigée en caractères arabo-malgaches sur du papier végétal séculaire (*Taratasy Antemoro* fabriqué à partir de l'Avoha).",
+            textMg:
+              "Ny morontsiraka atsinanana dia fonenan'ny **Betsimisaraka** (« ireo maro tsy mifanary ») sy ny **Antemoro** any Vohipeno sy Manakara. Any no nivoahan'ny soratra tranainy indrindra malagasy : ny **Sorabe**, voasoratra amin'ny tarehin-tsoratra arabo-malagasy eo amin'ny Taratasy Antemoro vita amin'ny hazo Avoha. Ny fiteny any dia manankarena voambolana mikasika ny ala, ny ranomasina sy ny fahendrena.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'AKORY',
+            phonetic: 'a-kou-ri (ouverture ample)',
+            frenchEquivalent:
+              "Salutation universelle de la côte Est. Le 'O' est bien rond 'ou', le 'y' final est bref (ex: Akory aby = Bonjour à tous).",
+            sampleWordMg: 'Akory',
+            sampleTranslationFr: 'Salutation fraternelle de la côte Est',
+          },
+          {
+            type: 'concept',
+            termMg: 'Akory / Mba tsara va ?',
+            phonetic: 'a-kou-ri / mba tsa-ra va',
+            meaningFr:
+              'Bonjour, comment allez-vous ? Est-ce que tout va bien ?',
+            explanation:
+              "La salutation la plus douce et fraternelle sur la côte Est de Madagascar. Elle témoigne de l'attention bienveillante portée à son interlocuteur.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Sorabe',
+            phonetic: 'sou-ra-be',
+            meaningFr: 'La grande écriture / Manuscrits arabo-malgaches',
+            explanation:
+              "Textes manuscrits vénérables préservés par les scribes royaux Antemoro (*Katibo*), consignant l'histoire, la pharmacopée traditionnelle et l'astrologie.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Taratasy Antemoro',
+            phonetic: 'ta-ra-ta-si an-te-mou-rou',
+            meaningFr: 'Le papier artisanal végétal Antemoro',
+            explanation:
+              "Papier fait main d'une résistance exceptionnelle fabriqué à partir des fibres bouillies du mûrier sauvage (*Avoha*), orné de fleurs sauvages séchées.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Katibo',
+            phonetic: 'ka-ti-bou',
+            meaningFr: 'Le scribe et gardien des textes sacrés',
+            explanation:
+              "Érudit traditionnel de la lignée noble des Antemoro formé pendant des décennies à la calligraphie, à l'art divinatoire et aux lois coutumières.",
+          },
+          {
+            type: 'example',
+            textMg:
+              'Akory nareo namana, mba tsara va ny fambolena lavanila sy jirofo tamin’ity taona ity ?',
+            textFr:
+              'Bonjour chers amis, la récolte de vanille et de girofle a-t-elle été bonne cette année ?',
+          },
+          {
+            type: 'example',
+            textMg:
+              'Ireo Katibo no miambina sy mamaky ny Sorabe nentin-drazana any Vohipeno.',
+            textFr:
+              'Ce sont les Katibo qui gardent et lisent les vénérables manuscrits du Sorabe à Vohipeno.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Le nom « Betsimisaraka » a été proclamé solennellement au XVIIIe siècle lors de l'alliance des chefs de clans de l'Est pour signifier : « Même nombreux, nous ne serons plus jamais divisés ni séparés ». C'est l'un des plus beaux hommages historiques à l'idéal du Fihavanana.",
+            textMg:
+              "Ny anarana hoe « Betsimisaraka » dia fanekem-pihavanana lehibe nataon'ireo foko tany Atsinanana tamin'ny taonjato faha-18 : « Na maro aza izahay dia tsy hisaraka intsony mandrakizay ».",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Qu'est-ce que le « Sorabe » dans l'histoire de la culture malgache ?",
+            questionMg:
+              "Inona no atao hoe « Sorabe » eo amin'ny tantara sy ny kolontsaina malagasy ?",
+            choices: [
+              'Les manuscrits sacrés rédigés en caractères arabo-malgaches chez les Antemoro',
+              'Un type de grand chapeau en paille',
+              'Une danse moderne',
+              'Un instrument à cordes de fer',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le Sorabe est la première forme d'écriture historique de Madagascar, conservée précieusement dans le Sud-Est par les Katibo.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quelle plante locale est utilisée pour confectionner le célèbre Papier Antemoro ?',
+            questionMg:
+              "Inona ilay hazo fanao taratasy malaza any amin'ny faritra Antemoro ?",
+            choices: [
+              'L’Avoha (mûrier sauvage à fibres denses)',
+              'Le bambou géant',
+              'Le pin d’Europe',
+              'Le baobab géant',
+            ],
+            correctIndex: 0,
+            explanation:
+              "L'écorce de l'Avoha est bouillie, pilée et étalée sur des toiles de coton pour créer le prestigieux papier Antemoro.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Comment appelle-t-on les érudits traditionnels qui écrivent et lisent le Sorabe ?',
+            questionMg:
+              "Ahoana no anaran'ireo mpitahiry sy mpamaky ny Sorabe nentin-drazana ?",
+            choices: ['Ny Katibo', 'Ny Mpamboly', 'Ny Mpihira', 'Ny Mpantsaka'],
+            correctIndex: 0,
+            explanation:
+              "Les 'Katibo' sont les maîtres scribes et sages dépositaires de l'écriture arabo-malgache à Vohipeno.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Que signifie le nom du peuple « Betsimisaraka » sur la côte Est ?',
+            questionMg: "Inona no dikan'ny teny hoe « Betsimisaraka » ?",
+            choices: [
+              'Les nombreux qui ne se séparent jamais',
+              'Ceux qui vivent sur les bateaux',
+              'Les habitants des montagnes',
+              'Les chercheurs d’or',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Be » (nombreux) + « tsy » (ne... pas) + « misaraka » (se séparer) : un serment perpétuel d'unité fraternelle.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quelle salutation fraternelle utilise-t-on couramment sur la côte Est ?',
+            questionMg:
+              "Inona no teny fiarahabana feno hatsaram-panahy amin'ny teny Betsimisaraka ?",
+            choices: [
+              'Akory / Mba tsara va ?',
+              'Adieu',
+              'Aza manelingelina',
+              'Tsy tiako ianao',
+            ],
+            correctIndex: 0,
+            explanation:
+              '« Akory / Mba tsara va ? » est la salutation chaleureuse par excellence le long de tout le littoral oriental.',
+          },
+        ],
+      },
+
+      // ─── LEÇON 8 : LE PAYS PASTORAL BARA (IHOROMBE) ───
+      {
+        slug: 'le-pays-pastoral-bara-et-plateau-ihorombe',
+        title:
+          'Le pays pastoral Bara : l’épopée du zébu et de l’Ihorombe (Ny Fiteny sy ny Omby any Ihorombe)',
+        titleMg: 'Ny Fiteny sy ny Kolontsaina Bara any Ihorombe',
+        summary:
+          'Plongez dans les savanes du Sud : vocabulaire pastoral, art de désigner les robes de zébus, bravoure du Ringa et poésie de l’Ihorombe.',
+        summaryMg:
+          'Fantaro ny fomba fiainan’ny Bara, ny anaran’ny volom-bita amin’ny omby, ny haiady Ringa ary ny teny any Ihorombe.',
+        type: 'TRADITION',
+        orderIndex: 8,
+        durationMinutes: 8,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Sur les immenses plateaux herbeux de l'Ihorombe et aux portes des massifs de l'Isalo vit le peuple **Bara**. Éleveurs de zébus par excellence, les Bara possèdent un parler puissant, sobre et direct, façonné par les grands espaces et le pastoralisme. Chez les Bara, le zébu (*Aombe*) n'est pas un bétail ordinaire : c'est un compagnon de destin, l'incarnation de la fierté et le pont sacré entre les ancêtres et les vivants.",
+            textMg:
+              "Eo amin'ny lembalemba midadasik'i Ihorombe sy ny manodidina an'Isalo no monina ny foko **Bara**. Mpiandry omby hatramin'ny ela izy ireo ka ny fiteniny dia mafonja, fohy ary mikasika ny fiainana an-kalamanjana. Ny omby (*Aombe*) eo amin'ny Bara dia harena amam-boninahitra, mariky ny herim-po ary fatorana masina amin'ny Razana.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'AOMBE',
+            phonetic: 'a-oum-be (diphtongue pastorale)',
+            frenchEquivalent:
+              "En parler Bara et dans le Sud, 'Omby' (zébu) se prononce avec un 'A' d'ouverture très sonore : 'Aombe'.",
+            sampleWordMg: 'Aombe',
+            sampleTranslationFr: 'Le zébu en dialecte Bara et pastoral',
+          },
+          {
+            type: 'concept',
+            termMg: 'Volom-bita / Volon-tsoratra',
+            phonetic: 'vou-loum-bi-ta',
+            meaningFr: 'La robe et les marques du zébu',
+            explanation:
+              'Le lexique Bara possède des dizaines de mots pour décrire précisément la robe de chaque zébu : *Mazavaloha* (tête blanche), *Borimanga* (robe gris-bleu), *Vangovango* (robe tachetée).',
+          },
+          {
+            type: 'concept',
+            termMg: 'Ringa Bara',
+            phonetic: 'rin-ga',
+            meaningFr: 'La lutte martiale traditionnelle à mains nues',
+            explanation:
+              "Art martial d'honneur et de courage pratiqué sur la terre rouge lors des grandes fêtes et foires pour éprouver la valeur et l'endurance des jeunes hommes.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Sombiky',
+            phonetic: 'soum-bi-ki',
+            meaningFr: 'Les entailles géométriques d’oreille du zébu',
+            explanation:
+              "Chaque famille noble et pastorale possède sa marque d'oreille spécifique (*Sombiky*), enregistrée dans la mémoire de toute la communauté.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Toka-barika',
+            phonetic: 'tou-ka-ba-ri-ka',
+            meaningFr: 'La déclamation oratoire héroïque pastorale',
+            explanation:
+              "Chant et cri poétique où le guerrier pastoral proclame la vaillance de ses aïeux, la force de son lignage et l'amour de sa terre.",
+          },
+          {
+            type: 'example',
+            textMg:
+              'Aombe matavy an-jatony no mandalo eny amin’ny lembalemban’i Ihorombe.',
+            textFr:
+              'Des centaines de zébus gras traversent majestueusement le plateau d’Ihorombe.',
+          },
+          {
+            type: 'example',
+            textMg:
+              'Mijoro am-pahasahiana ny tovolahy amin’ny kianjan’ny Ringa ho fiarovana ny voninahitry ny fokony.',
+            textFr:
+              'Le jeune homme se dresse avec fierté dans l’arène du Ringa pour honorer son clan.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              'Un éleveur Bara peut reconnaître chacun des zébus de son troupeau (parfois plus de cinq cents têtes !) simplement en observant la courbure de ses cornes (*Tandroka*) et la nuance exacte de sa robe au lever du soleil.',
+            textMg:
+              "Ny mpiandry omby Bara dia mahay manavaka ny ombiny tsirairay amin'ny tandroka sy ny volom-bita na dia an-jatony aza no miara-miraoka ahitra.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Comment appelle-t-on le zébu dans le parler Bara et du Sud de Madagascar ?',
+            questionMg:
+              "Ahoana no fanononana ny teny hoe « zébu » amin'ny fiteny Bara any Atsimo ?",
+            choices: ['Aombe', 'Soavaly', 'Kisoa', 'Vorona'],
+            correctIndex: 0,
+            explanation:
+              "En dialecte Bara, le zébu se nomme 'Aombe', avec la diphtongue caractéristique marquant la noblesse pastorale.",
+          },
+          {
+            type: 'quiz',
+            question: "Qu'est-ce que le « Ringa » chez les Bara ?",
+            questionMg:
+              "Inona no atao hoe « Ringa » eo amin'ny kolontsaina Bara ?",
+            choices: [
+              'Un art martial traditionnel de lutte à mains nues célébrant la vaillance',
+              'Une recette de cuisine avec du lait de zébu',
+              'Une pirogue de rivière',
+              'Un instrument à cordes de bambou',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le Ringa est la lutte traditionnelle où les jeunes hommes rivalisent de bravoure, d'équilibre et de force physique.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quel plateau herbeux immense est le cœur géographique du pays pastoral Bara ?',
+            questionMg:
+              "Inona ilay lembalemba midadasika fonenan'ny mpiandry omby Bara ?",
+            choices: [
+              'L’Ihorombe',
+              'L’Ankarana',
+              'La presqu’île Masoala',
+              'L’île Sainte-Marie',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le vaste plateau de l'Ihorombe est la terre d'élection des troupeaux et des grands espaces pastoraux Bara.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Que désigne le terme « Volom-bita » dans le vocabulaire des éleveurs ?',
+            questionMg:
+              "Inona no hevitry ny hoe « Volom-bita » eo amin'ny fiompiana omby ?",
+            choices: [
+              'Les différentes robes, teintes et motifs de pelage des zébus',
+              'Le prix de la viande au kilo',
+              'La longueur de la corde',
+              'L’âge du berger',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le 'Volom-bita' est l'extraordinaire palette de termes désignant chaque nuance et tache de la robe du zébu.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Comment les éleveurs identifient-ils traditionnellement la propriété de chaque bête ?',
+            questionMg:
+              "Ahoana no anavahan'ny mpiandry omby ny fananan'ny fianakaviana tsirairay ?",
+            choices: [
+              'Par le Sombiky (entailles géométriques rituelles aux oreilles du zébu)',
+              'Avec un collier électronique en plastique',
+              'En peignant le zébu en vert fluo',
+              'Au hasard de la chance',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le 'Sombiky' est la marque géométrique propre à chaque lignée gravée aux oreilles du zébu dès son jeune âge.",
+          },
+        ],
+      },
+
+      // ─── LEÇON 9 : HAUTES TERRES DU SUD & LACS (BETSILEO & SIHANAKA) ───
+      {
+        slug: 'les-parlers-betsileo-et-sihanaka',
+        title:
+          'Rizières et grands lacs : les parlers Betsileo et Sihanaka (Ny Fiteny Betsileo sy Sihanaka)',
+        titleMg: 'Ny Fiteny Betsileo sy Sihanaka : Rary sy Riha',
+        summary:
+          'Découvrez l’éloquence du chant poétique Betsileo (Riha), les rizières en gradins et les traditions lacustres du pays Sihanaka autour de l’Alaotra.',
+        summaryMg:
+          'Ianaro ny kanton’ny kabary Betsileo, ny tononkira Riha, ny zozoro ary ny fiainan’ny mpanjono ao Alaotra.',
+        type: 'CULTURE',
+        orderIndex: 9,
+        durationMinutes: 8,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Deux régions façonnées par l'eau et le travail de la terre : au Sud des Hautes Terres, le peuple **Betsileo** (« Les Invincibles ») a sculpté les montagnes en rizières en terrasses spectaculaires et cultivé l'art oratoire du chant déclamé (*Riha* et *Isa*). Au Nord-Est, le peuple **Antsihanaka** (« ceux des marais ») vit au bord du lac Alaotra, le plus grand lac d'eau douce de l'île. Leurs parlers célèbrent la solidarité paysanne et l'ingéniosité artisanale.",
+            textMg:
+              "Faritra roa lehibe no mifamatotra amin'ny rano sy ny fambolem-bary : ny **Betsileo** (ireo mpamboly kinga nanorina tanimbary an-toerana manerana ny havoana) sy ny **Sihanaka** (monina manodidina ny farihin'Alaotra, sompitry ny vary eto Madagasikara). Ny fiteniny dia mampiseho ny kanton'ny Riha sy Isa, ny haikanton'ny rary ary ny fihavanana an-tsaha.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'RIHA',
+            phonetic: 'ri-ha (intonation montante et poétique)',
+            frenchEquivalent:
+              "Désigne la joute poétique déclamée en chœur chez les Betsileo. Le 'R' est roulé, le 'h' doucement expiré.",
+            sampleWordMg: 'Riha',
+            sampleTranslationFr:
+              'Joute oratoire chantée traditionnelle Betsileo',
+          },
+          {
+            type: 'concept',
+            termMg: 'Riha sy Isa',
+            phonetic: 'ri-ha si i-sa',
+            meaningFr: 'Chants polyphoniques rythmés et joutes oratoires',
+            explanation:
+              'Chants traditionnels Betsileo déclamés dans les rizières et lors des fêtes pour galvaniser les travailleurs de la terre et honorer les mariages.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Tanimbary an-toerana',
+            phonetic: 'ta-nim-ba-ri an-tou-e-ra-na',
+            meaningFr: 'Rizières en terrasses étagées',
+            explanation:
+              "Prouesse d'ingénierie paysanne Betsileo classée au patrimoine mondial, utilisant la gravité pour irriguer chaque palier sans gaspillage d'eau.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Zozoro',
+            phonetic: 'zou-zou-rou',
+            meaningFr: 'Le grand roseau des marais de l’Alaotra',
+            explanation:
+              'Plante emblématique du lac Alaotra utilisée pour tresser les nattes, confectionner les toits étanches et fabriquer les nasses des pêcheurs Sihanaka.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Fihavanana an-tsaha',
+            phonetic: 'fi-ha-va-na-na an-tsa-ha',
+            meaningFr: 'La solidarité fraternelle des travaux agricoles',
+            explanation:
+              "Principe fondamental : quand vient le temps du repiquage ou de la moisson, tout le village s'entraide mutuellement sans échange d'argent.",
+          },
+          {
+            type: 'example',
+            textMg:
+              'Manako eny an-dohasaha ny feon’ny Riha rehefa miara-miasa an-tsaha ny Betsileo.',
+            textFr:
+              'La voix du chant Riha résonne dans la vallée lorsque les Betsileo travaillent ensemble dans les rizières.',
+          },
+          {
+            type: 'example',
+            textMg:
+              'Manankarena trondro sy vary ny tany Sihanaka manodidina ny farihin’Alaotra.',
+            textFr:
+              'La région Sihanaka autour du lac Alaotra regorge de poissons savoureux et de riz doré.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              'Le lac Alaotra en pays Sihanaka est le plus grand réservoir de riz de Madagascar, souvent surnommé « Le grenier à riz de la Grande Île ». Il abrite une faune unique au monde, dont le petit lémurien des roseaux (*Hapalemur alaotrensis* ou Bandro), qui ne vit nulle part ailleurs sur Terre.',
+            textMg:
+              "Ny farihin'Alaotra no farihy lehibe indrindra eto Madagasikara ary antsoina hoe « Sompitr'i Madagasikara ». Any no hany toerana ahitana ny Bandro, karazam-gidro tsy misy afa-tsy ao anaty zozoro.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Qu'est-ce que le « Riha » dans la tradition culturelle du peuple Betsileo ?",
+            questionMg:
+              "Inona no atao hoe « Riha » amin'ny kolontsaina Betsileo ?",
+            choices: [
+              'Une déclamation poétique chantée en chœur lors des fêtes et des travaux des champs',
+              'Un type de pirogue en bois de pin',
+              'Un outil en fer pour couper la viande',
+              'Une boisson alcoolisée',
+            ],
+            correctIndex: 0,
+            explanation:
+              'Le Riha est la joute oratoire poétique et polyphonique traditionnelle qui fait la renommée des orateurs Betsileo.',
+          },
+          {
+            type: 'quiz',
+            question:
+              "Pour quel chef-d'œuvre paysan d'ingénierie agricole les Betsileo sont-ils mondialement célèbres ?",
+            questionMg:
+              'Inona no haikanto ara-pambolena mampalaza ny Betsileo maneran-tany ?',
+            choices: [
+              'Les rizières en terrasses sculptées à flanc de montagne (Tanimbary an-toerana)',
+              'La culture des oliviers en serre',
+              'La pêche au harpon sur la glace',
+              'La cueillette exclusive de pommes',
+            ],
+            correctIndex: 0,
+            explanation:
+              'Les Betsileo ont sculpté des collines entières en paliers irrigués par gravité avec une maîtrise hydraulique ancestrale unique.',
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel lac d'eau douce majeur est le cœur du territoire des Antsihanaka ?",
+            questionMg:
+              "Inona ilay farihy lehibe indrindra fonenan'ny foko Sihanaka ?",
+            choices: [
+              'Le lac Alaotra',
+              'Le lac Léman',
+              'Le lac Victoria',
+              'Le lac Titicaca',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le lac Alaotra est le plus grand lac d'eau douce de Madagascar et le grenier à riz de toute l'île.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quel lémurien rare et endémique ne vit nulle part ailleurs que dans les roseaux du lac Alaotra ?',
+            questionMg:
+              "Inona ilay gidro kely tsy fahita afa-tsy ao anaty zozoron'ny farihin'Alaotra ?",
+            choices: [
+              'Le Bandro (Hapalemur alaotrensis)',
+              'Le Panda géant',
+              'Le Koala',
+              'Le Kangourou',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le Bandro est le lémurien aquatique emblématique qui vit exclusivement dans les fourrés de roseaux Zozoro de l'Alaotra.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quelle plante lacustre géante est essentielle à l'artisanat et aux toits en pays Sihanaka ?",
+            questionMg:
+              "Inona ilay zavamaniry maniry ao anaty heniheny ampiasain'ny Sihanaka amin'ny rary sy trano ?",
+            choices: [
+              'Le Zozoro (le grand roseau des marais)',
+              'Le blé d’hiver',
+              'Le cèdre du Liban',
+              'Le palmier dattier',
+            ],
+            correctIndex: 0,
+            explanation:
+              'Le Zozoro est le roseau traditionnel séché utilisé pour confectionner les nattes, cloisons et toitures lacustres.',
           },
         ],
       },
@@ -6202,7 +7066,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
     orderIndex: 6,
     estimatedMinutes: 50,
     lessons: [
-{
+      {
         slug: 'le-fanorona-strategie-royale-et-rituel-du-vela',
         title: 'Le Fanorona : Stratégie royale, cosmologie et rituel du Vela',
         titleMg: "Ny Fanorona : Tetikadin'ny Mpanjaka sy ny Lalàn'ny Vela",
@@ -6361,7 +7225,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
         ],
       },
-{
+      {
         slug: 'le-moraingy-et-ringa-art-martial-et-honneur',
         title:
           "Le Moraingy & le Ringa : L'éthique guerrière côtière et le respect du vaincu",
@@ -6502,7 +7366,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
         ],
       },
-{
+      {
         slug: 'le-sambatra-fete-septennale-antambahoaka',
         title: 'Le Sambatra de Mananjary : La grande initiation septennale',
         titleMg: 'Ny Sambatra any Mananjary : Fety Lehibe Isaky ny Fito Taona',
@@ -6652,10 +7516,11 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       },
       {
         slug: 'les-instruments-de-musique-valiha-et-marovany',
-        title: "Les instruments traditionnels : l'âme de la Valiha et du Marovany",
+        title:
+          "Les instruments traditionnels : l'âme de la Valiha et du Marovany",
         titleMg: 'Ireo Zava-maneno Nentin-drazana : ny Valiha sy ny Marovany',
         summary:
-          "Découvrez les instruments emblématiques malgaches : la cithare tubulaire en bambou Valiha, le Marovany côtier et la flûte Sodina.",
+          'Découvrez les instruments emblématiques malgaches : la cithare tubulaire en bambou Valiha, le Marovany côtier et la flûte Sodina.',
         summaryMg:
           "Fantaro ireo zava-maneno mampiavaka an'i Madagasikara : ny Valiha volotsangana, ny Marovany sy ny Sodina kanto.",
         type: 'CULTURE',
@@ -6674,39 +7539,42 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             letterOrSound: 'VALIHA',
             phonetic: 'va-li-ha',
             frenchEquivalent:
-              "Se prononce doucement avec le « H » expiré léger (ex: Valiha, Marovany, Sodina).",
+              'Se prononce doucement avec le « H » expiré léger (ex: Valiha, Marovany, Sodina).',
             sampleWordMg: 'Valiha',
-            sampleTranslationFr: 'Cithare tubulaire en bambou (instrument national)',
+            sampleTranslationFr:
+              'Cithare tubulaire en bambou (instrument national)',
           },
           {
             type: 'concept',
             termMg: 'Valiha',
             phonetic: 'va-li-ha',
-            meaningFr: "L'instrument emblématique de Madagascar en bambou sacré",
+            meaningFr:
+              "L'instrument emblématique de Madagascar en bambou sacré",
             explanation:
-              "Cithare tubulaire taillée dans une variété spécifique de bambou (Volotsangana), équipée de cordes tendues sur de petits chevalets en bois mobiles.",
+              'Cithare tubulaire taillée dans une variété spécifique de bambou (Volotsangana), équipée de cordes tendues sur de petits chevalets en bois mobiles.',
           },
           {
             type: 'concept',
             termMg: 'Marovany',
             phonetic: 'ma-rou-va-ni',
-            meaningFr: "« La boîte aux multiples voix » (cithare sur caisse côtière)",
+            meaningFr:
+              '« La boîte aux multiples voix » (cithare sur caisse côtière)',
             explanation:
-              "Instrument rectangulaire en bois muni de cordes sur deux faces opposées, incontournable pour invoquer les esprits royaux lors des cérémonies de possession Tromba.",
+              'Instrument rectangulaire en bois muni de cordes sur deux faces opposées, incontournable pour invoquer les esprits royaux lors des cérémonies de possession Tromba.',
           },
           {
             type: 'concept',
             termMg: 'Sodina',
             phonetic: 'sou-di-na',
-            meaningFr: "La flûte droite traditionnelle en bambou ou roseau",
+            meaningFr: 'La flûte droite traditionnelle en bambou ou roseau',
             explanation:
-              "Flûte pastorale à six trous, immortalisée à travers le monde par le virtuose Rakoto Frah et essentielle dans le Hira Gasy.",
+              'Flûte pastorale à six trous, immortalisée à travers le monde par le virtuose Rakoto Frah et essentielle dans le Hira Gasy.',
           },
           {
             type: 'concept',
             termMg: 'Lokanga Bara',
             phonetic: 'lou-kan-ga ba-ra',
-            meaningFr: "Le violon rustique à trois cordes des pasteurs du Sud",
+            meaningFr: 'Le violon rustique à trois cordes des pasteurs du Sud',
             explanation:
               "Instrument à archet sculpté dans du bois dur et garni d'une table d'harmonie en peau de zébu, accompagnant les récits poétiques des gardiens de troupeaux.",
           },
@@ -6715,7 +7583,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             textMg:
               "Nanakoako eran'ny vohitra ny feo mangan'ny valiha nampandry saina ny mpiara-monina.",
             textFr:
-              "Le son cristallin et mélodieux de la valiha a résonné à travers le village, apaisant les cœurs de la communauté.",
+              'Le son cristallin et mélodieux de la valiha a résonné à travers le village, apaisant les cœurs de la communauté.',
           },
           {
             type: 'didYouKnow',
@@ -6732,9 +7600,9 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             questionMg:
               "Inona ilay zava-maneno vita amin'ny volotsangana heverina ho marika lehibe malagasy ?",
             choices: [
-              "La Valiha",
-              "Le piano à queue",
-              "La guitare électrique",
+              'La Valiha',
+              'Le piano à queue',
+              'La guitare électrique',
               "L'accordéon moderne",
             ],
             correctIndex: 0,
@@ -6744,30 +7612,30 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quel instrument en caisse de résonance en bois est indispensable aux rituels de Tromba sur les côtes ?",
+              'Quel instrument en caisse de résonance en bois est indispensable aux rituels de Tromba sur les côtes ?',
             questionMg:
               "Inona ilay zava-maneno efajoro hazo fampiasa matetika amin'ny fombafomba Tromba morontsiraka ?",
             choices: [
-              "Le Marovany",
-              "Le violoncelle classique",
-              "La trompette en cuivre",
-              "La batterie moderne",
+              'Le Marovany',
+              'Le violoncelle classique',
+              'La trompette en cuivre',
+              'La batterie moderne',
             ],
             correctIndex: 0,
             explanation:
-              "Le Marovany, avec ses cordes montées sur deux faces, produit une onde sonore vibrante qui induit la transe spirituelle du Tromba.",
+              'Le Marovany, avec ses cordes montées sur deux faces, produit une onde sonore vibrante qui induit la transe spirituelle du Tromba.',
           },
           {
             type: 'quiz',
             question:
-              "Quel maître flûtiste malgache légendaire a fait connaître la Sodina dans le monde entier ?",
+              'Quel maître flûtiste malgache légendaire a fait connaître la Sodina dans le monde entier ?',
             questionMg:
-              "Iza ilay mpitsoka sodina kalaza eran-tany nampisandratra ny kolontsaina malagasy ?",
+              'Iza ilay mpitsoka sodina kalaza eran-tany nampisandratra ny kolontsaina malagasy ?',
             choices: [
-              "Rakoto Frah",
-              "Jean Laborde",
-              "Andrianampoinimerina",
-              "Radama Ier",
+              'Rakoto Frah',
+              'Jean Laborde',
+              'Andrianampoinimerina',
+              'Radama Ier',
             ],
             correctIndex: 0,
             explanation:
@@ -6776,38 +7644,39 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Comment appelle-t-on le violon rustique à trois cordes caractéristique des pasteurs Bara du Grand Sud ?",
+              'Comment appelle-t-on le violon rustique à trois cordes caractéristique des pasteurs Bara du Grand Sud ?',
             questionMg:
               "Inona no iantsoana ilay zava-maneno misy tadiny telo fitendrin'ny mpiompy Bara any Atsimo ?",
             choices: ['Le Lokanga', 'Ny Valiha', 'Ny Sodina', 'Ny Kabosy'],
             correctIndex: 0,
             explanation:
-              "Le Lokanga (ou Lokanga Bara) est un violon traditionnel à manche courbe et table en peau de zébu rythmant les récits du Sud.",
+              'Le Lokanga (ou Lokanga Bara) est un violon traditionnel à manche courbe et table en peau de zébu rythmant les récits du Sud.',
           },
           {
             type: 'quiz',
             question:
-              "Quelle fonction sacrée la musique traditionnelle remplit-elle auprès des ancêtres et de la communauté ?",
+              'Quelle fonction sacrée la musique traditionnelle remplit-elle auprès des ancêtres et de la communauté ?',
             questionMg:
               "Inona ny anjara asa masina sahanin'ny mozika nentim-paharazana eo amin'ny fiaraha-monina ?",
             choices: [
-              "Établir la communion avec les ancêtres, apaiser les esprits et resserrer le Fihavanana",
-              "Remplacer les lois du tribunal civil",
+              'Établir la communion avec les ancêtres, apaiser les esprits et resserrer le Fihavanana',
+              'Remplacer les lois du tribunal civil',
               "Interdire aux jeunes d'exprimer leurs émotions",
-              "Obliger les villageois à garder le silence",
+              'Obliger les villageois à garder le silence',
             ],
             correctIndex: 0,
             explanation:
-              "La musique malgache est un vecteur de bénédiction (hasina), de mémoire communautaire et de médiation avec les Razana.",
+              'La musique malgache est un vecteur de bénédiction (hasina), de mémoire communautaire et de médiation avec les Razana.',
           },
         ],
       },
       {
         slug: 'l-art-du-tissage-du-lamba-arindrano-et-soie-sauvage-landibe',
-        title: "L'art textile sacré : le Lamba Arindrano et la soie sauvage Landibe",
+        title:
+          "L'art textile sacré : le Lamba Arindrano et la soie sauvage Landibe",
         titleMg: 'Ny Tenona sy ny Landibe : Lamba Arindrano sy Akotofahana',
         summary:
-          "Explorez les secrets du tissage traditionnel : la récolte de la soie sauvage Landibe, le prestigieux Lamba Arindrano et les teintures végétales.",
+          'Explorez les secrets du tissage traditionnel : la récolte de la soie sauvage Landibe, le prestigieux Lamba Arindrano et les teintures végétales.',
         summaryMg:
           "Fantaro ny kanton'ny tenona malagasy : ny fambolena sy fiotazana ny Landibe, ny Lamba Arindrano ary ny Akotofahana.",
         type: 'CULTURE',
@@ -6826,7 +7695,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             letterOrSound: 'LANDIBE',
             phonetic: 'lan-di-be',
             frenchEquivalent:
-              "Prononcez distinctement « Lan-di-bé » (soie sauvage noble des hautes terres).",
+              'Prononcez distinctement « Lan-di-bé » (soie sauvage noble des hautes terres).',
             sampleWordMg: 'Landibe',
             sampleTranslationFr: 'Soie sauvage endémique de Madagascar',
           },
@@ -6834,7 +7703,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Landibe (Borocera madagascariensis)',
             phonetic: 'lan-di-be',
-            meaningFr: "Le ver à soie sauvage des forêts de tapia",
+            meaningFr: 'Le ver à soie sauvage des forêts de tapia',
             explanation:
               "Chenille endémique qui tisse de solides cocons dorés dans les forêts de tapia (notamment dans l'Itasy et l'Amoron'i Mania), matière première de la soie ancestrale.",
           },
@@ -6842,15 +7711,17 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Lamba Arindrano',
             phonetic: 'lam-ba a-rin-dra-nou',
-            meaningFr: "L'étoffe noble aux rayures géométriques noires et écrues",
+            meaningFr:
+              "L'étoffe noble aux rayures géométriques noires et écrues",
             explanation:
-              "Lamba de haute dignité traditionnellement porté par les souverains, les aînés et les juges coutumiers lors des grands discours officiels.",
+              'Lamba de haute dignité traditionnellement porté par les souverains, les aînés et les juges coutumiers lors des grands discours officiels.',
           },
           {
             type: 'concept',
             termMg: 'Lamba Akotofahana',
             phonetic: 'lam-ba a-kou-tou-fa-ha-na',
-            meaningFr: "L'étoffe de prestige aux motifs brodés et jacquards en relief",
+            meaningFr:
+              "L'étoffe de prestige aux motifs brodés et jacquards en relief",
             explanation:
               "Chef-d'œuvre de patience et de créativité, réservé jadis aux membres de la royauté pour les noces et les cérémonies d'apparat.",
           },
@@ -6858,14 +7729,15 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Tapia (Uapaca bojeri)',
             phonetic: 'ta-pi-a',
-            meaningFr: "L'arbre protecteur des forêts de l'Imerina et du Betsileo",
+            meaningFr:
+              "L'arbre protecteur des forêts de l'Imerina et du Betsileo",
             explanation:
               "Arbre résistant aux feux dont les feuilles nourrissent les chenilles de soie sauvage et dont l'écorce fournit des pigments de teinture naturelle.",
           },
           {
             type: 'example',
             textMg:
-              "Nisikina Lamba Arindrano ny raiamandreny raha nitsangana nanao kabary fampihavanana.",
+              'Nisikina Lamba Arindrano ny raiamandreny raha nitsangana nanao kabary fampihavanana.',
             textFr:
               "Le patriarche s'est drapé dans son somptueux Lamba Arindrano avant de se lever pour prononcer le discours de réconciliation.",
           },
@@ -6874,7 +7746,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             textFr:
               "Les teintures du lamba traditionnel étaient exclusivement végétales et minérales : le jaune éclatant provenait du curcuma (*Tamotamo*), le brun profond de l'argile ferrugineuse des rizières (*Tany mena*), et les nuances d'ocre de décoctions d'écorces d'arbres endémiques bouillies pendant plusieurs jours.",
             textMg:
-              "Tsy nisy loko simika ny tenona malagasy fahiny : ny tamotamo no nanome ny loko mavo manganofy, ny fotaka an-tanimbary no nahazoana ny volontany matroka, ary ny hodi-kazo nandrahoina no niteraka ireo loko volom-parasy sy mena mangamanga.",
+              'Tsy nisy loko simika ny tenona malagasy fahiny : ny tamotamo no nanome ny loko mavo manganofy, ny fotaka an-tanimbary no nahazoana ny volontany matroka, ary ny hodi-kazo nandrahoina no niteraka ireo loko volom-parasy sy mena mangamanga.',
           },
           // ─── 5 Micro-Quiz de validation ───
           {
@@ -6882,16 +7754,16 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             question:
               "D'où provient traditionnellement la soie sauvage noble « Landibe » à Madagascar ?",
             questionMg:
-              "Avy aiza ny landy nentim-paharazana antsoina hoe « Landibe » eto Madagasikara ?",
+              'Avy aiza ny landy nentim-paharazana antsoina hoe « Landibe » eto Madagasikara ?',
             choices: [
-              "Des cocons de chenilles sauvages vivant dans les forêts de tapia",
+              'Des cocons de chenilles sauvages vivant dans les forêts de tapia',
               "De fibres synthétiques d'usines modernes",
               "De la laine de moutons importés d'Europe",
-              "De feuilles de bananier séchées",
+              'De feuilles de bananier séchées',
             ],
             correctIndex: 0,
             explanation:
-              "Le Landibe provient de chenilles endémiques (Borocera madagascariensis) qui se développent sur les arbres Tapia des Hautes Terres.",
+              'Le Landibe provient de chenilles endémiques (Borocera madagascariensis) qui se développent sur les arbres Tapia des Hautes Terres.',
           },
           {
             type: 'quiz',
@@ -6900,10 +7772,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             questionMg:
               "Inona ilay lamba malaza manana tsipika milamina fanaon'ny raiamandreny sy ny manan-kaja ?",
             choices: [
-              "Le Lamba Arindrano",
-              "Un simple tablier de cuisine",
-              "Une serviette de bain",
-              "Un tissu de rideau imprimé",
+              'Le Lamba Arindrano',
+              'Un simple tablier de cuisine',
+              'Une serviette de bain',
+              'Un tissu de rideau imprimé',
             ],
             correctIndex: 0,
             explanation:
@@ -6912,36 +7784,36 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quel lamba réputé pour sa complexité comporte des motifs géométriques et floraux en relief ?",
+              'Quel lamba réputé pour sa complexité comporte des motifs géométriques et floraux en relief ?',
             questionMg:
               "Inona ilay lamba be haingon-tsoratra sy sarobidy indrindra amin'ny tenona malagasy ?",
             choices: [
-              "Le Lamba Akotofahana",
-              "Le lamba tantsaha tsotra",
-              "Ny salaka",
-              "Ny lamba lany fotsy",
+              'Le Lamba Akotofahana',
+              'Le lamba tantsaha tsotra',
+              'Ny salaka',
+              'Ny lamba lany fotsy',
             ],
             correctIndex: 0,
             explanation:
-              "Le Lamba Akotofahana est le joyau textile malgache, orné de motifs en relief tissés avec une minutie exceptionnelle.",
+              'Le Lamba Akotofahana est le joyau textile malgache, orné de motifs en relief tissés avec une minutie exceptionnelle.',
           },
           {
             type: 'quiz',
             question:
-              "Quel arbre endémique résistant au feu héberge et nourrit les vers à soie Landibe ?",
+              'Quel arbre endémique résistant au feu héberge et nourrit les vers à soie Landibe ?',
             questionMg:
-              "Inona ilay hazo fihinam-boa maniry an-tanety mamelona ny bibin-dandy Landibe ?",
+              'Inona ilay hazo fihinam-boa maniry an-tanety mamelona ny bibin-dandy Landibe ?',
             choices: ['Le Tapia', 'Le Baobab', 'Le Cocotier', "L'Eucalyptus"],
             correctIndex: 0,
             explanation:
-              "Le Tapia (Uapaca bojeri) forme des forêts claires endémiques essentielles à la survie du ver à soie sauvage Landibe.",
+              'Le Tapia (Uapaca bojeri) forme des forêts claires endémiques essentielles à la survie du ver à soie sauvage Landibe.',
           },
           {
             type: 'quiz',
             question:
-              "Pourquoi le tissu en soie de Landibe est-il au centre de la cérémonie du Famadihana ?",
+              'Pourquoi le tissu en soie de Landibe est-il au centre de la cérémonie du Famadihana ?',
             questionMg:
-              "Nahoana ny lamba landy no zava-dehibe indrindra mandritra ny famadihana ?",
+              'Nahoana ny lamba landy no zava-dehibe indrindra mandritra ny famadihana ?',
             choices: [
               "Parce qu'il enveloppe les dépouilles des ancêtres pour honorer leur mémoire éternelle dans le tombeau",
               "Parce qu'il sert de drapeau pour indiquer le chemin",
@@ -6956,10 +7828,11 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       },
       {
         slug: 'l-art-sculptural-des-aloalo-et-totems-funeraires',
-        title: "L'art sculptural des Aloalo : totems et mémoire éternelle du Grand Sud",
+        title:
+          "L'art sculptural des Aloalo : totems et mémoire éternelle du Grand Sud",
         titleMg: "Ny Haikanto amin'ny Aloalo sy ny Valavato Mahafaly",
         summary:
-          "Découvrez le génie sculptural des Mahafaly et Antandroy : les totems de bois sculpté Aloalo et les tombeaux Valavato.",
+          'Découvrez le génie sculptural des Mahafaly et Antandroy : les totems de bois sculpté Aloalo et les tombeaux Valavato.',
         summaryMg:
           "Fantaro ny kanton'ny sokitra Aloalo any amin'ny faritra Mahafaly sy Antandroy : tsangambato miresaka amin'ny lanitra.",
         type: 'CULTURE',
@@ -6978,15 +7851,16 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             letterOrSound: 'ALOALO',
             phonetic: 'a-lou-a-lou',
             frenchEquivalent:
-              "Vient du verbe « Mialo » (faire écran, protéger, faire le lien entre deux mondes).",
+              'Vient du verbe « Mialo » (faire écran, protéger, faire le lien entre deux mondes).',
             sampleWordMg: 'Aloalo',
-            sampleTranslationFr: 'Poteau funéraire sculpté en bois ajouré du Sud',
+            sampleTranslationFr:
+              'Poteau funéraire sculpté en bois ajouré du Sud',
           },
           {
             type: 'concept',
             termMg: 'Aloalo',
             phonetic: 'a-lou-a-lou',
-            meaningFr: "Poteau totémique funéraire en bois sculpté",
+            meaningFr: 'Poteau totémique funéraire en bois sculpté',
             explanation:
               "Sculpture verticale de 1,5 à 2 mètres comportant des motifs géométriques abstraits successifs surmontés d'une scène narrative figurative.",
           },
@@ -6994,15 +7868,16 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Valavato (Fasana Mahafaly)',
             phonetic: 'va-la-va-tou',
-            meaningFr: "Le tombeau monumental carré en pierres sèches taillées",
+            meaningFr: 'Le tombeau monumental carré en pierres sèches taillées',
             explanation:
-              "Édifice funéraire imposant sur lequel sont disposés les crânes de zébus sacrificiels (*Tinoka*) et les poteaux Aloalo honorant le défunt.",
+              'Édifice funéraire imposant sur lequel sont disposés les crânes de zébus sacrificiels (*Tinoka*) et les poteaux Aloalo honorant le défunt.',
           },
           {
             type: 'concept',
             termMg: 'Hazomalany sy Mendorave',
             phonetic: 'ha-zou-ma-la-ni si men-dou-ra-ve',
-            meaningFr: "Bois nobles et imputrescibles utilisés pour la sculpture",
+            meaningFr:
+              'Bois nobles et imputrescibles utilisés pour la sculpture',
             explanation:
               "Essences d'arbres sacrées de la forêt sèche du Sud, capables de résister des siècles au soleil ardent, au vent et aux termites.",
           },
@@ -7010,9 +7885,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Mialo',
             phonetic: 'mi-a-lou',
-            meaningFr: "Intercéder, servir d'intermédiaire spirituel et de protection",
+            meaningFr:
+              "Intercéder, servir d'intermédiaire spirituel et de protection",
             explanation:
-              "Sens étymologique du mot Aloalo : le poteau fait office de messager permanent entre le monde terrestre et le monde invisible.",
+              'Sens étymologique du mot Aloalo : le poteau fait office de messager permanent entre le monde terrestre et le monde invisible.',
           },
           {
             type: 'example',
@@ -7036,10 +7912,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             questionMg:
               "Inona moa ny atao hoe « Aloalo » amin'ny kolontsaina any Atsimo ?",
             choices: [
-              "Un poteau funéraire sculpté en bois ajouré surmontant les tombeaux",
-              "Un instrument de percussion en bronze",
-              "Un type de pirogue de mer",
-              "Une coiffure de fête pour les jeunes filles",
+              'Un poteau funéraire sculpté en bois ajouré surmontant les tombeaux',
+              'Un instrument de percussion en bronze',
+              'Un type de pirogue de mer',
+              'Une coiffure de fête pour les jeunes filles',
             ],
             correctIndex: 0,
             explanation:
@@ -7048,14 +7924,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quels peuples de Madagascar sont historiquement renommés pour la sculpture des Aloalo ?",
+              'Quels peuples de Madagascar sont historiquement renommés pour la sculpture des Aloalo ?',
             questionMg:
               "Iza ireo foko malaza indrindra amin'ny fanaovana ny sokitra Aloalo ?",
             choices: [
-              "Les Mahafaly et les Antandroy",
-              "Les Merina et les Betsileo uniquement",
-              "Les Bezanozano",
-              "Les Antakarana",
+              'Les Mahafaly et les Antandroy',
+              'Les Merina et les Betsileo uniquement',
+              'Les Bezanozano',
+              'Les Antakarana',
             ],
             correctIndex: 0,
             explanation:
@@ -7064,41 +7940,41 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Comment appelle-t-on les grands tombeaux monumentaux en pierres sèches sur lesquels sont érigés les Aloalo ?",
+              'Comment appelle-t-on les grands tombeaux monumentaux en pierres sèches sur lesquels sont érigés les Aloalo ?',
             questionMg:
-              "Ahoana no iantsoana ireo fasana vato lehibe any Atsimo ametrahana ny Aloalo ?",
+              'Ahoana no iantsoana ireo fasana vato lehibe any Atsimo ametrahana ny Aloalo ?',
             choices: ['Le Valavato', 'Ny Tranovola', 'Ny Rova', 'Ny Kianja'],
             correctIndex: 0,
             explanation:
-              "Le « Valavato » est le grand tombeau rectangulaire en dalles de pierre taillées, fierté et sanctuaire des familles du Sud.",
+              'Le « Valavato » est le grand tombeau rectangulaire en dalles de pierre taillées, fierté et sanctuaire des familles du Sud.',
           },
           {
             type: 'quiz',
             question:
               "Quel type d'essences de bois est rigoureusement sélectionné pour sculpter les Aloalo ?",
             questionMg:
-              "Karazan-kazo manao ahoana no fidina hanaovana ny Aloalo ?",
+              'Karazan-kazo manao ahoana no fidina hanaovana ny Aloalo ?',
             choices: [
-              "Des bois nobles, denses et imputrescibles résistant aux siècles (comme le Hazomalany)",
-              "Du bois de balsa très fragile",
-              "Des branches de sapin fraîches",
-              "Du carton recyclé",
+              'Des bois nobles, denses et imputrescibles résistant aux siècles (comme le Hazomalany)',
+              'Du bois de balsa très fragile',
+              'Des branches de sapin fraîches',
+              'Du carton recyclé',
             ],
             correctIndex: 0,
             explanation:
-              "Des bois exceptionnellement denses et imputrescibles (Hazomalany, Mendorave) sont requis pour défier les intempéries du désert.",
+              'Des bois exceptionnellement denses et imputrescibles (Hazomalany, Mendorave) sont requis pour défier les intempéries du désert.',
           },
           {
             type: 'quiz',
             question:
-              "Quel est le rôle spirituel et symbolique profond du poteau Aloalo ?",
+              'Quel est le rôle spirituel et symbolique profond du poteau Aloalo ?',
             questionMg:
               "Inona no hevitra ara-panahy lalina fonosin'ny Aloalo eo ambonin'ny fasana ?",
             choices: [
-              "Faire le lien mystique (Mialo) entre la terre des vivants et le royaume céleste des ancêtres",
+              'Faire le lien mystique (Mialo) entre la terre des vivants et le royaume céleste des ancêtres',
               "Servir d'épouvantail pour chasser les oiseaux migrateurs",
-              "Indiquer la direction des vents marins",
-              "Servir de balance pour peser les récoltes",
+              'Indiquer la direction des vents marins',
+              'Servir de balance pour peser les récoltes',
             ],
             correctIndex: 0,
             explanation:
@@ -7122,7 +7998,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
     orderIndex: 7,
     estimatedMinutes: 50,
     lessons: [
-{
+      {
         slug: 'astronomie-et-cosmologie-du-trano-gasy',
         title:
           "Cosmologie du Trano Gasy : Les 12 Vintana et l'architecture sacrée",
@@ -7272,7 +8148,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
         ],
       },
-{
+      {
         slug: 'le-fitampoha-et-le-rite-therapeutique-du-bilo',
         title:
           "Le Fitampoha et le Bilo : Rituels d'eau sacrée et guérison collective",
@@ -7425,7 +8301,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
         ],
       },
-{
+      {
         slug: 'la-loi-cosmique-du-tsiny-et-du-tody',
         title:
           'Le Tsiny et le Tody : La loi métaphysique de la justice immanente',
@@ -7577,7 +8453,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       },
       {
         slug: 'la-divination-du-sikidy-geometrie-sacree-des-graines',
-        title: "La divination du Sikidy : géométrie sacrée des graines et algèbre du destin",
+        title:
+          'La divination du Sikidy : géométrie sacrée des graines et algèbre du destin',
         titleMg: "Ny Fahendren'ny Sikidy : Haifisainana sy ny Voan-kily",
         summary:
           "Explorez la logique philosophique du Sikidy : l'algèbre des 16 figures sacrées, le rôle de l'Ombiasy et le rituel d'apaisement du Faditra.",
@@ -7607,7 +8484,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Sikidy',
             phonetic: 'si-ki-di',
-            meaningFr: "L'art divinatoire géomantique traditionnel par les graines",
+            meaningFr:
+              "L'art divinatoire géomantique traditionnel par les graines",
             explanation:
               "Système séculaire combinant les principes pairs (deux graines) et impairs (une graine) pour former une matrice d'orientation spirituelle et morale.",
           },
@@ -7615,7 +8493,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Ombiasy',
             phonetic: 'oum-bi-a-si',
-            meaningFr: "Le sage, médecin traditionnel, astrologue et maître de sagesse",
+            meaningFr:
+              'Le sage, médecin traditionnel, astrologue et maître de sagesse',
             explanation:
               "Détenteur respecté des savoirs thérapeutiques (plantes médicinales), astrologiques et coutumiers, garant de l'équilibre du village.",
           },
@@ -7623,22 +8502,24 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Voan-kily',
             phonetic: 'vouan-ki-li',
-            meaningFr: "Graines dures de tamarinier utilisées pour la divination",
+            meaningFr:
+              'Graines dures de tamarinier utilisées pour la divination',
             explanation:
-              "Graines lisses et inaltérables choisies pour leur pureté symbolique et leur régularité géométrique lors du tirage sur la natte.",
+              'Graines lisses et inaltérables choisies pour leur pureté symbolique et leur régularité géométrique lors du tirage sur la natte.',
           },
           {
             type: 'concept',
             termMg: 'Faditra',
             phonetic: 'fa-di-tsa',
-            meaningFr: "Le rite d'exorcisme symbolique et de rejet du mauvais sort",
+            meaningFr:
+              "Le rite d'exorcisme symbolique et de rejet du mauvais sort",
             explanation:
               "Action réparatrice (don d'une herbe, d'une pierre, d'une cendre ou d'une pièce) prescrite par le Sikidy pour chasser l'infortune et purifier l'aura.",
           },
           {
             type: 'example',
             textMg:
-              "Nandinika ny voan-kily teo ambony tsihy ny Ombiasy ka nahita ny fomba hampodiana ny hasina.",
+              'Nandinika ny voan-kily teo ambony tsihy ny Ombiasy ka nahita ny fomba hampodiana ny hasina.',
             textFr:
               "L'Ombiasy a scruté la disposition des graines sur la natte et a discerné le rituel nécessaire pour restaurer la force sacrée (hasina).",
           },
@@ -7653,26 +8534,31 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quelles graines végétales lisses et nobles sont traditionnellement utilisées pour consulter le Sikidy ?",
+              'Quelles graines végétales lisses et nobles sont traditionnellement utilisées pour consulter le Sikidy ?',
             questionMg:
               "Inona ireo voan-javamaniry ampiasain'ny Ombiasy rehefa mandatsaka Sikidy ?",
             choices: [
-              "Les graines de tamarinier (Voan-kily)",
-              "Des grains de maïs grillés",
-              "Des pépins de pomme",
-              "Des grains de café moulu",
+              'Les graines de tamarinier (Voan-kily)',
+              'Des grains de maïs grillés',
+              'Des pépins de pomme',
+              'Des grains de café moulu',
             ],
             correctIndex: 0,
             explanation:
-              "Les graines de tamarinier (Voan-kily), polies et durables, constituent le support rituel traditionnel par excellence du Sikidy.",
+              'Les graines de tamarinier (Voan-kily), polies et durables, constituent le support rituel traditionnel par excellence du Sikidy.',
           },
           {
             type: 'quiz',
             question:
-              "Quel titre traditionnel désigne le maître guérisseur, devin et conseiller communautaire malgache ?",
+              'Quel titre traditionnel désigne le maître guérisseur, devin et conseiller communautaire malgache ?',
             questionMg:
               "Iza no anarana iantsoana ilay olon-kendry mpitsabo sy mpanolotsaina eo amin'ny fiaraha-monina ?",
-            choices: ["L'Ombiasy", "Le Mpiandry omby", "Le Mpivarotra", "Le Mpamboly"],
+            choices: [
+              "L'Ombiasy",
+              'Le Mpiandry omby',
+              'Le Mpivarotra',
+              'Le Mpamboly',
+            ],
             correctIndex: 0,
             explanation:
               "L'Ombiasy est le sage traditionnel détenteur de la connaissance des plantes, des astres et de la métaphysique du Sikidy.",
@@ -7680,34 +8566,34 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quel support traditionnel et pur est impérativement étalé au sol pour disposer le Sikidy ?",
+              'Quel support traditionnel et pur est impérativement étalé au sol pour disposer le Sikidy ?',
             questionMg:
               "Inona ilay fitaovana madio velarina amin'ny tany ametrahana ny Sikidy ?",
             choices: [
-              "Une natte neuve en jonc tressé (Tsihy madio)",
-              "Une feuille de papier journal",
-              "Une plaque de tôle ondulée",
-              "Une bâche plastique usagée",
+              'Une natte neuve en jonc tressé (Tsihy madio)',
+              'Une feuille de papier journal',
+              'Une plaque de tôle ondulée',
+              'Une bâche plastique usagée',
             ],
             correctIndex: 0,
             explanation:
-              "Le Sikidy ne peut être interrogé que sur une natte végétale pure et propre (tsihy madio), symbole de clarté spirituelle.",
+              'Le Sikidy ne peut être interrogé que sur une natte végétale pure et propre (tsihy madio), symbole de clarté spirituelle.',
           },
           {
             type: 'quiz',
             question:
               "Quel principe mathématique rigoureux structure l'ensemble des figures du Sikidy ?",
             questionMg:
-              "Inona ilay fitsipika ara-kajy mifehy ny fandrafetana ireo sarin-tsikidy ?",
+              'Inona ilay fitsipika ara-kajy mifehy ny fandrafetana ireo sarin-tsikidy ?',
             choices: [
-              "Un système binaire logique de points pairs et impairs",
-              "Une division par dix décimale",
-              "Un hasard total sans aucune règle",
-              "Une formule de trigonométrie sphérique",
+              'Un système binaire logique de points pairs et impairs',
+              'Une division par dix décimale',
+              'Un hasard total sans aucune règle',
+              'Une formule de trigonométrie sphérique',
             ],
             correctIndex: 0,
             explanation:
-              "Le Sikidy repose sur une combinatoire binaire stricte (une ou deux graines) générant 16 figures géomantiques immuables.",
+              'Le Sikidy repose sur une combinatoire binaire stricte (une ou deux graines) générant 16 figures géomantiques immuables.',
           },
           {
             type: 'quiz',
@@ -7718,8 +8604,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             choices: [
               "Diagnostiquer les ruptures d'harmonie et prescrire l'apaisement spirituel réparateur (Faditra)",
               "Deviner les numéros d'un jeu de hasard moderne",
-              "Provoquer des querelles entre voisins de village",
-              "Remplacer les consultations chez le médecin moderne",
+              'Provoquer des querelles entre voisins de village',
+              'Remplacer les consultations chez le médecin moderne',
             ],
             correctIndex: 0,
             explanation:
@@ -7729,8 +8615,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       },
       {
         slug: 'l-astrologie-ancestrale-du-vintana-et-les-destins',
-        title: "Le Vintana et la roue du zodiaque : destins lunaires et harmonie cosmique",
-        titleMg: 'Ny Fanandroana sy ny Vintana : Ireo Renim-bintana Roambinifolo',
+        title:
+          'Le Vintana et la roue du zodiaque : destins lunaires et harmonie cosmique',
+        titleMg:
+          'Ny Fanandroana sy ny Vintana : Ireo Renim-bintana Roambinifolo',
         summary:
           "Comprenez la roue des 12 Vintana : l'orientation cardinale de l'espace, la résonance cosmique et le dépassement du destin fatal.",
         summaryMg:
@@ -7759,15 +8647,15 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Renim-bintana Roambinifolo',
             phonetic: 're-nim-vin-ta-na rouam-bi-ni-fou-lou',
-            meaningFr: "Les douze signes mères du zodiaque lunaire malgache",
+            meaningFr: 'Les douze signes mères du zodiaque lunaire malgache',
             explanation:
-              "Alahamady, Adaoro, Adizaoza, Asorotany, Alahasaty, Asombola, Adimizana, Alakarabo, Alakaosy, Adijady, Adalo, Alohotsy.",
+              'Alahamady, Adaoro, Adizaoza, Asorotany, Alahasaty, Asombola, Adimizana, Alakarabo, Alakaosy, Adijady, Adalo, Alohotsy.',
           },
           {
             type: 'concept',
             termMg: 'Alahamady (Nord-Est)',
             phonetic: 'a-la-ha-ma-di',
-            meaningFr: "Le destin royal souverain, noble et premier",
+            meaningFr: 'Le destin royal souverain, noble et premier',
             explanation:
               "Gouverne le coin sacré Nord-Est de la maison malgache (*Zoro Firarazana*), symbole d'autorité bienveillante et de sainteté.",
           },
@@ -7775,22 +8663,22 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Alakaosy (Sud-Ouest)',
             phonetic: 'a-la-ka-ou-si',
-            meaningFr: "Le signe du feu vigoureux et indomptable",
+            meaningFr: 'Le signe du feu vigoureux et indomptable',
             explanation:
-              "Destin redoutable par sa puissance explosive ; autrefois adouci dès la naissance par un bain rituel pour transformer sa fougue en leadership protecteur.",
+              'Destin redoutable par sa puissance explosive ; autrefois adouci dès la naissance par un bain rituel pour transformer sa fougue en leadership protecteur.',
           },
           {
             type: 'concept',
             termMg: 'Zoro Firarazana',
             phonetic: 'zou-rou fi-ra-ra-za-na',
-            meaningFr: "Le coin sacré Nord-Est de la maison dédié aux ancêtres",
+            meaningFr: 'Le coin sacré Nord-Est de la maison dédié aux ancêtres',
             explanation:
               "Emplacement architectural le plus sacré du foyer où l'on dépose les offrandes, les nattes de prières et les bénédictions familiales.",
           },
           {
             type: 'example',
             textMg:
-              "Nanontany mpanandro ny fianakaviana mba hahalala ny andro tsara hanorenana ny trano vaovao.",
+              'Nanontany mpanandro ny fianakaviana mba hahalala ny andro tsara hanorenana ny trano vaovao.',
             textFr:
               "La famille a consulté l'astrologue traditionnel (Mpanandro) pour connaître le jour faste idéal pour poser les fondations de la nouvelle demeure.",
           },
@@ -7805,18 +8693,18 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Combien de signes ou destins majeurs (Renim-bintana) composent le zodiaque traditionnel malgache ?",
+              'Combien de signes ou destins majeurs (Renim-bintana) composent le zodiaque traditionnel malgache ?',
             questionMg:
               "Firy ny isan'ireo Renim-bintana lehibe ao amin'ny fanandroana malagasy ?",
             choices: [
-              "Douze (Renim-bintana roambinifolo)",
-              "Sept seulement",
-              "Vingt-quatre",
-              "Quatre comme les saisons",
+              'Douze (Renim-bintana roambinifolo)',
+              'Sept seulement',
+              'Vingt-quatre',
+              'Quatre comme les saisons',
             ],
             correctIndex: 0,
             explanation:
-              "Le zodiaque lunaire malgache compte douze Renim-bintana régissant les mois, les jours et les directions cardinales.",
+              'Le zodiaque lunaire malgache compte douze Renim-bintana régissant les mois, les jours et les directions cardinales.',
           },
           {
             type: 'quiz',
@@ -7837,10 +8725,15 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Comment appelle-t-on le maître astrologue coutumier chargé de déterminer les jours fastes (Andro tsara) ?",
+              'Comment appelle-t-on le maître astrologue coutumier chargé de déterminer les jours fastes (Andro tsara) ?',
             questionMg:
-              "Ahoana no iantsoana ilay manampahaizana manokana momba ny kintana sy ny andro tsara ?",
-            choices: ['Le Mpanandro', 'Le Mpihira gasy', 'Le Mpandihy', 'Le Mpanao taozavatra'],
+              'Ahoana no iantsoana ilay manampahaizana manokana momba ny kintana sy ny andro tsara ?',
+            choices: [
+              'Le Mpanandro',
+              'Le Mpihira gasy',
+              'Le Mpandihy',
+              'Le Mpanao taozavatra',
+            ],
             correctIndex: 0,
             explanation:
               "Le Mpanandro est l'astrologue coutumier qui scrute la marche des lunes et le Vintana pour orienter les grands actes de la vie.",
@@ -7848,14 +8741,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Comment la sagesse malgache conçoit-elle le destin individuel face au Vintana ?",
+              'Comment la sagesse malgache conçoit-elle le destin individuel face au Vintana ?',
             questionMg:
               "Ahoana ny fomba fijerin'ny fahendrena malagasy ny anjara sy ny vintana ?",
             choices: [
               "Le destin n'est pas une fatalité : la sagesse et les rites d'apaisement (Faditra) permettent de l'harmoniser",
               "L'homme est condamné sans aucun espoir de changement",
               "Le destin n'a aucune importance dans la culture",
-              "Seule la richesse matérielle change le destin",
+              'Seule la richesse matérielle change le destin',
             ],
             correctIndex: 0,
             explanation:
@@ -7864,14 +8757,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question:
-              "Quel espace cardinal du Trano Gasy accueille les prières solennelles et les bénédictions des anciens ?",
+              'Quel espace cardinal du Trano Gasy accueille les prières solennelles et les bénédictions des anciens ?',
             questionMg:
-              "Inona ilay zoro masina indrindra ao an-trano gasy fanaovana ny tso-drano sy ny vavaka ?",
+              'Inona ilay zoro masina indrindra ao an-trano gasy fanaovana ny tso-drano sy ny vavaka ?',
             choices: [
-              "Le coin Nord-Est (Zoro Firarazana)",
-              "Le seuil de la porte Sud",
+              'Le coin Nord-Est (Zoro Firarazana)',
+              'Le seuil de la porte Sud',
               "L'arrière du foyer de cendre",
-              "Le toit de paille extérieur",
+              'Le toit de paille extérieur',
             ],
             correctIndex: 0,
             explanation:
@@ -7881,7 +8774,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       },
       {
         slug: 'le-hasina-energie-sacree-et-force-vitale-universelle',
-        title: "Le Hasina : force vitale sacrée, efficience spirituelle et dignité",
+        title:
+          'Le Hasina : force vitale sacrée, efficience spirituelle et dignité',
         titleMg: 'Ny Hasina : Hery Masina, Fahamasinana ary Aina Iombonana',
         summary:
           "Plongez dans le concept philosophique suprême du Hasina : l'énergie vitale qui sanctifie la nature, les aînés, la royauté et le Fihavanana.",
@@ -7903,15 +8797,17 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             letterOrSound: 'HASINA',
             phonetic: 'ha-si-na',
             frenchEquivalent:
-              "Le mot Hasina a donné le verbe « Manamasina » (sanctifier, bénir, consacrer avec dignité).",
+              'Le mot Hasina a donné le verbe « Manamasina » (sanctifier, bénir, consacrer avec dignité).',
             sampleWordMg: 'Hasina',
-            sampleTranslationFr: 'Énergie sacrée / Force vitale spirituelle / Sainteté',
+            sampleTranslationFr:
+              'Énergie sacrée / Force vitale spirituelle / Sainteté',
           },
           {
             type: 'concept',
             termMg: 'Hasina',
             phonetic: 'ha-si-na',
-            meaningFr: "L'énergie sacrée universelle, vertu spirituelle et force vitale",
+            meaningFr:
+              "L'énergie sacrée universelle, vertu spirituelle et force vitale",
             explanation:
               "Fluide sacré qui donne à une plante médicinale son pouvoir de guérir, à la parole de l'aîné son autorité morale et à la rizière sa fertilité.",
           },
@@ -7919,7 +8815,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Manome hasina',
             phonetic: 'ma-nou-me ha-si-na',
-            meaningFr: "« Donner du Hasina » / Honorer la dignité sacrée d'autrui",
+            meaningFr:
+              "« Donner du Hasina » / Honorer la dignité sacrée d'autrui",
             explanation:
               "Geste éthique et rituel par lequel on reconnaît la grandeur morale d'une personne ou d'une institution en lui offrant respect et présent symbolique.",
           },
@@ -7927,7 +8824,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Fahamasinana',
             phonetic: 'fa-ha-ma-si-na-na',
-            meaningFr: "La sainteté, la pureté sacrée et la souveraineté spirituelle",
+            meaningFr:
+              'La sainteté, la pureté sacrée et la souveraineté spirituelle',
             explanation:
               "État d'élévation morale et spirituelle préservé par le respect scrupuleux des lois de justice et des interdits sacrés (*Fady*).",
           },
@@ -7935,14 +8833,15 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             type: 'concept',
             termMg: 'Tsimatahotra (Vola fotsy)',
             phonetic: 'tsi-ma-ta-hou-tsa (vou-la fou-tsi)',
-            meaningFr: "La pièce d'argent pur non tronquée offerte en hommage au souverain",
+            meaningFr:
+              "La pièce d'argent pur non tronquée offerte en hommage au souverain",
             explanation:
-              "Symbole métallique de pureté absolue remis traditionnellement par les sujets au roi pour sceller leur fidélité et honorer son Hasina.",
+              'Symbole métallique de pureté absolue remis traditionnellement par les sujets au roi pour sceller leur fidélité et honorer son Hasina.',
           },
           {
             type: 'example',
             textMg:
-              "Ny fanajana ny raiamandreny sy ny tany dia fanomezana hasina ny aina nomen-Janahary.",
+              'Ny fanajana ny raiamandreny sy ny tany dia fanomezana hasina ny aina nomen-Janahary.',
             textFr:
               "Respecter les aînés et honorer la terre nourricière constitue un hommage rendu à l'énergie sacrée (hasina) offerte par le Créateur.",
           },
@@ -7962,13 +8861,13 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
               "Inona marina moa ny atao hoe « Hasina » eo amin'ny fisainana sy kolontsaina malagasy ?",
             choices: [
               "L'énergie vitale sacrée, la vertu spirituelle et l'efficience conférées par Zanahary et les ancêtres",
-              "Une simple pièce de monnaie moderne pour acheter des vivres",
-              "Une punition corporelle infligée aux prisonniers",
+              'Une simple pièce de monnaie moderne pour acheter des vivres',
+              'Une punition corporelle infligée aux prisonniers',
               "Un contrat commercial d'importation de marchandises",
             ],
             correctIndex: 0,
             explanation:
-              "Le Hasina est la force sacrée immanente qui donne vie, dignité, puissance morale et fertilité au monde malgache.",
+              'Le Hasina est la force sacrée immanente qui donne vie, dignité, puissance morale et fertilité au monde malgache.',
           },
           {
             type: 'quiz',
@@ -7980,7 +8879,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
               "Reconnaître et honorer avec vénération la dignité et la valeur sacrée d'une personne ou d'une autorité",
               "Prêter de l'argent avec un taux d'intérêt élevé",
               "Obliger quelqu'un à se taire en public",
-              "Se vanter de ses propres mérites personnels",
+              'Se vanter de ses propres mérites personnels',
             ],
             correctIndex: 0,
             explanation:
@@ -7991,12 +8890,12 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             question:
               "Quel objet traditionnel pur servait d'offrande de Hasina aux rois et grands dignitaires ?",
             questionMg:
-              "Inona ilay fitaovana madio nentim-paharazana natolotra ho mariky ny fanomezana Hasina ?",
+              'Inona ilay fitaovana madio nentim-paharazana natolotra ho mariky ny fanomezana Hasina ?',
             choices: [
               "Une pièce d'argent pur non coupée (Tsimatahotra / Vola fotsy)",
-              "Un morceau de fer rouillé",
-              "Une pierre ordinaire ramassée au sol",
-              "Une poignée de sel de cuisine",
+              'Un morceau de fer rouillé',
+              'Une pierre ordinaire ramassée au sol',
+              'Une poignée de sel de cuisine',
             ],
             correctIndex: 0,
             explanation:
@@ -8007,27 +8906,27 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             question:
               "Que se passait-il traditionnellement lorsqu'un souverain devenait injuste et tyrannique ?",
             questionMg:
-              "Inona no mitranga araka ny finoana nentin-drazana raha lasa masiaka sy tsy marina ny mpitondra ?",
+              'Inona no mitranga araka ny finoana nentin-drazana raha lasa masiaka sy tsy marina ny mpitondra ?',
             choices: [
-              "Il perdait son Hasina (Afaka hasina) et perdait ainsi toute légitimité spirituelle à commander",
-              "Son pouvoir augmentait pour toujours",
-              "Le peuple était obligé de le vénérer davantage",
-              "Tous les arbres de la région mouraient sur le champ",
+              'Il perdait son Hasina (Afaka hasina) et perdait ainsi toute légitimité spirituelle à commander',
+              'Son pouvoir augmentait pour toujours',
+              'Le peuple était obligé de le vénérer davantage',
+              'Tous les arbres de la région mouraient sur le champ',
             ],
             correctIndex: 0,
             explanation:
-              "La tyrannie brise le pacte sacré : sans justice (*Rariny sy Hitsiny*), le souverain est déchu de son Hasina.",
+              'La tyrannie brise le pacte sacré : sans justice (*Rariny sy Hitsiny*), le souverain est déchu de son Hasina.',
           },
           {
             type: 'quiz',
             question:
-              "Quel lien vital unit le respect du Hasina et la valeur suprême du Fihavanana ?",
+              'Quel lien vital unit le respect du Hasina et la valeur suprême du Fihavanana ?',
             questionMg:
               "Inona no fifamatorana lalina misy eo amin'ny fanajana ny Hasina sy ny Fihavanana ?",
             choices: [
-              "Honorer le Hasina de chacun fonde le respect mutuel (Haja) qui rend le Fihavanana vivant et indestructible",
+              'Honorer le Hasina de chacun fonde le respect mutuel (Haja) qui rend le Fihavanana vivant et indestructible',
               "Ils sont en conflit permanent et s'opposent l'un à l'autre",
-              "Le Hasina ne concerne que les rois et le Fihavanana que les enfants",
+              'Le Hasina ne concerne que les rois et le Fihavanana que les enfants',
               "Il n'existe aucun rapport entre les deux concepts",
             ],
             correctIndex: 0,
@@ -8055,7 +8954,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       // ─── LEÇON 1 : RETOUR AU PAYS & VOYAGE ───
       {
         slug: 'retour-au-pays-et-voyage-fodiana',
-        title: 'Le retour au pays et le voyage à Madagascar (Ny Fodiana & ny Dia)',
+        title:
+          'Le retour au pays et le voyage à Madagascar (Ny Fodiana & ny Dia)',
         titleMg: 'Ny Fodiana an-Tanindrazana sy ny Dia eto Madagasikara',
         summary:
           'Vocabulaire essentiel du voyageur et de la diaspora : arrivées, transports en taxi-brousse et joie des retrouvailles familiales.',
@@ -8087,7 +8987,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             phonetic: 'fou-di-a-na an-ta-nin-dra-za-na',
             meaningFr: 'Le retour à la terre des ancêtres',
             explanation:
-              "Concept noble désignant le voyage de retour vers ses racines, que ce soit pour des vacances, une fête familiale ou pour se ressourcer.",
+              'Concept noble désignant le voyage de retour vers ses racines, que ce soit pour des vacances, une fête familiale ou pour se ressourcer.',
           },
           {
             type: 'concept',
@@ -8115,25 +9015,31 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'example',
-            textMg: 'Faly be izahay mahita anao tompoko, tonga soa eto an-tanindrazana !',
-            textFr: 'Nous sommes tellement heureux de vous revoir, soyez le bienvenu sur la terre de nos ancêtres !',
+            textMg:
+              'Faly be izahay mahita anao tompoko, tonga soa eto an-tanindrazana !',
+            textFr:
+              'Nous sommes tellement heureux de vous revoir, soyez le bienvenu sur la terre de nos ancêtres !',
           },
           {
             type: 'example',
-            textMg: 'Azafady tompoko, amin’ny firy no miainga ny taksiborosy mankany Antsirabe ?',
-            textFr: 'Excusez-moi s’il vous plaît, à quelle heure part le taxi-brousse pour Antsirabe ?',
+            textMg:
+              'Azafady tompoko, amin’ny firy no miainga ny taksiborosy mankany Antsirabe ?',
+            textFr:
+              'Excusez-moi s’il vous plaît, à quelle heure part le taxi-brousse pour Antsirabe ?',
           },
           {
             type: 'didYouKnow',
             textFr:
-              "À Madagascar, lorsqu’un voyageur rentre chez lui après un long périple, on lui offre traditionnellement un verre d’eau fraîche (*Rano madio*) avant toute chose, pour apaiser la fatigue de la route (*Mamadika fofon’aina*) et purifier le souffle avant de converser.",
+              'À Madagascar, lorsqu’un voyageur rentre chez lui après un long périple, on lui offre traditionnellement un verre d’eau fraîche (*Rano madio*) avant toute chose, pour apaiser la fatigue de la route (*Mamadika fofon’aina*) et purifier le souffle avant de converser.',
             textMg:
               "Rehefa avy lavitra ny mpivahiny, dia rano mangatsiaka no aroso azy voalohany mba hamadika fofon'aina sy hampitony ny havizanana alohan'ny hiresahana raharaha.",
           },
           {
             type: 'quiz',
-            question: "Que souhaite-t-on chaleureusement à un voyageur qui prend la route à Madagascar ?",
-            questionMg: "Inona no firariantsoa atolotra ny olona handeha hanao dia lavitra ?",
+            question:
+              'Que souhaite-t-on chaleureusement à un voyageur qui prend la route à Madagascar ?',
+            questionMg:
+              'Inona no firariantsoa atolotra ny olona handeha hanao dia lavitra ?',
             choices: [
               'Manaova dia soa tompoko !',
               'Mandehana haingana loatra',
@@ -8142,12 +9048,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             ],
             correctIndex: 0,
             explanation:
-              "« Manaova dia soa ! » souhaite une route paisible, sûre et bénie sous la bienveillance des ancêtres.",
+              '« Manaova dia soa ! » souhaite une route paisible, sûre et bénie sous la bienveillance des ancêtres.',
           },
           {
             type: 'quiz',
-            question: "Que représente le concept de « Fodiana an-Tanindrazana » pour la diaspora ?",
-            questionMg: "Inona no hevitra lehibe fonosin'ny hoe « Fodiana an-Tanindrazana » ?",
+            question:
+              'Que représente le concept de « Fodiana an-Tanindrazana » pour la diaspora ?',
+            questionMg:
+              "Inona no hevitra lehibe fonosin'ny hoe « Fodiana an-Tanindrazana » ?",
             choices: [
               'Le pèlerinage de retour vers la terre ancestrale et les racines familiales',
               'Un simple voyage d’affaires sans âme',
@@ -8160,17 +9068,26 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Quel moyen de transport emblématique relie les provinces et villages de l'île ?",
-            questionMg: "Inona no fiara fitateram-bahoaka malaza mampitohy ny tanàna rehetra eto Madagasikara ?",
-            choices: ['Ny Taksiborosy', 'Le métro souterrain', 'Le tramway à cheval', 'La diligence'],
+            question:
+              "Quel moyen de transport emblématique relie les provinces et villages de l'île ?",
+            questionMg:
+              'Inona no fiara fitateram-bahoaka malaza mampitohy ny tanàna rehetra eto Madagasikara ?',
+            choices: [
+              'Ny Taksiborosy',
+              'Le métro souterrain',
+              'Le tramway à cheval',
+              'La diligence',
+            ],
             correctIndex: 0,
             explanation:
               "Le taxi-brousse est l'artère vivante du transport malgache, où s'exprime la solidarité paysanne et citadine.",
           },
           {
             type: 'quiz',
-            question: "Quel geste d'accueil traditionnel offre-t-on en premier au voyageur fatigué qui arrive ?",
-            questionMg: "Inona no atolotra voalohany ny vahiny vao avy nanao dia lavitra ?",
+            question:
+              "Quel geste d'accueil traditionnel offre-t-on en premier au voyageur fatigué qui arrive ?",
+            questionMg:
+              'Inona no atolotra voalohany ny vahiny vao avy nanao dia lavitra ?',
             choices: [
               'Un verre d’eau fraîche pour apaiser le souffle (Mamadika fofon’aina)',
               'Un dossier de formulaires à remplir',
@@ -8183,8 +9100,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Qu'est-ce que le « Mafon-tanana » apporté lors d'une visite à la famille ?",
-            questionMg: "Inona no atao hoe « Mafon-tanana » rehefa mamangy havana ?",
+            question:
+              "Qu'est-ce que le « Mafon-tanana » apporté lors d'une visite à la famille ?",
+            questionMg:
+              'Inona no atao hoe « Mafon-tanana » rehefa mamangy havana ?',
             choices: [
               'Un présent affectueux pour marquer la joie des retrouvailles et honorer le foyer',
               'Une taxe obligatoire réclamée par la mairie',
@@ -8201,7 +9120,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       // ─── LEÇON 2 : FAMILLE ÉLARGIE & PARENTÉ ───
       {
         slug: 'la-famille-elargie-et-liens-de-parente',
-        title: 'La famille élargie et les liens de parenté (Ny Rohim-pihavanana sy ny Havantsika)',
+        title:
+          'La famille élargie et les liens de parenté (Ny Rohim-pihavanana sy ny Havantsika)',
         titleMg: 'Ny Rohim-pihavanana sy ny Fianakaviana Malagasy',
         summary:
           'Maîtrisez les appellations familiales malgaches : aînés, cadets, oncles, tantes et beaux-parents avec le respect coutumier.',
@@ -8261,13 +9181,16 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'example',
-            textMg: 'Manaja ny zokiny ny zandry, ary mifankatia ny mpiray tampo rehetra.',
-            textFr: 'Les cadets respectent leurs aînés, et tous les frères et sœurs s’aiment d’un amour sincère.',
+            textMg:
+              'Manaja ny zokiny ny zandry, ary mifankatia ny mpiray tampo rehetra.',
+            textFr:
+              'Les cadets respectent leurs aînés, et tous les frères et sœurs s’aiment d’un amour sincère.',
           },
           {
             type: 'example',
             textMg: 'Tonga mamangy ny dadatoa sy ny nenitoa izahay mianakavy.',
-            textFr: 'Nous venons en famille rendre visite à notre oncle et à notre tante.',
+            textFr:
+              'Nous venons en famille rendre visite à notre oncle et à notre tante.',
           },
           {
             type: 'didYouKnow',
@@ -8278,8 +9201,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Comment un homme appelle-t-il sa propre sœur en langue malgache ?",
-            questionMg: "Ahoana no iantsoan'ny lehilahy ny anabaviny amin'ny teny malagasy ?",
+            question:
+              'Comment un homme appelle-t-il sa propre sœur en langue malgache ?',
+            questionMg:
+              "Ahoana no iantsoan'ny lehilahy ny anabaviny amin'ny teny malagasy ?",
             choices: ['Anabavy', 'Rahalahy', 'Rahavavy', 'Renibe'],
             correctIndex: 0,
             explanation:
@@ -8287,8 +9212,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Que désigne le terme « Zoky » dans la hiérarchie familiale malgache ?",
-            questionMg: "Inona no hevitry ny hoe « Zoky » eo anivon'ny mpiray tampo ?",
+            question:
+              'Que désigne le terme « Zoky » dans la hiérarchie familiale malgache ?',
+            questionMg:
+              "Inona no hevitry ny hoe « Zoky » eo anivon'ny mpiray tampo ?",
             choices: [
               'Le frère aîné ou la sœur aînée',
               'Le plus jeune enfant de la maison',
@@ -8301,8 +9228,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Comment nomme-t-on les beaux-parents dans la parenté d'alliance ?",
-            questionMg: "Ahoana no fiantsoana ny rain'ny vady na ny renin'ny vady ?",
+            question:
+              "Comment nomme-t-on les beaux-parents dans la parenté d'alliance ?",
+            questionMg:
+              "Ahoana no fiantsoana ny rain'ny vady na ny renin'ny vady ?",
             choices: ['Ny Rafozana', 'Ny Zandry', 'Ny Zafikely', 'Ny Sakaiza'],
             correctIndex: 0,
             explanation:
@@ -8310,8 +9239,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Pourquoi évite-t-on d'appeler les aînés par leur simple prénom sans préfixe ?",
-            questionMg: "Nahoana no tsy tsara ny miantso ny zoky amin'ny anarany fotsiny ?",
+            question:
+              "Pourquoi évite-t-on d'appeler les aînés par leur simple prénom sans préfixe ?",
+            questionMg:
+              "Nahoana no tsy tsara ny miantso ny zoky amin'ny anarany fotsiny ?",
             choices: [
               'Parce que le respect des aînés (Haja) exige un titre affectueux comme « Zoky » ou « Dada »',
               'Parce qu’on a oublié son prénom',
@@ -8324,8 +9255,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Quel proverbe célèbre illustre la solidarité indéfectible entre frères et sœurs ?",
-            questionMg: "Inona no ohabolana malaza maneho ny fifankatiavan'ny mpiray tampo ?",
+            question:
+              'Quel proverbe célèbre illustre la solidarité indéfectible entre frères et sœurs ?',
+            questionMg:
+              "Inona no ohabolana malaza maneho ny fifankatiavan'ny mpiray tampo ?",
             choices: [
               'Mpiray tampo toy ny rantsan-tanana : miara-mifarombaka fa tsy mifanary',
               'Aleo very tsena toy izay very fihavanana',
@@ -8334,7 +9267,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             ],
             correctIndex: 0,
             explanation:
-              "Les frères et sœurs sont comparés aux doigts de la main : solidaires et unis dans toutes les épreuves de la vie.",
+              'Les frères et sœurs sont comparés aux doigts de la main : solidaires et unis dans toutes les épreuves de la vie.',
           },
         ],
       },
@@ -8342,7 +9275,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       // ─── LEÇON 3 : LE VODIONDRY & MARIAGE TRADITIONNEL ───
       {
         slug: 'le-vodiondry-fiancailles-traditionnelles',
-        title: 'Le Vodiondry : fiançailles et mariage traditionnel (Ny Vodiondry & Fanambadiana)',
+        title:
+          'Le Vodiondry : fiançailles et mariage traditionnel (Ny Vodiondry & Fanambadiana)',
         titleMg: 'Ny Vodiondry sy ny Fanambadiana ara-drazana Malagasy',
         summary:
           'Tout savoir sur la cérémonie du Vodiondry : étapes, discours des Mpikabary, dot symbolique et alliance sacrée des deux familles.',
@@ -8382,7 +9316,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             phonetic: 'sou-loum-bou-dim-ba-ri',
             meaningFr: 'Hommage pour le riz nourricier de la mariée',
             explanation:
-              "Somme symbolique offerte à la mère de la jeune fille en reconnaissance de toutes les cuillerées de riz et de tendresse prodiguées depuis son enfance.",
+              'Somme symbolique offerte à la mère de la jeune fille en reconnaissance de toutes les cuillerées de riz et de tendresse prodiguées depuis son enfance.',
           },
           {
             type: 'concept',
@@ -8402,13 +9336,17 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'example',
-            textMg: 'Tonga am-panajana izahay mangataka ny zanakareo ho vady ho an’ny zanakay.',
-            textFr: 'Nous nous présentons avec respect pour demander votre fille en mariage pour notre fils.',
+            textMg:
+              'Tonga am-panajana izahay mangataka ny zanakareo ho vady ho an’ny zanakay.',
+            textFr:
+              'Nous nous présentons avec respect pour demander votre fille en mariage pour notre fils.',
           },
           {
             type: 'example',
-            textMg: 'Mahazoa tso-drano ianareo roa ka ho maro taranaka sy hahita fiadanana.',
-            textFr: 'Recevez la bénédiction sacrée, puissiez-vous avoir une nombreuse descendance et vivre en paix.',
+            textMg:
+              'Mahazoa tso-drano ianareo roa ka ho maro taranaka sy hahita fiadanana.',
+            textFr:
+              'Recevez la bénédiction sacrée, puissiez-vous avoir une nombreuse descendance et vivre en paix.',
           },
           {
             type: 'didYouKnow',
@@ -8419,8 +9357,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Que représente fondamentalement la cérémonie du « Vodiondry » à Madagascar ?",
-            questionMg: "Inona no hevitra lehibe fonosin'ny lanonana Vodiondry ?",
+            question:
+              'Que représente fondamentalement la cérémonie du « Vodiondry » à Madagascar ?',
+            questionMg:
+              "Inona no hevitra lehibe fonosin'ny lanonana Vodiondry ?",
             choices: [
               'L’alliance sacrée et officielle de deux familles à travers le mariage',
               'Une simple fête d’anniversaire entre amis',
@@ -8433,8 +9373,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Qu'est-ce que le « Solombodim-bary » offert lors du Vodiondry ?",
-            questionMg: "Inona no atao hoe « Solombodim-bary » atolotra ny renin-jaza ?",
+            question:
+              "Qu'est-ce que le « Solombodim-bary » offert lors du Vodiondry ?",
+            questionMg:
+              'Inona no atao hoe « Solombodim-bary » atolotra ny renin-jaza ?',
             choices: [
               'Un hommage plein de gratitude envers la mère qui a nourri et élevé sa fille',
               'Un sac de riz pour nourrir les chevaux',
@@ -8447,8 +9389,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Quel rôle jouent les « Mpikabary » durant la demande en mariage ?",
-            questionMg: "Inona no andraikitry ny Mpikabary amin'ny fotoanan'ny Vodiondry ?",
+            question:
+              'Quel rôle jouent les « Mpikabary » durant la demande en mariage ?',
+            questionMg:
+              "Inona no andraikitry ny Mpikabary amin'ny fotoanan'ny Vodiondry ?",
             choices: [
               'Ils dialoguent avec éloquence, respect et poésie pour demander la main et sceller l’accord',
               'Ils chantent uniquement des chansons étrangères',
@@ -8457,12 +9401,14 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             ],
             correctIndex: 0,
             explanation:
-              "Les Mpikabary portent la parole sacrée des familles avec art, humilité et finesse oratoire.",
+              'Les Mpikabary portent la parole sacrée des familles avec art, humilité et finesse oratoire.',
           },
           {
             type: 'quiz',
-            question: "Quel est l'acte suprême clôturant le Vodiondry pour protéger le nouveau couple ?",
-            questionMg: "Inona no fanomezana masina lehibe indrindra atolotry ny ray aman-dreny ho an'ny mpivady ?",
+            question:
+              "Quel est l'acte suprême clôturant le Vodiondry pour protéger le nouveau couple ?",
+            questionMg:
+              "Inona no fanomezana masina lehibe indrindra atolotry ny ray aman-dreny ho an'ny mpivady ?",
             choices: [
               'Le Tso-drano (la bénédiction sacrée par l’eau et le souffle)',
               'Une clé de voiture de sport',
@@ -8475,8 +9421,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "D'où vient l'origine étymologique du mot « Vodiondry » ?",
-            questionMg: "Avy aiza ny teny hoe « Vodiondry » tany am-boalohany ?",
+            question:
+              "D'où vient l'origine étymologique du mot « Vodiondry » ?",
+            questionMg:
+              'Avy aiza ny teny hoe « Vodiondry » tany am-boalohany ?',
             choices: [
               'Du croupion de mouton, le morceau noble réservé jadis aux aînés pour les honorer',
               'D’un mot d’origine portugaise',
@@ -8493,7 +9441,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       // ─── LEÇON 4 : CADEAUX, BÉNÉDICTIONS & GRATITUDE ───
       {
         slug: 'les-cadeaux-honneurs-et-solombodim-bary',
-        title: 'Bénédictions, cadeaux et marques de gratitude (Ny Tso-drano sy ny Fisaorana)',
+        title:
+          'Bénédictions, cadeaux et marques de gratitude (Ny Tso-drano sy ny Fisaorana)',
         titleMg: 'Ny Tso-drano, ny Hasina sy ny Fisaorana ara-drazana',
         summary:
           'Comprendre le pouvoir du Tso-drano, l’art de remercier les anciens et la portée spirituelle des présents symboliques.',
@@ -8525,7 +9474,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             phonetic: 'tsou-dra-nou ma-ha-vi-ta be',
             meaningFr: 'La bénédiction accomplit de grandes choses',
             explanation:
-              "Proverbe et conviction selon laquelle la parole bienveillante des parents aplanit les obstacles et ouvre les chemins les plus ardus.",
+              'Proverbe et conviction selon laquelle la parole bienveillante des parents aplanit les obstacles et ouvre les chemins les plus ardus.',
           },
           {
             type: 'concept',
@@ -8541,7 +9490,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             phonetic: 'ha-si-na',
             meaningFr: 'Énergie sacrée et hommage d’honneur',
             explanation:
-              "Rendre hommage à un ancien en lui offrant un cadeau de retour (*Tamberim-bavaka*) préserve le Hasina familial et attire la paix.",
+              'Rendre hommage à un ancien en lui offrant un cadeau de retour (*Tamberim-bavaka*) préserve le Hasina familial et attire la paix.',
           },
           {
             type: 'concept',
@@ -8549,17 +9498,21 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             phonetic: 'ha-sou-a-va-na',
             meaningFr: 'Le bienfait ne périt jamais',
             explanation:
-              "Principe moral : tout geste de générosité envers autrui revient tôt ou tard sous forme de bénédictions sur les enfants et les descendants.",
+              'Principe moral : tout geste de générosité envers autrui revient tôt ou tard sous forme de bénédictions sur les enfants et les descendants.',
           },
           {
             type: 'example',
-            textMg: 'Mangataka tso-drano aminao izahay alohan’ny handehanana lavitra.',
-            textFr: 'Nous venons solliciter humblement votre bénédiction avant de partir en voyage au loin.',
+            textMg:
+              'Mangataka tso-drano aminao izahay alohan’ny handehanana lavitra.',
+            textFr:
+              'Nous venons solliciter humblement votre bénédiction avant de partir en voyage au loin.',
           },
           {
             type: 'example',
-            textMg: 'Mankasitraka indrindra tompoko amin’ny fandraisana sy ny fitiavana nasehonareo.',
-            textFr: 'Je vous exprime ma gratitude la plus profonde pour votre accueil et toute votre affection.',
+            textMg:
+              'Mankasitraka indrindra tompoko amin’ny fandraisana sy ny fitiavana nasehonareo.',
+            textFr:
+              'Je vous exprime ma gratitude la plus profonde pour votre accueil et toute votre affection.',
           },
           {
             type: 'didYouKnow',
@@ -8570,8 +9523,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Que signifie littéralement le mot « Tso-drano » (bénédiction) ?",
-            questionMg: "Inona no dikan'ny teny hoe « Tso-drano » ara-bakiteny ?",
+            question:
+              'Que signifie littéralement le mot « Tso-drano » (bénédiction) ?',
+            questionMg:
+              "Inona no dikan'ny teny hoe « Tso-drano » ara-bakiteny ?",
             choices: [
               'Le souffle sur l’eau pure apportant la vie et la paix',
               'Un coup de poing sur la table',
@@ -8584,8 +9539,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Quelle expression malgache exprime une reconnaissance encore plus noble que le simple « Misaotra » ?",
-            questionMg: "Inona no teny fisaorana lalina maneho fankasitrahana feno fo ?",
+            question:
+              'Quelle expression malgache exprime une reconnaissance encore plus noble que le simple « Misaotra » ?',
+            questionMg:
+              'Inona no teny fisaorana lalina maneho fankasitrahana feno fo ?',
             choices: [
               'Mankasitraka tompoko',
               'Tsy maninona',
@@ -8598,8 +9555,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Pourquoi les membres de la diaspora sollicitent-ils toujours le Tso-drano des parents avant de voyager ?",
-            questionMg: "Nahoana ny tanora sy ny am-pielezana no mangataka tso-drano foana alohan'ny fiaingana ?",
+            question:
+              'Pourquoi les membres de la diaspora sollicitent-ils toujours le Tso-drano des parents avant de voyager ?',
+            questionMg:
+              "Nahoana ny tanora sy ny am-pielezana no mangataka tso-drano foana alohan'ny fiaingana ?",
             choices: [
               'Car la bénédiction parentale est perçue comme un bouclier protecteur et le gage du succès',
               'Pour obtenir un passeport gratuit',
@@ -8612,8 +9571,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Que risque moralement une personne qui méprise les bienfaits de ses aînés et refuse de remercier ?",
-            questionMg: "Inona no voka-dratsy ara-panahy mety hanjo ny olona tsy mahay mankasitraka ?",
+            question:
+              'Que risque moralement une personne qui méprise les bienfaits de ses aînés et refuse de remercier ?',
+            questionMg:
+              'Inona no voka-dratsy ara-panahy mety hanjo ny olona tsy mahay mankasitraka ?',
             choices: [
               'Elle attire le Tsiny (le blâme moral) et rompt l’harmonie du Fihavanana',
               'Rien du tout',
@@ -8627,7 +9588,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           {
             type: 'quiz',
             question: "Que rappelle l'adage « Ny hasoavana tsy mba lany » ?",
-            questionMg: "Inona no fampianarana fonosin'ny hoe « Ny hasoavana tsy mba lany » ?",
+            questionMg:
+              "Inona no fampianarana fonosin'ny hoe « Ny hasoavana tsy mba lany » ?",
             choices: [
               'Le bien que l’on fait à autrui ne se perd jamais et produit des fruits durables',
               'Qu’il faut garder toutes ses affaires pour soi',
@@ -8636,7 +9598,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             ],
             correctIndex: 0,
             explanation:
-              "La bienveillance génère des bénédictions récurrentes qui rejaillissent sur toute la lignée familiale.",
+              'La bienveillance génère des bénédictions récurrentes qui rejaillissent sur toute la lignée familiale.',
           },
         ],
       },
@@ -8644,7 +9606,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       // ─── LEÇON 5 : RÉAPPRENDRE SA LANGUE AVEC MODESTIE ───
       {
         slug: 'la-parole-humble-quand-on-reapprend-sa-langue',
-        title: 'L’art de la modestie quand on réapprend sa langue (Fialan-tsiny am-pahendrena)',
+        title:
+          'L’art de la modestie quand on réapprend sa langue (Fialan-tsiny am-pahendrena)',
         titleMg: 'Fialan-tsiny am-pahendrena sy Fianarana ny Tenin-drazana',
         summary:
           'Formules d’humilité, bienveillance des aînés et expressions pour oser parler malgache sans complexe en famille.',
@@ -8668,7 +9631,8 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             frenchEquivalent:
               "Composé de 'Fiala' (s'écarter, conjurer) et 'Tsiny' (le blâme). Prononcé 'fi-a-lan-tsi-ni'.",
             sampleWordMg: 'Aza omena tsiny',
-            sampleTranslationFr: 'Ne m’en veuillez pas / Pardonnez mes hésitations',
+            sampleTranslationFr:
+              'Ne m’en veuillez pas / Pardonnez mes hésitations',
           },
           {
             type: 'concept',
@@ -8684,15 +9648,16 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             phonetic: 'a-za ou-me-na tsi-ni toum-pou-kou',
             meaningFr: 'Ne m’en tenez pas rigueur / Pardonnez mon accent',
             explanation:
-              "Formule de politesse traditionnelle pour excuser une éventuelle imperfection de langage ou une maladresse.",
+              'Formule de politesse traditionnelle pour excuser une éventuelle imperfection de langage ou une maladresse.',
           },
           {
             type: 'concept',
             termMg: 'Mahafaly ny fiezahanao',
             phonetic: 'ma-ha-fa-li ni fi-e-za-ha-now',
-            meaningFr: 'Votre effort fait chaud au cœur / C’est un bonheur de vous entendre',
+            meaningFr:
+              'Votre effort fait chaud au cœur / C’est un bonheur de vous entendre',
             explanation:
-              "Réponse chaleureuse des anciens et des proches pour encourager la jeunesse de la diaspora à poursuivre sa pratique.",
+              'Réponse chaleureuse des anciens et des proches pour encourager la jeunesse de la diaspora à poursuivre sa pratique.',
           },
           {
             type: 'concept',
@@ -8700,29 +9665,35 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             phonetic: 'a-how-na nou fi-te-ni',
             meaningFr: 'Comment dit-on cela en malgache ?',
             explanation:
-              "La question clé pour enrichir son vocabulaire au quotidien en demandant conseil aux aînés avec respect.",
+              'La question clé pour enrichir son vocabulaire au quotidien en demandant conseil aux aînés avec respect.',
           },
           {
             type: 'example',
-            textMg: 'Miala tsiny tompoko fa mbola mianatra miteny gasy aho, saingy te hianatra tsara.',
-            textFr: 'Pardonnez-moi mes imperfections car j’apprends encore le malgache, mais j’ai grand désir de bien l’apprendre.',
+            textMg:
+              'Miala tsiny tompoko fa mbola mianatra miteny gasy aho, saingy te hianatra tsara.',
+            textFr:
+              'Pardonnez-moi mes imperfections car j’apprends encore le malgache, mais j’ai grand désir de bien l’apprendre.',
           },
           {
             type: 'example',
-            textMg: 'Tsara be izany anaka ! Aza menatra fa ny fiezahana no tsara indrindra.',
-            textFr: 'C’est admirable mon enfant ! N’aie aucune honte, car l’effort sincère est ce qu’il y a de plus beau.',
+            textMg:
+              'Tsara be izany anaka ! Aza menatra fa ny fiezahana no tsara indrindra.',
+            textFr:
+              'C’est admirable mon enfant ! N’aie aucune honte, car l’effort sincère est ce qu’il y a de plus beau.',
           },
           {
             type: 'didYouKnow',
             textFr:
               "Le proverbe malgache dit : « Ny teny toy ny fary : raha tsakolina, mamy ; raha atelina, mahavoky » (La parole est comme la canne à sucre : savourée, elle est douce ; avalée, elle nourrit l'âme). Pratiquer quelques mots de malgache en famille renforce instantanément le lien affectif intergénérationnel.",
             textMg:
-              "Ohabolana malaza ny hoe : « Ny teny toy ny fary, mamy rehefa tsakolina ». Na dia vitsy aza ny teny hainao, ny fiezahanao miteny gasy dia mamelona ny fitiavana ao an-tokantrano.",
+              'Ohabolana malaza ny hoe : « Ny teny toy ny fary, mamy rehefa tsakolina ». Na dia vitsy aza ny teny hainao, ny fiezahanao miteny gasy dia mamelona ny fitiavana ao an-tokantrano.',
           },
           {
             type: 'quiz',
-            question: "Que dire avec modestie pour annoncer avec bienveillance que l'on est en train d'apprendre la langue ?",
-            questionMg: "Inona no teny feno fanetren-tena milaza fa mbola mianatra teny gasy ianao ?",
+            question:
+              "Que dire avec modestie pour annoncer avec bienveillance que l'on est en train d'apprendre la langue ?",
+            questionMg:
+              'Inona no teny feno fanetren-tena milaza fa mbola mianatra teny gasy ianao ?',
             choices: [
               'Miala tsiny tompoko fa mbola mianatra teny gasy aho',
               'Tsy tiako ny teny gasy',
@@ -8735,8 +9706,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Quelle phrase permet de demander le nom d'un mot inconnu en malgache ?",
-            questionMg: "Ahoana no hanontanianao ny anaran-javatra tsy fantatrao amin'ny teny gasy ?",
+            question:
+              "Quelle phrase permet de demander le nom d'un mot inconnu en malgache ?",
+            questionMg:
+              "Ahoana no hanontanianao ny anaran-javatra tsy fantatrao amin'ny teny gasy ?",
             choices: [
               'Ahoana no fiteny an’izao amin’ny teny gasy tompoko ?',
               'Aza miresaka amiko',
@@ -8749,8 +9722,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Comment réagissent traditionnellement les familles et les aînés face aux efforts linguistiques de la diaspora ?",
-            questionMg: "Ahoana no fandraisan'ny fianakaviana sy ny ray aman-dreny ny ezaka ataon'ny tanora mianatra teny gasy ?",
+            question:
+              'Comment réagissent traditionnellement les familles et les aînés face aux efforts linguistiques de la diaspora ?',
+            questionMg:
+              "Ahoana no fandraisan'ny fianakaviana sy ny ray aman-dreny ny ezaka ataon'ny tanora mianatra teny gasy ?",
             choices: [
               'Avec une immense fierté, un profond encouragement et beaucoup d’amour',
               'Avec moquerie et sévérité',
@@ -8763,8 +9738,9 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "Que signifie la formule de politesse « Aza omena tsiny tompoko » ?",
-            questionMg: "Inona no hevitry ny hoe « Aza omena tsiny tompoko » ?",
+            question:
+              'Que signifie la formule de politesse « Aza omena tsiny tompoko » ?',
+            questionMg: 'Inona no hevitry ny hoe « Aza omena tsiny tompoko » ?',
             choices: [
               'Pardonnez mes maladresses / Ne m’en veuillez pas pour mes imperfections',
               'Donnez-moi une médaille',
@@ -8777,8 +9753,10 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
           {
             type: 'quiz',
-            question: "À quoi le proverbe malgache compare-t-il la douceur de la parole partagée en famille ?",
-            questionMg: "Amin'inona no ampitahana ny hamamian'ny teny malagasy amin'ny ohabolana ?",
+            question:
+              'À quoi le proverbe malgache compare-t-il la douceur de la parole partagée en famille ?',
+            questionMg:
+              "Amin'inona no ampitahana ny hamamian'ny teny malagasy amin'ny ohabolana ?",
             choices: [
               'À la canne à sucre que l’on savoure (Toy ny fary)',
               'Au piment le plus fort',
@@ -8793,5 +9771,4 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
       },
     ],
   },
-
 ];

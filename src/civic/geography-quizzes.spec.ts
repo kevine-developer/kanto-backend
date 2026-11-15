@@ -8,7 +8,10 @@ const __dirname = path.dirname(__filename);
 const seedDataDir = path.resolve(__dirname, '../../prisma/seed-data');
 
 describe('Corpus de référence : Géographie et trésors naturels de Madagascar', () => {
-  const quizPath = path.join(seedDataDir, 'madagascar-geography-nature-quizzes.json');
+  const quizPath = path.join(
+    seedDataDir,
+    'madagascar-geography-nature-quizzes.json',
+  );
   const sourcesPath = path.join(seedDataDir, 'sources-references.json');
 
   let quizData: any;
@@ -32,7 +35,9 @@ describe('Corpus de référence : Géographie et trésors naturels de Madagascar
     expect(quizData.levels.length).toBe(5);
 
     for (let lvl = 1; lvl <= 5; lvl++) {
-      const qsInLvl = quizData.questions.filter((q: any) => q.levelNumber === lvl);
+      const qsInLvl = quizData.questions.filter(
+        (q: any) => q.levelNumber === lvl,
+      );
       expect(qsInLvl.length).toBe(10);
     }
   });
@@ -41,8 +46,12 @@ describe('Corpus de référence : Géographie et trésors naturels de Madagascar
     for (const q of quizData.questions) {
       expect(['A', 'B', 'C', 'D']).toContain(q.correctOption);
       const choices = [q.options.A, q.options.B, q.options.C, q.options.D];
-      expect(choices.every((c: any) => typeof c === 'string' && c.trim().length > 0)).toBe(true);
-      const unique = new Set(choices.map((c: string) => c.trim().toLowerCase()));
+      expect(
+        choices.every((c: any) => typeof c === 'string' && c.trim().length > 0),
+      ).toBe(true);
+      const unique = new Set(
+        choices.map((c: string) => c.trim().toLowerCase()),
+      );
       expect(unique.size).toBe(4);
     }
   });
@@ -72,7 +81,11 @@ describe('Corpus de référence : Géographie et trésors naturels de Madagascar
   });
 
   test('Point 8 : Répartition exacte des difficultés (15 Faciles, 25 Intermédiaires, 10 Difficiles)', () => {
-    const counts: Record<string, number> = { EASY: 0, INTERMEDIATE: 0, DIFFICULT: 0 };
+    const counts: Record<string, number> = {
+      EASY: 0,
+      INTERMEDIATE: 0,
+      DIFFICULT: 0,
+    };
     for (const q of quizData.questions) {
       counts[q.difficulty]++;
     }
@@ -109,4 +122,3 @@ describe('Corpus de référence : Géographie et trésors naturels de Madagascar
     expect(report.issues.length).toBe(0);
   });
 });
-

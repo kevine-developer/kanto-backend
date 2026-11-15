@@ -297,7 +297,9 @@ export class ResendService {
    * - Élimine les doubles chevrons et les caractères non conformes
    */
   public formatValidFrom(fromCandidate?: string): string {
-    const raw = (fromCandidate || this.defaultFrom || '').trim().replace(/^["']|["']$/g, '');
+    const raw = (fromCandidate || this.defaultFrom || '')
+      .trim()
+      .replace(/^["']|["']$/g, '');
     if (!raw) return 'Kanto <onboarding@resend.dev>';
 
     // Extraire l'adresse email pure avec un regex strict pour éviter d'embarquer des chevrons parasites

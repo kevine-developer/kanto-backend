@@ -246,7 +246,9 @@ describe('ResendService', () => {
       const result = service.formatValidFrom(
         'Kanto MG • Bêta Test <Kanto <noreply@contact.gastsar.fr>>',
       );
-      expect(result).toBe('"Kanto MG • Bêta Test" <noreply@contact.gastsar.fr>');
+      expect(result).toBe(
+        '"Kanto MG • Bêta Test" <noreply@contact.gastsar.fr>',
+      );
     });
 
     it('doit formater correctement un email simple sans chevrons', () => {

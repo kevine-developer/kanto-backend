@@ -450,7 +450,10 @@ export class FriendsService {
         OR: [
           { senderId: userId, receiverId: friendUserId },
           { senderId: friendUserId, receiverId: userId },
-          { id: friendUserId, OR: [{ senderId: userId }, { receiverId: userId }] },
+          {
+            id: friendUserId,
+            OR: [{ senderId: userId }, { receiverId: userId }],
+          },
         ],
         status: { in: [FriendshipStatus.ACCEPTED, FriendshipStatus.PENDING] },
       },

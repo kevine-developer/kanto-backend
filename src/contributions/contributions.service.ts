@@ -787,7 +787,9 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
     const items = await this.prisma.contribution.findMany({
       where: {
         status: statusCondition,
-        ...(category && category !== 'all' ? { category: category as any } : {}),
+        ...(category && category !== 'all'
+          ? { category: category as any }
+          : {}),
       },
       take: safeLimit,
       select: {
@@ -1365,7 +1367,11 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
     }
 
     // ── Idempotence stricte : Si déjà validée et transférée, ne pas dupliquer
-    if (approve && contribution.status === 'APPROVED' && contribution.officialItemId) {
+    if (
+      approve &&
+      contribution.status === 'APPROVED' &&
+      contribution.officialItemId
+    ) {
       this.logger.log(
         `[validate] Contribution ${id} déjà approuvée et intégrée au contenu officiel ${contribution.officialItemId}`,
       );
@@ -1537,10 +1543,18 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
             } else if (parsed.malagasy && typeof parsed.malagasy === 'string') {
               cleanMalagasy = parsed.malagasy.trim();
             }
-            if (parsed.textFr && typeof parsed.textFr === 'string' && !cleanFrench) {
+            if (
+              parsed.textFr &&
+              typeof parsed.textFr === 'string' &&
+              !cleanFrench
+            ) {
               cleanFrench = parsed.textFr.trim();
             }
-            if (parsed.meaning && typeof parsed.meaning === 'string' && !cleanMeaning) {
+            if (
+              parsed.meaning &&
+              typeof parsed.meaning === 'string' &&
+              !cleanMeaning
+            ) {
               cleanMeaning = parsed.meaning.trim();
             }
           } catch {
@@ -1578,8 +1592,8 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
             cat === 'PROVERBE'
               ? 'PROVERBE'
               : cat === 'DICTON'
-              ? 'DICTON'
-              : 'EXPRESSION';
+                ? 'DICTON'
+                : 'EXPRESSION';
 
           const created = await prisma.malagasyItem.create({
             data: {
@@ -1958,7 +1972,9 @@ export class ContributionsService implements OnModuleInit, OnModuleDestroy {
         `[validate] Caches Redis du catalogue officiel invalidés avec succès suite à la publication de la contribution ${id}`,
       );
     } catch (cacheErr) {
-      this.logger.warn(`Échec invalidation cache Redis après validation : ${cacheErr}`);
+      this.logger.warn(
+        `Échec invalidation cache Redis après validation : ${cacheErr}`,
+      );
     }
 
     // 1. Notification temps réel du classement
