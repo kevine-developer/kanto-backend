@@ -572,7 +572,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
   <div class="modal-overlay" id="kanto-cgu-modal" role="dialog" aria-modal="true" aria-labelledby="modal-cgu-title" style="display:none;">
     <div class="modal-dialog">
       <div class="modal-head">
-        <h3 id="modal-cgu-title">Conditions Générales d'Utilisation • Bêta Kanto</h3>
+        <h3 id="modal-cgu-title">Conditions Générales d'Utilisation • Bêta-Testeur Kanto</h3>
         <button type="button" class="btn-modal-close" id="cgu-modal-close" aria-label="Fermer">✕</button>
       </div>
       <div class="modal-body">
@@ -589,7 +589,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
   <div class="modal-overlay" id="kanto-privacy-modal" role="dialog" aria-modal="true" aria-labelledby="modal-privacy-title" style="display:none;">
     <div class="modal-dialog">
       <div class="modal-head">
-        <h3 id="modal-privacy-title">Politique de Confidentialité • Bêta Kanto</h3>
+        <h3 id="modal-privacy-title">Politique de Confidentialité • Bêta-Testeur Kanto</h3>
         <button type="button" class="btn-modal-close" id="privacy-modal-close" aria-label="Fermer">✕</button>
       </div>
       <div class="modal-body">
