@@ -2603,7 +2603,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
     icon: 'Layers',
     color: '#8E44AD',
     orderIndex: 3,
-    estimatedMinutes: 30,
+    estimatedMinutes: 55,
     lessons: [
       {
         slug: 'le-culte-des-razana-et-les-fady',
@@ -3042,173 +3042,799 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
         ],
       },
-    ],
-  },
-  {
-    slug: 'tantara-sy-fitenim-paritra',
-    title: 'Histoire de Madagascar & Dialectes régionaux',
-    titleMg: 'Tantarampirenena & ny Fitenim-paritra Malagasy',
-    description:
-      'Explorez les origines et les grands règnes de Madagascar, la mosaïque des dialectes côtiers et la poésie du Rasavôlana et du Tôkatôka.',
-    descriptionMg:
-      "Fantaro ny fototra niavian'ny Malagasy, ireo Mpanjaka lehibe, ny haren'ny fitenim-paritra ary ny kanton'ny Rasavôlana sy ny Tôkatôka.",
-    level: 'INTERMEDIATE',
-    icon: 'Compass',
-    color: '#1E88E5',
-    orderIndex: 4,
-    estimatedMinutes: 30,
-    lessons: [
       {
-        slug: 'les-dialectes-regionaux-sakalava-betsimisaraka-antandroy',
-        title:
-          'Les dialectes régionaux : voyage linguistique à travers Madagascar',
-        titleMg: 'Ireo Fitenim-paritra : Sakalava, Betsimisaraka, Antandroy',
+        slug: 'le-fitampoha-et-le-bain-des-reliques',
+        title: "Le Fitampoha : le bain sacré des reliques royales Sakalava",
+        titleMg: "Ny Fitampoha : Fandroan-Dady any amin'ny Menabe",
         summary:
-          'Découvrez la richesse des parlers régionaux côtiers et leurs formules de salutation chaleureuses.',
+          "Découvrez le plus grand rassemblement rituel du Menabe : l'immersion sacrée des reliques des rois Sakalava dans le fleuve Tsiribihina.",
         summaryMg:
-          'Ianaro ireo teny sy fiarahabana mampiavaka ireo faritra samihafa eto Madagasikara.',
-        type: 'VOCABULARY',
-        orderIndex: 1,
-        durationMinutes: 7,
+          "Fantaro ny fomban-drazana lehibe any Menabe : ny fandroana ireo Dady masina ao amin'ny reniranon'i Tsiribihina.",
+        type: 'TRADITION',
+        orderIndex: 4,
+        durationMinutes: 8,
         sections: [
           {
             type: 'intro',
             textFr:
-              "Bien que le malgache standard officiel soit compris sur toute l'île, chaque région possède son dialecte vivant (*fitenim-paritra*) riche en sonorités, formules d'accueil et expressions pittoresques.",
+              "Sur les rives majestueuses du fleuve Tsiribihina, dans la région du Menabe, le **Fitampoha** (« le bain des reliques ») est l'une des cérémonies sacrées les plus grandioses de Madagascar. Tous les cinq ans, le peuple Sakalava se rassemble pour laver rituellement les reliques sacrées (*Dady*) des grands souverains défunts (notamment Radama Ier, Andriamisara et leurs ancêtres), renouvelant l'alliance mystique entre les vivants, la terre et la royauté sacrée.",
             textMg:
-              'Na dia iray aza ny fiteny malagasy ôfisialy, ny faritra tsirairay dia manana ny fitenim-paritra mampiavaka azy, feno hafanana sy fahendrena mampanan-karena ny kolontsaina.',
+              "Any amin'ny moron'ny renirano Tsiribihina ao Menabe, ny **Fitampoha** no fomba masina lehibe indrindra. Isaky ny dimy taona, ny vahoaka Sakalava dia miangona hanasa ireo **Dady** na taolambalon'ireo Mpanjaka lehibe fahiny, mba hanavao ny fanekena sy ny tsodrano ho an'ny vahoaka sy ny tany.",
           },
           {
             type: 'phonetic',
-            letterOrSound: 'GN',
-            phonetic: 'gn',
+            letterOrSound: 'DADY',
+            phonetic: 'da-di',
             frenchEquivalent:
-              'Son nasal mouillé caractéristique des dialectes côtiers (Sakalava, Antakarana), sonnant comme « gn » dans « vigne » (ex: Volagna).',
-            sampleWordMg: 'Volagna',
-            sampleTranslationFr: 'La parole / La lune (en dialecte côtier)',
+              "Terme sacré prononcé nettement, désignant les reliques royales vénérées conservées dans le sanctuaire du Doany.",
+            sampleWordMg: 'Dady',
+            sampleTranslationFr: 'Reliques sacrées des souverains royaux Sakalava',
           },
           {
             type: 'concept',
-            termMg: 'Akory aby / Akory anareo',
-            phonetic: 'a-kou-ri a-bi / a-kou-ri a-na-re-ou',
-            meaningFr: 'Bonjour à tous / Comment allez-vous tous ?',
+            termMg: 'Dady',
+            phonetic: 'da-di',
+            meaningFr: "Les reliques corporelles sacrées des anciens rois du Menabe",
             explanation:
-              'Formule de salutation universellement répandue sur les côtes ouest, nord et est (Sakalava, Tsimihety, Betsimisaraka).',
+              "Objets hautement sacrés (dents, ossements, vertèbres) enveloppés d'étoffes royales et conservés au Doany (sanctuaire royal).",
           },
           {
             type: 'concept',
-            termMg: 'Mbarakaly e !',
-            phonetic: 'mba-ra-ka-li e',
-            meaningFr: 'Bienvenue chaleureuse / Vœu de bénédiction et de joie',
+            termMg: 'Fitampoha',
+            phonetic: 'fi-tam-pou-ha',
+            meaningFr: "« Le bain des reliques » / La grande ablution royale",
             explanation:
-              "Salutation festive et bienveillante d'accueil, très prisée dans les régions côtières du nord et de l'ouest.",
+              "Rite de purification et de revivification au cours duquel les reliques sont immergées avec solennité dans l'eau vive du fleuve.",
           },
           {
             type: 'concept',
-            termMg: 'Tsaiky',
-            phonetic: 'tsye-ki',
-            meaningFr:
-              'Enfant / Les enfants (équivalent de « zaza » sur les Hautes Terres)',
+            termMg: 'Mpibasy sy Mpitoka',
+            phonetic: 'mpi-ba-si si mpi-tou-ka',
+            meaningFr: "Gardiens de la tradition armés de fusils et déclamateurs d'invocations",
             explanation:
-              'Mot très affectueux utilisé dans les dialectes côtiers pour désigner les enfants et les jeunes.',
+              "Dignitaires traditionnels qui escortent le cortège royal et invoquent la bienveillance des esprits ancestraux.",
           },
           {
             type: 'concept',
-            termMg: 'Aia / Karaha',
-            phonetic: 'eye-a / ka-ra-ha',
-            meaningFr:
-              'Où (au lieu de « aiza ») / Comme (au lieu de « toy ny »)',
+            termMg: 'Tromba',
+            phonetic: 'troum-ba',
+            meaningFr: "Possession spirituelle rituelle par l'esprit d'un roi défunt",
             explanation:
-              'Variations lexicales quotidiennes qui donnent toute leur couleur et leur musicalité aux échanges régionaux.',
+              "État mystique durant lequel l'esprit du souverain s'exprime à travers un médium (*mpiantse*) pour conseiller et guider le peuple.",
           },
           {
             type: 'example',
             textMg:
-              'Akory aby nareo tsaiky ? — Tsara be tompoko, mbarakaly e !',
+              "Tonga marobe ny vahoaka teo amoron'i Tsiribihina nahita ny fandroan'ireo Dady masina.",
             textFr:
-              'Bonjour à tous les enfants, comment allez-vous ? — Très bien, soyez les bienvenus parmi nous !',
+              "Le peuple s'est réuni en foule sur les rives de la Tsiribihina pour assister au bain sacré des reliques royales.",
           },
           {
             type: 'didYouKnow',
             textFr:
-              "À Madagascar, la lettre « N » suivie d'un « G » dans certains dialectes s'écrit souvent « Ñ » ou « GN » (ex: « volana » devient « volagna » ou « volaña »). Ces parlers témoignent de l'histoire vivante des migrations et des échanges maritimes.",
+              "Pendant toute la durée du Fitampoha (qui dure plus d'une semaine sur un banc de sable sacré de la Tsiribihina), un campement éphémère de plusieurs dizaines de milliers de personnes vit sous des règles strictes d'harmonie, de propreté et de paix absolue : toute dispute ou parole blessante y est rigoureusement taboue (Fady).",
             textMg:
-              "Ny fanononana morontsiraka dia mampiasa matetika ny « gn » na « ñ » solon'ny « n » tsotra. Manaporofo ny firindrana sy ny fahasamihafan'ny tontolo malagasy izany.",
+              "Mandritra ny Fitampoha eo amin'ny fasika masina ao Tsiribihina, olona an'aliny maro no miara-monina am-pilaminana tanteraka : fady mafy ny mifamaly na miteny ratsy mandritra ny fankalazana.",
           },
           // ─── 5 Micro-Quiz de validation ───
           {
             type: 'quiz',
             question:
-              'Que signifie la salutation côtière populaire « Akory aby » ?',
+              "Dans quelle grande région et sur quel fleuve emblématique est célébré le Fitampoha ?",
             questionMg:
-              'Inona no hevitry ny fiarahabana amoron-tsiraka hoe « Akory aby » ?',
+              "Any amin'ny faritra aiza sy amin'ny renirano inona no anatanterahana ny Fitampoha ?",
             choices: [
-              'Bonjour à tous / Comment allez-vous tous ?',
-              'Au revoir et à la semaine prochaine',
-              'Bon appétit pour le dîner',
-              'Attention au danger',
+              "Dans le Menabe, sur les rives du fleuve Tsiribihina",
+              "Dans les Hautes Terres, sur la rivière Ikopa",
+              "Sur l'île de Sainte-Marie dans l'océan Indien",
+              "Au sommet du mont Maromokotro",
             ],
             correctIndex: 0,
             explanation:
-              '« Akory aby » est la formule emblématique de salutation collective dans les dialectes côtiers (Sakalava, Tsimihety, etc.).',
+              "Le Fitampoha est célébré par le peuple Sakalava du Menabe sur un banc de sable sacré du fleuve Tsiribihina.",
           },
           {
             type: 'quiz',
             question:
-              "Comment désigne-t-on couramment « un enfant » dans les dialectes du Nord et de l'Ouest ?",
+              "Que désignent précisément les « Dady » immergés rituellement lors du Fitampoha ?",
             questionMg:
-              "Ahoana no iantsoana ny « zaza » amin'ny fitenim-paritra any avaratra sy andrefana ?",
-            choices: ['Tsaiky', 'Zoky', 'Ray', 'Havana'],
-            correctIndex: 0,
-            explanation:
-              '« Tsaiky » est le terme côtier équivalent à « zaza » (enfant).',
-          },
-          {
-            type: 'quiz',
-            question:
-              'Que traduit la chaleureuse exclamation côtière « Mbarakaly e ! » ?',
-            questionMg:
-              "Inona no hevitra fonosin'ny fomba fiteny hoe « Mbarakaly e ! » ?",
+              "Inona marina moa ireo antsoina hoe « Dady » sasana mandritra ny Fitampoha ?",
             choices: [
-              "Une formule d'accueil joyeuse, de bienvenue et de vœux de bénédiction",
-              'Une plainte pour le mauvais temps',
-              "Une dispute lors d'un match de football",
-              "Une demande d'argent au marché",
+              "Les reliques sacrées des anciens souverains royaux du Menabe",
+              "Des statuettes en argile cuite",
+              "Des parchemins écrits en Sorabe",
+              "Des instruments de musique en cuivre",
             ],
             correctIndex: 0,
             explanation:
-              "« Mbarakaly » est un souhait festif de prospérité, d'accueil et de bénédiction mutuelle.",
+              "Les Dady sont les reliques corporelles sacrées des rois fondateurs, conservées au sanctuaire du Doany.",
           },
           {
             type: 'quiz',
             question:
-              'Quel mot remplace souvent « Aiza » (Où) dans plusieurs parlers régionaux côtiers ?',
+              "Quelle est la signification spirituelle majeure de cette immersion rituelle ?",
             questionMg:
-              "Inona no teny ampiasain'ny fitenim-paritra sasany solon'ny teny hoe « Aiza » ?",
-            choices: ['Aia', 'Iza', 'Oviana', 'Ahoana'],
-            correctIndex: 0,
-            explanation:
-              'Dans les dialectes côtiers, « aiza » (où) se dit fréquemment « aia » (ex: Aia ny lalana ?).',
-          },
-          {
-            type: 'quiz',
-            question:
-              'Quelle est la richesse principale de la diversité des dialectes à Madagascar ?',
-            questionMg:
-              "Inona no maha-harena lehibe ny fahasamihafan'ny fitenim-paritra eto Madagasikara ?",
+              "Inona no hevitra ara-panahy lehibe fonosin'ny fandroana ny Dady ?",
             choices: [
-              'Elle enrichit le patrimoine culturel et linguistique tout en conservant une racine commune unie',
-              'Elle empêche définitivement les Malgaches de se comprendre',
-              'Elle oblige à utiliser une langue étrangère',
-              "Elle n'a aucune valeur historique",
+              "Purifier les reliques, renouveler la fertilité de la terre et sceller la bénédiction royale",
+              "Célébrer la fin des récoltes de riz uniquement",
+              "Préparer une expédition maritime militaire",
+              "Désigner le vainqueur d'un tournoi sportif",
             ],
             correctIndex: 0,
             explanation:
-              "Les dialectes partagent une grammaire et un tronc linguistique communs tout en apportant une inestimable richesse d'images et de poésie.",
+              "L'ablution sacrée purifie les reliques, régénère l'énergie de la nature et renouvelle le pacte de protection avec les ancêtres.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Comment appelle-t-on la transe rituelle au cours de laquelle un esprit royal parle à travers un médium ?",
+            questionMg:
+              "Ahoana no iantsoana ny fisehoan'ny fanahin'ny mpanjaka amin'ny alalan'ny mpiantse ?",
+            choices: ['Le Tromba', 'Le Kabary', 'Le Hira Gasy', 'Le Famadihana'],
+            correctIndex: 0,
+            explanation:
+              "Le Tromba est l'institution spirituelle par laquelle l'esprit d'un grand roi défunt s'exprime pour guider sa communauté.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quelle règle de conduite fondamentale s'impose à tous les pèlerins sur le banc de sable sacré ?",
+            questionMg:
+              "Inona ilay fepetra tsy maintsy hajain'ny rehetra mandritra ny Fitampoha ?",
+            choices: [
+              "La concorde absolue, la paix et l'interdiction totale de disputes (Fady)",
+              "Le port d'armes à feu pour tous les enfants",
+              "Le jeûne total sans eau pendant sept jours",
+              "L'interdiction de parler à ses voisins",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le site sacré du Fitampoha est un sanctuaire de paix où toute animosité ou querelle est rigoureusement bannie.",
           },
         ],
       },
       {
+        slug: 'le-tsaboraha-et-le-sacrifice-du-zebe',
+        title: "Le Tsaboraha et le sacrifice du zébu : alliance, prière et partage",
+        titleMg: "Ny Tsaboraha sy ny Sorona Omby : Fanolorana sy Fifampizarana",
+        summary:
+          "Comprenez la dimension sacrée du sacrifice du zébu : prières aux ancêtres (Joro), répartition rituelle et solidarité.",
+        summaryMg:
+          "Ianaro ny lanjan'ny sorona omby sy ny Tsaboraha : ny joro, ny hasina ary ny fizarana nofon-kena mitam-pihavanana.",
+        type: 'TRADITION',
+        orderIndex: 5,
+        durationMinutes: 8,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Dans la tradition malgache, l'abattage d'un zébu n'est jamais un acte purement profane : c'est un acte sacrificiel solennel appelé **Sorona** ou **Joro**, particulièrement magnifié lors du **Tsaboraha** (fête rituelle commémorative chez les Betsimisaraka et autres peuples de Madagascar). Le zébu, bien le plus précieux légué par les ancêtres, est offert pour sceller une alliance, remercier Zanahary ou demander la pluie et la santé de la lignée.",
+            textMg:
+              "Eo amin'ny kolontsaina malagasy, ny famonoana omby dia tsy fihinanana fotsiny fa fanolorana masina antsoina hoe **Sorona** na **Joro**, indrindra amin'ny **Tsaboraha**. Ny omby, izay fananana sarobidy indrindra avy amin'ny razana, dia atolotra ho fisaorana an'Andriamanitra sy ny Razana ary ifampizarana amin'ny mpiara-belona.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'JORO',
+            phonetic: 'dzou-rou',
+            frenchEquivalent:
+              "Le « J » malgache se prononce « DZ » appuyé (ex: Joro, Zanahary).",
+            sampleWordMg: 'Joro',
+            sampleTranslationFr: 'Invocation rituelle solennelle et prière sacrificielle',
+          },
+          {
+            type: 'concept',
+            termMg: 'Tsaboraha',
+            phonetic: 'tsa-bou-ra-ha',
+            meaningFr: "Grande fête rituelle et cérémonielle familiale et villageoise",
+            explanation:
+              "Célébration traditionnelle (notamment à l'Est) marquant l'accomplissement d'un vœu, un deuil ou une réunion de famille.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Joro',
+            phonetic: 'dzou-rou',
+            meaningFr: "Prière d'invocation solennelle adressée à Zanahary et aux Razana",
+            explanation:
+              "Prière prononcée devant le poteau sacrificiel avant l'immolation du zébu pour solliciter la bénédiction et la paix.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Hazomanga',
+            phonetic: 'ha-zou-man-ga',
+            meaningFr: "Le poteau sacrificiel sacré du clan ou de la lignée",
+            explanation:
+              "Pieu en bois noble érigé au village où le patriarche (mpitoka hazomanga) célèbre les rituels et bénit la descendance.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Nofon-kena mitam-pihavanana',
+            phonetic: 'nou-foun ke-na mi-tam-pi-ha-va-na-na',
+            meaningFr: "La part de viande qui consolide le lien fraternel",
+            explanation:
+              "Règle séculaire selon laquelle chaque morceau de viande est distribué selon un ordre hiérarchique strict (vodivena pour les aînés), nourrissant tout le village sans exception.",
+          },
+          {
+            type: 'example',
+            textMg:
+              "Nanao joro teo amin'ny hazomanga ny raiamandreny talohan'ny nanolorana ny omby.",
+            textFr:
+              "Le patriarche a prononcé la prière sacrée (joro) devant le poteau traditionnel avant d'offrir le zébu.",
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Le partage de la viande sacrificielle obéit à une géométrie sociale d'une précision absolue : la croupe (*vodi-kena*) revient de droit aux anciens et chefs de famille en signe d'allégeance et de respect filial, tandis que le foie et les morceaux tendres sont réservés aux femmes enceintes et aux enfants.",
+            textMg:
+              "Ny fizarana ny hena amin'ny fomba malagasy dia manaja lamina hentitra : ny vodi-kena dia an'ny raiamandreny sy ny zokiolona ho mariky ny haja, ary ny nofo malefaka kosa dia omena ny zaza sy ny vehivavy bevohoka.",
+          },
+          // ─── 5 Micro-Quiz de validation ───
+          {
+            type: 'quiz',
+            question:
+              "Qu'est-ce que le « Joro » dans la tradition sacrificielle malgache ?",
+            questionMg:
+              "Inona no atao hoe « Joro » eo amin'ny fomban-drazana malagasy ?",
+            choices: [
+              "Une prière rituelle d'invocation adressée à Zanahary et aux Ancêtres",
+              "Un instrument de percussion en peau de zébu",
+              "Une danse guerrière exécutée avant le combat",
+              "Une boisson fermentée à base de miel",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le « Joro » est l'acte de prière et d'invocation solennelle qui confère tout son sens spirituel au sacrifice.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel monument sacré du village sert d'autel pour le sacrifice du zébu et les bénédictions ?",
+            questionMg:
+              "Inona ilay tsangambato hazo masina eo an-tanàna anaovana ny sorona sy ny tsodrano ?",
+            choices: [
+              "Le Hazomanga (poteau sacré du clan)",
+              "Le Hadivory (fossé circulaire)",
+              "Ny Tranovola",
+              "Ny Valam-parihy",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le « Hazomanga » est le poteau sacrificiel en bois noble autour duquel se réunit la famille sous la conduite du patriarche.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quelle expression célèbre illustre le partage de la viande qui resserre la solidarité ?",
+            questionMg:
+              "Inona ilay ohabolana na fomba fiteny milaza ny fizarana hena mampiray ny fianakaviana ?",
+            choices: [
+              "« Nofon-kena mitam-pihavanana »",
+              "« Tsy misy hena tsy misy taolana »",
+              "« Vola latsaka an-kady »",
+              "« Lasa rano nisasana »",
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Nofon-kena mitam-pihavanana » résume l'esprit du partage : la viande offerte nourrit l'harmonie et la fraternité communautaire.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quelle part du zébu sacrificiel est traditionnellement offerte aux aînés et aux parents en signe de respect ?",
+            questionMg:
+              "Inona ilay anjara hena omena ny raiamandreny ho mariky ny fanajana sy ny haja ?",
+            choices: [
+              "Le Vodi-kena (la croupe sacrée)",
+              "Les sabots du zébu",
+              "La corne gauche uniquement",
+              "La peau brute",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le « Vodi-kena » (la croupe) est le morceau noble dévolu par coutume aux aînés et détenteurs de l'autorité morale.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quelle fête rituelle commémorative est particulièrement réputée chez les Betsimisaraka ?",
+            questionMg:
+              "Inona ilay fety nentim-paharazana malaza indrindra any amin'ny faritra Betsimisaraka ?",
+            choices: ['Le Tsaboraha', 'Le Fanorona', 'Le Moraingy', 'Le Ringa'],
+            correctIndex: 0,
+            explanation:
+              "Le Tsaboraha est la fête rituelle emblématique de rassemblement et de sacrifices chez les Betsimisaraka.",
+          },
+        ],
+      },
+      {
+        slug: 'le-sambatra-et-la-circoncision-rituelle',
+        title: "Le Sambatra : la grande fête septennale de la circoncision à Mananjary",
+        titleMg: "Ny Sambatra : Fankalazana Isaky ny Fito Taona ao Mananjary",
+        summary:
+          "Explorez la grandiose fête du Sambatra chez les Antambahoaka : rite de passage, dignité masculine et ferveur collective.",
+        summaryMg:
+          "Fantaro ny fety miezinezina fanaon'ny Antambahoaka : fampidirana ny zazalahy ho lehilahy vanona sy tompon'andraikitra.",
+        type: 'TRADITION',
+        orderIndex: 6,
+        durationMinutes: 8,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "À Mananjary, sur la côte sud-est de Madagascar, les **Antambahoaka** célèbrent tous les sept ans une fête spectaculaire unique au monde : le **Sambatra**. Durant un mois entier de festivités, de processions en costumes rouges et de danses martiales, des centaines de jeunes garçons sont circoncis rituellement au bord de l'embouchure, accédant ainsi au rang d'hommes accomplis (*Lehilahy vanona*), intégrés à la communauté et bénis par leurs ancêtres.",
+            textMg:
+              "Ao Mananjary, eo amin'ny morontsiraka atsimo atsinanana, ny foko **Antambahoaka** dia mankalaza ny **Sambatra** isaky ny fito taona. Mandritra ny iray volana feno lanonana, fitafiana mena ary filaharana makotrokotroka, ireo zazalahy kely rehetra dia didiana amin'ny fomba nentim-paharazana mba ho tonga lehilahy tompon'andraikitra sy mahazo ny tsodranon'ny razana.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'SAMBATRA',
+            phonetic: 'sam-ba-tsa',
+            frenchEquivalent:
+              "Le mot « Sambatra » signifie étymologiquement « Heureux / Béni » en langue malgache.",
+            sampleWordMg: 'Sambatra',
+            sampleTranslationFr: 'Fête septennale sacrée / Félicité et bénédiction',
+          },
+          {
+            type: 'concept',
+            termMg: 'Sambatra',
+            phonetic: 'sam-ba-tsa',
+            meaningFr: "La fête septennale sacrée de la circoncision collective",
+            explanation:
+              "Célébration historique fondée selon la tradition par Raminia, ancêtre fondateur des Antambahoaka venu d'outre-mer.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Lehilahy vanona',
+            phonetic: 'le-hi-la-hi va-nou-na',
+            meaningFr: "L'homme intègre, accompli, responsable et digne",
+            explanation:
+              "Statut moral et social acquis par le jeune garçon après la circoncision, lui permettant d'entrer dans la lignée des ancêtres.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Lamba mena sy Malabary',
+            phonetic: 'lam-ba me-na si ma-la-ba-ri',
+            meaningFr: "Les tuniques écarlates et coiffes traditionnelles des pèlerins",
+            explanation:
+              "Tenue de fête flamboyante portée par les pères et les enfants lors de la descente solennelle vers l'embouchure du fleuve.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Trano fandraiky',
+            phonetic: 'tsa-nou fan-drye-ki',
+            meaningFr: "La case royale traditionnelle du village de Mananjary",
+            explanation:
+              "Lieu sacré où sont conservés les étendards, les tambours rituels et les généalogies des douze clans Antambahoaka.",
+          },
+          {
+            type: 'example',
+            textMg:
+              "Feno hafaliana ny tanànan'i Mananjary nandritra ny fankalazana ny Sambatra.",
+            textFr:
+              "La ville de Mananjary a vibré de joie et de ferveur tout au long de la célébration du Sambatra.",
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Le point d'orgue du Sambatra est la spectaculaire procession militaire symbolique : des milliers d'hommes armés de lances de bois et vêtus de rouge miment une bataille héroïque pour purifier la route menant les enfants jusqu'à la mer sacrée (Vinany).",
+            textMg:
+              "Ny tena mampitolagaga amin'ny Sambatra dia ny filaharana lehibe an-dranomasina : lehilahy an'arivony mitafy mena sy mitondra lefona hazo no maneho ny herim-pon'ny razana mandra-pahatonga any amin'ny vinany.",
+          },
+          // ─── 5 Micro-Quiz de validation ───
+          {
+            type: 'quiz',
+            question:
+              "À quelle fréquence périodique est célébrée la grande fête du Sambatra à Mananjary ?",
+            questionMg:
+              "Isaky ny firy taona no anatanterahana ny fankalazana ny Sambatra ao Mananjary ?",
+            choices: [
+              "Tous les sept ans (fête septennale)",
+              "Chaque année au mois de janvier",
+              "Tous les cinquante ans",
+              "Tous les deux ans",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le Sambatra est une célébration septennale qui a lieu fidèlement tous les sept ans selon le calendrier coutumier.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel peuple du sud-est de Madagascar est le gardien historique de la tradition du Sambatra ?",
+            questionMg:
+              "Iza ilay foko tompon'ny fomban-drazana Sambatra any atsimo atsinanana ?",
+            choices: [
+              "Le peuple Antambahoaka",
+              "Le peuple Merina",
+              "Le peuple Bara",
+              "Le peuple Mahafaly",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le Sambatra est la tradition la plus sacrée et prestigieuse du peuple Antambahoaka de Mananjary.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel est le rôle social et spirituel fondamental de cette circoncision rituelle ?",
+            questionMg:
+              "Inona no tanjona ara-tsosialy sy ara-panahy amin'ity hasoavan-jaza ity ?",
+            choices: [
+              "Faire accéder les jeunes garçons au rang d'hommes intègres (Lehilahy vanona) bénis par les ancêtres",
+              "Préparer les enfants à quitter définitivement leur région",
+              "Organiser un concours de danse moderne",
+              "Remplacer les études scolaires obligatoires",
+            ],
+            correctIndex: 0,
+            explanation:
+              "La circoncision fait du garçon un « lehilahy vanona », membre à part entière de la famille spirituelle et sociale.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quelle couleur vestimentaire spectaculaire domine le cortège lors des processions du Sambatra ?",
+            questionMg:
+              "Inona ilay loko marevaka iombonan'ireo mpilahatra mandritra ny Sambatra ?",
+            choices: [
+              "Le rouge écarlate (Lamba mena sy Malabary)",
+              "Le vert pomme",
+              "Le bleu marine uniquement",
+              "Le noir complet de deuil",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Les tuniques écarlates (malabary mena) symbolisent la vie, le courage royal et la force spirituelle.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Vers quel lieu naturel sacré convergent les pèlerins pour le dénouement de la cérémonie ?",
+            questionMg:
+              "Mankany amin'ny toerana voajanahary aiza no iombonan'ny filaharana lehibe ?",
+            choices: [
+              "L'embouchure où le fleuve rencontre la mer (Vinany)",
+              "Au fond d'une grotte souterraine",
+              "Dans un désert de sel",
+              "Au sommet d'un baobab géant",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le cortège se rend solennellement à l'embouchure (Vinany) où les eaux fluviales purificatrices rejoignent l'océan.",
+          },
+        ],
+      },
+      {
+        slug: 'le-taom-baovao-malagasy-et-l-alahamady',
+        title: "Le Taom-baovao Malagasy et l'Alahamady : renouveau, pardon et concorde",
+        titleMg: "Ny Taom-baovao Malagasy sy ny Alahamady : Famelan-keloka sy Fihavanana",
+        summary:
+          "Revivez les rituels du Nouvel An malgache : le feu perpétuel (Afo tsy maty), le bain de purification (Fandroana) et le pardon mutuel.",
+        summaryMg:
+          "Tsarovy ireo fomba amam-panao amin'ny Taom-baovao : ny Afo tsy maty, ny Fandroana ary ny fihavanana amin'ny vary amin-dronono tondrahana tantely.",
+        type: 'TRADITION',
+        orderIndex: 7,
+        durationMinutes: 8,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "À l'apparition de la première nouvelle lune du mois d'**Alahamady** (premier signe du zodiaque malgache ancestral), Madagascar célèbre le **Taom-baovao Malagasy** (le Nouvel An traditionnel). Ce temps sacré est avant tout celui du renouveau cosmique et de la réconciliation : on allume le feu perpétuel (**Afo tsy maty**), on procède aux ablutions de purification (**Fandroana**) et l'on partage le repas de concorde (**Vary amin-dronono tondrahana tantely**) en s'accordant un pardon réciproque sincère.",
+            textMg:
+              "Rehefa tsinana ny tsinam-bolana voalohany amin'ny volana **Alahamady**, dia mankalaza ny **Taom-baovao Malagasy** ny vahoaka. Fotoana masina ho an'ny fanavaozana sy ny fampihavanana izany : arehitra ny **Afo tsy maty**, atao ny **Fandroana** fanadiovana, ary ifampizarana ny **Vary amin-dronono tondrahana tantely** sady mifamela heloka ny rehetra mba hiditra madio ao amin'ny taona vaovao.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'FANDROANA',
+            phonetic: 'fan-drou-a-na',
+            frenchEquivalent:
+              "Dérive du verbe « mandro » (se laver, se purifier dans l'eau sacrée).",
+            sampleWordMg: 'Fandroana',
+            sampleTranslationFr: 'Bain sacré de purification / Fête royale du Nouvel An',
+          },
+          {
+            type: 'concept',
+            termMg: 'Alahamady',
+            phonetic: 'a-la-ha-ma-di',
+            meaningFr: "Le premier signe astrologique du Vintana malgache / Mois royal",
+            explanation:
+              "Signe de la royauté, de la noblesse d'âme et du commencement, associé au point cardinal Nord-Est.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Afo tsy maty',
+            phonetic: 'a-fou tsi ma-ti',
+            meaningFr: "« Le feu perpétuel » allumé la veille du Nouvel An",
+            explanation:
+              "Brasier allumé dans la nuit pour dissiper les ténèbres et symboliser la vitalité continue du peuple et de la descendance.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Fandroana',
+            phonetic: 'fan-drou-a-na',
+            meaningFr: "L'ablution sacrée de purification",
+            explanation:
+              "Bain rituel au cours duquel le souverain ou le patriarche aspergeait le peuple avec l'eau sacrée en prononçant des vœux de santé (*Tsodrano*).",
+          },
+          {
+            type: 'concept',
+            termMg: 'Vary amin-dronono tondrahana tantely',
+            phonetic: 'va-ri a-min drou-nou-nou toun-dra-ha-na tan-te-li',
+            meaningFr: "Riz au lait nappé de miel sauvage",
+            explanation:
+              "Mets sacré de concorde partagé par tous, symbolisant la douceur de vivre, la pureté et l'abondance partagée.",
+          },
+          {
+            type: 'example',
+            textMg:
+              "Tratry ny taona vaovao, samy ho velon-ko taiza ka ho tahin-Janahary sy ny Razana !",
+            textFr:
+              "Joyeux Nouvel An à tous, que chacun vive dans la paix, la santé et la bénédiction de Dieu et des Ancêtres !",
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "La règle cardinale du Taom-baovao Malagasy était l'obligation d'effacer toutes les dettes morales et les rancœurs avant le lever du jour : il était formellement interdit d'entrer dans la nouvelle année avec une colère au cœur envers son semblable.",
+            textMg:
+              "Ny fitsipika volamena tamin'ny Taom-baovao malagasy dia ny famelan-keloka tanteraka : tsy azo atao ny miditra amin'ny taona vaovao raha mbola misy lolom-po na disadisa tsy voavaha eo amin'ny mpiray tanindrazana.",
+          },
+          // ─── 5 Micro-Quiz de validation ───
+          {
+            type: 'quiz',
+            question:
+              "Sous quel signe astrologique lunaire ancestral est traditionnellement célébré le Taom-baovao Malagasy ?",
+            questionMg:
+              "Amin'ny volana vintana inona no ankalazana ny Taom-baovao Malagasy ?",
+            choices: [
+              "Le mois d'Alahamady (signe royal du renouveau)",
+              "Le mois d'Adimizana",
+              "Le mois d'Alakarabo",
+              "Le mois d'Asombola",
+            ],
+            correctIndex: 0,
+            explanation:
+              "L'Alahamady est le premier mois du calendrier luni-solaire malgache, dédié à la royauté et au renouveau cosmique.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel plat rituel hautement symbolique est partagé lors du Nouvel An malgache ?",
+            questionMg:
+              "Inona ilay hanim-py masina ifampizarana amin'ny Taom-baovao ?",
+            choices: [
+              "Le Vary amin-dronono tondrahana tantely (riz au lait au miel)",
+              "Le Koba ravina froid",
+              "Des beignets salés uniquement",
+              "Du poisson séché au piment fort",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le riz au lait nappé de miel (vary amin-dronono tondrahana tantely) symbolise la félicité, la pureté et l'abondance.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quelle obligation morale majeure précède le passage à la nouvelle année dans la tradition malgache ?",
+            questionMg:
+              "Inona ilay adidy ara-pitondran-tena lehibe takina amin'ny rehetra alohan'ny taona vaovao ?",
+            choices: [
+              "Le pardon réciproque sincère et l'apaisement de toutes les rancœurs",
+              "L'achat de vêtements neufs importés",
+              "La fermeture complète de toutes les maisons",
+              "L'exil temporaire des jeunes hors du village",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le pardon mutuel (famelan-keloka) est au cœur du rite : nul ne peut accueillir le Nouvel An sans être réconcilié.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Que symbolise le « Fandroana » (bain sacré) pratiqué lors du Nouvel An ?",
+            questionMg:
+              "Inona no hevitra fonosin'ny « Fandroana » amin'ny fiandohan'ny taona ?",
+            choices: [
+              "La purification des souillures de l'année écoulée et la renaissance de la vie",
+              "Une simple épreuve de natation sportive",
+              "Un concours de beauté villageois",
+              "L'apprentissage de la pêche pour les enfants",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le Fandroana est une régénération symbolique : l'eau vive purifie les fautes passées pour entamer un cycle neuf et fertile.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel symbole nocturne représente la pérennité de la descendance et de la patrie ?",
+            questionMg:
+              "Inona ilay marika mirehitra amin'ny alina maneho ny fitohizan'ny aina sy ny taranaka ?",
+            choices: [
+              "L'« Afo tsy maty » (le feu perpétuel)",
+              "Un feu d'artifice moderne",
+              "Une lanterne chinoise volante",
+              "Une bougie parfumée",
+            ],
+            correctIndex: 0,
+            explanation:
+              "L'« Afo tsy maty » (feu perpétuel) célèbre la flamme vivante du peuple et de la descendance qui ne doit jamais s'éteindre.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'histoire-de-madagascar',
+    title: 'Histoire de Madagascar',
+    titleMg: "Tantaran'i Madagasikara",
+    description:
+      "Explorez la grande fresque historique de la Grande Île : les origines austronésiennes et bantoues, les souverains réformateurs, les reines illustres, les luttes patriotiques et les collines sacrées.",
+    descriptionMg:
+      "Diniho ny tantara miezinezina nampiray an'i Madagasikara : ny fiavian'ny vahoaka, ireo Mpanjaka sy Mpanjakavavy, ny fanoherana tia tanindrazana ary ireo tendrombohitra masina.",
+    level: 'INTERMEDIATE',
+    icon: 'BookOpen',
+    color: '#C0392B',
+    orderIndex: 4,
+    estimatedMinutes: 40,
+    lessons: [
+      {
+        slug: 'les-origines-et-le-peuplement-de-madagascar',
+        title:
+          "Les origines et le peuplement : la double racine austronésienne et africaine",
+        titleMg: "Ny Fiavian'ny Malagasy : ny Fototra Aotroneziana sy Afrikana",
+        summary:
+          "Explorez l'épopée des navigateurs austronésiens et des migrants bantous qui ont forgé le peuple malgache.",
+        summaryMg:
+          "Fantaro ny dia lehibe nifamatoran'ny tantsambo aotroneziana sy ny vahoaka banto nanorina an'i Madagasikara.",
+        type: 'CULTURE',
+        orderIndex: 1,
+        durationMinutes: 8,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Madagascar est une terre de rencontre exceptionnelle au cœur de l'océan Indien. Dès le début de notre ère, d'intrépides navigateurs austronésiens ont traversé des milliers de kilomètres sur des pirogues à balancier depuis l'archipel indonésien, rejoignant les populations bantoues d'Afrique de l'Est. Ensemble, ils ont fondu leurs langues, leurs techniques et leurs spiritualités pour donner naissance au peuple malgache.",
+            textMg:
+              "I Madagasikara dia tany niavaka teo amin'ny Ranomasimbe Indiana. Nisy tantsambo aotroneziana sahy nitaingina lakana niala tany Indonezia, nihaona tamin'ireo vahoaka banto avy any Afrika Atsinanana. Nampifangaro ny teny, ny fomba amam-panao ary ny fahendrena izy ireo ka nanorina ny firenena malagasy iray.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'AO',
+            phonetic: 'o',
+            frenchEquivalent:
+              "Le groupe « AO » se prononce comme un « O » ouvert et clair en malgache standard (ex: Ntaolo, Aotroneziana).",
+            sampleWordMg: 'Ntaolo',
+            sampleTranslationFr: 'Les Anciens / Les ancêtres premiers',
+          },
+          {
+            type: 'concept',
+            termMg: 'Vahoaka Ntaolo',
+            phonetic: 'va-houa-ka n-ta-ou-lou',
+            meaningFr: "Les premiers habitants et ancêtres pionniers de la Grande Île",
+            explanation:
+              "Désigne avec déférence les premières générations de navigateurs et de pionniers qui ont défriché et nommé la terre malgache.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Lakana misy vava',
+            phonetic: 'la-ka-na mi-si va-va',
+            meaningFr: "La pirogue à balancier océanique",
+            explanation:
+              "Chef-d'œuvre de la technologie maritime austronésienne qui a permis de braver les houles de l'océan Indien sur plus de 6 000 kilomètres.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Vary sy Tanimbary',
+            phonetic: 'va-ri si ta-nim-ba-ri',
+            meaningFr: "Le riz irrigué et la rizière aménagée",
+            explanation:
+              "Technique agricole magistrale importée d'Asie du Sud-Est, devenue le pilier économique, alimentaire et rituel de la société malgache.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Fitaovana vy sy Omby',
+            phonetic: 'fi-ta-ou-va-na vi si oum-bi',
+            meaningFr: "La métallurgie du fer et le cheptel de zébus",
+            explanation:
+              "Apports technologiques et pastoraux fondamentaux issus des migrations bantoues d'Afrique orientale, complétant harmonieusement la culture du riz.",
+          },
+          {
+            type: 'example',
+            textMg:
+              "Ny fihavian'ny Malagasy dia ahitana ny fahendrena aotroneziana sy ny herin'ny kolontsaina afrikana miray hina.",
+            textFr:
+              "L'origine du peuple malgache réunit la sagesse austronésienne et la force culturelle africaine dans une unité harmonieuse.",
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "L'analyse comparative linguistique montre que plus de 90 % du vocabulaire de base malgache (nombres, parties du corps, éléments naturels) dérive de la famille austronésienne (proche du ma'anyan de Bornéo), tandis que le lexique de l'élevage pastoral (omby, aody, kizo) provient directement des langues bantoues.",
+            textMg:
+              "Ny fikarohana momba ny fiteny dia manaporofo fa ny 90 %-n'ny voambolana fototra malagasy dia avy amin'ny fiteny aotroneziana, raha avy amin'ny fiteny banto kosa ny ankamaroan'ny voambolana momba ny fiompiana omby.",
+          },
+          // ─── 5 Micro-Quiz de validation ───
+          {
+            type: 'quiz',
+            question:
+              "Quelles sont les deux grandes vagues migratoires fondatrices du peuple malgache ?",
+            questionMg:
+              "Inona ireo onjam-pifindran-monina lehibe roa nanorina ny vahoaka malagasy ?",
+            choices: [
+              "Les navigateurs austronésiens (Asie du Sud-Est) et les populations bantoues (Afrique de l'Est)",
+              "Uniquement des explorateurs européens au XIXe siècle",
+              "Des tribus nomades de Sibérie boréale",
+              "Des marins marchands uniquement venus de Méditerranée",
+            ],
+            correctIndex: 0,
+            explanation:
+              "L'archéologie, la linguistique et la génétique confirment la fusion féconde entre les navigateurs austronésiens et les populations bantoues.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "À quelle grande famille linguistique appartient la langue malgache ?",
+            questionMg:
+              "Ao amin'ny fianakaviam-piteny inona no misy ny teny malagasy ?",
+            choices: [
+              "La famille des langues austronésiennes (malayo-polynésiennes)",
+              "La famille des langues indo-européennes",
+              "La famille des langues sémitiques",
+              "La famille des langues sino-tibétaines",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le malgache est une langue austronésienne occidentale, présentant une parenté frappante avec les parlers de l'île de Bornéo en Indonésie.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quelle culture vivrière essentielle a été introduite par les navigateurs austronésiens ?",
+            questionMg:
+              "Inona ilay fambolena fototra nentin'ireo tantsambo aotroneziana teto Madagasikara ?",
+            choices: [
+              "La culture du riz irrigué en rizières aménagées (Tanimbary)",
+              "La culture du blé d'hiver",
+              "La plantation d'oliviers",
+              "La culture exclusive du maïs",
+            ],
+            correctIndex: 0,
+            explanation:
+              "La riziculture inondée (vary sy tanimbary) constitue le legs agraire majeur des navigateurs austronésiens, au cœur de l'identité malgache.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel apport pastoral et matériel majeur provient des migrations bantoues africaines ?",
+            questionMg:
+              "Inona ny harena lehibe teo amin'ny fiompiana sy ny asa vy nentin'ny fifindran-monina banto ?",
+            choices: [
+              "L'élevage du zébu (omby) et la métallurgie du fer",
+              "L'élevage des rennes polaires",
+              "La construction de bateaux à vapeur",
+              "L'usage exclusif de la pierre taillée",
+            ],
+            correctIndex: 0,
+            explanation:
+              "L'élevage du zébu et le travail du fer sont des apports majeurs des populations bantoues d'Afrique de l'Est.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quelle embarcation traditionnelle a permis aux premiers ancêtres de traverser l'océan Indien ?",
+            questionMg:
+              "Inona ilay fitaovam-pitaterana an-dranomasina nentin'ireo razana nita ny Ranomasimbe Indiana ?",
+            choices: [
+              "La pirogue à balancier (lakana misy vava)",
+              "Une galère romaine en bois de chêne",
+              "Un canot pneumatique moderne",
+              "Un grand paquebot métallique",
+            ],
+            correctIndex: 0,
+            explanation:
+              "La pirogue à balancier (lakana misy vava), d'une stabilité remarquable sur les vagues, a rendu possible la traversée de milliers de kilomètres d'océan.",
+          },
+        ],
+      },
+{
         slug: 'histoire-et-souverains-andrianampoinimerina-radama',
         title:
           "Les repères de l'histoire malgache : Andrianampoinimerina & Radama Ier",
@@ -3369,6 +3995,635 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
         ],
       },
       {
+        slug: 'les-reines-illustres-ranavalona',
+        title:
+          "Les Reines illustres de Madagascar : souveraineté, diplomatie et résistance",
+        titleMg: "Ireo Mpanjakavavy Malagasy : Ranavalona I, Rasoherina sy Ranavalona III",
+        summary:
+          "Découvrez le règne et le courage des souveraines malgaches dans la défense de l'indépendance nationale.",
+        summaryMg:
+          "Fantaro ny herim-po sy ny fahendren'ireo Mpanjakavavy niaro ny fiandrianam-pirenena.",
+        type: 'CULTURE',
+        orderIndex: 3,
+        durationMinutes: 8,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Au XIXe siècle, Madagascar s'est illustré par le règne de femmes d'État exceptionnelles. Face aux pressions et convoitises des puissances impérialistes européennes, Ranavalona Ire (1828-1861) a défendu avec une résolution inébranlable la souveraineté territoriale et les traditions ancestrales (*Fomba Ntaolo*). Par la suite, Rasoherina (1863-1868), Ranavalona II (1868-1883) et Ranavalona III (1883-1897), dernière reine déportée en exil, ont incarné la dignité et la pérennité de la nation.",
+            textMg:
+              "Tamin'ny taonjato faha-19, i Madagasikara dia niavaka tamin'ny fanapahan'ireo Mpanjakavavy mahery fo. Manoloana ny fanirian-daza sy ny fikasana fanjanahan-tany nataon'ireo hery lehibe eoropeana, Ranavalona I (1828-1861) dia niaro tamin'ny heriny rehetra ny fiandrianam-pirenena sy ny fomban-drazana. Taorian'izany, Rasoherina, Ranavalona II ary Ranavalona III dia samy nampiseho fahamendrehana lehibe ho an'ny firenena.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'V',
+            phonetic: 'v',
+            frenchEquivalent:
+              "Le « V » malgache se prononce nettement comme en français (ex: Vohitra, Vahoaka, Ranavalona).",
+            sampleWordMg: 'Ranavalona',
+            sampleTranslationFr: "Nom des illustres souveraines malgaches",
+          },
+          {
+            type: 'concept',
+            termMg: 'Fiandrianam-pirenena',
+            phonetic: 'fi-an-dri-a-nam-pi-re-ne-na',
+            meaningFr: "La souveraineté nationale / L'indépendance sacrée de la patrie",
+            explanation:
+              "Principe fondamental défendu avec ferveur par la monarchie malgache, affirmant qu'aucune puissance étrangère ne peut asservir le sol des ancêtres.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Ranavalona Ire (1828-1861)',
+            phonetic: 'ra-na-va-lou-na vo-a-lou-ha-ni',
+            meaningFr: "Souveraine intraitable, gardienne des traditions et de l'indépendance",
+            explanation:
+              "Elle développa l'artisanat national, les forges d'armes de Mantasoa avec Jean Laborde et refusa fermement toute ingérence étrangère.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Ranavalona III (1883-1897)',
+            phonetic: 'ra-na-va-lou-na fa-ha-te-lou',
+            meaningFr: "Dernière reine de Madagascar, icône de dignité et de résistance morale",
+            explanation:
+              "Déportée injustement par les autorités coloniales à La Réunion puis à Alger, elle conserva l'admiration et l'amour inconditionnel de son peuple.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Manjakamiadana sy Manampisoa',
+            phonetic: 'man-ja-ka-mi-a-da-na si ma-nam-pi-sou-a',
+            meaningFr: "Les palais royaux du Rova d'Antananarivo",
+            explanation:
+              "Résidences royales et sièges du pouvoir d'où les souveraines rendaient la justice et s'adressaient à la nation tout entière.",
+          },
+          {
+            type: 'example',
+            textMg:
+              "Ranavalona III dia naneho fahamendrehana sy fitiavan-tanindrazana lehibe manoloana ny fisedrana.",
+            textFr:
+              "Ranavalona III a manifesté une dignité et un patriotisme exemplaires face aux épreuves de l'histoire.",
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Même en exil forcé à Alger où elle s'éteignit en 1917, la reine Ranavalona III refusa toute compromission et demeura le symbole vivant de l'unité et de la dignité malgache. Ses cendres furent solennellement rapatriées au Rova d'Antananarivo en 1938 sous la ferveur populaire.",
+            textMg:
+              "Na dia tany an-tsesitany tany Aljeria aza no nodimandry Ranavalona III tamin'ny 1917, dia nitoetra ho mariky ny fahamendrehana malagasy izy. Tamin'ny taona 1938 no naverina teto an-tanindrazana tao amin'ny Rovan'Antananarivo ny taolambalony.",
+          },
+          // ─── 5 Micro-Quiz de validation ───
+          {
+            type: 'quiz',
+            question:
+              "Quelle souveraine malgache a défendu vigoureusement la souveraineté nationale de 1828 à 1861 ?",
+            questionMg:
+              "Iza ilay Mpanjakavavy niaro mafy ny fiandrianam-pirenena tamin'ny taona 1828 ka hatramin'ny 1861 ?",
+            choices: [
+              "Ranavalona Ire",
+              "Marie-Antoinette",
+              "La reine Victoria",
+              "Cléopâtre",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Ranavalona Ire a régné pendant 33 ans en consolidant l'autosuffisance, l'artisanat national et la souveraineté de Madagascar.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Qui fut la dernière reine souveraine de Madagascar avant la colonisation en 1897 ?",
+            questionMg:
+              "Iza no Mpanjakavavy farany nanjaka teto Madagasikara talohan'ny fanjanahan-tany ?",
+            choices: [
+              "Ranavalona III",
+              "Ranavalona Ire",
+              "Rasoherina",
+              "Ranavalona II",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Ranavalona III fut la dernière reine souveraine de Madagascar avant d'être déportée en exil en 1897.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel mot malgache fondamental désigne « la souveraineté nationale » ?",
+            questionMg:
+              "Inona ilay teny malagasy manan-danja milaza ny « fiandrianam-pirenena » ?",
+            choices: [
+              "Fiandrianam-pirenena",
+              "Fananana manokana",
+              "Fivarotana fananana",
+              "Fiaraha-monina tsotra",
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Fiandrianam-pirenena » désigne la souveraineté, l'indépendance et la dignité de la nation malgache.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Dans quelle ville la reine Ranavalona III a-t-elle vécu ses dernières années en exil ?",
+            questionMg:
+              "Taiza no nasesitany ary nahafatesan'ny Mpanjakavavy Ranavalona III ?",
+            choices: [
+              "À Alger (après un passage à La Réunion)",
+              "À Londres en Angleterre",
+              "À Rome en Italie",
+              "Au Caire en Égypte",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Déportée d'abord à La Réunion, la reine Ranavalona III a ensuite été exilée à Alger où elle est décédée en 1917.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel ensemble monumental historique d'Antananarivo abritait la cour des reines malgaches ?",
+            questionMg:
+              "Inona ilay toerana manan-tantara teo an-drenivohitra nisy ny lapan'ireo Mpanjakavavy ?",
+            choices: [
+              "Le Rova d'Antananarivo (Anatirova)",
+              "Le port de Toamasina",
+              "Le marché d'Analakely",
+              "La gare de Soarano",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le Rova d'Antananarivo, perché sur la colline d'Analamanga, était le cœur spirituel et politique du royaume des reines.",
+          },
+        ],
+      },
+      {
+        slug: 'les-resistances-et-la-lutte-de-1947',
+        title:
+          "Les résistances patriotiques et l'insurrection héroïque de 1947",
+        titleMg: "Ny Tolom-Panafahana : Ny Menalamba, ny VVS ary ny 29 Martsa 1947",
+        summary:
+          "Revivez l'épopée des patriotes malgaches pour la liberté, des Menalamba au soulèvement national du 29 mars 1947.",
+        summaryMg:
+          "Tsarovy ireo maherifon'ny firenena niady ho an'ny fahafahana : ny Menalamba, ny VVS ary ny tolona 1947.",
+        type: 'CULTURE',
+        orderIndex: 4,
+        durationMinutes: 8,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Tout au long de l'ère coloniale, le peuple malgache n'a jamais renoncé à sa dignité ni à son indépendance (*Fahafahana*). Dès 1895, le mouvement patriotique des **Menalamba** (« toges rouges ») a refusé le joug étranger pour défendre la terre des ancêtres. Plus tard, en 1913, les étudiants et intellectuels de la société secrète **V.V.S.** (*Vy Vato Sakelika*) ont réveillé la conscience politique nationale, ouvrant la voie à l'héroïque soulèvement populaire du **29 mars 1947**, symbole immortel de la lutte pour la liberté.",
+            textMg:
+              "Nandritra ny vanim-potoan'ny fanjanahan-tany, tsy nanaiky ho resy na oviana na oviana ny vahoaka malagasy. Nanomboka tamin'ny 1895, ny hetsiky ny **Menalamba** dia nanohitra ny tafika vahiny mba hiarovana ny Tanindrazana. Tamin'ny 1913, ny fikambanana miafina **V.V.S.** (Vy Vato Sakelika) dia nanaitra ny hambom-po sy ny fahaizan-tsain'ny Malagasy, nitarika nankany amin'ny tolona lehibe tamin'ny **29 Martsa 1947**.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'TS',
+            phonetic: 'ts',
+            frenchEquivalent:
+              "Le groupe « TS » se prononce comme dans « tsar » ou « mouche » appuyée (ex: Martsa, Tanindrazana).",
+            sampleWordMg: 'Martsa',
+            sampleTranslationFr: 'Mars (le mois du soulèvement patriotique de 1947)',
+          },
+          {
+            type: 'concept',
+            termMg: 'Fahafahana',
+            phonetic: 'fa-ha-fa-ha-na',
+            meaningFr: "La Liberté / L'émancipation / L'Indépendance",
+            explanation:
+              "Aspiration suprême pour laquelle des dizaines de milliers de patriotes malgaches ont offert leur vie avec abnégation.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Menalamba',
+            phonetic: 'me-na-lam-ba',
+            meaningFr: "« Les toges rouges » : résistants de la première heure (1895-1898)",
+            explanation:
+              "Insurgés vêtus du lamba traditionnel teint à l'argile rouge, qui ont mené la guérilla pour protéger les coutumes et les tombeaux des ancêtres.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Vy Vato Sakelika (V.V.S.)',
+            phonetic: 'vi va-tou sa-ke-li-ka',
+            meaningFr: "« Fer, Pierre, Ramification » (Mouvement patriotique fondé en 1913)",
+            explanation:
+              "Organisation secrète d'étudiants en médecine et de lettrés malgaches plaidant pour l'égalité citoyenne et la souveraineté nationale.",
+          },
+          {
+            type: 'concept',
+            termMg: '29 Martsa 1947',
+            phonetic: 'roam-bi-ny si-vi mar-tsa',
+            meaningFr: "L'insurrection nationale pour la liberté / Journée des Martyrs",
+            explanation:
+              "Soulèvement généralisé contre l'oppression coloniale, durement réprimé mais ayant scellé l'inévitable marche vers l'indépendance de 1960.",
+          },
+          {
+            type: 'example',
+            textMg:
+              "Ny 29 Martsa dia andro masina ahatsiarovana ireo Maherifo nahafoy ny ainy ho an'ny Tanindrazana.",
+            textFr:
+              "Le 29 mars est un jour sacré du souvenir pour honorer les Héros ayant sacrifié leur vie pour la Patrie.",
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Le monument commémoratif d'Ankatso et les stèles érigées à Moramanga et Manakara rappellent chaque année le sacrifice de 1947. La devise « Ho an'ny Tanindrazana » (Pour la Patrie) demeure gravée au cœur de la mémoire républicaine malgache.",
+            textMg:
+              "Ireo tsangambato fahatsiarovana ao Moramanga, Manakara ary Ankatso dia mampahatsiaro mandrakariva ny rà latsaka tamin'ny 1947. Ny teny filamatra hoe « Ho an'ny Tanindrazana » dia mitoetra ao am-pon'ny Malagasy rehetra.",
+          },
+          // ─── 5 Micro-Quiz de validation ───
+          {
+            type: 'quiz',
+            question:
+              "Quel mouvement patriotique de 1895 portait le nom des toges rouges teintes d'argile ?",
+            questionMg:
+              "Inona ilay hetsika tia tanindrazana tamin'ny 1895 nisalotra lamba miloko mena tany ?",
+            choices: [
+              "Les Menalamba",
+              "Les V.V.S.",
+              "Les marins Vezo",
+              "Les marchands arabes",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Les Menalamba (« toges rouges ») ont combattu avec ferveur pour protéger la terre ancestrale et les coutumes malgaches.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Que signifiait le nom du mouvement nationaliste secret « V.V.S. » fondé en 1913 ?",
+            questionMg:
+              "Inona no hevitry ny fanafohezana hoe « V.V.S. » niorina tamin'ny 1913 ?",
+            choices: [
+              "Vy Vato Sakelika (Fer, Pierre, Ramification)",
+              "Vahoaka Vonona Saika",
+              "Vola Vitsy Sambatra",
+              "Vato Vao Sombintsombiny",
+            ],
+            correctIndex: 0,
+            explanation:
+              "V.V.S. signifie « Vy, Vato, Sakelika », symbolisant la force du fer, la fermeté de la pierre et l'essor des ramifications patriotiques.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quelle date célèbre commémore officiellement l'insurrection nationale pour la liberté à Madagascar ?",
+            questionMg:
+              "Inona ilay daty manan-tantara ahatsiarovana ny tolom-panafahana teto Madagasikara ?",
+            choices: [
+              "Le 29 mars (1947)",
+              "Le 1er janvier",
+              "Le 14 juillet",
+              "Le 25 décembre",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le 29 mars 1947 marque le grand soulèvement populaire malgache et la commémoration des martyrs de la liberté.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel mot malgache fondamental désigne « la Liberté » et l'indépendance du peuple ?",
+            questionMg:
+              "Inona ilay teny malagasy midika hoe « Fahaleovantena sy Fahafahana » ?",
+            choices: ["Fahafahana", "Fananana", "Fahantrana", "Fahatsiarovana"],
+            correctIndex: 0,
+            explanation:
+              "« Fahafahana » signifie la liberté, l'affranchissement et l'indépendance légitime du peuple malgache.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "En quelle année Madagascar a-t-il finalement proclamé le retour de son Indépendance nationale ?",
+            questionMg:
+              "Tamin'ny taona firy no niverina tamin'ny fomba ôfisialy ny Fahaleovantenan'i Madagasikara ?",
+            choices: [
+              "1960 (le 26 juin)",
+              "1947",
+              "1914",
+              "1989",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Madagascar a retrouvé sa pleine indépendance nationale le 26 juin 1960, couronnant des décennies de luttes patriotiques.",
+          },
+        ],
+      },
+      {
+        slug: 'les-collines-sacrees-et-ambohimanga',
+        title: "Les Collines sacrées et la cité royale d'Ambohimanga",
+        titleMg: "Ireo Tendrombohitra Roambinifolo sy ny Rovan'Ambohimanga",
+        summary:
+          "Explorez la spiritualité et l'histoire des douze collines sacrées et du sanctuaire d'Ambohimanga, classé à l'UNESCO.",
+        summaryMg:
+          "Fantaro ny hasin'ny tendrombohitra roambinifolo sy ny Rovan'Ambohimanga, lova sarobidin'ny firenena.",
+        type: 'CULTURE',
+        orderIndex: 5,
+        durationMinutes: 8,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Autour d'Antananarivo s'élèvent les **Douze Collines sacrées** (*Tendrombohitra Roambinifolo*), sanctuaires de la mémoire royale et de la spiritualité malgache. Parmi elles, **Ambohimanga** (« la colline bleue ») est le berceau d'Andrianampoinimerina. Classée au patrimoine mondial de l'Humanité par l'UNESCO, cette cité royale fortifiée conserve ses remparts scellés au blanc d'œuf, ses fossés circulaires (*Hadivory*), ses portes fermées par d'immenses meules de pierre et ses arbres sacrés (*Aviavy* et *Amontana*).",
+            textMg:
+              "Manodidina an'Antananarivo no misy ireo **Tendrombohitra Roambinifolo Masina**, toeram-pitoeran'ny hasina sy ny tantaran'ireo mpanjaka malagasy. Ny voalohany amin'izy ireo dia **Ambohimanga** (« ny tendrombohitra manga »), toerana niavian'Andrianampoinimerina. Voasokajy ho Lova Iraisam-pirenena UNESCO ity rova ity, ahitana hadivory, vavahady vato boribory goavana ary hazo masina (Aviavy sy Amontana).",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'DR',
+            phonetic: 'dr',
+            frenchEquivalent:
+              "Le groupe consonantique « DR » est alvéolaire et dynamique (ex: Tendrombohitra, Andrianampoinimerina).",
+            sampleWordMg: 'Tendrombohitra',
+            sampleTranslationFr: 'Montagne / Colline sacrée',
+          },
+          {
+            type: 'concept',
+            termMg: 'Tendrombohitra Roambinifolo',
+            phonetic: 'ten-droum-bou-hi-tsa rouam-bi-ni-fou-lou',
+            meaningFr: "Les douze collines sacrées du royaume d'Imerina",
+            explanation:
+              "Sites perchés fortifiés (Ambohimanga, Antananarivo, Ilafy, Ambohidrabiby, etc.) incarnant l'ordre politique, cosmique et spirituel traditionnel.",
+          },
+          {
+            type: 'concept',
+            termMg: "Rovan'Ambohimanga",
+            phonetic: 'rou-van am-bou-hi-man-ga',
+            meaningFr: "La colline bleue royale, sanctuaire classé au patrimoine mondial UNESCO",
+            explanation:
+              "Cité royale intacte avec la case d'Andrianampoinimerina (Mahandrihono), le pavillon de Ranavalona II et les bassins d'ablutions royales.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Aviavy sy Amontana',
+            phonetic: 'a-vi-a-vi si a-moun-ta-na',
+            meaningFr: "Ficus royaux sacrés plantés aux portes des enceintes",
+            explanation:
+              "Arbres vénérés symbolisant la majesté royale, la descendance ininterrompue et la bienveillance des ancêtres protecteurs.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Hadivory sy Vavahady vato',
+            phonetic: 'ha-di-vou-ri si va-va-ha-di va-tou',
+            meaningFr: "Fossés circulaires profonds et portes en disques de pierre monolithiques",
+            explanation:
+              "Ingénieux système défensif entourant les collines sacrées, fermé chaque soir par d'immenses dalles de granit roulées à bras d'hommes.",
+          },
+          {
+            type: 'example',
+            textMg:
+              "Ambohimanga dia vohitra masina mampahatsiaro ny hasina sy ny fomba nentin-drazana malagasy.",
+            textFr:
+              "Ambohimanga est une cité sacrée qui témoigne de l'énergie spirituelle (hasina) et des traditions ancestrales malgaches.",
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Pour bâtir les remparts d'enceinte d'Ambohimanga au XVIIIe siècle, la tradition rapporte que seize millions de blancs d'œufs ont été mélangés à la chaux et au sable pour constituer un ciment d'une solidité légendaire, ayant résisté intact aux siècles et aux intempéries.",
+            textMg:
+              "Tamin'ny nananganana ny mandan'Ambohimanga, ny tantara dia milaza fa tapotsin-atody an-tapitrisany maro no nafangaro tamin'ny sokay mba hahatonga ny manda ho mafy sy tsy mety rava nandritra ny taonjato maro.",
+          },
+          // ─── 5 Micro-Quiz de validation ───
+          {
+            type: 'quiz',
+            question:
+              "Combien de collines sacrées entouraient historiquement le royaume d'Imerina ?",
+            questionMg:
+              "Firy ny isan'ireo tendrombohitra masina manan-tantara manodidina an'Imerina ?",
+            choices: [
+              "Douze (Tendrombohitra Roambinifolo)",
+              "Sept",
+              "Trois seulement",
+              "Vingt-quatre",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Les douze collines sacrées (Tendrombohitra Roambinifolo) formaient le maillage spirituel, stratégique et dynastique du royaume.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel site historique et royal malgache est classé au patrimoine mondial de l'Humanité par l'UNESCO ?",
+            questionMg:
+              "Inona ilay toerana masina malagasy voasokajy ho Lova Iraisam-pirenena UNESCO ?",
+            choices: [
+              "La colline royale d'Ambohimanga",
+              "Le canal des Pangalanes",
+              "L'avenue de l'Indépendance",
+              "Le marché d'Isotry",
+            ],
+            correctIndex: 0,
+            explanation:
+              "La colline royale d'Ambohimanga est classée au patrimoine mondial de l'UNESCO pour sa valeur universelle et son authenticité culturelle.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quels arbres sacrés majestueux étaient traditionnellement plantés pour marquer la présence royale ?",
+            questionMg:
+              "Inona ireo hazo masina famboly teo amin'ny rova sy ny tanàna nisy mpanjaka ?",
+            choices: [
+              "L'Aviavy et l'Amontana (ficus royaux)",
+              "Le pommier et le poirier",
+              "Le sapin de Noël",
+              "Le peuplier blanc",
+            ],
+            correctIndex: 0,
+            explanation:
+              "L'Aviavy et l'Amontana (ficus majestueux) symbolisent la royauté, la bénédiction des ancêtres et la pérennité de la nation.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Comment appelle-t-on le grand fossé circulaire défensif protégeant les cités fortifiées royales ?",
+            questionMg:
+              "Inona no iantsoana ilay hady boribory lalina manodidina ny vohitra masina ?",
+            choices: ["Le Hadivory", "Le Valam-parihy", "Ny Tany mena", "Ny Kianja"],
+            correctIndex: 0,
+            explanation:
+              "Le « Hadivory » est le fossé défensif circulaire creusé autour des collines royales pour empêcher les assauts ennemis.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel grand souverain réformateur a fait d'Ambohimanga son point de départ pour unifier le pays ?",
+            questionMg:
+              "Iza ilay Mpanjaka lehibe niainga tao Ambohimanga nampiray an'i Madagasikara ?",
+            choices: [
+              "Andrianampoinimerina",
+              "Radama II",
+              "Andrianjaka",
+              "Ralambo",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Andrianampoinimerina régna d'abord à Ambohimanga avant de conquérir Antananarivo et d'œuvrer pour l'unité de toute l'île.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'dialectes-et-parlers-regionaux',
+    title: 'Dialectes & Parlers régionaux',
+    titleMg: 'Ny Fitenim-paritra Malagasy',
+    description:
+      "Voyagez au cœur des richesses linguistiques des provinces malgaches : les parlers côtiers, l'éloquence du Rasavôlana, les formules du Grand Sud et le vocabulaire maritime Vezo.",
+    descriptionMg:
+      "Tsidiho ny haren'ny tenim-paritra manerana ny Nosy : ny teny morontsiraka, ny kanton'ny Rasavôlana sy Tôkatôka, ny any Atsimo ary ny voambolan'ny mpanjono.",
+    level: 'INTERMEDIATE',
+    icon: 'Compass',
+    color: '#1E88E5',
+    orderIndex: 5,
+    estimatedMinutes: 40,
+    lessons: [
+{
+        slug: 'les-dialectes-regionaux-sakalava-betsimisaraka-antandroy',
+        title:
+          'Les dialectes régionaux : voyage linguistique à travers Madagascar',
+        titleMg: 'Ireo Fitenim-paritra : Sakalava, Betsimisaraka, Antandroy',
+        summary:
+          'Découvrez la richesse des parlers régionaux côtiers et leurs formules de salutation chaleureuses.',
+        summaryMg:
+          'Ianaro ireo teny sy fiarahabana mampiavaka ireo faritra samihafa eto Madagasikara.',
+        type: 'VOCABULARY',
+        orderIndex: 1,
+        durationMinutes: 7,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Bien que le malgache standard officiel soit compris sur toute l'île, chaque région possède son dialecte vivant (*fitenim-paritra*) riche en sonorités, formules d'accueil et expressions pittoresques.",
+            textMg:
+              'Na dia iray aza ny fiteny malagasy ôfisialy, ny faritra tsirairay dia manana ny fitenim-paritra mampiavaka azy, feno hafanana sy fahendrena mampanan-karena ny kolontsaina.',
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'GN',
+            phonetic: 'gn',
+            frenchEquivalent:
+              'Son nasal mouillé caractéristique des dialectes côtiers (Sakalava, Antakarana), sonnant comme « gn » dans « vigne » (ex: Volagna).',
+            sampleWordMg: 'Volagna',
+            sampleTranslationFr: 'La parole / La lune (en dialecte côtier)',
+          },
+          {
+            type: 'concept',
+            termMg: 'Akory aby / Akory anareo',
+            phonetic: 'a-kou-ri a-bi / a-kou-ri a-na-re-ou',
+            meaningFr: 'Bonjour à tous / Comment allez-vous tous ?',
+            explanation:
+              'Formule de salutation universellement répandue sur les côtes ouest, nord et est (Sakalava, Tsimihety, Betsimisaraka).',
+          },
+          {
+            type: 'concept',
+            termMg: 'Mbarakaly e !',
+            phonetic: 'mba-ra-ka-li e',
+            meaningFr: 'Bienvenue chaleureuse / Vœu de bénédiction et de joie',
+            explanation:
+              "Salutation festive et bienveillante d'accueil, très prisée dans les régions côtières du nord et de l'ouest.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Tsaiky',
+            phonetic: 'tsye-ki',
+            meaningFr:
+              'Enfant / Les enfants (équivalent de « zaza » sur les Hautes Terres)',
+            explanation:
+              'Mot très affectueux utilisé dans les dialectes côtiers pour désigner les enfants et les jeunes.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Aia / Karaha',
+            phonetic: 'eye-a / ka-ra-ha',
+            meaningFr:
+              'Où (au lieu de « aiza ») / Comme (au lieu de « toy ny »)',
+            explanation:
+              'Variations lexicales quotidiennes qui donnent toute leur couleur et leur musicalité aux échanges régionaux.',
+          },
+          {
+            type: 'example',
+            textMg:
+              'Akory aby nareo tsaiky ? — Tsara be tompoko, mbarakaly e !',
+            textFr:
+              'Bonjour à tous les enfants, comment allez-vous ? — Très bien, soyez les bienvenus parmi nous !',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "À Madagascar, la lettre « N » suivie d'un « G » dans certains dialectes s'écrit souvent « Ñ » ou « GN » (ex: « volana » devient « volagna » ou « volaña »). Ces parlers témoignent de l'histoire vivante des migrations et des échanges maritimes.",
+            textMg:
+              "Ny fanononana morontsiraka dia mampiasa matetika ny « gn » na « ñ » solon'ny « n » tsotra. Manaporofo ny firindrana sy ny fahasamihafan'ny tontolo malagasy izany.",
+          },
+          // ─── 5 Micro-Quiz de validation ───
+          {
+            type: 'quiz',
+            question:
+              'Que signifie la salutation côtière populaire « Akory aby » ?',
+            questionMg:
+              'Inona no hevitry ny fiarahabana amoron-tsiraka hoe « Akory aby » ?',
+            choices: [
+              'Bonjour à tous / Comment allez-vous tous ?',
+              'Au revoir et à la semaine prochaine',
+              'Bon appétit pour le dîner',
+              'Attention au danger',
+            ],
+            correctIndex: 0,
+            explanation:
+              '« Akory aby » est la formule emblématique de salutation collective dans les dialectes côtiers (Sakalava, Tsimihety, etc.).',
+          },
+          {
+            type: 'quiz',
+            question:
+              "Comment désigne-t-on couramment « un enfant » dans les dialectes du Nord et de l'Ouest ?",
+            questionMg:
+              "Ahoana no iantsoana ny « zaza » amin'ny fitenim-paritra any avaratra sy andrefana ?",
+            choices: ['Tsaiky', 'Zoky', 'Ray', 'Havana'],
+            correctIndex: 0,
+            explanation:
+              '« Tsaiky » est le terme côtier équivalent à « zaza » (enfant).',
+          },
+          {
+            type: 'quiz',
+            question:
+              'Que traduit la chaleureuse exclamation côtière « Mbarakaly e ! » ?',
+            questionMg:
+              "Inona no hevitra fonosin'ny fomba fiteny hoe « Mbarakaly e ! » ?",
+            choices: [
+              "Une formule d'accueil joyeuse, de bienvenue et de vœux de bénédiction",
+              'Une plainte pour le mauvais temps',
+              "Une dispute lors d'un match de football",
+              "Une demande d'argent au marché",
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Mbarakaly » est un souhait festif de prospérité, d'accueil et de bénédiction mutuelle.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quel mot remplace souvent « Aiza » (Où) dans plusieurs parlers régionaux côtiers ?',
+            questionMg:
+              "Inona no teny ampiasain'ny fitenim-paritra sasany solon'ny teny hoe « Aiza » ?",
+            choices: ['Aia', 'Iza', 'Oviana', 'Ahoana'],
+            correctIndex: 0,
+            explanation:
+              'Dans les dialectes côtiers, « aiza » (où) se dit fréquemment « aia » (ex: Aia ny lalana ?).',
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quelle est la richesse principale de la diversité des dialectes à Madagascar ?',
+            questionMg:
+              "Inona no maha-harena lehibe ny fahasamihafan'ny fitenim-paritra eto Madagasikara ?",
+            choices: [
+              'Elle enrichit le patrimoine culturel et linguistique tout en conservant une racine commune unie',
+              'Elle empêche définitivement les Malgaches de se comprendre',
+              'Elle oblige à utiliser une langue étrangère',
+              "Elle n'a aucune valeur historique",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Les dialectes partagent une grammaire et un tronc linguistique communs tout en apportant une inestimable richesse d'images et de poésie.",
+          },
+        ],
+      },
+{
         slug: 'eloquence-cotiere-rasavolagna-et-tokatoka',
         title: "L'art poétique côtier : le Rasavôlana et le Tôkatôka",
         titleMg: 'Ny Haikanto am-Bava : Rasavôlana sy Tôkatôka Betsimisaraka',
@@ -3377,7 +4632,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
         summaryMg:
           "Fantaro ny kanton'ny kabary atsinanana : ny Rasavôlana feno fahendrena sy ny Tôkatôka mirindra sy mavitrika.",
         type: 'LITERATURE',
-        orderIndex: 3,
+        orderIndex: 2,
         durationMinutes: 7,
         sections: [
           {
@@ -3516,6 +4771,462 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
         ],
       },
+      {
+        slug: 'les-parlers-du-grand-sud-antandroy-mahafaly',
+        title: 'Les parlers du Grand Sud : Antandroy, Mahafaly et Bara',
+        titleMg: "Ny Fitenin'ny Faritra Atsimo : Antandroy, Mahafaly ary Bara",
+        summary:
+          "Plongez dans les sonorités vigoureuses du Sud malgache, les salutations pastorales et la poésie des troupeaux.",
+        summaryMg:
+          "Fantaro ny fiteny sy ny fomba fitenin'ny mponina any Atsimo, eo amin'ny tontolon'ny omby sy ny roy.",
+        type: 'VOCABULARY',
+        orderIndex: 3,
+        durationMinutes: 7,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Les régions arides et grandioses du Sud de Madagascar possèdent des parlers d'une force et d'une musicalité remarquables. Chez les **Antandroy** (« les gens des épineux »), les **Mahafaly** (« ceux qui rendent tabou / heureux ») et les **Bara** (grands éleveurs pasteurs), la parole se caractérise par des consonnes appuyées, la présence du son « tch / ts » et un lexique d'une extraordinaire précision lié au monde du zébu et de la terre ancestrale.",
+            textMg:
+              "Ny faritra atsimo midadasika eto Madagasikara dia manana fitenim-paritra mafonja sy mirindra tsara. Ny **Antandroy**, ny **Mahafaly** ary ny **Bara** dia mampiasa teny feno hafanana, manindry mafy ny renifeo (indrindra ny feo « tch / ts »), ary manana voambolana maro be mikasika ny tontolon'ny omby sy ny fiainana an-tany mena.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'TY',
+            phonetic: 'ti',
+            frenchEquivalent:
+              "En dialecte du Sud, « Ty » sert d'article ou démonstratif courant à la place de « Ity » ou « Ny » (ex: Akore ty tantara ?).",
+            sampleWordMg: 'Akore ty tantara ?',
+            sampleTranslationFr: 'Quelles sont les nouvelles ? (Salutation emblématique du Sud)',
+          },
+          {
+            type: 'concept',
+            termMg: 'Akore ty tantara ?',
+            phonetic: 'a-kou-re ti tan-ta-ra',
+            meaningFr: 'Comment vont les nouvelles ? / Bonjour à vous',
+            explanation:
+              "Formule de salutation universelle et chaleureuse dans tout le Sud malgache (Antandroy, Mahafaly, Bara).",
+          },
+          {
+            type: 'concept',
+            termMg: 'Soa soa, tsy manin-draho',
+            phonetic: 'sou-a sou-a, tsi ma-nin-dra-hou',
+            meaningFr: 'Tout va très bien, je me porte à merveille',
+            explanation:
+              "Réponse rituelle polie et bienveillante marquant la paix et la tranquillité de l'esprit.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Vala / Fahitra',
+            phonetic: 'va-la / fa-hi-tsa',
+            meaningFr: "L'enclos à zébus familial et communautaire",
+            explanation:
+              "Cœur battant du village dans le Sud, symbole de prospérité, de bénédiction ancestrale et de sécurité des troupeaux.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Roy',
+            phonetic: 'rouy',
+            meaningFr: 'Les arbustes épineux de la forêt australe',
+            explanation:
+              "Végétation typique du bush du Sud ayant donné son nom au peuple Antandroy (« ceux de la forêt d'épineux »).",
+          },
+          {
+            type: 'example',
+            textMg:
+              "Akore ty tantara lahy ? — Soa soa rahavana, tomombana ty omby am-bala !",
+            textFr:
+              "Quelles sont les nouvelles, mon ami ? — Excellentes nouvelles, mon frère, les zébus sont sains et saufs dans l'enclos !",
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Dans les langues pastorales du Grand Sud malgache, il existe plus de 80 termes distincts pour désigner la robe d'un zébu, la courbure exacte de ses cornes et sa démarche, preuve de l'importance vitale du zébu dans la culture et la poésie populaire.",
+            textMg:
+              "Amin'ny fitenin'ny mpiompy any Atsimo, misy teny mihoatra ny 80 samy hafa enti-milaza ny lokon'ny omby, ny bikany, ary ny fiolakolaky ny tandrony, manaporofo ny lanjan'ny omby eo amin'ny fiainana.",
+          },
+          // ─── 5 Micro-Quiz de validation ───
+          {
+            type: 'quiz',
+            question:
+              'Quelle est la célèbre salutation traditionnelle emblématique du Grand Sud malgache ?',
+            questionMg:
+              "Inona ilay fiarahabana nentim-paharazana fanta-daza indrindra any Atsimo ?",
+            choices: [
+              "« Akore ty tantara ? » (Quelles sont les nouvelles ?)",
+              "« Veloma finaritra »",
+              "« Misaotra betsaka »",
+              "« Azafady tompoko »",
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Akore ty tantara ? » est la formule de salutation rituelle incontournable chez les Antandroy, Mahafaly et Bara.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Comment répond-on couramment et poliment à la salutation « Akore ty tantara ? » ?",
+            questionMg:
+              "Ahoana no famaliana am-panajana ny fiarahabana hoe « Akore ty tantara ? » ?",
+            choices: [
+              "« Soa soa » (Très bien / Tout va bien)",
+              "« Tsy misy hena »",
+              "« Lasa nody aho »",
+              "« Vaky ny vilany »",
+            ],
+            correctIndex: 0,
+            explanation:
+              "On répond traditionnellement « Soa soa » ou « Soa soa, tsy manin-draho » pour signifier que la paix règne.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Que signifie littéralement le nom du peuple du Sud « Antandroy » ?",
+            questionMg:
+              "Inona no dikan'ny anaran'ny foko hoe « Antandroy » ?",
+            choices: [
+              "Ceux de la forêt d'épineux (Roy)",
+              "Ceux des grandes rizières d'eau",
+              "Les habitants des montagnes enneigées",
+              "Les marins des îles lointaines",
+            ],
+            correctIndex: 0,
+            explanation:
+              "« An-tandro-roy » signifie littéralement « ceux du pays des épineux » (roy), faisant référence au bush xérophile du Sud.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel mot désigne l'enclos sacré protégeant les troupeaux de zébus dans les villages du Sud ?",
+            questionMg:
+              "Inona ny teny iantsoana ny valan'omby fiarovana ny biby fiompy any Atsimo ?",
+            choices: ["Le Vala (ou Fahitra)", "Ny Tranokely", "Ny Lapa", "Ny Tsena"],
+            correctIndex: 0,
+            explanation:
+              "Le « Vala » (ou « Fahitra ») est l'enclos traditionnel à bétail en rondins de bois, symbole de vie et de sécurité.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quel animal prestigieux est au centre du vocabulaire et de la vie pastorale du Grand Sud ?',
+            questionMg:
+              "Inona ilay biby manan-kaja mibaiko ny voambolana sy ny fiainan'ny olona any Atsimo ?",
+            choices: [
+              "Le zébu (Omby)",
+              "Le dromadaire",
+              "Le cheval de trait",
+              "Le lama des Andes",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le zébu (omby) est la richesse suprême, le lien avec les ancêtres et le cœur linguistique de la culture du Sud.",
+          },
+        ],
+      },
+      {
+        slug: 'le-vocabulaire-maritime-vezo-et-pecheurs',
+        title: "Le vocabulaire maritime : l'épopée des Vezo et des gens de la mer",
+        titleMg: "Ny Voambolan'ny Ranomasina sy ny Fiteny Vezo",
+        summary:
+          "Explorez le lexique maritime des nomades marins Vezo, les vents et la navigation en pirogue à balancier.",
+        summaryMg:
+          "Fantaro ireo tenin'ny ranomasina fampiasan'ny foko Vezo sy ireo mpanjono amoron-tsiraka.",
+        type: 'VOCABULARY',
+        orderIndex: 4,
+        durationMinutes: 7,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Sur le littoral sud-ouest de Madagascar s'étend le royaume marin des **Vezo**, maîtres incontestés de la navigation côtière dans le canal de Mozambique. Vivant en symbiose avec l'océan, les Vezo ont développé un lexique maritime raffiné, nommant avec précision chaque brise de vent, chaque recoin de récif coralien, chaque élément de leur pirogue à balancier (*Lakana*) et les trésors de la pêche artisanale.",
+            textMg:
+              "Any amin'ny morontsiraka atsimo andrefana no misy ny foko **Vezo**, tantsambo mahay mikaroka sy miaina an-dranomasina. Noho ny fifandraisany lalina amin'ny ranomasina, ny Vezo dia manana voambolana manokana manan-karena momba ny rivotra, ny onja, ny lakana misy vava ary ny harena an-dranomasina rehetra.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'RIA',
+            phonetic: 'ri-a',
+            frenchEquivalent:
+              "Sonorité fluide et coulante évoquant le mouvement des vagues (ex: Riaka).",
+            sampleWordMg: 'Riaka',
+            sampleTranslationFr: "La mer / L'océan (en vocabulaire maritime et côtier)",
+          },
+          {
+            type: 'concept',
+            termMg: 'Vezo',
+            phonetic: 've-zou',
+            meaningFr: "« Ceux qui rament et défient la mer » / Peuple marin du littoral",
+            explanation:
+              "Plus qu'une ethnie, être Vezo définit une philosophie de vie fondée sur la liberté marine, la pêche et le savoir des marées.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Lakam-biha (Lakana Vezo)',
+            phonetic: 'la-kam-bi-ha',
+            meaningFr: "La pirogue à balancier monoxyle traditionnelle",
+            explanation:
+              "Embarcation taillée dans un tronc d'arbre léger (farafatsy), équipée d'un balancier stabilisateur et d'une voile carrée.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Varatraza sy Tsioka',
+            phonetic: 'va-ra-tsa-za si tsi-ou-ka',
+            meaningFr: "L'alizé marin vigoureux et la brise marine",
+            explanation:
+              "Vents quotidiens que le marin Vezo sait décrypter dès l'aube pour hisser la voile et regagner la terre ferme avant la nuit.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Riaka',
+            phonetic: 'ri-a-ka',
+            meaningFr: "La mer / L'étendue océanique nourricière",
+            explanation:
+              "Terme vénéré et poétique désignant l'océan, espace de vie sacré soumis aux interdits maritimes (fady).",
+          },
+          {
+            type: 'example',
+            textMg:
+              "Nandeha natsapa riaka maraina ny Vezo tamin'ny lakam-bihany.",
+            textFr:
+              "Les pêcheurs Vezo sont partis sonder la mer au petit matin à bord de leur pirogue à balancier.",
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Pour les Vezo, la mer n'appartient à personne : elle est un don partagé de Zanahary. Les pêcheurs observent scrupuleusement des jours de repos marin (Fady riaka) pour permettre aux poissons de se reproduire, témoignant d'une conscience écologique ancestrale remarquable.",
+            textMg:
+              "Ho an'ny Vezo, ny ranomasina dia an'Andriamanitra ary ifampizarana. Manaja ny andro fady tsy anjonoana izy ireo mba hitsinjovana ny taranaky ny hazandrano, fomba fiarovana ny tontolo iainana efa nisy hatry ny ela.",
+          },
+          // ─── 5 Micro-Quiz de validation ───
+          {
+            type: 'quiz',
+            question:
+              "Qui sont les « Vezo » dans la culture malgache ?",
+            questionMg:
+              "Iza moa ny foko Vezo eo amin'ny kolontsaina malagasy ?",
+            choices: [
+              "Les marins, navigateurs et pêcheurs nomades du littoral sud-ouest",
+              "Des forgerons des hautes montagnes",
+              "Des cultivateurs de thé de l'est",
+              "Des éleveurs de rennes des plateaux",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Les Vezo sont les réputés navigateurs et pêcheurs traditionnels du canal de Mozambique (Tuléar, Morombe, etc.).",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Comment appelle-t-on l'embarcation traditionnelle à balancier emblématique des pêcheurs Vezo ?",
+            questionMg:
+              "Ahoana no iantsoana ny lakan'ny Vezo misy vava enti-manjono ?",
+            choices: [
+              "Le Lakam-biha (Lakana Vezo)",
+              "Le Sambofiara",
+              "Le Kalesa",
+              "Le Trano hazo",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le « Lakam-biha » est la pirogue à balancier traditionnelle sculptée et équipée d'une voile carrée.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel mot poétique et traditionnel désigne la mer dans le vocabulaire côtier Vezo ?",
+            questionMg:
+              "Inona ilay teny mampiavaka ny ranomasina amin'ny fitenin'ny mpanjono amoron-tsiraka ?",
+            choices: ["Riaka", "Hady", "Tanety", "Lalana"],
+            correctIndex: 0,
+            explanation:
+              "« Riaka » est le mot traditionnel employé sur les côtes pour désigner la mer et les flots marins.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Comment appelle-t-on l'alizé marin puissant et régulier qui souffle sur les côtes ?",
+            questionMg:
+              "Inona no iantsoana ilay rivotra mahery mitsoka avy an-dranomasina ?",
+            choices: [
+              "Le Varatraza",
+              "Le Rano mafana",
+              "Ny Zavona",
+              "Ny Orana mikija",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le « Varatraza » est le vent alizé régulier et soutenu qui gonfle les voiles des pêcheurs côtiers.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quelle pratique traditionnelle écologique est respectée par les pêcheurs Vezo ?",
+            questionMg:
+              "Inona ilay fomba nentin-drazana miaro ny tontolo iainana hajain'ny mpanjono Vezo ?",
+            choices: [
+              "Le respect des jours d'interdiction de pêche (Fady riaka) pour préserver le repos de la mer",
+              "La pêche avec des filets industriels destructeurs",
+              "L'assèchement complet des lagons",
+              "La destruction systématique des coraux",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Les interdits traditionnels (fady riaka) permettent aux espèces marines de se reproduire et protègent la ressource halieutique.",
+          },
+        ],
+      },
+      {
+        slug: 'variations-de-vocabulaire-et-unite-linguistique',
+        title: "Variations régionales et unité profonde de la langue malgache",
+        titleMg: "Fahasamihafan'ny Voambolana sy Firaisan'ny Teny Malagasy",
+        summary:
+          "Comprenez comment la diversité des parlers régionaux s'enracine dans une même structure grammaticale et unie.",
+        summaryMg:
+          "Diniho ny fahasamihafan'ny teny isam-paritra sy ny fototra iray mampiray ny fiteny malagasy rehetra.",
+        type: 'GRAMMAR',
+        orderIndex: 5,
+        durationMinutes: 7,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Bien que Madagascar compte dix-huit grands groupes régionaux possédant chacun son accent et ses expressions pittoresques, **tous les dialectes malgaches partagent rigoureusement la même architecture grammaticale**. L'ordre canonique Verbe - Objet - Sujet (VOS), le système verbal d'infixation (*-in-*, *-um-*), et le tronc commun de racines austronésiennes permettent à tous les enfants de l'île de se comprendre et de célébrer leur unité fraternelle (*Fihavanana*).",
+            textMg:
+              "Na dia manana foko valo ambin'ny folo manana ny fitenim-paritra sy ny kanton'ny feony aza i Madagasikara, **ny teny malagasy rehetra dia miray amin'ny rafitra ara-pitsipika tokana**. Ny filaharan'ny teny Matoanteny - Fameno - Lazaina (VOS), ny fanovonana sy ny fampidirana tovona sy tsofoka, ary ny fototeny iombonana dia manaporofo fa iray ihany ny teny malagasy manerana ny Nosy.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'VOS',
+            phonetic: 'v-o-s',
+            frenchEquivalent:
+              "Ordre habituel des phrases malgaches : Verbe + Complément d'objet + Sujet (ex: Mihinana vary aho).",
+            sampleWordMg: 'Mihinana vary aho',
+            sampleTranslationFr: 'Je mange du riz (littéralement : Mange du riz moi)',
+          },
+          {
+            type: 'concept',
+            termMg: 'Matoanteny - Fameno - Lazaina (VOS)',
+            phonetic: 'ma-tou-an-te-ni fa-me-nou la-zeye-na',
+            meaningFr: "L'ordre syntaxique universel de la langue malgache",
+            explanation:
+              "Contrairement au français qui place le Sujet en tête (SVO), le malgache débute traditionnellement par le verbe dans tous ses dialectes.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Mihinana / Komana / Homana / Mihinagne',
+            phonetic: 'mi-hi-na-na / kou-ma-na / hou-ma-na / mi-hi-nang-e',
+            meaningFr: "Variations régionales du verbe « Manger »",
+            explanation:
+              "Démontre que les variantes lexicales partagent la même racine ou expriment une simple évolution phonétique locale parfaitement intelligible.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Zaza / Tsaiky / Ajaja',
+            phonetic: 'za-za / tsye-ki / a-ja-ja',
+            meaningFr: "Variations affectueuses pour désigner « l'enfant »",
+            explanation:
+              "Sur les Hautes Terres on dit « zaza », dans le Nord et l'Ouest « tsaiky », à l'Est « ajaja » : trois manières douces d'honorer la jeunesse.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Ny Teny Malagasy dia Iray',
+            phonetic: 'ni te-ni ma-la-ga-si di-a i-rye',
+            meaningFr: "La langue malgache est une et indivisible",
+            explanation:
+              "Principe linguistique et culturel soulignant que les dialectes ne divisent pas, mais enrichissent le patrimoine commun de la nation.",
+          },
+          {
+            type: 'example',
+            textMg:
+              "Na samihafa aza ny tenim-paritra, ny fanahin'ny fiteny kosa dia iray ihany mampiray ny Malagasy rehetra.",
+            textFr:
+              "Bien que les dialectes régionaux varient, l'âme de la langue est une et unit tous les Malgaches dans le Fihavanana.",
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Alors que moins de 5 % des langues du monde utilisent l'ordre de phrase Verbe - Objet - Sujet (VOS), tous les dialectes malgaches, de Diégo-Suarez à Fort-Dauphin, partagent cette structure syntaxique originale. C'est l'une des preuves scientifiques les plus éclatantes de l'unité fondamentale de la nation malgache.",
+            textMg:
+              "Tsy misy afa-tsy 5 % amin'ny fiteny maneran-tany no mampiasa ny filaharana Matoanteny - Fameno - Lazaina (VOS). Ny fitenim-paritra malagasy rehetra hatrany Avaratra ka hatrany Atsimo anefa dia mampiasa an'io firafitra io avokoa, manamarina ny firaisan-kinan'ny teny malagasy.",
+          },
+          // ─── 5 Micro-Quiz de validation ───
+          {
+            type: 'quiz',
+            question:
+              "Quel est l'ordre syntaxique naturel d'une phrase verbale en malgache, partagé par tous les dialectes ?",
+            questionMg:
+              "Inona ny filaharan'ny teny mahazatra amin'ny fehezanteny malagasy ?",
+            choices: [
+              "Verbe - Complément d'objet - Sujet (VOS)",
+              "Sujet - Verbe - Complément d'objet (SVO)",
+              "Complément d'objet - Sujet - Verbe (OSV)",
+              "Sujet - Complément d'objet - Verbe (SOV)",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le malgache structure ses phrases avec le verbe en tête (VOS), par exemple : « Mahandro vary i Soa » (Cuisine du riz Soa).",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quels termes côtiers correspondent au verbe standard « Mihinana » (Manger) ?",
+            questionMg:
+              "Inona ireo tenim-paritra mitovy hevitra amin'ny hoe « Mihinana » ?",
+            choices: [
+              "Komana, Homana na Mihinagne",
+              "Matory na Mandry",
+              "Mandeha na Mamindra",
+              "Milalao na Mikorana",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Selon les régions, « manger » se dit couramment « komana », « homana » ou « mihinagne », toutes issues de racines proches.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel mot des dialectes du Nord et de l'Ouest équivaut au terme « Zaza » (Enfant) ?",
+            questionMg:
+              "Inona ny tenim-paritra any Avaratra sy Andrefana mitovy hevitra amin'ny teny hoe « Zaza » ?",
+            choices: ["Tsaiky", "Raiamandreny", "Zoky", "Mpanjaka"],
+            correctIndex: 0,
+            explanation:
+              "« Tsaiky » est le mot très populaire et affectueux des côtes nord et ouest pour désigner un enfant.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Qu'est-ce qui prouve l'unité profonde de la langue malgache par-delà les dialectes ?",
+            questionMg:
+              "Inona no manaporofo ny firaisana lalina misy eo amin'ny fitenim-paritra malagasy rehetra ?",
+            choices: [
+              "Une grammaire identique, une syntaxe VOS commune et un même fonds de racines",
+              "L'obligation d'utiliser des mots étrangers",
+              "L'absence de communication entre les provinces",
+              "Le fait qu'il n'y ait aucun mot similaire",
+            ],
+            correctIndex: 0,
+            explanation:
+              "La structure grammaticale (VOS), les infixes et les racines partagées démontrent l'unité indissoluble de la langue malgache.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quelle valeur culturelle suprême est renforcée par cette unité linguistique à Madagascar ?",
+            questionMg:
+              "Inona ilay soatoavina lehibe malagasy hamafisin'izany firaisan'ny teny izany ?",
+            choices: [
+              "Le Fihavanana (solidarité, fraternité et concorde nationale)",
+              "La division et l'isolement des clans",
+              "L'oubli des traditions des ancêtres",
+              "La rivalité permanente entre les régions",
+            ],
+            correctIndex: 0,
+            explanation:
+              "L'unité de la langue malgache est le pilier vivant du Fihavanana, liant fraternellement tous les habitants de la Grande Île.",
+          },
+        ],
+      },
     ],
   },
   {
@@ -3529,7 +5240,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
     level: 'ADVANCED',
     icon: 'Compass',
     color: '#C58B38',
-    orderIndex: 5,
+    orderIndex: 6,
     estimatedMinutes: 45,
     lessons: [
       {
