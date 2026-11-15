@@ -5230,20 +5230,20 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
     ],
   },
   {
-    slug: 'harena-miafina-sy-fahendrena-lalina',
-    title: 'Trésors cachés & Sagesses atypiques de Madagascar',
-    titleMg: 'Harena Miafina sy Fahendrena Lalina Malagasy',
+    slug: 'tresors-caches-de-madagascar',
+    title: 'Trésors cachés de Madagascar',
+    titleMg: 'Harena Miafina Malagasy',
     description:
-      "Explorez les dimensions méconnues et captivantes de la culture malgache : la métaphysique du Fanorona et le Vela, l'art martial du Moraingy, la cosmologie du Trano Gasy, le bain sacré du Fitampoha et la justice cosmique du Tsiny sy Tody.",
+      "Explorez les arts vivants et patrimoines méconnus de la Grande Île : la stratégie du Fanorona, les arts martiaux du Moraingy et du Ringa, les rituels du Sambatra, les instruments traditionnels (Valiha, Marovany), la soie sauvage Landibe et l'art sculptural des Aloalo.",
     descriptionMg:
-      "Diniho ireo fomba amam-panao manan-danja sy miavaka : ny haifisainan'ny Fanorona sy ny Vela, ny haiady Moraingy, ny fandrindrana ny Trano Gasy, ny fandroana ny Dady amin'ny Fitampoha ary ny famaizan'ny Tsiny sy ny Tody.",
+      "Fantaro ireo harena sy haikanto miavaka eto Madagasikara : ny tetikadin'ny Fanorona, ny haiady Moraingy sy Ringa, ny fetin'ny Sambatra, ireo zava-maneno nentim-paharazana, ny tenona Landibe ary ny sokitr'ireo Aloalo.",
     level: 'ADVANCED',
-    icon: 'Compass',
+    icon: 'Trophy',
     color: '#C58B38',
     orderIndex: 6,
-    estimatedMinutes: 45,
+    estimatedMinutes: 50,
     lessons: [
-      {
+{
         slug: 'le-fanorona-strategie-royale-et-rituel-du-vela',
         title: 'Le Fanorona : Stratégie royale, cosmologie et rituel du Vela',
         titleMg: "Ny Fanorona : Tetikadin'ny Mpanjaka sy ny Lalàn'ny Vela",
@@ -5402,7 +5402,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
         ],
       },
-      {
+{
         slug: 'le-moraingy-et-ringa-art-martial-et-honneur',
         title:
           "Le Moraingy & le Ringa : L'éthique guerrière côtière et le respect du vaincu",
@@ -5543,7 +5543,627 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
         ],
       },
+{
+        slug: 'le-sambatra-fete-septennale-antambahoaka',
+        title: 'Le Sambatra de Mananjary : La grande initiation septennale',
+        titleMg: 'Ny Sambatra any Mananjary : Fety Lehibe Isaky ny Fito Taona',
+        summary:
+          "Plongez au cœur du rassemblement septennal des Antambahoaka : un mois de communion, rites des Tranobe et passage vers la plénitude de l'homme.",
+        summaryMg:
+          "Diniho ny fankalazana miavaka ataon'ny Antambahoaka isaky ny fito taona : firaisankina, fomban'ny Tranobe ary fanandratana ny maha lehilahy.",
+        type: 'TRADITION',
+        orderIndex: 3,
+        durationMinutes: 7,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Tous les 7 ans, la ville de Mananjary (sur la côte Sud-Est de Madagascar) devient le théâtre du Sambatra, l'un des rituels collectifs les plus saisissants de l'île. Durant un mois entier, le peuple Antambahoaka célèbre la circoncision de toute une génération de garçons.",
+            textMg:
+              "Isaky ny fito taona, ny tanànan'i Mananjary (morontsiraka Atsimo-Atsinanana) dia ivon'ny lanonana Sambatra miavaka indrindra eto Madagasikara. Mandritra ny iray volana maninjitra, ny vahoaka Antambahoaka dia miray hina mankalaza ny hasin'ireo zaza lahy.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Sambatra',
+            phonetic: 'sam-ba-tra',
+            meaningFr: 'Bienheureux / Félicité suprême',
+            explanation:
+              "Nom donné à la fête qui confère aux jeunes garçons la plénitude de leur dignité et leur statut d'hommes accomplis au sein du clan.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Tranobe',
+            phonetic: 'tra-nou-be',
+            meaningFr: 'La grande maison sacrée du clan royal',
+            explanation:
+              'Résidence des dignitaires coutumiers et temple des bénédictions ancestrales autour duquel gravitent les cortèges.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Fito taona',
+            phonetic: 'fi-tou tow-na',
+            meaningFr: 'Le cycle sacré de sept ans',
+            explanation:
+              "Période rituelle incompressible : aucun garçon Antambahoaka n'est initié hors de cette fenêtre septennale collective.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Vinany',
+            phonetic: 'vi-na-ni',
+            meaningFr: "L'embouchure sacrée du fleuve",
+            explanation:
+              "Lieu de convergence solennel où l'eau douce du fleuve Mananjary rejoint l'océan Indien, théâtre du bain rituel purificateur.",
+          },
+          {
+            type: 'example',
+            textMg:
+              "Nirohotra nankany amin'ny Tranobe ny vahoaka Antambahoaka niaraka tamin'ireo zaza hotsofin-drano.",
+            textFr:
+              'Le peuple Antambahoaka a afflué vers le Tranobe avec les jeunes garçons appelés à recevoir la bénédiction sacrée.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              'Durant le Sambatra, les jeunes initiés portent des tuniques rouge vif brodées et de hauts bonnets coniques rouges rappelant la noblesse des origines. Les mères et tantes entonnent des chants polyphoniques ininterrompus et exécutent des rondes solennelles autour du Tranobe pour protéger les enfants.',
+            textMg:
+              "Mandritra ny Sambatra, miakanjo lamba mena midorehitra misy peta-kofehy sy satroka maranitra mena manambara ny firazanana ambony ireo ankizilahy. Mihira sy mandihy manodidina ny Tranobe andro aman'alina ireo renibe sy reny hiarovana ny zaza.",
+          },
+          // ─── 5 Micro-Quiz de validation ───
+          {
+            type: 'quiz',
+            question:
+              "Tous les combien d'années est célébré le grand rituel du Sambatra chez les Antambahoaka de Mananjary ?",
+            questionMg:
+              'Isaky ny firy taona no anatanterahana ny fankalazana lehibe Sambatra any Mananjary ?',
+            choices: [
+              'Tous les 7 ans (Isaky ny fito taona)',
+              'Tous les ans au mois de janvier',
+              'Tous les 50 ans seulement',
+              "Tous les 2 ans au solstice d'été",
+            ],
+            correctIndex: 0,
+            explanation:
+              'Le Sambatra obéit à un cycle septennal strict : il a lieu exactement tous les 7 ans et rassemble des milliers de familles.',
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quelle grande maison coutumière constitue le cœur spirituel des cérémonies du Sambatra ?',
+            questionMg:
+              "Inona ilay trano fomban-drazana masina ivon'ny fombafomba rehetra mandritra ny Sambatra ?",
+            choices: [
+              'Le Tranobe (la grande maison clanique)',
+              'La mairie de la commune',
+              'Le phare du port de mer',
+              'Le marché couvert des pêcheurs',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le 'Tranobe' est le centre névralgique où siègent les rois coutumiers (Mpanjaka) et où se font les prières.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Que signifie littéralement le mot malgache « Sambatra » ?',
+            questionMg:
+              "Inona no dikan'ny teny malagasy hoe « Sambatra » amin'ny fiteny andavanandro ?",
+            choices: [
+              'Bienheureux, comblé de joie et de félicité',
+              'Rapide comme la foudre',
+              'Secret et caché sous la terre',
+              'Combattant invaincu',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le mot 'Sambatra' signifie heureux ou comblé de bénédictions, marquant la joie de toute la communauté.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Où se rendent en procession les cortèges pour le bain rituel purificateur des initiés ?',
+            questionMg:
+              "Mankany amin'ny toerana manao ahoana ny filaharana be mba handroana ireo zaza amin'ny rano masina ?",
+            choices: [
+              "Au Vinany (l'embouchure où le fleuve rencontre l'océan)",
+              'Dans une piscine municipale en ville',
+              'Au sommet de la plus haute montagne',
+              'Dans une grotte sans lumière',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le cortège gagne le 'Vinany' (l'embouchure) où la force de l'océan et la pureté de l'eau douce s'unissent pour bénir les enfants.",
+          },
+          {
+            type: 'quiz',
+            question:
+              'Quelle couleur emblématique domine les vêtements traditionnels et bonnets coniques des jeunes initiés du Sambatra ?',
+            questionMg:
+              "Inona no loko mampiavaka ny akanjo sy ny satroka maranitra fitondran'ireo zaza am-pifaliana ?",
+            choices: [
+              'Le rouge vif (loko mena)',
+              'Le noir sombre',
+              'Le vert fluo',
+              'Le violet violette',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Les initiés portent le rouge royal (mena), couleur ancestrale de l'autorité, du feu vital et de la bravoure.",
+          },
+        ],
+      },
       {
+        slug: 'les-instruments-de-musique-valiha-et-marovany',
+        title: "Les instruments traditionnels : l'âme de la Valiha et du Marovany",
+        titleMg: 'Ireo Zava-maneno Nentin-drazana : ny Valiha sy ny Marovany',
+        summary:
+          "Découvrez les instruments emblématiques malgaches : la cithare tubulaire en bambou Valiha, le Marovany côtier et la flûte Sodina.",
+        summaryMg:
+          "Fantaro ireo zava-maneno mampiavaka an'i Madagasikara : ny Valiha volotsangana, ny Marovany sy ny Sodina kanto.",
+        type: 'CULTURE',
+        orderIndex: 4,
+        durationMinutes: 8,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "La musique traditionnelle malgache est un pont mystique entre le cœur des vivants et le monde des ancêtres. Parmi sa prestigieuse lutherie, la **Valiha** (cithare tubulaire en bambou d'origine austronésienne) s'impose comme l'emblème musical national. Sur les côtes, le **Marovany** (cithare sur caisse en bois) résonne lors des cérémonies de Tromba, tandis que la **Sodina** (flûte en bambou pastoral) et le **Lokanga** (violon à trois cordes des pasteurs Bara) font vibrer les vallées et les grands plateaux.",
+            textMg:
+              "Ny mozika nentim-paharazana malagasy dia tetezana mampifandray ny velona sy ny Razana. Ny **Valiha** (zava-maneno vita amin'ny volotsangana) no zava-maneno sarobidy indrindra manerana ny Nosy. Any amin'ny morontsiraka, ny **Marovany** no manaitra ny Tromba amin'ny feony lalina, raha ny **Sodina** sy ny **Lokanga** kosa no manome aina ny tontolo ambanivohitra sy ny fiandrasana omby.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'VALIHA',
+            phonetic: 'va-li-ha',
+            frenchEquivalent:
+              "Se prononce doucement avec le « H » expiré léger (ex: Valiha, Marovany, Sodina).",
+            sampleWordMg: 'Valiha',
+            sampleTranslationFr: 'Cithare tubulaire en bambou (instrument national)',
+          },
+          {
+            type: 'concept',
+            termMg: 'Valiha',
+            phonetic: 'va-li-ha',
+            meaningFr: "L'instrument emblématique de Madagascar en bambou sacré",
+            explanation:
+              "Cithare tubulaire taillée dans une variété spécifique de bambou (Volotsangana), équipée de cordes tendues sur de petits chevalets en bois mobiles.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Marovany',
+            phonetic: 'ma-rou-va-ni',
+            meaningFr: "« La boîte aux multiples voix » (cithare sur caisse côtière)",
+            explanation:
+              "Instrument rectangulaire en bois muni de cordes sur deux faces opposées, incontournable pour invoquer les esprits royaux lors des cérémonies de possession Tromba.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Sodina',
+            phonetic: 'sou-di-na',
+            meaningFr: "La flûte droite traditionnelle en bambou ou roseau",
+            explanation:
+              "Flûte pastorale à six trous, immortalisée à travers le monde par le virtuose Rakoto Frah et essentielle dans le Hira Gasy.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Lokanga Bara',
+            phonetic: 'lou-kan-ga ba-ra',
+            meaningFr: "Le violon rustique à trois cordes des pasteurs du Sud",
+            explanation:
+              "Instrument à archet sculpté dans du bois dur et garni d'une table d'harmonie en peau de zébu, accompagnant les récits poétiques des gardiens de troupeaux.",
+          },
+          {
+            type: 'example',
+            textMg:
+              "Nanakoako eran'ny vohitra ny feo mangan'ny valiha nampandry saina ny mpiara-monina.",
+            textFr:
+              "Le son cristallin et mélodieux de la valiha a résonné à travers le village, apaisant les cœurs de la communauté.",
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "À l'origine, les cordes de la Valiha étaient découpées directement dans l'écorce fibreuse du bambou lui-même, soulevées par des éclats de bois servant de chevalets. Au XXe siècle, les luthiers malgaches ont révolutionné la sonorité de l'instrument en utilisant des brins effilés de câbles de frein de bicyclette !",
+            textMg:
+              "Tany am-boalohany, ny kofehin'ny Valiha dia ny hodi-bolotsangana ihany no nofisahana sy natsangana tamin'ny hazo kely. Taty aoriana vao nampiasa tariby vy manify ny mpanao valiha ka vao mainka nanjary manga sy maneno lavitra ny feony.",
+          },
+          // ─── 5 Micro-Quiz de validation ───
+          {
+            type: 'quiz',
+            question:
+              "Quel instrument à cordes en bambou tubulaire est l'emblème musical national de Madagascar ?",
+            questionMg:
+              "Inona ilay zava-maneno vita amin'ny volotsangana heverina ho marika lehibe malagasy ?",
+            choices: [
+              "La Valiha",
+              "Le piano à queue",
+              "La guitare électrique",
+              "L'accordéon moderne",
+            ],
+            correctIndex: 0,
+            explanation:
+              "La Valiha est l'instrument traditionnel national par excellence, symbole de pureté et d'harmonie sonore.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel instrument en caisse de résonance en bois est indispensable aux rituels de Tromba sur les côtes ?",
+            questionMg:
+              "Inona ilay zava-maneno efajoro hazo fampiasa matetika amin'ny fombafomba Tromba morontsiraka ?",
+            choices: [
+              "Le Marovany",
+              "Le violoncelle classique",
+              "La trompette en cuivre",
+              "La batterie moderne",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le Marovany, avec ses cordes montées sur deux faces, produit une onde sonore vibrante qui induit la transe spirituelle du Tromba.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel maître flûtiste malgache légendaire a fait connaître la Sodina dans le monde entier ?",
+            questionMg:
+              "Iza ilay mpitsoka sodina kalaza eran-tany nampisandratra ny kolontsaina malagasy ?",
+            choices: [
+              "Rakoto Frah",
+              "Jean Laborde",
+              "Andrianampoinimerina",
+              "Radama Ier",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Rakoto Frah (1923-2001) est le maître mondialement célébré de la Sodina, dont l'effigie orna même les billets de banque malgaches.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Comment appelle-t-on le violon rustique à trois cordes caractéristique des pasteurs Bara du Grand Sud ?",
+            questionMg:
+              "Inona no iantsoana ilay zava-maneno misy tadiny telo fitendrin'ny mpiompy Bara any Atsimo ?",
+            choices: ['Le Lokanga', 'Ny Valiha', 'Ny Sodina', 'Ny Kabosy'],
+            correctIndex: 0,
+            explanation:
+              "Le Lokanga (ou Lokanga Bara) est un violon traditionnel à manche courbe et table en peau de zébu rythmant les récits du Sud.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quelle fonction sacrée la musique traditionnelle remplit-elle auprès des ancêtres et de la communauté ?",
+            questionMg:
+              "Inona ny anjara asa masina sahanin'ny mozika nentim-paharazana eo amin'ny fiaraha-monina ?",
+            choices: [
+              "Établir la communion avec les ancêtres, apaiser les esprits et resserrer le Fihavanana",
+              "Remplacer les lois du tribunal civil",
+              "Interdire aux jeunes d'exprimer leurs émotions",
+              "Obliger les villageois à garder le silence",
+            ],
+            correctIndex: 0,
+            explanation:
+              "La musique malgache est un vecteur de bénédiction (hasina), de mémoire communautaire et de médiation avec les Razana.",
+          },
+        ],
+      },
+      {
+        slug: 'l-art-du-tissage-du-lamba-arindrano-et-soie-sauvage-landibe',
+        title: "L'art textile sacré : le Lamba Arindrano et la soie sauvage Landibe",
+        titleMg: 'Ny Tenona sy ny Landibe : Lamba Arindrano sy Akotofahana',
+        summary:
+          "Explorez les secrets du tissage traditionnel : la récolte de la soie sauvage Landibe, le prestigieux Lamba Arindrano et les teintures végétales.",
+        summaryMg:
+          "Fantaro ny kanton'ny tenona malagasy : ny fambolena sy fiotazana ny Landibe, ny Lamba Arindrano ary ny Akotofahana.",
+        type: 'CULTURE',
+        orderIndex: 5,
+        durationMinutes: 8,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Dans la culture malgache, le tissu est bien plus qu'un vêtement : c'est une parure de dignité pour les vivants et le suaire d'éternité pour les ancêtres. L'art du tissage manuel (**Tenona**) atteint des sommets de perfection avec le **Landibe** (la soie sauvage endémique issue des chenilles des forêts de Tapia). Des étoffes légendaires comme le **Lamba Arindrano** (aux rayures sobres royales) et le **Lamba Akotofahana** (aux motifs géométriques en relief) témoignent du raffinement d'un savoir-faire séculaire transmis de mère en fille.",
+            textMg:
+              "Eo amin'ny fomba amam-panao malagasy, ny lamba dia fitafiana mendrika ho an'ny velona ary fono masina ho an'ny Razana mandrakizay. Ny **Tenona** malagasy dia manana laza lehibe amin'ny alalan'ny **Landibe** (landy avy amin'ny ala tapia). Ny **Lamba Arindrano** manana tsipika milamina sy ny **Lamba Akotofahana** misy soratra marevaka no porofon'ny fahaiza-manao nentim-paharazana nampitaina tamin'ny taranaka fara mandimby.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'LANDIBE',
+            phonetic: 'lan-di-be',
+            frenchEquivalent:
+              "Prononcez distinctement « Lan-di-bé » (soie sauvage noble des hautes terres).",
+            sampleWordMg: 'Landibe',
+            sampleTranslationFr: 'Soie sauvage endémique de Madagascar',
+          },
+          {
+            type: 'concept',
+            termMg: 'Landibe (Borocera madagascariensis)',
+            phonetic: 'lan-di-be',
+            meaningFr: "Le ver à soie sauvage des forêts de tapia",
+            explanation:
+              "Chenille endémique qui tisse de solides cocons dorés dans les forêts de tapia (notamment dans l'Itasy et l'Amoron'i Mania), matière première de la soie ancestrale.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Lamba Arindrano',
+            phonetic: 'lam-ba a-rin-dra-nou',
+            meaningFr: "L'étoffe noble aux rayures géométriques noires et écrues",
+            explanation:
+              "Lamba de haute dignité traditionnellement porté par les souverains, les aînés et les juges coutumiers lors des grands discours officiels.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Lamba Akotofahana',
+            phonetic: 'lam-ba a-kou-tou-fa-ha-na',
+            meaningFr: "L'étoffe de prestige aux motifs brodés et jacquards en relief",
+            explanation:
+              "Chef-d'œuvre de patience et de créativité, réservé jadis aux membres de la royauté pour les noces et les cérémonies d'apparat.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Tapia (Uapaca bojeri)',
+            phonetic: 'ta-pi-a',
+            meaningFr: "L'arbre protecteur des forêts de l'Imerina et du Betsileo",
+            explanation:
+              "Arbre résistant aux feux dont les feuilles nourrissent les chenilles de soie sauvage et dont l'écorce fournit des pigments de teinture naturelle.",
+          },
+          {
+            type: 'example',
+            textMg:
+              "Nisikina Lamba Arindrano ny raiamandreny raha nitsangana nanao kabary fampihavanana.",
+            textFr:
+              "Le patriarche s'est drapé dans son somptueux Lamba Arindrano avant de se lever pour prononcer le discours de réconciliation.",
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Les teintures du lamba traditionnel étaient exclusivement végétales et minérales : le jaune éclatant provenait du curcuma (*Tamotamo*), le brun profond de l'argile ferrugineuse des rizières (*Tany mena*), et les nuances d'ocre de décoctions d'écorces d'arbres endémiques bouillies pendant plusieurs jours.",
+            textMg:
+              "Tsy nisy loko simika ny tenona malagasy fahiny : ny tamotamo no nanome ny loko mavo manganofy, ny fotaka an-tanimbary no nahazoana ny volontany matroka, ary ny hodi-kazo nandrahoina no niteraka ireo loko volom-parasy sy mena mangamanga.",
+          },
+          // ─── 5 Micro-Quiz de validation ───
+          {
+            type: 'quiz',
+            question:
+              "D'où provient traditionnellement la soie sauvage noble « Landibe » à Madagascar ?",
+            questionMg:
+              "Avy aiza ny landy nentim-paharazana antsoina hoe « Landibe » eto Madagasikara ?",
+            choices: [
+              "Des cocons de chenilles sauvages vivant dans les forêts de tapia",
+              "De fibres synthétiques d'usines modernes",
+              "De la laine de moutons importés d'Europe",
+              "De feuilles de bananier séchées",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le Landibe provient de chenilles endémiques (Borocera madagascariensis) qui se développent sur les arbres Tapia des Hautes Terres.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel lamba d'apparat prestigieux se caractérise par des bandes et rayures sobres et soignées ?",
+            questionMg:
+              "Inona ilay lamba malaza manana tsipika milamina fanaon'ny raiamandreny sy ny manan-kaja ?",
+            choices: [
+              "Le Lamba Arindrano",
+              "Un simple tablier de cuisine",
+              "Une serviette de bain",
+              "Un tissu de rideau imprimé",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le Lamba Arindrano est l'étoffe de noblesse et de dignité par excellence, arborée lors des grands Kabary solennels.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel lamba réputé pour sa complexité comporte des motifs géométriques et floraux en relief ?",
+            questionMg:
+              "Inona ilay lamba be haingon-tsoratra sy sarobidy indrindra amin'ny tenona malagasy ?",
+            choices: [
+              "Le Lamba Akotofahana",
+              "Le lamba tantsaha tsotra",
+              "Ny salaka",
+              "Ny lamba lany fotsy",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le Lamba Akotofahana est le joyau textile malgache, orné de motifs en relief tissés avec une minutie exceptionnelle.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel arbre endémique résistant au feu héberge et nourrit les vers à soie Landibe ?",
+            questionMg:
+              "Inona ilay hazo fihinam-boa maniry an-tanety mamelona ny bibin-dandy Landibe ?",
+            choices: ['Le Tapia', 'Le Baobab', 'Le Cocotier', "L'Eucalyptus"],
+            correctIndex: 0,
+            explanation:
+              "Le Tapia (Uapaca bojeri) forme des forêts claires endémiques essentielles à la survie du ver à soie sauvage Landibe.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Pourquoi le tissu en soie de Landibe est-il au centre de la cérémonie du Famadihana ?",
+            questionMg:
+              "Nahoana ny lamba landy no zava-dehibe indrindra mandritra ny famadihana ?",
+            choices: [
+              "Parce qu'il enveloppe les dépouilles des ancêtres pour honorer leur mémoire éternelle dans le tombeau",
+              "Parce qu'il sert de drapeau pour indiquer le chemin",
+              "Parce qu'il protège de la pluie pendant la fête",
+              "Parce qu'il doit être brûlé à la fin du rituel",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Envelopper les ossements des Razana dans un lamba de soie Landibe neuf est le devoir d'amour et de piété filiale suprême.",
+          },
+        ],
+      },
+      {
+        slug: 'l-art-sculptural-des-aloalo-et-totems-funeraires',
+        title: "L'art sculptural des Aloalo : totems et mémoire éternelle du Grand Sud",
+        titleMg: "Ny Haikanto amin'ny Aloalo sy ny Valavato Mahafaly",
+        summary:
+          "Découvrez le génie sculptural des Mahafaly et Antandroy : les totems de bois sculpté Aloalo et les tombeaux Valavato.",
+        summaryMg:
+          "Fantaro ny kanton'ny sokitra Aloalo any amin'ny faritra Mahafaly sy Antandroy : tsangambato miresaka amin'ny lanitra.",
+        type: 'CULTURE',
+        orderIndex: 6,
+        durationMinutes: 8,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Au cœur des paysages arides du Sud-Ouest malgache, sur les territoires des peuples **Mahafaly** et **Antandroy**, s'élève l'une des formes d'art funéraire les plus impressionnantes au monde : les **Aloalo**. Ces monumentaux poteaux de bois sculpté en ajours géométriques, plantés sur les tombeaux en pierres sèches (**Valavato**), constituent de véritables livres ouverts relatant la destinée du défunt et établissant une liaison mystique entre la terre des mortels et le domaine céleste des ancêtres immortels.",
+            textMg:
+              "Any amin'ny faritra Atsimo Andrefana, eo amin'ny tanin'ny **Mahafaly** sy ny **Antandroy**, dia ahitana haikanto sokitra hazo manaitra indrindra : ny **Aloalo**. Ireo tsangambato hazo voasokitra am-pahaizana avo lenta ireo, natsangana teo ambonin'ny fasana vato (**Valavato**), dia mampahatsiaro ny fiainan'ilay lasa ary manandratra ny fanahiny ho eny amin'ny tontolon'ny Razana mandrakizay.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'ALOALO',
+            phonetic: 'a-lou-a-lou',
+            frenchEquivalent:
+              "Vient du verbe « Mialo » (faire écran, protéger, faire le lien entre deux mondes).",
+            sampleWordMg: 'Aloalo',
+            sampleTranslationFr: 'Poteau funéraire sculpté en bois ajouré du Sud',
+          },
+          {
+            type: 'concept',
+            termMg: 'Aloalo',
+            phonetic: 'a-lou-a-lou',
+            meaningFr: "Poteau totémique funéraire en bois sculpté",
+            explanation:
+              "Sculpture verticale de 1,5 à 2 mètres comportant des motifs géométriques abstraits successifs surmontés d'une scène narrative figurative.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Valavato (Fasana Mahafaly)',
+            phonetic: 'va-la-va-tou',
+            meaningFr: "Le tombeau monumental carré en pierres sèches taillées",
+            explanation:
+              "Édifice funéraire imposant sur lequel sont disposés les crânes de zébus sacrificiels (*Tinoka*) et les poteaux Aloalo honorant le défunt.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Hazomalany sy Mendorave',
+            phonetic: 'ha-zou-ma-la-ni si men-dou-ra-ve',
+            meaningFr: "Bois nobles et imputrescibles utilisés pour la sculpture",
+            explanation:
+              "Essences d'arbres sacrées de la forêt sèche du Sud, capables de résister des siècles au soleil ardent, au vent et aux termites.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Mialo',
+            phonetic: 'mi-a-lou',
+            meaningFr: "Intercéder, servir d'intermédiaire spirituel et de protection",
+            explanation:
+              "Sens étymologique du mot Aloalo : le poteau fait office de messager permanent entre le monde terrestre et le monde invisible.",
+          },
+          {
+            type: 'example',
+            textMg:
+              "Ny Aloalo tsara sokitra teo ambonin'ny valavato dia mampiseho ny voninahitr'ilay raiamandreny nodimandry.",
+            textFr:
+              "L'Aloalo finement sculpté surmontant le tombeau en pierre témoigne de la grandeur et du prestige de l'ancien disparu.",
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Le sommet de l'Aloalo comporte toujours une figurine figurative emblématique : autrefois un zébu royal ou un cavalier armé d'une lance ; de nos jours, les sculpteurs mahafaly y intègrent avec humour et réalisme un avion, une moto ou un taxi-brousse, symbolisant le dernier voyage triomphal du défunt vers l'au-delà !",
+            textMg:
+              "Ny tendron'ny Aloalo dia ahitana sarin'omby na lehilahy mitaingina soavaly hatramin'izay. Amin'izao fotoana izao, ny mpanao sokitra dia manasokitra fiarakodia na fiaramanidina mihitsy aza, maneho ny dia farany mankany amin'ny Razana amin'ny fomba manara-penitra.",
+          },
+          // ─── 5 Micro-Quiz de validation ───
+          {
+            type: 'quiz',
+            question:
+              "Qu'est-ce qu'un « Aloalo » dans l'art et les traditions du Grand Sud malgache ?",
+            questionMg:
+              "Inona moa ny atao hoe « Aloalo » amin'ny kolontsaina any Atsimo ?",
+            choices: [
+              "Un poteau funéraire sculpté en bois ajouré surmontant les tombeaux",
+              "Un instrument de percussion en bronze",
+              "Un type de pirogue de mer",
+              "Une coiffure de fête pour les jeunes filles",
+            ],
+            correctIndex: 0,
+            explanation:
+              "L'Aloalo est le poteau funéraire totémique en bois sculpté, signature artistique majeure des Mahafaly et Antandroy.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quels peuples de Madagascar sont historiquement renommés pour la sculpture des Aloalo ?",
+            questionMg:
+              "Iza ireo foko malaza indrindra amin'ny fanaovana ny sokitra Aloalo ?",
+            choices: [
+              "Les Mahafaly et les Antandroy",
+              "Les Merina et les Betsileo uniquement",
+              "Les Bezanozano",
+              "Les Antakarana",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Les sculpteurs Mahafaly et Antandroy ont élevé l'art de l'Aloalo au rang de chef-d'œuvre du patrimoine mondial.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Comment appelle-t-on les grands tombeaux monumentaux en pierres sèches sur lesquels sont érigés les Aloalo ?",
+            questionMg:
+              "Ahoana no iantsoana ireo fasana vato lehibe any Atsimo ametrahana ny Aloalo ?",
+            choices: ['Le Valavato', 'Ny Tranovola', 'Ny Rova', 'Ny Kianja'],
+            correctIndex: 0,
+            explanation:
+              "Le « Valavato » est le grand tombeau rectangulaire en dalles de pierre taillées, fierté et sanctuaire des familles du Sud.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel type d'essences de bois est rigoureusement sélectionné pour sculpter les Aloalo ?",
+            questionMg:
+              "Karazan-kazo manao ahoana no fidina hanaovana ny Aloalo ?",
+            choices: [
+              "Des bois nobles, denses et imputrescibles résistant aux siècles (comme le Hazomalany)",
+              "Du bois de balsa très fragile",
+              "Des branches de sapin fraîches",
+              "Du carton recyclé",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Des bois exceptionnellement denses et imputrescibles (Hazomalany, Mendorave) sont requis pour défier les intempéries du désert.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel est le rôle spirituel et symbolique profond du poteau Aloalo ?",
+            questionMg:
+              "Inona no hevitra ara-panahy lalina fonosin'ny Aloalo eo ambonin'ny fasana ?",
+            choices: [
+              "Faire le lien mystique (Mialo) entre la terre des vivants et le royaume céleste des ancêtres",
+              "Servir d'épouvantail pour chasser les oiseaux migrateurs",
+              "Indiquer la direction des vents marins",
+              "Servir de balance pour peser les récoltes",
+            ],
+            correctIndex: 0,
+            explanation:
+              "L'Aloalo intercède (mialo) et relie le monde temporel des vivants à l'éternité bienheureuse des ancêtres Razana.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'sagesses-atypiques-et-philosophie',
+    title: 'Sagesses atypiques & Philosophie profonde',
+    titleMg: 'Fahendrena Lalina sy Haifisainana Malagasy',
+    description:
+      "Plongez dans les profondeurs de la pensée et de la métaphysique malgaches : la cosmologie céleste du Trano Gasy, la thérapie holistique du Bilo, la justice cosmique du Tody, l'algèbre sacrée du Sikidy, l'astrologie du Vintana et l'énergie vitale du Hasina.",
+    descriptionMg:
+      "Diniho ny halalin'ny haifisainana sy ny finoana malagasy : ny firafitry ny Trano Gasy, ny fombafomba fanasitranana Bilo, ny famaizan'ny Tody, ny fahendren'ny Sikidy, ny fanandroana Vintana ary ny herin'ny Hasina.",
+    level: 'ADVANCED',
+    icon: 'Flame',
+    color: '#0D9488',
+    orderIndex: 7,
+    estimatedMinutes: 50,
+    lessons: [
+{
         slug: 'astronomie-et-cosmologie-du-trano-gasy',
         title:
           "Cosmologie du Trano Gasy : Les 12 Vintana et l'architecture sacrée",
@@ -5554,7 +6174,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
         summaryMg:
           "Ianaro ny antony ametrahana ny varavarana, ny fandriana ary ny andry manaraka ny vintana 12 sy ny hasin'ny Razana.",
         type: 'TRADITION',
-        orderIndex: 3,
+        orderIndex: 1,
         durationMinutes: 8,
         sections: [
           {
@@ -5693,7 +6313,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
         ],
       },
-      {
+{
         slug: 'le-fitampoha-et-le-rite-therapeutique-du-bilo',
         title:
           "Le Fitampoha et le Bilo : Rituels d'eau sacrée et guérison collective",
@@ -5704,7 +6324,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
         summaryMg:
           "Diniho ny fandroana ny Dadin'ny mpanjaka any Menabe sy ny fombafomba Bilo anasitranana ny manjo am-pitiavana.",
         type: 'CULTURE',
-        orderIndex: 4,
+        orderIndex: 2,
         durationMinutes: 8,
         sections: [
           {
@@ -5846,7 +6466,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
         ],
       },
-      {
+{
         slug: 'la-loi-cosmique-du-tsiny-et-du-tody',
         title:
           'Le Tsiny et le Tody : La loi métaphysique de la justice immanente',
@@ -5856,7 +6476,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
         summaryMg:
           "Fantaro ny antony atahorana ny Tsiny mihoatra ny olombelona sy ny finoana tsy mihozongozona amin'ny famaizan'ny Tody.",
         type: 'LITERATURE',
-        orderIndex: 5,
+        orderIndex: 3,
         durationMinutes: 7,
         sections: [
           {
@@ -5997,153 +6617,467 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
         ],
       },
       {
-        slug: 'le-sambatra-fete-septennale-antambahoaka',
-        title: 'Le Sambatra de Mananjary : La grande initiation septennale',
-        titleMg: 'Ny Sambatra any Mananjary : Fety Lehibe Isaky ny Fito Taona',
+        slug: 'la-divination-du-sikidy-geometrie-sacree-des-graines',
+        title: "La divination du Sikidy : géométrie sacrée des graines et algèbre du destin",
+        titleMg: "Ny Fahendren'ny Sikidy : Haifisainana sy ny Voan-kily",
         summary:
-          "Plongez au cœur du rassemblement septennal des Antambahoaka : un mois de communion, rites des Tranobe et passage vers la plénitude de l'homme.",
+          "Explorez la logique philosophique du Sikidy : l'algèbre des 16 figures sacrées, le rôle de l'Ombiasy et le rituel d'apaisement du Faditra.",
         summaryMg:
-          "Diniho ny fankalazana miavaka ataon'ny Antambahoaka isaky ny fito taona : firaisankina, fomban'ny Tranobe ary fanandratana ny maha lehilahy.",
+          "Fantaro ny fahendrena fonosin'ny Sikidy : ny fahaizan'ny Ombiasy, ireo renitsikidy 16 ary ny fandaminana ny fiainana.",
         type: 'TRADITION',
-        orderIndex: 6,
-        durationMinutes: 7,
+        orderIndex: 4,
+        durationMinutes: 8,
         sections: [
           {
             type: 'intro',
             textFr:
-              "Tous les 7 ans, la ville de Mananjary (sur la côte Sud-Est de Madagascar) devient le théâtre du Sambatra, l'un des rituels collectifs les plus saisissants de l'île. Durant un mois entier, le peuple Antambahoaka célèbre la circoncision de toute une génération de garçons.",
+              "Loin d'une simple superstition fortuite, le **Sikidy** constitue un système métaphysique et géomantique d'une complexité mathématique remarquable. Manipulé par l'**Ombiasy** (savant devin-guérisseur et philosophe communautaire), le Sikidy utilise seize graines polies de tamarinier (*Voan-kily*) disposées sur une natte pure pour générer seize figures binaires (*Renin-tsikidy* et *Zanan-tsikidy*). Son but n'est pas de prédire aveuglément l'avenir, mais de diagnostiquer les ruptures d'harmonie cosmique et de prescrire le remède spirituel (*Faditra* ou *Sorona*) pour rétablir la paix de l'être.",
             textMg:
-              "Isaky ny fito taona, ny tanànan'i Mananjary (morontsiraka Atsimo-Atsinanana) dia ivon'ny lanonana Sambatra miavaka indrindra eto Madagasikara. Mandritra ny iray volana maninjitra, ny vahoaka Antambahoaka dia miray hina mankalaza ny hasin'ireo zaza lahy.",
+              "Tsy filokana na finoanoam-poana ny **Sikidy**, fa haifisainana sy rafitra ara-kajy tena lalina. Ny **Ombiasy** (olon-kendry mpitsabo sy mpanoro hevitra) dia mampiasa voan-kily 16 latsahina eo ambony tsihy madio mba hamoahana ireo sarin-tsikidy 16 (Renin-tsikidy sy Zanan-tsikidy). Ny tanjony dia tsy ny haminany fotsiny, fa ny hikaroka ny anton'ny olana sy hanolotra **Faditra** na vahaolana mampody ny fiadanana.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'SIKIDY',
+            phonetic: 'si-ki-di',
+            frenchEquivalent:
+              "Dérive du mot sémitique d'origine « Sihr » ou géomancie astrale médiévale (ex: Sikidy, Ombiasy).",
+            sampleWordMg: 'Sikidy',
+            sampleTranslationFr: 'Géomancie sacrée traditionnelle malgache',
           },
           {
             type: 'concept',
-            termMg: 'Sambatra',
-            phonetic: 'sam-ba-tra',
-            meaningFr: 'Bienheureux / Félicité suprême',
+            termMg: 'Sikidy',
+            phonetic: 'si-ki-di',
+            meaningFr: "L'art divinatoire géomantique traditionnel par les graines",
             explanation:
-              "Nom donné à la fête qui confère aux jeunes garçons la plénitude de leur dignité et leur statut d'hommes accomplis au sein du clan.",
+              "Système séculaire combinant les principes pairs (deux graines) et impairs (une graine) pour former une matrice d'orientation spirituelle et morale.",
           },
           {
             type: 'concept',
-            termMg: 'Tranobe',
-            phonetic: 'tra-nou-be',
-            meaningFr: 'La grande maison sacrée du clan royal',
+            termMg: 'Ombiasy',
+            phonetic: 'oum-bi-a-si',
+            meaningFr: "Le sage, médecin traditionnel, astrologue et maître de sagesse",
             explanation:
-              'Résidence des dignitaires coutumiers et temple des bénédictions ancestrales autour duquel gravitent les cortèges.',
+              "Détenteur respecté des savoirs thérapeutiques (plantes médicinales), astrologiques et coutumiers, garant de l'équilibre du village.",
           },
           {
             type: 'concept',
-            termMg: 'Fito taona',
-            phonetic: 'fi-tou tow-na',
-            meaningFr: 'Le cycle sacré de sept ans',
+            termMg: 'Voan-kily',
+            phonetic: 'vouan-ki-li',
+            meaningFr: "Graines dures de tamarinier utilisées pour la divination",
             explanation:
-              "Période rituelle incompressible : aucun garçon Antambahoaka n'est initié hors de cette fenêtre septennale collective.",
+              "Graines lisses et inaltérables choisies pour leur pureté symbolique et leur régularité géométrique lors du tirage sur la natte.",
           },
           {
             type: 'concept',
-            termMg: 'Vinany',
-            phonetic: 'vi-na-ni',
-            meaningFr: "L'embouchure sacrée du fleuve",
+            termMg: 'Faditra',
+            phonetic: 'fa-di-tsa',
+            meaningFr: "Le rite d'exorcisme symbolique et de rejet du mauvais sort",
             explanation:
-              "Lieu de convergence solennel où l'eau douce du fleuve Mananjary rejoint l'océan Indien, théâtre du bain rituel purificateur.",
+              "Action réparatrice (don d'une herbe, d'une pierre, d'une cendre ou d'une pièce) prescrite par le Sikidy pour chasser l'infortune et purifier l'aura.",
           },
           {
             type: 'example',
             textMg:
-              "Nirohotra nankany amin'ny Tranobe ny vahoaka Antambahoaka niaraka tamin'ireo zaza hotsofin-drano.",
+              "Nandinika ny voan-kily teo ambony tsihy ny Ombiasy ka nahita ny fomba hampodiana ny hasina.",
             textFr:
-              'Le peuple Antambahoaka a afflué vers le Tranobe avec les jeunes garçons appelés à recevoir la bénédiction sacrée.',
+              "L'Ombiasy a scruté la disposition des graines sur la natte et a discerné le rituel nécessaire pour restaurer la force sacrée (hasina).",
           },
           {
             type: 'didYouKnow',
             textFr:
-              'Durant le Sambatra, les jeunes initiés portent des tuniques rouge vif brodées et de hauts bonnets coniques rouges rappelant la noblesse des origines. Les mères et tantes entonnent des chants polyphoniques ininterrompus et exécutent des rondes solennelles autour du Tranobe pour protéger les enfants.',
+              "Les anthropologues et mathématiciens contemporains étudient le Sikidy comme l'un des ancêtres des algorithmes binaires : les seize figures canoniques (Tareky, Asorotany, Alahasady, Alakaosy...) correspondent exactement aux combinaisons binaires (0 et 1) utilisées dans l'informatique moderne !",
             textMg:
-              "Mandritra ny Sambatra, miakanjo lamba mena midorehitra misy peta-kofehy sy satroka maranitra mena manambara ny firazanana ambony ireo ankizilahy. Mihira sy mandihy manodidina ny Tranobe andro aman'alina ireo renibe sy reny hiarovana ny zaza.",
+              "Ireo mpahay matematika ma современina dia talanjona amin'ny firafitry ny Sikidy : ireo sary 16 (Tareky, Alahasady, Asorotany...) dia mampiasa ny fitsipiky ny isa roa (binaire : 1 sy 2), mitovy tanteraka amin'ny fototry ny kajimirindra informatika ankehitriny !",
           },
           // ─── 5 Micro-Quiz de validation ───
           {
             type: 'quiz',
             question:
-              "Tous les combien d'années est célébré le grand rituel du Sambatra chez les Antambahoaka de Mananjary ?",
+              "Quelles graines végétales lisses et nobles sont traditionnellement utilisées pour consulter le Sikidy ?",
             questionMg:
-              'Isaky ny firy taona no anatanterahana ny fankalazana lehibe Sambatra any Mananjary ?',
+              "Inona ireo voan-javamaniry ampiasain'ny Ombiasy rehefa mandatsaka Sikidy ?",
             choices: [
-              'Tous les 7 ans (Isaky ny fito taona)',
-              'Tous les ans au mois de janvier',
-              'Tous les 50 ans seulement',
-              "Tous les 2 ans au solstice d'été",
+              "Les graines de tamarinier (Voan-kily)",
+              "Des grains de maïs grillés",
+              "Des pépins de pomme",
+              "Des grains de café moulu",
             ],
             correctIndex: 0,
             explanation:
-              'Le Sambatra obéit à un cycle septennal strict : il a lieu exactement tous les 7 ans et rassemble des milliers de familles.',
+              "Les graines de tamarinier (Voan-kily), polies et durables, constituent le support rituel traditionnel par excellence du Sikidy.",
           },
           {
             type: 'quiz',
             question:
-              'Quelle grande maison coutumière constitue le cœur spirituel des cérémonies du Sambatra ?',
+              "Quel titre traditionnel désigne le maître guérisseur, devin et conseiller communautaire malgache ?",
             questionMg:
-              "Inona ilay trano fomban-drazana masina ivon'ny fombafomba rehetra mandritra ny Sambatra ?",
-            choices: [
-              'Le Tranobe (la grande maison clanique)',
-              'La mairie de la commune',
-              'Le phare du port de mer',
-              'Le marché couvert des pêcheurs',
-            ],
+              "Iza no anarana iantsoana ilay olon-kendry mpitsabo sy mpanolotsaina eo amin'ny fiaraha-monina ?",
+            choices: ["L'Ombiasy", "Le Mpiandry omby", "Le Mpivarotra", "Le Mpamboly"],
             correctIndex: 0,
             explanation:
-              "Le 'Tranobe' est le centre névralgique où siègent les rois coutumiers (Mpanjaka) et où se font les prières.",
+              "L'Ombiasy est le sage traditionnel détenteur de la connaissance des plantes, des astres et de la métaphysique du Sikidy.",
           },
           {
             type: 'quiz',
             question:
-              'Que signifie littéralement le mot malgache « Sambatra » ?',
+              "Quel support traditionnel et pur est impérativement étalé au sol pour disposer le Sikidy ?",
             questionMg:
-              "Inona no dikan'ny teny malagasy hoe « Sambatra » amin'ny fiteny andavanandro ?",
+              "Inona ilay fitaovana madio velarina amin'ny tany ametrahana ny Sikidy ?",
             choices: [
-              'Bienheureux, comblé de joie et de félicité',
-              'Rapide comme la foudre',
-              'Secret et caché sous la terre',
-              'Combattant invaincu',
+              "Une natte neuve en jonc tressé (Tsihy madio)",
+              "Une feuille de papier journal",
+              "Une plaque de tôle ondulée",
+              "Une bâche plastique usagée",
             ],
             correctIndex: 0,
             explanation:
-              "Le mot 'Sambatra' signifie heureux ou comblé de bénédictions, marquant la joie de toute la communauté.",
+              "Le Sikidy ne peut être interrogé que sur une natte végétale pure et propre (tsihy madio), symbole de clarté spirituelle.",
           },
           {
             type: 'quiz',
             question:
-              'Où se rendent en procession les cortèges pour le bain rituel purificateur des initiés ?',
+              "Quel principe mathématique rigoureux structure l'ensemble des figures du Sikidy ?",
             questionMg:
-              "Mankany amin'ny toerana manao ahoana ny filaharana be mba handroana ireo zaza amin'ny rano masina ?",
+              "Inona ilay fitsipika ara-kajy mifehy ny fandrafetana ireo sarin-tsikidy ?",
             choices: [
-              "Au Vinany (l'embouchure où le fleuve rencontre l'océan)",
-              'Dans une piscine municipale en ville',
-              'Au sommet de la plus haute montagne',
-              'Dans une grotte sans lumière',
+              "Un système binaire logique de points pairs et impairs",
+              "Une division par dix décimale",
+              "Un hasard total sans aucune règle",
+              "Une formule de trigonométrie sphérique",
             ],
             correctIndex: 0,
             explanation:
-              "Le cortège gagne le 'Vinany' (l'embouchure) où la force de l'océan et la pureté de l'eau douce s'unissent pour bénir les enfants.",
+              "Le Sikidy repose sur une combinatoire binaire stricte (une ou deux graines) générant 16 figures géomantiques immuables.",
           },
           {
             type: 'quiz',
             question:
-              'Quelle couleur emblématique domine les vêtements traditionnels et bonnets coniques des jeunes initiés du Sambatra ?',
+              "Quel est l'objectif premier d'une consultation de Sikidy selon la philosophie ancestrale ?",
             questionMg:
-              "Inona no loko mampiavaka ny akanjo sy ny satroka maranitra fitondran'ireo zaza am-pifaliana ?",
+              "Inona ny tena tanjona lehibe amin'ny fandatsahana Sikidy eo amin'ny fiainana ?",
             choices: [
-              'Le rouge vif (loko mena)',
-              'Le noir sombre',
-              'Le vert fluo',
-              'Le violet violette',
+              "Diagnostiquer les ruptures d'harmonie et prescrire l'apaisement spirituel réparateur (Faditra)",
+              "Deviner les numéros d'un jeu de hasard moderne",
+              "Provoquer des querelles entre voisins de village",
+              "Remplacer les consultations chez le médecin moderne",
             ],
             correctIndex: 0,
             explanation:
-              "Les initiés portent le rouge royal (mena), couleur ancestrale de l'autorité, du feu vital et de la bravoure.",
+              "Le Sikidy cherche à rétablir l'équilibre de l'âme et du destin en identifiant les blocages pour les neutraliser par le Faditra.",
+          },
+        ],
+      },
+      {
+        slug: 'l-astrologie-ancestrale-du-vintana-et-les-destins',
+        title: "Le Vintana et la roue du zodiaque : destins lunaires et harmonie cosmique",
+        titleMg: 'Ny Fanandroana sy ny Vintana : Ireo Renim-bintana Roambinifolo',
+        summary:
+          "Comprenez la roue des 12 Vintana : l'orientation cardinale de l'espace, la résonance cosmique et le dépassement du destin fatal.",
+        summaryMg:
+          "Ianaro ny tontolon'ny Vintana : ireo renim-bintana 12, ny zoro firarazana ary ny fampihavanana ny olona amin'ny lahatra.",
+        type: 'TRADITION',
+        orderIndex: 5,
+        durationMinutes: 8,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Dans la conception du monde malgache, l'homme ne vit pas isolé dans le temps et l'espace : il est intimement tissé avec le cosmos à travers le système du **Vintana** (astrologie lunaire ancestrale). Composée de douze signes majeurs (**Renim-bintana**) hérités de traditions arabo-malgaches et adaptés au climat insulaire, la roue du Vintana gouverne les jours fastes, les moments propices aux semailles ou aux voyages, et détermine les traits fondamentaux de chaque être humain. La philosophie malgache enseigne qu'aucun destin n'est une prison fatale : par la sagesse et le sacrifice (*Faditra*), chaque déséquilibre peut être harmonisé.",
+            textMg:
+              "Eo amin'ny fomba fisainana malagasy, ny olombelona dia mifamatotra tanteraka amin'ny kintana sy ny tsinam-bolana amin'ny alalan'ny **Vintana**. Misy **Renim-bintana roambinifolo** mifehy ny andro tsara sy ratsy, ny fotoana fambolena na fanaovana lanonana, ary ny toetran'ny olona tsirairay. Ny fahendrena malagasy anefa dia manambara fa ny lahatra dia tsy fanamelohana : amin'ny alalan'ny fahendrena sy ny **Faditra**, ny vintana mahery dia azo havadika ho fiadanana.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'VINTANA',
+            phonetic: 'vin-ta-na',
+            frenchEquivalent:
+              "Le mot « Vintana » englobe à la fois le signe astrologique, le destin, la chance et l'harmonie temporelle.",
+            sampleWordMg: 'Vintana',
+            sampleTranslationFr: 'Destin astrologique lunaire / Heure propice',
+          },
+          {
+            type: 'concept',
+            termMg: 'Renim-bintana Roambinifolo',
+            phonetic: 're-nim-vin-ta-na rouam-bi-ni-fou-lou',
+            meaningFr: "Les douze signes mères du zodiaque lunaire malgache",
+            explanation:
+              "Alahamady, Adaoro, Adizaoza, Asorotany, Alahasaty, Asombola, Adimizana, Alakarabo, Alakaosy, Adijady, Adalo, Alohotsy.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Alahamady (Nord-Est)',
+            phonetic: 'a-la-ha-ma-di',
+            meaningFr: "Le destin royal souverain, noble et premier",
+            explanation:
+              "Gouverne le coin sacré Nord-Est de la maison malgache (*Zoro Firarazana*), symbole d'autorité bienveillante et de sainteté.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Alakaosy (Sud-Ouest)',
+            phonetic: 'a-la-ka-ou-si',
+            meaningFr: "Le signe du feu vigoureux et indomptable",
+            explanation:
+              "Destin redoutable par sa puissance explosive ; autrefois adouci dès la naissance par un bain rituel pour transformer sa fougue en leadership protecteur.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Zoro Firarazana',
+            phonetic: 'zou-rou fi-ra-ra-za-na',
+            meaningFr: "Le coin sacré Nord-Est de la maison dédié aux ancêtres",
+            explanation:
+              "Emplacement architectural le plus sacré du foyer où l'on dépose les offrandes, les nattes de prières et les bénédictions familiales.",
+          },
+          {
+            type: 'example',
+            textMg:
+              "Nanontany mpanandro ny fianakaviana mba hahalala ny andro tsara hanorenana ny trano vaovao.",
+            textFr:
+              "La famille a consulté l'astrologue traditionnel (Mpanandro) pour connaître le jour faste idéal pour poser les fondations de la nouvelle demeure.",
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Le grand roi Ralambo, fondateur de nombreuses institutions royales d'Imerina au XVIe siècle, est né sous le signe d'Alahamady. C'est sous ce même signe faste qu'il a institué la fête sacrée du Nouvel An malgache (Fandroana), consacrant ainsi le mois d'Alahamady comme le renouveau de toute la Grande Île.",
+            textMg:
+              "Ny mpanjaka Ralambo tamin'ny taonjato faha-16 dia teraka tamin'ny andro Alahamady. Tamin'io vintana ambony io indrindra no nametrahany ny fankalazana ny Fandroana na Taom-baovao malagasy, ho fanandratana ny hasin'ny firenena rehetra.",
+          },
+          // ─── 5 Micro-Quiz de validation ───
+          {
+            type: 'quiz',
+            question:
+              "Combien de signes ou destins majeurs (Renim-bintana) composent le zodiaque traditionnel malgache ?",
+            questionMg:
+              "Firy ny isan'ireo Renim-bintana lehibe ao amin'ny fanandroana malagasy ?",
+            choices: [
+              "Douze (Renim-bintana roambinifolo)",
+              "Sept seulement",
+              "Vingt-quatre",
+              "Quatre comme les saisons",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le zodiaque lunaire malgache compte douze Renim-bintana régissant les mois, les jours et les directions cardinales.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel signe astrologique royal d'excellence régit le coin sacré Nord-Est de la maison malgache ?",
+            questionMg:
+              "Inona ilay vintan'ny mpanjaka mamaritra ny zoro avaratra atsinanana amin'ny trano gasy ?",
+            choices: [
+              "L'Alahamady",
+              "L'Asorotany",
+              "L'Alakaosy",
+              "L'Adimizana",
+            ],
+            correctIndex: 0,
+            explanation:
+              "L'Alahamady est le premier signe cardinal, associé au coin Nord-Est (Zoro Firarazana) et à la souveraineté.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Comment appelle-t-on le maître astrologue coutumier chargé de déterminer les jours fastes (Andro tsara) ?",
+            questionMg:
+              "Ahoana no iantsoana ilay manampahaizana manokana momba ny kintana sy ny andro tsara ?",
+            choices: ['Le Mpanandro', 'Le Mpihira gasy', 'Le Mpandihy', 'Le Mpanao taozavatra'],
+            correctIndex: 0,
+            explanation:
+              "Le Mpanandro est l'astrologue coutumier qui scrute la marche des lunes et le Vintana pour orienter les grands actes de la vie.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Comment la sagesse malgache conçoit-elle le destin individuel face au Vintana ?",
+            questionMg:
+              "Ahoana ny fomba fijerin'ny fahendrena malagasy ny anjara sy ny vintana ?",
+            choices: [
+              "Le destin n'est pas une fatalité : la sagesse et les rites d'apaisement (Faditra) permettent de l'harmoniser",
+              "L'homme est condamné sans aucun espoir de changement",
+              "Le destin n'a aucune importance dans la culture",
+              "Seule la richesse matérielle change le destin",
+            ],
+            correctIndex: 0,
+            explanation:
+              "La philosophie malgache affirme que l'homme agit sur son Vintana avec sagesse, prière et rites réparateurs.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel espace cardinal du Trano Gasy accueille les prières solennelles et les bénédictions des anciens ?",
+            questionMg:
+              "Inona ilay zoro masina indrindra ao an-trano gasy fanaovana ny tso-drano sy ny vavaka ?",
+            choices: [
+              "Le coin Nord-Est (Zoro Firarazana)",
+              "Le seuil de la porte Sud",
+              "L'arrière du foyer de cendre",
+              "Le toit de paille extérieur",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le coin Nord-Est (Zoro Firarazana) est le sanctuaire domestique où s'invoquent la bénédiction de Dieu et la paix des ancêtres.",
+          },
+        ],
+      },
+      {
+        slug: 'le-hasina-energie-sacree-et-force-vitale-universelle',
+        title: "Le Hasina : force vitale sacrée, efficience spirituelle et dignité",
+        titleMg: 'Ny Hasina : Hery Masina, Fahamasinana ary Aina Iombonana',
+        summary:
+          "Plongez dans le concept philosophique suprême du Hasina : l'énergie vitale qui sanctifie la nature, les aînés, la royauté et le Fihavanana.",
+        summaryMg:
+          "Diniho ny hevitra lehibe indrindra amin'ny fisainana malagasy : ny Hasina, ny fahamasinana ary ny fifanajana eo amin'ny fiaraha-monina.",
+        type: 'TRADITION',
+        orderIndex: 6,
+        durationMinutes: 8,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Au cœur le plus intime de la métaphysique malgache réside un concept universel : le **Hasina**. Le Hasina n'est pas une simple formule magique, mais une énergie vitale sacrée, une efficience immanente conférée par Zanahary et les ancêtres à tout ce qui participe de l'harmonie du monde. Les grands arbres de la forêt, la terre nourricière, les aînés bienveillants (*Raiamandreny*) et les souverains intègres possèdent du Hasina. Reconnaître et honorer cette force chez son semblable à travers le respect (*Haja*) et le don solennel (*Manome hasina*) est le fondement spirituel qui cimente le **Fihavanana**.",
+            textMg:
+              "Ao amin'ny fototry ny fisainana malagasy rehetra no misy ny foto-kevitra hoe **Hasina**. Ny Hasina dia hery masina avy amin'Andriamanitra sy ny Razana izay mamelona ny zavaboary, ny tany, ny raiamandreny ary ny mpitondra marina. Ny fanajana ny Hasina ananan'ny tsirairay amin'ny alalan'ny **Haja** sy ny **Fanomezana Hasina** no fototra iorenan'ny firaisankina sy ny **Fihavanana** marina.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'HASINA',
+            phonetic: 'ha-si-na',
+            frenchEquivalent:
+              "Le mot Hasina a donné le verbe « Manamasina » (sanctifier, bénir, consacrer avec dignité).",
+            sampleWordMg: 'Hasina',
+            sampleTranslationFr: 'Énergie sacrée / Force vitale spirituelle / Sainteté',
+          },
+          {
+            type: 'concept',
+            termMg: 'Hasina',
+            phonetic: 'ha-si-na',
+            meaningFr: "L'énergie sacrée universelle, vertu spirituelle et force vitale",
+            explanation:
+              "Fluide sacré qui donne à une plante médicinale son pouvoir de guérir, à la parole de l'aîné son autorité morale et à la rizière sa fertilité.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Manome hasina',
+            phonetic: 'ma-nou-me ha-si-na',
+            meaningFr: "« Donner du Hasina » / Honorer la dignité sacrée d'autrui",
+            explanation:
+              "Geste éthique et rituel par lequel on reconnaît la grandeur morale d'une personne ou d'une institution en lui offrant respect et présent symbolique.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Fahamasinana',
+            phonetic: 'fa-ha-ma-si-na-na',
+            meaningFr: "La sainteté, la pureté sacrée et la souveraineté spirituelle",
+            explanation:
+              "État d'élévation morale et spirituelle préservé par le respect scrupuleux des lois de justice et des interdits sacrés (*Fady*).",
+          },
+          {
+            type: 'concept',
+            termMg: 'Tsimatahotra (Vola fotsy)',
+            phonetic: 'tsi-ma-ta-hou-tsa (vou-la fou-tsi)',
+            meaningFr: "La pièce d'argent pur non tronquée offerte en hommage au souverain",
+            explanation:
+              "Symbole métallique de pureté absolue remis traditionnellement par les sujets au roi pour sceller leur fidélité et honorer son Hasina.",
+          },
+          {
+            type: 'example',
+            textMg:
+              "Ny fanajana ny raiamandreny sy ny tany dia fanomezana hasina ny aina nomen-Janahary.",
+            textFr:
+              "Respecter les aînés et honorer la terre nourricière constitue un hommage rendu à l'énergie sacrée (hasina) offerte par le Créateur.",
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Si un chef ou un roi devenait cruel, tyrannique ou injuste envers son peuple, la philosophie traditionnelle malgache considérait qu'il avait perdu son Hasina (*Afaka hasina*). Dès lors, le peuple reprenait sa liberté et n'était plus tenu à l'obéissance, car nul ne peut gouverner sans la vertu morale et sacrée du Hasina.",
+            textMg:
+              "Raha mivadika ho mpanao jadona na tsy mandala ny rariny ny mpitondra na mpanjaka, ny fahendrena malagasy dia manambara fa « latsaka ny hasiny » na « afaka hasina » izy. Tsy voatery mankato azy intsony ny vahoaka amin'izay fotoana izay, satria ny rariny sy ny hitsiny ihany no fototry ny hasina.",
+          },
+          // ─── 5 Micro-Quiz de validation ───
+          {
+            type: 'quiz',
+            question:
+              "Qu'est-ce que le « Hasina » dans la vision métaphysique traditionnelle malgache ?",
+            questionMg:
+              "Inona marina moa ny atao hoe « Hasina » eo amin'ny fisainana sy kolontsaina malagasy ?",
+            choices: [
+              "L'énergie vitale sacrée, la vertu spirituelle et l'efficience conférées par Zanahary et les ancêtres",
+              "Une simple pièce de monnaie moderne pour acheter des vivres",
+              "Une punition corporelle infligée aux prisonniers",
+              "Un contrat commercial d'importation de marchandises",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le Hasina est la force sacrée immanente qui donne vie, dignité, puissance morale et fertilité au monde malgache.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Que signifie moralement l'expression coutumière respectueuse « Manome hasina » ?",
+            questionMg:
+              "Inona no hevitra ara-panahy sy ara-pitondran-tena fonosin'ny hoe « Manome hasina » ?",
+            choices: [
+              "Reconnaître et honorer avec vénération la dignité et la valeur sacrée d'une personne ou d'une autorité",
+              "Prêter de l'argent avec un taux d'intérêt élevé",
+              "Obliger quelqu'un à se taire en public",
+              "Se vanter de ses propres mérites personnels",
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Manome hasina » est l'acte noble de reconnaître la sainteté et la valeur inestimable de l'autre dans le respect mutuel.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel objet traditionnel pur servait d'offrande de Hasina aux rois et grands dignitaires ?",
+            questionMg:
+              "Inona ilay fitaovana madio nentim-paharazana natolotra ho mariky ny fanomezana Hasina ?",
+            choices: [
+              "Une pièce d'argent pur non coupée (Tsimatahotra / Vola fotsy)",
+              "Un morceau de fer rouillé",
+              "Une pierre ordinaire ramassée au sol",
+              "Une poignée de sel de cuisine",
+            ],
+            correctIndex: 0,
+            explanation:
+              "La pièce d'argent pur non coupée (Tsimatahotra) incarnait l'hommage limpide et inaltérable rendu au souverain.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Que se passait-il traditionnellement lorsqu'un souverain devenait injuste et tyrannique ?",
+            questionMg:
+              "Inona no mitranga araka ny finoana nentin-drazana raha lasa masiaka sy tsy marina ny mpitondra ?",
+            choices: [
+              "Il perdait son Hasina (Afaka hasina) et perdait ainsi toute légitimité spirituelle à commander",
+              "Son pouvoir augmentait pour toujours",
+              "Le peuple était obligé de le vénérer davantage",
+              "Tous les arbres de la région mouraient sur le champ",
+            ],
+            correctIndex: 0,
+            explanation:
+              "La tyrannie brise le pacte sacré : sans justice (*Rariny sy Hitsiny*), le souverain est déchu de son Hasina.",
+          },
+          {
+            type: 'quiz',
+            question:
+              "Quel lien vital unit le respect du Hasina et la valeur suprême du Fihavanana ?",
+            questionMg:
+              "Inona no fifamatorana lalina misy eo amin'ny fanajana ny Hasina sy ny Fihavanana ?",
+            choices: [
+              "Honorer le Hasina de chacun fonde le respect mutuel (Haja) qui rend le Fihavanana vivant et indestructible",
+              "Ils sont en conflit permanent et s'opposent l'un à l'autre",
+              "Le Hasina ne concerne que les rois et le Fihavanana que les enfants",
+              "Il n'existe aucun rapport entre les deux concepts",
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le Fihavanana est la manifestation fraternelle du Hasina : respecter l'énergie sacrée d'autrui scelle la paix sociale.",
           },
         ],
       },
     ],
   },
+
 ];

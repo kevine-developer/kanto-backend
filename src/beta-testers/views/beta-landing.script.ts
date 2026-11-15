@@ -10,8 +10,11 @@ export function renderBetaWaitlistScript(): string {
   var succText = document.getElementById('success-text');
 
   var currentTesterEmail = '';
+  try {
+    currentTesterEmail = localStorage.getItem('kanto_tester_email') || '';
+  } catch (e) {}
 
-  // ─── GESTION DES BANNIÈRES DE NOTIFICATION ─────────────────────────────────
+  // ─── GESTION DES NOTIFICATIONS & BANNIÈRES ────────────────────────────────
   function hideBanners() {
     if (errBanner) errBanner.style.display = 'none';
     if (succBanner) succBanner.style.display = 'none';
@@ -33,69 +36,51 @@ export function renderBetaWaitlistScript(): string {
     }
   }
 
-  // ─── TRANSITIONS ET SCROLL VERS L'ESPACE TESTEUR EXISTANT ───────────────
-  function scrollToStatusCheck(email) {
-    var el = document.getElementById('deja-inscrit');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    var chkInput = document.getElementById('check-email-input');
-    if (chkInput) {
-      if (email) chkInput.value = email;
-      setTimeout(function() { chkInput.focus(); }, 250);
-    }
+  // ─── DÉTECTION AUTOMATIQUE DE LA PLATEFORME (OS MOBILE) ───────────────────
+  var detectedPlatform = 'ANDROID';
+  var ua = navigator.userAgent || navigator.vendor || (window.opera ? '' : '');
+  if (/iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+    detectedPlatform = 'IOS';
+  } else if (/android/i.test(ua)) {
+    detectedPlatform = 'ANDROID';
   }
 
-  // Clic sur « Déjà inscrit comme testeur ? Consulter ou confirmer mon statut ↓ »
-  var linkOpenAlready = document.getElementById('link-open-already');
-  if (linkOpenAlready) {
-    linkOpenAlready.addEventListener('click', function(e) {
-      if (e) e.preventDefault();
-      scrollToStatusCheck();
-    });
+  // Mise en exergue du badge "Votre appareil" sur les cartes correspondantes
+  var recBadgeAndroid = document.getElementById('rec-badge-android');
+  var recBadgeIos = document.getElementById('rec-badge-ios');
+  if (detectedPlatform === 'IOS') {
+    if (recBadgeIos) recBadgeIos.style.display = 'inline-flex';
+    var cardConfirmIos = document.getElementById('card-confirm-ios');
+    if (cardConfirmIos) cardConfirmIos.classList.add('is-detected');
+    var cardDlIos = document.getElementById('card-download-ios');
+    if (cardDlIos) cardDlIos.classList.add('is-detected');
+  } else {
+    if (recBadgeAndroid) recBadgeAndroid.style.display = 'inline-flex';
+    var cardConfirmAndroid = document.getElementById('card-confirm-android');
+    if (cardConfirmAndroid) cardConfirmAndroid.classList.add('is-detected');
+    var cardDlAndroid = document.getElementById('card-download-android');
+    if (cardDlAndroid) cardDlAndroid.classList.add('is-detected');
   }
 
-  // Clic CTA En-tête « Devenir testeur »
-  var headerBtnReg = document.getElementById('header-btn-register');
-  if (headerBtnReg) {
-    headerBtnReg.addEventListener('click', function() {
-      var regInput = document.getElementById('reg-email');
-      if (regInput) setTimeout(function() { regInput.focus(); }, 200);
-    });
-  }
-
-  // ─── SÉLECTION TACTILE DES PLATEFORMES (ANDROID / IOS) ────────────────────
+  // ─── SÉLECTION DES PLATEFORMES DU FORMULAIRE D'INSCRIPTION ─────────────────
   var cardAndroid = document.getElementById('card-android');
   var cardIos = document.getElementById('card-ios');
-  var selectedPlatforms = ['ANDROID'];
+  var selectedPlatforms = [detectedPlatform];
 
-  function highlightConfirmButtons(platforms) {
-    var playBtn = document.getElementById('confirm-link-google-play');
-    var tfBtn = document.getElementById('confirm-link-testflight');
-    if (playBtn) playBtn.classList.remove('active-target');
-    if (tfBtn) tfBtn.classList.remove('active-target');
-
-    var list = platforms || selectedPlatforms;
-    if (list.indexOf('ANDROID') !== -1 && playBtn) {
-      playBtn.classList.add('active-target');
-    }
-    if (list.indexOf('IOS') !== -1 && tfBtn) {
-      tfBtn.classList.add('active-target');
-    }
-  }
-
-  function updatePlatformCards() {
+  function updatePlatformButtons() {
     if (cardAndroid) {
-      cardAndroid.classList.toggle('checked', selectedPlatforms.indexOf('ANDROID') !== -1);
+      var isAndroid = selectedPlatforms.indexOf('ANDROID') !== -1;
+      cardAndroid.classList.toggle('checked', isAndroid);
+      cardAndroid.setAttribute('aria-pressed', isAndroid ? 'true' : 'false');
     }
     if (cardIos) {
-      cardIos.classList.toggle('checked', selectedPlatforms.indexOf('IOS') !== -1);
+      var isIos = selectedPlatforms.indexOf('IOS') !== -1;
+      cardIos.classList.toggle('checked', isIos);
+      cardIos.setAttribute('aria-pressed', isIos ? 'true' : 'false');
     }
-    highlightConfirmButtons(selectedPlatforms);
   }
 
-  // Initialisation de la mise en valeur des liens de confirmation selon la plateforme par défaut
-  highlightConfirmButtons(selectedPlatforms);
+  updatePlatformButtons();
 
   if (cardAndroid) {
     cardAndroid.addEventListener('click', function() {
@@ -105,7 +90,7 @@ export function renderBetaWaitlistScript(): string {
       } else {
         selectedPlatforms.push('ANDROID');
       }
-      updatePlatformCards();
+      updatePlatformButtons();
     });
   }
 
@@ -117,13 +102,54 @@ export function renderBetaWaitlistScript(): string {
       } else {
         selectedPlatforms.push('IOS');
       }
-      updatePlatformCards();
+      updatePlatformButtons();
     });
   }
 
-  // ─── 1. SOUMISSION DU FORMULAIRE D'INSCRIPTION ─────────────────────────────
+  // Clic CTA En-tête « Rejoindre »
+  var headerBtnReg = document.getElementById('header-btn-register');
+  if (headerBtnReg) {
+    headerBtnReg.addEventListener('click', function() {
+      var regInput = document.getElementById('reg-email');
+      if (regInput) setTimeout(function() { regInput.focus(); }, 150);
+    });
+  }
+
+  // ─── PILIER A : SOUMISSION DU FORMULAIRE D'INSCRIPTION ─────────────────────
   var waitlistForm = document.getElementById('waitlist-form');
   var btnSubmitReg = document.getElementById('btn-submit-reg');
+  var feedbackCard = document.getElementById('registration-feedback-card');
+  var feedbackBadgeLabel = document.getElementById('feedback-badge-label');
+  var feedbackTitle = document.getElementById('feedback-card-title');
+  var feedbackDesc = document.getElementById('feedback-card-desc');
+  var feedbackEmailDisp = document.getElementById('feedback-email-display');
+
+  function displayFeedbackState(email, isAlreadyRegistered) {
+    currentTesterEmail = email;
+    try {
+      localStorage.setItem('kanto_tester_email', email);
+    } catch (e) {}
+
+    if (feedbackEmailDisp) feedbackEmailDisp.innerText = email;
+
+    if (feedbackCard) {
+      feedbackCard.style.display = 'block';
+      if (isAlreadyRegistered) {
+        if (feedbackBadgeLabel) feedbackBadgeLabel.innerText = 'Testeur déjà inscrit';
+        if (feedbackTitle) feedbackTitle.innerText = 'Vous faites déjà partie des testeurs Kanto MG';
+        if (feedbackDesc) {
+          feedbackDesc.innerHTML = 'Votre compte <strong>' + escapeHtml(email) + '</strong> est déjà enregistré. Suivez les étapes ci-dessous pour confirmer votre statut ou télécharger l’application :';
+        }
+      } else {
+        if (feedbackBadgeLabel) feedbackBadgeLabel.innerText = 'Inscription confirmée';
+        if (feedbackTitle) feedbackTitle.innerText = 'Bienvenue parmi les pionniers de Kanto MG';
+        if (feedbackDesc) {
+          feedbackDesc.innerHTML = 'Votre inscription pour <strong>' + escapeHtml(email) + '</strong> a bien été enregistrée. Deux étapes simples vous permettent d’accéder à l’application :';
+        }
+      }
+      feedbackCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
 
   if (waitlistForm) {
     waitlistForm.addEventListener('submit', async function(e) {
@@ -131,14 +157,11 @@ export function renderBetaWaitlistScript(): string {
       hideBanners();
 
       var emailEl = document.getElementById('reg-email');
-      var nameEl = document.getElementById('reg-name');
       var cguEl = document.getElementById('consent-cgu');
-      var privEl = document.getElementById('consent-privacy');
       var hpEl = document.getElementById('hp-website');
 
       var email = emailEl ? emailEl.value.trim() : '';
-      var fullName = nameEl ? nameEl.value.trim() : '';
-      var termsAccepted = (cguEl && cguEl.checked) && (privEl && privEl.checked);
+      var termsAccepted = cguEl ? cguEl.checked : true;
       var website = hpEl ? hpEl.value.trim() : '';
 
       if (!email || email.indexOf('@') === -1) {
@@ -150,7 +173,7 @@ export function renderBetaWaitlistScript(): string {
         return;
       }
       if (selectedPlatforms.length === 0) {
-        showError('Veuillez sélectionner au moins une plateforme (Android ou iPhone/iOS).');
+        showError('Veuillez sélectionner au moins une plateforme (Android ou iOS).');
         return;
       }
 
@@ -165,7 +188,6 @@ export function renderBetaWaitlistScript(): string {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             email: email,
-            fullName: fullName || undefined,
             platforms: selectedPlatforms,
             termsAccepted: true,
             website: website
@@ -174,19 +196,15 @@ export function renderBetaWaitlistScript(): string {
 
         var data = await res.json();
         if (res.ok && data.success && !data.alreadyRegistered) {
-          showSuccess('Candidature enregistrée avec succès ! Bienvenue parmi les testeurs de Kanto MG.');
+          showSuccess('Inscription réussie ! Bienvenue parmi les testeurs.');
           var countBadge = document.getElementById('header-tester-count');
           if (countBadge) {
             var m = countBadge.innerText.match(/[0-9]+/);
-            if (m) countBadge.innerText = (parseInt(m[0], 10) + 1) + ' testeurs inscrits';
+            if (m) countBadge.innerText = (parseInt(m[0], 10) + 1) + ' testeurs pionniers';
           }
-          // Défilement automatique vers le formulaire en bas
-          scrollToStatusCheck(email);
-          verifyEmail(email);
+          displayFeedbackState(email, false);
         } else if (data.alreadyRegistered) {
-          showError('Cette adresse e-mail est déjà inscrite. Consultation de votre statut en cours...');
-          scrollToStatusCheck(email);
-          verifyEmail(email);
+          displayFeedbackState(email, true);
         } else {
           showError(data.message || 'Une erreur est survenue lors de l’inscription.');
         }
@@ -195,210 +213,148 @@ export function renderBetaWaitlistScript(): string {
       } finally {
         if (btnSubmitReg) {
           btnSubmitReg.disabled = false;
-          btnSubmitReg.innerHTML = '<span>Devenir testeur</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>';
+          btnSubmitReg.innerHTML = '<span>Rejoindre les testeurs</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>';
         }
       }
     });
   }
 
-  // ─── 2. VÉRIFICATION DU STATUT ET CONSULTATION DE L'ESPACE TESTEUR ─────────
-  var checkStatusForm = document.getElementById('check-status-form');
-  var btnSubmitCheck = document.getElementById('btn-submit-check');
-
-  function maskEmailClient(em) {
-    if (!em || em.indexOf('@') === -1) return em || '—';
-    var parts = em.split('@');
-    var user = parts[0];
-    var domain = parts[1];
-    var masked = user.length <= 2 
-      ? user.charAt(0) + '***' 
-      : (user.length <= 4 ? user.substring(0, 2) + '***' : user.substring(0, 3) + '***');
-    return masked + '@' + domain;
+  // ─── PILIER B : VALIDATION DU STATUT DE TESTEUR ───────────────────────────
+  function ensureTesterEmail() {
+    if (currentTesterEmail && currentTesterEmail.indexOf('@') !== -1) {
+      return currentTesterEmail;
+    }
+    var emailInput = document.getElementById('reg-email');
+    if (emailInput && emailInput.value.trim() && emailInput.value.indexOf('@') !== -1) {
+      currentTesterEmail = emailInput.value.trim();
+      return currentTesterEmail;
+    }
+    return '';
   }
 
-  async function verifyEmail(email) {
-    hideBanners();
-    if (btnSubmitCheck) {
-      btnSubmitCheck.disabled = true;
-      btnSubmitCheck.innerText = 'Vérification...';
+  async function notifyParticipation(btnEl, platformName) {
+    var email = ensureTesterEmail();
+    if (!email) {
+      showError('Veuillez d’abord renseigner votre adresse e-mail dans le formulaire d’inscription ci-dessus.');
+      var regInput = document.getElementById('reg-email');
+      if (regInput) {
+        regInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        regInput.focus();
+      }
+      return;
+    }
+
+    if (btnEl) {
+      btnEl.disabled = true;
+      btnEl.innerHTML = '<span>Enregistrement...</span>';
     }
 
     try {
-      var res = await fetch('/api/beta-testers/verify-participation', {
+      var res = await fetch('/api/beta-testers/confirm-participation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email })
+        body: JSON.stringify({ email: email, action: 'JOINED' })
       });
       var data = await res.json();
-
-      if (!res.ok || !data.exists) {
-        showError(data.message || 'Aucune inscription trouvée pour cette adresse.');
-        return;
-      }
-
-      currentTesterEmail = email;
-      var box = document.getElementById('status-result-box');
-      if (box) box.style.display = 'block';
-
-      // Affichage de l'email
-      var lbl = document.getElementById('tester-email-lbl');
-      if (lbl) {
-        var displayEmail = (data.tester && (data.tester.maskedEmail || data.tester.email)) 
-          ? (data.tester.maskedEmail || data.tester.email) 
-          : maskEmailClient(email);
-        lbl.innerText = displayEmail;
-      }
-
-      var tester = data.tester;
-      var cStatus = (tester && tester.confirmationStatus) ? tester.confirmationStatus : 'INSCRIT';
-
-      // Badge de statut
-      var sBadge = document.getElementById('tester-status-badge');
-      if (sBadge) {
-        sBadge.innerText = (
-          cStatus === 'INSTALLE' ? 'INSTALLATION CONFIRMÉE' :
-          cStatus === 'CONFIRME' || cStatus === 'VERIFIE' ? 'ACCÈS VALIDÉ' :
-          cStatus === 'EN_ATTENTE' ? 'EN ATTENTE' : 'INSCRIPTION ACTIVE'
-        );
-      }
-
-      // Actions de confirmation
-      var btnJoined = document.getElementById('btn-confirm-joined');
-      var btnInstalled = document.getElementById('btn-confirm-installed');
-      var actionTitle = document.getElementById('action-box-title');
-      var actionDesc = document.getElementById('action-box-desc');
-
-      if (cStatus === 'INSTALLE') {
-        if (actionTitle) actionTitle.innerText = 'Application Kanto MG installée !';
-        if (actionDesc) actionDesc.innerText = 'Merci pour votre précieuse contribution ! Explorez l’application et partagez vos remarques avec l’équipe.';
-        if (btnJoined) btnJoined.style.display = 'none';
-        if (btnInstalled) btnInstalled.style.display = 'none';
-      } else if (cStatus === 'CONFIRME' || cStatus === 'VERIFIE') {
-        if (actionTitle) actionTitle.innerText = 'Participation confirmée au programme !';
-        if (actionDesc) actionDesc.innerText = 'Votre accès est validé. Une fois l’application téléchargée sur votre téléphone, confirmez l’installation ci-dessous.';
-        if (btnJoined) btnJoined.style.display = 'none';
-        if (btnInstalled) btnInstalled.style.display = 'inline-flex';
+      if (res.ok && data.success) {
+        showSuccess('Statut de testeur validé avec succès sur ' + platformName + ' !');
+        if (btnEl) {
+          btnEl.classList.add('confirmed');
+          btnEl.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg><span>✓ Statut confirmé</span>';
+        }
+        var nextStep = document.getElementById('telechargement');
+        if (nextStep) {
+          setTimeout(function() {
+            nextStep.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 400);
+        }
       } else {
-        if (actionTitle) actionTitle.innerText = 'Valider votre participation au programme';
-        if (actionDesc) actionDesc.innerText = 'Dès que vous avez rejoint le groupe ou accepté l’invitation, cliquez sur le bouton ci-dessous pour confirmer.';
-        if (btnJoined) btnJoined.style.display = 'inline-flex';
-        if (btnInstalled) btnInstalled.style.display = 'none';
-      }
-
-      // Liens débloqués pour Android et iOS
-      var platforms = (tester && tester.platforms) ? tester.platforms : ['ANDROID'];
-      var hasAndroid = platforms.indexOf('ANDROID') !== -1;
-      var hasIos = platforms.indexOf('IOS') !== -1;
-
-      var cardStatusAndroid = document.getElementById('card-status-android');
-      var linkPlayWeb = document.getElementById('link-play-web');
-      if (cardStatusAndroid) {
-        cardStatusAndroid.style.display = hasAndroid ? 'block' : 'none';
-        if (linkPlayWeb && data.links && data.links.androidWeb) {
-          linkPlayWeb.href = data.links.androidWeb;
+        showError(data.message || 'Impossible d’enregistrer la confirmation.');
+        if (btnEl) {
+          btnEl.disabled = false;
+          btnEl.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg><span>J\'ai confirmé mon statut</span>';
         }
       }
-
-      var cardStatusIos = document.getElementById('card-status-ios');
-      var linkTestflight = document.getElementById('link-testflight');
-      if (cardStatusIos) {
-        cardStatusIos.style.display = hasIos ? 'block' : 'none';
-        if (linkTestflight && data.links && data.links.testFlight) {
-          linkTestflight.href = data.links.testFlight;
-        }
-      }
-
-      // Synchronisation et mise en exergue des boutons directs de confirmation supérieure
-      var topPlayBtn = document.getElementById('confirm-link-google-play');
-      var topTfBtn = document.getElementById('confirm-link-testflight');
-      if (topPlayBtn && data.links && data.links.androidWeb) {
-        topPlayBtn.href = data.links.androidWeb;
-      }
-      if (topTfBtn && data.links && data.links.testFlight) {
-        topTfBtn.href = data.links.testFlight;
-      }
-      highlightConfirmButtons(platforms);
-
     } catch (err) {
-      showError('Erreur lors de la vérification de votre espace personnel.');
-    } finally {
-      if (btnSubmitCheck) {
-        btnSubmitCheck.disabled = false;
-        btnSubmitCheck.innerText = 'Vérifier mon statut';
+      showError('Erreur de connexion lors de la confirmation.');
+      if (btnEl) {
+        btnEl.disabled = false;
+        btnEl.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg><span>J\'ai confirmé mon statut</span>';
       }
     }
   }
 
-  if (checkStatusForm) {
-    checkStatusForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      var input = document.getElementById('check-email-input');
-      var email = input ? input.value.trim() : '';
-      if (email) verifyEmail(email);
+  var btnConfirmAndroidJoined = document.getElementById('btn-confirm-android-joined');
+  if (btnConfirmAndroidJoined) {
+    btnConfirmAndroidJoined.addEventListener('click', function() {
+      notifyParticipation(btnConfirmAndroidJoined, 'Google Play');
     });
   }
 
-  // ─── 3. ACTIONS DE CONFIRMATION DE PARTICIPATION ───────────────────────────
-  var btnConfirmJoined = document.getElementById('btn-confirm-joined');
-  if (btnConfirmJoined) {
-    btnConfirmJoined.addEventListener('click', async function() {
-      if (!currentTesterEmail) {
-        showError('Veuillez d’abord renseigner votre adresse e-mail.');
-        return;
-      }
-      btnConfirmJoined.disabled = true;
-      btnConfirmJoined.innerText = 'Validation en cours...';
-      try {
-        var res = await fetch('/api/beta-testers/confirm-participation', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: currentTesterEmail, action: 'JOINED' })
-        });
-        var data = await res.json();
-        if (res.ok && data.success) {
-          showSuccess('Votre participation est confirmée ! Vous pouvez maintenant installer Kanto MG.');
-          verifyEmail(currentTesterEmail);
-        } else {
-          showError(data.message || 'Impossible de confirmer votre participation.');
+  var btnConfirmIosJoined = document.getElementById('btn-confirm-ios-joined');
+  if (btnConfirmIosJoined) {
+    btnConfirmIosJoined.addEventListener('click', function() {
+      notifyParticipation(btnConfirmIosJoined, 'TestFlight');
+    });
+  }
+
+  // ─── PILIER C : NOTIFICATION D'INSTALLATION DE L'APPLICATION ──────────────
+  async function notifyInstalled(btnEl) {
+    var email = ensureTesterEmail();
+    if (!email) {
+      showError('Veuillez d’abord renseigner votre adresse e-mail ci-dessus.');
+      return;
+    }
+
+    if (btnEl) {
+      btnEl.disabled = true;
+      btnEl.innerHTML = '<span>Enregistrement...</span>';
+    }
+
+    try {
+      var res = await fetch('/api/beta-testers/confirm-participation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, action: 'INSTALLED' })
+      });
+      var data = await res.json();
+      if (res.ok && data.success) {
+        showSuccess('Installation confirmée ! Merci beaucoup pour votre contribution au rayonnement culturel de Kanto.');
+        if (btnEl) {
+          btnEl.classList.add('confirmed');
+          btnEl.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg><span>✓ Application installée</span>';
         }
-      } catch (err) {
-        showError('Erreur lors de la confirmation. Vérifiez votre connexion.');
-      } finally {
-        btnConfirmJoined.disabled = false;
-        btnConfirmJoined.innerText = 'Confirmer ma participation';
-      }
-    });
-  }
-
-  var btnConfirmInstalled = document.getElementById('btn-confirm-installed');
-  if (btnConfirmInstalled) {
-    btnConfirmInstalled.addEventListener('click', async function() {
-      if (!currentTesterEmail) return;
-      btnConfirmInstalled.disabled = true;
-      btnConfirmInstalled.innerText = 'Enregistrement...';
-      try {
-        var res = await fetch('/api/beta-testers/confirm-participation', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: currentTesterEmail, action: 'INSTALLED' })
-        });
-        var data = await res.json();
-        if (res.ok && data.success) {
-          showSuccess('Installation confirmée ! Excellente exploration de la culture malgache dans Kanto MG.');
-          verifyEmail(currentTesterEmail);
-        } else {
-          showError(data.message || 'Impossible d’enregistrer l’installation.');
+      } else {
+        showError(data.message || 'Impossible d’enregistrer l’installation.');
+        if (btnEl) {
+          btnEl.disabled = false;
+          btnEl.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span>J\'ai installé l\'application</span>';
         }
-      } catch (err) {
-        showError('Erreur lors de l’enregistrement de l’installation.');
-      } finally {
-        btnConfirmInstalled.disabled = false;
-        btnConfirmInstalled.innerText = "J'ai installé l'application";
       }
+    } catch (err) {
+      showError('Erreur de connexion lors de la confirmation d’installation.');
+      if (btnEl) {
+        btnEl.disabled = false;
+        btnEl.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span>J\'ai installé l\'application</span>';
+      }
+    }
+  }
+
+  var btnInstalledAndroid = document.getElementById('btn-installed-android');
+  if (btnInstalledAndroid) {
+    btnInstalledAndroid.addEventListener('click', function() {
+      notifyInstalled(btnInstalledAndroid);
     });
   }
 
-  // ─── 4. SYNCHRONISATION DYNAMIQUE DES LIENS DE TÉLÉCHARGEMENT (ZONE 3) ─────
+  var btnInstalledIos = document.getElementById('btn-installed-ios');
+  if (btnInstalledIos) {
+    btnInstalledIos.addEventListener('click', function() {
+      notifyInstalled(btnInstalledIos);
+    });
+  }
+
+  // ─── SYNCHRONISATION DYNAMIQUE DES LIENS DE TÉLÉCHARGEMENT ────────────────
   async function loadDownloadInfo() {
     try {
       var res = await fetch('/api/beta-testers/download-info');
@@ -416,7 +372,7 @@ export function renderBetaWaitlistScript(): string {
           aConfirmBtn.href = data.android.playStoreWebLink;
         }
         if (aBadge && data.android.availability) {
-          aBadge.innerText = (data.android.availability === 'PUBLIC') ? 'Version Publique' : 'Programme Bêta Ouvert';
+          aBadge.innerText = (data.android.availability === 'PUBLIC') ? 'Google Play (Public)' : 'Google Play (Bêta)';
         }
       }
 
@@ -431,7 +387,7 @@ export function renderBetaWaitlistScript(): string {
           iConfirmBtn.href = data.ios.testFlightLink;
         }
         if (iBadge && data.ios.availability) {
-          iBadge.innerText = (data.ios.availability === 'PUBLIC') ? 'App Store' : 'Apple TestFlight';
+          iBadge.innerText = (data.ios.availability === 'PUBLIC') ? 'App Store (Public)' : 'Apple TestFlight';
         }
       }
     } catch (err) {
@@ -441,7 +397,7 @@ export function renderBetaWaitlistScript(): string {
 
   loadDownloadInfo();
 
-  // ─── 5. GESTION DU THÈME CLAIR / SOMBRE ───────────────────────────────────
+  // ─── GESTION DU THÈME CLAIR / SOMBRE ──────────────────────────────────────
   var themeToggle = document.getElementById('theme-toggle');
   var iconSun = document.getElementById('theme-icon-sun');
   var iconMoon = document.getElementById('theme-icon-moon');
@@ -469,10 +425,10 @@ export function renderBetaWaitlistScript(): string {
     });
   }
 
-  // ─── 6. MODALES CGU & POLITIQUE DE CONFIDENTIALITÉ ───────────────────────
-  var cguModal = document.getElementById('kanto-cgu-modal') || document.getElementById('modal-cgu');
+  // ─── MODALES CGU & POLITIQUE DE CONFIDENTIALITÉ ──────────────────────────
+  var cguModal = document.getElementById('kanto-cgu-modal');
   var openCguBtn = document.getElementById('btn-open-cgu-modal');
-  var closeCguBtn = document.getElementById('cgu-modal-close') || document.getElementById('btn-close-cgu-modal');
+  var closeCguBtn = document.getElementById('cgu-modal-close');
   var acceptCguBtn = document.getElementById('cgu-modal-btn-accept');
   var footerCguBtn = document.getElementById('footer-link-cgu');
 
@@ -494,9 +450,9 @@ export function renderBetaWaitlistScript(): string {
     });
   }
 
-  var privacyModal = document.getElementById('kanto-privacy-modal') || document.getElementById('modal-privacy');
+  var privacyModal = document.getElementById('kanto-privacy-modal');
   var openPrivBtn = document.getElementById('btn-open-privacy-modal');
-  var closePrivBtn = document.getElementById('privacy-modal-close') || document.getElementById('btn-close-privacy-modal');
+  var closePrivBtn = document.getElementById('privacy-modal-close');
   var acceptPrivBtn = document.getElementById('privacy-modal-btn-accept');
   var footerPrivBtn = document.getElementById('footer-link-privacy');
 
@@ -518,7 +474,7 @@ export function renderBetaWaitlistScript(): string {
     });
   }
 
-  // ─── 7. GESTION DES COOKIES (KantoConsent) ────────────────────────────────
+  // ─── GESTION DES COOKIES (KantoConsent) ───────────────────────────────────
   var cookieBanner = document.getElementById('kanto-cookie-banner');
   var cookieModal = document.getElementById('kanto-cookie-modal');
   var btnAcceptAll = document.getElementById('cookie-btn-accept-all');
@@ -564,7 +520,7 @@ export function renderBetaWaitlistScript(): string {
 
   checkConsent();
 
-  // ─── PROTECTION XSS CLIENT POUR LE RENDU DYNAMIQUE ───
+  // ─── UTILITAIRE ÉCHAPPEMENT HTML ──────────────────────────────────────────
   function escapeHtml(str) {
     if (str === null || str === undefined) return '';
     return String(str)
@@ -575,163 +531,16 @@ export function renderBetaWaitlistScript(): string {
       .replace(/'/g, '&#039;');
   }
 
-  // --- MODULE AVIS DE LA COMMUNAUTÉ (OPTIONNEL, ACTIF UNIQUEMENT SI LE CONTENEUR EXISTE) ---
-  (function initCommunityReviews() {
-    var avgScoreEl = document.getElementById('reviews-avg-rating');
-    var avgStarsEl = document.getElementById('reviews-avg-stars');
-    var totalCountEl = document.getElementById('reviews-total-count');
-    var cardsListEl = document.getElementById('reviews-cards-list');
-    var paginationBox = document.getElementById('reviews-pagination-box');
-    var btnLoadMore = document.getElementById('btn-load-more-reviews');
-
-    if (!cardsListEl) return;
-
-    var currentPage = 1;
-    var totalPages = 1;
-    var isLoadingReviews = false;
-
-    function renderStarSvg(filled) {
-      return '<svg width="15" height="15" viewBox="0 0 24 24" class="' + (filled ? 'star-icon-filled' : 'star-icon-empty') + '" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>';
-    }
-
-    function renderStarsRow(rating) {
-      var html = '';
-      for (var i = 1; i <= 5; i++) {
-        html += renderStarSvg(i <= Math.round(rating));
-      }
-      return html;
-    }
-
-    function formatDate(dateStr) {
-      try {
-        var d = new Date(dateStr);
-        return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
-      } catch(e) {
-        return '';
-      }
-    }
-
-    function getInitials(name) {
-      if (!name) return 'K';
-      var parts = name.trim().split(/\s+/);
-      if (parts.length >= 2 && parts[0] && parts[1]) {
-        return (parts[0][0] + parts[1][0]).toUpperCase();
-      }
-      return name.slice(0, 2).toUpperCase();
-    }
-
-    function loadStats() {
-      fetch('/api/reviews/public/stats')
-        .then(function(res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
-        .then(function(stats) {
-          if (!stats || typeof stats.totalReviews !== 'number') return;
-          var total = stats.totalReviews;
-          if (avgScoreEl) {
-            avgScoreEl.textContent = total > 0 ? stats.averageRating.toFixed(1).replace('.', ',') : '5,0';
-          }
-          if (avgStarsEl) {
-            avgStarsEl.innerHTML = renderStarsRow(total > 0 ? stats.averageRating : 5);
-          }
-          if (totalCountEl) {
-            totalCountEl.textContent = total > 0 
-              ? total + ' avis certifié' + (total > 1 ? 's' : '') + ' (4★ et 5★)' 
-              : 'Avis 4★ et 5★ certifiés';
-          }
-        })
-        .catch(function(err) {
-          console.warn('[Reviews] Erreur chargement stats:', err);
-        });
-    }
-
-    function loadReviews(page, append) {
-      if (isLoadingReviews) return;
-      isLoadingReviews = true;
-
-      var url = '/api/reviews/public?page=' + page + '&limit=6&minRating=4';
-
-      fetch(url)
-        .then(function(res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
-        .then(function(res) {
-          isLoadingReviews = false;
-          var items = res.data || [];
-          totalPages = res.pagination ? res.pagination.totalPages : 1;
-          currentPage = page;
-
-          if (!append) {
-            cardsListEl.innerHTML = '';
-          }
-
-          if (items.length === 0 && !append) {
-            cardsListEl.innerHTML = '<div class="reviews-empty-state">Aucun avis 4 ou 5 étoiles disponible pour le moment.</div>';
-            if (paginationBox) paginationBox.style.display = 'none';
-            return;
-          }
-
-          items.forEach(function(item) {
-            var card = document.createElement('div');
-            card.className = 'review-card-item';
-            
-            var name = item.publicDisplayName || 'Membre de la communauté';
-            var initials = getInitials(name);
-            var versionBadge = item.appVersion ? '<span class="review-card-version">v' + escapeHtml(item.appVersion) + '</span>' : '';
-            var dateFormatted = formatDate(item.createdAt);
-
-            card.innerHTML = 
-              '<div class="review-card-head">' +
-                '<div class="review-card-stars">' + renderStarsRow(item.rating) + '</div>' +
-                '<div class="review-card-badge-verified">' +
-                  '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>' +
-                  '<span>Vérifié</span>' +
-                '</div>' +
-              '</div>' +
-              '<p class="review-card-comment">« ' + escapeHtml(item.comment) + ' »</p>' +
-              '<div class="review-card-footer">' +
-                '<div class="review-author-group">' +
-                  '<div class="review-avatar-circle">' + escapeHtml(initials) + '</div>' +
-                  '<div class="review-author-meta">' +
-                    '<span class="review-card-author">' + escapeHtml(name) + '</span>' +
-                    '<span class="review-card-date">' + dateFormatted + '</span>' +
-                  '</div>' +
-                '</div>' +
-                versionBadge +
-              '</div>';
-
-            cardsListEl.appendChild(card);
-          });
-
-          if (paginationBox) {
-            paginationBox.style.display = (currentPage < totalPages) ? 'block' : 'none';
-          }
-        })
-        .catch(function(err) {
-          isLoadingReviews = false;
-          console.warn('[Reviews] Erreur chargement avis:', err);
-          if (!append) {
-            cardsListEl.innerHTML = '<div class="reviews-empty-state">Impossible de charger les avis. Réessayez ultérieurement.</div>';
-          }
-        });
-    }
-
-    if (btnLoadMore) {
-      btnLoadMore.addEventListener('click', function() {
-        if (currentPage < totalPages) {
-          loadReviews(currentPage + 1, true);
-        }
-      });
-    }
-
-    loadStats();
-    loadReviews(1, false);
-  })();
-
-  // ─── 8. INITIALISATION AUTOMATIQUE SI E-MAIL PRÉSENT DANS L'URL ───────────
+  // ─── INITIALISATION SI E-MAIL PRÉSENT DANS L'URL OU STOCKÉ ────────────────
   try {
     var qEmail = new URLSearchParams(window.location.search).get('email') || '';
-    var chkInput = document.getElementById('check-email-input');
-    var initEmail = qEmail || (chkInput ? chkInput.value.trim() : '');
+    var initEmail = qEmail || currentTesterEmail;
     if (initEmail && initEmail.indexOf('@') !== -1) {
-      if (chkInput) chkInput.value = initEmail;
-      verifyEmail(initEmail);
+      var regInput = document.getElementById('reg-email');
+      if (regInput && !regInput.value) {
+        regInput.value = initEmail;
+      }
+      displayFeedbackState(initEmail, true);
     }
   } catch (e) {}
 
