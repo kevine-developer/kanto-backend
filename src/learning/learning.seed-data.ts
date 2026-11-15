@@ -55,7 +55,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
     icon: 'GraduationCap',
     color: '#4A6741',
     orderIndex: 1,
-    estimatedMinutes: 20,
+    estimatedMinutes: 50,
     lessons: [
       {
         slug: 'salutations-et-politesse-aza-fady',
@@ -792,6 +792,757 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
           },
         ],
       },
+      {
+        slug: 'la-structure-de-la-phrase-et-pronoms',
+        title: 'La structure de la phrase et les pronoms (Ny Firafitry ny Fehezanteny)',
+        titleMg: 'Ny Firafitry ny Fehezanteny sy ny Mpisolo Tena',
+        summary: "Découvrez l'ordre unique Verbe-Objet-Sujet et les pronoms personnels malgaches.",
+        summaryMg: 'Fantaro ny fomba fandrafetana fehezanteny (Matoanteny-Fameno-Lazaina) sy ireo mpisolo tena.',
+        type: 'GRAMMAR',
+        orderIndex: 6,
+        durationMinutes: 5,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "La langue malgache possède une architecture de phrase très originale : contrairement au français qui utilise l'ordre Sujet-Verbe-Objet (SVO), le malgache standard place naturellement le Verbe en premier, suivi du complément, puis du Sujet (VOS) : « Mihinana vary aho » (Mange du riz je = Je mange du riz).",
+            textMg:
+              "Ny firafitry ny fehezanteny tsotra amin'ny teny malagasy dia manomboka amin'ny Matoanteny, arahin'ny Fameno, ary mifarana amin'ny Lazaina (VOS) : ohatra « Mihinana vary aho ».",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'Y',
+            phonetic: 'i',
+            frenchEquivalent:
+              'En fin de mot, le « Y » se prononce comme un « i » très bref et léger, presque murmuré (ex: Vary, Faly).',
+            sampleWordMg: 'Vary',
+            sampleTranslationFr: 'Le riz',
+          },
+          {
+            type: 'concept',
+            termMg: 'Aho / Izaho',
+            phonetic: 'a-hou / i-za-hou',
+            meaningFr: 'Je / Moi',
+            explanation:
+              "« Aho » s'utilise après le verbe (en fin de phrase), tandis que « Izaho » s'emploie en tête pour insister sur la personne.",
+          },
+          {
+            type: 'concept',
+            termMg: 'Ianao',
+            phonetic: 'i-a-now',
+            meaningFr: 'Tu / Toi (au singulier)',
+            explanation:
+              'Pronom personnel singulier pour s’adresser à un proche, un ami ou un pair.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Izy',
+            phonetic: 'i-zi',
+            meaningFr: 'Il / Elle (3e personne du singulier)',
+            explanation:
+              'La langue malgache ne fait aucune distinction de genre grammatical : « Izy » s’applique aussi bien au masculin qu’au féminin.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Isika',
+            phonetic: 'i-si-ka',
+            meaningFr: 'Nous (inclusif : toi, moi et nous tous)',
+            explanation:
+              'Pronom de solidarité totale qui englobe obligatoirement la personne à qui l’on parle (le cœur du Fihavanana).',
+          },
+          {
+            type: 'concept',
+            termMg: 'Izahay',
+            phonetic: 'i-za-hye',
+            meaningFr: 'Nous (exclusif : nous, mais sans toi)',
+            explanation:
+              'Désigne notre groupe en excluant poliment l’interlocuteur (ex: notre famille, notre village).',
+          },
+          {
+            type: 'concept',
+            termMg: 'Ianareo',
+            phonetic: 'i-a-na-re-ou',
+            meaningFr: 'Vous (pluriel)',
+            explanation:
+              'S’adresse à plusieurs personnes réunies.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Izy ireo',
+            phonetic: 'i-zi i-re-ou',
+            meaningFr: 'Ils / Elles (pluriel)',
+            explanation:
+              'Pluriel neutre désignant un groupe de personnes tierces.',
+          },
+          {
+            type: 'example',
+            textMg: 'Mianatra teny gasy isika anio.',
+            textFr: 'Nous apprenons tous ensemble le malgache aujourd’hui (inclusif).',
+          },
+          {
+            type: 'example',
+            textMg: 'Mandeha miasa izy ireo maraina.',
+            textFr: 'Ils partent travailler le matin.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "La distinction entre « Isika » (inclusif) et « Izahay » (exclusif) évite tout malentendu dans les prises de décision communautaires malgaches. Elle garantit que personne ne se sente indûment engagé ou involontairement exclu.",
+            textMg:
+              "Ny fahasamihafan'ny « Isika » (mpandahateny sy mpihaino miaraka) sy « Izahay » (mpandahateny tsy manisy ny mpihaino) dia mampiseho ny fahaiza-miaina sy ny fanajana ny hafa eo amin'ny fiarahamonina malagasy.",
+          },
+          // ─── 5 Micro-Quiz ───
+          {
+            type: 'quiz',
+            question: "Quel est l'ordre habituel des mots dans une phrase simple en malgache ?",
+            questionMg: "Ahoana ny lamin'ny teny ao amin'ny fehezanteny tsotra amin'ny teny malagasy ?",
+            choices: [
+              'Verbe - Complément - Sujet (VOS)',
+              'Sujet - Verbe - Complément (SVO)',
+              'Complément - Sujet - Verbe (OSV)',
+              'Sujet - Complément - Verbe (SOV)',
+            ],
+            correctIndex: 0,
+            explanation:
+              "En malgache standard, la phrase simple s'organise naturellement sous la structure Verbe - Complément/Objet - Sujet (ex: « Mihinana vary aho »).",
+          },
+          {
+            type: 'quiz',
+            question: "Quelle est la différence fondamentale entre « Isika » et « Izahay » ?",
+            questionMg: "Inona no tena mampiavaka ny « Isika » sy ny « Izahay » ?",
+            choices: [
+              '« Isika » inclut l’interlocuteur, « Izahay » l’exclut poliment',
+              '« Isika » est réservé aux aînés, « Izahay » aux enfants',
+              '« Isika » est du singulier, « Izahay » est du pluriel',
+              '« Isika » est du passé, « Izahay » est du futur',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Isika » est un nous inclusif (nous tous, toi compris), tandis que « Izahay » est exclusif (nous, à l'exclusion de la personne à qui l'on s'adresse).",
+          },
+          {
+            type: 'quiz',
+            question: "Quel pronom personnel correspond à « Il » ou « Elle » au singulier ?",
+            questionMg: "Inona no mpisolo tena milaza ny lahy na vavy tokana (3e personne) ?",
+            choices: ['Izy', 'Aho', 'Ianao', 'Ianareo'],
+            correctIndex: 0,
+            explanation:
+              "En malgache, il n'y a pas de genre grammatical : « Izy » signifie indifféremment « il » ou « elle ».",
+          },
+          {
+            type: 'quiz',
+            question: "Comment se prononce la lettre « Y » à la fin d'un mot malgache (ex: Vary, Faly) ?",
+            questionMg: "Ahoana no fanononana ny litera « Y » amin'ny faran'ny teny malagasy ?",
+            choices: [
+              'Comme un « i » court et doux',
+              'Comme un « u » français',
+              'Comme un « o » ouvert',
+              'Elle n’est jamais prononcée',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le « Y » final malgache équivaut au son « i », articulé avec brièveté et douceur.",
+          },
+          {
+            type: 'quiz',
+            question: "Dans la phrase « Mianatra teny gasy aho », quel mot représente le sujet ?",
+            questionMg: "Ao amin'ny fehezanteny « Mianatra teny gasy aho », iza no lazaina ?",
+            choices: ['Aho (Je/Moi)', 'Mianatra (Apprendre)', 'Teny (Langue)', 'Gasy (Malgache)'],
+            correctIndex: 0,
+            explanation:
+              "« Aho » (je) est le sujet (lazaina) placé en fin de phrase, après l'action (mianatra) et le complément (teny gasy).",
+          },
+        ],
+      },
+      {
+        slug: 'poser-des-questions-et-s-orienter',
+        title: "Poser des questions et s'orienter dans l'espace (Fanontaniana sy Toerana)",
+        titleMg: 'Fametrahana Fanontaniana sy Fanamarihan-toerana',
+        summary: "Apprenez à interroger votre interlocuteur et à vous repérer selon les points cardinaux sacrés.",
+        summaryMg: "Ianaro ny fomba fanontanian-javatra sy ny fanondroana toerana araka ny vazan-tany.",
+        type: 'VOCABULARY',
+        orderIndex: 7,
+        durationMinutes: 5,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Savoir poser des questions simples ouvre les portes de l'échange chaleureux avec les Malgaches. De plus, l'orientation traditionnelle dans la Grande Île repose sur les quatre points cardinaux (vazan-tany), omniprésents dans la vie quotidienne.",
+            textMg:
+              "Ny fahaizana mametraka fanontaniana tsotra dia manamora ny fifampiresahana am-pitiavana. Eo an-daniny, ny Malagasy dia mampiasa matetika ireo vazan-tany efatra amin'ny fiainana andavanandro.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'TR',
+            phonetic: 'tsh-r',
+            frenchEquivalent:
+              'La combinaison « TR » (ex: Avaratra) s’articule comme une consonne affriquée dynamique, proche du son « tch-r » énergique.',
+            sampleWordMg: 'Avaratra',
+            sampleTranslationFr: 'Le Nord',
+          },
+          {
+            type: 'concept',
+            termMg: 'Inona ?',
+            phonetic: 'i-nou-na',
+            meaningFr: 'Quoi ? / Qu’est-ce que ?',
+            explanation:
+              'Mot interrogatif pour identifier un objet, une idée ou un événement (ex: Inona ny vaovao ? = Quelles sont les nouvelles ?).',
+          },
+          {
+            type: 'concept',
+            termMg: 'Iza ?',
+            phonetic: 'i-za',
+            meaningFr: 'Qui ?',
+            explanation:
+              'Sert à demander l’identité d’une personne (ex: Iza ianao ? = Qui es-tu ? / Iza izany ? = Qui est-ce ?).',
+          },
+          {
+            type: 'concept',
+            termMg: 'Aiza ?',
+            phonetic: 'eye-za',
+            meaningFr: 'Où ?',
+            explanation:
+              'Permet de demander un lieu ou une localisation (ex: Aiza ny trano ? = Où est la maison ?).',
+          },
+          {
+            type: 'concept',
+            termMg: 'Avaratra sy Atsimo',
+            phonetic: 'a-va-ra-tra si a-tsi-mou',
+            meaningFr: 'Nord et Sud',
+            explanation:
+              'L’axe Nord-Sud est primordial : le Nord (Avaratra) est traditionnellement la place d’honneur des anciens dans la maison.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Atsinanana sy Andrefana',
+            phonetic: 'a-tsi-na-na-na si an-dre-fa-na',
+            meaningFr: 'Est et Ouest',
+            explanation:
+              'L’Est (Atsinanana) symbolise la vie et le lever du soleil ; l’Ouest (Andrefana) accueille traditionnellement la porte de la maison.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Eto / Any',
+            phonetic: 'e-tou / a-ni',
+            meaningFr: 'Ici / Là-bas',
+            explanation:
+              '« Eto » indique la proximité immédiate de qui parle, tandis que « Any » renvoie à un lieu plus lointain.',
+          },
+          {
+            type: 'example',
+            textMg: 'Azafady tompoko, aiza ny lalana mankany an-tsena ?',
+            textFr: 'Pardon monsieur/madame, où se trouve le chemin qui mène au marché ?',
+          },
+          {
+            type: 'example',
+            textMg: 'Inona ny vaovao any aminareo ? — Tsara ny vaovao, misaotra tompoko.',
+            textFr: 'Quelles sont les nouvelles chez vous ? — Les nouvelles sont bonnes, merci beaucoup.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Dans l'habitat traditionnel malgache, le lit des parents se trouve toujours au Nord-Est (Alahamady), le coin le plus sacré de la demeure. La porte d'entrée s'ouvre toujours vers l'Ouest (Andrefana) pour capter la lumière du soleil couchant.",
+            textMg:
+              "Ao amin'ny trano nentin-drazana malagasy, ny zoron-trano Avaratra-Atsinanana (Alahamady) no masina indrindra, toerana misy ny farafaran'ny ray aman-dreny. Ny varavarana kosa dia mitodika miankandrefana foana.",
+          },
+          // ─── 5 Micro-Quiz ───
+          {
+            type: 'quiz',
+            question: "Quel mot malgache signifie « Où ? » pour demander un lieu ?",
+            questionMg: "Inona no teny fanontaniana manontany toerana ?",
+            choices: ['Aiza ?', 'Inona ?', 'Iza ?', 'Rahoviana ?'],
+            correctIndex: 0,
+            explanation:
+              "« Aiza ? » est le mot interrogatif pour demander « Où ? » (ex: Aiza ny lalana ? = Où est le chemin ?).",
+          },
+          {
+            type: 'quiz',
+            question: "Quel mot signifie « Quoi ? » ou « Qu'est-ce que ? » (ex: Inona ny vaovao ?)",
+            questionMg: "Inona no teny manontany ny anton-javatra hoe « Quoi / Qu'est-ce que » ?",
+            choices: ['Inona ?', 'Iza ?', 'Aiza ?', 'Ahoana ?'],
+            correctIndex: 0,
+            explanation:
+              "« Inona ? » signifie « quoi » ou « qu'est-ce que ».",
+          },
+          {
+            type: 'quiz',
+            question: "Dans l'orientation traditionnelle malgache, quel point cardinal désigne « Avaratra » ?",
+            questionMg: "Amin'ny vazan-tany, inona no tondroin'ny teny hoe « Avaratra » ?",
+            choices: ['Le Nord', 'Le Sud', 'L’Est', 'L’Ouest'],
+            correctIndex: 0,
+            explanation:
+              "« Avaratra » désigne le Nord, place sacrée et noble des aînés.",
+          },
+          {
+            type: 'quiz',
+            question: "Quel terme correspond à « L'Est » (le lever du soleil) ?",
+            questionMg: "Inona no vazan-tany ipoiran'ny masoandro ?",
+            choices: ['Atsinanana', 'Andrefana', 'Atsimo', 'Avaratra'],
+            correctIndex: 0,
+            explanation:
+              "« Atsinanana » désigne l'Est, direction du soleil levant et de la vitalité.",
+          },
+          {
+            type: 'quiz',
+            question: "Comment demande-t-on poliment « Qui êtes-vous ? » en malgache ?",
+            questionMg: "Ahoana no fomba fanontaniana am-panajana hoe « Qui êtes-vous ? » ?",
+            choices: [
+              'Iza ianao tompoko ?',
+              'Aiza ianao tompoko ?',
+              'Inona ianao tompoko ?',
+              'Rahoviana ianao tompoko ?',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Iza ianao tompoko ? » utilise « Iza » (qui) et « tompoko » pour une formule respectueuse.",
+          },
+        ],
+      },
+      {
+        slug: 'les-verbes-du-quotidien-et-les-trois-temps',
+        title: 'Les verbes indispensables et les 3 temps (Matoanteny sy ny Fotoana)',
+        titleMg: 'Ireo Matoanteny Fampiasa sy ny Fotoana Telo',
+        summary: 'Comprenez le mécanisme simple des temps (Passé, Présent, Futur) grâce aux préfixes N-, M-, H-.',
+        summaryMg: "Fantaro ny zava-miafina amin'ny fanovana fotoana (Lasa, Ankehitriny, Ho avy) amin'ny litera N, M, H.",
+        type: 'GRAMMAR',
+        orderIndex: 8,
+        durationMinutes: 5,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "En malgache, la conjugaison est d'une remarquable simplicité : les verbes ne changent pas selon la personne (je, tu, il, nous restent identiques). Pour passer du présent au passé ou au futur, il suffit de changer la consonne initiale du verbe !",
+            textMg:
+              "Tena tsotra ny manova fotoana amin'ny matoanteny malagasy : tsy miova araka ny mpisolo tena ny teny. Matetika dia ny litera voalohany fotsiny no miova mba hilazana ny lasa, ankehitriny na ho avy.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'NG',
+            phonetic: 'ng',
+            frenchEquivalent:
+              'Le digraphe « NG » se prononce comme une consonne nasale continue, semblable au son « ng » de l’anglais « sing » (ex: Manga, Mangatsiaka).',
+            sampleWordMg: 'Manga',
+            sampleTranslationFr: 'Bleu / La mangue / Éminent',
+          },
+          {
+            type: 'concept',
+            termMg: 'M- / N- / H-',
+            phonetic: 'm / n / h',
+            meaningFr: 'La clé magique des 3 temps',
+            explanation:
+              "• M = Présent (Ankehitriny)\n• N = Passé (Lasa)\n• H = Futur (Ho avy).\nExemple : Mandeha (part) → Nandeha (est parti) → Handeha (partira).",
+          },
+          {
+            type: 'concept',
+            termMg: 'Mandeha',
+            phonetic: 'man-de-ha',
+            meaningFr: 'Marcher / Aller / Partir',
+            explanation:
+              'Verbe de mouvement essentiel : Nandeha (passé), Mandeha (présent), Handeha (futur).',
+          },
+          {
+            type: 'concept',
+            termMg: 'Mihinana',
+            phonetic: 'mi-hi-na-na',
+            meaningFr: 'Manger',
+            explanation:
+              'Verbe fondamental de la nourriture : Nihinana (a mangé), Mihinana (mange), Hihinana (mangera).',
+          },
+          {
+            type: 'concept',
+            termMg: 'Misotro',
+            phonetic: 'mi-sou-trou',
+            meaningFr: 'Boire',
+            explanation:
+              'Consommer une boisson : Misotro rano (boire de l’eau), Misotro dite (boire du thé).',
+          },
+          {
+            type: 'concept',
+            termMg: 'Miteny',
+            phonetic: 'mi-te-ni',
+            meaningFr: 'Parler / Dire',
+            explanation:
+              'S’exprimer par la parole : Miteny gasy aho (Je parle malgache).',
+          },
+          {
+            type: 'concept',
+            termMg: 'Mahita',
+            phonetic: 'ma-hi-ta',
+            meaningFr: 'Voir / Trouver / Découvrir',
+            explanation:
+              'Percevoir avec les yeux ou trouver une solution : Nahita (a vu/trouvé), Mahita (voit), Hahita (verra).',
+          },
+          {
+            type: 'example',
+            textMg: 'Handeha any Toamasina aho rahampitso.',
+            textFr: 'J’irai à Toamasina demain (futur avec le préfixe H-).',
+          },
+          {
+            type: 'example',
+            textMg: 'Nihinana vary matsiro izahay omaly hariva.',
+            textFr: 'Nous avons mangé un riz délicieux hier soir (passé avec le préfixe N-).',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Puisque le verbe ne change pas avec la personne, la phrase « Miteny gasy izy » signifie « Il/Elle parle malgache » et « Miteny gasy isika » signifie « Nous parlons malgache ». Seul le pronom final indique qui agit !",
+            textMg:
+              "Tsy misy fahasamihafana amin'ny matoanteny ny olona tokana sy ny maro : « Miteny izy » sy « Miteny izahay » dia mitovy tanteraka ny matoanteny hoe « miteny ».",
+          },
+          // ─── 5 Micro-Quiz ───
+          {
+            type: 'quiz',
+            question: "Quelle consonne préfixée indique généralement le temps Passé (Lasa) en malgache ?",
+            questionMg: "Inona no litera fiandohana manondro ny fotoana Lasa matetika ?",
+            choices: ['La lettre N (ex: Nandeha)', 'La lettre M (ex: Mandeha)', 'La lettre H (ex: Handeha)', 'La lettre V'],
+            correctIndex: 0,
+            explanation:
+              "La lettre « N » marque le temps passé : Mandeha (présent) devient Nandeha (passé).",
+          },
+          {
+            type: 'quiz',
+            question: "Quelle consonne préfixée annonce une action au Futur (Ho avy) ?",
+            questionMg: "Inona no litera fiandohana manondro ny fotoana Ho avy ?",
+            choices: ['La lettre H (ex: Handeha)', 'La lettre N (ex: Nandeha)', 'La lettre M (ex: Mandeha)', 'La lettre T'],
+            correctIndex: 0,
+            explanation:
+              "La lettre « H » est la marque universelle du futur : Mihinana → Hihinana (mangera).",
+          },
+          {
+            type: 'quiz',
+            question: "Que signifie la phrase « Miteny gasy aho » ?",
+            questionMg: "Inona no dikan'ny fehezanteny hoe « Miteny gasy aho » ?",
+            choices: [
+              'Je parle malgache',
+              'J’écoute de la musique',
+              'Je mange du riz',
+              'Je pars en voyage',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Miteny » = parler, « gasy » = malgache, « aho » = je/moi.",
+          },
+          {
+            type: 'quiz',
+            question: "Comment dit-on « Nous avons mangé » au passé avec le verbe « Mihinana » ?",
+            questionMg: "Ahoana ny filazana ny hoe « Nihinana » amin'ny fotoana lasa ?",
+            choices: ['Nihinana izahay', 'Hihinana izahay', 'Mihinana izahay', 'Mihinanana izahay'],
+            correctIndex: 0,
+            explanation:
+              "Au passé, le verbe prend le préfixe « N- » : Nihinana.",
+          },
+          {
+            type: 'quiz',
+            question: "Quel verbe signifie « Marcher » ou « Partir » en malgache ?",
+            questionMg: "Inona no matoanteny midika hoe mandeha an-tongotra na miainga ?",
+            choices: ['Mandeha', 'Misotro', 'Matory', 'Mahita'],
+            correctIndex: 0,
+            explanation:
+              "« Mandeha » signifie marcher, aller ou partir.",
+          },
+        ],
+      },
+      {
+        slug: 'exprimer-ses-emotions-accord-et-besoins',
+        title: 'Émotions, accord et expressions du quotidien (Fihetseham-po sy Filàna)',
+        titleMg: 'Fihetseham-po, Fifanarahana ary Filàna Andavanandro',
+        summary: 'Exprimez vos ressentis, votre accord bienveillant et vos besoins avec délicatesse.',
+        summaryMg: 'Mianara maneho ny fihetseham-po, ny fanekena ary ny filàna andavanandro amim-panajana.',
+        type: 'VOCABULARY',
+        orderIndex: 9,
+        durationMinutes: 5,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "La courtoisie malgache accorde une importance primordiale à l'expression bienveillante des émotions. Savoir dire « oui », relativiser un souci avec « Tsy maninona » et encourager autrui avec « Mazotoa ! » fortifie le lien fraternel.",
+            textMg:
+              "Ny fahalalam-pomba malagasy dia manome lanja lehibe ny fanehoana hatsaram-panahy. Ny fahaizana mampahery sy milaza hoe « Tsy maninona » dia manamafy ny fihavanana.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'Accent tonique',
+            phonetic: 'avant-dernière syllabe',
+            frenchEquivalent:
+              'En malgache, la voix s’appuie naturellement sur l’avant-dernière syllabe du mot (ex: Fa-LY, Noa-NA, Ma-zo-TOA).',
+            sampleWordMg: 'Faly',
+            sampleTranslationFr: 'Heureux / Joyeux',
+          },
+          {
+            type: 'concept',
+            termMg: 'Eny / Tsia',
+            phonetic: 'e-ni / tsi-a',
+            meaningFr: 'Oui / Non',
+            explanation:
+              'Les réponses de base. « Eny tompoko » (Oui monsieur/madame) est la forme soignée.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Tsy maninona',
+            phonetic: 'tsi ma-ni-nou-na',
+            meaningFr: 'Ce n’est rien / Pas de souci / Ne vous inquiétez pas',
+            explanation:
+              'L’expression universelle d’apaisement à Madagascar, qui efface la gêne et restaure le calme.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Mazotoa !',
+            phonetic: 'ma-zou-tow',
+            meaningFr: 'Bon courage ! / Travaillez avec ardeur et cœur !',
+            explanation:
+              'Bénédiction adressée à toute personne au travail, aux études ou accomplissant une tâche.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Faly',
+            phonetic: 'fa-li',
+            meaningFr: 'Heureux / Joyeux / Content',
+            explanation:
+              'Ressentir de la joie intérieure : « Faly aho » (Je suis content / heureux).',
+          },
+          {
+            type: 'concept',
+            termMg: 'Malahelo',
+            phonetic: 'ma-la-he-lou',
+            meaningFr: 'Triste / Avoir de la peine / Compatir',
+            explanation:
+              'Exprime la tristesse personnelle ou la compassion chaleureuse envers quelqu’un qui souffre.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Noana sy Mangetaheta',
+            phonetic: 'nou-a-na si man-ge-ta-he-ta',
+            meaningFr: 'Avoir faim et Avoir soif',
+            explanation:
+              'Expressions des besoins corporels élémentaires : « Noana aho » (J’ai faim), « Mangetaheta aho » (J’ai soif).',
+          },
+          {
+            type: 'example',
+            textMg: 'Faly be mihaona aminao aho tompoko !',
+            textFr: 'Je suis extrêmement heureux de vous rencontrer !',
+          },
+          {
+            type: 'example',
+            textMg: 'Aza malahelo fa tsy maninona akory izany.',
+            textFr: 'Ne soyez pas triste, ce n’est vraiment rien de grave.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Le mot « Mazotoa » vient de « Zoto » (le zèle, l'ardeur, l'enthousiasme). Dire « Mazotoa ! » à un artisan ou à un paysan est une marque suprême de reconnaissance de la dignité de son labeur.",
+            textMg:
+              "Ny teny hoe « Mazotoa » dia avy amin'ny hoe « zoto ». Fanomezana hery sy fankasitrahana ny hasasaran'ny olona miasa izany.",
+          },
+          // ─── 5 Micro-Quiz ───
+          {
+            type: 'quiz',
+            question: "Que répond-on pour rassurer quelqu'un en disant « Ce n'est rien / Pas de souci » ?",
+            questionMg: "Inona no teny fiteny mba hampitony hoe « Pas de souci / Ce n'est rien » ?",
+            choices: ['Tsy maninona', 'Misaotra betsaka', 'Azafady tompoko', 'Veloma finaritra'],
+            correctIndex: 0,
+            explanation:
+              "« Tsy maninona » est la formule d'apaisement par excellence (« ça ne fait rien »).",
+          },
+          {
+            type: 'quiz',
+            question: "Que signifie l'encouragement bienveillant « Mazotoa ! » ?",
+            questionMg: "Inona no hevitry ny fampaherezana hoe « Mazotoa ! » ?",
+            choices: [
+              'Bon courage / Soyez plein de zèle !',
+              'Bonne nuit et doux rêves',
+              'Au revoir et à demain',
+              'Donnez-moi à boire',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Mazotoa ! » souhaite l'ardeur et l'énergie à qui entreprend un travail ou une tâche.",
+          },
+          {
+            type: 'quiz',
+            question: "Comment exprime-t-on le sentiment d'être « heureux » ou « joyeux » en malgache ?",
+            questionMg: "Inona no teny ilazana ny fahatsapana fifaliana ?",
+            choices: ['Faly', 'Malahelo', 'Noana', 'Vizana'],
+            correctIndex: 0,
+            explanation:
+              "« Faly » signifie joyeux, content ou heureux (ex: Faly aho = Je suis heureux).",
+          },
+          {
+            type: 'quiz',
+            question: "Comment dit-on « J'ai soif » en langue malgache ?",
+            questionMg: "Ahoana no filazana ny hoe mila rano hosotroina ?",
+            choices: ['Mangetaheta aho', 'Noana aho', 'Faly aho', 'Matory aho'],
+            correctIndex: 0,
+            explanation:
+              "« Mangetaheta » signifie avoir soif (ex: Mangetaheta rano aho = J'ai soif d'eau).",
+          },
+          {
+            type: 'quiz',
+            question: "Sur quelle syllabe porte généralement l'accent tonique d'un mot malgache ?",
+            questionMg: "Aiza ho aiza matetika no misy ny tsindrim-peo amin'ny teny malagasy ?",
+            choices: [
+              'Sur l’avant-dernière syllabe',
+              'Sur la toute première syllabe',
+              'Toujours sur la dernière lettre',
+              'Il n’y a aucun accent',
+            ],
+            correctIndex: 0,
+            explanation:
+              "En malgache, l'accentuation naturelle frappe l'avant-dernière syllabe du mot.",
+          },
+        ],
+      },
+      {
+        slug: 'la-nourriture-les-saveurs-et-le-repas',
+        title: 'La nourriture, les saveurs et le repas malgache (Ny Sakafo sy ny Hanina)',
+        titleMg: 'Ny Sakafo, ny Tsiro ary ny Fihinanana Malagasy',
+        summary: "Découvrez le vocabulaire culinaire, les saveurs traditionnelles et l'étiquette de la table.",
+        summaryMg: 'Ianaro ny voambolan’ny sakafo, ny tsiro samihafa ary ny fomba amam-panao eo am-pisakafoana.',
+        type: 'CULTURE',
+        orderIndex: 10,
+        durationMinutes: 5,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "À Madagascar, manger dépasse le simple besoin biologique : c'est un moment de communion solennel et joyeux. Le riz (Vary) en est l'âme incontestée, sanctifié par le célèbre adage : « Ny vary no aina » (Le riz est la vie).",
+            textMg:
+              "Eo amin'ny kolontsaina malagasy, ny fihinanana dia fotoana iombonana masina sy mahafinaritra. Ny vary no fototry ny sakafo, araka ny ohabolana hoe « Ny vary no aina ».",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'AI',
+            phonetic: 'aille',
+            frenchEquivalent:
+              'La diphtongue « AI » se prononce comme dans « ail » ou « paille » en français (ex: Aina, Maintso, Kely aina).',
+            sampleWordMg: 'Aina',
+            sampleTranslationFr: 'La vie / L’âme vitale',
+          },
+          {
+            type: 'concept',
+            termMg: 'Vary',
+            phonetic: 'va-ri',
+            meaningFr: 'Le riz (aliment sacré)',
+            explanation:
+              'Présent à chaque repas (matin, midi, soir). Il existe le Vary gasy (riz rouge parfumé) et le Vary fotsy (riz blanc).',
+          },
+          {
+            type: 'concept',
+            termMg: 'Laoka',
+            phonetic: 'low-ka',
+            meaningFr: 'L’accompagnement du riz',
+            explanation:
+              'Tout mets servant d’escorte au riz : viande de zébu, volaille, poisson ou brèdes (anana).',
+          },
+          {
+            type: 'concept',
+            termMg: "Ranon'ampango",
+            phonetic: 'ra-noun am-pan-gou',
+            meaningFr: 'Eau de riz dorée / Boisson traditionnelle',
+            explanation:
+              'Infusion désaltérante et digestive obtenue en versant de l’eau bouillante sur la croûte dorée de riz au fond de la marmite.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Mamy sy Masira',
+            phonetic: 'ma-mi si ma-si-ra',
+            meaningFr: 'Sucré / Doux et Salé',
+            explanation:
+              'Les deux saveurs majeures. « Mamy » évoque aussi la douceur du cœur et de la parole.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Masiaka (Sakay)',
+            phonetic: 'ma-si-a-ka (sa-kye)',
+            meaningFr: 'Pimenté / Épicé / Fort',
+            explanation:
+              'Désigne le goût piquant du piment malgache (Sakay pilopilo), servi à part sur la table.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Mazotoa homana !',
+            phonetic: 'ma-zou-tow hou-ma-na',
+            meaningFr: 'Bon appétit ! (Mangez de bon cœur !)',
+            explanation:
+              'La formule d’invitation conviviale prononcée avant de porter la première cuillère à la bouche.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Voky tsara',
+            phonetic: 'vou-ki tsa-ra',
+            meaningFr: 'Bien rassasié / Comblé avec reconnaissance',
+            explanation:
+              'Réponse polie à la fin du repas pour remercier qui a cuisiné et offert la nourriture.',
+          },
+          {
+            type: 'example',
+            textMg: 'Mazotoa homana daholo tompoko ! — Misaotra tompoko, mazotoa koa ianao.',
+            textFr: 'Bon appétit à tous ! — Merci beaucoup, bon appétit à vous également.',
+          },
+          {
+            type: 'example',
+            textMg: 'Mamy be ity voankazo ity, ary matsiro ny laoka.',
+            textFr: 'Ce fruit est très sucré, et le plat d’accompagnement est délicieux.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Selon l'étiquette ancestrale malgache, personne ne commence à manger avant que l'aîné de la table n'ait levé sa cuillère. C'est l'application du « Zo maha-zoky » (le respect dû au rang d'aîné), garant de l'ordre familial.",
+            textMg:
+              "Araka ny fomban-drazana, tsy misy mikitika sotro alohan'ny zokiolona eo amin'ny latabatra. Izany no fanajana ny « Zo maha-zoky » mampandry feizay ny ankohonana.",
+          },
+          // ─── 5 Micro-Quiz ───
+          {
+            type: 'quiz',
+            question: "Quel proverbe illustre la place suprême du riz dans la vie des Malgaches ?",
+            questionMg: "Inona no ohabolana mampiseho ny lanjan'ny vary amin'ny fiainan'ny Malagasy ?",
+            choices: [
+              '« Ny vary no aina » (Le riz est la vie)',
+              '« Ny vola no aina »',
+              '« Ny trano no aina »',
+              '« Ny lalana no aina »',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Ny vary no aina » (Le riz est la vie) exprime le caractère sacré et vital de cette céréale à Madagascar.",
+          },
+          {
+            type: 'quiz',
+            question: "Comment appelle-t-on le plat ou la viande qui accompagne le riz ?",
+            questionMg: "Inona no anaran'ny hena na anana ampiarahina amin'ny vary ?",
+            choices: ['Ny Laoka', 'Ny Ampango', 'Ny Rano', 'Ny Sakafo'],
+            correctIndex: 0,
+            explanation:
+              "Le « Laoka » désigne tout mets (viande, poisson, brèdes, haricots) accompagnant le riz blanc ou rouge.",
+          },
+          {
+            type: 'quiz',
+            question: "Comment souhaite-t-on « Bon appétit ! » en malgache ?",
+            questionMg: "Ahoana no firariana fahazotoana homana amin'ny teny malagasy ?",
+            choices: ['Mazotoa homana !', 'Mandra-pihaona !', 'Azafady tompoko !', 'Tonga soa !'],
+            correctIndex: 0,
+            explanation:
+              "« Mazotoa homana ! » signifie littéralement « Soyez plein d'entrain pour manger ».",
+          },
+          {
+            type: 'quiz',
+            question: "Quelle est la boisson traditionnelle préparée à base de croûte de riz bouillie ?",
+            questionMg: "Inona no zava-pisotro nentin-drazana avy amin'ny ampangon-bary nandrahoina ?",
+            choices: ["Ranon'ampango", 'Ranom-boankazo', 'Ranom-boanio', 'Kafe'],
+            correctIndex: 0,
+            explanation:
+              "Le « Ranon'ampango » (ou ranovola) est l'eau bouillie versée sur le riz doré au fond de la marmite.",
+          },
+          {
+            type: 'quiz',
+            question: "Que répond poliment un invité rassasié à la fin du repas ?",
+            questionMg: "Inona no teny fanehoana fankasitrahana rehefa voky tsara ?",
+            choices: ['Voky tsara, misaotra tompoko', 'Mbola noana aho', 'Tsy maninona', 'Veloma tompoko'],
+            correctIndex: 0,
+            explanation:
+              "« Voky tsara, misaotra tompoko » affirme que l'on est copieusement et délicieusement rassasié avec reconnaissance.",
+          },
+        ],
+      },
     ],
   },
   {
@@ -806,7 +1557,7 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
     icon: 'Compass',
     color: '#C58B38',
     orderIndex: 2,
-    estimatedMinutes: 25,
+    estimatedMinutes: 45,
     lessons: [
       {
         slug: 'le-concept-fondamental-du-fihavanana',
@@ -1237,6 +1988,604 @@ export const SEED_LEARNING_TRACKS: SeedTrack[] = [
             correctIndex: 0,
             explanation:
               "Le « Vary be menaka » est le repas d'abondance et de fête par excellence partagé lors des grands événements familiaux.",
+          },
+        ],
+      },
+      {
+        slug: 'le-haja-et-le-dina-pacte-communautaire',
+        title: 'Le Haja et le Dina : respect mutuel et pacte solidaire (Ny Haja sy ny Dina)',
+        titleMg: 'Ny Haja sy ny Dina : Fanajana sy Fifanekem-piarahamonina',
+        summary:
+          "Découvrez comment le Haja (déférence sacrée) et le Dina (convention communautaire) cimentent la paix villageoise.",
+        summaryMg:
+          "Fantaro ny lanjan'ny Haja mifehy ny fiainana sy ny Dina mampandry fahalemana ny Fokonolona.",
+        type: 'CULTURE',
+        orderIndex: 4,
+        durationMinutes: 7,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Dans la pensée traditionnelle malgache, le respect (Haja) n'est pas une simple marque d'obéissance, c'est la reconnaissance sacrée de la valeur d'autrui. Associé au Dina, pacte communautaire juré ensemble, il assure l'harmonie et l'ordre sans nécessiter de police extérieure.",
+            textMg:
+              "Ao amin'ny fahendrena malagasy, ny Haja dia tsy fanandevozan-tena fa fanomezana lanja ny maha-olona sy ny soatoavina. Rehefa mifamatotra amin'ny Dina izany dia milamina sy milamina ny fiarahamonina.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'J',
+            phonetic: 'dz',
+            frenchEquivalent:
+              'Le « J » malgache se prononce toujours comme une consonne affriquée « dz » (semblable au « ds » dans « kids » ou « zz » dans « pizza »), jamais comme le « j » français doux (ex: Haja = ha-dza).',
+            sampleWordMg: 'Haja',
+            sampleTranslationFr: 'Le respect / La dignité / L’honneur',
+          },
+          {
+            type: 'concept',
+            termMg: 'Haja',
+            phonetic: 'ha-dza',
+            meaningFr: 'Respect, déférence, dignité d’autrui',
+            explanation:
+              'Vertu cardinale qui impose de traiter chacun avec considération, des plus jeunes aux ancêtres.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Dina',
+            phonetic: 'di-na',
+            meaningFr: 'Convention collective, pacte communautaire juré',
+            explanation:
+              'Règlement traditionnel établi et accepté par le Fokonolona pour protéger le village, les récoltes et la paix.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Fokonolona',
+            phonetic: 'fou-kou-nou-lou-na',
+            meaningFr: 'Assemblée des villageois, communauté solidaire de base',
+            explanation:
+              'Cellule fondamentale de la démocratie participative malgache où chaque voix compte dans le consensus.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Fanajana',
+            phonetic: 'fa-na-dza-na',
+            meaningFr: 'L’action de respecter, politesse en acte',
+            explanation:
+              'Pratique concrète du respect au quotidien : saluer humblement, écouter sans couper la parole, laisser passer l’aîné.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Firaisankina',
+            phonetic: 'fi-rye-san-ki-na',
+            meaningFr: 'Union solidaire, cohésion indéfectible',
+            explanation:
+              'La force née de l’assemblage de volontés unies, comme le rappelle le proverbe : « Ny firaisankina no hery ».',
+          },
+          {
+            type: 'example',
+            textMg: 'Manaja ny Dina ny Fokonolona ka mandry feizay ny tanàna.',
+            textFr: 'La communauté villageoise respecte le Dina, ainsi la paix et la quiétude règnent sur le village.',
+          },
+          {
+            type: 'example',
+            textMg: 'Ny haja omena ny hafa no haja iverenana aminao.',
+            textFr: 'Le respect que vous offrez aux autres est celui qui vous reviendra en retour.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Le Dina malgache est si profondément ancré dans l'histoire qu'il a été reconnu par la législation moderne à Madagascar. Aujourd'hui encore, un Dina validé par le tribunal a force exécutoire dans les campagnes pour la surveillance du bétail et des forêts sacrées.",
+            textMg:
+              "Ny Dina dia manana hery lehibe eo amin'ny lalàna malagasy ankehitriny. Eken'ny fitsarana ny Dina ifanaovan'ny mponina any ambanivohitra mba hiarovana ny omby sy ny ala.",
+          },
+          // ─── 5 Micro-Quiz ───
+          {
+            type: 'quiz',
+            question: "Que désigne le concept de « Dina » dans la société traditionnelle malgache ?",
+            questionMg: "Inona no hevitry ny « Dina » eo amin'ny fiarahamonina malagasy ?",
+            choices: [
+              'Un pacte social ou une convention communautaire adoptée ensemble',
+              'Un instrument de musique traditionnel à cordes',
+              'Un type de riz rouge réservé aux rois',
+              'Une fête de naissance',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le « Dina » est un accord ou pacte traditionnel juré par les membres d'une communauté pour régir la sécurité et l'harmonie.",
+          },
+          {
+            type: 'quiz',
+            question: "Comment se prononce la lettre « J » en langue malgache (ex: Haja) ?",
+            questionMg: "Ahoana no fanononana ny litera « J » amin'ny teny malagasy ?",
+            choices: [
+              'Comme le son « dz » (ex: ha-dza)',
+              'Comme le « j » doux français de « jardin »',
+              'Comme un « ch » soufflé',
+              'Comme un « g » dur de « gare »',
+            ],
+            correctIndex: 0,
+            explanation:
+              "En malgache, le « J » correspond systématiquement au son affriqué « dz ».",
+          },
+          {
+            type: 'quiz',
+            question: "Quelle institution traditionnelle représente l'assemblée des villageois délibérant ensemble ?",
+            questionMg: "Inona no rafitra nentin-drazana ivorian'ny vahoaka rehetra handray fanapahan-kevitra ?",
+            choices: ['Ny Fokonolona', 'Ny Kabary', 'Ny Lova', 'Ny Tsena'],
+            correctIndex: 0,
+            explanation:
+              "Le « Fokonolona » est l'assemblée villageoise communautaire, base de la démocratie directe malgache.",
+          },
+          {
+            type: 'quiz',
+            question: "Quel célèbre proverbe illustre la force de l'union fraternelle ?",
+            questionMg: "Inona no ohabolana mampiseho fa herin'ny vahoaka ny firaisana ?",
+            choices: [
+              '« Ny firaisankina no hery » (L’union fait la force)',
+              '« Ny vola no hery »',
+              '« Ny feo no hery »',
+              '« Ny hazo no hery »',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Ny firaisankina no hery » est l'adage fondamental proclamant que la solidarité collective dépasse toutes les forces individuelles.",
+          },
+          {
+            type: 'quiz',
+            question: "Que signifie le terme fondamental « Haja » ?",
+            questionMg: "Inona no dikan'ny teny fototra hoe « Haja » ?",
+            choices: [
+              'Le respect, la dignité et la déférence',
+              'La richesse financière',
+              'La force physique au combat',
+              'La ruse politique',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Haja » est le respect et la déférence sacrée accordée à chaque être humain et aux traditions.",
+          },
+        ],
+      },
+      {
+        slug: 'le-tsiny-et-le-tody-boussole-morale',
+        title: 'Le Tsiny et le Tody : blâme cosmique et justice immanente (Ny Tsiny sy ny Tody)',
+        titleMg: 'Ny Tsiny sy ny Tody : Lalàm-panahy sy Fitsaran-tena',
+        summary:
+          "Comprenez la crainte du Tsiny (le blâme moral) et la certitude du Tody (la loi cosmique du retour des actes).",
+        summaryMg:
+          "Iantohan'ny tahotra ny Tsiny sy ny fahalalana ny Tody ny fahitsiana sy ny fahamendrehana Malagasy.",
+        type: 'CULTURE',
+        orderIndex: 5,
+        durationMinutes: 7,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Dans la philosophie malgache, deux forces invisibles mais omniprésentes régulent la conscience : le « Tsiny » (le reproche ou blâme moral invisible qu'on s'attire par une maladresse) et le « Tody » (la loi inéluctable du retour, où chaque acte semé finit par revenir à son auteur).",
+            textMg:
+              "Ao amin'ny fisainan'ny Ntaolo, ny « Tsiny » sy ny « Tody » no mitantana ny fiasan'ny feon'ny fieritreretana : tahotra sao mahazo tsiny, sy fahalalana fa izay afafy ihany no jinjaina.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'TS',
+            phonetic: 'ts',
+            frenchEquivalent:
+              'Le digraphe « TS » (ex: Tsiny) se prononce d’un seul bloc énergique et sifflant comme dans « tsar » ou « tsunami ».',
+            sampleWordMg: 'Tsiny',
+            sampleTranslationFr: 'Le blâme / Le reproche moral / La faute d’étiquette',
+          },
+          {
+            type: 'concept',
+            termMg: 'Tsiny',
+            phonetic: 'tsi-ni',
+            meaningFr: 'Blâme cosmique, reproche moral intérieur',
+            explanation:
+              'Force invisible engendrée par un faux pas social, une arrogance ou un manque de tact envers autrui.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Tody',
+            phonetic: 'tou-di',
+            meaningFr: 'La loi du retour des actes, justice immanente',
+            explanation:
+              'Principe universel : le bien comme le mal posé finit inévitablement par atteindre son auteur ou sa lignée.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Miala tsiny',
+            phonetic: 'mi-a-la tsi-ni',
+            meaningFr: 'Demander pardon, écarter préventivement le blâme',
+            explanation:
+              'L’art oratoire suprême de débuter chaque prise de parole en reconnaissant humblement son imperfection devant l’auditoire.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Fahamarinana',
+            phonetic: 'fa-ha-ma-ri-na-na',
+            meaningFr: 'La droiture, la justice, la vérité authentique',
+            explanation:
+              'Agir avec pureté d’intention pour être à l’abri du Tsiny et attirer le Tody favorable.',
+          },
+          {
+            type: 'example',
+            textMg: 'Miala tsiny tompoko raha misy ny teny tafahoatra na tsy voalaza am-pahendrena.',
+            textFr: 'Je m’excuse humblement s’il y a eu un mot de trop ou une parole maladroite dans mon propos.',
+          },
+          {
+            type: 'example',
+            textMg: 'Aza manao ratsy olona fandrao tratry ny tody.',
+            textFr: 'Ne faites pas de tort à autrui de peur que la loi du retour ne vous frappe.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Le philosophe malgache Richard Andriamanjato a défini le Tsiny comme « l'ombre portée de nos actes imparfaits ». Dans tout discours de Kabary, un long prologue appelé « Fanalana tsiny » est obligatoirement dédié à supplier les anciens et l'assemblée d'effacer d'avance toute maladresse oratoire.",
+            textMg:
+              "Ao amin'ny Kabary malagasy, tsy maintsy misy ny « Fanalana tsiny » : fombafomba kanto sy lalina angatahan'ny mpikabary famelan-keloka mialoha sao misy diso teny.",
+          },
+          // ─── 5 Micro-Quiz ───
+          {
+            type: 'quiz',
+            question: "Que représente le concept de « Tody » dans la philosophie malgache ?",
+            questionMg: "Inona no hevitry ny hoe « Tody » eo amin'ny finoana nentin-drazana ?",
+            choices: [
+              'La loi du retour inéluctable : chaque acte commis revient vers son auteur',
+              'Un plat traditionnel de poisson séché',
+              'Le chapeau de paille porté par les hommes',
+              'La saison des pluies dans l’Est',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le « Tody » est la conviction absolue que nos actions bonnes ou mauvaises reviennent immanquablement vers nous (l'équivalent malgache de la justice immanente).",
+          },
+          {
+            type: 'quiz',
+            question: "Que signifie littéralement l'expression de politesse « Miala tsiny » ?",
+            questionMg: "Inona no dikan'ny teny hoe « Miala tsiny » ara-bakiteny ?",
+            choices: [
+              'Écarter / ôter le blâme (s’excuser avec déférence)',
+              'Partir en voyage loin du village',
+              'Changer d’avis sur un sujet',
+              'Donner une récompense financière',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Miala tsiny » signifie textuellement « faire partir le blâme », c'est la formule consacrée pour s'excuser et préserver l'harmonie.",
+          },
+          {
+            type: 'quiz',
+            question: "Quel proverbe célèbre résume la nature invisible et subtile du Tsiny ?",
+            questionMg: "Inona no ohabolana mampitaha ny tsiny amin'ny zavaboary ?",
+            choices: [
+              '« Ny tsiny toy ny rivotra, tsy hita fa mahamay » (Le blâme est comme le vent, invisible mais brûlant)',
+              '« Ny tsiny toy ny vato »',
+              '« Ny tsiny toy ny volamena »',
+              '« Ny tsiny toy ny hazo avo »',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Ny tsiny toy ny rivotra, tsy hita fa mahamay » illustre que même invisible à l'œil, le blâme moral blesse profondément le cœur et l'âme.",
+          },
+          {
+            type: 'quiz',
+            question: "Dans le discours traditionnel du Kabary, comment appelle-t-on le passage où l'orateur s'excuse préventivement ?",
+            questionMg: "Inona no anaran'ilay dingana fialan-tsiny mialoha ataon'ny mpikabary ?",
+            choices: [
+              'Ny Fanalana tsiny',
+              'Ny Fisaorana',
+              'Ny Tsodrano',
+              'Ny Veloma',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le « Fanalana tsiny » est l'étape rituelle d'humilité où l'orateur désamorce toute rancœur ou maladresse verbale.",
+          },
+          {
+            type: 'quiz',
+            question: "Pourquoi les anciens disent-ils « Ny tody tsy miady fa ny atao no miverina » ?",
+            questionMg: "Nahoana no lazaina fa « Ny tody tsy miady fa ny atao no miverina » ?",
+            choices: [
+              'Parce que la justice du destin n’a pas besoin d’arme : ce sont nos propres actes qui nous reviennent',
+              'Parce qu’il faut toujours se battre en duel',
+              'Parce que le temps efface tout sans trace',
+              'Parce que les ennemis finissent par fuir',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Ce proverbe souligne que le Tody n'a nul besoin de violence : la conséquence naturelle de nos actes se charge elle-même du dénouement.",
+          },
+        ],
+      },
+      {
+        slug: 'le-valin-tanana-et-le-fampihavanana',
+        title: 'Le Valin-tanana et le Fampihavanana : entraide paysanne et réconciliation (Ny Valin-tanana)',
+        titleMg: 'Ny Valin-tanana sy ny Fampihavanana : Fifanampiana sy Fihavanana Vaovao',
+        summary:
+          "Explorez la puissance de l'entraide gratuite sans argent et les rituels de paix pour éteindre les conflits.",
+        summaryMg:
+          "Diniho ny herin'ny fifanampiana maimaim-poana eo an-tanimbary sy ny fahendrena mamadika ny fifandrafiana ho fihavanana.",
+        type: 'TRADITION',
+        orderIndex: 6,
+        durationMinutes: 7,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "À Madagascar, la survie des rizières et la solidité des villages reposent sur le « Valin-tanana » (littéralement « le retour de main ») : un réseau d'entraide solidaire où l'on travaille gratuitement pour son voisin en sachant qu'il viendra travailler pour nous demain. Et lorsque survient une discorde, le « Fampihavanana » rétablit la paix sans rancune.",
+            textMg:
+              "Ny fambolena sy ny fiarahamonina malagasy dia mifototra amin'ny « Valin-tanana » : asa iombonana tsy andoavam-bola. Ary rehefa misy disadisa dia ny « Fampihavanana » tarihin'ny Raiamandreny no mamerina ny firindrana.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'DR',
+            phonetic: 'dzr',
+            frenchEquivalent:
+              'Le digraphe « DR » (ex: Fampihavanana, Andriana, Draka) se prononce avec une légère friction sonore « dz-r » vigoureuse.',
+            sampleWordMg: 'Andriana',
+            sampleTranslationFr: 'Noble / Souverain / Respectable',
+          },
+          {
+            type: 'concept',
+            termMg: 'Valin-tanana',
+            phonetic: 'va-lin ta-na-na',
+            meaningFr: 'Entraide réciproque par le travail solidaire',
+            explanation:
+              'Pratique séculaire où l’argent est absent : on échange du temps et des bras pour les labours, le repiquage ou la moisson.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Fampihavanana',
+            phonetic: 'fam-pi-ha-va-na-na',
+            meaningFr: 'Réconciliation, rétablissement de la concorde',
+            explanation:
+              'Processus de médiation mené par les Raiamandreny pour guérir les blessures relationnelles et réconcilier les parties.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Raiamandreny',
+            phonetic: 'rye-man-dre-ni',
+            meaningFr: 'Parents, aînés, sages respectés de la communauté',
+            explanation:
+              'Autorités morales et spirituelles dont la parole bienveillante apaise les conflits et éclaire les décisions.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Asa vadi-drano',
+            phonetic: 'a-sa va-di-dra-nou',
+            meaningFr: 'Travaux de repiquage collectif dans les rizières',
+            explanation:
+              'La grande fête du travail paysan où femmes et hommes se rassemblent en chants pour ensemencer les rizières du village.',
+          },
+          {
+            type: 'example',
+            textMg: 'Nanao valin-tanana tamin’ny vadi-bainga izahay omaly ka vita haingana ny asa.',
+            textFr: 'Nous avons fait du Valin-tanana pour retourner la terre hier, ainsi le travail a été achevé promptement.',
+          },
+          {
+            type: 'example',
+            textMg: 'Nampihavana ny mpirahalahy niady ny Raiamandreny teo an-tanàna.',
+            textFr: 'Les aînés du village ont réconcilié avec sagesse les deux frères en conflit.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Dans la tradition du Fampihavanana, la réconciliation ne s'achève jamais par la désignation d'un perdant humilié. Au contraire, les deux parties partagent un repas symbolique (souvent un poulet ou du zébu avec du riz) et prononcent le pardon mutuel pour que le Fihavanana renaisse plus fort.",
+            textMg:
+              "Rehefa vita ny Fampihavanana malagasy, tsy misy resy na mpandresy manambany : miara-mihinana sy mifamela heloka ny roa tonta mba tsy hisy lolompo tavela ao am-po.",
+          },
+          // ─── 5 Micro-Quiz ───
+          {
+            type: 'quiz',
+            question: "Que signifie littéralement la formule solidaire « Valin-tanana » ?",
+            questionMg: "Inona no dikan'ny teny hoe « Valin-tanana » ara-bakiteny ?",
+            choices: [
+              'Le retour de la main (l’échange de travail solidaire sans argent)',
+              'Une poignée de main rapide',
+              'Un bracelet traditionnel en argent',
+              'Un coup de poing de défi',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Valin-tanana » signifie littéralement « retour de main » : l'assistance mutuelle bénévole entre voisins pour les travaux pénibles.",
+          },
+          {
+            type: 'quiz',
+            question: "Quel rôle jouent les « Raiamandreny » lors d'une dispute dans le village ?",
+            questionMg: "Inona no andraikitry ny Raiamandreny rehefa misy fifanolanana eo an-tanàna ?",
+            choices: [
+              'Médiateurs sages qui réconcilient les parties par le Fampihavanana',
+              'Gardiens de prison qui enferment les coupables',
+              'Collecteurs d’impôts qui prennent l’argent des familles',
+              'Spectateurs qui ne s’expriment jamais',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Les Raiamandreny (sages et aînés) interviennent avec déférence pour écouter, conseiller et réconcilier durablement les esprits.",
+          },
+          {
+            type: 'quiz',
+            question: "Comment se termine traditionnellement un rituel de Fampihavanana réussi ?",
+            questionMg: "Ahoana no famaranana ny fampihavanana vita soa aman-tsara ?",
+            choices: [
+              'Par un repas fraternel partagé et le pardon mutuel scellé',
+              'Par l’expulsion de l’une des familles hors du village',
+              'Par un duel public d’arts martiaux',
+              'Par le paiement d’une lourde amende en or',
+            ],
+            correctIndex: 0,
+            explanation:
+              "La vraie réconciliation malgache se scelle autour d'un repas de fête partagé, effaçant toute trace de rancune.",
+          },
+          {
+            type: 'quiz',
+            question: "Que désigne l'expression « Asa vadi-drano » chez les paysans malgaches ?",
+            questionMg: "Inona no atao hoe « Asa vadi-drano » eo amin'ny tantsaha ?",
+            choices: [
+              'Le travail collectif solidaire de repiquage du riz dans l’eau des rizières',
+              'La pêche nocturne en pirogue',
+              'La traversée d’un fleuve en crue',
+              'La lessive collective au bord de la rivière',
+            ],
+            correctIndex: 0,
+            explanation:
+              "L'« Asa vadi-drano » désigne les grands travaux agricoles collectifs d'inondation et de repiquage du riz où tout le village s'entraide.",
+          },
+          {
+            type: 'quiz',
+            question: "Pourquoi le Valin-tanana est-il considéré comme supérieur au salariat dans les rizières traditionnelles ?",
+            questionMg: "Nahoana no sarobidy lavitra noho ny karama ny Valin-tanana amin'ny fambolena ?",
+            choices: [
+              'Parce qu’il resserre le lien humain et l’amitié fraternelle au lieu de diviser par l’argent',
+              'Parce que cela ne coûte absolument rien en riz',
+              'Parce qu’on peut obliger les voisins par la force',
+              'Parce que le gouvernement l’interdit',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le Valin-tanana repose sur le cœur, l'honneur et l'amitié, fortifiant le tissu social au-delà des considérations financières.",
+          },
+        ],
+      },
+      {
+        slug: 'le-ziva-alliance-et-plaisanterie-sacree',
+        title: 'Le Ziva : l\'alliance sacrée et le devoir d\'humour pacificateur (Ny Ziva sy ny Fihavanana)',
+        titleMg: 'Ny Ziva : Fifamatorana Masina sy Firahalahiana Mandrakizay',
+        summary:
+          "Plongez dans l'un des rituels les plus originaux de Madagascar : le Ziva, alliance d'immunité et de fraternité indéfectible.",
+        summaryMg:
+          "Fantaro ny fomban'ny Ziva, fanekena masina mandrara ny ady sy mampiasa ny fihomehezana ho fitaovam-pihavanana.",
+        type: 'TRADITION',
+        orderIndex: 7,
+        durationMinutes: 7,
+        sections: [
+          {
+            type: 'intro',
+            textFr:
+              "Le « Ziva » (ou « Fatidra » d'alliance) est une institution sociale unique au monde : un pacte séculaire conclu entre deux ethnies, clans ou familles, interdisant formellement et pour toujours toute guerre ou animosité entre leurs descendants. Entre alliés de Ziva, la dispute est taboue, et la dérision joyeuse est un devoir pour désamorcer les tensions.",
+            textMg:
+              "Ny « Ziva » dia fomba nentin-drazana miavaka tokoa : fifanekena masina teo amin'ny foko na fianakaviana roa, mandrara tanteraka ny fifandrafiana mandrakizay. Afaka mifanaraby am-pitiavana ny mpiziva mba hampihomehy sy handravona ny olana.",
+          },
+          {
+            type: 'phonetic',
+            letterOrSound: 'Z',
+            phonetic: 'z',
+            frenchEquivalent:
+              'Le « Z » malgache est doux et voisé, vibrant comme dans « zèbre » ou « horizon » (ex: Ziva, Zanaka, Zoky).',
+            sampleWordMg: 'Ziva',
+            sampleTranslationFr: 'Allié de parenté à plaisanterie / Pacte fraternel sacré',
+          },
+          {
+            type: 'concept',
+            termMg: 'Ziva',
+            phonetic: 'zi-va',
+            meaningFr: 'Pacte d’alliance sacrée et parenté à plaisanterie',
+            explanation:
+              'Statut liant deux groupes où toute effusion de sang ou querelle sérieuse est un sacrilège absolu (Fady).',
+          },
+          {
+            type: 'concept',
+            termMg: 'Lova tsy mifamono',
+            phonetic: 'lou-va tsi mi-fa-mou-nou',
+            meaningFr: 'Héritage sacré d’immunité mutuelle',
+            explanation:
+              'Expression solennelle rappelant qu’entre alliés de sang ou de ziva, le meurtre et la trahison sont impossibles.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Fihavanana am-pilalaovana',
+            phonetic: 'fi-ha-va-na-na am-pi-la-low-va-na',
+            meaningFr: 'Fraternité joviale par le jeu et l’humour',
+            explanation:
+              'Le droit sacré pour deux alliés de Ziva de se taquiner et de plaisanter ouvertement sans que nul ne puisse s’en offusquer.',
+          },
+          {
+            type: 'concept',
+            termMg: 'Fatidra',
+            phonetic: 'fa-ti-dra',
+            meaningFr: 'Serment du sang, pacte d’adoption fraternelle',
+            explanation:
+              'Rituel où deux personnes ou clans scellent leur union par une goutte de sang partagée, devenant frères pour l’éternité.',
+          },
+          {
+            type: 'example',
+            textMg: 'Mpi-ziva izahay sy ry zareo ka tsy misy fahatezerana mahazo mitoetra eo aminay.',
+            textFr: 'Nous sommes liés par le Ziva avec eux, ainsi aucune rancœur ni animosité ne peut subsister entre nous.',
+          },
+          {
+            type: 'example',
+            textMg: 'Ny fihomehezan’ny mpi-ziva dia mandevona ny disadisa rehetra.',
+            textFr: 'L’humour bienveillant entre alliés de Ziva dissout instantanément tous les malentendus.',
+          },
+          {
+            type: 'didYouKnow',
+            textFr:
+              "Lors des funérailles traditionnelles, c'est souvent l'allié de Ziva qui a le privilège de monter sur le tombeau pour raconter des anecdotes joyeuses, faire sourire les endeuillés et les aider à traverser la douleur par la chaleur du rire.",
+            textMg:
+              "Mandritra ny fandevenana, ny mpi-ziva dia afaka mananihany sy mampihomehy ny mpisaona eo am-pasan-drazana mba hanamaivanana ny alahelo sy hampahery ny fianakaviana.",
+          },
+          // ─── 5 Micro-Quiz ───
+          {
+            type: 'quiz',
+            question: "Quelle est la règle suprême entre deux clans ou personnes liés par le « Ziva » ?",
+            questionMg: "Inona no fitsipika masina tsy azo dikaina eo amin'ny mpi-ziva ?",
+            choices: [
+              'Toute querelle, guerre ou violence est strictement interdite pour l’éternité',
+              'Ils doivent obligatoirement habiter dans la même maison',
+              'Ils n’ont pas le droit de se parler en public',
+              'Ils doivent donner tous leurs biens au roi',
+            ],
+            correctIndex: 0,
+            explanation:
+              "Le Ziva est une alliance sacrée de paix absolue : toute haine ou effusion de sang entre alliés est un interdit suprême (Fady).",
+          },
+          {
+            type: 'quiz',
+            question: "Quel rôle bienveillant l'humour et la plaisanterie jouent-ils entre alliés de Ziva ?",
+            questionMg: "Inona no antony ampiasan'ny mpi-ziva ny sangisangy sy ny fihomehezana ?",
+            choices: [
+              'Désamorcer les tensions et maintenir la fraternité sans orgueil ni rancœur',
+              'Humilier les pauvres devant le village',
+              'Se moquer méchamment des ancêtres',
+              'Gagner de l’argent lors des foires',
+            ],
+            correctIndex: 0,
+            explanation:
+              "L'humour sacré du Ziva permet d'aborder les sujets délicats avec légèreté, neutralisant toute tentation d'orgueil ou de conflit.",
+          },
+          {
+            type: 'quiz',
+            question: "Que désigne l'expression « Lova tsy mifamono » ?",
+            questionMg: "Inona no hevitry ny hoe « Lova tsy mifamono » ?",
+            choices: [
+              'L’héritage ancestral sacré qui interdit de s’entretuer entre frères et alliés',
+              'Un testament écrit sur une feuille de papier',
+              'Un troupeau de zébus légué au premier né',
+              'Une maison en bois qu’on ne démolit jamais',
+            ],
+            correctIndex: 0,
+            explanation:
+              "« Lova tsy mifamono » est le pacte éternel d'inviolabilité de la vie humaine entre deux groupes unis par la tradition.",
+          },
+          {
+            type: 'quiz',
+            question: "Lors des funérailles traditionnelles, quelle mission spéciale revient souvent à l'allié de Ziva ?",
+            questionMg: "Inona no ataon'ny mpi-ziva mandritra ny fisaonana sy ny fandevenana ?",
+            choices: [
+              'Apporter la consolation par le réconfort chaleureux et dédramatiser la douleur par des paroles vivifiantes',
+              'Pleurer plus fort que tout le monde pendant sept jours',
+              'Creuser la tombe tout seul sans aide',
+              'Fermer les portes du village aux étrangers',
+            ],
+            correctIndex: 0,
+            explanation:
+              "L'allié de Ziva a le rôle libérateur d'aider la famille en deuil à surmonter l'accablement en insufflant l'espoir et la vie.",
+          },
+          {
+            type: 'quiz',
+            question: "Comment appelle-t-on le rituel traditionnel du serment scellé par le sang créant une fraternité éternelle ?",
+            questionMg: "Inona no anaran'ny fianianana masina ifamatorana ho mpirahalahy mandrakizay ?",
+            choices: ['Ny Fatidra', 'Ny Famadihana', 'Ny Fitampoha', 'Ny Tsaboraha'],
+            correctIndex: 0,
+            explanation:
+              "Le « Fatidra » (serment du sang) est l'alliance suprême d'adoption mutuelle qui transforme deux étrangers en frères de sang inviolables.",
           },
         ],
       },
