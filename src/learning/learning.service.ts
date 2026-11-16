@@ -314,7 +314,7 @@ export class LearningService implements OnModuleInit {
         orderIndex: t.orderIndex,
         estimatedMinutes: t.estimatedMinutes,
         ratingsCount: t.ratingsCount ?? 0,
-        averageRating: t.averageRating ?? 0,
+        averageRating: (t.ratingsCount ?? 0) > 0 ? (t.averageRating ?? 0) : 0,
         coverImage: t.coverImage || null,
         lessonsCount,
         completedLessonsCount: completedCount,
@@ -494,7 +494,8 @@ export class LearningService implements OnModuleInit {
       color: track.color || '#4A6741',
       coverImage: track.coverImage || null,
       ratingsCount: track.ratingsCount ?? 0,
-      averageRating: track.averageRating ?? 0,
+      averageRating:
+        (track.ratingsCount ?? 0) > 0 ? (track.averageRating ?? 0) : 0,
       userRating,
       isEligible,
       lessonsCount: totalLessons,
@@ -1493,7 +1494,8 @@ export class LearningService implements OnModuleInit {
     return {
       trackSlug: track.slug,
       trackTitle: track.title,
-      averageRating: track.averageRating ?? 0,
+      averageRating:
+        (track.ratingsCount ?? 0) > 0 ? (track.averageRating ?? 0) : 0,
       ratingsCount: track.ratingsCount ?? 0,
       userRating,
       userComment,
