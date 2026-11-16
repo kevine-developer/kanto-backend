@@ -14,6 +14,12 @@ describe('LearningService', () => {
       learningTrack: {
         findMany: jest.fn(),
         findUnique: jest.fn(),
+        update: jest.fn(),
+      },
+      learningTrackRating: {
+        findUnique: jest.fn(),
+        upsert: jest.fn(),
+        aggregate: jest.fn(),
       },
       learningLesson: {
         findMany: jest.fn(),
@@ -25,6 +31,7 @@ describe('LearningService', () => {
         findFirst: jest.fn(),
         findMany: jest.fn(),
         upsert: jest.fn(),
+        count: jest.fn(),
       },
       userTrackProgress: {
         findUnique: jest.fn(),
@@ -267,6 +274,212 @@ describe('LearningService', () => {
 
       expect(dueReviews).toBeDefined();
       expect(dueReviews.every((r) => r.isDue === true)).toBe(true);
+    });
+  });
+
+  describe('rateTrack & getTrackRating (Système de notation par étoiles)', () => {
+    const mockTrack = {
+      id: 'track-1',
+      slug: 'fondamentaux-langue-malgache',
+      title: 'Fondamentaux de la langue',
+      averageRating: 4.5,
+      ratingsCount: 10,
+      _count: { lessons: 5 },
+    };
+
+    it('devrait refuser la notation si l’utilisateur n’a pas terminé le cours', async () => {
+      prismaMock.learningTrack.findUnique.mockResolvedValue(mockTrack);
+      prismaMock.userTrackProgress.findUnique.mockResolvedValue({
+        isCompleted: false,
+      });
+      prismaMock.userLessonProgress.count.mockResolvedValue(2);
+
+      await expect(
+        service.rateTrack('fondamentaux-langue-malgache', 'user-1', {
+          rating: 5,
+        }),
+      ).rejects.toThrow('Vous devez avoir terminé l’ensemble des leçons');
+    });
+
+    it('devrait enregistrer la note et recalculer la moyenne si l’utilisateur est éligible', async () => {
+      prismaMock.learningTrack.findUnique.mockResolvedValue(mockTrack);
+      prismaMock.userTrackProgress.findUnique.mockResolvedValue({
+        isCompleted: true,
+      });
+
+      // Simulation de la transaction
+      prismaMock.$transaction.mockImplementation(async (callback: any) => {
+        const txMock = {
+          learningTrackRating: {
+            upsert: jest.fn().mockResolvedValue({ rating: 5 }),
+            aggregate: jest.fn().mockResolvedValue({
+              _avg: { rating: 4.8 },
+              _count: { id: 11 },
+            }),
+          },
+          learningTrack: {
+            update: jest.fn().mockResolvedValue({
+              averageRating: 4.8,
+              ratingsCount: 11,
+            }),
+          },
+        };
+        return callback(txMock);
+      });
+
+      const result = await service.rateTrack(
+        'fondamentaux-langue-malgache',
+        'user-1',
+        { rating: 5 },
+      );
+
+      expect(result.success).toBe(true);
+      expect(result.userRating).toBe(5);
+      expect(result.averageRating).toBe(4.8);
+      expect(result.ratingsCount).toBe(11);
+    });
+
+    it('devrait récupérer la note moyenne, le total et la note personnelle de l’utilisateur', async () => {
+      prismaMock.learningTrack.findUnique.mockResolvedValue(mockTrack);
+      prismaMock.userTrackProgress.findUnique.mockResolvedValue({
+        isCompleted: true,
+      });
+      prismaMock.learningTrackRating.findUnique.mockResolvedValue({
+        rating: 4,
+        comment: 'Très enrichissant',
+      });
+
+      const ratingInfo = await service.getTrackRating(
+        'fondamentaux-langue-malgache',
+        'user-1',
+      );
+
+      expect(ratingInfo.averageRating).toBe(4.5);
+      expect(ratingInfo.ratingsCount).toBe(10);
+      expect(ratingInfo.userRating).toBe(4);
+      expect(ratingInfo.userComment).toBe('Très enrichissant');
+      expect(ratingInfo.isEligible).toBe(true);
+    });
+  });
+
+  describe('Gestion des images (Couvertures de cours & Images de leçons)', () => {
+    const mockTrack = {
+      id: 'track-1',
+      slug: 'fondamentaux-langue-malgache',
+      title: 'Fondamentaux de la langue',
+      averageRating: 4.5,
+      ratingsCount: 10,
+      _count: { lessons: 5 },
+      lessons: [],
+    };
+
+    const mockLesson = {
+      id: 'lesson-1',
+      slug: 'salutations-et-politesse-aza-fady',
+      title: 'Aza fady : Politesse',
+      trackId: 'track-1',
+      durationMinutes: 5,
+      isPublished: true,
+      sections: [],
+      track: {
+        id: 'track-1',
+        slug: 'fondamentaux-langue-malgache',
+        title: 'Fondamentaux',
+        lessons: [],
+      },
+    };
+
+    it('devrait retourner coverImage dans getTracks et getTrackBySlug', async () => {
+      const trackWithCover = {
+        ...mockTrack,
+        coverImage: 'https://res.cloudinary.com/kanto/cover-track.jpg',
+      };
+      prismaMock.learningTrack.findMany.mockResolvedValue([trackWithCover]);
+      prismaMock.learningTrack.findUnique.mockResolvedValue(trackWithCover);
+
+      const tracks = await service.getTracks();
+      expect(tracks[0].coverImage).toBe(
+        'https://res.cloudinary.com/kanto/cover-track.jpg',
+      );
+
+      const trackDetail = await service.getTrackBySlug(
+        'fondamentaux-langue-malgache',
+      );
+      expect(trackDetail.coverImage).toBe(
+        'https://res.cloudinary.com/kanto/cover-track.jpg',
+      );
+    });
+
+    it('devrait retourner la liste des images associées ordonnées dans getLessonBySlug', async () => {
+      const mockImages = [
+        {
+          id: 'img-1',
+          url: 'https://res.cloudinary.com/kanto/palais-reine.jpg',
+          altText: 'Le Rova de Manjakamiadana',
+          captionFr: 'Palais de la Reine à Antananarivo',
+          captionMg: 'Rovan’i Manjakamiadana',
+          credit: 'Archives Nationales de Madagascar',
+          description: 'Symbole historique majeur de l’Imerina.',
+          orderIndex: 0,
+        },
+      ];
+
+      const lessonWithImages = {
+        ...mockLesson,
+        images: mockImages,
+      };
+
+      prismaMock.learningLesson.findUnique.mockResolvedValue(lessonWithImages);
+
+      const result = await service.getLessonBySlug(
+        'salutations-et-politesse-aza-fady',
+      );
+
+      expect(result.images).toBeDefined();
+      expect(result.images.length).toBe(1);
+      expect(result.images[0].url).toBe(
+        'https://res.cloudinary.com/kanto/palais-reine.jpg',
+      );
+      expect(result.images[0].credit).toBe(
+        'Archives Nationales de Madagascar',
+      );
+      expect(result.images[0].altText).toBe('Le Rova de Manjakamiadana');
+    });
+
+    it('devrait normaliser correctement une section de type image dans une leçon', async () => {
+      const lessonWithImageSection = {
+        ...mockLesson,
+        sections: [
+          {
+            type: 'image',
+            imageUrl: '/uploads/learning/lessons/tsinjaka.webp',
+            altText: 'Danse traditionnelle malgache',
+            captionFr: 'Démonstration lors d’un festival culturel',
+            credit: 'Fianakaviana Kanto',
+          },
+        ],
+        images: [],
+      };
+
+      prismaMock.learningLesson.findUnique.mockResolvedValue(
+        lessonWithImageSection,
+      );
+
+      const result = await service.getLessonBySlug(
+        'salutations-et-politesse-aza-fady',
+      );
+
+      const imageSection = result.sections.find(
+        (s: any) => s.type === 'image',
+      );
+      expect(imageSection).toBeDefined();
+      expect(imageSection.imageUrl).toBe(
+        '/uploads/learning/lessons/tsinjaka.webp',
+      );
+      expect(imageSection.captionFr).toBe(
+        'Démonstration lors d’un festival culturel',
+      );
+      expect(imageSection.credit).toBe('Fianakaviana Kanto');
     });
   });
 });

@@ -46,3 +46,15 @@ export class ReviewActionDto {
   quality?:
     'again' | 'hard' | 'good' | 'easy' | 'AGAIN' | 'HARD' | 'GOOD' | 'EASY';
 }
+
+export class RateTrackDto {
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  @Max(5)
+  rating: number;
+
+  @IsOptional()
+  @IsString()
+  comment?: string;
+}

@@ -11,9 +11,12 @@ import pg from 'pg';
 import { ResendService } from '../integrations/resend/resend.service.js';
 import type { PrismaService } from '../infrastructure/database/prisma.service.js';
 
-// Instance Prisma dédiée à Better Auth
+// Instance Prisma dédiée à Better Auth avec pool dimensionné
 const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
+  max: Number(process.env.PG_AUTH_POOL_MAX) || 5,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 5000,
 });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });

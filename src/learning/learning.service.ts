@@ -1,4 +1,5 @@
 import {
+  ForbiddenException,
   Injectable,
   Logger,
   NotFoundException,
@@ -6,13 +7,12 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { RedisService } from '../redis/redis.service.js';
+import { SEED_LEARNING_TRACKS } from './learning.seed-data.js';
 import {
-  SEED_LEARNING_TRACKS,
-  SeedTrack,
-  SeedLesson,
-  SeedSection,
-} from './learning.seed-data.js';
-import { CompleteLessonDto, ReviewActionDto } from './dto/learning.dto.js';
+  CompleteLessonDto,
+  RateTrackDto,
+  ReviewActionDto,
+} from './dto/learning.dto.js';
 
 @Injectable()
 export class LearningService implements OnModuleInit {
@@ -313,6 +313,9 @@ export class LearningService implements OnModuleInit {
         color: t.color || '#4A6741',
         orderIndex: t.orderIndex,
         estimatedMinutes: t.estimatedMinutes,
+        ratingsCount: t.ratingsCount ?? 0,
+        averageRating: t.averageRating ?? 0,
+        coverImage: t.coverImage || null,
         lessonsCount,
         completedLessonsCount: completedCount,
         progressPercent,
@@ -464,6 +467,22 @@ export class LearningService implements OnModuleInit {
         ? Math.round((completedLessonsCount / totalLessons) * 100)
         : 0;
 
+    let userRating: number | null = null;
+    const isEligible = progressPercent === 100;
+
+    if (userId && track.id) {
+      try {
+        const existingRating = await this.prisma.learningTrackRating.findUnique({
+          where: { userId_trackId: { userId, trackId: track.id } },
+        });
+        if (existingRating) {
+          userRating = existingRating.rating;
+        }
+      } catch {
+        // Ignorer
+      }
+    }
+
     return {
       id: track.id || track.slug,
       slug: track.slug,
@@ -473,6 +492,11 @@ export class LearningService implements OnModuleInit {
       descriptionMg: track.descriptionMg,
       level: track.level,
       color: track.color || '#4A6741',
+      coverImage: track.coverImage || null,
+      ratingsCount: track.ratingsCount ?? 0,
+      averageRating: track.averageRating ?? 0,
+      userRating,
+      isEligible,
       lessonsCount: totalLessons,
       completedLessonsCount,
       progressPercent,
@@ -538,6 +562,16 @@ export class LearningService implements OnModuleInit {
           frenchEquivalent: s.frenchEquivalent || s.explanation || '',
           sampleWordMg: s.sampleWordMg || s.termMg || '',
           sampleTranslationFr: s.sampleTranslationFr || s.meaningFr || '',
+        });
+      } else if (s.type === 'image') {
+        sections.push({
+          type: 'image',
+          imageUrl: s.imageUrl || s.url || '',
+          altText: s.altText || '',
+          captionFr: s.captionFr || s.caption || '',
+          captionMg: s.captionMg || '',
+          credit: s.credit || s.source || '',
+          description: s.description || '',
         });
       } else if (s.type === 'didYouKnow') {
         // Préservation des deux langues : Malagasy et Français
@@ -626,6 +660,9 @@ export class LearningService implements OnModuleInit {
       lesson = await this.prisma.learningLesson.findUnique({
         where: { slug },
         include: {
+          images: {
+            orderBy: { orderIndex: 'asc' },
+          },
           track: {
             include: {
               lessons: {
@@ -653,6 +690,9 @@ export class LearningService implements OnModuleInit {
         lesson = await this.prisma.learningLesson.findUnique({
           where: { slug },
           include: {
+            images: {
+              orderBy: { orderIndex: 'asc' },
+            },
             track: {
               include: {
                 lessons: {
@@ -789,6 +829,16 @@ export class LearningService implements OnModuleInit {
       didYouKnowMg: normalized.didYouKnowMg,
       culturalNote: normalized.culturalNote,
       culturalNoteMg: normalized.culturalNoteMg,
+      images: (lesson.images || []).map((img: any) => ({
+        id: img.id,
+        url: img.url,
+        altText: img.altText || null,
+        captionFr: img.captionFr || null,
+        captionMg: img.captionMg || null,
+        credit: img.credit || null,
+        description: img.description || null,
+        orderIndex: img.orderIndex ?? 0,
+      })),
       track: {
         id: lesson.track?.id || lesson.track?.slug,
         slug: lesson.track?.slug,
@@ -965,31 +1015,32 @@ export class LearningService implements OnModuleInit {
     const earnedXp = wasAlreadyCompleted ? 0 : lesson.xpReward || 25;
 
     try {
-      // 1. Enregistrement idempotent de la validation de la leçon (>= 60%)
-      await this.prisma.userLessonProgress.upsert({
-        where: {
-          userId_lessonId: { userId, lessonId },
-        },
-        create: {
-          userId,
-          lessonId,
-          status: 'COMPLETED',
-          score,
-          timeSpentSeconds: dto.timeSpentSeconds ?? 0,
-          completedAt: new Date(),
-        },
-        update: {
-          status: 'COMPLETED',
-          score: Math.max(score, 0),
-          timeSpentSeconds: { increment: dto.timeSpentSeconds ?? 0 },
-          completedAt: new Date(),
-        },
-      });
+      // 1. Transaction atomique ACID : validation leçon + crédit XP + progression parcours
+      await this.prisma.$transaction(async (tx) => {
+        // Enregistrement idempotent de la validation de la leçon (>= 60%)
+        await tx.userLessonProgress.upsert({
+          where: {
+            userId_lessonId: { userId, lessonId },
+          },
+          create: {
+            userId,
+            lessonId,
+            status: 'COMPLETED',
+            score,
+            timeSpentSeconds: dto.timeSpentSeconds ?? 0,
+            completedAt: new Date(),
+          },
+          update: {
+            status: 'COMPLETED',
+            score: Math.max(score, 0),
+            timeSpentSeconds: { increment: dto.timeSpentSeconds ?? 0 },
+            completedAt: new Date(),
+          },
+        });
 
-      // 2. Crédit réel d'XP utilisateur et historique de transaction
-      if (earnedXp > 0) {
-        try {
-          const up = await this.prisma.userProgress.upsert({
+        // Crédit réel d'XP utilisateur et historique de transaction
+        if (earnedXp > 0) {
+          const up = await tx.userProgress.upsert({
             where: { userId },
             create: {
               userId,
@@ -1002,7 +1053,7 @@ export class LearningService implements OnModuleInit {
           });
           totalUserXp = Math.round(Number(up.totalXp));
 
-          await this.prisma.xpTransaction.create({
+          await tx.xpTransaction.create({
             data: {
               userId,
               amount: earnedXp,
@@ -1010,61 +1061,57 @@ export class LearningService implements OnModuleInit {
               description: `Validation de la leçon : ${lesson.title}`,
             },
           });
-        } catch (xpErr) {
-          this.logger.warn(`Erreur lors du crédit d'XP :`, xpErr);
-        }
-      } else {
-        try {
-          const currentUp = await this.prisma.userProgress.findUnique({
+        } else {
+          const currentUp = await tx.userProgress.findUnique({
             where: { userId },
           });
           if (currentUp) {
             totalUserXp = Math.round(Number(currentUp.totalXp));
           }
-        } catch {}
-      }
+        }
 
-      // 3. Mise à jour de la progression globale du parcours
-      if (trackId) {
-        const completedCount = await this.prisma.userLessonProgress.count({
-          where: {
-            userId,
-            status: 'COMPLETED',
-            lesson: { trackId },
-          },
-        });
+        // Mise à jour de la progression globale du parcours
+        if (trackId) {
+          const completedCount = await tx.userLessonProgress.count({
+            where: {
+              userId,
+              status: 'COMPLETED',
+              lesson: { trackId },
+            },
+          });
 
-        const totalLessonsInTrack = await this.prisma.learningLesson.count({
-          where: { trackId, isPublished: true },
-        });
+          const totalLessonsInTrack = await tx.learningLesson.count({
+            where: { trackId, isPublished: true },
+          });
 
-        isTrackCompleted =
-          completedCount >= totalLessonsInTrack && totalLessonsInTrack > 0;
-        trackProgressPercent =
-          totalLessonsInTrack > 0
-            ? Math.round((completedCount / totalLessonsInTrack) * 100)
-            : 100;
+          isTrackCompleted =
+            completedCount >= totalLessonsInTrack && totalLessonsInTrack > 0;
+          trackProgressPercent =
+            totalLessonsInTrack > 0
+              ? Math.round((completedCount / totalLessonsInTrack) * 100)
+              : 100;
 
-        await this.prisma.userTrackProgress.upsert({
-          where: {
-            userId_trackId: { userId, trackId },
-          },
-          create: {
-            userId,
-            trackId,
-            completedLessonsCount: completedCount,
-            totalLessonsCount: totalLessonsInTrack,
-            isCompleted: isTrackCompleted,
-            lastAccessedAt: new Date(),
-          },
-          update: {
-            completedLessonsCount: completedCount,
-            totalLessonsCount: totalLessonsInTrack,
-            isCompleted: isTrackCompleted,
-            lastAccessedAt: new Date(),
-          },
-        });
-      }
+          await tx.userTrackProgress.upsert({
+            where: {
+              userId_trackId: { userId, trackId },
+            },
+            create: {
+              userId,
+              trackId,
+              completedLessonsCount: completedCount,
+              totalLessonsCount: totalLessonsInTrack,
+              isCompleted: isTrackCompleted,
+              lastAccessedAt: new Date(),
+            },
+            update: {
+              completedLessonsCount: completedCount,
+              totalLessonsCount: totalLessonsInTrack,
+              isCompleted: isTrackCompleted,
+              lastAccessedAt: new Date(),
+            },
+          });
+        }
+      });
 
       // 4. Alimentation automatique du système de répétition espacée (SRS)
       const rawSections =
@@ -1391,5 +1438,158 @@ export class LearningService implements OnModuleInit {
         recentCompletions: [],
       };
     }
+  }
+
+  /**
+   * Récupère la note moyenne, le total d'avis et l'évaluation personnelle de l'utilisateur pour un parcours.
+   */
+  async getTrackRating(slug: string, userId?: string) {
+    const track = await this.prisma.learningTrack.findUnique({
+      where: { slug },
+      include: {
+        _count: { select: { lessons: { where: { isPublished: true } } } },
+      },
+    });
+
+    if (!track) {
+      throw new NotFoundException(`Parcours pédagogique "${slug}" introuvable`);
+    }
+
+    let userRating: number | null = null;
+    let userComment: string | null = null;
+    let isEligible = false;
+
+    if (userId) {
+      // Vérification de l'éligibilité : le parcours doit être complété
+      const progress = await this.prisma.userTrackProgress.findUnique({
+        where: { userId_trackId: { userId, trackId: track.id } },
+      });
+
+      if (progress?.isCompleted) {
+        isEligible = true;
+      } else {
+        const totalLessons = track._count.lessons;
+        const completedCount = await this.prisma.userLessonProgress.count({
+          where: {
+            userId,
+            lesson: { trackId: track.id },
+            status: 'COMPLETED',
+          },
+        });
+        isEligible = totalLessons > 0 && completedCount >= totalLessons;
+      }
+
+      const userRatingRecord =
+        await this.prisma.learningTrackRating.findUnique({
+          where: { userId_trackId: { userId, trackId: track.id } },
+        });
+
+      if (userRatingRecord) {
+        userRating = userRatingRecord.rating;
+        userComment = userRatingRecord.comment;
+      }
+    }
+
+    return {
+      trackSlug: track.slug,
+      trackTitle: track.title,
+      averageRating: track.averageRating ?? 0,
+      ratingsCount: track.ratingsCount ?? 0,
+      userRating,
+      userComment,
+      isEligible,
+    };
+  }
+
+  /**
+   * Enregistre ou modifie l'évaluation (1 à 5 étoiles) d'un cours complété par un utilisateur.
+   * Transaction atomique : upsert de la note et recalcul de la moyenne du parcours.
+   */
+  async rateTrack(slug: string, userId: string, dto: RateTrackDto) {
+    const track = await this.prisma.learningTrack.findUnique({
+      where: { slug },
+      include: {
+        _count: { select: { lessons: { where: { isPublished: true } } } },
+      },
+    });
+
+    if (!track) {
+      throw new NotFoundException(`Parcours pédagogique "${slug}" introuvable`);
+    }
+
+    // 1. Contrôle d'éligibilité strict : l'utilisateur doit avoir terminé le cours
+    const progress = await this.prisma.userTrackProgress.findUnique({
+      where: { userId_trackId: { userId, trackId: track.id } },
+    });
+
+    let isEligible = progress?.isCompleted === true;
+
+    if (!isEligible) {
+      const totalLessons = track._count.lessons;
+      const completedCount = await this.prisma.userLessonProgress.count({
+        where: {
+          userId,
+          lesson: { trackId: track.id },
+          status: 'COMPLETED',
+        },
+      });
+      isEligible = totalLessons > 0 && completedCount >= totalLessons;
+    }
+
+    if (!isEligible) {
+      throw new ForbiddenException(
+        'Vous devez avoir terminé l’ensemble des leçons de ce cours pour pouvoir lui attribuer une note.',
+      );
+    }
+
+    // 2. Transaction atomique ACID pour enregistrer la note et recalculer les statistiques
+    return this.prisma.$transaction(async (tx) => {
+      // Upsert de la note individuelle
+      const ratingRecord = await tx.learningTrackRating.upsert({
+        where: { userId_trackId: { userId, trackId: track.id } },
+        create: {
+          userId,
+          trackId: track.id,
+          rating: dto.rating,
+          comment: dto.comment,
+        },
+        update: {
+          rating: dto.rating,
+          comment: dto.comment,
+        },
+      });
+
+      // Recalcul précis de la moyenne et du total
+      const aggregate = await tx.learningTrackRating.aggregate({
+        where: { trackId: track.id },
+        _avg: { rating: true },
+        _count: { id: true },
+      });
+
+      const rawAvg = aggregate._avg.rating ?? 0;
+      const roundedAvg = Math.round(rawAvg * 10) / 10;
+      const count = aggregate._count.id;
+
+      // Mise à jour sur le parcours pour lectures directes O(1)
+      await tx.learningTrack.update({
+        where: { id: track.id },
+        data: {
+          averageRating: roundedAvg,
+          ratingsCount: count,
+        },
+      });
+
+      this.logger.log(
+        `⭐ Parcours "${track.slug}" noté ${dto.rating}/5 par l'utilisateur ${userId}. Nouvelle moyenne : ${roundedAvg} (${count} avis).`,
+      );
+
+      return {
+        success: true,
+        userRating: ratingRecord.rating,
+        averageRating: roundedAvg,
+        ratingsCount: count,
+        message: 'Votre évaluation a été enregistrée avec succès.',
+      };
+    });
   }
 }

@@ -1,8 +1,10 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  Logger,
   NotFoundException,
   Param,
   Patch,
@@ -10,14 +12,90 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import fs from 'node:fs';
+import path from 'node:path';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { AuthGuard, Roles } from '../auth/index.js';
+import { CloudinaryService } from '../integrations/cloudinary/cloudinary.service.js';
+import {
+  CreateLessonImageDto,
+  ReorderLessonImagesDto,
+  UpdateLessonImageDto,
+  UploadTrackCoverDto,
+} from './dto/learning-image.dto.js';
 
 @Controller('admin/learning')
 @UseGuards(AuthGuard)
 @Roles(['ADMIN', 'admin'])
 export class AdminLearningController {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(AdminLearningController.name);
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
+
+  /**
+   * Sauvegarde une image soit sur Cloudinary soit en stockage local sécurisé.
+   */
+  private async saveImage(
+    base64Data: string,
+    folder: string,
+    prefix: string,
+  ): Promise<string> {
+    const { buffer, mimeType } =
+      this.cloudinaryService.validateAndDecodeBase64Image(base64Data);
+
+    const extension = mimeType.split('/')[1] || 'jpg';
+
+    if (this.cloudinaryService.isConfigured()) {
+      try {
+        const cloudinaryUrl = await this.cloudinaryService.uploadImageBase64(
+          base64Data,
+          `${prefix}_${Date.now()}`,
+          `kanto/images/${folder}`,
+        );
+        return cloudinaryUrl;
+      } catch (err: unknown) {
+        this.logger.warn(
+          `[Cloudinary] Échec upload ${folder} : ${
+            err instanceof Error ? err.message : String(err)
+          }. Bascule vers stockage local.`,
+        );
+      }
+    }
+
+    // Fallback stockage local dans uploads/
+    const uploadDir = path.resolve(process.cwd(), 'uploads', folder);
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    const fileName = `${prefix}-${Date.now()}.${extension}`;
+    const filePath = path.join(uploadDir, fileName);
+    await fs.promises.writeFile(filePath, buffer);
+
+    return `/uploads/${folder}/${fileName}`;
+  }
+
+  /**
+   * Supprime une image hébergée sur Cloudinary ou sur le disque local.
+   */
+  private async deleteStoredImage(url?: string | null): Promise<void> {
+    if (!url) return;
+    try {
+      if (url.startsWith('https://res.cloudinary.com/')) {
+        await this.cloudinaryService.deleteMediaFromUrl(url);
+      } else if (url.startsWith('/uploads/')) {
+        const localPath = path.resolve(process.cwd(), url.slice(1));
+        if (fs.existsSync(localPath)) {
+          await fs.promises.unlink(localPath);
+        }
+      }
+    } catch (err: unknown) {
+      this.logger.warn(`Impossible de supprimer l'image ${url}: ${err}`);
+    }
+  }
 
   private extractAudioEnabled(sections: any): boolean {
     let list: any[] = [];
@@ -334,5 +412,260 @@ export class AdminLearningController {
     return this.prisma.learningLesson.delete({
       where: { id },
     });
+  }
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // GESTION DES IMAGES — COURS (Couvertures) & LEÇONS (Pédagogiques)
+  // ════════════════════════════════════════════════════════════════════════════
+
+  /**
+   * Téléverse ou remplace l'image de couverture d'un cours.
+   */
+  @Post('tracks/:id/cover')
+  async uploadTrackCover(
+    @Param('id') id: string,
+    @Body() dto: UploadTrackCoverDto,
+  ) {
+    const track = await this.prisma.learningTrack.findUnique({
+      where: { id },
+      select: { id: true, coverImage: true },
+    });
+    if (!track) {
+      throw new NotFoundException(`Cours "${id}" introuvable`);
+    }
+
+    const coverUrl = await this.saveImage(
+      dto.imageBase64,
+      'learning/tracks',
+      `cover_${id}`,
+    );
+
+    // Suppression de l'ancienne image le cas échéant
+    if (track.coverImage && track.coverImage !== coverUrl) {
+      await this.deleteStoredImage(track.coverImage);
+    }
+
+    const updated = await this.prisma.learningTrack.update({
+      where: { id },
+      data: { coverImage: coverUrl },
+    });
+
+    return {
+      success: true,
+      coverImage: coverUrl,
+      track: updated,
+    };
+  }
+
+  /**
+   * Supprime l'image de couverture d'un cours.
+   */
+  @Delete('tracks/:id/cover')
+  async removeTrackCover(@Param('id') id: string) {
+    const track = await this.prisma.learningTrack.findUnique({
+      where: { id },
+      select: { id: true, coverImage: true },
+    });
+    if (!track) {
+      throw new NotFoundException(`Cours "${id}" introuvable`);
+    }
+
+    if (track.coverImage) {
+      await this.deleteStoredImage(track.coverImage);
+    }
+
+    await this.prisma.learningTrack.update({
+      where: { id },
+      data: { coverImage: null },
+    });
+
+    return { success: true };
+  }
+
+  /**
+   * Récupère la liste des images associées à une leçon.
+   */
+  @Get('lessons/:id/images')
+  async getLessonImages(@Param('id') id: string) {
+    const lesson = await this.prisma.learningLesson.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+    if (!lesson) {
+      throw new NotFoundException(`Leçon "${id}" introuvable`);
+    }
+
+    return this.prisma.learningLessonImage.findMany({
+      where: { lessonId: id },
+      orderBy: { orderIndex: 'asc' },
+    });
+  }
+
+  /**
+   * Ajoute une nouvelle image pédagogique à une leçon (upload base64 ou URL externe).
+   */
+  @Post('lessons/:id/images')
+  async addLessonImage(
+    @Param('id') id: string,
+    @Body() dto: CreateLessonImageDto,
+  ) {
+    const lesson = await this.prisma.learningLesson.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+    if (!lesson) {
+      throw new NotFoundException(`Leçon "${id}" introuvable`);
+    }
+
+    let finalUrl = dto.imageUrl;
+    if (dto.imageBase64) {
+      finalUrl = await this.saveImage(
+        dto.imageBase64,
+        'learning/lessons',
+        `lesson_${id}`,
+      );
+    }
+
+    if (!finalUrl) {
+      throw new BadRequestException(
+        "Vous devez fournir soit une image en base64 ('imageBase64'), soit une URL valide ('imageUrl').",
+      );
+    }
+
+    // Déterminer le prochain ordre d'affichage si non spécifié
+    let nextOrder = dto.orderIndex;
+    if (nextOrder === undefined) {
+      const highestOrder = await this.prisma.learningLessonImage.findFirst({
+        where: { lessonId: id },
+        orderBy: { orderIndex: 'desc' },
+        select: { orderIndex: true },
+      });
+      nextOrder = (highestOrder?.orderIndex ?? -1) + 1;
+    }
+
+    const created = await this.prisma.learningLessonImage.create({
+      data: {
+        lessonId: id,
+        url: finalUrl,
+        altText: dto.altText || null,
+        captionFr: dto.captionFr || null,
+        captionMg: dto.captionMg || null,
+        credit: dto.credit || null,
+        description: dto.description || null,
+        orderIndex: nextOrder,
+      },
+    });
+
+    return {
+      success: true,
+      image: created,
+    };
+  }
+
+  /**
+   * Met à jour les métadonnées d'une image ou remplace son fichier binaire.
+   */
+  @Patch('images/:imageId')
+  async updateLessonImage(
+    @Param('imageId') imageId: string,
+    @Body() dto: UpdateLessonImageDto,
+  ) {
+    const existing = await this.prisma.learningLessonImage.findUnique({
+      where: { id: imageId },
+    });
+    if (!existing) {
+      throw new NotFoundException(`Image "${imageId}" introuvable`);
+    }
+
+    let newUrl = existing.url;
+    if (dto.imageBase64) {
+      newUrl = await this.saveImage(
+        dto.imageBase64,
+        'learning/lessons',
+        `lesson_${existing.lessonId}`,
+      );
+      // Nettoyage de l'ancienne image
+      await this.deleteStoredImage(existing.url);
+    } else if (dto.imageUrl) {
+      newUrl = dto.imageUrl;
+    }
+
+    const updated = await this.prisma.learningLessonImage.update({
+      where: { id: imageId },
+      data: {
+        url: newUrl,
+        ...(dto.altText !== undefined && { altText: dto.altText }),
+        ...(dto.captionFr !== undefined && { captionFr: dto.captionFr }),
+        ...(dto.captionMg !== undefined && { captionMg: dto.captionMg }),
+        ...(dto.credit !== undefined && { credit: dto.credit }),
+        ...(dto.description !== undefined && { description: dto.description }),
+        ...(dto.orderIndex !== undefined && {
+          orderIndex: Number(dto.orderIndex),
+        }),
+      },
+    });
+
+    return {
+      success: true,
+      image: updated,
+    };
+  }
+
+  /**
+   * Supprime une image d'une leçon (fichier stocké et base de données).
+   */
+  @Delete('images/:imageId')
+  async deleteLessonImage(@Param('imageId') imageId: string) {
+    const existing = await this.prisma.learningLessonImage.findUnique({
+      where: { id: imageId },
+    });
+    if (!existing) {
+      throw new NotFoundException(`Image "${imageId}" introuvable`);
+    }
+
+    await this.deleteStoredImage(existing.url);
+
+    await this.prisma.learningLessonImage.delete({
+      where: { id: imageId },
+    });
+
+    return { success: true, deletedId: imageId };
+  }
+
+  /**
+   * Réordonne les images d'une leçon selon l'ordre du tableau fourni.
+   */
+  @Patch('lessons/:id/reorder-images')
+  async reorderLessonImages(
+    @Param('id') id: string,
+    @Body() dto: ReorderLessonImagesDto,
+  ) {
+    const lesson = await this.prisma.learningLesson.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+    if (!lesson) {
+      throw new NotFoundException(`Leçon "${id}" introuvable`);
+    }
+
+    await this.prisma.$transaction(
+      dto.imageIds.map((imgId, idx) =>
+        this.prisma.learningLessonImage.updateMany({
+          where: { id: imgId, lessonId: id },
+          data: { orderIndex: idx },
+        }),
+      ),
+    );
+
+    const reordered = await this.prisma.learningLessonImage.findMany({
+      where: { lessonId: id },
+      orderBy: { orderIndex: 'asc' },
+    });
+
+    return {
+      success: true,
+      count: reordered.length,
+      images: reordered,
+    };
   }
 }

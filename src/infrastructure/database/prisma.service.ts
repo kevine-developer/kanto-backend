@@ -24,6 +24,9 @@ export class PrismaService
     }
     const pool = new pg.Pool({
       connectionString,
+      max: Number(process.env.PG_POOL_MAX) || 10,
+      idleTimeoutMillis: Number(process.env.PG_IDLE_TIMEOUT) || 30000,
+      connectionTimeoutMillis: Number(process.env.PG_CONNECT_TIMEOUT) || 5000,
     });
     const adapter = new PrismaPg(pool);
     super({ adapter });
