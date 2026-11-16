@@ -13,6 +13,7 @@ import { LearningService } from './learning.service.js';
 import {
   FindTracksQueryDto,
   CompleteLessonDto,
+  RateTrackDto,
   ReviewActionDto,
 } from './dto/learning.dto.js';
 import {
@@ -56,6 +57,29 @@ export class LearningController {
   @OptionalAuth()
   getTrack(@Param('slug') slug: string, @Session() session?: UserSession) {
     return this.learningService.getTrackBySlug(slug, session?.user?.id);
+  }
+
+  /**
+   * Consultation de la note et des statistiques d'évaluation d'un parcours.
+   */
+  @Get('tracks/:slug/rating')
+  @OptionalAuth()
+  getTrackRating(@Param('slug') slug: string, @Session() session?: UserSession) {
+    return this.learningService.getTrackRating(slug, session?.user?.id);
+  }
+
+  /**
+   * Attribution ou mise à jour de la note d'un parcours par un apprenant éligible (1 à 5 étoiles).
+   */
+  @Post('tracks/:slug/rate')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  rateTrack(
+    @Param('slug') slug: string,
+    @Body() dto: RateTrackDto,
+    @Session() session: UserSession,
+  ) {
+    return this.learningService.rateTrack(slug, session.user.id, dto);
   }
 
   /**

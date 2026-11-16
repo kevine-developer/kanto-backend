@@ -50,6 +50,7 @@ model User {
   lessonProgress UserLessonProgress[]
   trackProgress  UserTrackProgress[]
   reviewItems    UserReviewItem[]
+  trackRatings   LearningTrackRating[]
 
   // Relations sociales, Amis & Blocages
   sentFriendships        Friendship[]    @relation("SentFriendships")

@@ -16,11 +16,15 @@ model LearningTrack {
   orderIndex       Int           @default(0)
   isPublished      Boolean       @default(true)
   estimatedMinutes Int           @default(30)
+  ratingsCount     Int           @default(0)
+  averageRating    Float         @default(0.0)
+  coverImage       String?       // Image de couverture du cours
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 
   lessons       LearningLesson[]
   trackProgress UserTrackProgress[]
+  ratings       LearningTrackRating[]
 
   @@index([level, isPublished])
   @@index([orderIndex])
@@ -39,6 +43,8 @@ model LearningLesson {
   type            LessonType   @default(CULTURE)
   orderIndex      Int          @default(0)
   durationMinutes Int          @default(5)
+  ratingsCount    Int          @default(0)
+  averageRating   Float        @default(0.0)
   audioUrl        String?
   illustrationUrl String?
   isPublished     Boolean      @default(true)
@@ -58,6 +64,7 @@ model LearningLesson {
 
   progress    UserLessonProgress[]
   reviewItems UserReviewItem[]
+  images      LearningLessonImage[]
 
   @@index([trackId, orderIndex])
   @@index([isPublished])
@@ -122,4 +129,41 @@ model UserReviewItem {
   @@index([userId, nextReviewDue])
   @@map("user_review_items")
 }
+
+model LearningTrackRating {
+  id        String        @id @default(cuid())
+  trackId   String
+  track     LearningTrack @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating    Int           // Note de 1 à 5 étoiles
+  comment   String?       @db.Text
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@unique([userId, trackId])
+  @@index([trackId, rating])
+  @@index([userId])
+  @@map("learning_track_ratings")
+}
+
+model LearningLessonImage {
+  id          String         @id @default(cuid())
+  lessonId    String
+  lesson      LearningLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  url         String         // URL Cloudinary ou /uploads/learning/...
+  altText     String?        // Accessibilité
+  captionFr   String?        // Légende en français
+  captionMg   String?        // Légende en malgache
+  credit      String?        // Source / attribution (ex: Archives Nationales, Wikimedia Commons)
+  description String?        @db.Text // Description pédagogique détaillée
+  orderIndex  Int            @default(0) // Ordre d'affichage
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([lessonId, orderIndex])
+  @@map("learning_lesson_images")
+}
+
+
 
