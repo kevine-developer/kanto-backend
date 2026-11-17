@@ -1124,23 +1124,45 @@ export class LearningService implements OnModuleInit {
 
       for (const section of rawSections) {
         if (section.type === 'concept' && section.termMg && section.meaningFr) {
+          const cleanTerm = section.termMg.trim();
           try {
-            await this.prisma.userReviewItem.create({
-              data: {
-                userId,
-                lessonId,
-                termMg: section.termMg,
-                meaningFr: section.meaningFr,
-                phonetic: section.phonetic || null,
-                contextMg: section.explanation || null,
-                contextFr: section.meaningFr || null,
-                masteryLevel: 1,
-                intervalDays: 1,
-                nextReviewDue: new Date(Date.now() + 24 * 60 * 60 * 1000), // J+1
+            const existingReview = await this.prisma.userReviewItem.findUnique({
+              where: {
+                userId_termMg: {
+                  userId,
+                  termMg: cleanTerm,
+                },
               },
             });
+
+            if (existingReview) {
+              await this.prisma.userReviewItem.update({
+                where: { id: existingReview.id },
+                data: {
+                  lessonId: lessonId || existingReview.lessonId,
+                  meaningFr: section.meaningFr,
+                  phonetic: section.phonetic || existingReview.phonetic,
+                  contextMg: section.explanation || existingReview.contextMg,
+                },
+              });
+            } else {
+              await this.prisma.userReviewItem.create({
+                data: {
+                  userId,
+                  lessonId,
+                  termMg: cleanTerm,
+                  meaningFr: section.meaningFr,
+                  phonetic: section.phonetic || null,
+                  contextMg: section.explanation || null,
+                  contextFr: section.meaningFr || null,
+                  masteryLevel: 1,
+                  intervalDays: 1,
+                  nextReviewDue: new Date(Date.now() + 24 * 60 * 60 * 1000), // J+1
+                },
+              });
+            }
           } catch {
-            // Ignorer les doublons éventuels
+            // Protégé contre toute anomalie concurrente
           }
         }
       }
@@ -1211,51 +1233,66 @@ export class LearningService implements OnModuleInit {
       // Ignorer si indisponible
     }
 
+    // Déduplication stricte par terme (insensible à la casse)
+    const seenTerms = new Set<string>();
+    reviewsList = reviewsList.filter((item) => {
+      const norm = item.termMg.trim().toLowerCase();
+      if (seenTerms.has(norm)) return false;
+      seenTerms.add(norm);
+      return true;
+    });
+
     // Fallback éducatif si la base ne contient pas encore d'items
     if (reviewsList.length === 0) {
-      const firstTrack = SEED_LEARNING_TRACKS[0];
       const sampleReviews: any[] = [];
+      const seenSampleTerms = new Set<string>();
 
-      firstTrack.lessons.forEach((l, lIdx) => {
-        l.sections.forEach((s, sIdx) => {
-          if (s.type === 'concept' && s.termMg && s.meaningFr) {
-            const isSampleDue = (lIdx + sIdx) % 2 === 0;
-            const sampleLevel = ((lIdx + sIdx) % 5) + 1;
-            sampleReviews.push({
-              id: `seed_review_${lIdx}_${sIdx}`,
-              conceptKey: s.termMg,
-              termMg: s.termMg,
-              meaningFr: s.meaningFr,
-              phonetic: s.phonetic || null,
-              contextMg: s.explanation || null,
-              contextFr: s.meaningFr || null,
-              questionMg: `Inona no dikan'ny hoe « ${s.termMg} » ?`,
-              questionFr: `Que signifie l'expression « ${s.termMg} » ?`,
-              answerMg: s.termMg,
-              answerFr: s.meaningFr,
-              level: sampleLevel,
-              masteryLevel: sampleLevel,
-              intervalDays: sampleLevel * 2,
-              nextReviewDue: isSampleDue
-                ? new Date(now.getTime() - 1000).toISOString()
-                : new Date(now.getTime() + 48 * 3600 * 1000).toISOString(),
-              reviewCount: sampleLevel,
-              easeFactor: 2.5,
-              isDue: isSampleDue,
-              status:
-                sampleLevel >= 5
-                  ? 'mastered'
-                  : isSampleDue
-                    ? 'due'
-                    : 'in_progress',
-              lessonTitle: l.title,
-              lessonTitleMg: l.titleMg,
-              lessonSlug: l.slug,
-              trackTitle: firstTrack.title,
-              trackTitleMg: firstTrack.titleMg,
-              trackColor: firstTrack.color || '#4A6741',
-            });
-          }
+      SEED_LEARNING_TRACKS.forEach((track, tIdx) => {
+        track.lessons.forEach((l, lIdx) => {
+          l.sections.forEach((s, sIdx) => {
+            if (s.type === 'concept' && s.termMg && s.meaningFr) {
+              const normTerm = s.termMg.trim().toLowerCase();
+              if (seenSampleTerms.has(normTerm)) return;
+              seenSampleTerms.add(normTerm);
+
+              const isSampleDue = (tIdx + lIdx + sIdx) % 2 === 0;
+              const sampleLevel = ((tIdx + lIdx + sIdx) % 5) + 1;
+              sampleReviews.push({
+                id: `seed_review_${tIdx}_${lIdx}_${sIdx}`,
+                conceptKey: s.termMg,
+                termMg: s.termMg,
+                meaningFr: s.meaningFr,
+                phonetic: s.phonetic || null,
+                contextMg: s.explanation || null,
+                contextFr: s.meaningFr || null,
+                questionMg: `Inona no dikan'ny hoe « ${s.termMg} » ?`,
+                questionFr: `Que signifie l'expression « ${s.termMg} » ?`,
+                answerMg: s.termMg,
+                answerFr: s.meaningFr,
+                level: sampleLevel,
+                masteryLevel: sampleLevel,
+                intervalDays: sampleLevel * 2,
+                nextReviewDue: isSampleDue
+                  ? new Date(now.getTime() - 1000).toISOString()
+                  : new Date(now.getTime() + 48 * 3600 * 1000).toISOString(),
+                reviewCount: sampleLevel,
+                easeFactor: 2.5,
+                isDue: isSampleDue,
+                status:
+                  sampleLevel >= 5
+                    ? 'mastered'
+                    : isSampleDue
+                      ? 'due'
+                      : 'in_progress',
+                lessonTitle: l.title,
+                lessonTitleMg: l.titleMg,
+                lessonSlug: l.slug,
+                trackTitle: track.title,
+                trackTitleMg: track.titleMg,
+                trackColor: track.color || '#4A6741',
+              });
+            }
+          });
         });
       });
 
