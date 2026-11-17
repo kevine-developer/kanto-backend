@@ -225,10 +225,14 @@ export function renderBetaWaitlistScript(): string {
       var data = await res.json();
 
       if (data.android) {
-        var aBtn = document.getElementById('dl-btn-android-main');
+        var aConfirmBtn = document.getElementById('confirm-link-google-play');
+        var aDlBtn = document.getElementById('dl-btn-android-main');
         var aBadge = document.getElementById('dl-android-badge');
-        if (aBtn && data.android.playStoreWebLink) {
-          aBtn.href = data.android.playStoreWebLink;
+        if (aConfirmBtn && data.android.playStoreWebLink) {
+          aConfirmBtn.href = data.android.playStoreWebLink;
+        }
+        if (aDlBtn && (data.android.playStoreAppLink || data.android.playStoreWebLink)) {
+          aDlBtn.href = data.android.playStoreAppLink || data.android.playStoreWebLink;
         }
         if (aBadge && data.android.availability) {
           aBadge.innerText = (data.android.availability === 'PUBLIC') ? 'Google Play (Public)' : 'Google Play (Bêta)';
@@ -236,10 +240,14 @@ export function renderBetaWaitlistScript(): string {
       }
 
       if (data.ios) {
-        var iBtn = document.getElementById('dl-btn-ios-main');
+        var iInstallBtn = document.getElementById('install-link-testflight');
+        var iDlBtn = document.getElementById('dl-btn-ios-main');
         var iBadge = document.getElementById('dl-ios-badge');
-        if (iBtn && data.ios.testFlightLink) {
-          iBtn.href = data.ios.testFlightLink;
+        if (iInstallBtn && data.ios.appStoreLink) {
+          iInstallBtn.href = data.ios.appStoreLink;
+        }
+        if (iDlBtn && data.ios.testFlightLink) {
+          iDlBtn.href = data.ios.testFlightLink;
         }
         if (iBadge && data.ios.availability) {
           iBadge.innerText = (data.ios.availability === 'PUBLIC') ? 'App Store (Public)' : 'Apple TestFlight';

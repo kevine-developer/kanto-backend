@@ -246,16 +246,35 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
             </div>
 
             <div class="store-kanto-footer">
-              <a
-                href="https://play.google.com/store/apps/details?id=com.devengalere.kantomg"
-                class="btn-download-kanto"
-                id="dl-btn-android-main"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span>Télécharger sur Google Play</span>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-              </a>
+              <div class="store-steps-flow">
+                <!-- Étape 1 : Confirmer son compte sur Google Play -->
+                <a
+                  href="https://play.google.com/apps/testing/com.devengalere.kantomg"
+                  class="btn-store-step outline"
+                  id="confirm-link-google-play"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Étape 1 : Confirmer mon compte sur Google Play"
+                >
+                  <span class="step-num">1</span>
+                  <span class="step-label">Confirmer sur Google Play</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                </a>
+
+                <!-- Étape 2 : Télécharger sur le Play Store -->
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.devengalere.kantomg"
+                  class="btn-store-step primary"
+                  id="dl-btn-android-main"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Étape 2 : Télécharger Kanto sur Google Play"
+                >
+                  <span class="step-num">2</span>
+                  <span class="step-label">Télécharger sur le Play Store</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                </a>
+              </div>
             </div>
           </div>
 
@@ -274,7 +293,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
               </div>
 
               <p class="store-kanto-desc">
-                Rejoignez le programme sur iPhone et iPad. Mises à jour directes sans aucune configuration requise.
+                Rejoignez le programme sur iPhone et iPad. Installez TestFlight puis activez votre accès anticipé officiel.
               </p>
 
               <div class="store-kanto-specs">
@@ -284,16 +303,35 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
             </div>
 
             <div class="store-kanto-footer">
-              <a
-                href="https://testflight.apple.com/join/kantomg"
-                class="btn-download-kanto"
-                id="dl-btn-ios-main"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span>Télécharger sur TestFlight</span>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-              </a>
+              <div class="store-steps-flow">
+                <!-- Étape 1 : Installer TestFlight si besoin -->
+                <a
+                  href="https://apps.apple.com/app/testflight/id899247664"
+                  class="btn-store-step outline"
+                  id="install-link-testflight"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Étape 1 : Installer Apple TestFlight depuis l'App Store"
+                >
+                  <span class="step-num">1</span>
+                  <span class="step-label">Installer l'app TestFlight</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                </a>
+
+                <!-- Étape 2 : Rejoindre et installer Kanto -->
+                <a
+                  href="https://testflight.apple.com/join/kantomg"
+                  class="btn-store-step primary"
+                  id="dl-btn-ios-main"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Étape 2 : Rejoindre la bêta Kanto sur TestFlight"
+                >
+                  <span class="step-num">2</span>
+                  <span class="step-label">Rejoindre sur TestFlight</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                </a>
+              </div>
             </div>
           </div>
 

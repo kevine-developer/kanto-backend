@@ -926,47 +926,108 @@ export const BETA_LANDING_CSS = `
   .store-kanto-footer {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     padding-top: 4px;
   }
 
-  .btn-download-kanto {
-    min-height: 48px;
+  .store-steps-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    width: 100%;
+  }
+
+  .btn-store-step {
+    min-height: 46px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 12px 20px;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 10px 16px;
     border-radius: var(--radius-md);
     text-decoration: none;
     font-family: var(--font-sans);
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     font-weight: 600;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .btn-store-step .step-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .btn-store-step .step-label {
+    flex: 1;
+    text-align: left;
+  }
+
+  .btn-store-step svg {
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+  }
+
+  .btn-store-step:hover svg {
+    transform: translate(2px, -2px);
+  }
+
+  /* Étape 1 : Lien d'acceptation / confirmation chez Google ou Apple (Outline noble) */
+  .btn-store-step.outline {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    color: var(--color-ink);
+  }
+
+  .btn-store-step.outline .step-num {
+    background: var(--color-surface);
+    color: var(--color-ink-muted);
+    border: 1px solid var(--color-border);
+  }
+
+  .btn-store-step.outline:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-ink-subtle);
+    color: var(--color-heading);
+    transform: translateY(-1px);
+  }
+
+  /* Étape 2 : Bouton principal de téléchargement (Vert Tanimbary signature) */
+  .btn-store-step.primary {
     background: var(--color-tanimbary);
     color: #FFFFFF;
-    transition: all 0.2s ease;
+    border: 1px solid transparent;
     box-shadow: 0 2px 8px rgba(74, 103, 65, 0.18);
   }
 
-  [data-theme="dark"] .btn-download-kanto {
+  .btn-store-step.primary .step-num {
+    background: rgba(255, 255, 255, 0.25);
+    color: #FFFFFF;
+  }
+
+  [data-theme="dark"] .btn-store-step.primary {
     background: var(--color-tanimbary);
     color: #0D0D0B;
     font-weight: 700;
     box-shadow: 0 4px 14px rgba(107, 158, 97, 0.25);
   }
 
-  .btn-download-kanto:hover {
+  [data-theme="dark"] .btn-store-step.primary .step-num {
+    background: rgba(0, 0, 0, 0.22);
+    color: #0D0D0B;
+  }
+
+  .btn-store-step.primary:hover {
     filter: brightness(1.08);
     transform: translateY(-1px);
     box-shadow: 0 4px 14px rgba(74, 103, 65, 0.28);
-  }
-
-  .btn-download-kanto svg {
-    transition: transform 0.15s ease;
-  }
-
-  .btn-download-kanto:hover svg {
-    transform: translate(2px, -2px);
   }
 
   /* ─── CARTE QR CODE SCANNABLE SUR GRAND ÉCRAN ────────────────────────────── */
