@@ -51,14 +51,10 @@ export function renderBetaWaitlistScript(): string {
   var recBadgeIos = document.getElementById('rec-badge-ios');
   if (detectedPlatform === 'IOS') {
     if (recBadgeIos) recBadgeIos.style.display = 'inline-flex';
-    var cardConfirmIos = document.getElementById('card-confirm-ios');
-    if (cardConfirmIos) cardConfirmIos.classList.add('is-detected');
     var cardDlIos = document.getElementById('card-download-ios');
     if (cardDlIos) cardDlIos.classList.add('is-detected');
   } else {
     if (recBadgeAndroid) recBadgeAndroid.style.display = 'inline-flex';
-    var cardConfirmAndroid = document.getElementById('card-confirm-android');
-    if (cardConfirmAndroid) cardConfirmAndroid.classList.add('is-detected');
     var cardDlAndroid = document.getElementById('card-download-android');
     if (cardDlAndroid) cardDlAndroid.classList.add('is-detected');
   }
@@ -139,13 +135,13 @@ export function renderBetaWaitlistScript(): string {
         if (feedbackBadgeLabel) feedbackBadgeLabel.innerText = 'Testeur déjà inscrit';
         if (feedbackTitle) feedbackTitle.innerText = 'Vous faites déjà partie des testeurs Kanto MG';
         if (feedbackDesc) {
-          feedbackDesc.innerHTML = 'Votre compte <strong>' + escapeHtml(email) + '</strong> est déjà enregistré. Suivez les étapes ci-dessous pour confirmer votre statut ou télécharger l’application :';
+          feedbackDesc.innerHTML = 'Votre compte <strong>' + escapeHtml(email) + '</strong> est déjà enregistré. Accédez directement au téléchargement ci-dessous :';
         }
       } else {
         if (feedbackBadgeLabel) feedbackBadgeLabel.innerText = 'Inscription confirmée';
         if (feedbackTitle) feedbackTitle.innerText = 'Bienvenue parmi les pionniers de Kanto MG';
         if (feedbackDesc) {
-          feedbackDesc.innerHTML = 'Votre inscription pour <strong>' + escapeHtml(email) + '</strong> a bien été enregistrée. Deux étapes simples vous permettent d’accéder à l’application :';
+          feedbackDesc.innerHTML = 'Votre inscription pour <strong>' + escapeHtml(email) + '</strong> a bien été enregistrée. Vous pouvez dès à présent télécharger l’application :';
         }
       }
       feedbackCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -233,73 +229,7 @@ export function renderBetaWaitlistScript(): string {
     return '';
   }
 
-  async function notifyParticipation(btnEl, platformName) {
-    var email = ensureTesterEmail();
-    if (!email) {
-      showError('Veuillez d’abord renseigner votre adresse e-mail dans le formulaire d’inscription ci-dessus.');
-      var regInput = document.getElementById('reg-email');
-      if (regInput) {
-        regInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        regInput.focus();
-      }
-      return;
-    }
-
-    if (btnEl) {
-      btnEl.disabled = true;
-      btnEl.innerHTML = '<span>Enregistrement...</span>';
-    }
-
-    try {
-      var res = await fetch('/api/beta-testers/confirm-participation', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, action: 'JOINED' })
-      });
-      var data = await res.json();
-      if (res.ok && data.success) {
-        showSuccess('Statut de testeur validé avec succès sur ' + platformName + ' !');
-        if (btnEl) {
-          btnEl.classList.add('confirmed');
-          btnEl.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg><span>✓ Statut confirmé</span>';
-        }
-        var nextStep = document.getElementById('telechargement');
-        if (nextStep) {
-          setTimeout(function() {
-            nextStep.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }, 400);
-        }
-      } else {
-        showError(data.message || 'Impossible d’enregistrer la confirmation.');
-        if (btnEl) {
-          btnEl.disabled = false;
-          btnEl.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg><span>J’ai confirmé mon statut</span>';
-        }
-      }
-    } catch (err) {
-      showError('Erreur de connexion lors de la confirmation.');
-      if (btnEl) {
-        btnEl.disabled = false;
-        btnEl.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg><span>J’ai confirmé mon statut</span>';
-      }
-    }
-  }
-
-  var btnConfirmAndroidJoined = document.getElementById('btn-confirm-android-joined');
-  if (btnConfirmAndroidJoined) {
-    btnConfirmAndroidJoined.addEventListener('click', function() {
-      notifyParticipation(btnConfirmAndroidJoined, 'Google Play');
-    });
-  }
-
-  var btnConfirmIosJoined = document.getElementById('btn-confirm-ios-joined');
-  if (btnConfirmIosJoined) {
-    btnConfirmIosJoined.addEventListener('click', function() {
-      notifyParticipation(btnConfirmIosJoined, 'TestFlight');
-    });
-  }
-
-  // ─── PILIER C : NOTIFICATION D'INSTALLATION DE L'APPLICATION ──────────────
+  // ─── NOTIFICATION D'INSTALLATION DE L'APPLICATION ─────────────────────────
   async function notifyInstalled(btnEl) {
     var email = ensureTesterEmail();
     if (!email) {
@@ -365,12 +295,8 @@ export function renderBetaWaitlistScript(): string {
       if (data.android) {
         var aBtn = document.getElementById('dl-btn-android-main');
         var aBadge = document.getElementById('dl-android-badge');
-        var aConfirmBtn = document.getElementById('confirm-link-google-play');
         if (aBtn && data.android.playStoreWebLink) {
           aBtn.href = data.android.playStoreWebLink;
-        }
-        if (aConfirmBtn && data.android.playStoreWebLink) {
-          aConfirmBtn.href = data.android.playStoreWebLink;
         }
         if (aBadge && data.android.availability) {
           aBadge.innerText = (data.android.availability === 'PUBLIC') ? 'Google Play (Public)' : 'Google Play (Bêta)';
@@ -380,12 +306,8 @@ export function renderBetaWaitlistScript(): string {
       if (data.ios) {
         var iBtn = document.getElementById('dl-btn-ios-main');
         var iBadge = document.getElementById('dl-ios-badge');
-        var iConfirmBtn = document.getElementById('confirm-link-testflight');
         if (iBtn && data.ios.testFlightLink) {
           iBtn.href = data.ios.testFlightLink;
-        }
-        if (iConfirmBtn && data.ios.testFlightLink) {
-          iConfirmBtn.href = data.ios.testFlightLink;
         }
         if (iBadge && data.ios.availability) {
           iBadge.innerText = (data.ios.availability === 'PUBLIC') ? 'App Store (Public)' : 'Apple TestFlight';
