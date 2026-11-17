@@ -808,93 +808,79 @@ export const BETA_LANDING_CSS = `
     }
   }
 
-  .action-card {
+  /* ─── CARTES DE TÉLÉCHARGEMENT DIRECT KANTO MG ───────────────────────────── */
+  .store-kanto-card {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     box-shadow: var(--color-card-shadow);
-    padding: 24px;
+    padding: 26px 24px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 20px;
+    gap: 22px;
     position: relative;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   }
 
-  .action-card:hover {
+  .store-kanto-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--color-card-shadow-hover);
-    border-color: var(--color-ink-subtle);
+    border-color: var(--color-divider);
   }
 
-  .action-card.is-detected {
+  .store-kanto-card.is-detected {
     border-color: var(--color-tanimbary);
     box-shadow: 0 0 0 1px var(--color-tanimbary), var(--color-card-shadow);
   }
 
-  .action-card-head {
+  .store-kanto-card-body {
     display: flex;
-    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .store-kanto-header {
+    display: flex;
+    align-items: center;
     gap: 14px;
     position: relative;
   }
 
-  .platform-emblem {
+  .store-platform-icon {
     width: 44px;
     height: 44px;
     border-radius: var(--radius-md);
+    background: var(--color-bg-alt);
+    color: var(--color-ink);
+    border: 1px solid var(--color-border);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
 
-  .platform-emblem.android {
-    background: var(--color-android-soft);
-    color: var(--color-android);
-    border: 1px solid var(--color-android-border);
-  }
-
-  .platform-emblem.ios {
-    background: var(--color-ios-soft);
-    color: var(--color-ios);
-    border: 1px solid var(--color-ios-border);
-  }
-
-  .platform-emblem.store-play {
-    background: var(--color-android-soft);
-    color: var(--color-android);
-    border: 1px solid var(--color-android-border);
-  }
-
-  .platform-emblem.store-apple {
-    background: var(--color-ios-soft);
-    color: var(--color-ios);
-    border: 1px solid var(--color-ios-border);
-  }
-
-  .platform-meta {
+  .store-platform-meta {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 2px;
   }
 
-  .platform-tag {
+  .store-channel-tag {
     font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     color: var(--color-ink-subtle);
   }
 
-  .platform-heading {
+  .store-platform-title {
     font-family: var(--font-serif);
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     font-weight: 600;
     color: var(--color-heading);
-    line-height: 1.3;
+    line-height: 1.25;
   }
 
   .badge-recommended {
@@ -902,7 +888,7 @@ export const BETA_LANDING_CSS = `
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    padding: 3px 8px;
+    padding: 3px 9px;
     border-radius: var(--radius-full);
     background: var(--color-tanimbary-soft);
     color: var(--color-tanimbary);
@@ -910,135 +896,117 @@ export const BETA_LANDING_CSS = `
     white-space: nowrap;
   }
 
-  .action-card-text {
-    font-size: 0.92rem;
+  .store-kanto-desc {
+    font-size: 0.9rem;
     color: var(--color-ink-muted);
     line-height: 1.55;
   }
 
-  .action-buttons-wrap {
+  .store-kanto-specs {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding-top: 6px;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 4px;
   }
 
-  /* ─── BOUTONS D'ACTION (INSTALLATION & STATUT) ────────────────────────── */
-
-  .btn-action-check {
-    min-height: 42px;
+  .spec-item {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-ink-muted);
     display: inline-flex;
     align-items: center;
-    justify-content: center;
+    gap: 6px;
+  }
+
+  .spec-item svg {
+    color: var(--color-tanimbary);
+    flex-shrink: 0;
+  }
+
+  .store-kanto-footer {
+    display: flex;
+    flex-direction: column;
     gap: 8px;
-    padding: 8px 16px;
-    background: transparent;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    color: var(--color-ink-muted);
-    font-family: var(--font-sans);
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s ease;
+    padding-top: 4px;
   }
 
-  .btn-action-check:hover {
-    background: var(--color-surface-hover);
-    color: var(--color-ink);
-    border-color: var(--color-ink-subtle);
-  }
-
-  .btn-action-check.confirmed {
-    background: var(--color-success-bg);
-    border-color: var(--color-success);
-    color: var(--color-success-text);
-    cursor: default;
-  }
-
-  /* ─── BOUTONS D'ACTION ÉTAPE 2 (TÉLÉCHARGEMENT STORE) ─────────────────────── */
-  .btn-store-primary {
-    min-height: 52px;
+  .btn-download-kanto {
+    min-height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    padding: 10px 20px;
+    gap: 10px;
+    padding: 12px 20px;
     border-radius: var(--radius-md);
     text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    font-weight: 600;
+    background: var(--color-tanimbary);
     color: #FFFFFF;
-    transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(74, 103, 65, 0.18);
   }
 
-  .btn-store-primary.android {
-    background: #141412;
-    border: 1px solid #333330;
-  }
-
-  [data-theme="light"] .btn-store-primary.android {
-    background: #1A1A1A;
-  }
-
-  .btn-store-primary.android:hover {
-    filter: brightness(1.15);
-    transform: translateY(-1px);
-  }
-
-  .btn-store-primary.ios {
-    background: #141412;
-    border: 1px solid #333330;
-  }
-
-  [data-theme="light"] .btn-store-primary.ios {
-    background: #1A1A1A;
-  }
-
-  .btn-store-primary.ios:hover {
-    filter: brightness(1.15);
-    transform: translateY(-1px);
-  }
-
-  .btn-store-labels {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    line-height: 1.15;
-  }
-
-  .btn-store-labels .sub-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    opacity: 0.8;
-  }
-
-  .btn-store-labels .main-label {
-    font-size: 1rem;
+  [data-theme="dark"] .btn-download-kanto {
+    background: var(--color-tanimbary);
+    color: #0D0D0B;
     font-weight: 700;
-    letter-spacing: -0.01em;
+    box-shadow: 0 4px 14px rgba(107, 158, 97, 0.25);
   }
 
+  .btn-download-kanto:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(74, 103, 65, 0.28);
+  }
 
-  /* ─── CARTE QR CODE SUR GRAND ÉCRAN ──────────────────────────────────────── */
+  .btn-download-kanto svg {
+    transition: transform 0.15s ease;
+  }
+
+  .btn-download-kanto:hover svg {
+    transform: translate(2px, -2px);
+  }
+
+  /* ─── CARTE QR CODE SCANNABLE SUR GRAND ÉCRAN ────────────────────────────── */
   .desktop-qr-card {
     display: none;
     align-items: center;
-    gap: 20px;
-    padding: 16px 24px;
+    gap: 24px;
+    padding: 22px 28px;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    margin-top: 8px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--color-card-shadow);
+    margin-top: 24px;
   }
 
-  @media (min-width: 992px) {
+  @media (min-width: 768px) {
     .desktop-qr-card {
       display: flex;
     }
   }
 
   .qr-visual {
-    color: var(--color-ink);
+    flex-shrink: 0;
+  }
+
+  .qr-code-frame {
+    background: #FFFFFF;
+    padding: 8px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .qr-code-frame svg {
+    display: block;
+    width: 104px;
+    height: 104px;
   }
 
   .qr-info {
@@ -1047,16 +1015,44 @@ export const BETA_LANDING_CSS = `
     gap: 4px;
   }
 
+  .qr-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-tanimbary);
+  }
+
   .qr-heading {
-    font-size: 0.92rem;
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
     font-weight: 600;
     color: var(--color-heading);
+    line-height: 1.3;
   }
 
   .qr-text {
-    font-size: 0.82rem;
+    font-size: 0.86rem;
     color: var(--color-ink-muted);
-    max-width: 440px;
+    line-height: 1.5;
+    max-width: 480px;
+  }
+
+  .qr-domain-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-ink-subtle);
+    margin-top: 6px;
+  }
+
+  .qr-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-tanimbary);
   }
 
   /* ─── SECTION QUESTIONS FRÉQUENTES ───────────────────────────────────────── */
