@@ -923,40 +923,7 @@ export const BETA_LANDING_CSS = `
     padding-top: 6px;
   }
 
-  /* ─── BOUTONS D'ACTION ÉTAPE 1 (CONFIRMATION STATUT) ──────────────────────── */
-  .btn-action-primary {
-    min-height: 46px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 10px 18px;
-    border-radius: var(--radius-md);
-    font-size: 0.92rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.15s ease;
-  }
-
-  .btn-action-primary.android {
-    background: var(--color-android);
-    color: #FFFFFF;
-  }
-
-  .btn-action-primary.android:hover {
-    filter: brightness(1.08);
-    transform: translateY(-1px);
-  }
-
-  .btn-action-primary.ios {
-    background: var(--color-ios);
-    color: #FFFFFF;
-  }
-
-  .btn-action-primary.ios:hover {
-    filter: brightness(1.08);
-    transform: translateY(-1px);
-  }
+  /* ─── BOUTONS D'ACTION (INSTALLATION & STATUT) ────────────────────────── */
 
   .btn-action-check {
     min-height: 42px;
@@ -1051,21 +1018,6 @@ export const BETA_LANDING_CSS = `
     letter-spacing: -0.01em;
   }
 
-  .step-transition {
-    display: flex;
-    justify-content: center;
-    padding-top: 8px;
-  }
-
-  .transition-pill {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--color-ink-subtle);
-    padding: 4px 14px;
-    border-radius: var(--radius-full);
-    background: var(--color-bg-alt);
-    border: 1px solid var(--color-border);
-  }
 
   /* ─── CARTE QR CODE SUR GRAND ÉCRAN ──────────────────────────────────────── */
   .desktop-qr-card {
