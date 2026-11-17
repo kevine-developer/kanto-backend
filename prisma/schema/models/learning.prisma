@@ -126,6 +126,7 @@ model UserReviewItem {
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
 
+  @@unique([userId, termMg])
   @@index([userId, nextReviewDue])
   @@map("user_review_items")
 }
