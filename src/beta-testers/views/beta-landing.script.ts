@@ -549,7 +549,7 @@ export function renderBetaWaitlistScript(): string {
       if (regInput && !regInput.value) {
         regInput.value = initEmail;
       }
-      displayFeedbackState(initEmail, true);
+      displayFeedbackState(initEmail);
     }
   } catch (e) {}
 
