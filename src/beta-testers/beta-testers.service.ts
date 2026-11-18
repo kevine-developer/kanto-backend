@@ -445,8 +445,9 @@ export class BetaTestersService {
 
     if (!tester) {
       return {
-        success: false,
-        message: 'Adresse email introuvable parmi les testeurs inscrits.',
+        success: true,
+        message:
+          'Si cette adresse correspond à un compte actif, votre demande de désinscription a été prise en compte.',
       };
     }
 
@@ -456,7 +457,7 @@ export class BetaTestersService {
       tester.unsubscribeToken &&
       tester.unsubscribeToken !== dto.token
     ) {
-      throw new BadRequestException('Jeton de désinscription invalide.');
+      throw new BadRequestException('Jeton de désinscription invalide ou expiré.');
     }
 
     const alreadyUnsubscribed =

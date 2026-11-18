@@ -1,6 +1,12 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { Session, type UserSession } from '../../auth/index.js';
 import { RiddleService } from './riddle.service.js';
+import {
+  StartRiddleSessionDto,
+  AnswerRiddleQuestionDto,
+  FinishRiddleSessionDto,
+  AbandonRiddleSessionDto,
+} from './dto/riddle-session.dto.js';
 
 @Controller('games/riddle')
 export class RiddleController {
@@ -12,7 +18,10 @@ export class RiddleController {
   }
 
   @Post('start')
-  startSession(@Body() dto: any, @Session() session?: UserSession) {
+  startSession(
+    @Body() dto: StartRiddleSessionDto,
+    @Session() session?: UserSession,
+  ) {
     const userId = session?.user?.id;
     const targetGroup = dto.groupNumber ?? dto.level;
     const parsedGroup =
@@ -27,16 +36,16 @@ export class RiddleController {
   }
 
   @Post('answer')
-  answerQuestion(@Body() dto: any) {
+  answerQuestion(@Body() dto: AnswerRiddleQuestionDto) {
     return this.riddleService.answerQuestion(
       dto.sessionId,
       dto.questionId,
-      dto.userAnswer,
+      dto.userAnswer as any,
     );
   }
 
   @Post('finish')
-  finishSession(@Body() dto: any) {
+  finishSession(@Body() dto: FinishRiddleSessionDto) {
     return this.riddleService.finishSession(
       dto.sessionId,
       dto.durationSeconds || 0,
@@ -44,7 +53,7 @@ export class RiddleController {
   }
 
   @Post('abandon')
-  abandonSession(@Body() dto: { sessionId: string }) {
+  abandonSession(@Body() dto: AbandonRiddleSessionDto) {
     return this.riddleService.abandonSession(dto.sessionId);
   }
 

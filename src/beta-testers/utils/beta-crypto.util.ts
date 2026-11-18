@@ -4,12 +4,21 @@ import crypto from 'node:crypto';
  * Récupère la clé secrète serveur pour le hachage HMAC-SHA-256 des adresses e-mail.
  */
 function getHmacSecret(): string {
-  return (
+  const secret =
     process.env.BETA_HMAC_SECRET ||
     process.env.JWT_SECRET ||
-    process.env.BETTER_AUTH_SECRET ||
-    'kanto_beta_default_hmac_secret_2026_do_not_use_in_prod'
-  );
+    process.env.BETTER_AUTH_SECRET;
+
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error(
+        '❌ [Security Critical] Aucun secret HMAC (BETA_HMAC_SECRET, JWT_SECRET, BETTER_AUTH_SECRET) n’est configuré en production.',
+      );
+    }
+    return 'kanto_beta_default_hmac_secret_2026_do_not_use_in_prod';
+  }
+
+  return secret;
 }
 
 /**
@@ -20,7 +29,20 @@ function getAesKey(): Buffer {
     process.env.BETA_ENCRYPTION_SECRET ||
     process.env.ENCRYPTION_KEY ||
     process.env.JWT_SECRET ||
-    'kanto_beta_default_aes_key_2026_do_not_use_in_prod';
+    process.env.BETTER_AUTH_SECRET;
+
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error(
+        '❌ [Security Critical] Aucune clé de chiffrement (BETA_ENCRYPTION_SECRET, ENCRYPTION_KEY, BETTER_AUTH_SECRET) n’est configurée en production.',
+      );
+    }
+    return crypto
+      .createHash('sha256')
+      .update('kanto_beta_default_aes_key_2026_do_not_use_in_prod')
+      .digest();
+  }
+
   // Dérivation d'une clé de 32 octets déterministe via SHA-256
   return crypto.createHash('sha256').update(secret).digest();
 }

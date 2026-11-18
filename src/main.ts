@@ -98,7 +98,6 @@ async function bootstrap() {
     /^http:\/\/169\.254\.\d+\.\d+:\d+$/,
     'https://kanto-admin.vercel.app',
     /^https:\/\/kanto-admin.*\.vercel\.app$/,
-    /^https:\/\/.*\.vercel\.app$/,
   ];
 
   const defaultProdOrigins: (string | RegExp)[] = [
@@ -111,7 +110,6 @@ async function bootstrap() {
     /^https:\/\/.*\.gastsar\.fr$/,
     'https://kanto-admin.vercel.app',
     /^https:\/\/kanto-admin.*\.vercel\.app$/,
-    /^https:\/\/.*\.vercel\.app$/,
     /^https:\/\/.*\.kanto\.mg$/,
     /^kanto:\/\//,
     /^kantomg:\/\//,

@@ -17,6 +17,11 @@ import {
 } from './dto/find-civic-quiz.dto.js';
 import { CreateCivicQuizDto } from './dto/create-civic-quiz.dto.js';
 import { UpdateCivicQuizDto } from './dto/update-civic-quiz.dto.js';
+import {
+  StartCivicSessionDto,
+  AnswerCivicQuestionDto,
+  FinishCivicSessionDto,
+} from './dto/civic-session.dto.js';
 import { AuthGuard, Roles } from '../auth/index.js';
 
 @Controller('civic-quiz')
@@ -60,19 +65,22 @@ export class CivicQuizController {
   }
 
   @Post('session/start')
-  startSession(@Body() dto: any, @Session() session?: UserSession) {
+  startSession(
+    @Body() dto: StartCivicSessionDto,
+    @Session() session?: UserSession,
+  ) {
     const userId = session?.user?.id;
     return this.civicQuizService.startSession(
       userId,
       dto.category,
       dto.difficulty,
       dto.questionCount || 10,
-      dto.levelNumber ? parseInt(dto.levelNumber, 10) : undefined,
+      dto.levelNumber ? parseInt(String(dto.levelNumber), 10) : undefined,
     );
   }
 
   @Post('session/answer')
-  answerSessionQuestion(@Body() dto: any) {
+  answerSessionQuestion(@Body() dto: AnswerCivicQuestionDto) {
     return this.civicQuizService.answerSessionQuestion(
       dto.sessionId,
       dto.questionId,
@@ -82,7 +90,7 @@ export class CivicQuizController {
   }
 
   @Post('session/finish')
-  finishSession(@Body() dto: any) {
+  finishSession(@Body() dto: FinishCivicSessionDto) {
     return this.civicQuizService.finishSession(
       dto.sessionId,
       dto.durationSeconds || 0,

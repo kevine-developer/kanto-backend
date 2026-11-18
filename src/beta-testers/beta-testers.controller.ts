@@ -202,48 +202,6 @@ export class BetaTestersController {
   }
 
   /**
-   * Consultation publique du statut de participation via requête POST (AJAX JSON).
-   */
-  @Post([
-    'api/beta-testers/verify-participation',
-    'beta-testers/verify-participation',
-  ])
-  @HttpCode(HttpStatus.OK)
-  @Throttle({ default: { limit: 10, ttl: 60000 } })
-  async verifyParticipation(@Body() dto: VerifyBetaTesterDto) {
-    if (!dto?.email || !dto.email.trim()) {
-      return {
-        success: false,
-        exists: false,
-        message:
-          'Veuillez renseigner votre adresse e-mail pour consulter votre statut de participation.',
-      };
-    }
-    return this.betaTestersService.verifyParticipation(dto.email.trim());
-  }
-
-  /**
-   * Consultation publique du statut de participation via requête GET directe (?email=...).
-   */
-  @Get([
-    'api/beta-testers/verify-participation',
-    'beta-testers/verify-participation',
-  ])
-  @HttpCode(HttpStatus.OK)
-  @Throttle({ default: { limit: 10, ttl: 60000 } })
-  async verifyParticipationByQuery(@Query('email') email?: string) {
-    if (!email || !email.trim()) {
-      return {
-        success: false,
-        exists: false,
-        message:
-          'Veuillez renseigner votre adresse e-mail pour consulter votre statut de participation.',
-      };
-    }
-    return this.betaTestersService.verifyParticipation(email.trim());
-  }
-
-  /**
    * Confirmation publique de participation ou d'installation par le testeur (« J'ai rejoint le programme bêta »).
    */
   @Post([
