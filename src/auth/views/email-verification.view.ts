@@ -432,7 +432,7 @@ export function renderEmailVerificationPage(
 
       <h1>${title}</h1>
 
-      ${email ? `<div class="email-badge">${email}</div>` : ''}
+      ${email ? `<div class="email-badge">${escapeHtml(email)}</div>` : ''}
 
       <div class="message">
         ${message}
@@ -473,4 +473,13 @@ export function renderEmailVerificationPage(
 </body>
 </html>
 `;
+}
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }

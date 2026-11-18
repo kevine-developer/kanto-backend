@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { WordPuzzleService } from './word-puzzle.service.js';
 
 @Controller('games/word-puzzle')
@@ -19,13 +19,5 @@ export class WordPuzzleController {
   @Get('levels/:levelNumber')
   getLevelSentences(@Param('levelNumber', ParseIntPipe) levelNumber: number) {
     return this.wordPuzzleService.getLevelSentences(levelNumber);
-  }
-
-  /**
-   * Endpoint de bootstrap / seed (initialise les niveaux s'ils sont vides).
-   */
-  @Post('seed')
-  seedInitial() {
-    return this.wordPuzzleService.seedInitialLevels();
   }
 }

@@ -38,11 +38,13 @@ export function renderBetaLandingPage(
 
   const initialTab =
     options?.initialTab || (isRegistered ? 'already_registered' : 'register');
-  const emailVal = options?.registeredEmail || options?.initialEmail || '';
+  const emailVal = escapeHtml(
+    options?.registeredEmail || options?.initialEmail || '',
+  );
   const errorVal = options?.errorMessage
     ? escapeHtml(options.errorMessage)
     : '';
-  const tokenVal = options?.unsubscribeToken || '';
+  const tokenVal = escapeHtml(options?.unsubscribeToken || '');
 
   const countBadgeText =
     count > 0

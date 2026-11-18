@@ -23,9 +23,15 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
   const currentYear = new Date().getFullYear();
   const supportEmail =
     options?.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
-  const initialType = (options?.initialType || 'BUG').toUpperCase();
-  const initialPlatform = (options?.initialPlatform || 'ANDROID').toUpperCase();
-  const initialEmail = options?.initialEmail || '';
+  const validTypes = ['BUG', 'UI_UX', 'PERFORMANCE', 'CONTENT', 'SUGGESTION', 'OTHER'];
+  const rawType = (options?.initialType || 'BUG').toUpperCase();
+  const initialType = validTypes.includes(rawType) ? rawType : 'BUG';
+
+  const validPlatforms = ['ANDROID', 'IOS', 'ALL'];
+  const rawPlatform = (options?.initialPlatform || 'ANDROID').toUpperCase();
+  const initialPlatform = validPlatforms.includes(rawPlatform) ? rawPlatform : 'ANDROID';
+
+  const initialEmail = escapeHtml(options?.initialEmail || '');
 
   const legalBaseUrl =
     process.env.NATIVE_APP_URL ||
@@ -1142,6 +1148,15 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
   <script src="/bug-report.js"></script>
 </body>
 </html>`.trim();
+}
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
 
 /**
