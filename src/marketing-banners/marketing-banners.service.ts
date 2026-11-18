@@ -12,6 +12,8 @@ import {
 } from './dto/marketing-banner.dto.js';
 import { DEFAULT_MARKETING_BANNERS } from './constants/default-marketing-banners.constant.js';
 
+export const FEATURE_MARKETING_BANNER_AI = 'feature:marketing_banner_ai';
+
 @Injectable()
 export class MarketingBannersService implements OnModuleInit {
   private readonly logger = new Logger(MarketingBannersService.name);
@@ -203,5 +205,83 @@ export class MarketingBannersService implements OnModuleInit {
     await this.findOne(id);
     await this.prisma.marketingBanner.delete({ where: { id } });
     return { success: true, message: `Bannière #${id} supprimée avec succès` };
+  }
+
+  /**
+   * Récupère le statut d'activation de la génération IA des bannières marketing.
+   * Par défaut : DÉSACTIVÉ (false) si absent en base (conforme aux exigences métier).
+   */
+  async getAiGenerationStatus(): Promise<{
+    enabled: boolean;
+    description: string;
+  }> {
+    try {
+      const lock = await this.prisma.moduleLock.findUnique({
+        where: { key: FEATURE_MARKETING_BANNER_AI },
+      });
+
+      if (!lock) {
+        return {
+          enabled: false,
+          description: 'Désactivé par défaut (non configuré en base).',
+        };
+      }
+
+      const enabled = !lock.isLocked && lock.isVisible;
+      return {
+        enabled,
+        description: enabled
+          ? 'Génération automatique IA (Gemini) active toutes les 48 heures.'
+          : lock.lockReason ||
+            'Génération automatique IA désactivée par l’administrateur.',
+      };
+    } catch (err: unknown) {
+      this.logger.warn(
+        `[MarketingBanners] Erreur lecture statut IA : ${err instanceof Error ? err.message : String(err)}`,
+      );
+      return {
+        enabled: false,
+        description: 'Erreur de lecture — désactivé par sécurité.',
+      };
+    }
+  }
+
+  /**
+   * Active ou désactive la génération IA des bannières marketing.
+   */
+  async updateAiGenerationStatus(enabled: boolean): Promise<{
+    enabled: boolean;
+    description: string;
+  }> {
+    const lock = await this.prisma.moduleLock.upsert({
+      where: { key: FEATURE_MARKETING_BANNER_AI },
+      create: {
+        key: FEATURE_MARKETING_BANNER_AI,
+        type: 'FEATURE',
+        nameFr: 'Génération automatique de bannières IA',
+        nameMg: 'Famoronana sora-baventy mandeha hoazy amin’ny alalan’ny AI',
+        isLocked: !enabled,
+        isVisible: enabled,
+        lockReason: enabled ? null : 'Désactivé par l’administrateur',
+        minTier: 'FREE',
+      },
+      update: {
+        isLocked: !enabled,
+        isVisible: enabled,
+        lockReason: enabled ? null : 'Désactivé par l’administrateur',
+      },
+    });
+
+    const isNowEnabled = !lock.isLocked && lock.isVisible;
+    this.logger.log(
+      `⚙️ [MarketingBanners] Statut génération IA mis à jour : ${isNowEnabled ? 'ACTIVÉ' : 'DÉSACTIVÉ'}`,
+    );
+
+    return {
+      enabled: isNowEnabled,
+      description: isNowEnabled
+        ? 'Génération automatique IA (Gemini) active toutes les 48 heures.'
+        : 'Génération automatique IA désactivée par l’administrateur.',
+    };
   }
 }
