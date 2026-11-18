@@ -190,3 +190,15 @@ export class ReorderMarketingBannersDto {
   @IsNotEmpty()
   items: { id: string; orderIndex: number }[];
 }
+
+export class UpdateMarketingBannerAiStatusDto {
+  @IsBoolean()
+  enabled: boolean;
+}
+
+export class GenerateMarketingBannerDto {
+  @IsBoolean()
+  @IsOptional()
+  force?: boolean;
+}
+

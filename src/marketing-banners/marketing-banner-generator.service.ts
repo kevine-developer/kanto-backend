@@ -5,6 +5,7 @@ import {
   GeminiContentService,
   GeneratedBannerContent,
 } from '../integrations/gemini/gemini-content.service.js';
+import { FEATURE_MARKETING_BANNER_AI } from './marketing-banners.service.js';
 
 /**
  * Service responsable de la génération automatique de bannières marketing
@@ -28,23 +29,65 @@ export class MarketingBannerGeneratorService {
   ) {}
 
   /**
+   * Vérifie si la génération IA est autorisée (par défaut false / désactivée).
+   */
+  async isAiGenerationEnabled(): Promise<boolean> {
+    try {
+      const lock = await this.prisma.moduleLock.findUnique({
+        where: { key: FEATURE_MARKETING_BANNER_AI },
+      });
+      if (!lock) return false;
+      return !lock.isLocked && lock.isVisible;
+    } catch (err: unknown) {
+      this.logger.warn(
+        `⚠️ [BannerGenerator] Erreur vérification activation IA : ${err instanceof Error ? err.message : String(err)}`,
+      );
+      return false;
+    }
+  }
+
+  /**
    * Cron déclenché tous les 2 jours à 8h00 UTC.
    */
   @Cron('0 8 */2 * *', { name: 'generate-marketing-banner', timeZone: 'UTC' })
   async handleCron(): Promise<void> {
-    await this.generateAndSaveBanner();
+    const isEnabled = await this.isAiGenerationEnabled();
+    if (!isEnabled) {
+      this.logger.log(
+        '⏸️ [BannerGenerator] Génération automatique par IA désactivée dans l’administration. Exécution du cron ignorée.',
+      );
+      return;
+    }
+    await this.generateAndSaveBanner({ force: false });
   }
 
   /**
    * Génère et sauvegarde une nouvelle bannière marketing.
    * Utilise Gemini AI en priorité, puis bascule sur le catalogue culturel
    * de repli en cas d'erreur réseau ou d'indisponibilité du service IA.
+   *
+   * @param options.force Si true (déclenchement manuel admin), ignore le statut de désactivation du cron automatique.
    */
-  async generateAndSaveBanner(): Promise<{
+  async generateAndSaveBanner(options: { force?: boolean } = {}): Promise<{
     success: boolean;
     bannerId?: string;
     message: string;
   }> {
+    const force = options.force ?? false;
+    if (!force) {
+      const isEnabled = await this.isAiGenerationEnabled();
+      if (!isEnabled) {
+        this.logger.log(
+          '⏸️ [BannerGenerator] Génération automatique IA désactivée (utiliser force: true pour déclenchement manuel).',
+        );
+        return {
+          success: false,
+          message:
+            'La génération automatique de bannières par IA est actuellement désactivée.',
+        };
+      }
+    }
+
     const theme = this.geminiContent.pickRandomTheme();
     this.logger.log(
       `🤖 [BannerGenerator] Démarrage génération bannière marketing — thème: "${theme}"`,

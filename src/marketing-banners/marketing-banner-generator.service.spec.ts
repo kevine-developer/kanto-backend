@@ -12,6 +12,9 @@ describe('MarketingBannerGeneratorService (Tolérance aux pannes et Repli cultur
       findFirst: jest.Mock<any>;
       create: jest.Mock<any>;
     };
+    moduleLock: {
+      findUnique: jest.Mock<any>;
+    };
   };
   let geminiContent: {
     isConfigured: jest.Mock<any>;
@@ -30,6 +33,13 @@ describe('MarketingBannerGeneratorService (Tolérance aux pannes et Repli cultur
             ...data,
           }),
         ),
+      },
+      moduleLock: {
+        findUnique: jest.fn<any>().mockResolvedValue({
+          key: 'feature:marketing_banner_ai',
+          isLocked: false,
+          isVisible: true,
+        }),
       },
     };
 
@@ -134,6 +144,56 @@ describe('MarketingBannerGeneratorService (Tolérance aux pannes et Repli cultur
     expect(result.success).toBe(true);
     expect(geminiContent.generateBannerContent).not.toHaveBeenCalled();
     expect(geminiContent.getFallbackBannerContent).toHaveBeenCalled();
+    expect(prisma.marketingBanner.create).toHaveBeenCalled();
+  });
+
+  it('ne génère pas de bannière dans le cron si la fonctionnalité IA est désactivée', async () => {
+    prisma.moduleLock.findUnique.mockResolvedValueOnce({
+      key: 'feature:marketing_banner_ai',
+      isLocked: true,
+      isVisible: false,
+    });
+
+    await service.handleCron();
+
+    expect(prisma.marketingBanner.create).not.toHaveBeenCalled();
+    expect(geminiContent.generateBannerContent).not.toHaveBeenCalled();
+  });
+
+  it('refuse la génération non-forcée si la fonctionnalité IA est absente de la base (désactivée par défaut)', async () => {
+    prisma.moduleLock.findUnique.mockResolvedValueOnce(null);
+
+    const result = await service.generateAndSaveBanner({ force: false });
+
+    expect(result.success).toBe(false);
+    expect(result.message).toContain('désactivée');
+    expect(prisma.marketingBanner.create).not.toHaveBeenCalled();
+  });
+
+  it('permet de forcer la génération manuelle même si l’IA automatique est désactivée', async () => {
+    prisma.moduleLock.findUnique.mockResolvedValueOnce({
+      key: 'feature:marketing_banner_ai',
+      isLocked: true,
+      isVisible: false,
+    });
+
+    const mockData = {
+      badgeFr: 'MANUEL',
+      badgeMg: 'MANUEL',
+      titleFr: 'Bannière forcée admin',
+      titleMg: 'Sora-baventy natao tànana',
+      descriptionFr: 'Description test',
+      descriptionMg: 'Famaritana fitsapana',
+      ctaFr: 'Voir',
+      ctaMg: 'Hijery',
+      accentColor: '#F59E0B',
+      deepLink: '/(tabs)/explore',
+    };
+    geminiContent.generateBannerContent.mockResolvedValue(mockData);
+
+    const result = await service.generateAndSaveBanner({ force: true });
+
+    expect(result.success).toBe(true);
     expect(prisma.marketingBanner.create).toHaveBeenCalled();
   });
 });

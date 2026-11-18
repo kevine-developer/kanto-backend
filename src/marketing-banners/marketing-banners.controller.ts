@@ -15,6 +15,8 @@ import {
   CreateMarketingBannerDto,
   UpdateMarketingBannerDto,
   ReorderMarketingBannersDto,
+  UpdateMarketingBannerAiStatusDto,
+  GenerateMarketingBannerDto,
 } from './dto/marketing-banner.dto.js';
 import { AuthGuard, Roles } from '../auth/index.js';
 
@@ -47,6 +49,26 @@ export class MarketingBannersController {
   }
 
   /**
+   * Consulter l'état d'activation de la génération IA de bannières (admin uniquement)
+   */
+  @Get('ai-status')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  getAiStatus() {
+    return this.marketingBannersService.getAiGenerationStatus();
+  }
+
+  /**
+   * Activer ou désactiver la génération automatique IA de bannières (admin uniquement)
+   */
+  @Patch('ai-status')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  updateAiStatus(@Body() dto: UpdateMarketingBannerAiStatusDto) {
+    return this.marketingBannersService.updateAiGenerationStatus(dto.enabled);
+  }
+
+  /**
    * Réordonnancement des bannières (avant :id)
    */
   @Patch('reorder')
@@ -57,21 +79,23 @@ export class MarketingBannersController {
   }
 
   /**
+   * Déclencher manuellement la génération d'une bannière via Gemini AI (admin uniquement)
+   */
+  @Post('generate')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  generate(@Body() dto?: GenerateMarketingBannerDto) {
+    return this.bannerGeneratorService.generateAndSaveBanner({
+      force: dto?.force ?? true,
+    });
+  }
+
+  /**
    * Récupérer une bannière par son identifiant
    */
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.marketingBannersService.findOne(id);
-  }
-
-  /**
-   * Déclencher manuellement la génération d'une bannière via Gemini AI
-   */
-  @Post('generate')
-  @UseGuards(AuthGuard)
-  @Roles(['ADMIN', 'admin'])
-  generate() {
-    return this.bannerGeneratorService.generateAndSaveBanner();
   }
 
   /**
