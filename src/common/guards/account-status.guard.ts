@@ -57,7 +57,7 @@ export class AccountStatusGuard implements CanActivate {
     } | null = null;
 
     try {
-      cachedStatus = await this.redis.getJson<{
+      cachedStatus = await this.redis.get<{
         banned: boolean;
         status: string | null;
         suspendedUntil: string | null;
@@ -96,7 +96,7 @@ export class AccountStatusGuard implements CanActivate {
 
         // Mise en cache courte pour haute performance
         await this.redis
-          .setJson(cacheKey, statusInfo, CACHE_TTL_ACCOUNT_STATUS)
+          .set(cacheKey, statusInfo, CACHE_TTL_ACCOUNT_STATUS)
           .catch(() => {});
       } catch (err: unknown) {
         if (err instanceof ForbiddenException) throw err;

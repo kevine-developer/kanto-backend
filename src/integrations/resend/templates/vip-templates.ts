@@ -47,7 +47,7 @@ export function buildVipGrantedEmail(
       ? formatDateFr(new Date(data.expiresAt))
       : `${data.durationDays} jours`;
 
-  const subject = '👑 Votre statut VIP Kanto MG est désormais actif !';
+  const subject = 'Votre statut VIP Kanto MG est désormais actif !';
 
   const text = `${greetingText}
 
@@ -64,7 +64,7 @@ Kanto MG — Lova, Kolontsaina & Tantara Malagasy
 https://app-kanto.gastsar.fr`.trim();
 
   const metadataRows = [
-    { label: 'Statut du compte', value: '👑 Membre VIP Privilège' },
+    { label: 'Statut du compte', value: 'Membre VIP Privilège' },
     {
       label: 'Publicités AdMob',
       value: 'Désactivées (Expérience fluide sans pub)',
@@ -74,7 +74,7 @@ https://app-kanto.gastsar.fr`.trim();
 
   const contentHtml = `
     <h1 style="font-size: 20px; font-weight: 700; color: ${KANTO_COLORS.textPrimary}; margin: 0 0 16px 0; line-height: 26px;">
-      Félicitations, vous êtes membre VIP ! 👑
+      Félicitations, vous êtes membre VIP !
     </h1>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 14px 0;">
@@ -134,7 +134,7 @@ export function buildVipExtendedEmail(
     : 'Bonjour,';
   const newDateLabel = formatDateFr(new Date(data.newExpiresAt));
 
-  const subject = `🎉 Votre statut VIP Kanto MG a été prolongé jusqu'au ${newDateLabel}`;
+  const subject = `Votre statut VIP Kanto MG a été prolongé jusqu'au ${newDateLabel}`;
 
   const text = `${greetingText}
 
@@ -154,7 +154,7 @@ https://app-kanto.gastsar.fr`.trim();
 
   const contentHtml = `
     <h1 style="font-size: 20px; font-weight: 700; color: ${KANTO_COLORS.textPrimary}; margin: 0 0 16px 0; line-height: 26px;">
-      Prolongation de votre statut VIP 🎉
+      Prolongation de votre statut VIP
     </h1>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 14px 0;">
@@ -429,7 +429,7 @@ https://app-kanto.gastsar.fr`.trim();
 
   const contentHtml = `
     <h1 style="font-size: 20px; font-weight: 700; color: ${KANTO_COLORS.textPrimary}; margin: 0 0 16px 0; line-height: 26px;">
-      Votre compte est de nouveau actif 🎉
+      Votre compte est de nouveau actif
     </h1>
 
     <p style="font-size: 14px; line-height: 23px; color: ${KANTO_COLORS.textSecondary}; margin: 0 0 14px 0;">

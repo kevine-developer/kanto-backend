@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import { ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { AccountStatusGuard } from './account-status.guard.js';
 
@@ -13,8 +14,8 @@ describe('AccountStatusGuard', () => {
       },
     };
     redisMock = {
-      getJson: jest.fn().mockResolvedValue(null),
-      setJson: jest.fn().mockResolvedValue(true),
+      get: jest.fn().mockResolvedValue(null),
+      set: jest.fn().mockResolvedValue(true),
     };
     guard = new AccountStatusGuard(prismaMock, redisMock);
   });
@@ -42,7 +43,7 @@ describe('AccountStatusGuard', () => {
 
     const ctx = createMockContext({ id: 'u-1' });
     await expect(guard.canActivate(ctx)).resolves.toBe(true);
-    expect(redisMock.setJson).toHaveBeenCalled();
+    expect(redisMock.set).toHaveBeenCalled();
   });
 
   it('bloque un utilisateur banni avec code ACCOUNT_BANNED', async () => {
@@ -70,7 +71,7 @@ describe('AccountStatusGuard', () => {
   });
 
   it('utilise le statut en cache Redis s’il est disponible sans appeler Prisma', async () => {
-    redisMock.getJson.mockResolvedValue({
+    redisMock.get.mockResolvedValue({
       banned: false,
       status: 'ACTIVE',
       suspendedUntil: null,
