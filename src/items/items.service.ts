@@ -15,6 +15,10 @@ import {
   formatPaginatedResponse,
 } from '../common/utils/pagination.util.js';
 import { CACHE_KEYS } from '../common/constants/cache.constant.js';
+import {
+  ContentAccessControlService,
+  UserSubscriptionContext,
+} from '../common/security/content-access-control.service.js';
 
 @Injectable()
 export class ItemsService {
@@ -23,6 +27,7 @@ export class ItemsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
+    private readonly contentAccessControl: ContentAccessControlService,
   ) {}
 
   private async invalidateCache(id?: string, slug?: string) {
@@ -157,7 +162,10 @@ export class ItemsService {
     return { success: true, id };
   }
 
-  async findAll(query: FindItemsQueryDto = {}) {
+  async findAll(
+    query: FindItemsQueryDto = {},
+    user?: UserSubscriptionContext | null,
+  ) {
     const { page, limit, skip } = calculatePagination({
       page: query.page,
       limit: query.limit,
@@ -167,7 +175,13 @@ export class ItemsService {
     const cached = await this.redis.get<Record<string, unknown>>(cacheKey);
     if (cached) {
       this.logger.debug(`⚡ [Redis] Cache hit pour findAll items`);
-      return cached;
+      return {
+        ...cached,
+        data: this.contentAccessControl.filterMalagasyItems(
+          (cached as any).data,
+          user,
+        ),
+      };
     }
 
     const where: Prisma.MalagasyItemWhereInput = {
@@ -317,7 +331,10 @@ export class ItemsService {
     const result = formatPaginatedResponse(items, total, page, limit);
 
     await this.redis.set(cacheKey, result, 300); // Cache 5 min
-    return result;
+    return {
+      ...result,
+      data: this.contentAccessControl.filterMalagasyItems(result.data, user),
+    };
   }
 
   private seededShuffle<T>(array: T[], seedStr: string): T[] {
@@ -338,12 +355,12 @@ export class ItemsService {
     return result;
   }
 
-  async findOne(idOrSlug: string) {
+  async findOne(idOrSlug: string, user?: UserSubscriptionContext | null) {
     const cacheKey = `${CACHE_KEYS.ITEMS_DETAIL_PREFIX}${idOrSlug}`;
     const cached = await this.redis.get<Record<string, unknown>>(cacheKey);
     if (cached) {
       this.logger.debug(`⚡ [Redis] Cache hit pour findOne item "${idOrSlug}"`);
-      return cached;
+      return this.contentAccessControl.filterMalagasyItem(cached, user);
     }
 
     const item = await this.prisma.malagasyItem.findFirst({
@@ -372,7 +389,7 @@ export class ItemsService {
     );
 
     await this.redis.set(cacheKey, item, 600); // 10 min
-    return item;
+    return this.contentAccessControl.filterMalagasyItem(item, user);
   }
 
   /**

@@ -39,7 +39,7 @@ const BUILTIN_FALLBACK_TEMPLATES: Record<
 
 <div style="background-color: #F8FAF7; border: 1px solid #D6E4D3; border-left: 4px solid #4A6741; padding: 16px 18px; margin: 20px 0; border-radius: 8px;">
   <div style="font-weight: 700; color: #16442A; font-size: 15px; margin-bottom: 10px;">
-    🤖 Pour les appareils Android (Google Play)
+     Pour les appareils Android (Google Play)
   </div>
   <ol style="margin: 0; padding-left: 20px; color: #2C3E33; line-height: 1.6; font-size: 14px;">
     <li style="margin-bottom: 10px;">
@@ -60,7 +60,7 @@ const BUILTIN_FALLBACK_TEMPLATES: Record<
 
 <div style="background-color: #FBF9F5; border: 1px solid #EAE3D5; border-left: 4px solid #C58B38; padding: 16px 18px; margin: 20px 0; border-radius: 8px;">
   <div style="font-weight: 700; color: #4A3515; font-size: 15px; margin-bottom: 10px;">
-    🍎 Pour iPhone &amp; iPad (Apple iOS)
+     Pour iPhone &amp; iPad (Apple iOS)
   </div>
   <ol style="margin: 0; padding-left: 20px; color: #3D3528; line-height: 1.6; font-size: 14px;">
     <li style="margin-bottom: 10px;">
@@ -116,7 +116,7 @@ const BUILTIN_FALLBACK_TEMPLATES: Record<
 
 <div style="background-color: #FBF9F5; border: 1px solid #EAE3D5; border-left: 4px solid #C58B38; padding: 16px 18px; margin: 20px 0; border-radius: 8px;">
   <div style="font-weight: 700; color: #4A3515; font-size: 15px; margin-bottom: 10px;">
-    🍎 Pour iPhone &amp; iPad (Apple iOS)
+     Pour iPhone &amp; iPad (Apple iOS)
   </div>
   <ol style="margin: 0; padding-left: 20px; color: #3D3528; line-height: 1.6; font-size: 14px;">
     <li style="margin-bottom: 10px;">
@@ -133,7 +133,7 @@ const BUILTIN_FALLBACK_TEMPLATES: Record<
 </div>
 
 <div style="margin-top: 22px; padding: 14px 18px; background-color: #FDF9F3; border: 1px solid #EADBCC; border-left: 4px solid #C58B38; border-radius: 8px; font-size: 13px; color: #4A3515; line-height: 1.5;">
-  ⚠️ <strong>Un problème pour accéder aux tests ou une question ?</strong><br>
+   <strong>Un problème pour accéder aux tests ou une question ?</strong><br>
   Si vous rencontrez la moindre difficulté technique pour installer l'application, si votre compte Google Play ou TestFlight n'est pas reconnu, ou si vous n'êtes pas à l'origine de cette demande, vous pouvez contacter directement l'administrateur à l'adresse <a href="mailto:{{supportEmail}}" style="color: #4A6741; font-weight: 700; text-decoration: underline;">{{supportEmail}}</a> ou simplement répondre à cet e-mail.
 </div>
 

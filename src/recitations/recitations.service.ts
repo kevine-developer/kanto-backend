@@ -11,6 +11,10 @@ import {
 } from '../common/utils/pagination.util.js';
 import { CACHE_KEYS } from '../common/constants/cache.constant.js';
 import { ReportContentDto } from '../common/dto/report-content.dto.js';
+import {
+  ContentAccessControlService,
+  UserSubscriptionContext,
+} from '../common/security/content-access-control.service.js';
 
 function slugify(text: string): string {
   return text
@@ -31,6 +35,7 @@ export class RecitationsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
+    private readonly contentAccessControl: ContentAccessControlService,
   ) {}
 
   private async invalidateCache(id?: string) {
@@ -121,7 +126,10 @@ export class RecitationsService {
     return { success: true, message: 'Récitation supprimée avec succès' };
   }
 
-  async findAll(query: FindRecitationsQueryDto) {
+  async findAll(
+    query: FindRecitationsQueryDto,
+    user?: UserSubscriptionContext | null,
+  ) {
     const { page = 1, limit = 20, search, author, authors, tag, tags } = query;
     const {
       skip,
@@ -131,7 +139,12 @@ export class RecitationsService {
 
     const cacheKey = `${CACHE_KEYS.RECITATIONS_LIST_PREFIX}${currentPage}:${takeLimit}:${search || ''}:${author || ''}:${tag || ''}`;
     const cached = await this.redis.get<any>(cacheKey);
-    if (cached) return cached;
+    if (cached) {
+      return {
+        ...cached,
+        data: this.contentAccessControl.filterRecitations(cached.data, user),
+      };
+    }
 
     const where: Prisma.RecitationWhereInput = {
       status: 'PUBLISHED',
@@ -195,13 +208,16 @@ export class RecitationsService {
       takeLimit,
     );
     await this.redis.set(cacheKey, result, 300); // 5 min TTL
-    return result;
+    return {
+      ...result,
+      data: this.contentAccessControl.filterRecitations(result.data, user),
+    };
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, user?: UserSubscriptionContext | null) {
     const cacheKey = `${CACHE_KEYS.RECITATIONS_DETAIL_PREFIX}${id}`;
     const cached = await this.redis.get<any>(cacheKey);
-    if (cached) return cached;
+    if (cached) return this.contentAccessControl.filterRecitation(cached, user);
 
     const recitation = await this.prisma.recitation.findFirst({
       where: {
@@ -216,7 +232,7 @@ export class RecitationsService {
     }
 
     await this.redis.set(cacheKey, recitation, 600); // 10 min TTL
-    return recitation;
+    return this.contentAccessControl.filterRecitation(recitation, user);
   }
 
   async like(id: string, userId: string) {

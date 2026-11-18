@@ -11,6 +11,10 @@ import {
 } from '../common/utils/pagination.util.js';
 import { CACHE_KEYS } from '../common/constants/cache.constant.js';
 import { ReportContentDto } from '../common/dto/report-content.dto.js';
+import {
+  ContentAccessControlService,
+  UserSubscriptionContext,
+} from '../common/security/content-access-control.service.js';
 
 function slugify(text: string): string {
   return text
@@ -31,6 +35,7 @@ export class PoesiesService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
+    private readonly contentAccessControl: ContentAccessControlService,
   ) {}
 
   private async invalidateCache(id?: string) {
@@ -147,7 +152,10 @@ export class PoesiesService {
     return { success: true, message: 'Poésie supprimée avec succès' };
   }
 
-  async findAll(query: FindPoesiesQueryDto) {
+  async findAll(
+    query: FindPoesiesQueryDto,
+    user?: UserSubscriptionContext | null,
+  ) {
     const {
       page = 1,
       limit = 20,
@@ -165,7 +173,12 @@ export class PoesiesService {
 
     const cacheKey = `${CACHE_KEYS.POESIES_LIST_PREFIX}${currentPage}:${takeLimit}:${search || ''}:${category || ''}:${author || ''}`;
     const cached = await this.redis.get<any>(cacheKey);
-    if (cached) return cached;
+    if (cached) {
+      return {
+        ...cached,
+        data: this.contentAccessControl.filterPoesies(cached.data, user),
+      };
+    }
 
     const where: Prisma.PoesieWhereInput = {
       status: 'PUBLISHED',
@@ -236,13 +249,16 @@ export class PoesiesService {
       takeLimit,
     );
     await this.redis.set(cacheKey, result, 300); // 5 min TTL
-    return result;
+    return {
+      ...result,
+      data: this.contentAccessControl.filterPoesies(result.data, user),
+    };
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, user?: UserSubscriptionContext | null) {
     const cacheKey = `${CACHE_KEYS.POESIES_DETAIL_PREFIX}${id}`;
     const cached = await this.redis.get<any>(cacheKey);
-    if (cached) return cached;
+    if (cached) return this.contentAccessControl.filterPoesie(cached, user);
 
     const poesie = await this.prisma.poesie.findFirst({
       where: {
@@ -262,7 +278,7 @@ export class PoesiesService {
     }
 
     await this.redis.set(cacheKey, poesie, 600); // 10 min TTL
-    return poesie;
+    return this.contentAccessControl.filterPoesie(poesie, user);
   }
 
   async like(id: string, userId: string) {
