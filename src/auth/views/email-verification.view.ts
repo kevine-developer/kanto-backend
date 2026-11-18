@@ -448,7 +448,7 @@ export function renderEmailVerificationPage(
     </div>
 
     <div class="footer">
-      © ${currentYear} Kanto • <a href="/pages/help">Centre d'aide</a> • <a href="/pages/privacy">Confidentialité</a>
+      © ${currentYear} Kanto • <a href="/">Accueil</a> • <a href="/pages/help">Centre d'aide</a> • <a href="/pages/privacy">Confidentialité</a>
     </div>
   </div>
 

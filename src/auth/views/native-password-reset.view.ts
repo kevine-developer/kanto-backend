@@ -479,7 +479,7 @@ export function renderNativePasswordResetPage(
     </div>
 
     <div class="footer">
-      <p>&copy; ${new Date().getFullYear()} Kanto MG — Patrimoine & Culture Malagasy</p>
+      <p>&copy; ${new Date().getFullYear()} Kanto MG — <a href="/" style="color: inherit; text-decoration: underline;">Accueil</a> • <a href="/pages/help" style="color: inherit; text-decoration: underline;">Centre d'aide</a> • <a href="/pages/privacy" style="color: inherit; text-decoration: underline;">Confidentialité</a></p>
     </div>
   </div>
 
