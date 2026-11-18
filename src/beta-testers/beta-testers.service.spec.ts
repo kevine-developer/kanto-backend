@@ -167,7 +167,7 @@ describe('BetaTestersService', () => {
       });
     });
 
-    it('ne crée pas de doublon et masque l’adresse email dans la réponse de doublon', async () => {
+    it('ne crée pas de doublon, ne divulgue rien sur le formulaire web et envoie le mail ALREADY_REGISTERED', async () => {
       prisma.betaTester.findFirst.mockResolvedValue({
         id: 'existing_tester_1',
         email: encryptEmail('deja.inscrit@example.com'),
@@ -177,6 +177,7 @@ describe('BetaTestersService', () => {
         androidStatus: 'ACCEPTED',
         iosStatus: 'NOT_REQUESTED',
         createdAt: new Date(),
+        unsubscribeToken: 'unsub-token-xyz',
       });
 
       const result = await service.register({
@@ -188,13 +189,20 @@ describe('BetaTestersService', () => {
 
       expect(prisma.betaTester.findFirst).toHaveBeenCalled();
       expect(prisma.betaTester.create).not.toHaveBeenCalled();
-      expect(emailDispatcher.sendTemplateEmail).not.toHaveBeenCalled();
+      expect(emailDispatcher.sendTemplateEmail).toHaveBeenCalledWith({
+        to: 'deja.inscrit@example.com',
+        templateCode: 'ALREADY_REGISTERED',
+        variables: expect.objectContaining({
+          userName: 'Doublon Test',
+          platform: 'Android',
+          supportEmail: expect.any(String),
+        }),
+      });
 
-      expect(result.success).toBe(false);
-      expect(result.alreadyRegistered).toBe(true);
-      expect(result.code).toBe('EMAIL_ALREADY_REGISTERED');
-      // L'email dans la réponse de doublon doit être masqué pour éviter l'énumération
-      expect(result.tester?.email).toBe('dej***@example.com');
+      // Le web formulaire ne doit rien révéler (pas de alreadyRegistered = true)
+      expect(result.success).toBe(true);
+      expect(result.alreadyRegistered).toBe(false);
+      expect(result.message).toContain('enregistrée');
     });
 
     it('ignore silencieusement la requête si le piège Honeypot est rempli', async () => {

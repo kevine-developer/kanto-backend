@@ -203,25 +203,49 @@ export class BetaTestersService {
         };
       }
 
+      // 2.2 Utilisateur déjà activement inscrit :
+      // Règle de sécurité & UX : ne rien indiquer sur le web formulaire pour éviter toute divulgation / énumération,
+      // mais envoyer immédiatement un e-mail dédié indiquant qu'il est déjà inscrit avec les étapes et le contact administrateur.
       this.logger.log(
-        `ℹ️ [BetaTesters] Inscription existante trouvée pour : ${maskEmail(email)}`,
+        `ℹ️ [BetaTesters] Inscription existante trouvée pour : ${maskEmail(email)} — expédition e-mail de rappel ALREADY_REGISTERED`,
       );
+
+      const config = await this.prisma.betaAutomationConfig.findFirst();
+      if (config?.autoConfirmRegistration !== false) {
+        try {
+          const hasAndroid = existing.platforms?.includes('ANDROID') ?? true;
+          const hasIos = existing.platforms?.includes('IOS') ?? false;
+          const platformLabel =
+            hasAndroid && hasIos
+              ? 'Android & iOS'
+              : hasAndroid
+                ? 'Android'
+                : 'iOS';
+
+          await this.emailDispatcher.sendTemplateEmail({
+            to: email,
+            templateCode: 'ALREADY_REGISTERED',
+            variables: {
+              userName: existing.fullName || 'Bêta-testeur',
+              platform: platformLabel,
+              supportEmail: config?.supportEmail || 'contact@kanto.mg',
+              unsubscribeLink: `https://app-kanto.gastsar.fr/beta?tab=unsubscribe&token=${existing.unsubscribeToken || ''}`,
+            },
+          });
+        } catch (emailErr: unknown) {
+          const msg =
+            emailErr instanceof Error ? emailErr.message : String(emailErr);
+          this.logger.warn(
+            `⚠️ [BetaTesters] Échec envoi rappel inscription existante à ${maskEmail(email)} : ${msg}`,
+          );
+        }
+      }
+
       return {
-        success: false,
-        alreadyRegistered: true,
-        code: 'EMAIL_ALREADY_REGISTERED',
-        message: 'Cette adresse e-mail est déjà inscrite au programme bêta.',
-        tester: {
-          id: existing.id,
-          email: maskEmail(existing.email),
-          maskedEmail: maskEmail(existing.email),
-          fullName: existing.fullName,
-          platforms: existing.platforms,
-          status: existing.status,
-          androidStatus: existing.androidStatus,
-          iosStatus: existing.iosStatus,
-          createdAt: existing.createdAt,
-        },
+        success: true,
+        alreadyRegistered: false,
+        message:
+          'Votre inscription a bien été enregistrée ! Un e-mail récapitulatif contenant vos instructions d’accès vient de vous être envoyé.',
       };
     }
 
