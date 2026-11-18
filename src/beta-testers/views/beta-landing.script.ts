@@ -115,29 +115,44 @@ export function renderBetaWaitlistScript(): string {
   // ─── PILIER A : SOUMISSION DU FORMULAIRE D'INSCRIPTION ─────────────────────
   var waitlistForm = document.getElementById('waitlist-form');
   var btnSubmitReg = document.getElementById('btn-submit-reg');
-  var feedbackCard = document.getElementById('registration-feedback-card');
-  var feedbackBadgeLabel = document.getElementById('feedback-badge-label');
-  var feedbackTitle = document.getElementById('feedback-card-title');
-  var feedbackDesc = document.getElementById('feedback-card-desc');
-  var feedbackEmailDisp = document.getElementById('feedback-email-display');
+  var modalConfirmed = document.getElementById('modal-registration-confirmed');
+  var btnCloseConfirmed = document.getElementById('confirmed-modal-close');
+  var btnOkConfirmed = document.getElementById('confirmed-modal-btn-ok');
 
-  function displayFeedbackState(email) {
-    currentTesterEmail = email;
-    try {
-      localStorage.setItem('kanto_tester_email', email);
-    } catch (e) {}
-
-    if (feedbackEmailDisp) feedbackEmailDisp.innerText = email;
-
-    if (feedbackCard) {
-      feedbackCard.style.display = 'block';
-      if (feedbackBadgeLabel) feedbackBadgeLabel.innerText = 'Inscription prise en compte';
-      if (feedbackTitle) feedbackTitle.innerText = 'Bienvenue parmi les pionniers de Kanto MG';
-      if (feedbackDesc) {
-        feedbackDesc.innerHTML = 'Votre demande pour <strong>' + escapeHtml(email) + '</strong> a bien été enregistrée. Un e-mail récapitulatif avec vos étapes d’accès vous a été envoyé. Vous pouvez également accéder directement aux liens ci-dessous :';
-      }
-      feedbackCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  function openConfirmedModal() {
+    if (modalConfirmed) {
+      modalConfirmed.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
     }
+  }
+
+  function closeConfirmedModal() {
+    if (modalConfirmed) {
+      modalConfirmed.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  }
+
+  if (btnCloseConfirmed) btnCloseConfirmed.addEventListener('click', closeConfirmedModal);
+  if (btnOkConfirmed) btnOkConfirmed.addEventListener('click', closeConfirmedModal);
+  if (modalConfirmed) {
+    modalConfirmed.addEventListener('click', function(e) {
+      if (e.target === modalConfirmed) closeConfirmedModal();
+    });
+  }
+
+  // Fonction de feedback sobre vers la modale (sans carte verbeuse)
+  function displayFeedbackState(email) {
+    openConfirmedModal();
+  }
+
+  // Fermeture des modales avec la touche Échap
+  if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' || e.keyCode === 27) {
+        closeConfirmedModal();
+      }
+    });
   }
 
   if (waitlistForm) {
@@ -185,20 +200,23 @@ export function renderBetaWaitlistScript(): string {
 
         var data = await res.json();
         if (res.ok && data.success) {
-          showSuccess(data.message || 'Inscription réussie ! Un e-mail récapitulatif vient de vous être envoyé.');
-          
-          // Nettoyage complet du formulaire de soumission
+          hideBanners();
+
+          // 1. Vidage et réinitialisation complète du formulaire
           if (emailEl) emailEl.value = '';
           if (hpEl) hpEl.value = '';
           selectedPlatforms = [detectedPlatform];
           updatePlatformButtons();
 
+          // 2. Mise à jour discrète du compteur de testeurs
           var countBadge = document.getElementById('header-tester-count');
           if (countBadge) {
             var m = countBadge.innerText.match(/[0-9]+/);
             if (m) countBadge.innerText = (parseInt(m[0], 10) + 1) + ' testeurs pionniers';
           }
-          displayFeedbackState(email);
+
+          // 3. Affichage sobre de la modale de confirmation (sans carte de détails verbeuse)
+          openConfirmedModal();
         } else {
           showError(data.message || 'Une erreur est survenue lors de l’inscription.');
         }
@@ -549,7 +567,6 @@ export function renderBetaWaitlistScript(): string {
       if (regInput && !regInput.value) {
         regInput.value = initEmail;
       }
-      displayFeedbackState(initEmail);
     }
   } catch (e) {}
 

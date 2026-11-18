@@ -56,10 +56,15 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
       </div>
     </a>
 
-    <!-- Navigation concise vers les 2 étapes -->
+    <!-- Navigation complète reliant toutes les interfaces web Kanto -->
     <nav class="header-nav" aria-label="Navigation principale">
       <a href="#inscription" class="header-nav-link">Inscription</a>
       <a href="#telechargement" class="header-nav-link">Téléchargement</a>
+      <a href="/ohabolana" class="header-nav-link">Ohabolana</a>
+      <a href="/angano" class="header-nav-link">Angano</a>
+      <a href="/kabary" class="header-nav-link">Kabary</a>
+      <a href="/pages/about" class="header-nav-link">À propos</a>
+      <a href="/pages/help" class="header-nav-link">Aide</a>
     </nav>
 
     <div class="header-actions">
@@ -107,25 +112,6 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
         <div id="success-banner" class="banner banner-success" style="display: none;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
           <span id="success-text"></span>
-        </div>
-
-        <!-- Encart dynamique post-inscription ou utilisateur déjà inscrit -->
-        <div id="registration-feedback-card" class="registration-feedback-card" style="${isRegistered ? 'display:block;' : 'display:none;'}">
-          <div class="feedback-card-inner">
-            <div class="feedback-status-badge">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <span id="feedback-badge-label">Inscription prise en compte</span>
-            </div>
-            <h2 class="feedback-card-title" id="feedback-card-title">Bienvenue parmi les pionniers de Kanto MG</h2>
-            <p class="feedback-card-desc" id="feedback-card-desc">
-              Votre demande pour <strong id="feedback-email-display">${emailVal || ''}</strong> a bien été enregistrée. Un e-mail récapitulatif avec vos étapes d’accès vous a été envoyé. Vous pouvez également accéder directement aux liens ci-dessous :
-            </p>
-            <div class="feedback-actions-quick">
-              <a href="#telechargement" class="btn-step-jump primary">
-                <span>Télécharger l'application ↓</span>
-              </a>
-            </div>
-          </div>
         </div>
 
         <!-- Formulaire d'inscription épuré (champs indispensables uniquement) -->
@@ -409,16 +395,29 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
         </div>
 
         <div class="footer-links-col">
-          <span class="footer-heading">Parcours testeur</span>
-          <a href="#inscription">1. Inscription</a>
-          <a href="#telechargement">2. Téléchargement</a>
-          <a href="/feedback">Signaler une anomalie</a>
+          <span class="footer-heading">Patrimoine vivant</span>
+          <a href="/ohabolana">Ohabolana (Proverbes)</a>
+          <a href="/angano">Angano (Contes)</a>
+          <a href="/kabary">Kabary (Discours)</a>
+          <a href="/tononkalo">Tononkalo (Poésies)</a>
+          <a href="/raki-teny">Raki-teny (Vocabulaire)</a>
+          <a href="/histoire">Tantara (Histoire)</a>
         </div>
 
         <div class="footer-links-col">
-          <span class="footer-heading">Transparence</span>
-          <a href="${legalBaseUrl}/pages/privacy" id="footer-link-privacy">Confidentialité &amp; RGPD</a>
+          <span class="footer-heading">Application &amp; Bêta</span>
+          <a href="#inscription">1. Inscription Testeur</a>
+          <a href="#telechargement">2. Téléchargement</a>
+          <a href="/pages/about">À propos de Kanto</a>
+          <a href="/pages/help">Centre d'aide &amp; FAQ</a>
+        </div>
+
+        <div class="footer-links-col">
+          <span class="footer-heading">Transparence &amp; Support</span>
           <a href="${legalBaseUrl}/pages/terms" id="footer-link-cgu">Conditions Générales (CGU)</a>
+          <a href="${legalBaseUrl}/pages/privacy" id="footer-link-privacy">Confidentialité &amp; RGPD</a>
+          <a href="${legalBaseUrl}/pages/licenses">Mentions légales &amp; Licences</a>
+          <a href="/feedback">Signaler une anomalie</a>
           <button type="button" class="btn-text-link" id="btn-cookie-settings">Cookies &amp; Préférences</button>
           <a href="mailto:${supportEmail}">Support : ${supportEmail}</a>
         </div>
@@ -502,6 +501,36 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
       </div>
       <div class="modal-foot">
         <button type="button" id="privacy-modal-btn-accept" class="btn-cookie primary">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modale d'inscription confirmée épurée & sans détails superflus -->
+  <div class="modal-overlay" id="modal-registration-confirmed" role="dialog" aria-modal="true" aria-labelledby="modal-confirmed-title" style="display:none;">
+    <div class="modal-dialog">
+      <div class="modal-head" style="position: relative; justify-content: center; border-bottom: none; padding-top: 26px; padding-bottom: 4px;">
+        <button type="button" class="btn-modal-close" id="confirmed-modal-close" aria-label="Fermer" style="position: absolute; right: 16px; top: 16px;">✕</button>
+        <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; width: 100%;">
+          <div style="width: 52px; height: 52px; border-radius: 50%; background: var(--color-tanimbary-soft, #EBF2E8); color: var(--color-tanimbary, #4A6741); display: flex; align-items: center; justify-content: center; border: 1px solid var(--color-tanimbary-border, #CBD8C6);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <h3 id="modal-confirmed-title" style="font-family: var(--font-serif); font-size: 21px; font-weight: 600; color: var(--color-heading); margin: 0;">
+            Inscription confirmée
+          </h3>
+        </div>
+      </div>
+      <div class="modal-body" style="text-align: center; padding: 10px 24px 18px;">
+        <p style="font-size: 14.5px; line-height: 1.6; color: var(--color-ink-muted); margin: 0 0 10px;">
+          Votre demande a bien été prise en compte.
+        </p>
+        <p style="font-size: 13px; line-height: 1.55; color: var(--color-ink-subtle); margin: 0;">
+          Un e-mail vous a été envoyé avec les instructions d'accès. Si vous êtes déjà inscrit ou pour toute question, veuillez contacter l'administrateur à <a href="mailto:${supportEmail}" style="color: var(--color-terracotta); text-decoration: underline;">${supportEmail}</a>.
+        </p>
+      </div>
+      <div class="modal-foot" style="justify-content: center; border-top: none; padding: 0 24px 22px;">
+        <button type="button" id="confirmed-modal-btn-ok" class="btn-cookie primary" style="min-width: 140px; font-weight: 600;">
+          Compris
+        </button>
       </div>
     </div>
   </div>

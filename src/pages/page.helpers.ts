@@ -762,11 +762,14 @@ export function pageShell(options: {
       </div>
     </a>
     <nav class="header-nav">
+      <a href="/" class="header-link">Accueil</a>
       <a href="/ohabolana" class="header-link">Ohabolana</a>
       <a href="/angano" class="header-link">Angano</a>
       <a href="/kabary" class="header-link">Kabary</a>
-      <a href="/" class="header-cta">
-        <span>Portail officiel</span>
+      <a href="/pages/about" class="header-link">À propos</a>
+      <a href="/pages/help" class="header-link">Aide</a>
+      <a href="/#inscription" class="header-cta">
+        <span>Rejoindre la Bêta</span>
         <span aria-hidden="true">→</span>
       </a>
     </nav>
@@ -782,6 +785,8 @@ export function pageShell(options: {
       <div>© ${year} <strong>kanto.mg</strong> — Sauvegarde, rayonnement et transmission vivante du patrimoine malgache.</div>
       <div class="footer-links">
         <a href="/">Accueil</a>
+        <a href="/#inscription">Programme Bêta</a>
+        <a href="/#telechargement">Téléchargement</a>
         <a href="/ohabolana">Ohabolana</a>
         <a href="/angano">Angano</a>
         <a href="/kabary">Kabary</a>
@@ -792,6 +797,7 @@ export function pageShell(options: {
         <a href="/pages/help">Aide &amp; FAQ</a>
         <a href="/pages/terms">Conditions d'utilisation (CGU)</a>
         <a href="/pages/privacy">Confidentialité (RGPD)</a>
+        <a href="/pages/licenses">Mentions légales</a>
         <button type="button" class="footer-cookie-btn" id="btn-open-cookie-modal">Gestion des cookies</button>
         <a href="mailto:${supportEmail}">Contact &amp; Support</a>
       </div>

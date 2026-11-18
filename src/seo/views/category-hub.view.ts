@@ -483,9 +483,14 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
         <div class="brand-sub">Madagascar</div>
       </div>
     </a>
-    <div>
-      <a href="/#panel-register" class="btn-cta" style="padding: 8px 16px; font-size: 12px;">Accès Anticipé</a>
-    </div>
+    <nav style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
+      <a href="/" style="color: var(--color-text-secondary); text-decoration: none; font-size: 13px; font-weight: 500;">Accueil</a>
+      <a href="/ohabolana" style="color: var(--color-text-secondary); text-decoration: none; font-size: 13px; font-weight: 500;">Ohabolana</a>
+      <a href="/angano" style="color: var(--color-text-secondary); text-decoration: none; font-size: 13px; font-weight: 500;">Angano</a>
+      <a href="/kabary" style="color: var(--color-text-secondary); text-decoration: none; font-size: 13px; font-weight: 500;">Kabary</a>
+      <a href="/pages/about" style="color: var(--color-text-secondary); text-decoration: none; font-size: 13px; font-weight: 500;">À propos</a>
+      <a href="/#inscription" class="btn-cta" style="padding: 7px 15px; font-size: 12px;">Rejoindre la Bêta</a>
+    </nav>
   </header>
 
   <main>
@@ -533,7 +538,7 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
       <p class="cta-desc">
         Téléchargez Kanto MG sur Android et iOS pour écouter les enregistrements audio authentiques, apprendre le vocabulaire et relever les quiz culturels quotidiens.
       </p>
-      <a href="/#panel-download" class="btn-cta">
+      <a href="/#telechargement" class="btn-cta">
         Télécharger gratuitement sur Google Play &amp; TestFlight
       </a>
     </div>
@@ -554,12 +559,15 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
     <div class="footer-quote">« Ny hazo no vanon-ko lakana, ny tany naniriany no tsara »</div>
     <div>© ${year} <strong>kanto.mg</strong> — Ny harena ara-kolontsaina malagasy</div>
     <div class="footer-links">
+      <a href="/">Accueil</a>
+      <a href="/#inscription">Inscription Testeur</a>
+      <a href="/#telechargement">Téléchargement</a>
+      <a href="/pages/about">À propos de Kanto</a>
+      <a href="/pages/help">Aide &amp; FAQ</a>
       <a href="/pages/terms">Conditions d'utilisation (CGU)</a>
       <a href="/pages/privacy">Confidentialité &amp; RGPD</a>
-      <a href="/pages/about">À propos de Kanto</a>
-      <a href="/#section-community-reviews">Avis de la communauté</a>
-      <a href="/pages/help">Aide &amp; FAQ</a>
-      <a href="mailto:support@kanto.mg">Contact</a>
+      <a href="/pages/licenses">Mentions légales</a>
+      <a href="mailto:support@kanto.mg">Contact &amp; Support</a>
     </div>
   </footer>
 </body>
