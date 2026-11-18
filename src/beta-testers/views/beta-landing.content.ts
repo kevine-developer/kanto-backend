@@ -114,11 +114,11 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
           <div class="feedback-card-inner">
             <div class="feedback-status-badge">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <span id="feedback-badge-label">Inscription active</span>
+              <span id="feedback-badge-label">Inscription prise en compte</span>
             </div>
-            <h2 class="feedback-card-title" id="feedback-card-title">Bienvenue parmi les testeurs de Kanto MG</h2>
+            <h2 class="feedback-card-title" id="feedback-card-title">Bienvenue parmi les pionniers de Kanto MG</h2>
             <p class="feedback-card-desc" id="feedback-card-desc">
-              Votre adresse <strong id="feedback-email-display">${emailVal || ''}</strong> est associée au programme. Vous pouvez dès à présent télécharger l'application :
+              Votre demande pour <strong id="feedback-email-display">${emailVal || ''}</strong> a bien été enregistrée. Un e-mail récapitulatif avec vos étapes d’accès vous a été envoyé. Vous pouvez également accéder directement aux liens ci-dessous :
             </p>
             <div class="feedback-actions-quick">
               <a href="#telechargement" class="btn-step-jump primary">
