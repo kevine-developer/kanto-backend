@@ -48,7 +48,7 @@ describe('BetaTestersController', () => {
   });
 
   describe('getWaitlistScript', () => {
-    it('doit servir le script client avec le moteur de consentement et la gestion des doublons', () => {
+    it('doit servir le script client avec le moteur de consentement et la soumission du formulaire', () => {
       const res = {
         setHeader: jest.fn(),
         send: jest.fn(),
@@ -64,7 +64,7 @@ describe('BetaTestersController', () => {
         expect.stringContaining('KantoConsent'),
       );
       expect(res.send).toHaveBeenCalledWith(
-        expect.stringContaining('alreadyRegistered'),
+        expect.stringContaining('displayFeedbackState'),
       );
       expect(res.send).toHaveBeenCalledWith(
         expect.stringContaining('theme-toggle'),
@@ -230,12 +230,12 @@ describe('BetaTestersController', () => {
       expect(res.json).toHaveBeenCalledWith(mockResult);
     });
 
-    it('doit renvoyer le message de doublon sans erreur 500 pour une adresse déjà enregistrée', async () => {
+    it('doit renvoyer une réponse propre sans erreur 500 pour une adresse déjà enregistrée', async () => {
       const duplicateResult = {
-        success: false,
-        alreadyRegistered: true,
-        code: 'EMAIL_ALREADY_REGISTERED',
-        message: 'Cette adresse e-mail est déjà inscrite au programme bêta.',
+        success: true,
+        alreadyRegistered: false,
+        message:
+          'Votre inscription a bien été enregistrée ! Un e-mail récapitulatif contenant vos instructions d’accès vient de vous être envoyé.',
       };
       service.register.mockResolvedValue(duplicateResult);
 

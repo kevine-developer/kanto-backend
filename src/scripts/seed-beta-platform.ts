@@ -12,20 +12,148 @@ const prisma = new PrismaClient({ adapter });
 const DEFAULT_TEMPLATES = [
   {
     code: 'CONFIRMATION',
-    name: '1. Confirmation d’inscription',
-    subject: 'Bienvenue dans le programme Bêta Kanto MG !',
-    title: 'Votre candidature est bien enregistrée',
+    name: '1. Confirmation d’inscription & Accès immédiat',
+    subject: 'Bienvenue dans le programme Bêta Kanto MG — Vos étapes d’accès',
+    title: 'Votre accès au programme Bêta Kanto MG',
     senderName: 'Kanto MG • Bêta Test',
-    buttonText: 'Consulter mon statut',
-    buttonUrl: 'https://app-kanto.gastsar.fr/beta?tab=already_registered',
+    buttonText: 'Accéder au portail de téléchargement',
+    buttonUrl: 'https://app-kanto.gastsar.fr/#telechargement',
+    secondaryButtonText: 'Transmettre un avis ou un bug',
+    secondaryButtonUrl: 'https://app-kanto.gastsar.fr/#feedback',
     accentColor: '#4A6741',
     contentHtml: `<p>Manao ahoana {{userName}},</p>
-<p>Nous avons bien reçu votre inscription au programme de bêta-test de <strong>Kanto MG</strong> pour la ou les plateforme(s) : <strong>{{platform}}</strong>.</p>
-<p>Notre équipe valide les accès par vagues successives afin d'assurer un suivi qualitatif de chaque testeur. Vous recevrez une notification par email dès que votre accès sera prêt à être activé.</p>
-<p>Merci pour votre engagement à faire rayonner la culture, la langue et le patrimoine malgaches !</p>`,
-    contentText: `Manao ahoana {{userName}}, nous avons bien reçu votre inscription au programme bêta Kanto MG pour la plateforme {{platform}}. Vous recevrez vos accès dès validation.`,
+<p>Votre inscription au programme officiel de bêta-test de <strong>Kanto MG</strong> (plateforme : <strong>{{platform}}</strong>) a été enregistrée avec succès. Misaotra betsaka pour votre engagement à nos côtés pour faire rayonner la langue et la culture malgaches !</p>
+<p>Pour installer l'application sur votre appareil et débuter votre exploration, suivez simplement les étapes ci-dessous :</p>
+
+<div style="background-color: #F8FAF7; border: 1px solid #D6E4D3; border-left: 4px solid #4A6741; padding: 16px 18px; margin: 20px 0; border-radius: 8px;">
+  <div style="font-weight: 700; color: #16442A; font-size: 15px; margin-bottom: 10px;">
+    🤖 Pour les appareils Android (Google Play)
+  </div>
+  <ol style="margin: 0; padding-left: 20px; color: #2C3E33; line-height: 1.6; font-size: 14px;">
+    <li style="margin-bottom: 10px;">
+      <strong>Étape 1 : Valider votre accès testeur</strong><br>
+      Connectez-vous avec votre adresse <strong>{{userEmail}}</strong> et acceptez de participer au test :<br>
+      <a href="{{androidTestingLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #4A6741; font-weight: 600; text-decoration: underline;">👉 Étape 1 : Confirmer mon compte sur Google Play &rarr;</a>
+    </li>
+    <li>
+      <strong>Étape 2 : Télécharger l'application</strong><br>
+      Une fois l'invitation acceptée, téléchargez Kanto MG sur votre smartphone ou tablette :<br>
+      <a href="{{downloadLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #4A6741; font-weight: 600; text-decoration: underline;">📲 Étape 2 : Installer depuis le Play Store &rarr;</a>
+    </li>
+  </ol>
+  <div style="font-size: 12px; color: #5C6E5A; margin-top: 10px; font-style: italic;">
+    * Note importante : Vous devez obligatoirement être connecté avec l'adresse {{userEmail}} sur Google Play pour accéder à la version fermée.
+  </div>
+</div>
+
+<div style="background-color: #FBF9F5; border: 1px solid #EAE3D5; border-left: 4px solid #C58B38; padding: 16px 18px; margin: 20px 0; border-radius: 8px;">
+  <div style="font-weight: 700; color: #4A3515; font-size: 15px; margin-bottom: 10px;">
+    🍎 Pour iPhone &amp; iPad (Apple iOS)
+  </div>
+  <ol style="margin: 0; padding-left: 20px; color: #3D3528; line-height: 1.6; font-size: 14px;">
+    <li style="margin-bottom: 10px;">
+      <strong>Étape 1 : Installer Apple TestFlight</strong><br>
+      Téléchargez l'application officielle gratuite d'Apple sur l'App Store :<br>
+      <a href="https://apps.apple.com/app/testflight/id899247664" target="_blank" style="display: inline-block; margin-top: 4px; color: #C58B38; font-weight: 600; text-decoration: underline;">👉 Étape 1 : Télécharger TestFlight sur l'App Store &rarr;</a>
+    </li>
+    <li>
+      <strong>Étape 2 : Rejoindre la bêta Kanto MG</strong><br>
+      Depuis votre appareil iOS, cliquez sur l'invitation pour installer l'application :<br>
+      <a href="{{testFlightLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #C58B38; font-weight: 600; text-decoration: underline;">📲 Étape 2 : Rejoindre le test sur TestFlight &rarr;</a>
+    </li>
+  </ol>
+</div>
+
+<div style="margin-top: 22px; padding: 14px 18px; background-color: #F5F4F0; border-radius: 8px; font-size: 13px; color: #555550; line-height: 1.5; border: 1px solid #E5E2DB;">
+  💬 <strong>Vos impressions nous aident à progresser :</strong> Si vous rencontrez la moindre anomalie ou si vous souhaitez suggérer une amélioration culturelle ou ergonomique, vous pouvez répondre directement à cet e-mail ou utiliser notre portail de retours.
+</div>
+
+<p style="margin-top: 18px;">Nous vous souhaitons une excellente découverte de Kanto MG !</p>`,
+    contentText: `Manao ahoana {{userName}}, votre inscription au programme bêta Kanto MG ({{platform}}) est confirmée !
+
+Pour Android :
+1. Validez votre compte Google ({{userEmail}}) : {{androidTestingLink}}
+2. Téléchargez sur Google Play : {{downloadLink}}
+
+Pour iOS :
+1. Téléchargez Apple TestFlight : https://apps.apple.com/app/testflight/id899247664
+2. Rejoignez la bêta sur TestFlight : {{testFlightLink}}
+
+Portail de téléchargement : https://app-kanto.gastsar.fr/#telechargement
+Signaler une remarque : https://app-kanto.gastsar.fr/#feedback
+Support : {{supportEmail}}`,
     footerText:
-      'Kanto MG — Ny harena ara-kolontsaina malagasy eo am-pelatananao.',
+      'Kanto MG — Ny harena ara-kolontsaina malagasy eo am-pelatananao. Une question ? Écrivez à {{supportEmail}}.',
+  },
+  {
+    code: 'ALREADY_REGISTERED',
+    name: '1bis. Rappel d’inscription existante',
+    subject: 'Vous êtes déjà inscrit au programme Bêta Kanto MG — Vos accès',
+    title: 'Votre accès au programme Bêta Kanto MG',
+    senderName: 'Kanto MG • Bêta Test',
+    buttonText: 'Accéder au portail de téléchargement',
+    buttonUrl: 'https://app-kanto.gastsar.fr/#telechargement',
+    secondaryButtonText: 'Contacter l’administrateur',
+    secondaryButtonUrl: 'mailto:{{supportEmail}}',
+    accentColor: '#4A6741',
+    contentHtml: `<p>Manao ahoana {{userName}},</p>
+<p>Une demande d’inscription a été effectuée avec cette adresse e-mail (<strong>{{userEmail}}</strong>). Vous faites déjà partie de nos bêta-testeurs officiels pour la plateforme : <strong>{{platform}}</strong>.</p>
+<p>Vos accès sont actifs ! Voici la marche à suivre pour installer ou retrouver Kanto MG sur votre appareil :</p>
+
+<div style="background-color: #F8FAF7; border: 1px solid #D6E4D3; border-left: 4px solid #4A6741; padding: 16px 18px; margin: 20px 0; border-radius: 8px;">
+  <div style="font-weight: 700; color: #16442A; font-size: 15px; margin-bottom: 10px;">
+    🤖 Pour les appareils Android (Google Play)
+  </div>
+  <ol style="margin: 0; padding-left: 20px; color: #2C3E33; line-height: 1.6; font-size: 14px;">
+    <li style="margin-bottom: 10px;">
+      <strong>Étape 1 : Vérifier votre compte Google Play</strong><br>
+      Assurez-vous d’être connecté avec l'adresse <strong>{{userEmail}}</strong> et d’avoir validé votre accès fermé :<br>
+      <a href="{{androidTestingLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #4A6741; font-weight: 600; text-decoration: underline;">👉 Étape 1 : Confirmer mon compte sur Google Play &rarr;</a>
+    </li>
+    <li>
+      <strong>Étape 2 : Télécharger ou mettre à jour l'application</strong><br>
+      Accédez directement à la fiche privée de Kanto MG :<br>
+      <a href="{{downloadLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #4A6741; font-weight: 600; text-decoration: underline;">📲 Étape 2 : Installer depuis le Play Store &rarr;</a>
+    </li>
+  </ol>
+</div>
+
+<div style="background-color: #FBF9F5; border: 1px solid #EAE3D5; border-left: 4px solid #C58B38; padding: 16px 18px; margin: 20px 0; border-radius: 8px;">
+  <div style="font-weight: 700; color: #4A3515; font-size: 15px; margin-bottom: 10px;">
+    🍎 Pour iPhone &amp; iPad (Apple iOS)
+  </div>
+  <ol style="margin: 0; padding-left: 20px; color: #3D3528; line-height: 1.6; font-size: 14px;">
+    <li style="margin-bottom: 10px;">
+      <strong>Étape 1 : Installer Apple TestFlight</strong><br>
+      Téléchargez l'application officielle gratuite sur l'App Store :<br>
+      <a href="https://apps.apple.com/app/testflight/id899247664" target="_blank" style="display: inline-block; margin-top: 4px; color: #C58B38; font-weight: 600; text-decoration: underline;">👉 Étape 1 : Télécharger TestFlight sur l'App Store &rarr;</a>
+    </li>
+    <li>
+      <strong>Étape 2 : Ouvrir l'invitation TestFlight</strong><br>
+      Rejoignez la version de test Kanto MG depuis votre iPhone ou iPad :<br>
+      <a href="{{testFlightLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #C58B38; font-weight: 600; text-decoration: underline;">📲 Étape 2 : Ouvrir le test sur TestFlight &rarr;</a>
+    </li>
+  </ol>
+</div>
+
+<div style="margin-top: 22px; padding: 14px 18px; background-color: #FDF9F3; border: 1px solid #EADBCC; border-left: 4px solid #C58B38; border-radius: 8px; font-size: 13px; color: #4A3515; line-height: 1.5;">
+  ⚠️ <strong>Un problème pour accéder aux tests ou une question ?</strong><br>
+  Si vous rencontrez la moindre difficulté technique pour installer l'application, si votre compte Google Play ou TestFlight n'est pas reconnu, ou si vous n'êtes pas à l'origine de cette demande, vous pouvez contacter directement l'administrateur à l'adresse <a href="mailto:{{supportEmail}}" style="color: #4A6741; font-weight: 700; text-decoration: underline;">{{supportEmail}}</a> ou simplement répondre à cet e-mail.
+</div>
+
+<p style="margin-top: 18px;">Misaotra betsaka pour votre fidélité et votre soutien continu !</p>`,
+    contentText: `Manao ahoana {{userName}}, vous êtes déjà inscrit au programme bêta Kanto MG pour la plateforme {{platform}}.
+
+Vos accès sont actifs :
+- Android : Validez avec {{userEmail}} sur Google Play ({{androidTestingLink}}) puis installez ({{downloadLink}}).
+- iOS : Installez TestFlight puis ouvrez {{testFlightLink}}.
+
+Portail de téléchargement : https://app-kanto.gastsar.fr/#telechargement
+
+UN PROBLÈME ?
+Si vous rencontrez un problème d'accès ou avez une question, contactez directement l'administrateur à : {{supportEmail}}`,
+    footerText:
+      'Kanto MG — Ny harena ara-kolontsaina malagasy eo am-pelatananao. Une question ? Écrivez à {{supportEmail}}.',
   },
   {
     code: 'PENDING',

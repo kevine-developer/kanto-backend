@@ -121,7 +121,7 @@ export function renderBetaWaitlistScript(): string {
   var feedbackDesc = document.getElementById('feedback-card-desc');
   var feedbackEmailDisp = document.getElementById('feedback-email-display');
 
-  function displayFeedbackState(email, isAlreadyRegistered) {
+  function displayFeedbackState(email) {
     currentTesterEmail = email;
     try {
       localStorage.setItem('kanto_tester_email', email);
@@ -131,18 +131,10 @@ export function renderBetaWaitlistScript(): string {
 
     if (feedbackCard) {
       feedbackCard.style.display = 'block';
-      if (isAlreadyRegistered) {
-        if (feedbackBadgeLabel) feedbackBadgeLabel.innerText = 'Testeur déjà inscrit';
-        if (feedbackTitle) feedbackTitle.innerText = 'Vous faites déjà partie des testeurs Kanto MG';
-        if (feedbackDesc) {
-          feedbackDesc.innerHTML = 'Votre compte <strong>' + escapeHtml(email) + '</strong> est déjà enregistré. Accédez directement au téléchargement ci-dessous :';
-        }
-      } else {
-        if (feedbackBadgeLabel) feedbackBadgeLabel.innerText = 'Inscription confirmée';
-        if (feedbackTitle) feedbackTitle.innerText = 'Bienvenue parmi les pionniers de Kanto MG';
-        if (feedbackDesc) {
-          feedbackDesc.innerHTML = 'Votre inscription pour <strong>' + escapeHtml(email) + '</strong> a bien été enregistrée. Vous pouvez dès à présent télécharger l’application :';
-        }
+      if (feedbackBadgeLabel) feedbackBadgeLabel.innerText = 'Inscription prise en compte';
+      if (feedbackTitle) feedbackTitle.innerText = 'Bienvenue parmi les pionniers de Kanto MG';
+      if (feedbackDesc) {
+        feedbackDesc.innerHTML = 'Votre demande pour <strong>' + escapeHtml(email) + '</strong> a bien été enregistrée. Un e-mail récapitulatif avec vos étapes d’accès vous a été envoyé. Vous pouvez également accéder directement aux liens ci-dessous :';
       }
       feedbackCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -192,16 +184,21 @@ export function renderBetaWaitlistScript(): string {
         });
 
         var data = await res.json();
-        if (res.ok && data.success && !data.alreadyRegistered) {
-          showSuccess('Inscription réussie ! Bienvenue parmi les testeurs.');
+        if (res.ok && data.success) {
+          showSuccess(data.message || 'Inscription réussie ! Un e-mail récapitulatif vient de vous être envoyé.');
+          
+          // Nettoyage complet du formulaire de soumission
+          if (emailEl) emailEl.value = '';
+          if (hpEl) hpEl.value = '';
+          selectedPlatforms = [detectedPlatform];
+          updatePlatformButtons();
+
           var countBadge = document.getElementById('header-tester-count');
           if (countBadge) {
             var m = countBadge.innerText.match(/[0-9]+/);
             if (m) countBadge.innerText = (parseInt(m[0], 10) + 1) + ' testeurs pionniers';
           }
-          displayFeedbackState(email, false);
-        } else if (data.alreadyRegistered) {
-          displayFeedbackState(email, true);
+          displayFeedbackState(email);
         } else {
           showError(data.message || 'Une erreur est survenue lors de l’inscription.');
         }
