@@ -54,6 +54,8 @@ import { PartnersModule } from './partners/partners.module.js';
 import { ReviewsModule } from './reviews/reviews.module.js';
 import { SeoModule } from './seo/seo.module.js';
 import { LearningModule } from './learning/learning.module.js';
+import { SecurityModule } from './common/security/security.module.js';
+import { AccountStatusGuard } from './common/guards/account-status.guard.js';
 
 @Module({
   imports: [
@@ -121,6 +123,7 @@ import { LearningModule } from './learning/learning.module.js';
     ReviewsModule,
     SeoModule,
     LearningModule,
+    SecurityModule,
   ],
   controllers: [AppController],
   providers: [
@@ -129,6 +132,11 @@ import { LearningModule } from './learning/learning.module.js';
     {
       provide: APP_GUARD,
       useClass: AppThrottlerGuard,
+    },
+    // Guard de sécurité globale : validation des statuts de compte (actif, suspendu, banni)
+    {
+      provide: APP_GUARD,
+      useClass: AccountStatusGuard,
     },
   ],
 })

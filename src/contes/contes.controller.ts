@@ -14,7 +14,13 @@ import { ContesAudioService } from './contes-audio.service.js';
 import { FindContesQueryDto } from './dto/find-contes.dto.js';
 import { CreateConteDto } from './dto/create-conte.dto.js';
 import { UpdateConteDto } from './dto/update-conte.dto.js';
-import { AuthGuard, Roles, Session, type UserSession } from '../auth/index.js';
+import {
+  AuthGuard,
+  OptionalAuth,
+  Roles,
+  Session,
+  type UserSession,
+} from '../auth/index.js';
 import { ReportContentDto } from '../common/dto/report-content.dto.js';
 
 @Controller('contes')
@@ -46,13 +52,23 @@ export class ContesController {
   }
 
   @Get()
-  findAll(@Query() query: FindContesQueryDto) {
-    return this.contesService.findAll(query);
+  @UseGuards(AuthGuard)
+  @OptionalAuth()
+  findAll(
+    @Query() query: FindContesQueryDto,
+    @Session() session?: UserSession,
+  ) {
+    return this.contesService.findAll(query, session?.user as any);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.contesService.findOne(id);
+  @UseGuards(AuthGuard)
+  @OptionalAuth()
+  findOne(
+    @Param('id') id: string,
+    @Session() session?: UserSession,
+  ) {
+    return this.contesService.findOne(id, session?.user as any);
   }
 
   @Post(':id/like')

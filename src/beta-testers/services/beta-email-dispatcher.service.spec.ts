@@ -153,4 +153,30 @@ describe('BetaEmailDispatcherService', () => {
     expect(callArgs.html).toContain('Accéder au portail de téléchargement');
     expect(callArgs.html).toContain('Contacter l’administrateur');
   });
+
+  it('doit filtrer et supprimer automatiquement tous les emojis natifs du sujet et du contenu', async () => {
+    prisma.betaEmailTemplate.findUnique.mockResolvedValue({
+      subject: '🚀 Bienvenue dans la bêta 👑 !',
+      title: 'Accès Bêta 🎉',
+      contentHtml: '<p>👉 Cliquez ici 📲 pour installer ! 💬 Merci ⚠️</p>',
+    });
+
+    await service.sendTemplateEmail({
+      to: 'clean-tester@example.com',
+      templateCode: 'CUSTOM_TEST',
+      variables: {
+        userName: 'Rakoto 📱',
+      },
+    });
+
+    const callArgs = resendService.sendEmail.mock.calls[0][0];
+    const emojiRegex =
+      /[\u{1F300}-\u{1F9FF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/u;
+
+    expect(emojiRegex.test(callArgs.subject)).toBe(false);
+    expect(emojiRegex.test(callArgs.html)).toBe(false);
+    expect(emojiRegex.test(callArgs.text)).toBe(false);
+    expect(callArgs.subject).toBe('Bienvenue dans la bêta !');
+    expect(callArgs.html).toContain('Cliquez ici pour installer ! Merci');
+  });
 });

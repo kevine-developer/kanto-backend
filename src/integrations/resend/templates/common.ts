@@ -60,6 +60,21 @@ export function escapeHtml(str: string | null | undefined): string {
 }
 
 /**
+ * Supprime tous les emojis natifs d'une chaîne de caractères pour respecter
+ * la charte Kanto MG (sobriété patrimoniale, typographie claire et icônes vectorielles).
+ */
+export function removeNativeEmojis(str: string | null | undefined): string {
+  if (!str) return '';
+  return String(str)
+    .replace(
+      /(?:\p{Extended_Pictographic}|[\u{1F1E6}-\u{1F1FF}]|\u{FE0F}|\u{FE0E})/gu,
+      '',
+    )
+    .replace(/[ \t]{2,}/g, ' ')
+    .trim();
+}
+
+/**
  * Icône vectorielle officielle Google Play (compatible email HTML inline).
  * Conçue sans aucune dépendance d'image externe ni d'emoji.
  */

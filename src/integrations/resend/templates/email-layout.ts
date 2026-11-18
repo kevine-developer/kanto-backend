@@ -1,4 +1,4 @@
-import { KANTO_COLORS, FONT_STACK } from './common.js';
+import { KANTO_COLORS, FONT_STACK, removeNativeEmojis } from './common.js';
 
 export interface EmailLayoutOptions {
   /** Titre de la page e-mail (balise <title>) */
@@ -22,7 +22,9 @@ export interface EmailLayoutOptions {
  */
 export function renderEmailLayout(options: EmailLayoutOptions): string {
   const currentYear = new Date().getFullYear();
-  const preheaderText = options.preheader || options.title;
+  const cleanTitle = removeNativeEmojis(options.title);
+  const cleanContentHtml = removeNativeEmojis(options.contentHtml);
+  const preheaderText = removeNativeEmojis(options.preheader || cleanTitle);
 
   // Calcul du style du badge d'en-tête
   const badgeVariant = options.headerBadge?.variant || 'tanimbary';
@@ -77,7 +79,7 @@ export function renderEmailLayout(options: EmailLayoutOptions): string {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>${options.title}</title>
+  <title>${cleanTitle}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -132,7 +134,7 @@ export function renderEmailLayout(options: EmailLayoutOptions): string {
           <!-- Corps de l'email -->
           <tr>
             <td class="email-content-cell" style="padding: 32px 32px;">
-              ${options.contentHtml}
+              ${cleanContentHtml}
             </td>
           </tr>
 

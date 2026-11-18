@@ -13,7 +13,13 @@ import { RecitationsService } from './recitations.service.js';
 import { FindRecitationsQueryDto } from './dto/find-recitations.dto.js';
 import { CreateRecitationDto } from './dto/create-recitation.dto.js';
 import { UpdateRecitationDto } from './dto/update-recitation.dto.js';
-import { AuthGuard, Roles, Session, type UserSession } from '../auth/index.js';
+import {
+  AuthGuard,
+  OptionalAuth,
+  Roles,
+  Session,
+  type UserSession,
+} from '../auth/index.js';
 import { ReportContentDto } from '../common/dto/report-content.dto.js';
 
 @Controller('recitations')
@@ -42,13 +48,23 @@ export class RecitationsController {
   }
 
   @Get()
-  findAll(@Query() query: FindRecitationsQueryDto) {
-    return this.recitationsService.findAll(query);
+  @UseGuards(AuthGuard)
+  @OptionalAuth()
+  findAll(
+    @Query() query: FindRecitationsQueryDto,
+    @Session() session?: UserSession,
+  ) {
+    return this.recitationsService.findAll(query, session?.user as any);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.recitationsService.findOne(id);
+  @UseGuards(AuthGuard)
+  @OptionalAuth()
+  findOne(
+    @Param('id') id: string,
+    @Session() session?: UserSession,
+  ) {
+    return this.recitationsService.findOne(id, session?.user as any);
   }
 
   @Post(':id/like')

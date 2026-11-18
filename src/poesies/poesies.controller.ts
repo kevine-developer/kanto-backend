@@ -13,7 +13,13 @@ import { PoesiesService } from './poesies.service.js';
 import { FindPoesiesQueryDto } from './dto/find-poesies.dto.js';
 import { CreatePoesieDto } from './dto/create-poesie.dto.js';
 import { UpdatePoesieDto } from './dto/update-poesie.dto.js';
-import { AuthGuard, Roles, Session, type UserSession } from '../auth/index.js';
+import {
+  AuthGuard,
+  OptionalAuth,
+  Roles,
+  Session,
+  type UserSession,
+} from '../auth/index.js';
 import { ReportContentDto } from '../common/dto/report-content.dto.js';
 
 @Controller('poesies')
@@ -42,13 +48,23 @@ export class PoesiesController {
   }
 
   @Get()
-  findAll(@Query() query: FindPoesiesQueryDto) {
-    return this.poesiesService.findAll(query);
+  @UseGuards(AuthGuard)
+  @OptionalAuth()
+  findAll(
+    @Query() query: FindPoesiesQueryDto,
+    @Session() session?: UserSession,
+  ) {
+    return this.poesiesService.findAll(query, session?.user as any);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.poesiesService.findOne(id);
+  @UseGuards(AuthGuard)
+  @OptionalAuth()
+  findOne(
+    @Param('id') id: string,
+    @Session() session?: UserSession,
+  ) {
+    return this.poesiesService.findOne(id, session?.user as any);
   }
 
   @Post(':id/like')

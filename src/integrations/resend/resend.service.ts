@@ -22,6 +22,7 @@ import {
   buildVipExpiredEmail,
   buildUserBannedEmail,
   buildUserUnbannedEmail,
+  removeNativeEmojis,
 } from './templates/index.js';
 
 export interface SendEmailOptions {
@@ -334,6 +335,11 @@ export class ResendService {
     const rawTo = Array.isArray(options.to) ? options.to : [options.to];
     const to = rawTo.map((e) => e.trim().toLowerCase());
 
+    // 0. Assainissement strict anti-emoji pour tous les e-mails sortants Kanto MG
+    const subject = removeNativeEmojis(options.subject);
+    const html = removeNativeEmojis(options.html);
+    const text = options.text ? removeNativeEmojis(options.text) : undefined;
+
     // 1. Validation de sécurité des destinataires
     this.validateRecipients(to);
     const primaryRecipient = to[0];
@@ -427,7 +433,7 @@ export class ResendService {
             recipient: primaryRecipient,
             recipientName: options.recipientName,
             from,
-            subject: options.subject,
+            subject,
             templateType: options.templateType || 'TRANSACTIONAL',
             status: 'PENDING',
             idempotencyKey: options.idempotencyKey,
@@ -450,7 +456,7 @@ export class ResendService {
     if (!this.client) {
       const simulatedId = `sim_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
       this.logger.log(
-        `📬 [SIMULATION EMAIL] De: ${from} | À: ${to.join(', ')} | Sujet: "${options.subject}" (ID: ${simulatedId})`,
+        `📬 [SIMULATION EMAIL] De: ${from} | À: ${to.join(', ')} | Sujet: "${subject}" (ID: ${simulatedId})`,
       );
 
       if (emailLogId && this.prisma) {
@@ -480,9 +486,9 @@ export class ResendService {
       const response = await this.client.emails.send({
         from,
         to,
-        subject: options.subject,
-        html: options.html,
-        text: options.text,
+        subject,
+        html,
+        text,
         replyTo: options.replyTo,
         headers: options.idempotencyKey
           ? { 'X-Entity-Ref-ID': options.idempotencyKey }

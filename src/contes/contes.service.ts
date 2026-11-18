@@ -12,6 +12,10 @@ import {
 } from '../common/utils/pagination.util.js';
 import { CACHE_KEYS } from '../common/constants/cache.constant.js';
 import { ReportContentDto } from '../common/dto/report-content.dto.js';
+import {
+  ContentAccessControlService,
+  UserSubscriptionContext,
+} from '../common/security/content-access-control.service.js';
 
 @Injectable()
 export class ContesService {
@@ -20,6 +24,7 @@ export class ContesService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
+    private readonly contentAccessControl: ContentAccessControlService,
   ) {}
 
   private async invalidateCache(id?: string, slug?: string) {
@@ -170,7 +175,10 @@ export class ContesService {
     return { success: true, id };
   }
 
-  async findAll(query: FindContesQueryDto = {}) {
+  async findAll(
+    query: FindContesQueryDto = {},
+    user?: UserSubscriptionContext | null,
+  ) {
     const { page, limit, skip } = calculatePagination({
       page: query.page,
       limit: query.limit,
@@ -180,7 +188,10 @@ export class ContesService {
     const cached = await this.redis.get<any>(cacheKey);
     if (cached) {
       this.logger.debug(`⚡ [Redis] Cache hit pour findAll contes`);
-      return cached;
+      return {
+        ...cached,
+        data: this.contentAccessControl.filterContes(cached.data, user),
+      };
     }
 
     const where: Prisma.ConteWhereInput = {
@@ -243,17 +254,20 @@ export class ContesService {
     const result = formatPaginatedResponse(contes, total, page, limit);
 
     await this.redis.set(cacheKey, result, 300); // 5 minutes
-    return result;
+    return {
+      ...result,
+      data: this.contentAccessControl.filterContes(result.data, user),
+    };
   }
 
-  async findOne(idOrSlug: string) {
+  async findOne(idOrSlug: string, user?: UserSubscriptionContext | null) {
     const cacheKey = `${CACHE_KEYS.CONTES_DETAIL_PREFIX}${idOrSlug}`;
     const cached = await this.redis.get<any>(cacheKey);
     if (cached) {
       this.logger.debug(
         `⚡ [Redis] Cache hit pour findOne conte "${idOrSlug}"`,
       );
-      return cached;
+      return this.contentAccessControl.filterConte(cached, user);
     }
 
     const conte = await this.prisma.conte.findFirst({
@@ -304,7 +318,7 @@ export class ContesService {
     };
 
     await this.redis.set(cacheKey, result, 600); // 10 minutes
-    return result;
+    return this.contentAccessControl.filterConte(result, user);
   }
 
   async like(idOrSlug: string, userId: string) {
