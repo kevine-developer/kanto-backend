@@ -300,10 +300,10 @@ describe('Séparation stricte de la gestion des mots de passe (Native vs Adminis
       );
     });
 
-    it("9. Sur app-kanto.gastsar.fr, doit servir la page web native sans rediriger vers l'admin", () => {
+    it("9. Sur auth-kanto.gastsar.fr, doit servir la page web native sans rediriger vers l'admin", () => {
       const mockReq = {
         headers: {
-          host: 'app-kanto.gastsar.fr',
+          host: 'auth-kanto.gastsar.fr',
         },
       };
 
@@ -314,7 +314,7 @@ describe('Séparation stricte de la gestion des mots de passe (Native vs Adminis
         mockReq as any,
       );
 
-      // Ne doit JAMAIS rediriger
+      // Ne doit JAMAIS rediriger vers l'admin
       expect(mockRes.redirect).not.toHaveBeenCalled();
 
       // Doit servir la page HTML native avec deep link et solution de secours
@@ -330,6 +330,27 @@ describe('Séparation stricte de la gestion des mots de passe (Native vs Adminis
       );
       expect(mockRes.send).toHaveBeenCalledWith(
         expect.stringContaining('Nouveau mot de passe'),
+      );
+    });
+
+    it('9b. Sur app-kanto.gastsar.fr, doit rediriger (302) vers auth-kanto.gastsar.fr pour séparation stricte', () => {
+      const mockReq = {
+        headers: {
+          host: 'app-kanto.gastsar.fr',
+        },
+      };
+
+      appController.handleResetPasswordRedirect(
+        'native_token_test',
+        '',
+        mockRes,
+        mockReq as any,
+      );
+
+      // Doit rediriger vers le domaine auth dédié
+      expect(mockRes.redirect).toHaveBeenCalledWith(
+        302,
+        'https://auth-kanto.gastsar.fr/reset-password?token=native_token_test',
       );
     });
 

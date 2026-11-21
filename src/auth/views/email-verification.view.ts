@@ -448,7 +448,7 @@ export function renderEmailVerificationPage(
     </div>
 
     <div class="footer">
-      © ${currentYear} Kanto • <a href="/">Accueil</a> • <a href="/pages/help">Centre d'aide</a> • <a href="/pages/privacy">Confidentialité</a>
+      © ${currentYear} Kanto • <a href="https://app-kanto.gastsar.fr/">Accueil</a> • <a href="https://app-kanto.gastsar.fr/pages/help">Centre d'aide</a> • <a href="https://app-kanto.gastsar.fr/pages/privacy">Confidentialité</a> • <a href="https://app-kanto.gastsar.fr/pages/terms">Conditions</a>
     </div>
   </div>
 

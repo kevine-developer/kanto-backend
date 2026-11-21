@@ -75,13 +75,36 @@ export function getConfiguredAdminUrl(): string {
     : 'http://localhost:3001';
 }
 
+export function getConfiguredAuthUrl(): string {
+  if (process.env.AUTH_URL) {
+    return process.env.AUTH_URL.replace(/\/+$/, '');
+  }
+  if (process.env.PUBLIC_AUTH_URL) {
+    return process.env.PUBLIC_AUTH_URL.replace(/\/+$/, '');
+  }
+  return isProduction
+    ? 'https://auth-kanto.gastsar.fr'
+    : 'http://localhost:3000';
+}
+
 export function getConfiguredNativeUrl(): string {
   if (process.env.NATIVE_APP_URL) {
     return process.env.NATIVE_APP_URL.replace(/\/+$/, '');
   }
+  // En production, toutes les fonctionnalités d'authentification native résident sur auth-kanto.gastsar.fr
+  return getConfiguredAuthUrl();
+}
+
+export function getConfiguredAppUrl(): string {
+  if (process.env.APP_URL) {
+    return process.env.APP_URL.replace(/\/+$/, '');
+  }
+  if (process.env.PUBLIC_APP_URL) {
+    return process.env.PUBLIC_APP_URL.replace(/\/+$/, '');
+  }
   return isProduction
     ? 'https://app-kanto.gastsar.fr'
-    : 'http://192.168.1.100:3000';
+    : 'http://localhost:3000';
 }
 
 export const auth = betterAuth({
@@ -151,21 +174,23 @@ export const auth = betterAuth({
         `[Better-Auth] ✉️ Envoi de l'email de confirmation à : ${user.email}`,
       );
       try {
-        const baseUrl =
-          process.env.PUBLIC_AUTH_URL ||
-          process.env.BETTER_AUTH_URL ||
-          'https://api-kanto.gastsar.fr';
+        const baseUrl = getConfiguredAuthUrl();
         let origin = baseUrl;
-        if (!process.env.PUBLIC_AUTH_URL) {
+        if (!process.env.PUBLIC_AUTH_URL && !process.env.AUTH_URL) {
           try {
             const parsed = new URL(url);
-            origin = parsed.origin;
+            // S'assurer que le lien cible toujours le domaine d'authentification dédié
+            if (parsed.host.includes('app-kanto')) {
+              origin = baseUrl;
+            } else {
+              origin = parsed.origin;
+            }
           } catch {
             origin = baseUrl;
           }
         }
 
-        // Format d'URL de confirmation : https://auth.kanto.mg/confirmation?token=...
+        // Format d'URL de confirmation : https://auth-kanto.gastsar.fr/confirmation?token=...
         const confirmationUrl = new URL('/confirmation', origin);
         confirmationUrl.searchParams.set('token', token);
         const verifyUrl = confirmationUrl.toString();

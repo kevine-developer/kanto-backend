@@ -1,6 +1,6 @@
 /**
  * Kanto MG — Page web sécurisée de réinitialisation de mot de passe (Application Native)
- * Accessible sur https://app-kanto.gastsar.fr/reset-password
+ * Accessible sur https://auth-kanto.gastsar.fr/reset-password
  *
  * Fonctionnalités :
  * 1. Deep linking automatique / bouton direct vers l'application mobile Kanto MG (kantomg://reset-password?token=...).
@@ -421,7 +421,7 @@ export function renderNativePasswordResetPage(
             ? `
         <!-- Option 1 : Ouvrir directement dans l'application native installée -->
         <div class="app-open-section">
-          <p class="app-open-title">📱 Vous utilisez un smartphone ?</p>
+          <p class="app-open-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:-2px; margin-right:6px;"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>Vous utilisez un smartphone ?</p>
           <a href="${deepLinkAppUrl}" class="btn-app" id="btnOpenApp">
             Continuer dans l'application Kanto
           </a>
@@ -446,8 +446,8 @@ export function renderNativePasswordResetPage(
                 required
                 autocomplete="new-password"
               />
-              <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('password', this)">
-                👁️
+              <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('password', this)" aria-label="Afficher ou masquer le mot de passe">
+                Afficher
               </button>
             </div>
             <p class="password-hint">8 caractères minimum avec chiffres et lettres.</p>
@@ -464,8 +464,8 @@ export function renderNativePasswordResetPage(
                 required
                 autocomplete="new-password"
               />
-              <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('confirmPassword', this)">
-                👁️
+              <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('confirmPassword', this)" aria-label="Afficher ou masquer le mot de passe">
+                Afficher
               </button>
             </div>
           </div>
@@ -479,7 +479,7 @@ export function renderNativePasswordResetPage(
     </div>
 
     <div class="footer">
-      <p>&copy; ${new Date().getFullYear()} Kanto MG — <a href="/" style="color: inherit; text-decoration: underline;">Accueil</a> • <a href="/pages/help" style="color: inherit; text-decoration: underline;">Centre d'aide</a> • <a href="/pages/privacy" style="color: inherit; text-decoration: underline;">Confidentialité</a></p>
+      <p>&copy; ${new Date().getFullYear()} Kanto MG — <a href="https://app-kanto.gastsar.fr/" style="color: inherit; text-decoration: underline;">Accueil</a> • <a href="https://app-kanto.gastsar.fr/pages/help" style="color: inherit; text-decoration: underline;">Centre d'aide</a> • <a href="https://app-kanto.gastsar.fr/pages/privacy" style="color: inherit; text-decoration: underline;">Confidentialité</a> • <a href="https://app-kanto.gastsar.fr/pages/terms" style="color: inherit; text-decoration: underline;">Conditions</a></p>
     </div>
   </div>
 
@@ -496,10 +496,10 @@ export function renderNativePasswordResetPage(
       const input = document.getElementById(fieldId);
       if (input.type === 'password') {
         input.type = 'text';
-        btn.textContent = '🔒';
+        btn.textContent = 'Masquer';
       } else {
         input.type = 'password';
-        btn.textContent = '👁️';
+        btn.textContent = 'Afficher';
       }
     }
 
