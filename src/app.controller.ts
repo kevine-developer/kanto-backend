@@ -31,6 +31,15 @@ import { RedisService } from './redis/redis.service.js';
 import { ResendService } from './integrations/resend/resend.service.js';
 import { buildFeedbackAdminEmail } from './integrations/resend/templates/index.js';
 import { BetaTestersService } from './beta-testers/beta-testers.service.js';
+import {
+  extractHost,
+  isAuthDomain,
+  isAppDomain,
+  isAdminDomain,
+  DEFAULT_AUTH_BASE_URL,
+  DEFAULT_APP_BASE_URL,
+  sanitizeRedirectUrl,
+} from './common/security/domain-routing.util.js';
 
 @Controller()
 export class AppController {
@@ -58,27 +67,32 @@ export class AppController {
     @Res() res?: Response,
     @Req() req?: Request,
   ): Promise<void> {
-    // Si une redirection d'erreur auth arrive sur la racine (legacy), rediriger vers /confirmation
+    // Si une redirection d'erreur auth arrive sur la racine (legacy), rediriger vers /confirmation sur le domaine auth
     if (error) {
       const baseUrl =
+        process.env.AUTH_URL ||
         process.env.PUBLIC_AUTH_URL ||
         process.env.BETTER_AUTH_URL ||
-        'https://api-kanto.gastsar.fr';
+        DEFAULT_AUTH_BASE_URL;
       const target = `${baseUrl}/confirmation?error=${encodeURIComponent(error)}${email ? `&email=${encodeURIComponent(email)}` : ''}`;
-      res!.redirect(302, target);
+      const safeTarget = sanitizeRedirectUrl(target, `${DEFAULT_AUTH_BASE_URL}/confirmation`);
+      res!.redirect(302, safeTarget);
+      return;
+    }
+
+    const host = extractHost(req);
+
+    // Si la requête provient de auth-kanto.gastsar.fr sans paramètre d'auth, rediriger vers app-kanto.gastsar.fr
+    if (isAuthDomain(host)) {
+      res!.redirect(302, `${DEFAULT_APP_BASE_URL}/`);
       return;
     }
 
     // Si la requête provient du domaine app-kanto.gastsar.fr ou d'un hôte lié aux tests, servir la landing page
-    const host = (
-      (req?.headers?.['x-forwarded-host'] as string) ||
-      req?.headers?.host ||
-      ''
-    ).toLowerCase();
-
     if (
       host &&
-      (host.includes('app-kanto') ||
+      (isAppDomain(host) ||
+        host.includes('app-kanto') ||
         host.includes('beta-kanto') ||
         host.startsWith('app.'))
     ) {
@@ -258,15 +272,10 @@ export class AppController {
         ? 'https://kanto-admin.vercel.app'
         : 'http://localhost:3001');
 
-    const host = (
-      (req?.headers?.['x-forwarded-host'] as string) ||
-      req?.headers?.host ||
-      ''
-    ).toLowerCase();
-
+    const host = extractHost(req);
     const referer = ((req?.headers?.referer as string) || '').toLowerCase();
 
-    // Détection dynamique : comparaison avec l'hôte de l'URL admin configurée en priorité
+    // 1. Détection domaine administration (priorité absolue à l'environnement configuré)
     let configuredAdminHost = '';
     try {
       configuredAdminHost = new URL(adminFrontendUrl).host.toLowerCase();
@@ -274,18 +283,13 @@ export class AppController {
       // Ignorer si URL invalide
     }
 
-    const isAdminDomain =
+    const isAdmin =
+      isAdminDomain(host, referer) ||
       (configuredAdminHost &&
         (host.includes(configuredAdminHost) ||
-          referer.includes(configuredAdminHost))) ||
-      host.includes('kanto-admin') ||
-      host.includes('admin') ||
-      host.includes(':3001') ||
-      referer.includes('kanto-admin') ||
-      referer.includes('admin') ||
-      referer.includes(':3001');
+          referer.includes(configuredAdminHost)));
 
-    if (isAdminDomain) {
+    if (isAdmin) {
       try {
         const targetUrl = new URL('/reset-password', adminFrontendUrl);
         if (token) {
@@ -305,9 +309,28 @@ export class AppController {
       }
     }
 
-    // Parcours utilisateur natif Kanto MG (ex: https://app-kanto.gastsar.fr/reset-password)
+    // 2. Séparation stricte des domaines :
+    // Si la requête provient d'app-kanto.gastsar.fr (site public), rediriger vers auth-kanto.gastsar.fr (domaine auth dédié)
+    if (isAppDomain(host)) {
+      const authBaseUrl =
+        process.env.AUTH_URL ||
+        process.env.PUBLIC_AUTH_URL ||
+        DEFAULT_AUTH_BASE_URL;
+      const targetUrl = new URL('/reset-password', authBaseUrl);
+      if (token) targetUrl.searchParams.set('token', token);
+      if (error) targetUrl.searchParams.set('error', error);
+      const safeUrl = sanitizeRedirectUrl(targetUrl.toString(), `${authBaseUrl}/reset-password`);
+
+      this.logger.log(
+        `🔄 [Domain Separation] Redirection de /reset-password depuis app-kanto vers ${safeUrl}`,
+      );
+      res.redirect(302, safeUrl);
+      return;
+    }
+
+    // 3. Parcours utilisateur natif Kanto MG servi sur auth-kanto.gastsar.fr
     this.logger.log(
-      `📱 [Native] Affichage de la vue web de réinitialisation native pour l'hôte : ${host || 'app-kanto.gastsar.fr'}`,
+      `📱 [Native] Affichage de la vue web de réinitialisation native pour l'hôte : ${host || 'auth-kanto.gastsar.fr'}`,
     );
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.status(200).send(renderNativePasswordResetPage({ token, error }));
@@ -328,11 +351,36 @@ export class AppController {
     @Query('email') email?: string,
     @Query('status') status?: 'success' | 'already_confirmed' | 'expired',
     @Res() res?: Response,
+    @Req() req?: Request,
   ): Promise<void> {
+    const host = extractHost(req);
+
+    // Séparation stricte : Si requête arrive sur app-kanto.gastsar.fr (site public),
+    // rediriger vers auth-kanto.gastsar.fr (domaine auth dédié)
+    if (isAppDomain(host)) {
+      const authBaseUrl =
+        process.env.AUTH_URL ||
+        process.env.PUBLIC_AUTH_URL ||
+        DEFAULT_AUTH_BASE_URL;
+      const targetUrl = new URL('/confirmation', authBaseUrl);
+      if (token) targetUrl.searchParams.set('token', token);
+      if (error) targetUrl.searchParams.set('error', error);
+      if (email) targetUrl.searchParams.set('email', email);
+      if (status) targetUrl.searchParams.set('status', status);
+      const safeUrl = sanitizeRedirectUrl(targetUrl.toString(), `${authBaseUrl}/confirmation`);
+
+      this.logger.log(
+        `🔄 [Domain Separation] Redirection de /confirmation depuis app-kanto vers ${safeUrl}`,
+      );
+      res!.redirect(302, safeUrl);
+      return;
+    }
+
     const baseUrl =
+      process.env.AUTH_URL ||
       process.env.PUBLIC_AUTH_URL ||
       process.env.BETTER_AUTH_URL ||
-      'https://api-kanto.gastsar.fr';
+      DEFAULT_AUTH_BASE_URL;
 
     // Helper : envoyer la page HTML de vérification
     const sendHtmlPage = (html: string) => {

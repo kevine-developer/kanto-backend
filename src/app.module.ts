@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AppThrottlerGuard } from './common/guards/app-throttler.guard.js';
 import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
+import { DomainSeparationMiddleware } from './common/security/domain-separation.middleware.js';
 import { AuthModule } from './auth/auth.module.js';
 import { CitationsModule } from './citations/citations.module.js';
 import { ContesModule } from './contes/contes.module.js';
@@ -140,4 +141,8 @@ import { AccountStatusGuard } from './common/guards/account-status.guard.js';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(DomainSeparationMiddleware).forRoutes('*');
+  }
+}
