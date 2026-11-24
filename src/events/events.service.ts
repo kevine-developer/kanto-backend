@@ -31,7 +31,9 @@ import {
   EventParticipationType,
   EventRewardType,
   EventStatus,
+  TicketEntryMode,
 } from '../../generated/prisma/client.js';
+import { TicketsService } from '../tickets/services/tickets.service.js';
 
 @Injectable()
 export class EventsService {
@@ -44,6 +46,7 @@ export class EventsService {
     private readonly badgesService: BadgesService,
     private readonly cloudinaryService: CloudinaryService,
     private readonly cloudinarySyncService: CloudinarySyncService,
+    private readonly ticketsService: TicketsService,
   ) {}
 
   /**
@@ -304,10 +307,38 @@ export class EventsService {
 
     const waitlistCount = (event as any)._count?.participations ?? 0;
     const { participations, _count, ...rest } = event as any;
+
+    // Détection si l'utilisateur connecté est un agent de contrôle assigné pour cet événement précis
+    const eventMetadata = (event.metadata as any) || {};
+    const checkInAgents: Array<{ userId?: string; email?: string }> = Array.isArray(
+      eventMetadata.checkInAgents,
+    )
+      ? eventMetadata.checkInAgents
+      : [];
+
+    let isCheckInAgent = false;
+    if (userId) {
+      const user = await this.prisma.user.findUnique({
+        where: { id: userId },
+        select: { id: true, email: true, role: true },
+      });
+      if (user) {
+        const isAdmin = user.role === 'ADMIN';
+        const isAssigned = checkInAgents.some(
+          (a) =>
+            (a.userId && a.userId === user.id) ||
+            (a.email && user.email && a.email.toLowerCase() === user.email.toLowerCase()),
+        );
+        isCheckInAgent = isAdmin || isAssigned;
+      }
+    }
+
     return {
       ...rest,
       waitlistCount,
       userParticipation,
+      isCheckInAgent,
+      canScanTickets: isCheckInAgent && Boolean(event.ticketingEnabled),
     };
   }
 
@@ -360,11 +391,164 @@ export class EventsService {
 
     const waitlistCount = (event as any)._count?.participations ?? 0;
     const { participations, _count, ...rest } = event as any;
+
+    // Détection si l'utilisateur connecté est un agent de contrôle assigné pour cet événement précis
+    const eventMetadata = (event.metadata as any) || {};
+    const checkInAgents: Array<{ userId?: string; email?: string }> = Array.isArray(
+      eventMetadata.checkInAgents,
+    )
+      ? eventMetadata.checkInAgents
+      : [];
+
+    let isCheckInAgent = false;
+    if (userId) {
+      const user = await this.prisma.user.findUnique({
+        where: { id: userId },
+        select: { id: true, email: true, role: true },
+      });
+      if (user) {
+        const isAdmin = user.role === 'ADMIN';
+        const isAssigned = checkInAgents.some(
+          (a) =>
+            (a.userId && a.userId === user.id) ||
+            (a.email && user.email && a.email.toLowerCase() === user.email.toLowerCase()),
+        );
+        isCheckInAgent = isAdmin || isAssigned;
+      }
+    }
+
     return {
       ...rest,
       waitlistCount,
       userParticipation,
+      isCheckInAgent,
+      canScanTickets: isCheckInAgent && Boolean(event.ticketingEnabled),
     };
+  }
+
+  /**
+   * Récupère la liste des agents de contrôle / modérateurs assignés à un événement spécifique.
+   */
+  async getEventStaff(eventId: string) {
+    const event = await this.prisma.event.findUnique({
+      where: { id: eventId },
+      select: { id: true, titleFr: true, metadata: true },
+    });
+    if (!event) {
+      throw new NotFoundException('Événement introuvable.');
+    }
+    const metadata = (event.metadata as any) || {};
+    const checkInAgents: Array<{
+      userId: string;
+      email: string;
+      name: string;
+      avatar?: string;
+      addedAt: string;
+    }> = Array.isArray(metadata.checkInAgents) ? metadata.checkInAgents : [];
+
+    return checkInAgents;
+  }
+
+  /**
+   * Assigne un agent de contrôle à un événement spécifique (par email, username ou userId).
+   */
+  async addEventStaff(eventId: string, emailOrUserId: string) {
+    const event = await this.prisma.event.findUnique({
+      where: { id: eventId },
+    });
+    if (!event) {
+      throw new NotFoundException('Événement introuvable.');
+    }
+
+    const query = emailOrUserId.trim().toLowerCase();
+    const user = await this.prisma.user.findFirst({
+      where: {
+        OR: [
+          { email: query },
+          { id: emailOrUserId.trim() },
+          { username: query },
+        ],
+      },
+      select: { id: true, name: true, email: true, image: true, role: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException(`Aucun compte utilisateur trouvé pour "${emailOrUserId}".`);
+    }
+
+    const metadata = (event.metadata as any) || {};
+    const checkInAgents: Array<any> = Array.isArray(metadata.checkInAgents)
+      ? [...metadata.checkInAgents]
+      : [];
+
+    const alreadyExists = checkInAgents.some(
+      (a) =>
+        a.userId === user.id ||
+        (a.email && a.email.toLowerCase() === user.email.toLowerCase()),
+    );
+
+    if (alreadyExists) {
+      throw new BadRequestException(
+        `${user.name} est déjà assigné comme agent de contrôle sur cet événement.`,
+      );
+    }
+
+    const newAgent = {
+      userId: user.id,
+      email: user.email,
+      name: user.name,
+      avatar: user.image || null,
+      addedAt: new Date().toISOString(),
+    };
+
+    checkInAgents.push(newAgent);
+
+    await this.prisma.event.update({
+      where: { id: eventId },
+      data: {
+        metadata: {
+          ...metadata,
+          checkInAgents,
+        },
+      },
+    });
+
+    return checkInAgents;
+  }
+
+  /**
+   * Retire un agent de contrôle d'un événement spécifique.
+   */
+  async removeEventStaff(eventId: string, userIdOrEmail: string) {
+    const event = await this.prisma.event.findUnique({
+      where: { id: eventId },
+    });
+    if (!event) {
+      throw new NotFoundException('Événement introuvable.');
+    }
+
+    const metadata = (event.metadata as any) || {};
+    const checkInAgents: Array<any> = Array.isArray(metadata.checkInAgents)
+      ? metadata.checkInAgents
+      : [];
+
+    const filtered = checkInAgents.filter(
+      (a) =>
+        a.userId !== userIdOrEmail &&
+        a.email.toLowerCase() !== userIdOrEmail.toLowerCase(),
+    );
+
+    await this.prisma.event.update({
+      where: { id: eventId },
+      data: {
+        metadata: {
+          ...metadata,
+          checkInAgents: filtered,
+        },
+      },
+    });
+
+    return filtered;
   }
 
   /**
@@ -453,12 +637,33 @@ export class EventsService {
             });
             return p;
           });
+
+          let ticket: any = null;
+          if (event.ticketingEnabled) {
+            try {
+              ticket = await this.ticketsService.generateTicketForParticipation({
+                eventId: event.id,
+                participationId: updated.id,
+                userId,
+                validFrom: event.startDate,
+                validUntil: event.endDate,
+                entryMode: event.ticketEntryMode || TicketEntryMode.SINGLE,
+                maxEntries: event.ticketMaxEntries || 1,
+              });
+            } catch (ticketErr) {
+              this.logger.error(`Erreur génération billet événement : ${ticketErr}`);
+            }
+          }
+
           return {
             success: true,
             isWaitlist: false,
             alreadyRegistered: false,
             participation: updated,
-            message: 'Votre inscription a été réactivée avec succès.',
+            ticket,
+            message: ticket
+              ? 'Votre inscription a été réactivée et votre billet est prêt.'
+              : 'Votre inscription a été réactivée avec succès.',
           };
         } else if (event.enableWaitlist) {
           // Si l'événement est complet mais que la liste d'attente est activée
@@ -515,11 +720,17 @@ export class EventsService {
         };
       }
 
+      let ticket: any = null;
+      if (event.ticketingEnabled) {
+        ticket = await this.ticketsService.getTicketByEventId(eventId, userId);
+      }
+
       return {
         success: true,
         isWaitlist: false,
         alreadyRegistered: true,
         participation: existing,
+        ticket,
         message: 'Vous participez déjà à cet événement.',
       };
     }
@@ -692,12 +903,32 @@ export class EventsService {
       );
     }
 
+    let ticket: any = null;
+    if (event.ticketingEnabled) {
+      try {
+        ticket = await this.ticketsService.generateTicketForParticipation({
+          eventId: event.id,
+          participationId: participation.id,
+          userId,
+          validFrom: event.startDate,
+          validUntil: event.endDate,
+          entryMode: event.ticketEntryMode || TicketEntryMode.SINGLE,
+          maxEntries: event.ticketMaxEntries || 1,
+        });
+      } catch (ticketErr) {
+        this.logger.error(`Erreur génération billet événement : ${ticketErr}`);
+      }
+    }
+
     return {
       success: true,
       isWaitlist: false,
       alreadyRegistered: false,
       participation,
-      message: 'Inscription enregistrée avec succès !',
+      ticket,
+      message: ticket
+        ? 'Inscription validée ! Votre billet numérique est disponible.'
+        : 'Inscription enregistrée avec succès !',
     };
   }
 
@@ -792,8 +1023,40 @@ export class EventsService {
       return { cancelled, promotedUser };
     });
 
-    // 3. Notification asynchrone au participant promu depuis la liste d'attente
+    // Annulation du billet associé
+    if (participation.event.ticketingEnabled) {
+      try {
+        await this.ticketsService.cancelTicketForParticipation(
+          participation.id,
+          userId,
+          'Désistement volontaire de l’utilisateur',
+        );
+      } catch (ticketErr) {
+        this.logger.error(`Erreur annulation billet : ${ticketErr}`);
+      }
+    }
+
+    // 3. Notification asynchrone et génération de billet pour le participant promu
     if (result.promotedUser) {
+      if (participation.event.ticketingEnabled) {
+        try {
+          await this.ticketsService.generateTicketForParticipation({
+            eventId: participation.event.id,
+            participationId: result.promotedUser.id,
+            userId: result.promotedUser.userId,
+            validFrom: participation.event.startDate,
+            validUntil: participation.event.endDate,
+            entryMode:
+              participation.event.ticketEntryMode || TicketEntryMode.SINGLE,
+            maxEntries: participation.event.ticketMaxEntries || 1,
+          });
+        } catch (ticketErr) {
+          this.logger.error(
+            `Erreur génération billet participant promu : ${ticketErr}`,
+          );
+        }
+      }
+
       try {
         await this.notificationsService.createNotification({
           userId: result.promotedUser.userId,
@@ -1313,6 +1576,9 @@ export class EventsService {
         isPaid: Boolean(dto.isPaid),
         ticketPrice: dto.isPaid && dto.ticketPrice ? dto.ticketPrice : null,
         currency: dto.currency || 'MGA',
+        ticketingEnabled: Boolean(dto.ticketingEnabled),
+        ticketEntryMode: dto.ticketEntryMode || TicketEntryMode.SINGLE,
+        ticketMaxEntries: dto.ticketMaxEntries || 1,
         isFeatured: Boolean(dto.isFeatured),
         rulesMg: finalRulesMg,
         rulesFr: finalRulesFr,
@@ -1370,6 +1636,13 @@ export class EventsService {
     });
     if (!event) {
       throw new NotFoundException('Événement introuvable.');
+    }
+
+    // Règle métier fondamentale : la billetterie est strictement immuable après création
+    if ((dto as any).ticketingEnabled !== undefined) {
+      throw new BadRequestException(
+        'Le paramètre « Billet obligatoire » est immuable et ne peut pas être modifié après la création de l’événement.',
+      );
     }
 
     const contentConfig = dto.metadata?.contentConfig;
@@ -2164,6 +2437,19 @@ export class EventsService {
       return { cancelled, promotedUser };
     });
 
+    // Annulation du billet associé
+    if (event.ticketingEnabled) {
+      try {
+        await this.ticketsService.cancelTicketForParticipation(
+          participation.id,
+          adminId,
+          dto.reason,
+        );
+      } catch (ticketErr) {
+        this.logger.error(`Erreur annulation billet admin : ${ticketErr}`);
+      }
+    }
+
     // Envoi de notification au participant annulé (si notifyUser !== false)
     if (dto.notifyUser !== false) {
       try {
@@ -2187,8 +2473,26 @@ export class EventsService {
       }
     }
 
-    // Envoi de notification au participant promu s'il existe
+    // Envoi de notification et génération de billet pour le participant promu
     if (result.promotedUser) {
+      if (event.ticketingEnabled) {
+        try {
+          await this.ticketsService.generateTicketForParticipation({
+            eventId: event.id,
+            participationId: result.promotedUser.id,
+            userId: result.promotedUser.userId,
+            validFrom: event.startDate,
+            validUntil: event.endDate,
+            entryMode: event.ticketEntryMode || TicketEntryMode.SINGLE,
+            maxEntries: event.ticketMaxEntries || 1,
+          });
+        } catch (ticketErr) {
+          this.logger.error(
+            `Erreur génération billet participant promu : ${ticketErr}`,
+          );
+        }
+      }
+
       try {
         await this.notificationsService.createNotification({
           userId: result.promotedUser.userId,

@@ -33,6 +33,9 @@ export class AuthModule implements NestModule {
         { path: 'api/auth/reset-password', method: RequestMethod.POST },
         { path: 'auth/reset-password', method: RequestMethod.POST },
         { path: 'reset-password', method: RequestMethod.POST },
+        { path: 'api/auth/forget-password', method: RequestMethod.POST },
+        { path: 'auth/forget-password', method: RequestMethod.POST },
+        { path: 'forget-password', method: RequestMethod.POST },
       );
 
     consumer

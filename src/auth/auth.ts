@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { betterAuth } from 'better-auth';
+import { createAuthMiddleware, APIError } from 'better-auth/api';
 import { expo } from '@better-auth/expo';
 import { admin, bearer } from 'better-auth/plugins';
 import { adminAc, userAc } from 'better-auth/plugins/admin/access';
@@ -35,6 +36,12 @@ const devOrigins = [
   'http://localhost:8081',
   'http://localhost:*',
   'http://127.0.0.1:*',
+  'https://auth-kanto.gastsar.fr',
+  'https://app-kanto.gastsar.fr',
+  'https://api-kanto.gastsar.fr',
+  'https://kanto.mg',
+  'https://admin.kanto.mg',
+  'https://app.kanto.mg',
   'http://169.254.123.153:3000',
   'http://169.254.123.153:3001',
   'http://169.254.123.153:3002',
@@ -116,10 +123,19 @@ export const auth = betterAuth({
   trustedOrigins: [
     'kanto://',
     'kantomg://',
+    'https://auth-kanto.gastsar.fr',
+    'https://app-kanto.gastsar.fr',
+    'https://api-kanto.gastsar.fr',
+    'https://kanto.mg',
+    'https://admin.kanto.mg',
+    'https://app.kanto.mg',
+    'https://kanto-admin.vercel.app',
     ...(process.env.ADMIN_FRONTEND_URL ? [process.env.ADMIN_FRONTEND_URL] : []),
     ...(process.env.ADMIN_URL ? [process.env.ADMIN_URL] : []),
     ...(process.env.NATIVE_APP_URL ? [process.env.NATIVE_APP_URL] : []),
-    ...(isProduction ? prodOrigins : devOrigins),
+    ...(process.env.PUBLIC_AUTH_URL ? [process.env.PUBLIC_AUTH_URL] : []),
+    ...(process.env.AUTH_URL ? [process.env.AUTH_URL] : []),
+    ...(isProduction ? prodOrigins : [...devOrigins, ...prodOrigins]),
     ...(process.env.BETTER_AUTH_TRUSTED_ORIGINS
       ? process.env.BETTER_AUTH_TRUSTED_ORIGINS.split(',').map((o) => o.trim())
       : []),
@@ -131,6 +147,169 @@ export const auth = betterAuth({
     enabled: true,
     window: 60, // Fenêtre glissante de 60s
     max: 100, // Protection contre brute force et saturation d'emails
+  },
+  hooks: {
+    before: createAuthMiddleware(async (ctx) => {
+      const clientHeader = (
+        ctx.headers?.get('x-kanto-client') ||
+        ctx.headers?.get('x-client-context') ||
+        ctx.headers?.get('x-client-platform') ||
+        ''
+      ).toLowerCase();
+
+      const origin = (ctx.headers?.get('origin') || '').toLowerCase();
+      const referer = (ctx.headers?.get('referer') || '').toLowerCase();
+      const configuredAdminBase = getConfiguredAdminUrl().toLowerCase();
+      let configuredAdminHost = '';
+      try {
+        configuredAdminHost = new URL(configuredAdminBase).host.toLowerCase();
+      } catch {
+        // format url non standard
+      }
+
+      const redirectTo =
+        typeof (ctx.body as any)?.redirectTo === 'string'
+          ? ((ctx.body as any).redirectTo as string).toLowerCase()
+          : '';
+
+      const isFromAdmin =
+        clientHeader === 'admin' ||
+        (configuredAdminHost &&
+          (origin.includes(configuredAdminHost) ||
+            referer.includes(configuredAdminHost) ||
+            redirectTo.includes(configuredAdminHost))) ||
+        origin.includes('kanto-admin') ||
+        origin.includes('admin') ||
+        origin.includes(':3001') ||
+        referer.includes('kanto-admin') ||
+        referer.includes('admin') ||
+        referer.includes(':3001') ||
+        redirectTo.includes('admin') ||
+        redirectTo.includes(':3001');
+
+      // ────────────────────────────────────────────────────────────────────────
+      // RÈGLE CRITIQUE 1 : INTERCEPTION SUR "/forget-password"
+      // L'interface administrateur (kanto-admin) est strictement réservée aux comptes
+      // possédant le rôle ADMIN. Une tentative de réinitialisation initiée depuis l'admin
+      // pour un compte non-administrateur (ex: rôle USER ordinaire) doit être FORMELLEMENT
+      // BLOQUÉE et REJETÉE avant toute émission de jeton ou d'email.
+      // ────────────────────────────────────────────────────────────────────────
+      if (ctx.path === '/forget-password') {
+        const email = ((ctx.body as any)?.email as string | undefined)
+          ?.trim()
+          ?.toLowerCase();
+
+        if (isFromAdmin && email) {
+          const user = await prisma.user.findUnique({
+            where: { email },
+            select: { id: true, role: true },
+          });
+
+          if (!user || user.role !== 'ADMIN') {
+            console.warn(
+              `🛡️ [Auth Security] Tentative bloquée : demande de réinitialisation de mot de passe initiée depuis l'interface ADMIN pour un compte non-administrateur ("${email}", rôle: ${user?.role || 'INEXISTANT'}).`,
+            );
+            throw new APIError('FORBIDDEN', {
+              message:
+                "Cette interface de réinitialisation est strictement réservée aux comptes administrateurs de Kanto MG.",
+            });
+          }
+        }
+      }
+
+      // ────────────────────────────────────────────────────────────────────────
+      // RÈGLE CRITIQUE 2 : INTERCEPTION SUR "/reset-password"
+      // Validation effective du mot de passe avec le jeton.
+      // 1. Si la requête provient de l'admin, le compte associé au jeton DOIT être ADMIN.
+      // 2. Si la requête provient du parcours mobile/public, le jeton ne doit pas être un jeton admin.
+      // ────────────────────────────────────────────────────────────────────────
+      if (ctx.path === '/reset-password') {
+        const token = ((ctx.body as any)?.token as string | undefined)?.trim();
+
+        if (token) {
+          const contextRecord = await prisma.verification.findFirst({
+            where: { identifier: `reset-password-context:${token}` },
+          });
+
+          if (contextRecord) {
+            let meta: {
+              context?: 'native' | 'admin';
+              userId?: string;
+              role?: string;
+            } = {};
+            try {
+              meta = JSON.parse(contextRecord.value);
+            } catch {
+              meta = { context: contextRecord.value as any };
+            }
+
+            // Cas 1 : Tentative d'utiliser un jeton natif dans l'interface admin
+            if (isFromAdmin && meta.context === 'native') {
+              console.warn(
+                `🛡️ [Auth Security] Blocage : jeton natif soumis sur l'interface d'administration.`,
+              );
+              throw new APIError('FORBIDDEN', {
+                message:
+                  "Ce lien de réinitialisation est réservé à l'application mobile et ne peut pas être utilisé sur l'interface d'administration.",
+              });
+            }
+
+            // Cas 2 : Tentative pour un rôle non-administrateur de réinitialiser sur l'admin
+            if (
+              isFromAdmin &&
+              meta.role &&
+              meta.role !== 'ADMIN' &&
+              meta.role !== 'admin'
+            ) {
+              console.warn(
+                `🛡️ [Auth Security] Blocage : compte non-administrateur (${meta.role}) sur l'interface d'administration.`,
+              );
+              throw new APIError('FORBIDDEN', {
+                message:
+                  "Accès refusé : ce compte ne dispose pas des privilèges administrateur.",
+              });
+            }
+
+            // Cas 3 : Tentative d'utiliser un jeton administrateur sur le parcours mobile natif
+            if (!isFromAdmin && meta.context === 'admin') {
+              console.warn(
+                `🛡️ [Auth Security] Blocage : jeton administrateur soumis sur le parcours mobile.`,
+              );
+              throw new APIError('FORBIDDEN', {
+                message:
+                  "Ce lien de réinitialisation est réservé aux administrateurs.",
+              });
+            }
+          } else if (isFromAdmin) {
+            // Sécurité de secours : si le contextRecord est absent mais que la requête vient de l'admin,
+            // retrouver l'utilisateur dans la table de vérification Better-Auth pour vérifier son rôle
+            const baVerification = await prisma.verification.findFirst({
+              where: { value: token },
+            });
+            if (baVerification) {
+              const targetUser = await prisma.user.findFirst({
+                where: {
+                  OR: [
+                    { id: baVerification.identifier },
+                    { email: baVerification.identifier },
+                  ],
+                },
+                select: { id: true, role: true },
+              });
+              if (targetUser && targetUser.role !== 'ADMIN') {
+                console.warn(
+                  `🛡️ [Auth Security] Blocage : compte non-administrateur (${targetUser.role}) sur l'interface d'administration (via baVerification).`,
+                );
+                throw new APIError('FORBIDDEN', {
+                  message:
+                    "Accès refusé : seuls les administrateurs peuvent réinitialiser leur mot de passe depuis cette console.",
+                });
+              }
+            }
+          }
+        }
+      }
+    }),
   },
   emailVerification: {
     sendOnSignUp: true,
@@ -315,6 +494,14 @@ export const auth = betterAuth({
         // Seuls les comptes avec rôle effectif ADMIN peuvent recevoir un lien d'administration.
         const isAdminUser =
           (user as any).role === 'ADMIN' || (user as any).role === 'admin';
+
+        if (isTargetingAdmin && !isAdminUser) {
+          console.warn(
+            `🛡️ [Better-Auth] Tentative de réinitialisation bloquée : l'adresse email "${user.email}" (rôle: ${(user as any).role || 'USER'}) a été soumise depuis l'interface administrateur mais ne possède pas les privilèges requis. Aucun email envoyé.`,
+          );
+          return;
+        }
+
         const context: 'admin' | 'native' =
           isTargetingAdmin && isAdminUser ? 'admin' : 'native';
 

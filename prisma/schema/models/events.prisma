@@ -32,6 +32,9 @@ model Event {
   viewsCount               Int                    @default(0)
   sharesCount              Int                    @default(0)
   isFeatured               Boolean                @default(false)
+  ticketingEnabled         Boolean                @default(false)
+  ticketEntryMode          TicketEntryMode?       @default(SINGLE)
+  ticketMaxEntries         Int?                   @default(1)
   rulesMg                  String?                @db.Text
   rulesFr                  String?                @db.Text
   metadata                 Json?                  // Configuration spÃ©cifique (ex: { associatedQuizId: "...", targetScore: 80 })
@@ -50,6 +53,7 @@ model Event {
   rewards                  EventReward[]
   leaderboardEntries       EventLeaderboardEntry[]
   marketingRequests        MarketingRequest[]
+  tickets                  EventTicket[]
 
   @@index([status])
   @@index([partnerId])
@@ -106,6 +110,7 @@ model EventParticipation {
   updatedAt       DateTime                 @updatedAt
 
   rewardClaims    EventRewardClaim[]
+  ticket          EventTicket?
 
   @@unique([eventId, userId])
   @@index([eventId, status])
@@ -146,5 +151,69 @@ model EventLeaderboardEntry {
   @@unique([eventId, userId])
   @@index([eventId, rank])
   @@map("event_leaderboard_entries")
+}
+
+model EventTicket {
+  id                      String             @id @default(cuid())
+  ticketNumber            String             @unique // Ex: "KANTO-EVT-A3X7K9"
+  secureToken             String             @unique // Token cryptographique aléatoire non devinable
+  eventId                 String
+  event                   Event              @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  participationId         String             @unique
+  participation           EventParticipation @relation(fields: [participationId], references: [id], onDelete: Cascade)
+  userId                  String
+  user                    User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status                  TicketStatus       @default(VALID)
+  entryMode               TicketEntryMode    @default(SINGLE)
+  validFrom               DateTime
+  validUntil              DateTime
+  usedAt                  DateTime?
+  usedCount               Int                @default(0)
+  maxEntries              Int                @default(1)
+  cancelledAt             DateTime?
+  cancelledById           String?
+  cancellationReason      String?            @db.Text
+  revokedAt               DateTime?
+  revokedById             String?
+  revokeReason            String?            @db.Text
+
+  // Wallet integration
+  googleWalletObjectId    String?
+  appleWalletSerialNumber String?
+
+  // QR Code dynamique (TOTP optionnel)
+  totpSecret              String?
+  qrMode                  String             @default("STATIC") // "STATIC" | "DYNAMIC"
+
+  createdAt               DateTime           @default(now())
+  updatedAt               DateTime           @updatedAt
+
+  validations             TicketValidation[]
+
+  @@index([eventId])
+  @@index([userId])
+  @@index([status])
+  @@index([secureToken])
+  @@map("event_tickets")
+}
+
+model TicketValidation {
+  id            String      @id @default(cuid())
+  ticketId      String
+  ticket        EventTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  eventId       String
+  scannedById   String      // ID de l'agent ou admin qui effectue le contrôle
+  scannedByName String?     // Nom ou identifiant de l'agent
+  result        String      // "GRANTED" | "DENIED_INVALID" | "DENIED_USED" | "DENIED_CANCELLED" | "DENIED_EXPIRED" | "DENIED_REVOKED" | "DENIED_WRONG_EVENT"
+  deviceInfo    String?
+  ipAddress     String?
+  location      String?
+  scannedAt     DateTime    @default(now())
+
+  @@index([ticketId])
+  @@index([eventId])
+  @@index([scannedById])
+  @@index([scannedAt])
+  @@map("ticket_validations")
 }
 

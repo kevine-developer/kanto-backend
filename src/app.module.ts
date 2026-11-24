@@ -48,6 +48,7 @@ import { ModerationModule } from './modules/moderation/index.js';
 import { RakiTenyModule } from './raki-teny/raki-teny.module.js';
 import { ReferralModule } from './referral/referral.module.js';
 import { EventsModule } from './events/events.module.js';
+import { TicketsModule } from './tickets/tickets.module.js';
 import { ContentWizardModule } from './games/content-wizard/content-wizard.module.js';
 import { DailyChallengeModule } from './games/daily-challenge/daily-challenge.module.js';
 import { AppVersionModule } from './app-version/app-version.module.js';
@@ -117,6 +118,7 @@ import { AccountStatusGuard } from './common/guards/account-status.guard.js';
     RakiTenyModule,
     ReferralModule,
     EventsModule,
+    TicketsModule,
     ContentWizardModule,
     DailyChallengeModule,
     AppVersionModule,

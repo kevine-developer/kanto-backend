@@ -254,6 +254,72 @@ describe('Séparation stricte de la gestion des mots de passe (Native vs Adminis
       expect(mockRes.status).not.toHaveBeenCalled();
       expect(nextFn).toHaveBeenCalled();
     });
+
+    it("7b. Sur forget-password, doit bloquer (403) une demande initiée depuis l'admin pour un utilisateur standard", async () => {
+      prismaMock.user = {
+        findUnique: jest.fn().mockResolvedValueOnce({
+          id: 'usr_normal_123',
+          email: 'user.normal@gmail.com',
+          role: 'USER',
+        }),
+      };
+
+      mockReq = {
+        method: 'POST',
+        path: '/api/auth/forget-password',
+        body: {
+          email: 'user.normal@gmail.com',
+          redirectTo: 'http://localhost:3001/reset-password',
+        },
+        headers: {
+          origin: 'http://localhost:3001',
+          'x-client-context': 'admin',
+        },
+      };
+
+      await middleware.use(mockReq, mockRes, nextFn);
+
+      expect(mockRes.status).toHaveBeenCalledWith(403);
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          error: expect.objectContaining({
+            code: 'FORBIDDEN_ROLE',
+            message: expect.stringContaining(
+              'réservée aux comptes administrateurs',
+            ),
+          }),
+        }),
+      );
+      expect(nextFn).not.toHaveBeenCalled();
+    });
+
+    it("7c. Sur forget-password, doit autoriser (next) une demande initiée depuis l'admin pour un administrateur légitime", async () => {
+      prismaMock.user = {
+        findUnique: jest.fn().mockResolvedValueOnce({
+          id: 'usr_admin_456',
+          email: 'superadmin@kanto.mg',
+          role: 'ADMIN',
+        }),
+      };
+
+      mockReq = {
+        method: 'POST',
+        path: '/api/auth/forget-password',
+        body: {
+          email: 'superadmin@kanto.mg',
+          redirectTo: 'http://localhost:3001/reset-password',
+        },
+        headers: {
+          origin: 'http://localhost:3001',
+          'x-client-context': 'admin',
+        },
+      };
+
+      await middleware.use(mockReq, mockRes, nextFn);
+
+      expect(mockRes.status).not.toHaveBeenCalled();
+      expect(nextFn).toHaveBeenCalled();
+    });
   });
 
   // ─── 3. Tests du routage AppController sur /reset-password ────────────────

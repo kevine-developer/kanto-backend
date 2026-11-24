@@ -12,6 +12,7 @@ import { NotificationsService } from '../notifications/notifications.service.js'
 import { BadgesService } from '../badges/badges.service.js';
 import { CloudinaryService } from '../integrations/cloudinary/cloudinary.service.js';
 import { CloudinarySyncService } from '../integrations/cloudinary/cloudinary-sync.service.js';
+import { TicketsService } from '../tickets/services/tickets.service.js';
 import {
   EventCategory,
   EventParticipationStatus,
@@ -28,6 +29,7 @@ describe('EventsService', () => {
   let badgesService: any;
   let cloudinaryService: any;
   let cloudinarySyncService: any;
+  let ticketsService: any;
 
   const mockFutureStart = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   const mockFutureEnd = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
@@ -152,6 +154,19 @@ describe('EventsService', () => {
       }),
     };
 
+    ticketsService = {
+      generateTicketForParticipation: jest.fn<any>().mockResolvedValue({
+        id: 'ticket_1',
+        ticketNumber: 'KT-EVT-1234',
+        status: 'VALID',
+      }),
+      cancelTicketForParticipation: jest.fn<any>().mockResolvedValue({
+        id: 'ticket_1',
+        status: 'CANCELLED',
+      }),
+      getTicketByEventId: jest.fn<any>().mockResolvedValue(null),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         EventsService,
@@ -161,6 +176,7 @@ describe('EventsService', () => {
         { provide: BadgesService, useValue: badgesService },
         { provide: CloudinaryService, useValue: cloudinaryService },
         { provide: CloudinarySyncService, useValue: cloudinarySyncService },
+        { provide: TicketsService, useValue: ticketsService },
       ],
     }).compile();
 
