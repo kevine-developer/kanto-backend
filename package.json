@@ -46,6 +46,7 @@
     "fix:media": "tsx src/scripts/fix-broken-media-urls.ts",
     "seed:raki-teny": "tsx src/scripts/seed-raki-teny.ts",
     "clean:events": "tsx src/scripts/clean-fake-events-data.ts",
+    "seed:dev:ticket-event": "tsx src/scripts/seed-dev-ticket-event.ts",
     "test:email": "tsx src/scripts/test-email.ts",
     "seed:learning": "tsx prisma/seed-learning.ts",
     "seed:learning:prod": "tsx prisma/seed-learning.ts"

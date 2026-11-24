@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -226,6 +227,47 @@ export class EventsController {
   @Roles(['ADMIN', 'admin'])
   async getEventStats(@Param('id') eventId: string) {
     return this.eventsService.getEventStats(eventId);
+  }
+
+  /**
+   * Récupère la liste des agents de contrôle / staff assignés à un événement spécifique (admin).
+   */
+  @Get('admin/:id/staff')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  async getEventStaff(@Param('id') eventId: string) {
+    return this.eventsService.getEventStaff(eventId);
+  }
+
+  /**
+   * Assigne un agent de contrôle à un événement spécifique (admin).
+   */
+  @Post('admin/:id/staff')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  async addEventStaff(
+    @Param('id') eventId: string,
+    @Body('email') email?: string,
+    @Body('userId') userId?: string,
+  ) {
+    const target = email || userId;
+    if (!target) {
+      throw new BadRequestException("L'adresse e-mail ou l'ID de l'agent est requis.");
+    }
+    return this.eventsService.addEventStaff(eventId, target);
+  }
+
+  /**
+   * Retire un agent de contrôle d'un événement spécifique (admin).
+   */
+  @Delete('admin/:id/staff/:userId')
+  @UseGuards(AuthGuard)
+  @Roles(['ADMIN', 'admin'])
+  async removeEventStaff(
+    @Param('id') eventId: string,
+    @Param('userId') userId: string,
+  ) {
+    return this.eventsService.removeEventStaff(eventId, userId);
   }
 
   /**

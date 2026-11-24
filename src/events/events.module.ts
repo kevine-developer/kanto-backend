@@ -7,6 +7,7 @@ import { RedisModule } from '../redis/redis.module.js';
 import { ProgressionModule } from '../progression/progression.module.js';
 import { NotificationsModule } from '../notifications/notifications.module.js';
 import { BadgesModule } from '../badges/badges.module.js';
+import { TicketsModule } from '../tickets/tickets.module.js';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { BadgesModule } from '../badges/badges.module.js';
     ProgressionModule,
     NotificationsModule,
     BadgesModule,
+    TicketsModule,
   ],
   controllers: [EventsController],
   providers: [EventsService, EventLifecycleScheduler],

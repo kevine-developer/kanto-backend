@@ -13,6 +13,7 @@ import {
   EventParticipationType,
   EventRewardType,
   EventStatus,
+  TicketEntryMode,
 } from '../../../generated/prisma/client.js';
 
 export class CreateEventRewardDto {
@@ -133,6 +134,19 @@ export class CreateEventDto {
   @IsOptional()
   @IsBoolean()
   isPaid?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  ticketingEnabled?: boolean;
+
+  @IsOptional()
+  @IsEnum(TicketEntryMode, { message: 'Mode d’entrée du billet invalide' })
+  ticketEntryMode?: TicketEntryMode;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  ticketMaxEntries?: number;
 
   @IsOptional()
   @IsNumber()

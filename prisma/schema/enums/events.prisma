@@ -47,3 +47,17 @@ enum EventRewardType {
   CUSTOM          // Récompense personnalisée
 }
 
+enum TicketStatus {
+  VALID       // Billet valide, prêt à l'usage
+  USED        // Billet déjà scanné et validé
+  CANCELLED   // Billet annulé (par l'utilisateur ou l'admin)
+  REVOKED     // Billet révoqué (fraude détectée)
+  EXPIRED     // Billet expiré (événement terminé)
+}
+
+enum TicketEntryMode {
+  SINGLE      // Entrée unique
+  MULTI       // Entrées multiples (événement multi-jours)
+  UNLIMITED   // Accès illimité pendant la durée de l'événement
+}
+

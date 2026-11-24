@@ -73,6 +73,7 @@ model User {
 
   // Relations Événements & Fanamby
   eventParticipations    EventParticipation[]
+  eventTickets           EventTicket[]
   eventRewardClaims      EventRewardClaim[]
   eventLeaderboardEntries EventLeaderboardEntry[]
 
