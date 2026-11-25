@@ -125,16 +125,24 @@ export const PUBLIC_SHELL_CSS = `
   .site-header-inner {
     max-width: 1180px;
     margin: 0 auto;
-    padding: 12px 20px;
+    padding: 10px 14px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 10px;
+  }
+
+  @media (min-width: 480px) {
+    .site-header-inner {
+      padding: 12px 20px;
+      gap: 14px;
+    }
   }
 
   @media (min-width: 768px) {
     .site-header-inner {
       padding: 14px 32px;
+      gap: 16px;
     }
   }
 
@@ -146,15 +154,23 @@ export const PUBLIC_SHELL_CSS = `
   .brand {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 9px;
     text-decoration: none;
     color: var(--color-ink);
-    flex-shrink: 0;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  @media (min-width: 480px) {
+    .brand {
+      gap: 12px;
+      flex-shrink: 0;
+    }
   }
 
   .brand-logo-wrap {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -163,6 +179,13 @@ export const PUBLIC_SHELL_CSS = `
     border: 1px solid var(--color-border);
     background: var(--color-bg);
     flex-shrink: 0;
+  }
+
+  @media (min-width: 480px) {
+    .brand-logo-wrap {
+      width: 36px;
+      height: 36px;
+    }
   }
 
   .brand-logo {
@@ -175,15 +198,23 @@ export const PUBLIC_SHELL_CSS = `
   .brand-text-wrap {
     display: flex;
     flex-direction: column;
+    min-width: 0;
   }
 
   .brand-name {
     font-family: var(--font-serif);
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-weight: 600;
     line-height: 1.1;
     color: var(--color-heading);
     letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 480px) {
+    .brand-name {
+      font-size: 1.25rem;
+    }
   }
 
   .brand-domain {
@@ -192,11 +223,19 @@ export const PUBLIC_SHELL_CSS = `
   }
 
   .brand-tag {
-    font-size: 0.7rem;
+    display: none;
+    font-size: 0.68rem;
     color: var(--color-ink-muted);
     letter-spacing: 0.06em;
     text-transform: uppercase;
     font-weight: 600;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 400px) {
+    .brand-tag {
+      display: block;
+    }
   }
 
   .header-nav {
@@ -245,14 +284,20 @@ export const PUBLIC_SHELL_CSS = `
   .header-actions {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     flex-shrink: 0;
+  }
+
+  @media (min-width: 480px) {
+    .header-actions {
+      gap: 10px;
+    }
   }
 
   .theme-toggle-btn,
   .mobile-menu-btn {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -281,14 +326,22 @@ export const PUBLIC_SHELL_CSS = `
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 9px 18px;
-    font-size: 0.88rem;
+    min-height: 44px;
+    padding: 9px 13px;
+    font-size: 0.83rem;
     font-weight: 600;
     color: #FFFFFF;
     background: var(--color-tanimbary);
     border-radius: var(--radius-md);
     transition: background-color 0.15s ease, transform 0.1s ease;
     white-space: nowrap;
+  }
+
+  @media (min-width: 480px) {
+    .header-cta-btn {
+      padding: 9px 18px;
+      font-size: 0.88rem;
+    }
   }
 
   .header-cta-btn:hover {
@@ -301,7 +354,7 @@ export const PUBLIC_SHELL_CSS = `
     display: none;
     background: var(--color-surface);
     border-top: 1px solid var(--color-border);
-    padding: 14px 20px 20px;
+    padding: 14px 16px 20px;
   }
 
   .mobile-nav-drawer.open {
@@ -317,19 +370,26 @@ export const PUBLIC_SHELL_CSS = `
 
   .mobile-nav-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 8px;
+  }
+
+  @media (min-width: 440px) {
+    .mobile-nav-grid {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   .mobile-nav-link {
     display: flex;
     align-items: center;
-    padding: 10px 12px;
+    min-height: 44px;
+    padding: 10px 14px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--color-border);
     background: var(--color-bg);
     color: var(--color-ink);
-    font-size: 0.86rem;
+    font-size: 0.88rem;
     font-weight: 500;
     text-decoration: none;
     transition: border-color 0.15s ease, color 0.15s ease;
@@ -441,11 +501,23 @@ export const PUBLIC_SHELL_CSS = `
     color: var(--color-ink-muted);
     background: none;
     border: none;
-    padding: 0;
+    padding: 4px 0;
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
     text-align: left;
     font-family: inherit;
     cursor: pointer;
+    overflow-wrap: anywhere;
     transition: color 0.15s ease;
+  }
+
+  @media (min-width: 768px) {
+    .footer-links-col a,
+    .btn-text-link {
+      padding: 1px 0;
+      min-height: auto;
+    }
   }
 
   .footer-links-col a:hover,
@@ -472,8 +544,7 @@ export const PUBLIC_SHELL_CSS = `
   }
 
   /* ─── MODULE IMMERSIF DES AVIS COMMUNAUTÉ (NY FEON'NY FIKAMBANANA) ───────── */
-  body.hide-header .kanto-reviews-section,
-  body.hide-header .krv-modal-backdrop {
+  body.hide-header .kanto-reviews-section {
     display: none !important;
   }
 
@@ -577,38 +648,6 @@ export const PUBLIC_SHELL_CSS = `
     margin: 0;
   }
 
-  .krv-header-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    flex-shrink: 0;
-  }
-
-  .krv-btn-write {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-    min-height: 44px;
-    padding: 10px 20px;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--color-tanimbary);
-    background: var(--color-tanimbary);
-    color: #FFFFFF;
-    font-family: var(--font-sans);
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
-  }
-
-  .krv-btn-write:hover {
-    background: var(--color-tanimbary-dark);
-    transform: translateY(-1px);
-    box-shadow: var(--color-card-shadow);
-  }
-
   /* Baromètre Kanto (Score monumental + Histogramme interactif) */
   .krv-barometer {
     display: grid;
@@ -634,13 +673,15 @@ export const PUBLIC_SHELL_CSS = `
   .krv-score-panel {
     display: flex;
     align-items: center;
-    gap: 20px;
+    flex-wrap: wrap;
+    gap: 14px 20px;
     padding-bottom: 18px;
     border-bottom: 1px solid var(--color-border-subtle);
   }
 
   @media (min-width: 820px) {
     .krv-score-panel {
+      flex-wrap: nowrap;
       padding-bottom: 0;
       padding-right: 28px;
       border-bottom: none;
@@ -656,7 +697,7 @@ export const PUBLIC_SHELL_CSS = `
 
   .krv-score-value {
     font-family: var(--font-serif);
-    font-size: 3.1rem;
+    font-size: clamp(2.35rem, 8vw, 3.1rem);
     font-weight: 700;
     line-height: 0.95;
     color: var(--color-heading);
@@ -722,17 +763,27 @@ export const PUBLIC_SHELL_CSS = `
 
   .krv-dist-row {
     display: grid;
-    grid-template-columns: 44px 1fr 40px;
+    grid-template-columns: 42px 1fr 38px;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    min-height: 36px;
     background: transparent;
     border: none;
-    padding: 3px 6px;
+    padding: 4px 6px;
     border-radius: 6px;
     cursor: pointer;
     text-align: left;
     font-family: inherit;
     transition: background-color 0.15s ease;
+  }
+
+  @media (min-width: 768px) {
+    .krv-dist-row {
+      min-height: 28px;
+      grid-template-columns: 44px 1fr 40px;
+      gap: 10px;
+      padding: 3px 6px;
+    }
   }
 
   .krv-dist-row:hover {
@@ -792,8 +843,8 @@ export const PUBLIC_SHELL_CSS = `
   }
 
   .krv-filter-btn {
-    min-height: 36px;
-    padding: 6px 14px;
+    min-height: 40px;
+    padding: 7px 14px;
     border-radius: var(--radius-full);
     border: 1px solid var(--color-border);
     background: var(--color-bg);
@@ -803,6 +854,13 @@ export const PUBLIC_SHELL_CSS = `
     font-weight: 600;
     cursor: pointer;
     transition: all 0.15s ease;
+  }
+
+  @media (min-width: 768px) {
+    .krv-filter-btn {
+      min-height: 36px;
+      padding: 6px 14px;
+    }
   }
 
   .krv-filter-btn:hover {
@@ -829,16 +887,17 @@ export const PUBLIC_SHELL_CSS = `
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    padding: 26px 24px;
+    padding: 20px 18px;
     box-shadow: var(--color-card-shadow);
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 16px;
   }
 
   @media (min-width: 768px) {
     .krv-spotlight {
       padding: 32px 36px;
+      gap: 18px;
     }
   }
 
@@ -893,8 +952,8 @@ export const PUBLIC_SHELL_CSS = `
   }
 
   .krv-nav-btn {
-    width: 38px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -931,17 +990,11 @@ export const PUBLIC_SHELL_CSS = `
   .krv-spotlight-quote {
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: 1.25rem;
-    line-height: 1.55;
+    font-size: clamp(1.12rem, 3.6vw, 1.48rem);
+    line-height: 1.54;
     color: var(--color-heading);
+    overflow-wrap: anywhere;
     margin: 0;
-  }
-
-  @media (min-width: 768px) {
-    .krv-spotlight-quote {
-      font-size: 1.48rem;
-      line-height: 1.52;
-    }
   }
 
   .krv-spotlight-footer {
@@ -986,11 +1039,12 @@ export const PUBLIC_SHELL_CSS = `
 
   .review-card-item {
     flex: 0 0 84%;
+    min-width: 0;
     scroll-snap-align: start;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    padding: 20px;
+    padding: 18px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -1001,12 +1055,14 @@ export const PUBLIC_SHELL_CSS = `
   @media (min-width: 600px) and (max-width: 899px) {
     .review-card-item {
       flex: 0 0 47%;
+      padding: 20px;
     }
   }
 
   @media (min-width: 900px) {
     .review-card-item {
       flex: initial;
+      padding: 20px;
     }
   }
 
@@ -1050,6 +1106,7 @@ export const PUBLIC_SHELL_CSS = `
     font-size: 0.94rem;
     line-height: 1.62;
     color: var(--color-ink);
+    overflow-wrap: anywhere;
     margin: 0;
     flex: 1;
   }
@@ -1136,8 +1193,8 @@ export const PUBLIC_SHELL_CSS = `
   }
 
   .krv-card-spot-btn {
-    width: 32px;
-    height: 32px;
+    min-width: 40px;
+    min-height: 40px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1156,12 +1213,27 @@ export const PUBLIC_SHELL_CSS = `
 
   /* État Skeleton & Vide */
   .krv-skeleton-card {
+    flex: 0 0 84%;
+    min-width: 240px;
     height: 190px;
     border-radius: var(--radius-md);
     border: 1px solid var(--color-border);
     background: linear-gradient(90deg, var(--color-surface) 25%, var(--color-surface-hover) 50%, var(--color-surface) 75%);
     background-size: 200% 100%;
     animation: krvShimmer 1.5s infinite linear;
+  }
+
+  @media (min-width: 600px) and (max-width: 899px) {
+    .krv-skeleton-card {
+      flex: 0 0 47%;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .krv-skeleton-card {
+      flex: initial;
+      min-width: 0;
+    }
   }
 
   @keyframes krvShimmer {
@@ -1222,252 +1294,6 @@ export const PUBLIC_SHELL_CSS = `
     border-color: var(--color-tanimbary);
     color: var(--color-tanimbary);
     background: var(--color-surface-hover);
-  }
-
-  /* Modale immersive de dépôt d'avis */
-  .krv-modal-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 1200;
-    background: rgba(13, 13, 11, 0.72);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-  }
-
-  .krv-modal-backdrop.open {
-    display: flex;
-  }
-
-  .krv-modal-dialog {
-    width: 100%;
-    max-width: 540px;
-    max-height: 92vh;
-    overflow-y: auto;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--color-card-shadow-hover);
-    color: var(--color-ink);
-  }
-
-  .krv-modal-head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 22px 24px 16px;
-    border-bottom: 1px solid var(--color-border-subtle);
-  }
-
-  .krv-modal-title {
-    font-family: var(--font-serif);
-    font-size: 1.45rem;
-    font-weight: 600;
-    color: var(--color-heading);
-    margin: 0 0 4px;
-  }
-
-  .krv-modal-sub {
-    font-size: 0.84rem;
-    color: var(--color-ink-muted);
-    margin: 0;
-  }
-
-  .krv-modal-close {
-    width: 36px;
-    height: 36px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--color-border);
-    background: transparent;
-    color: var(--color-ink-muted);
-    font-size: 1rem;
-    cursor: pointer;
-    flex-shrink: 0;
-  }
-
-  .krv-modal-close:hover {
-    color: var(--color-ink);
-    background: var(--color-surface-hover);
-  }
-
-  .krv-modal-body {
-    padding: 20px 24px 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
-
-  .krv-star-picker-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    padding: 16px;
-    border-radius: var(--radius-md);
-    background: var(--color-bg-alt);
-    border: 1px solid var(--color-border-subtle);
-  }
-
-  .krv-star-picker {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .krv-star-pick-btn {
-    width: 44px;
-    height: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-sm);
-    border: 1px solid transparent;
-    background: transparent;
-    cursor: pointer;
-    color: var(--color-border);
-    transition: transform 0.12s ease, background-color 0.15s ease;
-  }
-
-  .krv-star-pick-btn:hover {
-    transform: scale(1.08);
-    background: var(--color-ochre-soft);
-  }
-
-  .krv-star-pick-btn.active svg {
-    fill: var(--color-ochre);
-    color: var(--color-ochre);
-  }
-
-  .krv-rating-caption {
-    font-size: 0.84rem;
-    font-weight: 600;
-    color: var(--color-ochre);
-    min-height: 20px;
-  }
-
-  .krv-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .krv-field-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  @media (min-width: 520px) {
-    .krv-field-row {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  .krv-label {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--color-heading);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .krv-input,
-  .krv-select,
-  .krv-textarea {
-    width: 100%;
-    padding: 10px 13px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--color-border);
-    background: var(--color-bg);
-    color: var(--color-ink);
-    font-family: var(--font-sans);
-    font-size: 0.9rem;
-    transition: border-color 0.15s ease;
-  }
-
-  .krv-textarea {
-    min-height: 104px;
-    resize: vertical;
-    line-height: 1.55;
-  }
-
-  .krv-input:focus,
-  .krv-select:focus,
-  .krv-textarea:focus {
-    outline: none;
-    border-color: var(--color-tanimbary);
-  }
-
-  .krv-consent-label {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    font-size: 0.8rem;
-    line-height: 1.5;
-    color: var(--color-ink-muted);
-    cursor: pointer;
-    padding: 10px 12px;
-    border-radius: var(--radius-sm);
-    background: var(--color-bg-alt);
-    border: 1px solid var(--color-border-subtle);
-  }
-
-  .krv-consent-label input {
-    margin-top: 3px;
-    accent-color: var(--color-tanimbary);
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-  }
-
-  .krv-form-feedback {
-    padding: 10px 14px;
-    border-radius: var(--radius-sm);
-    font-size: 0.84rem;
-    font-weight: 500;
-    display: none;
-  }
-
-  .krv-form-feedback.error {
-    display: block;
-    background: var(--color-error-bg);
-    color: var(--color-error-text);
-    border: 1px solid var(--color-error);
-  }
-
-  .krv-form-feedback.success {
-    display: block;
-    background: var(--color-success-bg);
-    color: var(--color-success-text);
-    border: 1px solid var(--color-success);
-  }
-
-  .krv-submit-btn {
-    width: 100%;
-    min-height: 46px;
-    border-radius: var(--radius-md);
-    border: none;
-    background: var(--color-tanimbary);
-    color: #FFFFFF;
-    font-family: var(--font-sans);
-    font-size: 0.94rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-  }
-
-  .krv-submit-btn:hover:not(:disabled) {
-    background: var(--color-tanimbary-dark);
-  }
-
-  .krv-submit-btn:disabled {
-    opacity: 0.6;
-    cursor: wait;
   }
 `;
 
@@ -1687,15 +1513,6 @@ export function renderPublicReviewsSection(
     )
     .join('');
 
-  const starButtons = [1, 2, 3, 4, 5]
-    .map(
-      (n) => `
-            <button type="button" class="krv-star-pick-btn${n <= 5 ? ' active' : ''}" data-star="${n}" aria-label="${n} étoile${n > 1 ? 's' : ''}">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            </button>`,
-    )
-    .join('');
-
   return `
   <section class="kanto-reviews-section${isCompact ? ' is-compact' : ''}" id="avis" aria-labelledby="krv-section-title" data-reviews-limit="${limit}">
     <div class="krv-container">
@@ -1707,13 +1524,6 @@ export function renderPublicReviewsSection(
           <p class="krv-subtitle">
             Retours authentiques, vérifiés et publiés avec le consentement explicite de leurs auteurs autour de la langue et du patrimoine malgaches.
           </p>
-        </div>
-
-        <div class="krv-header-actions">
-          <button type="button" class="krv-btn-write" id="krv-btn-open-modal">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-            <span>Partager mon avis</span>
-          </button>
         </div>
       </div>
 
@@ -1818,85 +1628,13 @@ export function renderPublicReviewsSection(
       </div>
     </div>
   </section>
-
-  <!-- Modale de soumission d'avis communautaire -->
-  <div class="krv-modal-backdrop" id="krv-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="krv-modal-title">
-    <div class="krv-modal-dialog">
-      <div class="krv-modal-head">
-        <div>
-          <h3 class="krv-modal-title" id="krv-modal-title">Partager votre avis sur Kanto</h3>
-          <p class="krv-modal-sub">Misaotra amin'ny fandraisanao anjara • Votre retour façonne le sanctuaire.</p>
-        </div>
-        <button type="button" class="krv-modal-close" id="krv-modal-close" aria-label="Fermer la fenêtre">✕</button>
-      </div>
-
-      <form class="krv-modal-body" id="krv-review-form" novalidate>
-        <div class="krv-star-picker-box">
-          <div class="krv-star-picker" id="krv-star-picker" role="radiogroup" aria-label="Votre note sur 5">
-            ${starButtons}
-          </div>
-          <span class="krv-rating-caption" id="krv-rating-caption">5 / 5 • Kanto indrindra ! Remarquable</span>
-        </div>
-
-        <div class="krv-field-row">
-          <div class="krv-field">
-            <label class="krv-label" for="krv-input-category">Thématique</label>
-            <select class="krv-select" id="krv-input-category">
-              <option value="general">Expérience générale</option>
-              <option value="heritage">Patrimoine (Angano, Ohabolana…)</option>
-              <option value="learning">Apprentissage &amp; Jeux</option>
-              <option value="design">Design &amp; Ergonomie</option>
-            </select>
-          </div>
-          <div class="krv-field">
-            <label class="krv-label" for="krv-input-display-type">Signature publique</label>
-            <select class="krv-select" id="krv-input-display-type">
-              <option value="FIRSTNAME">Afficher mon prénom</option>
-              <option value="PSEUDO">Afficher mon nom complet / pseudo</option>
-              <option value="ANONYMOUS">Rester anonyme (Membre)</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="krv-field-row">
-          <div class="krv-field">
-            <label class="krv-label" for="krv-input-name">Prénom ou pseudo</label>
-            <input type="text" class="krv-input" id="krv-input-name" maxlength="100" placeholder="Ex : Riana, Miora...">
-          </div>
-          <div class="krv-field">
-            <label class="krv-label" for="krv-input-email">E-mail (optionnel)</label>
-            <input type="email" class="krv-input" id="krv-input-email" placeholder="vous@exemple.com">
-          </div>
-        </div>
-
-        <div class="krv-field">
-          <label class="krv-label" for="krv-input-comment">
-            <span>Votre témoignage *</span>
-            <span id="krv-comment-counter" style="font-weight:500; color: var(--color-ink-subtle);">0 / 2000</span>
-          </label>
-          <textarea class="krv-textarea" id="krv-input-comment" minlength="10" maxlength="2000" required placeholder="Qu'avez-vous le plus apprécié dans Kanto MG ? (10 caractères minimum)"></textarea>
-        </div>
-
-        <label class="krv-consent-label" for="krv-input-consent">
-          <input type="checkbox" id="krv-input-consent" checked>
-          <span>J'autorise Kanto MG à publier ce témoignage sur le portail public après validation par l'équipe (rétractable à tout moment, conformément aux CGU).</span>
-        </label>
-
-        <div class="krv-form-feedback" id="krv-form-feedback" role="alert"></div>
-
-        <button type="submit" class="krv-submit-btn" id="krv-submit-btn">
-          Envoyer mon avis
-        </button>
-      </form>
-    </div>
-  </div>
   `;
 }
 
 /**
- * Script autonome du module Avis Communautaire (baromètre, scène vedette,
- * grille/carrousel filtrable et modale d'envoi vers POST /api/reviews).
- * Idempotent et compatible avec les environnements DOM légers de test.
+ * Script autonome du module Avis Communautaire (baromètre, scène vedette
+ * et grille/carrousel filtrable). Idempotent et compatible avec les
+ * environnements DOM légers de test.
  */
 export const PUBLIC_REVIEWS_SCRIPT = `
 (function initCommunityReviews() {
@@ -2116,7 +1854,6 @@ export const PUBLIC_REVIEWS_SCRIPT = `
           cardsListEl.innerHTML =
             '<div class="reviews-empty-state">' +
               '<span>Mbola tsy misy hevitra ho an\\u2019ity sivana ity. Aucun avis disponible pour ce filtre pour le moment.</span>' +
-              '<button type="button" class="krv-btn-load-more" id="krv-empty-write-btn">Soyez le premier à témoigner</button>' +
             '</div>';
           if (paginationBox) paginationBox.style.display = 'none';
           return;
@@ -2233,11 +1970,6 @@ export const PUBLIC_REVIEWS_SCRIPT = `
         if (spotlightEl && typeof spotlightEl.scrollIntoView === 'function') {
           spotlightEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
-        return;
-      }
-      var emptyWriteBtn = target.closest('#krv-empty-write-btn');
-      if (emptyWriteBtn) {
-        openReviewModal();
       }
     });
   }
@@ -2267,175 +1999,6 @@ export const PUBLIC_REVIEWS_SCRIPT = `
         });
       }
     })(distNodeList[d]);
-  }
-
-  // --- MODALE DE SOUMISSION D'AVIS ---
-  var modalBackdrop = document.getElementById('krv-modal-backdrop');
-  var btnOpenModal = document.getElementById('krv-btn-open-modal');
-  var btnCloseModal = document.getElementById('krv-modal-close');
-  var reviewForm = document.getElementById('krv-review-form');
-  var starPicker = document.getElementById('krv-star-picker');
-  var ratingCaption = document.getElementById('krv-rating-caption');
-  var commentInput = document.getElementById('krv-input-comment');
-  var commentCounter = document.getElementById('krv-comment-counter');
-  var feedbackBox = document.getElementById('krv-form-feedback');
-  var submitBtn = document.getElementById('krv-submit-btn');
-  var selectedStar = 5;
-
-  var starCaptions = {
-    1: '1 / 5 • Mila fanatsarana • À améliorer',
-    2: '2 / 5 • Antonony • Perfectible',
-    3: '3 / 5 • Tsara ihany • Satisfaisant',
-    4: '4 / 5 • Tena tsara ! Très apprécié',
-    5: '5 / 5 • Kanto indrindra ! Remarquable'
-  };
-
-  function syncStarPicker(val) {
-    selectedStar = val;
-    if (ratingCaption) ratingCaption.textContent = starCaptions[val] || '';
-    if (!starPicker || !starPicker.querySelectorAll) return;
-    var stars = starPicker.querySelectorAll('.krv-star-pick-btn');
-    for (var i = 0; i < stars.length; i++) {
-      var n = parseInt(stars[i].getAttribute('data-star') || '0', 10);
-      if (stars[i].classList) stars[i].classList.toggle('active', n <= val);
-    }
-  }
-
-  function openReviewModal() {
-    if (!modalBackdrop) return;
-    modalBackdrop.classList.add('open');
-    if (feedbackBox) {
-      feedbackBox.className = 'krv-form-feedback';
-      feedbackBox.textContent = '';
-    }
-  }
-
-  function closeReviewModal() {
-    if (!modalBackdrop) return;
-    modalBackdrop.classList.remove('open');
-  }
-
-  if (btnOpenModal && typeof btnOpenModal.addEventListener === 'function') {
-    btnOpenModal.addEventListener('click', openReviewModal);
-  }
-  if (btnCloseModal && typeof btnCloseModal.addEventListener === 'function') {
-    btnCloseModal.addEventListener('click', closeReviewModal);
-  }
-  if (modalBackdrop && typeof modalBackdrop.addEventListener === 'function') {
-    modalBackdrop.addEventListener('click', function(e) {
-      if (e.target === modalBackdrop) closeReviewModal();
-    });
-  }
-  if (typeof document.addEventListener === 'function') {
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && modalBackdrop && modalBackdrop.classList && modalBackdrop.classList.contains('open')) {
-        closeReviewModal();
-      }
-    });
-  }
-
-  if (starPicker && typeof starPicker.addEventListener === 'function') {
-    starPicker.addEventListener('click', function(e) {
-      var btn = e.target && typeof e.target.closest === 'function' ? e.target.closest('.krv-star-pick-btn') : null;
-      if (!btn) return;
-      var val = parseInt(btn.getAttribute('data-star') || '5', 10);
-      if (val >= 1 && val <= 5) syncStarPicker(val);
-    });
-  }
-
-  if (commentInput && commentCounter && typeof commentInput.addEventListener === 'function') {
-    commentInput.addEventListener('input', function() {
-      commentCounter.textContent = commentInput.value.length + ' / 2000';
-    });
-  }
-
-  if (reviewForm && typeof reviewForm.addEventListener === 'function') {
-    reviewForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      var comment = commentInput ? commentInput.value.trim() : '';
-      var authorNameEl = document.getElementById('krv-input-name');
-      var authorEmailEl = document.getElementById('krv-input-email');
-      var categoryEl = document.getElementById('krv-input-category');
-      var displayTypeEl = document.getElementById('krv-input-display-type');
-      var consentEl = document.getElementById('krv-input-consent');
-
-      if (comment.length < 10) {
-        if (feedbackBox) {
-          feedbackBox.className = 'krv-form-feedback error';
-          feedbackBox.textContent = 'Votre témoignage doit contenir au moins 10 caractères.';
-        }
-        return;
-      }
-
-      var payload = {
-        rating: selectedStar,
-        comment: comment,
-        category: categoryEl ? categoryEl.value : 'general',
-        publicDisplayNameType: displayTypeEl ? displayTypeEl.value : 'FIRSTNAME',
-        isPublicationAuthorized: consentEl ? Boolean(consentEl.checked) : true,
-        platform: 'WEB'
-      };
-
-      if (authorNameEl && authorNameEl.value.trim()) {
-        payload.authorName = authorNameEl.value.trim();
-      }
-      if (authorEmailEl && authorEmailEl.value.trim()) {
-        payload.authorEmail = authorEmailEl.value.trim();
-      }
-
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Envoi en cours...';
-      }
-      if (feedbackBox) {
-        feedbackBox.className = 'krv-form-feedback';
-        feedbackBox.textContent = '';
-      }
-
-      fetch('/api/reviews', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-        .then(function(res) {
-          return res.json().then(function(data) {
-            return { ok: res.ok, data: data };
-          });
-        })
-        .then(function(result) {
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Envoyer mon avis';
-          }
-          if (!result.ok) {
-            var errMsg = (result.data && result.data.message)
-              ? (Array.isArray(result.data.message) ? result.data.message[0] : result.data.message)
-              : 'Impossible d\\u2019enregistrer votre avis pour le moment.';
-            if (feedbackBox) {
-              feedbackBox.className = 'krv-form-feedback error';
-              feedbackBox.textContent = errMsg;
-            }
-            return;
-          }
-
-          if (feedbackBox) {
-            feedbackBox.className = 'krv-form-feedback success';
-            feedbackBox.textContent = 'Misaotra betsaka ! ' + (result.data.message || 'Votre avis a bien été enregistré.');
-          }
-          if (commentInput) commentInput.value = '';
-          if (commentCounter) commentCounter.textContent = '0 / 2000';
-        })
-        .catch(function() {
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Envoyer mon avis';
-          }
-          if (feedbackBox) {
-            feedbackBox.className = 'krv-form-feedback error';
-            feedbackBox.textContent = 'Erreur réseau lors de la soumission. Réessayez ultérieurement.';
-          }
-        });
-    });
   }
 
   loadStats();

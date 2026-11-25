@@ -7,7 +7,6 @@
  * Suppression complète de la vérification manuelle et du bloc intermédiaire de confirmation de statut.
  */
 
-import { renderQrCodeSvg } from '../utils/qr-code.util.js';
 import {
   renderPublicHeader,
   renderPublicFooter,
@@ -35,8 +34,6 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
     errorVal,
     currentYear,
   } = opt;
-
-  const qrSvg = renderQrCodeSvg(legalBaseUrl, 100);
 
   return `
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -348,26 +345,6 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
             </div>
           </div>
 
-        </div>
-
-        <!-- QR Code réel et scannable sur grand écran (ordinateur) -->
-        <div class="desktop-qr-card">
-          <div class="qr-visual">
-            <div class="qr-code-frame">
-              ${qrSvg}
-            </div>
-          </div>
-          <div class="qr-info">
-            <span class="qr-eyebrow">Scannez pour mobile</span>
-            <h3 class="qr-heading">Vous êtes sur ordinateur ?</h3>
-            <p class="qr-text">
-              Pointez l'appareil photo de votre smartphone vers ce code pour ouvrir la page directement sur votre mobile et lancer l'installation.
-            </p>
-            <div class="qr-domain-hint">
-              <span class="qr-dot"></span>
-              <span>app-kanto.gastsar.fr</span>
-            </div>
-          </div>
         </div>
 
       </div>

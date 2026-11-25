@@ -106,17 +106,11 @@ export const BETA_LANDING_CSS = `
 
   .hero-title {
     font-family: var(--font-serif);
-    font-size: 2.2rem;
+    font-size: clamp(1.85rem, 6.2vw, 2.85rem);
     font-weight: 600;
     line-height: 1.2;
     color: var(--color-heading);
     letter-spacing: -0.025em;
-  }
-
-  @media (min-width: 768px) {
-    .hero-title {
-      font-size: 2.85rem;
-    }
   }
 
   .hero-subtitle {
@@ -265,9 +259,15 @@ export const BETA_LANDING_CSS = `
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     box-shadow: var(--color-card-shadow);
-    padding: 24px;
+    padding: 20px 16px;
     text-align: left;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  @media (min-width: 480px) {
+    .register-form-card {
+      padding: 24px;
+    }
   }
 
   @media (min-width: 768px) {
@@ -352,8 +352,14 @@ export const BETA_LANDING_CSS = `
 
   .platform-selector-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 12px;
+  }
+
+  @media (min-width: 480px) {
+    .platform-selector-row {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   .platform-btn {
@@ -637,13 +643,20 @@ export const BETA_LANDING_CSS = `
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     box-shadow: var(--color-card-shadow);
-    padding: 26px 24px;
+    padding: 20px 18px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 22px;
+    gap: 20px;
     position: relative;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  @media (min-width: 480px) {
+    .store-kanto-card {
+      padding: 26px 24px;
+      gap: 22px;
+    }
   }
 
   .store-kanto-card:hover {
@@ -853,92 +866,6 @@ export const BETA_LANDING_CSS = `
     box-shadow: 0 4px 14px rgba(74, 103, 65, 0.28);
   }
 
-  /* ─── CARTE QR CODE SCANNABLE SUR GRAND ÉCRAN ────────────────────────────── */
-  .desktop-qr-card {
-    display: none;
-    align-items: center;
-    gap: 24px;
-    padding: 22px 28px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--color-card-shadow);
-    margin-top: 24px;
-  }
-
-  @media (min-width: 768px) {
-    .desktop-qr-card {
-      display: flex;
-    }
-  }
-
-  .qr-visual {
-    flex-shrink: 0;
-  }
-
-  .qr-code-frame {
-    background: #FFFFFF;
-    padding: 8px;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--color-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  }
-
-  .qr-code-frame svg {
-    display: block;
-    width: 104px;
-    height: 104px;
-  }
-
-  .qr-info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .qr-eyebrow {
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-tanimbary);
-  }
-
-  .qr-heading {
-    font-family: var(--font-serif);
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--color-heading);
-    line-height: 1.3;
-  }
-
-  .qr-text {
-    font-size: 0.86rem;
-    color: var(--color-ink-muted);
-    line-height: 1.5;
-    max-width: 480px;
-  }
-
-  .qr-domain-hint {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--color-ink-subtle);
-    margin-top: 6px;
-  }
-
-  .qr-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--color-tanimbary);
-  }
-
   /* ─── SECTION QUESTIONS FRÉQUENTES ───────────────────────────────────────── */
   .section-faq {
     width: 100%;
@@ -1065,8 +992,9 @@ export const BETA_LANDING_CSS = `
   }
 
   .btn-cookie {
-    padding: 6px 14px;
-    font-size: 0.82rem;
+    min-height: 44px;
+    padding: 10px 14px;
+    font-size: 0.84rem;
     font-weight: 600;
     border-radius: var(--radius-sm);
     cursor: pointer;
@@ -1109,11 +1037,12 @@ export const BETA_LANDING_CSS = `
   .modal-dialog {
     width: 100%;
     max-width: 500px;
+    max-height: 92vh;
+    overflow-y: auto;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
-    overflow: hidden;
     display: flex;
     flex-direction: column;
   }
@@ -1122,8 +1051,14 @@ export const BETA_LANDING_CSS = `
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 18px 24px;
+    padding: 18px 20px;
     border-bottom: 1px solid var(--color-border);
+  }
+
+  @media (min-width: 480px) {
+    .modal-head {
+      padding: 18px 24px;
+    }
   }
 
   .modal-head h3 {
@@ -1136,6 +1071,11 @@ export const BETA_LANDING_CSS = `
   .btn-modal-close {
     background: none;
     border: none;
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-size: 1.1rem;
     color: var(--color-ink-muted);
     cursor: pointer;
@@ -1178,8 +1118,9 @@ export const BETA_LANDING_CSS = `
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    flex-wrap: wrap;
     gap: 10px;
-    padding: 16px 24px;
+    padding: 16px 20px;
     border-top: 1px solid var(--color-border);
     background: var(--color-bg);
   }

@@ -86,7 +86,7 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
 <html lang="fr" data-theme="dark">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHtml(config.metaTitle)}</title>
   <meta name="description" content="${escapeHtml(config.metaDescription)}">
   <meta name="theme-color" content="#0D0D0B">
@@ -169,15 +169,21 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
       max-width: 1040px;
       margin: 0 auto;
       width: 100%;
-      padding: 40px 24px 72px;
+      padding: 28px 16px 52px;
+    }
+    @media (min-width: 768px) {
+      main {
+        padding: 40px 24px 72px;
+      }
     }
     .breadcrumbs {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 12px;
+      flex-wrap: wrap;
+      gap: 6px 8px;
+      font-size: 11.5px;
       color: var(--color-text-muted);
-      margin-bottom: 28px;
+      margin-bottom: 22px;
       text-transform: uppercase;
       letter-spacing: 0.8px;
       font-weight: 600;
@@ -207,7 +213,7 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
     }
     h1 {
       font-family: var(--font-serif);
-      font-size: clamp(32px, 4.5vw, 44px);
+      font-size: clamp(26px, 6.2vw, 44px);
       font-weight: 500;
       color: var(--color-heading);
       letter-spacing: -0.025em;
@@ -247,15 +253,23 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
     }
     .section-head {
       display: flex;
-      justify-content: space-between;
-      align-items: baseline;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
       margin-bottom: 20px;
       border-bottom: 1px solid var(--color-border);
       padding-bottom: 12px;
     }
+    @media (min-width: 560px) {
+      .section-head {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+    }
     .section-title {
       font-family: var(--font-serif);
-      font-size: 24px;
+      font-size: clamp(20px, 4.5vw, 24px);
       font-weight: 600;
       color: var(--color-heading);
       letter-spacing: -0.015em;
@@ -268,9 +282,16 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
     }
     .content-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 18px;
-      margin-bottom: 48px;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    @media (min-width: 640px) {
+      .content-grid {
+        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+        gap: 18px;
+        margin-bottom: 48px;
+      }
     }
     .content-card {
       background: var(--color-surface);
@@ -318,10 +339,16 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
-      padding: 40px 32px;
+      padding: 28px 18px;
       text-align: center;
-      margin-top: 36px;
+      margin-top: 32px;
       position: relative;
+    }
+    @media (min-width: 640px) {
+      .cta-banner {
+        padding: 40px 32px;
+        margin-top: 36px;
+      }
     }
     .cta-banner::before {
       content: "";
@@ -334,7 +361,7 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
     }
     .cta-title {
       font-family: var(--font-serif);
-      font-size: 26px;
+      font-size: clamp(22px, 5vw, 26px);
       font-weight: 600;
       color: var(--color-heading);
       margin-bottom: 10px;
@@ -350,16 +377,25 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
     .btn-cta {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 46px;
       gap: 8px;
       background: var(--color-tanimbary);
       color: #FFFFFF;
       font-weight: 700;
       font-size: 13.5px;
-      padding: 13px 26px;
+      padding: 13px 18px;
       border-radius: var(--radius-md);
       text-decoration: none;
       letter-spacing: 0.3px;
       transition: background-color 0.15s ease, transform 0.15s ease;
+    }
+    @media (min-width: 540px) {
+      .btn-cta {
+        width: auto;
+        padding: 13px 26px;
+      }
     }
     .btn-cta:hover { background: var(--color-tanimbary-dark); transform: translateY(-1px); }
     .hub-nav-tags {
@@ -371,8 +407,11 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
       border-top: 1px solid var(--color-border);
     }
     .tag-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
       font-size: 12px;
-      padding: 7px 14px;
+      padding: 8px 14px;
       border-radius: 99px;
       border: 1px solid var(--color-border);
       color: var(--color-text-secondary);
