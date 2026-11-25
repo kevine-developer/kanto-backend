@@ -12,6 +12,7 @@
 
 import { BETA_LANDING_CSS } from './beta-landing.styles.js';
 import { renderBetaLandingBody } from './beta-landing.content.js';
+import { PUBLIC_THEME_INIT_SCRIPT } from '../../common/web/public-layout.js';
 
 export interface BetaLandingPageOptions {
   testerCount?: number;
@@ -164,20 +165,7 @@ export function renderBetaLandingPage(
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500;1,6..72,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <script>
-    (function() {
-      try {
-        var savedTheme = localStorage.getItem('kanto_theme');
-        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var theme = savedTheme ? savedTheme : (prefersDark ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-        var metaTheme = document.querySelector('meta[name="theme-color"]');
-        if (metaTheme) {
-          metaTheme.setAttribute('content', theme === 'light' ? '#F8F6F0' : '#0C0C0A');
-        }
-      } catch (e) {}
-    })();
-  </script>
+  ${PUBLIC_THEME_INIT_SCRIPT}
 
   <style>
 ${BETA_LANDING_CSS}

@@ -1,3 +1,5 @@
+import { PUBLIC_REVIEWS_SCRIPT } from '../../common/web/public-layout.js';
+
 export function renderBetaWaitlistScript(): string {
   return `
 (function() {
@@ -307,6 +309,16 @@ export function renderBetaWaitlistScript(): string {
     });
   }
 
+  // ─── MENU DE NAVIGATION MOBILE ───────────────────────────────────────────
+  var mobileMenuBtn = document.getElementById('mobile-menu-toggle');
+  var mobileMenuDrawer = document.getElementById('mobile-nav-drawer');
+  if (mobileMenuBtn && mobileMenuDrawer) {
+    mobileMenuBtn.addEventListener('click', function() {
+      var isOpen = mobileMenuDrawer.classList.toggle('open');
+      mobileMenuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  }
+
   // ─── MODALES CGU & POLITIQUE DE CONFIDENTIALITÉ ──────────────────────────
   var cguModal = document.getElementById('kanto-cgu-modal');
   var openCguBtn = document.getElementById('btn-open-cgu-modal');
@@ -413,154 +425,8 @@ export function renderBetaWaitlistScript(): string {
       .replace(/'/g, '&#039;');
   }
 
-  // --- MODULE AVIS DE LA COMMUNAUTÉ (ACTIF SI LE CONTENEUR EXISTE DANS LE DOM) ---
-  (function initCommunityReviews() {
-    var avgScoreEl = document.getElementById('reviews-avg-rating');
-    var avgStarsEl = document.getElementById('reviews-avg-stars');
-    var totalCountEl = document.getElementById('reviews-total-count');
-    var cardsListEl = document.getElementById('reviews-cards-list');
-    var paginationBox = document.getElementById('reviews-pagination-box');
-    var btnLoadMore = document.getElementById('btn-load-more-reviews');
-
-    if (!cardsListEl) return;
-
-    var currentPage = 1;
-    var totalPages = 1;
-    var isLoadingReviews = false;
-
-    function renderStarSvg(filled) {
-      return '<svg width="15" height="15" viewBox="0 0 24 24" class="' + (filled ? 'star-icon-filled' : 'star-icon-empty') + '" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>';
-    }
-
-    function renderStarsRow(rating) {
-      var html = '';
-      for (var i = 1; i <= 5; i++) {
-        html += renderStarSvg(i <= Math.round(rating));
-      }
-      return html;
-    }
-
-    function formatDate(dateStr) {
-      try {
-        var d = new Date(dateStr);
-        return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
-      } catch(e) {
-        return '';
-      }
-    }
-
-    function getInitials(name) {
-      if (!name) return 'K';
-      var parts = name.trim().split(/\\s+/);
-      if (parts.length >= 2 && parts[0] && parts[1]) {
-        return (parts[0][0] + parts[1][0]).toUpperCase();
-      }
-      return name.slice(0, 2).toUpperCase();
-    }
-
-    function loadStats() {
-      fetch('/api/reviews/public/stats')
-        .then(function(res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
-        .then(function(stats) {
-          if (!stats || typeof stats.totalReviews !== 'number') return;
-          var total = stats.totalReviews;
-          if (avgScoreEl) {
-            avgScoreEl.textContent = total > 0 ? stats.averageRating.toFixed(1).replace('.', ',') : '5,0';
-          }
-          if (avgStarsEl) {
-            avgStarsEl.innerHTML = renderStarsRow(total > 0 ? stats.averageRating : 5);
-          }
-          if (totalCountEl) {
-            totalCountEl.textContent = total > 0 
-              ? total + ' avis certifié' + (total > 1 ? 's' : '') + ' (4★ et 5★)' 
-              : 'Avis 4★ et 5★ certifiés';
-          }
-        })
-        .catch(function(err) {
-          console.warn('[Reviews] Erreur chargement stats:', err);
-        });
-    }
-
-    function loadReviews(page, append) {
-      if (isLoadingReviews) return;
-      isLoadingReviews = true;
-
-      var url = '/api/reviews/public?page=' + page + '&limit=6&minRating=4';
-
-      fetch(url)
-        .then(function(res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
-        .then(function(res) {
-          isLoadingReviews = false;
-          var items = res.data || [];
-          totalPages = res.pagination ? res.pagination.totalPages : 1;
-          currentPage = page;
-
-          if (!append) {
-            cardsListEl.innerHTML = '';
-          }
-
-          if (items.length === 0 && !append) {
-            cardsListEl.innerHTML = '<div class="reviews-empty-state">Aucun avis 4 ou 5 étoiles disponible pour le moment.</div>';
-            if (paginationBox) paginationBox.style.display = 'none';
-            return;
-          }
-
-          items.forEach(function(item) {
-            var card = document.createElement('div');
-            card.className = 'review-card-item';
-            
-            var name = item.publicDisplayName || 'Membre de la communauté';
-            var initials = getInitials(name);
-            var versionBadge = item.appVersion ? '<span class="review-card-version">v' + escapeHtml(item.appVersion) + '</span>' : '';
-            var dateFormatted = formatDate(item.createdAt);
-
-            card.innerHTML = 
-              '<div class="review-card-head">' +
-                '<div class="review-card-stars">' + renderStarsRow(item.rating) + '</div>' +
-                '<div class="review-card-badge-verified">' +
-                  '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>' +
-                  '<span>Vérifié</span>' +
-                '</div>' +
-              '</div>' +
-              '<p class="review-card-comment">« ' + escapeHtml(item.comment) + ' »</p>' +
-              '<div class="review-card-footer">' +
-                '<div class="review-author-group">' +
-                  '<div class="review-avatar-circle">' + escapeHtml(initials) + '</div>' +
-                  '<div class="review-author-meta">' +
-                    '<span class="review-card-author">' + escapeHtml(name) + '</span>' +
-                    '<span class="review-card-date">' + dateFormatted + '</span>' +
-                  '</div>' +
-                '</div>' +
-                versionBadge +
-              '</div>';
-
-            cardsListEl.appendChild(card);
-          });
-
-          if (paginationBox) {
-            paginationBox.style.display = (currentPage < totalPages) ? 'block' : 'none';
-          }
-        })
-        .catch(function(err) {
-          isLoadingReviews = false;
-          console.warn('[Reviews] Erreur chargement avis:', err);
-          if (!append) {
-            cardsListEl.innerHTML = '<div class="reviews-empty-state">Impossible de charger les avis. Réessayez ultérieurement.</div>';
-          }
-        });
-    }
-
-    if (btnLoadMore) {
-      btnLoadMore.addEventListener('click', function() {
-        if (currentPage < totalPages) {
-          loadReviews(currentPage + 1, true);
-        }
-      });
-    }
-
-    loadStats();
-    loadReviews(1, false);
-  })();
+  // --- MODULE AVIS DE LA COMMUNAUTÉ (PARTAGÉ VIA PUBLIC-LAYOUT.TS) ---
+  ${PUBLIC_REVIEWS_SCRIPT}
 
   // ─── INITIALISATION SI E-MAIL PRÉSENT DANS L'URL OU STOCKÉ ────────────────
   try {
