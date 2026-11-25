@@ -67,7 +67,9 @@ describe('BetaEmailDispatcherService', () => {
     });
 
     expect(result.success).toBe(true);
-    expect(result.subject).toContain('Bienvenue dans le programme Bêta Kanto MG');
+    expect(result.subject).toContain(
+      'Bienvenue dans le programme Bêta Kanto MG',
+    );
     expect(resendService.sendEmail).toHaveBeenCalledTimes(1);
 
     const callArgs = resendService.sendEmail.mock.calls[0][0];
@@ -78,6 +80,9 @@ describe('BetaEmailDispatcherService', () => {
     expect(callArgs.html).toContain('Manao ahoana Rova');
     // Vérification des étapes Android
     expect(callArgs.html).toContain('Pour les appareils Android (Google Play)');
+    expect(callArgs.html).toContain(
+      'https://groups.google.com/g/communaute-kanto',
+    );
     expect(callArgs.html).toContain('Étape 1 : Valider votre accès testeur');
     expect(callArgs.html).toContain('tester@example.com');
     expect(callArgs.html).toContain(
@@ -94,7 +99,9 @@ describe('BetaEmailDispatcherService', () => {
       'https://apps.apple.com/app/testflight/id899247664',
     );
     expect(callArgs.html).toContain('Étape 2 : Rejoindre la bêta Kanto MG');
-    expect(callArgs.html).toContain('https://testflight.apple.com/join/kantomg');
+    expect(callArgs.html).toContain(
+      'https://testflight.apple.com/join/kantomg',
+    );
     // Vérification des boutons
     expect(callArgs.html).toContain('Accéder au portail de téléchargement');
     expect(callArgs.html).toContain(
@@ -145,7 +152,9 @@ describe('BetaEmailDispatcherService', () => {
       'Vous faites déjà partie de nos bêta-testeurs officiels',
     );
     expect(callArgs.html).toContain('Pour les appareils Android (Google Play)');
-    expect(callArgs.html).toContain('Étape 1 : Vérifier votre compte Google Play');
+    expect(callArgs.html).toContain(
+      'Étape 1 : Vérifier votre compte Google Play',
+    );
     expect(callArgs.html).toContain(
       'Un problème pour accéder aux tests ou une question ?',
     );

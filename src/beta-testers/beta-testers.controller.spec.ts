@@ -69,6 +69,9 @@ describe('BetaTestersController', () => {
       expect(res.send).toHaveBeenCalledWith(
         expect.stringContaining('theme-toggle'),
       );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining("platforms: ['IOS']"),
+      );
     });
   });
 
@@ -159,6 +162,15 @@ describe('BetaTestersController', () => {
       );
       expect(res.send).toHaveBeenCalledWith(
         expect.stringContaining('/feedback'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('https://groups.google.com/g/communaute-kanto'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('android-group-panel'),
+      );
+      expect(res.send).toHaveBeenCalledWith(
+        expect.stringContaining('iOS TestFlight uniquement'),
       );
     });
 

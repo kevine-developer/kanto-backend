@@ -26,7 +26,6 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
     legalBaseUrl,
     supportEmail,
     countBadgeText,
-    isRegistered,
     emailVal,
     errorVal,
     currentYear,
@@ -114,8 +113,76 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
           <span id="success-text"></span>
         </div>
 
-        <!-- Formulaire d'inscription épuré (champs indispensables uniquement) -->
+        <!-- Carte d'inscription : Android via Google Groups OU Formulaire iOS (TestFlight) -->
         <div class="register-form-card" id="register-card">
+          <!-- Sélection tactile de plateforme avec détection automatique -->
+          <div class="field-group" style="margin-bottom: 20px;">
+            <span class="field-label">
+              <span>Votre appareil</span>
+              <span class="label-required">Sélectionnez votre système</span>
+            </span>
+            <div class="platform-selector-row">
+              <button type="button" class="platform-btn" id="card-android" data-platform="ANDROID" aria-pressed="false">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8533 8.125 12 8.125s-3.5902.286-5.1368.8257L4.8409 5.4477a.416.416 0 00-.5676-.1521.416.416 0 00-.1521.5676l1.9973 3.4592C2.6889 10.9997.426 14.5408.426 18.6667h23.148c0-4.1259-2.2629-7.667-5.6925-9.3453"/></svg>
+                <div>
+                  <span class="platform-btn-label">Android</span>
+                  <span class="platform-btn-sub">Via Google Groups</span>
+                </div>
+              </button>
+
+              <button type="button" class="platform-btn checked" id="card-ios" data-platform="IOS" aria-pressed="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 0.92-2.87-.92.04-2.02.62-2.67 1.37-.56.64-1.05 1.71-.92 2.74 1.03.08 2.06-.49 2.67-1.24z"/></svg>
+                <div>
+                  <span class="platform-btn-label">iPhone / iPad (iOS)</span>
+                  <span class="platform-btn-sub">Formulaire TestFlight</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Panneau direct Android (Google Groups) — Aucun formulaire d'e-mail nécessaire -->
+          <div id="android-group-panel" class="android-group-panel" style="display: none;">
+            <div class="android-group-callout">
+              <div class="android-group-head">
+                <span class="store-channel-tag">Accès immédiat Android</span>
+                <h2 class="android-group-title">Rejoignez la communauté officielle sur Google Groups</h2>
+                <p class="android-group-desc">
+                  Pour Android, l'inscription par formulaire n'est plus nécessaire : rejoignez simplement le groupe Google de Kanto avec votre compte Google pour devenir testeur sur le Play Store.
+                </p>
+              </div>
+
+              <div class="android-group-steps">
+                <a
+                  href="https://groups.google.com/g/communaute-kanto"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-primary-action"
+                  id="btn-join-google-group"
+                >
+                  <span>1. Rejoindre le groupe Google Android</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                </a>
+
+                <a
+                  href="https://play.google.com/apps/testing/com.devengalere.kantomg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-store-step outline"
+                  id="btn-android-play-confirm"
+                >
+                  <span class="step-num">2</span>
+                  <span class="step-label">Devenir testeur &amp; télécharger sur Google Play</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                </a>
+              </div>
+
+              <span class="field-caption" style="text-align: center;">
+                Utilisez le même compte Google sur Google Groups et sur le Google Play Store.
+              </span>
+            </div>
+          </div>
+
+          <!-- Formulaire d'inscription réservé uniquement à iPhone / iPad (Apple iOS TestFlight) -->
           <form id="waitlist-form" class="clean-form">
             <!-- Piège anti-spam invisible -->
             <div class="hp-trap" aria-hidden="true" style="display:none;">
@@ -123,11 +190,11 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
             </div>
 
             <div class="form-grid">
-              <!-- Champ E-mail indispensable -->
+              <!-- Champ E-mail indispensable pour Apple TestFlight (iPhone / iPad) -->
               <div class="field-group">
                 <label for="reg-email" class="field-label">
-                  <span>Votre adresse e-mail</span>
-                  <span class="label-required">Indispensable</span>
+                  <span>Votre adresse e-mail Apple (iPhone / iPad)</span>
+                  <span class="label-required">iOS TestFlight uniquement</span>
                 </label>
                 <div class="field-input-wrap">
                   <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
@@ -136,31 +203,13 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
                     id="reg-email"
                     name="email"
                     class="clean-input"
-                    placeholder="nom@exemple.com"
+                    placeholder="nom@icloud.com ou votre e-mail Apple"
                     required
                     value="${emailVal}"
                     autocomplete="email"
                   >
                 </div>
-                <span class="field-caption">Utilisez l'adresse de votre compte Google Play ou de votre compte Apple.</span>
-              </div>
-
-              <!-- Sélection tactile de plateforme avec détection automatique -->
-              <div class="field-group">
-                <span class="field-label">Votre plateforme de test</span>
-                <div class="platform-selector-row">
-                  <button type="button" class="platform-btn checked" id="card-android" data-platform="ANDROID" aria-pressed="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8533 8.125 12 8.125s-3.5902.286-5.1368.8257L4.8409 5.4477a.416.416 0 00-.5676-.1521.416.416 0 00-.1521.5676l1.9973 3.4592C2.6889 10.9997.426 14.5408.426 18.6667h23.148c0-4.1259-2.2629-7.667-5.6925-9.3453"/></svg>
-                    <span class="platform-btn-label">Android</span>
-                    <span class="platform-btn-sub">Google Play</span>
-                  </button>
-
-                  <button type="button" class="platform-btn" id="card-ios" data-platform="IOS" aria-pressed="false">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 0.92-2.87-.92.04-2.02.62-2.67 1.37-.56.64-1.05 1.71-.92 2.74 1.03.08 2.06-.49 2.67-1.24z"/></svg>
-                    <span class="platform-btn-label">iOS</span>
-                    <span class="platform-btn-sub">TestFlight</span>
-                  </button>
-                </div>
+                <span class="field-caption">Ce formulaire concerne exclusivement iPhone / iPad (iOS). Utilisez l'adresse de votre compte Apple / TestFlight.</span>
               </div>
             </div>
 
@@ -175,7 +224,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
             <!-- Bouton d'action principal bien identifiable -->
             <div class="submit-wrap">
               <button type="submit" class="btn-primary-action" id="btn-submit-reg">
-                <span>Rejoindre les testeurs</span>
+                <span>Recevoir l'invitation TestFlight (iOS)</span>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
               </button>
             </div>
@@ -233,30 +282,44 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
 
             <div class="store-kanto-footer">
               <div class="store-steps-flow">
-                <!-- Étape 1 : Confirmer son compte sur Google Play -->
+                <!-- Étape 1 : Rejoindre le groupe Google officiel Kanto -->
+                <a
+                  href="https://groups.google.com/g/communaute-kanto"
+                  class="btn-store-step outline"
+                  id="join-link-google-group"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Étape 1 : Rejoindre le groupe Google Kanto"
+                >
+                  <span class="step-num">1</span>
+                  <span class="step-label">Rejoindre le groupe Google</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                </a>
+
+                <!-- Étape 2 : Confirmer son compte sur Google Play -->
                 <a
                   href="https://play.google.com/apps/testing/com.devengalere.kantomg"
                   class="btn-store-step outline"
                   id="confirm-link-google-play"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Étape 1 : Confirmer mon compte sur Google Play"
+                  aria-label="Étape 2 : Confirmer mon compte sur Google Play"
                 >
-                  <span class="step-num">1</span>
+                  <span class="step-num">2</span>
                   <span class="step-label">Confirmer sur Google Play</span>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
                 </a>
 
-                <!-- Étape 2 : Télécharger sur le Play Store -->
+                <!-- Étape 3 : Télécharger sur le Play Store -->
                 <a
                   href="https://play.google.com/store/apps/details?id=com.devengalere.kantomg"
                   class="btn-store-step primary"
                   id="dl-btn-android-main"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Étape 2 : Télécharger Kanto sur Google Play"
+                  aria-label="Étape 3 : Télécharger Kanto sur Google Play"
                 >
-                  <span class="step-num">2</span>
+                  <span class="step-num">3</span>
                   <span class="step-label">Télécharger sur le Play Store</span>
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
                 </a>
@@ -495,7 +558,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
         <button type="button" class="btn-modal-close" id="privacy-modal-close" aria-label="Fermer">✕</button>
       </div>
       <div class="modal-body">
-        <p>Vos identifiants sont protégés par chiffrement AES-256-GCM. Seul votre e-mail est conservé afin de synchroniser vos autorisations Google Play ou Apple TestFlight.</p>
+        <p>Vos identifiants sont protégés par chiffrement AES-256-GCM. Seul votre e-mail est conservé afin de synchroniser votre invitation Apple TestFlight (iOS). L'accès bêta Android s'effectue directement via le groupe officiel Google.</p>
         <p>Aucune donnée personnelle n'est cédée, vendue ou partagée avec des tiers publicitaires.</p>
         <p><a href="${legalBaseUrl}/pages/privacy" target="_blank" rel="noopener noreferrer">Consulter la politique de confidentialité complète ↗</a></p>
       </div>
