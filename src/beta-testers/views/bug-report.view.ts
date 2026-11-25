@@ -61,7 +61,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
 <html lang="fr" data-theme="dark">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Signaler une anomalie • Kanto MG</title>
   <meta name="description" content="Espace officiel de signalement technique et de retours pour l'application Kanto MG. Partagez vos observations pour perfectionner le sanctuaire culturel malgache.">
   <meta name="theme-color" content="#0D0D0B">
@@ -125,7 +125,13 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       max-width: 820px;
       margin: 0 auto;
       width: 100%;
-      padding: 32px 20px 48px;
+      padding: 24px 16px 40px;
+    }
+
+    @media (min-width: 768px) {
+      main {
+        padding: 36px 24px 56px;
+      }
     }
 
     .intro-header {
@@ -151,11 +157,12 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
 
     .page-title {
       font-family: 'Newsreader', Georgia, serif;
-      font-size: 32px;
+      font-size: clamp(24px, 6vw, 32px);
       font-weight: 600;
       color: var(--color-heading);
       letter-spacing: -0.4px;
       margin-bottom: 8px;
+      line-height: 1.2;
     }
 
     .page-subtitle {
@@ -171,9 +178,16 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       background: var(--color-surface);
       border: 1.5px solid var(--color-tanimbary);
       border-radius: var(--radius-lg);
-      padding: 24px;
-      margin-bottom: 28px;
+      padding: 18px 16px;
+      margin-bottom: 24px;
       box-shadow: var(--color-card-shadow);
+    }
+
+    @media (min-width: 600px) {
+      .app-rec-card {
+        padding: 24px;
+        margin-bottom: 28px;
+      }
     }
 
     .app-rec-badge {
@@ -229,17 +243,26 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      width: 100%;
+      min-height: 46px;
       gap: 10px;
       background: var(--color-tanimbary-dark);
       color: #FFFFFF;
       border: 1px solid var(--color-tanimbary);
-      padding: 12px 20px;
+      padding: 12px 18px;
       border-radius: var(--radius-md);
       font-size: 14px;
       font-weight: 700;
       text-decoration: none;
       transition: background-color 0.2s, transform 0.15s;
       cursor: pointer;
+    }
+
+    @media (min-width: 520px) {
+      .btn-deeplink {
+        width: auto;
+        padding: 12px 20px;
+      }
     }
 
     .btn-deeplink:hover {
@@ -283,8 +306,14 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
-      padding: 28px;
+      padding: 20px 16px;
       box-shadow: var(--color-card-shadow);
+    }
+
+    @media (min-width: 600px) {
+      .form-card {
+        padding: 28px;
+      }
     }
 
     .form-card-title {
@@ -339,14 +368,21 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       line-height: 1.4;
     }
 
-    /* Sélecteur de plateformes */
+    /* Sélecteur de plateformes (Mobile-First) */
     .platform-chips {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1fr;
       gap: 10px;
     }
 
+    @media (min-width: 600px) {
+      .platform-chips {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
     .platform-chip {
+      min-height: 48px;
       background: var(--color-surface-input);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
@@ -398,14 +434,21 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       text-overflow: ellipsis;
     }
 
-    /* Grille catégories */
+    /* Grille catégories (Mobile-First) */
     .category-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 10px;
     }
 
+    @media (min-width: 600px) {
+      .category-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
     .category-card {
+      min-height: 46px;
       background: var(--color-surface-input);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
@@ -467,12 +510,19 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
 
     .row-2 {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 14px;
+    }
+
+    @media (min-width: 600px) {
+      .row-2 {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
     .btn-submit-report {
       width: 100%;
+      min-height: 46px;
       padding: 13px 20px;
       background: var(--color-tanimbary-dark);
       color: #FFFFFF;
@@ -558,13 +608,25 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
 
     .conf-actions {
       display: flex;
-      gap: 12px;
+      flex-direction: column;
+      width: 100%;
+      gap: 10px;
       margin-top: 12px;
-      flex-wrap: wrap;
       justify-content: center;
     }
 
+    @media (min-width: 480px) {
+      .conf-actions {
+        flex-direction: row;
+        width: auto;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+    }
+
     .btn-conf-secondary {
+      min-height: 44px;
+      width: 100%;
       padding: 10px 18px;
       border-radius: var(--radius-md);
       font-size: 13px;
@@ -576,8 +638,15 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       transition: all 0.15s ease;
+    }
+
+    @media (min-width: 480px) {
+      .btn-conf-secondary {
+        width: auto;
+      }
     }
 
     .btn-conf-secondary:hover {
@@ -586,18 +655,6 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
 
     .hp-trap {
       display: none !important;
-    }
-
-    @media (max-width: 600px) {
-      .platform-chips {
-        grid-template-columns: 1fr;
-      }
-      .category-grid, .row-2 {
-        grid-template-columns: 1fr;
-      }
-      .form-card {
-        padding: 20px;
-      }
     }
   </style>
 </head>
