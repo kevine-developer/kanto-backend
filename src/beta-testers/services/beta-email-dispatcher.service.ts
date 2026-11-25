@@ -25,6 +25,7 @@ export interface EmailContextVariables {
   downloadLink?: string;
   testFlightLink?: string;
   androidTestingLink?: string;
+  googleGroupLink?: string;
   appVersion?: string;
   supportEmail?: string;
   unsubscribeLink?: string;
@@ -57,6 +58,11 @@ const BUILTIN_FALLBACK_TEMPLATES: Record<
     Pour les appareils Android (Google Play)
   </div>
   <ol style="margin: 0; padding-left: 20px; color: #2C3E33; line-height: 1.6; font-size: 14px;">
+    <li style="margin-bottom: 10px;">
+      <strong>Rejoindre la communauté officielle (Google Groups)</strong><br>
+      Inscrivez-vous en un clic avec votre compte Google pour devenir testeur Android :<br>
+      <a href="{{googleGroupLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #4A6741; font-weight: 600; text-decoration: underline;">Rejoindre le groupe Google Kanto &rarr;</a>
+    </li>
     <li style="margin-bottom: 10px;">
       <strong>Étape 1 : Valider votre accès testeur</strong><br>
       Connectez-vous avec votre adresse <strong>{{userEmail}}</strong> et acceptez de participer au test :<br>
@@ -116,6 +122,11 @@ const BUILTIN_FALLBACK_TEMPLATES: Record<
     Pour les appareils Android (Google Play)
   </div>
   <ol style="margin: 0; padding-left: 20px; color: #2C3E33; line-height: 1.6; font-size: 14px;">
+    <li style="margin-bottom: 10px;">
+      <strong>Rejoindre le groupe Google officiel</strong><br>
+      Assurez-vous d’avoir rejoint le groupe officiel de Kanto avec votre compte Google :<br>
+      <a href="{{googleGroupLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #4A6741; font-weight: 600; text-decoration: underline;">Rejoindre le groupe Google Kanto &rarr;</a>
+    </li>
     <li style="margin-bottom: 10px;">
       <strong>Étape 1 : Vérifier votre compte Google Play</strong><br>
       Assurez-vous d’être connecté avec l'adresse <strong>{{userEmail}}</strong> et d’avoir validé votre accès fermé :<br>
@@ -243,6 +254,9 @@ export class BetaEmailDispatcherService {
       downloadLink: variables.downloadLink || playStoreAppLink,
       testFlightLink: variables.testFlightLink || testFlightLink,
       androidTestingLink: variables.androidTestingLink || playStoreWebLink,
+      googleGroupLink:
+        variables.googleGroupLink ||
+        'https://groups.google.com/g/communaute-kanto',
       appVersion: variables.appVersion || '0.1.0',
       supportEmail: variables.supportEmail || supportEmail,
       unsubscribeLink:

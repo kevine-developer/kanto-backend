@@ -672,8 +672,51 @@ export const BETA_LANDING_CSS = `
     font-family: var(--font-sans);
     font-size: 1rem;
     font-weight: 600;
+    text-decoration: none;
     cursor: pointer;
     transition: background-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+  }
+
+  .android-group-panel {
+    width: 100%;
+  }
+
+  .android-group-callout {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .android-group-head {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .android-group-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--color-heading);
+    line-height: 1.3;
+  }
+
+  .android-group-desc {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-ink-muted);
+    line-height: 1.55;
+  }
+
+  .android-group-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   .btn-primary-action:hover {

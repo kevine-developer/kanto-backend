@@ -37,7 +37,7 @@ export function renderBetaWaitlistScript(): string {
   }
 
   // ─── DÉTECTION AUTOMATIQUE DE LA PLATEFORME (OS MOBILE) ───────────────────
-  var detectedPlatform = 'ANDROID';
+  var detectedPlatform = 'IOS';
   var nav = typeof navigator !== 'undefined' ? navigator : null;
   var ua = nav ? (nav.userAgent || nav.vendor || '') : '';
   if (nav && (/iPad|iPhone|iPod/.test(ua) || (nav.platform === 'MacIntel' && nav.maxTouchPoints > 1))) {
@@ -49,31 +49,40 @@ export function renderBetaWaitlistScript(): string {
   // Mise en exergue du badge "Votre appareil" sur les cartes correspondantes
   var recBadgeAndroid = document.getElementById('rec-badge-android');
   var recBadgeIos = document.getElementById('rec-badge-ios');
-  if (detectedPlatform === 'IOS') {
+  if (detectedPlatform === 'IOS' && /iPad|iPhone|iPod|MacIntel/.test(ua)) {
     if (recBadgeIos) recBadgeIos.style.display = 'inline-flex';
     var cardDlIos = document.getElementById('card-download-ios');
     if (cardDlIos) cardDlIos.classList.add('is-detected');
-  } else {
+  } else if (/android/i.test(ua)) {
     if (recBadgeAndroid) recBadgeAndroid.style.display = 'inline-flex';
     var cardDlAndroid = document.getElementById('card-download-android');
     if (cardDlAndroid) cardDlAndroid.classList.add('is-detected');
   }
 
-  // ─── SÉLECTION DES PLATEFORMES DU FORMULAIRE D'INSCRIPTION ─────────────────
+  // ─── BASCULE PLATEFORME : ANDROID (GOOGLE GROUPS) VS IOS (FORMULAIRE) ─────
   var cardAndroid = document.getElementById('card-android');
   var cardIos = document.getElementById('card-ios');
-  var selectedPlatforms = [detectedPlatform];
+  var androidPanel = document.getElementById('android-group-panel');
+  var waitlistForm = document.getElementById('waitlist-form');
+  var activePlatform = detectedPlatform;
 
   function updatePlatformButtons() {
+    var isAndroid = activePlatform === 'ANDROID';
+    var isIos = activePlatform === 'IOS';
+
     if (cardAndroid) {
-      var isAndroid = selectedPlatforms.indexOf('ANDROID') !== -1;
       cardAndroid.classList.toggle('checked', isAndroid);
       cardAndroid.setAttribute('aria-pressed', isAndroid ? 'true' : 'false');
     }
     if (cardIos) {
-      var isIos = selectedPlatforms.indexOf('IOS') !== -1;
       cardIos.classList.toggle('checked', isIos);
       cardIos.setAttribute('aria-pressed', isIos ? 'true' : 'false');
+    }
+    if (androidPanel) {
+      androidPanel.style.display = isAndroid ? 'block' : 'none';
+    }
+    if (waitlistForm) {
+      waitlistForm.style.display = isIos ? 'flex' : 'none';
     }
   }
 
@@ -81,25 +90,19 @@ export function renderBetaWaitlistScript(): string {
 
   if (cardAndroid) {
     cardAndroid.addEventListener('click', function() {
-      var idx = selectedPlatforms.indexOf('ANDROID');
-      if (idx !== -1) {
-        if (selectedPlatforms.length > 1) selectedPlatforms.splice(idx, 1);
-      } else {
-        selectedPlatforms.push('ANDROID');
-      }
+      activePlatform = 'ANDROID';
+      hideBanners();
       updatePlatformButtons();
     });
   }
 
   if (cardIos) {
     cardIos.addEventListener('click', function() {
-      var idx = selectedPlatforms.indexOf('IOS');
-      if (idx !== -1) {
-        if (selectedPlatforms.length > 1) selectedPlatforms.splice(idx, 1);
-      } else {
-        selectedPlatforms.push('IOS');
-      }
+      activePlatform = 'IOS';
+      hideBanners();
       updatePlatformButtons();
+      var regInput = document.getElementById('reg-email');
+      if (regInput) setTimeout(function() { regInput.focus(); }, 100);
     });
   }
 
@@ -107,13 +110,14 @@ export function renderBetaWaitlistScript(): string {
   var headerBtnReg = document.getElementById('header-btn-register');
   if (headerBtnReg) {
     headerBtnReg.addEventListener('click', function() {
-      var regInput = document.getElementById('reg-email');
-      if (regInput) setTimeout(function() { regInput.focus(); }, 150);
+      if (activePlatform === 'IOS') {
+        var regInput = document.getElementById('reg-email');
+        if (regInput) setTimeout(function() { regInput.focus(); }, 150);
+      }
     });
   }
 
-  // ─── PILIER A : SOUMISSION DU FORMULAIRE D'INSCRIPTION ─────────────────────
-  var waitlistForm = document.getElementById('waitlist-form');
+  // ─── PILIER A : SOUMISSION DU FORMULAIRE D'INSCRIPTION (IOS UNIQUEMENT) ────
   var btnSubmitReg = document.getElementById('btn-submit-reg');
   var modalConfirmed = document.getElementById('modal-registration-confirmed');
   var btnCloseConfirmed = document.getElementById('confirmed-modal-close');
@@ -176,10 +180,6 @@ export function renderBetaWaitlistScript(): string {
         showError('Veuillez accepter les Conditions Générales et la Politique de Confidentialité.');
         return;
       }
-      if (selectedPlatforms.length === 0) {
-        showError('Veuillez sélectionner au moins une plateforme (Android ou iOS).');
-        return;
-      }
 
       if (btnSubmitReg) {
         btnSubmitReg.disabled = true;
@@ -192,7 +192,7 @@ export function renderBetaWaitlistScript(): string {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             email: email,
-            platforms: selectedPlatforms,
+            platforms: ['IOS'],
             termsAccepted: true,
             website: website
           })
@@ -205,7 +205,7 @@ export function renderBetaWaitlistScript(): string {
           // 1. Vidage et réinitialisation complète du formulaire
           if (emailEl) emailEl.value = '';
           if (hpEl) hpEl.value = '';
-          selectedPlatforms = [detectedPlatform];
+          activePlatform = 'IOS';
           updatePlatformButtons();
 
           // 2. Mise à jour discrète du compteur de testeurs
@@ -225,7 +225,7 @@ export function renderBetaWaitlistScript(): string {
       } finally {
         if (btnSubmitReg) {
           btnSubmitReg.disabled = false;
-          btnSubmitReg.innerHTML = '<span>Rejoindre les testeurs</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>';
+          btnSubmitReg.innerHTML = '<span>Recevoir l’invitation TestFlight (iOS)</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>';
         }
       }
     });
@@ -240,9 +240,13 @@ export function renderBetaWaitlistScript(): string {
       var data = await res.json();
 
       if (data.android) {
+        var aPanelConfirmBtn = document.getElementById('btn-android-play-confirm');
         var aConfirmBtn = document.getElementById('confirm-link-google-play');
         var aDlBtn = document.getElementById('dl-btn-android-main');
         var aBadge = document.getElementById('dl-android-badge');
+        if (aPanelConfirmBtn && data.android.playStoreWebLink) {
+          aPanelConfirmBtn.href = data.android.playStoreWebLink;
+        }
         if (aConfirmBtn && data.android.playStoreWebLink) {
           aConfirmBtn.href = data.android.playStoreWebLink;
         }
@@ -447,7 +451,7 @@ export function renderBetaWaitlistScript(): string {
 
     function getInitials(name) {
       if (!name) return 'K';
-      var parts = name.trim().split(/\s+/);
+      var parts = name.trim().split(/\\s+/);
       if (parts.length >= 2 && parts[0] && parts[1]) {
         return (parts[0][0] + parts[1][0]).toUpperCase();
       }
