@@ -1,73 +1,79 @@
 /**
- * Kanto — Design system partagé pour toutes les pages web statiques.
- * Police, couleurs, composants réutilisables dans les vues HTML.
+ * Kanto — Design system partagé pour toutes les pages web institutionnelles.
+ * Aligné sur le layout public unifié (header, footer, thème clair/sombre synchronisé).
  */
+
+import {
+  PUBLIC_HEADER_INTERACTION_SCRIPT,
+  PUBLIC_SHELL_CSS,
+  PUBLIC_THEME_INIT_SCRIPT,
+  renderPublicFooter,
+  renderPublicHeader,
+  renderPublicReviewsSection,
+} from '../common/web/public-layout.js';
 
 export const PAGE_FONT = `
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500;1,6..72,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 `;
 
 export const PAGE_CSS = `
-  :root {
-    --bg: #F8F6F0;
-    --bg-warm: #F2EFEB;
-    --surface: #FFFFFF;
-    --surface-elevated: #FFFFFF;
-    --border: #E8E5DC;
-    --border-light: #F0EDE5;
-    --text: #161513;
-    --text-muted: #545047;
-    --text-subtle: #888377;
-    --accent: #2B4426;
-    --accent-hover: #1F331B;
-    --accent-light: #EEF4ED;
-    --accent-border: #D1E0CE;
-    --terracotta: #B93826;
+  ${PUBLIC_SHELL_CSS}
+
+  :root, [data-theme="light"] {
+    --bg: var(--color-bg);
+    --bg-warm: var(--color-bg-alt);
+    --surface: var(--color-surface);
+    --surface-elevated: var(--color-surface-elevated);
+    --border: var(--color-border);
+    --border-light: var(--color-border-subtle);
+    --text: var(--color-ink);
+    --text-muted: var(--color-ink-muted);
+    --text-subtle: var(--color-ink-subtle);
+    --accent: var(--color-tanimbary);
+    --accent-hover: var(--color-tanimbary-dark);
+    --accent-light: var(--color-tanimbary-soft);
+    --accent-border: var(--color-tanimbary-border);
+    --terracotta: var(--color-terracotta);
     --terracotta-hover: #962B1C;
-    --terracotta-light: #FCF1EE;
+    --terracotta-light: var(--color-terracotta-soft);
     --terracotta-border: #F3CEC6;
-    --amber: #C48833;
-    --amber-light: #FDF6EC;
+    --amber: var(--color-ochre);
+    --amber-light: var(--color-ochre-soft);
     --btn-bg: #161513;
-    --btn-hover: #2B4426;
-    --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
-    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --radius: 12px;
-    --radius-sm: 6px;
-    --shadow-sm: 0 1px 3px rgba(22, 21, 19, 0.04);
-    --shadow-md: 0 8px 24px rgba(22, 21, 19, 0.07);
+    --btn-hover: var(--color-tanimbary);
+    --radius: 14px;
+    --shadow-sm: var(--color-card-shadow);
+    --shadow-md: var(--color-card-shadow-hover);
     --shadow-lg: 0 16px 40px rgba(22, 21, 19, 0.1);
   }
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0C0C0A;
-      --bg-warm: #131310;
-      --surface: #141411;
-      --surface-elevated: #1B1B17;
-      --border: #262520;
-      --border-light: #1E1D19;
-      --text: #F4F3EE;
-      --text-muted: #A6A399;
-      --text-subtle: #6D695F;
-      --accent: #7AA870;
-      --accent-hover: #92BE88;
-      --accent-light: #162414;
-      --accent-border: #294426;
-      --terracotta: #E65A48;
-      --terracotta-hover: #F07363;
-      --terracotta-light: #2A1310;
-      --terracotta-border: #4D1F1A;
-      --amber: #E0A24A;
-      --amber-light: #2A1F10;
-      --btn-bg: #F4F3EE;
-      --btn-hover: #FFFFFF;
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
-      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
-      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
-    }
+  [data-theme="dark"] {
+    --bg: var(--color-bg);
+    --bg-warm: var(--color-bg-alt);
+    --surface: var(--color-surface);
+    --surface-elevated: var(--color-surface-elevated);
+    --border: var(--color-border);
+    --border-light: var(--color-border-subtle);
+    --text: var(--color-ink);
+    --text-muted: var(--color-ink-muted);
+    --text-subtle: var(--color-ink-subtle);
+    --accent: var(--color-tanimbary);
+    --accent-hover: var(--color-tanimbary-dark);
+    --accent-light: var(--color-tanimbary-soft);
+    --accent-border: var(--color-tanimbary-border);
+    --terracotta: var(--color-terracotta);
+    --terracotta-hover: #F07363;
+    --terracotta-light: var(--color-terracotta-soft);
+    --terracotta-border: #4D1F1A;
+    --amber: var(--color-ochre);
+    --amber-light: var(--color-ochre-soft);
+    --btn-bg: #F4F3EE;
+    --btn-hover: #FFFFFF;
+    --shadow-sm: var(--color-card-shadow);
+    --shadow-md: var(--color-card-shadow-hover);
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -77,106 +83,14 @@ export const PAGE_CSS = `
     background: var(--bg);
     color: var(--text);
     line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     padding: 0;
     margin: 0;
-  }
-
-  /* En-tête institutionnel & navigation éditoriale */
-  .page-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--surface);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    box-shadow: var(--shadow-sm);
-  }
-
-  .page-header .brand-wrap {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-  }
-
-  .page-header .brand-logo {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    object-fit: cover;
-  }
-
-  .page-header .brand-text {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .page-header .brand-name {
-    font-family: var(--font-serif);
-    font-size: 19px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: -0.3px;
-    line-height: 1.1;
-  }
-
-  .page-header .brand-tag {
-    font-family: var(--font-sans);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--terracotta);
-    font-weight: 700;
-  }
-
-  .page-header .header-nav {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-  }
-
-  .page-header .header-link {
-    font-size: 12.5px;
-    font-weight: 600;
-    color: var(--text-muted);
-    text-decoration: none;
-    transition: color 0.15s ease;
-  }
-
-  .page-header .header-link:hover {
-    color: var(--terracotta);
-  }
-
-  .page-header .header-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 7px 14px;
-    border-radius: 999px;
-    background: var(--terracotta);
-    color: #FFFFFF !important;
-    font-size: 12px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background 0.15s ease, transform 0.1s ease;
-  }
-
-  .page-header .header-cta:hover {
-    background: var(--terracotta-hover);
-    transform: translateY(-1px);
-    text-decoration: none;
-  }
-
-  body.hide-header .page-header {
-    display: none !important;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
   body.hide-header .container {
@@ -184,9 +98,11 @@ export const PAGE_CSS = `
   }
 
   .container {
+    width: 100%;
     max-width: 820px;
+    flex: 1;
     margin: 0 auto;
-    padding: 48px 24px 100px;
+    padding: 48px 24px 84px;
   }
 
   h1 {
@@ -313,14 +229,14 @@ export const PAGE_CSS = `
     margin-bottom: 8px;
   }
 
-  a {
+  .container a {
     color: var(--terracotta);
     text-decoration: none;
     font-weight: 600;
     transition: color 0.15s ease;
   }
 
-  a:hover {
+  .container a:hover {
     color: var(--terracotta-hover);
     text-decoration: underline;
   }
@@ -666,11 +582,13 @@ export function pageShell(options: {
   description?: string;
   body: string;
   hideHeader?: boolean;
+  showReviews?: boolean;
   supportEmail?: string;
   canonicalUrl?: string;
   slug?: string;
 }): string {
   const { title, pageTitle, description, body, hideHeader } = options;
+  const shouldShowReviews = !hideHeader && options.showReviews !== false;
   const year = currentYear();
   const supportEmail =
     options.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
@@ -682,12 +600,13 @@ export function pageShell(options: {
       : 'https://app-kanto.gastsar.fr/');
 
   return `<!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title}</title>
   <meta name="description" content="${description || `Kanto — ${pageTitle}`}">
+  <meta name="theme-color" content="#0D0D0B">
   <link rel="icon" href="/favicon.ico">
 
   <!-- Canonical & hreflang SEO -->
@@ -750,59 +669,23 @@ export function pageShell(options: {
   </script>
 
   ${PAGE_FONT}
+  ${PUBLIC_THEME_INIT_SCRIPT}
   <style>${PAGE_CSS}</style>
 </head>
 <body${bodyClass}>
-  <header class="page-header">
-    <a href="/" class="brand-wrap" aria-label="Retour à l'accueil Kanto MG">
-      <img src="/logo.png" alt="Logo Kanto" class="brand-logo" width="32" height="32" onerror="this.onerror=null; this.src='/favicon.png';">
-      <div class="brand-text">
-        <span class="brand-name">kanto<span style="color: var(--terracotta);">.mg</span></span>
-        <span class="brand-tag">Lova sy Kolontsaina</span>
-      </div>
-    </a>
-    <nav class="header-nav">
-      <a href="/" class="header-link">Accueil</a>
-      <a href="/ohabolana" class="header-link">Ohabolana</a>
-      <a href="/angano" class="header-link">Angano</a>
-      <a href="/kabary" class="header-link">Kabary</a>
-      <a href="/pages/about" class="header-link">À propos</a>
-      <a href="/pages/help" class="header-link">Aide</a>
-      <a href="/#inscription" class="header-cta">
-        <span>Rejoindre la Bêta</span>
-        <span aria-hidden="true">→</span>
-      </a>
-    </nav>
-  </header>
+  ${renderPublicHeader({ activePath: options.slug ? `/pages/${options.slug}` : '' })}
 
   <main class="container">
     ${body}
-
-    <div class="footer">
-      <div style="font-family: var(--font-serif); font-size: 16px; color: var(--text); margin-bottom: 6px;">
-        « Ny hazo no vanon-ko lakana, ny tany naniriany no tsara. »
-      </div>
-      <div>© ${year} <strong>kanto.mg</strong> — Sauvegarde, rayonnement et transmission vivante du patrimoine malgache.</div>
-      <div class="footer-links">
-        <a href="/">Accueil</a>
-        <a href="/#inscription">Programme Bêta</a>
-        <a href="/#telechargement">Téléchargement</a>
-        <a href="/ohabolana">Ohabolana</a>
-        <a href="/angano">Angano</a>
-        <a href="/kabary">Kabary</a>
-        <a href="/tononkalo">Tononkalo</a>
-        <a href="/raki-teny">Raki-teny</a>
-        <a href="/histoire">Tantara</a>
-        <a href="/pages/about">À propos</a>
-        <a href="/pages/help">Aide &amp; FAQ</a>
-        <a href="/pages/terms">Conditions d'utilisation (CGU)</a>
-        <a href="/pages/privacy">Confidentialité (RGPD)</a>
-        <a href="/pages/licenses">Mentions légales</a>
-        <button type="button" class="footer-cookie-btn" id="btn-open-cookie-modal">Gestion des cookies</button>
-        <a href="mailto:${supportEmail}">Contact &amp; Support</a>
-      </div>
-    </div>
   </main>
+
+  ${shouldShowReviews ? renderPublicReviewsSection({ compact: true, contextLabel: pageTitle }) : ''}
+
+  ${renderPublicFooter({
+    supportEmail,
+    cookieButtonId: 'btn-open-cookie-modal',
+    currentYear: year,
+  })}
 
   <!-- Modale de préférences de cookies partagée -->
   <div id="cookie-settings-modal" class="cookie-modal-backdrop" style="display: none;">
@@ -944,6 +827,7 @@ export function pageShell(options: {
     }
   })();
   </script>
+  ${PUBLIC_HEADER_INTERACTION_SCRIPT}
 </body>
 </html>`;
 }

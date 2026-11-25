@@ -12,6 +12,15 @@
  * - Protection RGPD et chiffrement AES-256-GCM
  */
 
+import {
+  PUBLIC_REVIEWS_SCRIPT,
+  PUBLIC_SHELL_CSS,
+  PUBLIC_THEME_INIT_SCRIPT,
+  renderPublicFooter,
+  renderPublicHeader,
+  renderPublicReviewsSection,
+} from '../../common/web/public-layout.js';
+
 export interface BugReportPageOptions {
   initialType?: string;
   initialPlatform?: string;
@@ -23,13 +32,22 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
   const currentYear = new Date().getFullYear();
   const supportEmail =
     options?.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
-  const validTypes = ['BUG', 'UI_UX', 'PERFORMANCE', 'CONTENT', 'SUGGESTION', 'OTHER'];
+  const validTypes = [
+    'BUG',
+    'UI_UX',
+    'PERFORMANCE',
+    'CONTENT',
+    'SUGGESTION',
+    'OTHER',
+  ];
   const rawType = (options?.initialType || 'BUG').toUpperCase();
   const initialType = validTypes.includes(rawType) ? rawType : 'BUG';
 
   const validPlatforms = ['ANDROID', 'IOS', 'ALL'];
   const rawPlatform = (options?.initialPlatform || 'ANDROID').toUpperCase();
-  const initialPlatform = validPlatforms.includes(rawPlatform) ? rawPlatform : 'ANDROID';
+  const initialPlatform = validPlatforms.includes(rawPlatform)
+    ? rawPlatform
+    : 'ANDROID';
 
   const initialEmail = escapeHtml(options?.initialEmail || '');
 
@@ -59,85 +77,29 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <script>
-    (function() {
-      try {
-        var savedTheme = localStorage.getItem('kanto_theme');
-        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var theme = savedTheme ? savedTheme : (prefersDark ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-        var metaTheme = document.querySelector('meta[name="theme-color"]');
-        if (metaTheme) {
-          metaTheme.setAttribute('content', theme === 'light' ? '#F5F4F0' : '#0D0D0B');
-        }
-      } catch (e) {}
-    })();
-  </script>
+  ${PUBLIC_THEME_INIT_SCRIPT}
 
   <style>
-    @font-face {
-      font-family: 'LazyDog';
-      src: url('/fonts/LazyDog.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
-    }
+    ${PUBLIC_SHELL_CSS}
 
     :root, [data-theme="dark"] {
-      --color-bg: #0D0D0B;
-      --color-surface: #141412;
       --color-surface-subtle: #191917;
       --color-surface-input: #1C1C1A;
-      --color-surface-hover: #22221F;
-      --color-border: #242420;
       --color-border-strong: #33332D;
-      --color-divider: #282824;
-      --color-tanimbary: #6B9E61;
-      --color-tanimbary-dark: #16442A;
-      --color-ochre: #C58B38;
-      --color-terracotta: #E75A4D;
-      --color-text: #F0F0EC;
-      --color-text-secondary: #9C9C98;
-      --color-text-muted: #707070;
-      --color-heading: #FFFFFF;
+      --color-text: var(--color-ink);
+      --color-text-secondary: var(--color-ink-muted);
+      --color-text-muted: var(--color-ink-subtle);
       --color-brand-title: #FFFFFF;
-      --color-card-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      --color-error: #E75A4D;
-      --color-error-bg: #2C1715;
-      --color-error-text: #FFAAA0;
-      --color-success: #6B9E61;
-      --color-success-bg: #132213;
-      --color-success-text: #B5E8AC;
-      --radius-sm: 6px;
-      --radius-md: 10px;
-      --radius-lg: 14px;
     }
 
     [data-theme="light"] {
-      --color-bg: #F5F4F0;
-      --color-surface: #FEFEFC;
       --color-surface-subtle: #F7F6F1;
       --color-surface-input: #FFFFFF;
-      --color-surface-hover: #F0EFEA;
-      --color-border: #E2E0D8;
       --color-border-strong: #CECAC0;
-      --color-divider: #ECEAE3;
-      --color-tanimbary: #4A6741;
-      --color-tanimbary-dark: #16442A;
-      --color-ochre: #A67026;
-      --color-terracotta: #C0392B;
-      --color-text: #1A1A1A;
-      --color-text-secondary: #5C5C58;
-      --color-text-muted: #8C8C88;
-      --color-heading: #111110;
+      --color-text: var(--color-ink);
+      --color-text-secondary: var(--color-ink-muted);
+      --color-text-muted: var(--color-ink-subtle);
       --color-brand-title: #16442A;
-      --color-card-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
-      --color-error: #C0392B;
-      --color-error-bg: #FDF2F0;
-      --color-error-text: #C0392B;
-      --color-success: #2E7D32;
-      --color-success-bg: #E8F5E9;
-      --color-success-text: #1B5E20;
     }
 
     * {
@@ -148,129 +110,14 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: var(--font-sans);
       background-color: var(--color-bg);
       color: var(--color-text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       line-height: 1.5;
-    }
-
-    header {
-      padding: 16px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--color-border);
-      max-width: 820px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 11px;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .brand-logo-wrap {
-      width: 38px;
-      height: 38px;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
-      flex-shrink: 0;
-    }
-
-    .brand-logo {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .brand-text-wrap {
-      display: inline-flex;
-      flex-direction: column;
-      justify-content: center;
-      line-height: 1;
-    }
-
-    .brand-name {
-      font-family: 'LazyDog', 'Plus Jakarta Sans', sans-serif;
-      font-size: 27px;
-      line-height: 0.95;
-      color: var(--color-brand-title);
-      font-weight: 400;
-    }
-
-    .brand-domain {
-      font-family: 'LazyDog', 'Plus Jakarta Sans', sans-serif;
-      color: var(--color-tanimbary);
-      font-size: 27px;
-      line-height: 0.95;
-    }
-
-    .brand-tag {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 9.5px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: var(--color-text-muted);
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .theme-toggle-btn {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      color: var(--color-text);
-      width: 36px;
-      height: 36px;
-      border-radius: var(--radius-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background-color 0.2s, border-color 0.2s;
-    }
-
-    .theme-toggle-btn:hover {
-      background: var(--color-surface-hover);
-      border-color: var(--color-border-strong);
-    }
-
-    .btn-header-back {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--color-text-secondary);
-      text-decoration: none;
-      padding: 7px 12px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--color-border);
-      background: var(--color-surface);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.15s ease;
-    }
-
-    .btn-header-back:hover {
-      color: var(--color-text);
-      border-color: var(--color-border-strong);
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
     main {
@@ -741,33 +588,6 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       display: none !important;
     }
 
-    footer {
-      border-top: 1px solid var(--color-border);
-      padding: 24px;
-      text-align: center;
-      font-size: 12px;
-      color: var(--color-text-muted);
-      margin-top: auto;
-    }
-
-    .footer-nav {
-      display: flex;
-      justify-content: center;
-      gap: 18px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-
-    .footer-nav a, .footer-cookie-btn {
-      color: var(--color-text-secondary);
-      text-decoration: none;
-      background: none;
-      border: none;
-      font-family: inherit;
-      font-size: 12px;
-      cursor: pointer;
-    }
-
     @media (max-width: 600px) {
       .platform-chips {
         grid-template-columns: 1fr;
@@ -783,37 +603,8 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
 </head>
 <body>
 
-  <!-- En-tête officiel Kanto MG -->
-  <header>
-    <a href="/" class="brand" aria-label="kanto.mg - Accueil">
-      <div class="brand-logo-wrap">
-        <img
-          src="/logo.png"
-          alt="Logo officiel Kanto MG"
-          class="brand-logo"
-          width="38"
-          height="38"
-          onerror="this.onerror=null; this.src='/favicon.png';"
-        />
-      </div>
-      <div class="brand-text-wrap">
-        <span class="brand-name">kanto<span class="brand-domain">.mg</span></span>
-        <span class="brand-tag">Diagnostic &amp; Retours</span>
-      </div>
-    </a>
-    <div class="header-actions">
-      <a href="/beta" class="btn-header-back">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-          <line x1="19" y1="12" x2="5" y2="12"></line>
-          <polyline points="12 19 5 12 12 5"></polyline>
-        </svg>
-        <span>Espace Bêta</span>
-      </a>
-      <button type="button" class="theme-toggle-btn" id="theme-toggle" aria-label="Changer de thème">
-        <span id="theme-toggle-icon"></span>
-      </button>
-    </div>
-  </header>
+  <!-- En-tête unifié Kanto MG -->
+  ${renderPublicHeader({ activePath: '/feedback' })}
 
   <main>
     <div class="intro-header">
@@ -1132,18 +923,10 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
     </div>
   </main>
 
-  <!-- Pied de page officiel Kanto MG -->
-  <footer>
-    <div class="footer-nav">
-      <a href="${legalBaseUrl}/pages/terms">Conditions d'utilisation (CGU)</a>
-      <a href="${legalBaseUrl}/pages/privacy">Confidentialité &amp; RGPD</a>
-      <a href="/beta">Portail Bêta-Testeurs</a>
-      <a href="mailto:${supportEmail}">Support officiel (${supportEmail})</a>
-    </div>
-    <div style="font-size: 11px;">
-      © ${currentYear} kanto.mg • Lova, Kolontsaina &amp; Tantara Malagasy
-    </div>
-  </footer>
+  ${renderPublicReviewsSection({ compact: true, contextLabel: 'Retours & Communauté' })}
+
+  <!-- Pied de page unifié Kanto MG -->
+  ${renderPublicFooter({ legalBaseUrl, supportEmail, currentYear })}
 
   <script src="/bug-report.js"></script>
 </body>
@@ -1212,15 +995,17 @@ export function renderBugReportScript(): string {
     if (errBanner) errBanner.style.display = 'none';
   }
 
-  // Thème sombre/clair sans emoji (SVG vectoriel)
+  // Thème sombre/clair unifié + menu mobile
   var themeBtn = document.getElementById('theme-toggle');
-  var themeIcon = document.getElementById('theme-toggle-icon');
-  var SUN_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>';
-  var MOON_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
+  var iconSun = document.getElementById('theme-icon-sun');
+  var iconMoon = document.getElementById('theme-icon-moon');
 
   function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
-    if (themeIcon) themeIcon.innerHTML = theme === 'light' ? MOON_SVG : SUN_SVG;
+    if (iconSun && iconMoon) {
+      iconSun.style.display = theme === 'dark' ? 'none' : 'block';
+      iconMoon.style.display = theme === 'dark' ? 'block' : 'none';
+    }
     var meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute('content', theme === 'light' ? '#F5F4F0' : '#0D0D0B');
   }
@@ -1236,6 +1021,15 @@ export function renderBugReportScript(): string {
 
   var activeTheme = document.documentElement.getAttribute('data-theme') || 'dark';
   applyTheme(activeTheme);
+
+  var mobileBtn = document.getElementById('mobile-menu-toggle');
+  var mobileDrawer = document.getElementById('mobile-nav-drawer');
+  if (mobileBtn && mobileDrawer) {
+    mobileBtn.addEventListener('click', function() {
+      var isOpen = mobileDrawer.classList.toggle('open');
+      mobileBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  }
 
   // Soumission du formulaire
   var form = document.getElementById('bug-report-form');
@@ -1335,5 +1129,7 @@ export function renderBugReportScript(): string {
     });
   }
 })();
+
+${PUBLIC_REVIEWS_SCRIPT}
   `.trim();
 }

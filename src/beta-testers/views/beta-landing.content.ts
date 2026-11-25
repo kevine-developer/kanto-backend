@@ -8,6 +8,11 @@
  */
 
 import { renderQrCodeSvg } from '../utils/qr-code.util.js';
+import {
+  renderPublicHeader,
+  renderPublicFooter,
+  renderPublicReviewsSection,
+} from '../../common/web/public-layout.js';
 
 export interface BetaLandingContentOptions {
   legalBaseUrl: string;
@@ -35,50 +40,9 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
 
   return `
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
-  <!-- EN-TÊTE MINIMALISTE ET RECONNAISSABLE                                  -->
+  <!-- EN-TÊTE UNIFIÉ KANTO MG                                                 -->
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
-  <header class="site-header">
-    <a href="/" class="brand" aria-label="Kanto MG - Accueil">
-      <div class="brand-logo-wrap">
-        <img
-          src="/logo.png"
-          alt="Logo officiel Kanto MG"
-          class="brand-logo"
-          width="34"
-          height="34"
-          onerror="this.onerror=null; this.src='/favicon.png';"
-        />
-      </div>
-      <div class="brand-text-wrap">
-        <span class="brand-name">kanto<span class="brand-domain">.mg</span></span>
-        <span class="brand-tag">Lova sy Kolontsaina</span>
-      </div>
-    </a>
-
-    <!-- Navigation complète reliant toutes les interfaces web Kanto -->
-    <nav class="header-nav" aria-label="Navigation principale">
-      <a href="#inscription" class="header-nav-link">Inscription</a>
-      <a href="#telechargement" class="header-nav-link">Téléchargement</a>
-      <a href="/ohabolana" class="header-nav-link">Ohabolana</a>
-      <a href="/angano" class="header-nav-link">Angano</a>
-      <a href="/kabary" class="header-nav-link">Kabary</a>
-      <a href="/pages/about" class="header-nav-link">À propos</a>
-      <a href="/pages/help" class="header-nav-link">Aide</a>
-    </nav>
-
-    <div class="header-actions">
-      <!-- Basculeur thème sombre / clair -->
-      <button type="button" class="theme-toggle-btn" id="theme-toggle" aria-label="Basculer le thème d'affichage">
-        <svg id="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-        <svg id="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-      </button>
-
-      <!-- CTA Inscription -->
-      <a href="#inscription" class="header-cta-btn" id="header-btn-register">
-        <span>Rejoindre</span>
-      </a>
-    </div>
-  </header>
+  ${renderPublicHeader({ activePath: '/', isLanding: true })}
 
   <main>
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -410,6 +374,11 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SECTION AVIS COMMUNAUTAIRES KANTO MG                                   -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    ${renderPublicReviewsSection({ contextLabel: 'Bêta & Application mobile' })}
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <!-- SECTION QUESTIONS FRÉQUENTES CONCISES                                  -->
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <section class="section-faq" id="faq" aria-labelledby="faq-title">
@@ -442,56 +411,15 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
   </main>
 
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
-  <!-- PIED DE PAGE SOBRE & LÉGAL                                              -->
+  <!-- PIED DE PAGE UNIFIÉ KANTO MG                                            -->
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
-  <footer class="site-footer">
-    <div class="footer-container">
-      <div class="footer-grid">
-        <div class="footer-brand-col">
-          <div class="footer-brand-wrap">
-            <img src="/logo.png" alt="Kanto MG" width="28" height="28" onerror="this.onerror=null; this.src='/favicon.png';" />
-            <span class="footer-brand-name">kanto.mg</span>
-          </div>
-          <p class="footer-brand-desc">
-            Sanctuaire numérique contemporain dédié à la valorisation, à la transmission et au rayonnement de la culture malgache.
-          </p>
-        </div>
-
-        <div class="footer-links-col">
-          <span class="footer-heading">Patrimoine vivant</span>
-          <a href="/ohabolana">Ohabolana (Proverbes)</a>
-          <a href="/angano">Angano (Contes)</a>
-          <a href="/kabary">Kabary (Discours)</a>
-          <a href="/tononkalo">Tononkalo (Poésies)</a>
-          <a href="/raki-teny">Raki-teny (Vocabulaire)</a>
-          <a href="/histoire">Tantara (Histoire)</a>
-        </div>
-
-        <div class="footer-links-col">
-          <span class="footer-heading">Application &amp; Bêta</span>
-          <a href="#inscription">1. Inscription Testeur</a>
-          <a href="#telechargement">2. Téléchargement</a>
-          <a href="/pages/about">À propos de Kanto</a>
-          <a href="/pages/help">Centre d'aide &amp; FAQ</a>
-        </div>
-
-        <div class="footer-links-col">
-          <span class="footer-heading">Transparence &amp; Support</span>
-          <a href="${legalBaseUrl}/pages/terms" id="footer-link-cgu">Conditions Générales (CGU)</a>
-          <a href="${legalBaseUrl}/pages/privacy" id="footer-link-privacy">Confidentialité &amp; RGPD</a>
-          <a href="${legalBaseUrl}/pages/licenses">Mentions légales &amp; Licences</a>
-          <a href="/feedback">Signaler une anomalie</a>
-          <button type="button" class="btn-text-link" id="btn-cookie-settings">Cookies &amp; Préférences</button>
-          <a href="mailto:${supportEmail}">Support : ${supportEmail}</a>
-        </div>
-      </div>
-
-      <div class="footer-bottom-line">
-        <span>© ${currentYear} Kanto MG • Lova sy Kolontsaina Malagasy. Tous droits réservés.</span>
-        <span>Version Bêta Officielle • app-kanto.gastsar.fr</span>
-      </div>
-    </div>
-  </footer>
+  ${renderPublicFooter({
+    legalBaseUrl,
+    supportEmail,
+    cookieButtonId: 'btn-cookie-settings',
+    currentYear,
+    isLanding: true,
+  })}
 
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
   <!-- BANNIÈRE & MODALES LÉGALES RGPD                                         -->

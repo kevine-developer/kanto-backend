@@ -1,4 +1,12 @@
 import { HubCategoryConfig } from '../seo.service.js';
+import {
+  PUBLIC_HEADER_INTERACTION_SCRIPT,
+  PUBLIC_SHELL_CSS,
+  PUBLIC_THEME_INIT_SCRIPT,
+  renderPublicFooter,
+  renderPublicHeader,
+  renderPublicReviewsSection,
+} from '../../common/web/public-layout.js';
 
 export interface CategoryHubItem {
   id: string;
@@ -124,16 +132,7 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
     ${JSON.stringify(schemaCollection)}
   </script>
 
-  <script>
-    (function() {
-      try {
-        var savedTheme = localStorage.getItem('kanto_theme');
-        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var theme = savedTheme ? savedTheme : (prefersDark ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-      } catch (e) {}
-    })();
-  </script>
+  ${PUBLIC_THEME_INIT_SCRIPT}
 
   <style>
     @font-face {
@@ -143,45 +142,16 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
       font-style: normal;
       font-display: swap;
     }
-    :root, [data-theme="dark"] {
-      --color-bg: #0D0D0B;
-      --color-surface: #141412;
-      --color-surface-hover: #1E1E1A;
-      --color-border: #242420;
-      --color-divider: #252E25;
-      --color-terracotta: #E75A4D;
-      --color-terracotta-soft: #2C1715;
-      --color-tanimbary: #6B9E61;
-      --color-tanimbary-dark: #374E30;
-      --color-amber: #E0A24A;
-      --color-text: #F0F0EC;
-      --color-text-secondary: #9C9C98;
-      --color-text-muted: #707070;
-      --color-heading: #F0F0EC;
-      --font-serif: 'Newsreader', Georgia, serif;
-      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --radius-sm: 6px;
-      --radius-md: 10px;
-      --radius-lg: 16px;
+
+    ${PUBLIC_SHELL_CSS}
+
+    :root, [data-theme="light"], [data-theme="dark"] {
+      --color-amber: var(--color-ochre);
+      --color-text: var(--color-ink);
+      --color-text-secondary: var(--color-ink-muted);
+      --color-text-muted: var(--color-ink-subtle);
     }
-    [data-theme="light"] {
-      --color-bg: #F5F4F0;
-      --color-surface: #FEFEFC;
-      --color-surface-hover: #F0EDE8;
-      --color-border: #E5E2DB;
-      --color-divider: #DCE1D7;
-      --color-terracotta: #C0392B;
-      --color-terracotta-soft: #FDF2F0;
-      --color-tanimbary: #4A6741;
-      --color-tanimbary-dark: #374E30;
-      --color-amber: #C58B38;
-      --color-text: #1A1A1A;
-      --color-text-secondary: #5C5C5C;
-      --color-text-muted: #8A8A8A;
-      --color-heading: #1A1A1A;
-      --font-serif: 'Newsreader', Georgia, serif;
-      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: var(--font-sans);
@@ -192,39 +162,7 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
       display: flex;
       flex-direction: column;
       -webkit-font-smoothing: antialiased;
-    }
-    header {
-      padding: 18px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--color-border);
-      max-width: 1040px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: inherit;
-    }
-    .brand-logo { width: 34px; height: 34px; border-radius: 4px; border: 1px solid var(--color-border); }
-    .brand-title {
-      font-family: var(--font-serif);
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      color: var(--color-heading);
-      line-height: 1.1;
-    }
-    .brand-sub {
-      font-size: 9.5px;
-      text-transform: uppercase;
-      letter-spacing: 1.8px;
-      color: var(--color-terracotta);
-      font-weight: 700;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
     main {
       flex: 1;
@@ -413,17 +351,17 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: var(--color-terracotta);
+      background: var(--color-tanimbary);
       color: #FFFFFF;
       font-weight: 700;
       font-size: 13.5px;
       padding: 13px 26px;
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-md);
       text-decoration: none;
       letter-spacing: 0.3px;
-      transition: opacity 0.15s ease, transform 0.15s ease;
+      transition: background-color 0.15s ease, transform 0.15s ease;
     }
-    .btn-cta:hover { opacity: 0.92; transform: translateY(-1px); }
+    .btn-cta:hover { background: var(--color-tanimbary-dark); transform: translateY(-1px); }
     .hub-nav-tags {
       display: flex;
       gap: 8px;
@@ -442,56 +380,15 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
       background: var(--color-surface);
       transition: border-color 0.15s ease, color 0.15s ease;
     }
-    .tag-link:hover {
-      border-color: var(--color-terracotta);
-      color: var(--color-heading);
+    .tag-link:hover,
+    .tag-link.active {
+      border-color: var(--color-tanimbary);
+      color: var(--color-tanimbary);
     }
-    footer {
-      border-top: 1px solid var(--color-border);
-      padding: 32px 24px;
-      font-size: 12.5px;
-      color: var(--color-text-muted);
-      text-align: center;
-      max-width: 1040px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    .footer-quote {
-      font-family: var(--font-serif);
-      font-style: italic;
-      color: var(--color-text-secondary);
-      margin-bottom: 12px;
-      font-size: 14px;
-    }
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 18px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-    .footer-links a { color: var(--color-text-secondary); text-decoration: none; }
-    .footer-links a:hover { color: var(--color-terracotta); }
   </style>
 </head>
 <body>
-  <header>
-    <a href="/" class="brand">
-      <img src="/logo.png" alt="Logo Kanto MG" class="brand-logo" width="34" height="34" onerror="this.onerror=null; this.src='/favicon.png';">
-      <div>
-        <div class="brand-title">Kanto</div>
-        <div class="brand-sub">Madagascar</div>
-      </div>
-    </a>
-    <nav style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
-      <a href="/" style="color: var(--color-text-secondary); text-decoration: none; font-size: 13px; font-weight: 500;">Accueil</a>
-      <a href="/ohabolana" style="color: var(--color-text-secondary); text-decoration: none; font-size: 13px; font-weight: 500;">Ohabolana</a>
-      <a href="/angano" style="color: var(--color-text-secondary); text-decoration: none; font-size: 13px; font-weight: 500;">Angano</a>
-      <a href="/kabary" style="color: var(--color-text-secondary); text-decoration: none; font-size: 13px; font-weight: 500;">Kabary</a>
-      <a href="/pages/about" style="color: var(--color-text-secondary); text-decoration: none; font-size: 13px; font-weight: 500;">À propos</a>
-      <a href="/#inscription" class="btn-cta" style="padding: 7px 15px; font-size: 12px;">Rejoindre la Bêta</a>
-    </nav>
-  </header>
+  ${renderPublicHeader({ activePath: `/${config.slug}` })}
 
   <main>
     <!-- Fil d'Ariane -->
@@ -546,30 +443,19 @@ export function renderCategoryHubPage(options: CategoryHubPageOptions): string {
     <!-- Navigation transversale / Maillage interne SEO -->
     <div class="hub-nav-tags">
       <span style="font-size: 12px; color: var(--color-text-muted); align-self: center;">Explorer aussi :</span>
-      <a href="/ohabolana" class="tag-link">Ohabolana (Proverbes)</a>
-      <a href="/angano" class="tag-link">Angano (Contes)</a>
-      <a href="/kabary" class="tag-link">Kabary (Discours)</a>
-      <a href="/tononkalo" class="tag-link">Tononkalo (Poésie)</a>
-      <a href="/raki-teny" class="tag-link">Raki-teny (Vocabulaire)</a>
-      <a href="/histoire" class="tag-link">Histoire &amp; Patrimoine</a>
+      <a href="/ohabolana" class="tag-link${config.slug === 'ohabolana' ? ' active' : ''}">Ohabolana (Proverbes)</a>
+      <a href="/angano" class="tag-link${config.slug === 'angano' ? ' active' : ''}">Angano (Contes)</a>
+      <a href="/kabary" class="tag-link${config.slug === 'kabary' ? ' active' : ''}">Kabary (Discours)</a>
+      <a href="/tononkalo" class="tag-link${config.slug === 'tononkalo' ? ' active' : ''}">Tononkalo (Poésie)</a>
+      <a href="/raki-teny" class="tag-link${config.slug === 'raki-teny' ? ' active' : ''}">Raki-teny (Vocabulaire)</a>
+      <a href="/histoire" class="tag-link${config.slug === 'histoire' ? ' active' : ''}">Histoire &amp; Patrimoine</a>
     </div>
   </main>
 
-  <footer>
-    <div class="footer-quote">« Ny hazo no vanon-ko lakana, ny tany naniriany no tsara »</div>
-    <div>© ${year} <strong>kanto.mg</strong> — Ny harena ara-kolontsaina malagasy</div>
-    <div class="footer-links">
-      <a href="/">Accueil</a>
-      <a href="/#inscription">Inscription Testeur</a>
-      <a href="/#telechargement">Téléchargement</a>
-      <a href="/pages/about">À propos de Kanto</a>
-      <a href="/pages/help">Aide &amp; FAQ</a>
-      <a href="/pages/terms">Conditions d'utilisation (CGU)</a>
-      <a href="/pages/privacy">Confidentialité &amp; RGPD</a>
-      <a href="/pages/licenses">Mentions légales</a>
-      <a href="mailto:support@kanto.mg">Contact &amp; Support</a>
-    </div>
-  </footer>
+  ${renderPublicReviewsSection({ compact: true, contextLabel: `Patrimoine • ${config.nameFr}` })}
+
+  ${renderPublicFooter({ currentYear: year })}
+  ${PUBLIC_HEADER_INTERACTION_SCRIPT}
 </body>
 </html>`.trim();
 }
