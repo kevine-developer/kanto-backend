@@ -44,7 +44,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
         <!-- Colonne gauche : Manifeste culturel et garanties transparentes -->
         <div class="editorial-manifesto">
           <div class="editorial-kicker-row">
-            <span class="editorial-kicker">Lova sy Kolontsaina • Programme Bêta</span>
+            <span class="editorial-kicker">Programme d’accès anticipé &bull; Bêta</span>
             <span class="editorial-counter" id="header-tester-count">${countBadgeText}</span>
           </div>
 

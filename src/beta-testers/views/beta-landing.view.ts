@@ -75,7 +75,7 @@ export function renderBetaLandingPage(
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kanto MG • La culture malgache, autrement | Lova, Kolontsaina &amp; Tantara</title>
+  <title>Kanto MG • La culture malgache, autrement | Patrimoine, Langue &amp; Contes</title>
   <meta name="description" content="Portail officiel Kanto MG : sanctuaire contemporain de la culture malgache. Explorez les contes (Angano), proverbes ancestraux (Ohabolana), l'art oratoire (Kabary), la poésie et la langue malgache. Téléchargez sur Android et iOS.">
   <meta name="keywords" content="kanto mg, culture malgache, langue malgache, angano, ohabolana, kabary, tononkalo, madagascar, proverbes malgaches, contes malgaches, dictionnaire malgache, fihavanana">
   <meta name="theme-color" content="#0D0D0B">
@@ -97,7 +97,7 @@ export function renderBetaLandingPage(
   <meta property="og:image" content="${legalBaseUrl}/assets/images/icon.png">
   <meta property="og:image:width" content="512">
   <meta property="og:image:height" content="512">
-  <meta property="og:image:alt" content="Kanto MG — Lova sy Kolontsaina Malagasy">
+  <meta property="og:image:alt" content="Kanto MG — Patrimoine et culture malgaches">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
