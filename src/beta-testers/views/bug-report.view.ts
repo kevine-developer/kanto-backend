@@ -959,7 +959,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
             <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
         </div>
-        <div class="conf-title">Misaotra betsaka !</div>
+        <div class="conf-title">Merci pour votre signalement</div>
         <p class="conf-desc">
           Votre signalement a bien été transmis à l'équipe technique de Kanto MG sous la référence :
         </p>

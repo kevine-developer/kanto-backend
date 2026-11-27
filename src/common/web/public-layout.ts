@@ -983,7 +983,7 @@ export const PUBLIC_SHELL_CSS = `
     color: #FAF9F6;
   }
 
-  /* Citation vedette éditoriale (Tsiahy Misongadina) */
+  /* Citation vedette éditoriale */
   .krv-spotlight {
     position: relative;
     overflow: hidden;
@@ -1434,7 +1434,7 @@ export function renderPublicHeader(options?: PublicHeaderOptions): string {
         </div>
         <div class="brand-text-wrap">
           <span class="brand-name">kanto<span class="brand-domain">.mg</span></span>
-          <span class="brand-tag">Lova sy Kolontsaina</span>
+          <span class="brand-tag">Patrimoine &amp; Culture</span>
         </div>
       </a>
 
@@ -1530,7 +1530,7 @@ export function renderPublicFooter(options?: PublicFooterOptions): string {
       </div>
 
       <div class="footer-bottom-line">
-        <span>© ${year} Kanto MG • Lova sy Kolontsaina Malagasy. Tous droits réservés.</span>
+        <span>© ${year} Kanto MG &bull; Patrimoine et culture malgaches. Tous droits réservés.</span>
         <span>Portail Bêta Officiel • app-kanto.gastsar.fr</span>
       </div>
     </div>
@@ -1579,7 +1579,7 @@ export function renderPublicReviewsSection(
     <div class="krv-container">
       <div class="krv-header">
         <div class="krv-header-copy">
-          <span class="krv-eyebrow">Feon'ny Fikambanana • Voix de la communauté</span>
+          <span class="krv-eyebrow">Voix de la communauté</span>
           <h2 id="krv-section-title" class="krv-title">Ce que la communauté retient de Kanto</h2>
           <p class="krv-subtitle">
             Retours d'expérience recueillis dans l'application, modérés et publiés uniquement avec le consentement explicite de leurs auteurs.
@@ -1619,7 +1619,7 @@ export function renderPublicReviewsSection(
         </div>
       </div>
 
-      <!-- Citation vedette éditoriale (Tsiahy Misongadina) -->
+      <!-- Citation vedette éditoriale -->
       <article class="krv-spotlight" id="krv-spotlight" style="display: none;" aria-live="polite">
         <svg class="krv-spotlight-motif" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
           <polygon points="60,8 112,60 60,112 8,60"></polygon>
@@ -1629,7 +1629,7 @@ export function renderPublicReviewsSection(
         </svg>
 
         <div class="krv-spotlight-top">
-          <span class="krv-spotlight-badge">Tsiahy Misongadina • Parole à la une</span>
+          <span class="krv-spotlight-badge">Parole à la une</span>
           <div class="krv-spotlight-controls">
             <button type="button" class="krv-nav-btn" id="krv-spot-prev" aria-label="Avis précédent">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -1972,7 +1972,10 @@ export const PUBLIC_REVIEWS_SCRIPT = `
           if (spotlightEl) spotlightEl.style.display = 'none';
           cardsListEl.innerHTML =
             '<div class="reviews-empty-state">' +
-              'Mbola tsy misy hevitra naseho ho an\\u2019ity sivana ity. Les retours approuvés des testeurs apparaîtront ici.' +
+              (activeRatingFilter === 'all'
+                ? 'Aucun avis publié pour le moment. '
+                : 'Aucun avis disponible pour cette sélection pour le moment. ') +
+              'Les retours approuvés des testeurs apparaîtront ici.' +
             '</div>';
           if (paginationBox) paginationBox.style.display = 'none';
           return;
