@@ -66,10 +66,10 @@ export function renderDeeplinkGatewayPage(
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHtml(pageTitle)}</title>
   <meta name="description" content="${escapeHtml(pageDescription)}">
-  <meta name="theme-color" content="#16442A">
+  <meta name="theme-color" content="#0D0D0B">
 
   <!-- Canonical & hreflang SEO -->
   <link rel="canonical" href="${escapeHtml(canonicalUrl)}">
@@ -161,24 +161,39 @@ export function renderDeeplinkGatewayPage(
       font-display: swap;
     }
     :root {
-      --kanto-green: #4A6741;
-      --kanto-green-dark: #374E30;
-      --kanto-green-light: #5B7F50;
-      --kanto-green-subtle: #E5ECE2;
-      --kanto-terracotta: #C0392B;
-      --kanto-terracotta-soft: #FDF2F0;
+      --kanto-accent: #A62C21;
+      --kanto-accent-hover: #8C231A;
+      --kanto-accent-soft: rgba(166, 44, 33, 0.08);
+      --kanto-sage: #3D5A38;
+      --kanto-sage-soft: rgba(61, 90, 56, 0.1);
+      --kanto-sage-border: rgba(61, 90, 56, 0.25);
       --kanto-bg: #F5F4F0;
-      --kanto-card-bg: #FEFEFC;
-      --kanto-card-border: #E5E2DB;
-      --kanto-text: #1A1A1A;
-      --kanto-text-secondary: #5C5C5C;
-      --kanto-text-muted: #8A8A8A;
+      --kanto-card-bg: #FCFBF8;
+      --kanto-card-border: #DDD8CE;
+      --kanto-text: #181715;
+      --kanto-text-secondary: #534F47;
+      --kanto-text-muted: #706B61;
       --kanto-font-serif: 'Newsreader', Georgia, serif;
       --kanto-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --radius-sm: 6px;
-      --radius-md: 10px;
-      --radius-lg: 16px;
-      --radius-full: 9999px;
+      --radius-xs: 2px;
+      --radius-sm: 4px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --kanto-accent: #D64F42;
+        --kanto-accent-hover: #E06356;
+        --kanto-accent-soft: rgba(214, 79, 66, 0.12);
+        --kanto-sage: #6D9666;
+        --kanto-sage-soft: rgba(109, 150, 102, 0.12);
+        --kanto-sage-border: rgba(109, 150, 102, 0.28);
+        --kanto-bg: #0D0D0B;
+        --kanto-card-bg: #141412;
+        --kanto-card-border: #262520;
+        --kanto-text: #F0EFEA;
+        --kanto-text-secondary: #B4B0A6;
+        --kanto-text-muted: #848077;
+      }
     }
 
     * {
@@ -190,8 +205,8 @@ export function renderDeeplinkGatewayPage(
     body {
       background-color: var(--kanto-bg);
       color: var(--kanto-text);
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      line-height: 1.55;
+      font-family: var(--kanto-font-sans);
+      line-height: 1.6;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -203,7 +218,7 @@ export function renderDeeplinkGatewayPage(
 
     .main-wrapper {
       width: 100%;
-      max-width: 480px;
+      max-width: 520px;
       margin: 0 auto;
     }
 
@@ -218,15 +233,15 @@ export function renderDeeplinkGatewayPage(
     }
 
     .brand-logo {
-      width: 38px;
-      height: 38px;
-      border-radius: var(--radius-sm);
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-xs);
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 10px rgba(22, 68, 42, 0.2);
-      background-color: #FFFFFF;
+      border: 1px solid var(--kanto-card-border);
+      background-color: var(--kanto-card-bg);
     }
 
     .brand-logo img {
@@ -237,26 +252,25 @@ export function renderDeeplinkGatewayPage(
     }
 
     .brand-title {
-      font-family: 'LazyDog', 'Plus Jakarta Sans', sans-serif;
-      font-size: 26px;
+      font-family: var(--kanto-font-serif);
+      font-size: 24px;
       line-height: 1;
-      font-weight: 400;
-      color: var(--kanto-green);
-      letter-spacing: 0.3px;
+      font-weight: 600;
+      color: var(--kanto-text);
+      letter-spacing: -0.02em;
     }
 
     .brand-domain {
-      font-family: 'LazyDog', 'Plus Jakarta Sans', sans-serif;
-      color: var(--kanto-terracotta);
+      color: var(--kanto-accent);
+      font-weight: 500;
     }
 
-    /* Carte Principale Tanimbary */
+    /* Carte Principale Éditoriale */
     .content-card {
       background-color: var(--kanto-card-bg);
       border: 1px solid var(--kanto-card-border);
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-xs);
       padding: 24px 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
       margin-bottom: 20px;
     }
 
@@ -264,52 +278,49 @@ export function renderDeeplinkGatewayPage(
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
       margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--kanto-card-border);
     }
 
     .category-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 10px;
-      border-radius: var(--radius-full);
-      background-color: var(--kanto-green-subtle);
-      color: var(--kanto-green);
-      font-size: 11.5px;
+      padding: 3px 9px;
+      border-radius: var(--radius-xs);
+      background-color: var(--kanto-accent-soft);
+      color: var(--kanto-accent);
+      border: 1px solid rgba(166, 44, 33, 0.25);
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.08em;
     }
 
     .app-status-indicator {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      font-size: 11.5px;
-      color: var(--kanto-text-muted);
-      font-weight: 500;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--kanto-sage);
+      font-weight: 600;
     }
 
     .indicator-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background-color: #22C55E;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { opacity: 0.4; }
-      50% { opacity: 1; }
-      100% { opacity: 0.4; }
+      width: 6px;
+      height: 6px;
+      border-radius: 1px;
+      background-color: var(--kanto-sage);
     }
 
     /* Titres & Contenus */
     .content-title {
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 21px;
+      font-weight: 600;
       color: var(--kanto-text);
-      line-height: 1.4;
+      line-height: 1.32;
       margin-bottom: 14px;
       font-family: var(--kanto-font-serif);
       letter-spacing: -0.015em;
@@ -317,15 +328,16 @@ export function renderDeeplinkGatewayPage(
 
     .quote-box {
       margin: 14px 0;
-      padding: 16px;
+      padding: 16px 18px;
       background-color: var(--kanto-bg);
-      border-left: 3.5px solid var(--kanto-green);
-      border-radius: var(--radius-sm);
+      border: 1px solid var(--kanto-card-border);
+      border-left: 3px solid var(--kanto-accent);
+      border-radius: var(--radius-xs);
     }
 
     .quote-malagasy {
-      font-size: 17px;
-      font-weight: 600;
+      font-size: 18px;
+      font-weight: 500;
       font-family: var(--kanto-font-serif);
       font-style: italic;
       color: var(--kanto-text);
@@ -336,34 +348,35 @@ export function renderDeeplinkGatewayPage(
     .quote-translation {
       font-size: 14px;
       color: var(--kanto-text-secondary);
-      line-height: 1.45;
-      border-top: 1px dashed var(--kanto-card-border);
+      line-height: 1.5;
+      border-top: 1px solid var(--kanto-card-border);
       padding-top: 10px;
     }
 
     .translation-label {
-      font-size: 11px;
+      font-size: 10.5px;
       text-transform: uppercase;
       font-weight: 700;
       color: var(--kanto-text-muted);
       margin-bottom: 4px;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.08em;
     }
 
     .notes-box {
       margin-top: 12px;
       font-size: 13px;
       color: var(--kanto-text-secondary);
-      background-color: #F4F2EC;
-      padding: 10px 12px;
-      border-radius: var(--radius-sm);
+      background-color: var(--kanto-bg);
+      border: 1px solid var(--kanto-card-border);
+      padding: 11px 14px;
+      border-radius: var(--radius-xs);
     }
 
     .meta-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 14px;
+      margin-top: 16px;
       padding-top: 12px;
       border-top: 1px solid var(--kanto-card-border);
       font-size: 12px;
@@ -379,17 +392,17 @@ export function renderDeeplinkGatewayPage(
     }
 
     .profile-avatar {
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      background-color: var(--kanto-green-light);
+      width: 54px;
+      height: 54px;
+      border-radius: var(--radius-sm);
+      background-color: var(--kanto-sage-soft);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #FFFFFF;
+      color: var(--kanto-sage);
       font-weight: 700;
-      font-size: 22px;
-      border: 2px solid var(--kanto-green);
+      font-size: 20px;
+      border: 1px solid var(--kanto-sage-border);
       overflow: hidden;
       flex-shrink: 0;
     }
@@ -401,10 +414,11 @@ export function renderDeeplinkGatewayPage(
     }
 
     .profile-meta h2 {
-      font-size: 17px;
-      font-weight: 700;
+      font-family: var(--kanto-font-serif);
+      font-size: 19px;
+      font-weight: 600;
       color: var(--kanto-text);
-      line-height: 1.3;
+      line-height: 1.25;
     }
 
     .profile-meta .username {
@@ -421,14 +435,16 @@ export function renderDeeplinkGatewayPage(
     }
 
     .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       background-color: var(--kanto-bg);
       border: 1px solid var(--kanto-card-border);
-      border-radius: var(--radius-full);
-      padding: 6px 12px;
+      border-radius: var(--radius-xs);
+      padding: 5px 10px;
       font-size: 12px;
       font-weight: 600;
-      font-family: var(--kanto-font-serif);
-      font-style: italic;
+      font-family: var(--kanto-font-sans);
       color: var(--kanto-text);
     }
 
@@ -444,56 +460,57 @@ export function renderDeeplinkGatewayPage(
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      min-height: 44px;
       gap: 8px;
-      padding: 13px 20px;
-      border-radius: var(--radius-md);
-      font-size: 14px;
+      padding: 12px 18px;
+      border-radius: var(--radius-xs);
+      font-size: 13.5px;
       font-weight: 700;
       text-decoration: none;
-      transition: all 0.2s ease;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
       cursor: pointer;
       text-align: center;
     }
 
     .btn-primary {
-      background-color: var(--kanto-green);
+      background-color: var(--kanto-accent);
       color: #FFFFFF;
-      border: none;
-      box-shadow: 0 4px 12px rgba(22, 68, 42, 0.25);
+      border: 1px solid var(--kanto-accent);
     }
 
     .btn-primary:hover {
-      background-color: var(--kanto-green-light);
-      transform: translateY(-1px);
+      background-color: var(--kanto-accent-hover);
+      border-color: var(--kanto-accent-hover);
     }
 
     .btn-secondary {
-      background-color: #FFFFFF;
-      color: var(--kanto-green);
+      background-color: transparent;
+      color: var(--kanto-text);
       border: 1px solid var(--kanto-card-border);
     }
 
     .btn-secondary:hover {
-      background-color: #F8F7F3;
-      border-color: var(--kanto-green);
+      background-color: var(--kanto-bg);
+      border-color: var(--kanto-accent);
     }
 
     .deeplink-footer-nav {
-      margin-top: 14px;
+      margin-top: 16px;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 8px 12px;
-      font-size: 11.5px;
+      font-size: 12px;
       color: var(--kanto-text-muted);
     }
     .deeplink-footer-nav a {
-      color: var(--kanto-green);
+      color: var(--kanto-text-secondary);
       text-decoration: none;
       font-weight: 600;
-      transition: opacity 0.15s ease;
+      transition: color 0.15s ease;
     }
     .deeplink-footer-nav a:hover {
+      color: var(--kanto-accent);
       text-decoration: underline;
     }
     .deeplink-footer-nav span {
@@ -513,8 +530,15 @@ export function renderDeeplinkGatewayPage(
     }
 
     .not-found-icon {
-      font-size: 32px;
-      margin-bottom: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--kanto-card-border);
+      border-radius: var(--radius-xs);
+      color: var(--kanto-accent);
+      margin: 0 auto 12px;
     }
   </style>
 </head>
@@ -551,7 +575,13 @@ export function renderDeeplinkGatewayPage(
         isNotFound
           ? `
           <div class="not-found-card">
-            <div class="not-found-icon">🌿</div>
+            <div class="not-found-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="12" r="9"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
             <h1 class="content-title">Votoaty tsy hita na voafafa</h1>
             <p style="color: var(--kanto-text-secondary); font-size: 13.5px; margin-bottom: 14px;">
               Ce contenu n'est plus accessible ou a été retiré. Explorez les milliers d'autres proverbes et récits sur Kanto MG.
@@ -578,7 +608,7 @@ export function renderDeeplinkGatewayPage(
           <div class="stats-pills">
             ${
               content.userStats.level
-                ? `<div class="stat-pill">Dingana ${content.userStats.level} • Niveau ${content.userStats.level}</div>`
+                ? `<div class="stat-pill">Dingana ${content.userStats.level} &bull; Niveau ${content.userStats.level}</div>`
                 : ''
             }
             ${
@@ -588,7 +618,12 @@ export function renderDeeplinkGatewayPage(
             }
             ${
               content.userStats.streak
-                ? `<div class="stat-pill">🔥 ${content.userStats.streak} andro misesy</div>`
+                ? `<div class="stat-pill">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path d="M12 2c1 4-1 6-1 6s3-1 4-4c3 3 4 7 4 10a7 7 0 1 1-14 0c0-4 3-7 7-12z"></path>
+                    </svg>
+                    <span>${content.userStats.streak} andro misesy</span>
+                  </div>`
                 : ''
             }
           </div>
@@ -664,20 +699,16 @@ export function renderDeeplinkGatewayPage(
     <div class="footer-text">
       Kanto MG • Ny haren-tsaina sy ny fahendrena malagasy ho an'ny rehetra
     </div>
-    <nav class="deeplink-footer-nav" aria-label="Patrimoine malgache">
+    <nav class="deeplink-footer-nav" aria-label="Navigation Kanto MG">
       <a href="/">Accueil</a>
       <span>·</span>
-      <a href="/ohabolana">Ohabolana</a>
+      <a href="/pages/about">À propos</a>
       <span>·</span>
-      <a href="/angano">Angano</a>
+      <a href="/pages/help">Aide</a>
       <span>·</span>
-      <a href="/kabary">Kabary</a>
+      <a href="/pages/terms">CGU</a>
       <span>·</span>
-      <a href="/tononkalo">Tononkalo</a>
-      <span>·</span>
-      <a href="/raki-teny">Raki-teny</a>
-      <span>·</span>
-      <a href="/histoire">Tantara</a>
+      <a href="/pages/privacy">Confidentialité</a>
     </nav>
   </div>
 

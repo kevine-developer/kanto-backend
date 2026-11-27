@@ -83,23 +83,23 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
     ${PUBLIC_SHELL_CSS}
 
     :root, [data-theme="dark"] {
-      --color-surface-subtle: #191917;
-      --color-surface-input: #1C1C1A;
-      --color-border-strong: #33332D;
+      --color-surface-subtle: #1A1916;
+      --color-surface-input: #10100E;
+      --color-border-strong: #3E3C37;
       --color-text: var(--color-ink);
       --color-text-secondary: var(--color-ink-muted);
       --color-text-muted: var(--color-ink-subtle);
-      --color-brand-title: #FFFFFF;
+      --color-brand-title: var(--color-ink);
     }
 
     [data-theme="light"] {
-      --color-surface-subtle: #F7F6F1;
+      --color-surface-subtle: #EDEAE2;
       --color-surface-input: #FFFFFF;
-      --color-border-strong: #CECAC0;
+      --color-border-strong: #C9C4B8;
       --color-text: var(--color-ink);
       --color-text-secondary: var(--color-ink-muted);
       --color-text-muted: var(--color-ink-subtle);
-      --color-brand-title: #16442A;
+      --color-brand-title: var(--color-ink);
     }
 
     * {
@@ -116,8 +116,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      line-height: 1.5;
-      transition: background-color 0.25s ease, color 0.25s ease;
+      line-height: 1.6;
     }
 
     main {
@@ -125,18 +124,20 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       max-width: 820px;
       margin: 0 auto;
       width: 100%;
-      padding: 24px 16px 40px;
+      padding: 28px 20px 56px;
     }
 
     @media (min-width: 768px) {
       main {
-        padding: 36px 24px 56px;
+        padding: 44px 32px 72px;
       }
     }
 
     .intro-header {
-      margin-bottom: 24px;
-      text-align: center;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--color-border);
+      text-align: left;
     }
 
     .section-eyebrow {
@@ -146,41 +147,40 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1.2px;
-      color: var(--color-ochre);
-      background: rgba(197, 139, 56, 0.1);
-      border: 1px solid rgba(197, 139, 56, 0.25);
-      padding: 4px 10px;
-      border-radius: 20px;
+      letter-spacing: 0.12em;
+      color: var(--color-accent);
+      background: var(--color-accent-soft);
+      border: 1px solid var(--color-accent-border);
+      padding: 3px 9px;
+      border-radius: var(--radius-xs);
       margin-bottom: 12px;
     }
 
     .page-title {
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: clamp(24px, 6vw, 32px);
+      font-family: var(--font-serif);
+      font-size: clamp(26px, 5vw, 38px);
       font-weight: 600;
       color: var(--color-heading);
-      letter-spacing: -0.4px;
-      margin-bottom: 8px;
-      line-height: 1.2;
+      letter-spacing: -0.025em;
+      margin-bottom: 10px;
+      line-height: 1.15;
     }
 
     .page-subtitle {
-      font-size: 14px;
+      font-size: 14.5px;
       color: var(--color-text-secondary);
-      max-width: 580px;
-      margin: 0 auto;
-      line-height: 1.5;
+      max-width: 62ch;
+      line-height: 1.65;
     }
 
-    /* ─── CARTE RECOMMANDATION DEEPLINK (SOBRE ET DIRECTE) ─── */
+    /* ─── RECOMMANDATION DEEPLINK (ÉDITORIAL SOBRE) ─── */
     .app-rec-card {
       background: var(--color-surface);
-      border: 1.5px solid var(--color-tanimbary);
-      border-radius: var(--radius-lg);
-      padding: 18px 16px;
+      border: 1px solid var(--color-border);
+      border-left: 3px solid var(--color-sage);
+      border-radius: var(--radius-xs);
+      padding: 20px 18px;
       margin-bottom: 24px;
-      box-shadow: var(--color-card-shadow);
     }
 
     @media (min-width: 600px) {
@@ -197,18 +197,19 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: var(--color-tanimbary);
-      background: rgba(107, 158, 97, 0.12);
-      border: 1px solid rgba(107, 158, 97, 0.25);
-      padding: 3px 10px;
-      border-radius: 20px;
+      letter-spacing: 0.08em;
+      color: var(--color-sage);
+      background: var(--color-sage-soft);
+      border: 1px solid var(--color-sage-border);
+      padding: 3px 9px;
+      border-radius: var(--radius-xs);
       margin-bottom: 12px;
     }
 
     .app-rec-title {
-      font-size: 18px;
-      font-weight: 700;
+      font-family: var(--font-serif);
+      font-size: 19px;
+      font-weight: 600;
       color: var(--color-heading);
       margin-bottom: 8px;
       display: flex;
@@ -217,14 +218,14 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
     }
 
     .app-rec-title svg {
-      color: var(--color-tanimbary);
+      color: var(--color-sage);
       flex-shrink: 0;
     }
 
     .app-rec-desc {
       font-size: 13.5px;
       color: var(--color-text-secondary);
-      line-height: 1.55;
+      line-height: 1.6;
       margin-bottom: 18px;
     }
 
@@ -246,34 +247,34 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       width: 100%;
       min-height: 46px;
       gap: 10px;
-      background: var(--color-tanimbary-dark);
-      color: #FFFFFF;
-      border: 1px solid var(--color-tanimbary);
-      padding: 12px 18px;
-      border-radius: var(--radius-md);
-      font-size: 14px;
+      background: var(--color-bg);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+      padding: 11px 18px;
+      border-radius: var(--radius-xs);
+      font-size: 13.5px;
       font-weight: 700;
       text-decoration: none;
-      transition: background-color 0.2s, transform 0.15s;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
       cursor: pointer;
     }
 
     @media (min-width: 520px) {
       .btn-deeplink {
         width: auto;
-        padding: 12px 20px;
+        padding: 11px 20px;
       }
     }
 
     .btn-deeplink:hover {
-      background: #1f5c39;
-      transform: translateY(-1px);
+      background: var(--color-sage-soft);
+      border-color: var(--color-sage);
     }
 
     .deeplink-hint {
       font-size: 12px;
       color: var(--color-text-muted);
-      line-height: 1.4;
+      line-height: 1.45;
       flex: 1 1 240px;
     }
 
@@ -284,10 +285,10 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       text-align: center;
       margin: 28px 0;
       color: var(--color-text-muted);
-      font-size: 11.5px;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.1em;
     }
 
     .or-divider::before,
@@ -301,32 +302,32 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       padding: 0 14px;
     }
 
-    /* ─── CARTE PRINCIPALE FORMULAIRE WEB ─── */
+    /* ─── FORMULAIRE WEB COMPLET ─── */
     .form-card {
       background: var(--color-surface);
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: 20px 16px;
-      box-shadow: var(--color-card-shadow);
+      border-radius: var(--radius-xs);
+      padding: 20px 18px;
     }
 
     @media (min-width: 600px) {
       .form-card {
-        padding: 28px;
+        padding: 28px 32px;
       }
     }
 
     .form-card-title {
-      font-size: 17px;
-      font-weight: 700;
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 600;
       color: var(--color-heading);
       margin-bottom: 6px;
     }
 
     .form-card-sub {
-      font-size: 13px;
+      font-size: 13.5px;
       color: var(--color-text-secondary);
-      margin-bottom: 22px;
+      margin-bottom: 24px;
     }
 
     .field {
@@ -345,27 +346,28 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
 
     .field-input, .field-textarea, .field-select {
       width: 100%;
-      padding: 11px 14px;
+      min-height: 44px;
+      padding: 10px 13px;
       background: var(--color-surface-input);
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-xs);
       color: var(--color-text);
       font-family: inherit;
-      font-size: 13.5px;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      font-size: 14px;
+      transition: border-color 0.15s ease;
     }
 
     .field-input:focus, .field-textarea:focus, .field-select:focus {
-      border-color: var(--color-tanimbary);
-      box-shadow: 0 0 0 3px rgba(107, 158, 97, 0.15);
+      border-color: var(--color-accent);
+      outline: 2px solid var(--color-accent-soft);
+      outline-offset: 0;
     }
 
     .field-note {
       font-size: 11.5px;
       color: var(--color-text-muted);
       margin-top: 5px;
-      line-height: 1.4;
+      line-height: 1.45;
     }
 
     /* Sélecteur de plateformes (Mobile-First) */
@@ -385,20 +387,20 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       min-height: 48px;
       background: var(--color-surface-input);
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-xs);
       padding: 11px 12px;
       text-align: left;
       cursor: pointer;
       user-select: none;
-      transition: all 0.15s ease;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
     .platform-chip.selected {
-      background: rgba(107, 158, 97, 0.1);
-      border-color: var(--color-tanimbary);
+      background: var(--color-accent-soft);
+      border-color: var(--color-accent);
       color: var(--color-heading);
     }
 
@@ -411,7 +413,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
     }
 
     .platform-chip.selected .platform-chip-icon {
-      color: var(--color-tanimbary);
+      color: var(--color-accent);
     }
 
     .chip-content {
@@ -451,19 +453,19 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       min-height: 46px;
       background: var(--color-surface-input);
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-xs);
       padding: 11px 12px;
       cursor: pointer;
       user-select: none;
-      transition: all 0.15s ease;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
     .category-card.selected {
-      background: rgba(107, 158, 97, 0.1);
-      border-color: var(--color-tanimbary);
+      background: var(--color-accent-soft);
+      border-color: var(--color-accent);
       color: var(--color-heading);
     }
 
@@ -479,8 +481,8 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
     }
 
     .category-card.selected .cat-radio {
-      border-color: var(--color-tanimbary);
-      background: var(--color-tanimbary);
+      border-color: var(--color-accent);
+      background: var(--color-accent);
     }
 
     .category-card.selected .cat-radio::after {
@@ -500,7 +502,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
     }
 
     .category-card.selected .cat-icon-wrap {
-      color: var(--color-tanimbary);
+      color: var(--color-accent);
     }
 
     .category-card-text {
@@ -523,11 +525,11 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
     .btn-submit-report {
       width: 100%;
       min-height: 46px;
-      padding: 13px 20px;
-      background: var(--color-tanimbary-dark);
+      padding: 12px 20px;
+      background: var(--color-accent);
       color: #FFFFFF;
-      border: 1px solid var(--color-tanimbary);
-      border-radius: var(--radius-md);
+      border: 1px solid var(--color-accent);
+      border-radius: var(--radius-xs);
       font-family: inherit;
       font-size: 14px;
       font-weight: 700;
@@ -536,12 +538,13 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       align-items: center;
       justify-content: center;
       gap: 9px;
-      transition: background-color 0.2s;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
       margin-top: 10px;
     }
 
     .btn-submit-report:hover {
-      background: #1f5c39;
+      background: var(--color-accent-hover);
+      border-color: var(--color-accent-hover);
     }
 
     .btn-submit-report:disabled {
@@ -552,7 +555,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
     .banner {
       display: none;
       padding: 12px 16px;
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-xs);
       font-size: 13px;
       margin-bottom: 20px;
       align-items: center;
@@ -582,20 +585,21 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
     }
 
     .conf-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: rgba(107, 158, 97, 0.15);
-      border: 1px solid rgba(107, 158, 97, 0.3);
-      color: var(--color-tanimbary);
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-xs);
+      background: var(--color-sage-soft);
+      border: 1px solid var(--color-sage-border);
+      color: var(--color-sage);
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .conf-title {
-      font-size: 20px;
-      font-weight: 700;
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 600;
       color: var(--color-heading);
     }
 
@@ -603,7 +607,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       font-size: 13.5px;
       color: var(--color-text-secondary);
       max-width: 480px;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
     .conf-actions {
@@ -628,7 +632,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       min-height: 44px;
       width: 100%;
       padding: 10px 18px;
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-xs);
       font-size: 13px;
       font-weight: 600;
       text-decoration: none;
@@ -640,7 +644,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       align-items: center;
       justify-content: center;
       gap: 6px;
-      transition: all 0.15s ease;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
     }
 
     @media (min-width: 480px) {
@@ -651,6 +655,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
 
     .btn-conf-secondary:hover {
       border-color: var(--color-border-strong);
+      background: var(--color-surface-subtle);
     }
 
     .hp-trap {
@@ -663,7 +668,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
   <!-- En-tête unifié Kanto MG -->
   ${renderPublicHeader({ activePath: '/feedback' })}
 
-  <main>
+  <main id="main-content" tabindex="-1">
     <div class="intro-header">
       <span class="section-eyebrow">Assistance &amp; Qualité Kanto MG</span>
       <h1 class="page-title">Signaler une anomalie ou un retour</h1>
@@ -958,7 +963,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
         <p class="conf-desc">
           Votre signalement a bien été transmis à l'équipe technique de Kanto MG sous la référence :
         </p>
-        <span style="font-family: monospace; font-weight: 700; color: var(--color-tanimbary); font-size: 15px;" id="conf-ref-id">
+        <span style="font-family: monospace; font-weight: 700; color: var(--color-sage); font-size: 15px;" id="conf-ref-id">
           #BUG-XXXX
         </span>
         <p class="conf-desc">
@@ -972,7 +977,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
             </svg>
             <span>Nouveau signalement</span>
           </button>
-          <a href="/beta" class="btn-conf-secondary" style="background: var(--color-tanimbary-dark); color: #FFF; border-color: var(--color-tanimbary);">
+          <a href="/beta" class="btn-conf-secondary" style="background: var(--color-accent); color: #FFF; border-color: var(--color-accent);">
             <span>Retour à l'Espace Bêta</span>
           </a>
         </div>

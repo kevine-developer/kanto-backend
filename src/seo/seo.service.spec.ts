@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import { SeoService } from './seo.service.js';
-import type { PrismaService } from '../prisma/prisma.service.js';
 
 describe('SeoService', () => {
   let service: SeoService;
@@ -85,19 +84,32 @@ describe('SeoService', () => {
   });
 
   describe('getSitemapXml', () => {
-    it('should generate a valid XML sitemap with static and dynamic cultural URLs', async () => {
-      const xml = await service.getSitemapXml('https://app-kanto.gastsar.fr');
+    it('should generate a valid XML sitemap without removed category hubs while keeping deeplinks and utility pages', async () => {
+      const xml = await service.getSitemapXml();
       expect(xml).toContain('<?xml version="1.0" encoding="UTF-8"?>');
       expect(xml).toContain(
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
       );
       expect(xml).toContain('<loc>https://app-kanto.gastsar.fr/</loc>');
       expect(xml).toContain(
+        '<loc>https://app-kanto.gastsar.fr/pages/about</loc>',
+      );
+      expect(xml).toContain(
+        '<loc>https://app-kanto.gastsar.fr/pages/help</loc>',
+      );
+      expect(xml).toContain(
+        '<loc>https://app-kanto.gastsar.fr/pages/terms</loc>',
+      );
+      expect(xml).not.toContain(
         '<loc>https://app-kanto.gastsar.fr/ohabolana</loc>',
       );
-      expect(xml).toContain('<loc>https://app-kanto.gastsar.fr/angano</loc>');
-      expect(xml).toContain('<loc>https://app-kanto.gastsar.fr/kabary</loc>');
-      expect(xml).toContain(
+      expect(xml).not.toContain(
+        '<loc>https://app-kanto.gastsar.fr/angano</loc>',
+      );
+      expect(xml).not.toContain(
+        '<loc>https://app-kanto.gastsar.fr/kabary</loc>',
+      );
+      expect(xml).not.toContain(
         '<loc>https://app-kanto.gastsar.fr/tononkalo</loc>',
       );
       expect(xml).toContain(
@@ -116,30 +128,16 @@ describe('SeoService', () => {
   });
 
   describe('getLlmsTxt', () => {
-    it('should return GEO markdown content for LLMs', () => {
+    it('should return GEO markdown content for LLMs without removed category hubs', () => {
       const llms = service.getLlmsTxt();
       expect(llms).toContain(
         '# Kanto MG — Sanctuaire Numérique du Patrimoine & de la Culture Malgache',
       );
-      expect(llms).toContain('## Corpus Culturel Indexé');
-      expect(llms).toContain('/ohabolana');
-      expect(llms).toContain('/angano');
-      expect(llms).toContain('/kabary');
-    });
-  });
-
-  describe('getHubData', () => {
-    it('should return hub metadata and items for valid category', async () => {
-      const hubData = await service.getHubData('ohabolana');
-      expect(hubData).toBeDefined();
-      expect(hubData?.config.metaTitle).toContain('Ohabolana Malagasy');
-      expect(hubData?.items.length).toBe(1);
-      expect(hubData?.items[0].title).toBe('Ny fihavanana toy ny volon-tsira');
-    });
-
-    it('should return null for unknown category', async () => {
-      const hubData = await service.getHubData('inconnue');
-      expect(hubData).toBeNull();
+      expect(llms).toContain('/pages/about');
+      expect(llms).toContain('/pages/terms');
+      expect(llms).not.toContain('https://app-kanto.gastsar.fr/ohabolana');
+      expect(llms).not.toContain('https://app-kanto.gastsar.fr/angano');
+      expect(llms).not.toContain('https://app-kanto.gastsar.fr/kabary');
     });
   });
 });

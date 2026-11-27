@@ -1,14 +1,6 @@
-import {
-  Controller,
-  Get,
-  Header,
-  NotFoundException,
-  Req,
-  Res,
-} from '@nestjs/common';
-import type { Request, Response } from 'express';
+import { Controller, Get, Header, Req } from '@nestjs/common';
+import type { Request } from 'express';
 import { SeoService } from './seo.service.js';
-import { renderCategoryHubPage } from './views/category-hub.view.js';
 
 @Controller()
 export class SeoController {
@@ -48,61 +40,5 @@ export class SeoController {
   @Header('Cache-Control', 'public, max-age=86400')
   getLlmsTxt(): string {
     return this.seoService.getLlmsTxt();
-  }
-
-  // ─── HUBS ÉDITORIAUX & CULTURELS ──────────────────────────────────────────
-
-  @Get('ohabolana')
-  @Header('Content-Type', 'text/html; charset=utf-8')
-  @Header('Cache-Control', 'public, max-age=1800')
-  async getOhabolanaHub(): Promise<string> {
-    const data = await this.seoService.getHubData('ohabolana');
-    if (!data) throw new NotFoundException('Rubrique introuvable');
-    return renderCategoryHubPage(data);
-  }
-
-  @Get('angano')
-  @Header('Content-Type', 'text/html; charset=utf-8')
-  @Header('Cache-Control', 'public, max-age=1800')
-  async getAnganoHub(): Promise<string> {
-    const data = await this.seoService.getHubData('angano');
-    if (!data) throw new NotFoundException('Rubrique introuvable');
-    return renderCategoryHubPage(data);
-  }
-
-  @Get('kabary')
-  @Header('Content-Type', 'text/html; charset=utf-8')
-  @Header('Cache-Control', 'public, max-age=1800')
-  async getKabaryHub(): Promise<string> {
-    const data = await this.seoService.getHubData('kabary');
-    if (!data) throw new NotFoundException('Rubrique introuvable');
-    return renderCategoryHubPage(data);
-  }
-
-  @Get('tononkalo')
-  @Header('Content-Type', 'text/html; charset=utf-8')
-  @Header('Cache-Control', 'public, max-age=1800')
-  async getTononkaloHub(): Promise<string> {
-    const data = await this.seoService.getHubData('tononkalo');
-    if (!data) throw new NotFoundException('Rubrique introuvable');
-    return renderCategoryHubPage(data);
-  }
-
-  @Get('raki-teny')
-  @Header('Content-Type', 'text/html; charset=utf-8')
-  @Header('Cache-Control', 'public, max-age=1800')
-  async getRakiTenyHub(): Promise<string> {
-    const data = await this.seoService.getHubData('raki-teny');
-    if (!data) throw new NotFoundException('Rubrique introuvable');
-    return renderCategoryHubPage(data);
-  }
-
-  @Get('histoire')
-  @Header('Content-Type', 'text/html; charset=utf-8')
-  @Header('Cache-Control', 'public, max-age=1800')
-  async getHistoireHub(): Promise<string> {
-    const data = await this.seoService.getHubData('histoire');
-    if (!data) throw new NotFoundException('Rubrique introuvable');
-    return renderCategoryHubPage(data);
   }
 }

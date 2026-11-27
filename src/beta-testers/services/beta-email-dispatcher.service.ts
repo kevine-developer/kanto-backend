@@ -51,33 +51,7 @@ const BUILTIN_FALLBACK_TEMPLATES: Record<
     title: 'Votre accès au programme Bêta Kanto MG',
     contentHtml: `<p>Manao ahoana {{userName}},</p>
 <p>Votre inscription au programme officiel de bêta-test de <strong>Kanto MG</strong> (plateforme : <strong>{{platform}}</strong>) a été enregistrée avec succès. Misaotra betsaka pour votre engagement à nos côtés pour faire rayonner la langue et la culture malgaches !</p>
-<p>Pour installer l'application sur votre appareil et débuter votre exploration, suivez simplement les étapes ci-dessous :</p>
-
-<div style="background-color: #F8FAF7; border: 1px solid #D6E4D3; border-left: 4px solid #4A6741; padding: 16px 18px; margin: 20px 0; border-radius: 8px;">
-  <div style="font-weight: 700; color: #16442A; font-size: 15px; margin-bottom: 10px;">
-    Pour les appareils Android (Google Play)
-  </div>
-  <ol style="margin: 0; padding-left: 20px; color: #2C3E33; line-height: 1.6; font-size: 14px;">
-    <li style="margin-bottom: 10px;">
-      <strong>Rejoindre la communauté officielle (Google Groups)</strong><br>
-      Inscrivez-vous en un clic avec votre compte Google pour devenir testeur Android :<br>
-      <a href="{{googleGroupLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #4A6741; font-weight: 600; text-decoration: underline;">Rejoindre le groupe Google Kanto &rarr;</a>
-    </li>
-    <li style="margin-bottom: 10px;">
-      <strong>Étape 1 : Valider votre accès testeur</strong><br>
-      Connectez-vous avec votre adresse <strong>{{userEmail}}</strong> et acceptez de participer au test :<br>
-      <a href="{{androidTestingLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #4A6741; font-weight: 600; text-decoration: underline;">Étape 1 : Confirmer mon compte sur Google Play &rarr;</a>
-    </li>
-    <li>
-      <strong>Étape 2 : Télécharger l'application</strong><br>
-      Une fois l'invitation acceptée, téléchargez Kanto MG sur votre smartphone ou tablette :<br>
-      <a href="{{downloadLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #4A6741; font-weight: 600; text-decoration: underline;">Étape 2 : Installer depuis le Play Store &rarr;</a>
-    </li>
-  </ol>
-  <div style="font-size: 12px; color: #5C6E5A; margin-top: 10px; font-style: italic;">
-    * Note importante : Vous devez obligatoirement être connecté avec l'adresse {{userEmail}} sur Google Play pour accéder à la version fermée.
-  </div>
-</div>
+<p>Pour installer l'application sur votre iPhone ou iPad via Apple TestFlight et débuter votre exploration, suivez simplement les étapes ci-dessous :</p>
 
 <div style="background-color: #FBF9F5; border: 1px solid #EAE3D5; border-left: 4px solid #C58B38; padding: 16px 18px; margin: 20px 0; border-radius: 8px;">
   <div style="font-weight: 700; color: #4A3515; font-size: 15px; margin-bottom: 10px;">
@@ -115,30 +89,7 @@ const BUILTIN_FALLBACK_TEMPLATES: Record<
     title: 'Votre accès au programme Bêta Kanto MG',
     contentHtml: `<p>Manao ahoana {{userName}},</p>
 <p>Une demande d’inscription a été effectuée avec cette adresse e-mail (<strong>{{userEmail}}</strong>). Vous faites déjà partie de nos bêta-testeurs officiels pour la plateforme : <strong>{{platform}}</strong>.</p>
-<p>Vos accès sont actifs ! Voici la marche à suivre pour installer ou retrouver Kanto MG sur votre appareil :</p>
-
-<div style="background-color: #F8FAF7; border: 1px solid #D6E4D3; border-left: 4px solid #4A6741; padding: 16px 18px; margin: 20px 0; border-radius: 8px;">
-  <div style="font-weight: 700; color: #16442A; font-size: 15px; margin-bottom: 10px;">
-    Pour les appareils Android (Google Play)
-  </div>
-  <ol style="margin: 0; padding-left: 20px; color: #2C3E33; line-height: 1.6; font-size: 14px;">
-    <li style="margin-bottom: 10px;">
-      <strong>Rejoindre le groupe Google officiel</strong><br>
-      Assurez-vous d’avoir rejoint le groupe officiel de Kanto avec votre compte Google :<br>
-      <a href="{{googleGroupLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #4A6741; font-weight: 600; text-decoration: underline;">Rejoindre le groupe Google Kanto &rarr;</a>
-    </li>
-    <li style="margin-bottom: 10px;">
-      <strong>Étape 1 : Vérifier votre compte Google Play</strong><br>
-      Assurez-vous d’être connecté avec l'adresse <strong>{{userEmail}}</strong> et d’avoir validé votre accès fermé :<br>
-      <a href="{{androidTestingLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #4A6741; font-weight: 600; text-decoration: underline;">Étape 1 : Confirmer mon compte sur Google Play &rarr;</a>
-    </li>
-    <li>
-      <strong>Étape 2 : Télécharger ou mettre à jour l'application</strong><br>
-      Accédez directement à la fiche privée de Kanto MG :<br>
-      <a href="{{downloadLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #4A6741; font-weight: 600; text-decoration: underline;">Étape 2 : Installer depuis le Play Store &rarr;</a>
-    </li>
-  </ol>
-</div>
+<p>Vos accès sont actifs ! Voici la marche à suivre pour installer ou retrouver Kanto MG sur votre appareil iOS :</p>
 
 <div style="background-color: #FBF9F5; border: 1px solid #EAE3D5; border-left: 4px solid #C58B38; padding: 16px 18px; margin: 20px 0; border-radius: 8px;">
   <div style="font-weight: 700; color: #4A3515; font-size: 15px; margin-bottom: 10px;">
@@ -160,7 +111,7 @@ const BUILTIN_FALLBACK_TEMPLATES: Record<
 
 <div style="margin-top: 22px; padding: 14px 18px; background-color: #FDF9F3; border: 1px solid #EADBCC; border-left: 4px solid #C58B38; border-radius: 8px; font-size: 13px; color: #4A3515; line-height: 1.5;">
   <strong>Un problème pour accéder aux tests ou une question ?</strong><br>
-  Si vous rencontrez la moindre difficulté technique pour installer l'application, si votre compte Google Play ou TestFlight n'est pas reconnu, ou si vous n'êtes pas à l'origine de cette demande, vous pouvez contacter directement l'administrateur à l'adresse <a href="mailto:{{supportEmail}}" style="color: #4A6741; font-weight: 700; text-decoration: underline;">{{supportEmail}}</a> ou simplement répondre à cet e-mail.
+  Si vous rencontrez la moindre difficulté technique pour installer l'application, si votre accès TestFlight n'est pas reconnu, ou si vous n'êtes pas à l'origine de cette demande, vous pouvez contacter directement l'administrateur à l'adresse <a href="mailto:{{supportEmail}}" style="color: #4A6741; font-weight: 700; text-decoration: underline;">{{supportEmail}}</a> ou simplement répondre à cet e-mail.
 </div>
 
 <p style="margin-top: 18px;">Misaotra betsaka pour votre fidélité et votre soutien continu !</p>`,
@@ -180,7 +131,7 @@ const BUILTIN_FALLBACK_TEMPLATES: Record<
 <div style="background-color: #FDF7F7; border-left: 4px solid #C0392B; padding: 14px 18px; margin: 18px 0; border-radius: 6px;">
   <strong style="color: #922B21;">Protection de vos données &amp; Accès :</strong>
   <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #5B2C27; line-height: 1.5;">
-    <li>Vos accès aux versions fermées de test (Google Play et/ou TestFlight) ont été révoqués.</li>
+    <li>Vos accès aux versions fermées de test (Apple TestFlight) ont été révoqués.</li>
     <li>Votre adresse e-mail a été immédiatement retirée de nos listes de diffusion.</li>
     <li>Conformément au RGPD, aucune sollicitation ultérieure ne vous sera adressée.</li>
   </ul>
@@ -250,7 +201,7 @@ export class BetaEmailDispatcherService {
     const mergedVars: Record<string, string> = {
       userName: variables.userName || 'Bêta-testeur',
       userEmail: to,
-      platform: variables.platform || 'Android & iOS',
+      platform: variables.platform || 'iOS',
       downloadLink: variables.downloadLink || playStoreAppLink,
       testFlightLink: variables.testFlightLink || testFlightLink,
       androidTestingLink: variables.androidTestingLink || playStoreWebLink,
@@ -284,11 +235,18 @@ export class BetaEmailDispatcherService {
       'Information Kanto MG Bêta';
     const titleRaw =
       tpl?.title || fallback?.title || 'Programme de Test Kanto MG';
-    const contentRaw =
+    const contentRawSource =
       customContentHtml ||
       tpl?.contentHtml ||
       fallback?.contentHtml ||
       '<p>Merci pour votre participation au test de Kanto MG.</p>';
+    const contentRaw =
+      !customContentHtml &&
+      (templateCode === 'CONFIRMATION' ||
+        templateCode === 'ALREADY_REGISTERED' ||
+        templateCode === 'UNSUBSCRIBE_CONFIRMATION')
+        ? this.stripLegacyAndroidStepsBlock(contentRawSource)
+        : contentRawSource;
     const buttonTextRaw = tpl?.buttonText ?? fallback?.buttonText ?? '';
     const buttonUrlRaw = tpl?.buttonUrl ?? fallback?.buttonUrl ?? '';
     const secondaryButtonTextRaw =
@@ -386,6 +344,48 @@ export class BetaEmailDispatcherService {
       );
       throw err;
     }
+  }
+
+  /**
+   * Supprime d'éventuels blocs d'étapes Android hérités dans les modèles BDD
+   * d'inscription / rappel / désinscription (l'inscription email cible désormais iOS TestFlight).
+   */
+  private stripLegacyAndroidStepsBlock(html: string): string {
+    let cleaned = html;
+    const markerPattern =
+      /<div[^>]*>\s*<div[^>]*>\s*Pour les appareils Android \(Google Play\)/i;
+
+    let match = markerPattern.exec(cleaned);
+    while (match) {
+      const startIdx = match.index;
+      const tagRegex = /<\/?div\b[^>]*>/gi;
+      tagRegex.lastIndex = startIdx;
+
+      let depth = 0;
+      let endIdx = -1;
+      let tagMatch: RegExpExecArray | null;
+
+      while ((tagMatch = tagRegex.exec(cleaned)) !== null) {
+        if (tagMatch[0].toLowerCase().startsWith('</div')) {
+          depth--;
+          if (depth === 0) {
+            endIdx = tagMatch.index + tagMatch[0].length;
+            break;
+          }
+        } else {
+          depth++;
+        }
+      }
+
+      if (endIdx === -1) break;
+      cleaned = cleaned.slice(0, startIdx) + cleaned.slice(endIdx);
+      match = markerPattern.exec(cleaned);
+    }
+
+    return cleaned
+      .replace(/compte Google Play ou TestFlight/gi, 'accès TestFlight')
+      .replace(/\(Google Play et\/ou TestFlight\)/gi, '(Apple TestFlight)')
+      .replace(/\(Google Play \/ TestFlight\)/gi, '(Apple TestFlight)');
   }
 
   /**

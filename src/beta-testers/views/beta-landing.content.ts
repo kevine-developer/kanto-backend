@@ -1,13 +1,10 @@
 /**
- * Kanto MG — Portail officiel et vitrine des testeurs
- * Structure simplifiée et épurée en 2 piliers essentiels :
- * 1. Inscription comme testeur (immédiate, sans friction)
- * 2. Téléchargement direct ou mise à jour de l'application
- *
- * Suppression complète de la vérification manuelle et du bloc intermédiaire de confirmation de statut.
+ * Kanto MG — Portail officiel d'accès anticipé (Contenu HTML éditorial)
+ * Direction artistique : Édition culturelle contemporaine, grilles asymétriques, filets fins 1px.
  */
 
 import {
+  KANTO_ZAFIMANIRY_DIVIDER,
   renderPublicHeader,
   renderPublicFooter,
   renderPublicReviewsSection,
@@ -36,193 +33,264 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
   } = opt;
 
   return `
-  <!-- ═══════════════════════════════════════════════════════════════════════ -->
-  <!-- EN-TÊTE UNIFIÉ KANTO MG                                                 -->
-  <!-- ═══════════════════════════════════════════════════════════════════════ -->
   ${renderPublicHeader({ activePath: '/', isLanding: true })}
 
-  <main>
+  <main id="main-content">
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <!-- PILIER A — INSCRIPTION COMME TESTEUR                                   -->
+    <!-- OUVERTURE ÉDITORIALE ASYMÉTRIQUE & ACCÈS BÊTA                          -->
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <section class="section-hero-register" id="inscription" aria-labelledby="hero-title">
-      <div class="hero-container">
-        
-        <div class="hero-intro">
-          <div class="hero-eyebrow">
-            <span class="eyebrow-pill">Programme Bêta Officiel</span>
-            <span class="eyebrow-counter" id="header-tester-count">${countBadgeText}</span>
+    <section class="section-editorial-hero" id="inscription" aria-labelledby="hero-title">
+      <div class="editorial-hero-grid">
+        <!-- Colonne gauche : Manifeste culturel et garanties transparentes -->
+        <div class="editorial-manifesto">
+          <div class="editorial-kicker-row">
+            <span class="editorial-kicker">Lova sy Kolontsaina • Programme Bêta</span>
+            <span class="editorial-counter" id="header-tester-count">${countBadgeText}</span>
           </div>
 
-          <h1 id="hero-title" class="hero-title">
-            Kanto — La culture malgache, autrement.
+          <h1 id="hero-title" class="editorial-title">
+            Kanto MG — La culture malgache, autrement.
           </h1>
 
-          <p class="hero-subtitle">
-            Rejoignez les testeurs en avant-première et participez activement à la renaissance numérique des contes (Angano), proverbes (Ohabolana) et de la langue de Madagascar.
+          <p class="editorial-lead">
+            Une application mobile dédiée à la découverte et à la transmission vivante de la langue, de la littérature orale et du patrimoine de Madagascar : <em>Angano</em>, <em>Ohabolana</em>, <em>Kabary</em>, <em>Tononkalo</em>, <em>Raki-teny</em> et <em>Tantara</em>.
           </p>
+
+          <dl class="editorial-guarantees" aria-label="Fonctionnement du programme d'accès anticipé">
+            <div class="guarantee-item">
+              <dt class="guarantee-term">Accès gratuit</dt>
+              <dd class="guarantee-desc">Programme bénévole sans publicité ni achat intégré pendant toute la phase de test.</dd>
+            </div>
+            <div class="guarantee-item">
+              <dt class="guarantee-term">Lecture hors-ligne</dt>
+              <dd class="guarantee-desc">Corpus bilingue malgache / français et favoris consultables sans connexion.</dd>
+            </div>
+            <div class="guarantee-item">
+              <dt class="guarantee-term">Android &amp; iOS natifs</dt>
+              <dd class="guarantee-desc">Distribution encadrée via Google Play (Google Groups) et Apple TestFlight.</dd>
+            </div>
+            <div class="guarantee-item">
+              <dt class="guarantee-term">Protection des données</dt>
+              <dd class="guarantee-desc">E-mails chiffrés au repos (AES-256-GCM) sans cession commerciale.</dd>
+            </div>
+          </dl>
         </div>
 
-        <!-- Bannières d'alerte ou de confirmation -->
-        <div id="error-banner" class="banner banner-error" style="${errorVal ? 'display:flex;' : 'display:none;'}">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-          <span id="error-text">${errorVal}</span>
-        </div>
-
-        <div id="success-banner" class="banner banner-success" style="display: none;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-          <span id="success-text"></span>
-        </div>
-
-        <!-- Carte d'inscription : Android via Google Groups OU Formulaire iOS (TestFlight) -->
+        <!-- Colonne droite : Panneau d'accès au programme Bêta -->
         <div class="register-form-card" id="register-card">
-          <!-- Sélection tactile de plateforme avec détection automatique -->
-          <div class="field-group" style="margin-bottom: 20px;">
-            <span class="field-label">
-              <span>Votre appareil</span>
-              <span class="label-required">Sélectionnez votre système</span>
+          <div class="register-card-head">
+            <span class="register-card-kicker">Rejoindre le programme</span>
+            <h2 class="register-card-title">Bêta-Testeur Kanto</h2>
+          </div>
+
+          <!-- Bannières d'état serveur -->
+          <div id="error-banner" class="banner banner-error" role="alert" style="${errorVal ? 'display:flex;' : 'display:none;'}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            <span id="error-text">${errorVal}</span>
+          </div>
+
+          <div id="success-banner" class="banner banner-success" role="status" style="display: none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span id="success-text"></span>
+          </div>
+
+          <!-- Sélecteur de plateforme (Android Google Groups vs iOS TestFlight) -->
+          <div class="field-group" style="margin-bottom: 18px;">
+            <span class="field-label" id="platform-selector-label">
+              <span>Votre système mobile</span>
+              <span class="label-meta">Choix du parcours</span>
             </span>
-            <div class="platform-selector-row">
-              <button type="button" class="platform-btn" id="card-android" data-platform="ANDROID" aria-pressed="false">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8533 8.125 12 8.125s-3.5902.286-5.1368.8257L4.8409 5.4477a.416.416 0 00-.5676-.1521.416.416 0 00-.1521.5676l1.9973 3.4592C2.6889 10.9997.426 14.5408.426 18.6667h23.148c0-4.1259-2.2629-7.667-5.6925-9.3453"/></svg>
-                <div>
+            <div class="platform-selector-row" role="tablist" aria-labelledby="platform-selector-label">
+              <button type="button" class="platform-btn" id="card-android" data-platform="ANDROID" role="tab" aria-selected="false" aria-pressed="false" aria-controls="android-group-panel">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8533 8.125 12 8.125s-3.5902.286-5.1368.8257L4.8409 5.4477a.416.416 0 00-.5676-.1521.416.416 0 00-.1521.5676l1.9973 3.4592C2.6889 10.9997.426 14.5408.426 18.6667h23.148c0-4.1259-2.2629-7.667-5.6925-9.3453"/></svg>
+                <span>
                   <span class="platform-btn-label">Android</span>
-                  <span class="platform-btn-sub">Via Google Groups</span>
-                </div>
+                  <span class="platform-btn-sub">Accès direct Google Groups</span>
+                </span>
               </button>
 
-              <button type="button" class="platform-btn checked" id="card-ios" data-platform="IOS" aria-pressed="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 0.92-2.87-.92.04-2.02.62-2.67 1.37-.56.64-1.05 1.71-.92 2.74 1.03.08 2.06-.49 2.67-1.24z"/></svg>
-                <div>
+              <button type="button" class="platform-btn checked" id="card-ios" data-platform="IOS" role="tab" aria-selected="true" aria-pressed="true" aria-controls="waitlist-form">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 0.92-2.87-.92.04-2.02.62-2.67 1.37-.56.64-1.05 1.71-.92 2.74 1.03.08 2.06-.49 2.67-1.24z"/></svg>
+                <span>
                   <span class="platform-btn-label">iPhone / iPad (iOS)</span>
-                  <span class="platform-btn-sub">Formulaire TestFlight</span>
-                </div>
+                  <span class="platform-btn-sub">Invitation Apple TestFlight</span>
+                </span>
               </button>
             </div>
           </div>
 
-          <!-- Panneau direct Android (Google Groups) — Aucun formulaire d'e-mail nécessaire -->
-          <div id="android-group-panel" class="android-group-panel" style="display: none;">
+          <!-- Parcours direct Android (sans formulaire) -->
+          <div id="android-group-panel" class="android-group-panel" role="tabpanel" aria-labelledby="card-android" style="display: none;">
             <div class="android-group-callout">
               <div class="android-group-head">
-                <span class="store-channel-tag">Accès immédiat Android</span>
-                <h2 class="android-group-title">Rejoignez la communauté officielle sur Google Groups</h2>
+                <span class="store-channel-tag">Procédure directe sans formulaire</span>
+                <h3 class="android-group-title">Activer votre accès testeur Android</h3>
                 <p class="android-group-desc">
-                  Pour Android, l'inscription par formulaire n'est plus nécessaire : rejoignez simplement le groupe Google de Kanto avec votre compte Google pour devenir testeur sur le Play Store.
+                  Pour Android, aucune inscription préalable par formulaire n'est requise. Suivez ces trois étapes avec le <strong>même compte Google</strong> :
                 </p>
               </div>
 
-              <div class="android-group-steps">
-                <a
-                  href="https://groups.google.com/g/communaute-kanto"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn-primary-action"
-                  id="btn-join-google-group"
-                >
-                  <span>1. Rejoindre le groupe Google Android</span>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                </a>
+              <ol class="android-steps-list">
+                <li>
+                  <span class="android-step-index">01</span>
+                  <div class="android-step-body">
+                    <span class="android-step-title">Rejoindre la communauté officielle</span>
+                    <a
+                      href="https://groups.google.com/g/communaute-kanto"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn-primary-action"
+                      id="btn-join-google-group"
+                    >
+                      <span>Rejoindre le groupe Google</span>
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                    </a>
+                  </div>
+                </li>
+                <li>
+                  <span class="android-step-index">02</span>
+                  <div class="android-step-body">
+                    <span class="android-step-title">Activer le statut de testeur</span>
+                    <a
+                      href="https://play.google.com/apps/testing/com.devengalere.kantomg"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn-store-step outline"
+                      id="btn-android-play-confirm"
+                    >
+                      <span class="step-label">Devenir testeur sur Google Play</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                    </a>
+                  </div>
+                </li>
+                <li>
+                  <span class="android-step-index">03</span>
+                  <div class="android-step-body">
+                    <span class="android-step-title">Télécharger l'application</span>
+                    <a
+                      href="https://play.google.com/store/apps/details?id=com.devengalere.kantomg"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn-store-step outline"
+                      id="btn-android-play-download"
+                    >
+                      <span class="step-label">Ouvrir la fiche Google Play Store</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                    </a>
+                  </div>
+                </li>
+              </ol>
 
-                <a
-                  href="https://play.google.com/apps/testing/com.devengalere.kantomg"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn-store-step outline"
-                  id="btn-android-play-confirm"
-                >
-                  <span class="step-num">2</span>
-                  <span class="step-label">Devenir testeur &amp; télécharger sur Google Play</span>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                </a>
-              </div>
-
-              <span class="field-caption" style="text-align: center;">
-                Utilisez le même compte Google sur Google Groups et sur le Google Play Store.
-              </span>
+              <p class="field-caption">
+                Important : utilisez strictement la même adresse Google sur Google Groups et sur votre Google Play Store.
+              </p>
             </div>
           </div>
 
-          <!-- Formulaire d'inscription réservé uniquement à iPhone / iPad (Apple iOS TestFlight) -->
-          <form id="waitlist-form" class="clean-form">
-            <!-- Piège anti-spam invisible -->
+          <!-- Formulaire iOS uniquement (Apple TestFlight) -->
+          <form id="waitlist-form" class="clean-form" role="tabpanel" aria-labelledby="card-ios" novalidate>
             <div class="hp-trap" aria-hidden="true" style="display:none;">
+              <label for="hp-website">Ne pas remplir</label>
               <input type="text" id="hp-website" name="website" tabindex="-1" autocomplete="off">
             </div>
 
             <div class="form-grid">
-              <!-- Champ E-mail indispensable pour Apple TestFlight (iPhone / iPad) -->
               <div class="field-group">
                 <label for="reg-email" class="field-label">
-                  <span>Votre adresse e-mail Apple (iPhone / iPad)</span>
+                  <span>Identifiant e-mail Apple (iOS)</span>
                   <span class="label-required">iOS TestFlight uniquement</span>
                 </label>
                 <div class="field-input-wrap">
-                  <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                  <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                   <input
                     type="email"
                     id="reg-email"
                     name="email"
                     class="clean-input"
-                    placeholder="nom@icloud.com ou votre e-mail Apple"
+                    placeholder="prenom@icloud.com"
                     required
                     value="${emailVal}"
                     autocomplete="email"
+                    aria-describedby="reg-email-hint reg-email-error"
                   >
                 </div>
-                <span class="field-caption">Ce formulaire concerne exclusivement iPhone / iPad (iOS). Utilisez l'adresse de votre compte Apple / TestFlight.</span>
+                <span id="reg-email-hint" class="field-caption">Renseignez l'adresse associée à votre compte Apple / TestFlight sur iPhone ou iPad.</span>
+                <span id="reg-email-error" class="field-inline-error" role="alert" style="display:none;"></span>
+              </div>
+
+              <div class="field-group">
+                <label for="reg-fullname" class="field-label">
+                  <span>Prénom ou nom</span>
+                  <span class="label-meta">Optionnel</span>
+                </label>
+                <div class="field-input-wrap">
+                  <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  <input
+                    type="text"
+                    id="reg-fullname"
+                    name="fullName"
+                    class="clean-input"
+                    placeholder="Ex. : Riana"
+                    maxlength="100"
+                    autocomplete="name"
+                  >
+                </div>
               </div>
             </div>
 
-            <!-- Consentement confidentiel & CGU -->
+            <!-- Case d'acceptation explicite distincte (non pré-cochée) -->
             <div class="consent-row">
-              <label class="consent-label">
-                <input type="checkbox" id="consent-cgu" required checked>
-                <span>J'accepte les <button type="button" class="link-inline" id="btn-open-cgu-modal">CGU</button> et la <button type="button" class="link-inline" id="btn-open-privacy-modal">Politique de confidentialité</button> (identifiants chiffrés, zéro démarchage).</span>
+              <label class="consent-label" for="consent-cgu">
+                <input type="checkbox" id="consent-cgu" name="termsAccepted" required aria-describedby="consent-cgu-error">
+                <span>
+                  J'accepte les <button type="button" class="link-inline" id="btn-open-cgu-modal">Conditions Générales d'Utilisation</button> ainsi que la <button type="button" class="link-inline" id="btn-open-privacy-modal">Politique de confidentialité</button> pour le traitement de mon invitation iOS TestFlight (aucune prospection commerciale).
+                </span>
               </label>
+              <span id="consent-cgu-error" class="field-inline-error" role="alert" style="display:none;"></span>
             </div>
 
-            <!-- Bouton d'action principal bien identifiable -->
             <div class="submit-wrap">
               <button type="submit" class="btn-primary-action" id="btn-submit-reg">
-                <span>Recevoir l'invitation TestFlight (iOS)</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                <span>Demander mon accès TestFlight (iOS)</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
               </button>
             </div>
 
-            <!-- Raccourci pour les personnes déjà inscrites -->
             <div class="already-registered-hint">
-              <span>Déjà inscrit(e) ?</span>
-              <a href="#telechargement" class="link-hint">Télécharger l'application</a>
+              <span>Déjà autorisé(e) sur iOS ou Android ?</span>
+              <a href="#telechargement" class="link-hint">Accéder au téléchargement</a>
             </div>
           </form>
         </div>
-
       </div>
     </section>
 
+    <div class="editorial-divider-wrap">
+      ${KANTO_ZAFIMANIRY_DIVIDER}
+    </div>
+
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <!-- SECTION TÉLÉCHARGEMENT DIRECT DE L'APPLICATION                         -->
+    <!-- SECTION TÉLÉCHARGEMENT DIRECT DES STORES                               -->
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <section class="section-step section-download-step" id="telechargement" aria-labelledby="step-download-title">
       <div class="step-container">
-        
         <div class="step-header">
-          <div class="step-number-badge accent">Accès direct</div>
-          <h2 id="step-download-title" class="step-title">Télécharger Kanto MG</h2>
+          <div class="step-header-left">
+            <span class="editorial-kicker">Accès aux préversions</span>
+            <h2 id="step-download-title" class="step-title">Installer l'application Kanto MG</h2>
+          </div>
           <p class="step-subtitle">
-            L'application est disponible gratuitement en avant-première sur smartphones et tablettes.
+            Retrouvez ci-dessous les liens officiels pour Android (Google Play) et iOS (Apple TestFlight), mis à jour automatiquement selon l'état de publication.
           </p>
         </div>
 
         <div class="cards-duo-grid">
-          
-          <!-- Carte Téléchargement Android -->
-          <div class="store-kanto-card" id="card-download-android">
+          <!-- Carte Android -->
+          <article class="store-kanto-card" id="card-download-android">
             <div class="store-kanto-card-body">
               <div class="store-kanto-header">
                 <div class="store-platform-icon android" aria-hidden="true">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8533 8.125 12 8.125s-3.5902.286-5.1368.8257L4.8409 5.4477a.416.416 0 00-.5676-.1521.416.416 0 00-.1521.5676l1.9973 3.4592C2.6889 10.9997.426 14.5408.426 18.6667h23.148c0-4.1259-2.2629-7.667-5.6925-9.3453"/></svg>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8533 8.125 12 8.125s-3.5902.286-5.1368.8257L4.8409 5.4477a.416.416 0 00-.5676-.1521.416.416 0 00-.1521.5676l1.9973 3.4592C2.6889 10.9997.426 14.5408.426 18.6667h23.148c0-4.1259-2.2629-7.667-5.6925-9.3453"/></svg>
                 </div>
                 <div class="store-platform-meta">
                   <span class="store-channel-tag" id="dl-android-badge">Google Play Store</span>
@@ -232,154 +300,170 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
               </div>
 
               <p class="store-kanto-desc">
-                Version complète optimisée pour smartphones et tablettes Android. Fonctionnement 100% hors-ligne inclus.
+                Smartphones et tablettes Android (version 9.0 ou ultérieure). Adhésion via le Google Group officiel puis installation directe depuis Google Play.
               </p>
 
-              <div class="store-kanto-specs">
-                <span class="spec-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Android 9.0 et ultérieur</span>
-                <span class="spec-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Bêta publique gratuite</span>
-              </div>
+              <ul class="store-kanto-specs">
+                <li>Android 9.0+</li>
+                <li>Mode hors-ligne inclus</li>
+                <li>Mises à jour automatiques</li>
+              </ul>
             </div>
 
             <div class="store-kanto-footer">
               <div class="store-steps-flow">
-                <!-- Étape 1 : Rejoindre le groupe Google officiel Kanto -->
                 <a
                   href="https://groups.google.com/g/communaute-kanto"
                   class="btn-store-step outline"
                   id="join-link-google-group"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Étape 1 : Rejoindre le groupe Google Kanto"
                 >
-                  <span class="step-num">1</span>
+                  <span class="step-num">01</span>
                   <span class="step-label">Rejoindre le groupe Google</span>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
                 </a>
 
-                <!-- Étape 2 : Confirmer son compte sur Google Play -->
                 <a
                   href="https://play.google.com/apps/testing/com.devengalere.kantomg"
                   class="btn-store-step outline"
                   id="confirm-link-google-play"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Étape 2 : Confirmer mon compte sur Google Play"
                 >
-                  <span class="step-num">2</span>
+                  <span class="step-num">02</span>
                   <span class="step-label">Confirmer sur Google Play</span>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
                 </a>
 
-                <!-- Étape 3 : Télécharger sur le Play Store -->
                 <a
                   href="https://play.google.com/store/apps/details?id=com.devengalere.kantomg"
                   class="btn-store-step primary"
                   id="dl-btn-android-main"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Étape 3 : Télécharger Kanto sur Google Play"
                 >
-                  <span class="step-num">3</span>
-                  <span class="step-label">Télécharger sur le Play Store</span>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                  <span class="step-num">03</span>
+                  <span class="step-label">Télécharger sur Google Play</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
                 </a>
               </div>
             </div>
-          </div>
+          </article>
 
-          <!-- Carte Téléchargement iOS -->
-          <div class="store-kanto-card" id="card-download-ios">
+          <!-- Carte iOS -->
+          <article class="store-kanto-card" id="card-download-ios">
             <div class="store-kanto-card-body">
               <div class="store-kanto-header">
                 <div class="store-platform-icon ios" aria-hidden="true">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 0.92-2.87-.92.04-2.02.62-2.67 1.37-.56.64-1.05 1.71-.92 2.74 1.03.08 2.06-.49 2.67-1.24z"/></svg>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 0.92-2.87-.92.04-2.02.62-2.67 1.37-.56.64-1.05 1.71-.92 2.74 1.03.08 2.06-.49 2.67-1.24z"/></svg>
                 </div>
                 <div class="store-platform-meta">
                   <span class="store-channel-tag" id="dl-ios-badge">Apple TestFlight</span>
-                  <h3 class="store-platform-title">iOS</h3>
+                  <h3 class="store-platform-title">iPhone &amp; iPad</h3>
                 </div>
                 <span class="badge-recommended" id="rec-badge-ios" style="display:none;">Votre appareil</span>
               </div>
 
               <p class="store-kanto-desc">
-                Rejoignez le programme sur iPhone et iPad. Installez TestFlight puis activez votre accès anticipé officiel.
+                Compatible iOS 15.0 et ultérieur. Installez d'abord l'application gratuite TestFlight d'Apple puis ouvrez l'invitation après validation de votre compte Apple.
               </p>
 
-              <div class="store-kanto-specs">
-                <span class="spec-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> iOS 15.0 et ultérieur</span>
-                <span class="spec-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> iPhone &amp; iPad</span>
-              </div>
+              <ul class="store-kanto-specs">
+                <li>iOS / iPadOS 15.0+</li>
+                <li>Via Apple TestFlight</li>
+                <li>Invitation par e-mail Apple</li>
+              </ul>
             </div>
 
             <div class="store-kanto-footer">
               <div class="store-steps-flow">
-                <!-- Étape 1 : Installer TestFlight si besoin -->
                 <a
                   href="https://apps.apple.com/app/testflight/id899247664"
                   class="btn-store-step outline"
                   id="install-link-testflight"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Étape 1 : Installer Apple TestFlight depuis l'App Store"
                 >
-                  <span class="step-num">1</span>
-                  <span class="step-label">Installer l'app TestFlight</span>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                  <span class="step-num">01</span>
+                  <span class="step-label">Installer Apple TestFlight</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
                 </a>
 
-                <!-- Étape 2 : Rejoindre et installer Kanto -->
                 <a
                   href="https://testflight.apple.com/join/kantomg"
                   class="btn-store-step primary"
                   id="dl-btn-ios-main"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Étape 2 : Rejoindre la bêta Kanto sur TestFlight"
                 >
-                  <span class="step-num">2</span>
+                  <span class="step-num">02</span>
                   <span class="step-label">Rejoindre sur TestFlight</span>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
                 </a>
               </div>
             </div>
-          </div>
-
+          </article>
         </div>
-
       </div>
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <!-- SECTION AVIS COMMUNAUTAIRES KANTO MG                                   -->
+    <!-- VOIX DE LA COMMUNAUTÉ (FEON'NY FIKAMBANANA)                            -->
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
     ${renderPublicReviewsSection({ contextLabel: 'Bêta & Application mobile' })}
 
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
-    <!-- SECTION QUESTIONS FRÉQUENTES CONCISES                                  -->
+    <!-- QUESTIONS FRÉQUENTES                                                   -->
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <section class="section-faq" id="faq" aria-labelledby="faq-title">
       <div class="faq-container">
-        <h2 id="faq-title" class="faq-title">Questions fréquentes</h2>
+        <div class="faq-intro">
+          <span class="editorial-kicker">Repères &amp; Réponses</span>
+          <h2 id="faq-title" class="faq-title">Questions fréquentes</h2>
+          <p class="faq-lead">
+            Tout ce qu'il faut savoir avant d'installer la préversion sur iPhone, iPad ou Android.
+          </p>
+        </div>
 
         <div class="faq-list">
           <details class="faq-card" open>
             <summary class="faq-summary">
-              <span>Le programme de test est-il gratuit ?</span>
-              <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              <span>L'accès iOS TestFlight est-il immédiat après l'inscription ?</span>
+              <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </summary>
             <div class="faq-body">
-              <p>Oui, l'accès est 100% gratuit et bénévole. Vous accédez à l'ensemble du patrimoine culturel malgache (contes, proverbes, kabary, leçons) sans aucune publicité.</p>
+              <p>Non : l'envoi du formulaire enregistre votre candidature iOS. Vous recevrez ensuite l'invitation officielle Apple TestFlight par e-mail dès que votre identifiant Apple aura été ajouté à la liste des testeurs.</p>
+            </div>
+          </details>
+
+          <details class="faq-card">
+            <summary class="faq-summary">
+              <span>Comment rejoindre la bêta sur Android sans formulaire ?</span>
+              <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </summary>
+            <div class="faq-body">
+              <p>Pour Android, l'accès passe directement par le Google Group officiel Kanto puis par la validation sur Google Play, en utilisant la même adresse Google sur les deux étapes.</p>
+            </div>
+          </details>
+
+          <details class="faq-card">
+            <summary class="faq-summary">
+              <span>Le programme de test est-il gratuit et utilisable hors-ligne ?</span>
+              <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </summary>
+            <div class="faq-body">
+              <p>Oui, Kanto MG est 100 % gratuit pendant le programme bêta et fonctionne sans publicité. Une fois les contenus synchronisés, la lecture des contes, proverbes et fiches reste accessible hors connexion.</p>
             </div>
           </details>
 
           <details class="faq-card">
             <summary class="faq-summary">
               <span>Comment mes données personnelles sont-elles protégées ?</span>
-              <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </summary>
             <div class="faq-body">
-              <p>Vos identifiants sont chiffrés selon le standard AES-256-GCM. Aucune donnée n'est cédée ni exploitée à des fins publicitaires. Vous pouvez vous désinscrire à tout instant en un clic.</p>
+              <p>Votre adresse e-mail est chiffrée au repos (AES-256-GCM) et utilisée uniquement pour gérer votre accès TestFlight. Aucune donnée n'est vendue ou transmise à des régies publicitaires, et vous pouvez vous désinscrire à tout moment.</p>
             </div>
           </details>
         </div>
@@ -387,9 +471,6 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
     </section>
   </main>
 
-  <!-- ═══════════════════════════════════════════════════════════════════════ -->
-  <!-- PIED DE PAGE UNIFIÉ KANTO MG                                            -->
-  <!-- ═══════════════════════════════════════════════════════════════════════ -->
   ${renderPublicFooter({
     legalBaseUrl,
     supportEmail,
@@ -399,13 +480,13 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
   })}
 
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
-  <!-- BANNIÈRE & MODALES LÉGALES RGPD                                         -->
+  <!-- BANDEAU & MODALES LÉGALES RGPD / CONFIRMATION                          -->
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
   <aside id="kanto-cookie-banner" class="cookie-banner" role="region" aria-label="Gestion des cookies" style="display: none;">
     <div class="cookie-banner-wrap">
       <div class="cookie-banner-text">
         <span class="cookie-banner-title">Respect de votre vie privée</span>
-        <p class="cookie-banner-desc">Traceurs strictement nécessaires et mémorisation du thème d'affichage. Aucun profilage publicitaire.</p>
+        <p class="cookie-banner-desc">Ce portail n'utilise que des traceurs techniques essentiels et la mémorisation de votre thème d'affichage. Aucun profilage publicitaire.</p>
       </div>
       <div class="cookie-banner-actions">
         <button type="button" id="cookie-btn-accept-all" class="btn-cookie primary">Accepter</button>
@@ -422,19 +503,19 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
         <button type="button" class="btn-modal-close" id="cookie-modal-close" aria-label="Fermer">✕</button>
       </div>
       <div class="modal-body">
-        <p>Ce portail utilise uniquement des témoins techniques indispensables pour mémoriser votre préférence d'affichage (thème sombre/clair).</p>
+        <p>Kanto MG limite strictement les traceurs locaux aux besoins techniques et à l'enregistrement de votre thème d'affichage (Clair / Sombre).</p>
         <div class="cookie-pref-row">
-          <span>1. Fonctionnement technique</span>
+          <span>1. Fonctionnement technique indispensable</span>
           <span class="badge-status">Toujours actif</span>
         </div>
         <div class="cookie-pref-row">
-          <span>2. Thème d'affichage</span>
+          <label for="cookie-opt-preferences" style="cursor:pointer;">2. Mémorisation du thème d'affichage</label>
           <input type="checkbox" id="cookie-opt-preferences" checked>
         </div>
       </div>
       <div class="modal-foot">
         <button type="button" id="cookie-modal-btn-reject" class="btn-cookie secondary">Refuser</button>
-        <button type="button" id="cookie-modal-btn-save" class="btn-cookie primary">Enregistrer</button>
+        <button type="button" id="cookie-modal-btn-save" class="btn-cookie primary">Enregistrer mes choix</button>
       </div>
     </div>
   </div>
@@ -446,12 +527,12 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
         <button type="button" class="btn-modal-close" id="cgu-modal-close" aria-label="Fermer">✕</button>
       </div>
       <div class="modal-body">
-        <p>En rejoignant le programme de test de Kanto MG, vous devenez acteur d'un sanctuaire numérique dédié au patrimoine, aux contes (<em>Angano</em>), proverbes (<em>Ohabolana</em>) et traditions de Madagascar.</p>
-        <p>L'utilisation est strictement gratuite et bénévole. Vous pouvez vous désinscrire à tout moment.</p>
-        <p><a href="${legalBaseUrl}/pages/terms" target="_blank" rel="noopener noreferrer">Consulter l'intégralité des CGU en pleine page ↗</a></p>
+        <p>En rejoignant le programme de test de Kanto MG, vous participez à l'amélioration d'un sanctuaire numérique consacré au patrimoine, aux contes (<em>Angano</em>), proverbes (<em>Ohabolana</em>) et à la langue malgaches.</p>
+        <p>L'utilisation est entièrement gratuite et bénévole. Vous pouvez retirer votre participation à tout moment.</p>
+        <p><a href="${legalBaseUrl}/pages/terms" target="_blank" rel="noopener noreferrer">Consulter l'intégralité des CGU ↗</a></p>
       </div>
       <div class="modal-foot">
-        <button type="button" id="cgu-modal-btn-accept" class="btn-cookie primary">J'ai compris</button>
+        <button type="button" id="cgu-modal-btn-accept" class="btn-cookie primary">Fermer</button>
       </div>
     </div>
   </div>
@@ -463,8 +544,8 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
         <button type="button" class="btn-modal-close" id="privacy-modal-close" aria-label="Fermer">✕</button>
       </div>
       <div class="modal-body">
-        <p>Vos identifiants sont protégés par chiffrement AES-256-GCM. Seul votre e-mail est conservé afin de synchroniser votre invitation Apple TestFlight (iOS). L'accès bêta Android s'effectue directement via le groupe officiel Google.</p>
-        <p>Aucune donnée personnelle n'est cédée, vendue ou partagée avec des tiers publicitaires.</p>
+        <p>Votre adresse e-mail est chiffrée selon le standard AES-256-GCM et utilisée exclusivement pour préparer votre invitation Apple TestFlight (iOS). L'accès Android s'effectue directement via le Google Group officiel.</p>
+        <p>Aucune donnée personnelle n'est cédée, vendue ou utilisée à des fins publicitaires.</p>
         <p><a href="${legalBaseUrl}/pages/privacy" target="_blank" rel="noopener noreferrer">Consulter la politique de confidentialité complète ↗</a></p>
       </div>
       <div class="modal-foot">
@@ -473,32 +554,29 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
     </div>
   </div>
 
-  <!-- Modale d'inscription confirmée épurée & sans détails superflus -->
+  <!-- Modale post-inscription explicitant l'ajout différé à Apple TestFlight -->
   <div class="modal-overlay" id="modal-registration-confirmed" role="dialog" aria-modal="true" aria-labelledby="modal-confirmed-title" style="display:none;">
     <div class="modal-dialog">
-      <div class="modal-head" style="position: relative; justify-content: center; border-bottom: none; padding-top: 26px; padding-bottom: 4px;">
-        <button type="button" class="btn-modal-close" id="confirmed-modal-close" aria-label="Fermer" style="position: absolute; right: 16px; top: 16px;">✕</button>
-        <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; width: 100%;">
-          <div style="width: 52px; height: 52px; border-radius: 50%; background: var(--color-tanimbary-soft, #EBF2E8); color: var(--color-tanimbary, #4A6741); display: flex; align-items: center; justify-content: center; border: 1px solid var(--color-tanimbary-border, #CBD8C6);">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          </div>
-          <h3 id="modal-confirmed-title" style="font-family: var(--font-serif); font-size: 21px; font-weight: 600; color: var(--color-heading); margin: 0;">
-            Inscription confirmée
-          </h3>
+      <div class="modal-head">
+        <div>
+          <span class="confirmed-kicker">Demande iOS enregistrée</span>
+          <h3 id="modal-confirmed-title">Votre inscription est bien prise en compte</h3>
         </div>
+        <button type="button" class="btn-modal-close" id="confirmed-modal-close" aria-label="Fermer">✕</button>
       </div>
-      <div class="modal-body" style="text-align: center; padding: 10px 24px 18px;">
-        <p style="font-size: 14.5px; line-height: 1.6; color: var(--color-ink-muted); margin: 0 0 10px;">
-          Votre demande a bien été prise en compte.
-        </p>
-        <p style="font-size: 13px; line-height: 1.55; color: var(--color-ink-subtle); margin: 0;">
-          Un e-mail vous a été envoyé avec les instructions d'accès. Si vous êtes déjà inscrit ou pour toute question, veuillez contacter l'administrateur à <a href="mailto:${supportEmail}" style="color: var(--color-terracotta); text-decoration: underline;">${supportEmail}</a>.
-        </p>
+      <div class="modal-body">
+        <div class="confirmed-notice">
+          <strong>Accès non immédiat :</strong> l'enregistrement de votre demande ne débloque pas encore l'application automatiquement. Vous recevrez votre invitation d'activation par e-mail dès que votre compte Apple aura été ajouté au programme <strong>Apple TestFlight</strong>.
+        </div>
+
+        <ol class="confirmed-steps">
+          <li><strong>01.</strong> Installez l'application gratuite <strong>Apple TestFlight</strong> sur votre iPhone ou iPad depuis l'App Store si ce n'est pas déjà fait.</li>
+          <li><strong>02.</strong> Surveillez votre boîte de réception (et vos courriers indésirables) pour l'e-mail de confirmation et l'invitation d'activation TestFlight.</li>
+          <li><strong>03.</strong> En cas de question ou si vous êtes déjà inscrit(e), écrivez-nous à <a href="mailto:${supportEmail}">${supportEmail}</a>.</li>
+        </ol>
       </div>
-      <div class="modal-foot" style="justify-content: center; border-top: none; padding: 0 24px 22px;">
-        <button type="button" id="confirmed-modal-btn-ok" class="btn-cookie primary" style="min-width: 140px; font-weight: 600;">
-          Compris
-        </button>
+      <div class="modal-foot">
+        <button type="button" id="confirmed-modal-btn-ok" class="btn-cookie primary">J'ai compris</button>
       </div>
     </div>
   </div>

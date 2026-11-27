@@ -53,7 +53,7 @@ describe('BetaEmailDispatcherService', () => {
     );
   });
 
-  it('doit envoyer l’email de confirmation avec les étapes détaillées pour Android et iOS en fallback', async () => {
+  it('doit envoyer l’email de confirmation avec uniquement les étapes iOS TestFlight (sans étapes Android)', async () => {
     // Cas où le template en base n'existe pas encore (utilise le fallback BUILTIN_FALLBACK_TEMPLATES)
     prisma.betaEmailTemplate.findUnique.mockResolvedValue(null);
 
@@ -62,7 +62,7 @@ describe('BetaEmailDispatcherService', () => {
       templateCode: 'CONFIRMATION',
       variables: {
         userName: 'Rova',
-        platform: 'Android & iOS',
+        platform: 'iOS',
       },
     });
 
@@ -78,19 +78,12 @@ describe('BetaEmailDispatcherService', () => {
       'Bienvenue dans le programme Bêta Kanto MG — Vos étapes d’accès',
     );
     expect(callArgs.html).toContain('Manao ahoana Rova');
-    // Vérification des étapes Android
-    expect(callArgs.html).toContain('Pour les appareils Android (Google Play)');
-    expect(callArgs.html).toContain(
-      'https://groups.google.com/g/communaute-kanto',
-    );
-    expect(callArgs.html).toContain('Étape 1 : Valider votre accès testeur');
-    expect(callArgs.html).toContain('tester@example.com');
-    expect(callArgs.html).toContain(
-      'https://play.google.com/apps/testing/com.devengalere.kantomg',
-    );
-    expect(callArgs.html).toContain("Étape 2 : Télécharger l'application");
-    expect(callArgs.html).toContain(
-      'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
+    // Vérification qu'aucune étape Android n'est incluse
+    expect(callArgs.html).not.toContain('Pour les appareils Android');
+    expect(callArgs.html).not.toContain('groups.google.com');
+    expect(callArgs.html).not.toContain('play.google.com');
+    expect(callArgs.html).not.toContain(
+      'Étape 1 : Valider votre accès testeur',
     );
     // Vérification des étapes iOS
     expect(callArgs.html).toContain('Pour iPhone &amp; iPad (Apple iOS)');
@@ -120,16 +113,16 @@ describe('BetaEmailDispatcherService', () => {
       templateCode: 'CONFIRMATION',
       variables: {
         userName: 'Faly',
-        platform: 'Android',
+        platform: 'iOS',
       },
     });
 
     const callArgs = resendService.sendEmail.mock.calls[0][0];
     expect(callArgs.to).toBe('secret-tester@example.com');
-    expect(callArgs.html).toContain('secret-tester@example.com');
+    expect(callArgs.html).toContain('Faly');
   });
 
-  it('doit envoyer le mail de rappel ALREADY_REGISTERED avec les étapes et le contact admin', async () => {
+  it('doit envoyer le mail de rappel ALREADY_REGISTERED avec uniquement les étapes iOS et le contact admin', async () => {
     prisma.betaEmailTemplate.findUnique.mockResolvedValue(null);
 
     const result = await service.sendTemplateEmail({
@@ -137,7 +130,7 @@ describe('BetaEmailDispatcherService', () => {
       templateCode: 'ALREADY_REGISTERED',
       variables: {
         userName: 'Aina',
-        platform: 'Android',
+        platform: 'iOS',
         supportEmail: 'contact@kanto.mg',
       },
     });
@@ -151,16 +144,48 @@ describe('BetaEmailDispatcherService', () => {
     expect(callArgs.html).toContain(
       'Vous faites déjà partie de nos bêta-testeurs officiels',
     );
-    expect(callArgs.html).toContain('Pour les appareils Android (Google Play)');
-    expect(callArgs.html).toContain(
-      'Étape 1 : Vérifier votre compte Google Play',
-    );
+    expect(callArgs.html).not.toContain('Pour les appareils Android');
+    expect(callArgs.html).not.toContain('play.google.com');
+    expect(callArgs.html).toContain('Pour iPhone &amp; iPad (Apple iOS)');
+    expect(callArgs.html).toContain('Étape 1 : Installer Apple TestFlight');
     expect(callArgs.html).toContain(
       'Un problème pour accéder aux tests ou une question ?',
     );
     expect(callArgs.html).toContain('contact@kanto.mg');
     expect(callArgs.html).toContain('Accéder au portail de téléchargement');
     expect(callArgs.html).toContain('Contacter l’administrateur');
+  });
+
+  it('doit nettoyer un bloc d’étapes Android hérité provenant de la base de données sans altérer le bloc iOS suivant', async () => {
+    prisma.betaEmailTemplate.findUnique.mockResolvedValue({
+      code: 'ALREADY_REGISTERED',
+      subject: 'Déjà inscrit Bêta',
+      title: 'Accès Bêta',
+      contentHtml: `<p>Bonjour {{userName}}</p>
+<div style="border-left: 4px solid #4A6741;">
+  <div>Pour les appareils Android (Google Play)</div>
+  <ol><li>Étape Android</li></ol>
+</div>
+<div style="border-left: 4px solid #C58B38;">
+  <div>Pour iPhone &amp; iPad (Apple iOS)</div>
+  <ol><li>Étape TestFlight</li></ol>
+</div>
+<p>Si votre compte Google Play ou TestFlight n'est pas reconnu, contactez {{supportEmail}}.</p>`,
+    });
+
+    await service.sendTemplateEmail({
+      to: 'db-legacy@example.com',
+      templateCode: 'ALREADY_REGISTERED',
+      variables: { userName: 'Soa', platform: 'iOS' },
+    });
+
+    const callArgs = resendService.sendEmail.mock.calls[0][0];
+    expect(callArgs.html).not.toContain('Pour les appareils Android');
+    expect(callArgs.html).not.toContain('Étape Android');
+    expect(callArgs.html).not.toContain('compte Google Play');
+    expect(callArgs.html).toContain('Pour iPhone &amp; iPad (Apple iOS)');
+    expect(callArgs.html).toContain('Étape TestFlight');
+    expect(callArgs.html).toContain('accès TestFlight');
   });
 
   it('doit filtrer et supprimer automatiquement tous les emojis natifs du sujet et du contenu', async () => {
