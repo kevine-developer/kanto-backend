@@ -20,8 +20,8 @@ import {
   Roles,
   Session,
   type UserSession,
-} from '../../auth/index.js';
-import { AdminAuditService } from '../../admin/admin-audit.service.js';
+} from '../auth/index.js';
+import { AdminAuditService } from '../admin/admin-audit.service.js';
 import { ConversationService } from './services/conversation.service.js';
 import { KnowledgeBaseService } from './services/knowledge-base.service.js';
 import { FeatureRegistryService } from './services/feature-registry.service.js';
