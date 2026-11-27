@@ -62,8 +62,8 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
               <dd class="guarantee-desc">Programme bénévole sans publicité ni achat intégré pendant toute la phase de test.</dd>
             </div>
             <div class="guarantee-item">
-              <dt class="guarantee-term">Lecture hors-ligne</dt>
-              <dd class="guarantee-desc">Corpus bilingue malgache / français et favoris consultables sans connexion.</dd>
+              <dt class="guarantee-term">Hors-ligne partiel</dt>
+              <dd class="guarantee-desc">Disponible sur certains contenus déjà chargés ; connexion requise pour le reste.</dd>
             </div>
             <div class="guarantee-item">
               <dt class="guarantee-term">Android &amp; iOS natifs</dt>
@@ -305,7 +305,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
 
               <ul class="store-kanto-specs">
                 <li>Android 9.0+</li>
-                <li>Mode hors-ligne inclus</li>
+                <li>Accès hors-ligne partiel</li>
                 <li>Mises à jour automatiques</li>
               </ul>
             </div>
@@ -453,7 +453,7 @@ export function renderBetaLandingBody(opt: BetaLandingContentOptions): string {
               <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </summary>
             <div class="faq-body">
-              <p>Oui, Kanto MG est 100 % gratuit pendant le programme bêta et fonctionne sans publicité. Une fois les contenus synchronisés, la lecture des contes, proverbes et fiches reste accessible hors connexion.</p>
+              <p>Oui, Kanto MG est 100 % gratuit pendant le programme bêta et fonctionne sans publicité. Le mode hors connexion est actuellement disponible de manière partielle sur certains contenus déjà chargés et continue d'être stabilisé ; une connexion Internet reste nécessaire pour le reste de l'application.</p>
             </div>
           </details>
 

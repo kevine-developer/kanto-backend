@@ -50,7 +50,7 @@ export function renderAboutPage(options?: {
       <ul>
         <li><strong>Application mobile native</strong> — Développée avec React Native (Expo) pour iOS et Android, conçue pour un confort de lecture optimal et une navigation fluide à une main.</li>
         <li><strong>Architecture backend performante</strong> — NestJS, base de données PostgreSQL, cache mémoire Redis et synchronisation temps réel.</li>
-        <li><strong>Mode hors-ligne intégral</strong> — Accès continu à vos contes, proverbes et favoris même sans connexion réseau.</li>
+        <li><strong>Mode hors-ligne partiel (en évolution)</strong> — Consultation hors connexion disponible sur certains contenus déjà chargés ; une connexion réseau reste nécessaire pour l'ensemble de l'application.</li>
         <li><strong>Voix &amp; Narrations authentiques</strong> — Enregistrements soignés valorisant la musicalité naturelle de la langue malgache.</li>
         <li><strong>Sécurité &amp; Confidentialité des données</strong> — Chiffrement des identifiants (AES-256-GCM, HMAC-SHA-256) et conformité RGPD intégrale.</li>
       </ul>

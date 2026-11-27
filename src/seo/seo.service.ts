@@ -57,7 +57,7 @@ Kanto MG est une plateforme culturelle et éducative malgache valorisant les val
 ## Fonctionnalités de l'Application Mobile
 - Apprentissage interactif et ludique de la langue malgache (quiz civiques, jeux de mots, devinettes ankamantatra).
 - Écoute audio haute définition en malgache et français.
-- Mode hors-ligne pour la consultation en tout lieu à Madagascar et dans le monde.
+- Accès hors-ligne partiel sur certains contenus déjà chargés (stabilisation complète en cours).
 - Défis multijoueurs culturels 1 contre 1 en temps réel.
 - Bêta-test officiel : https://app-kanto.gastsar.fr/#inscription
 
