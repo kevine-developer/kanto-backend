@@ -57,6 +57,7 @@ import { ReviewsModule } from './reviews/reviews.module.js';
 import { SeoModule } from './seo/seo.module.js';
 import { LearningModule } from './learning/learning.module.js';
 import { SecurityModule } from './common/security/security.module.js';
+import { AiStudioModule } from './ai-studio/ai-studio.module.js';
 import { AccountStatusGuard } from './common/guards/account-status.guard.js';
 
 @Module({
@@ -127,6 +128,7 @@ import { AccountStatusGuard } from './common/guards/account-status.guard.js';
     SeoModule,
     LearningModule,
     SecurityModule,
+    AiStudioModule,
   ],
   controllers: [AppController],
   providers: [

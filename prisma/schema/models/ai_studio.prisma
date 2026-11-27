@@ -1,0 +1,231 @@
+// ============================================================
+// MODÈLES — KANTO AI (COPILOTE MARKETING & STUDIO ÉDITORIAL)
+// Tables additives uniquement (conformité préservation des données)
+// ============================================================
+
+enum AiMessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+  TOOL
+}
+
+enum AiKnowledgeStatus {
+  DRAFT
+  VALIDATED
+  ARCHIVED
+}
+
+enum AiKnowledgeVisibility {
+  ADMIN_ONLY
+  INTERNAL_TEAM
+}
+
+enum AiFeatureStatus {
+  AVAILABLE
+  BETA
+  IN_DEVELOPMENT
+  PLANNED
+  DEPRECATED
+}
+
+enum AiDraftStatus {
+  DRAFT
+  READY
+  APPROVED
+  ARCHIVED
+}
+
+enum AiCampaignStatus {
+  DRAFT
+  IN_PREPARATION
+  SCHEDULED
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
+model AiConversation {
+  id              String    @id @default(cuid())
+  adminUserId     String
+  adminEmail      String?
+  title           String    @default("Nouvelle session éditoriale")
+  contextSummary  String?   @db.Text
+  defaultPlatform String?   @default("FACEBOOK")
+  defaultLanguage String?   @default("BILINGUAL")
+  defaultTone     String?   @default("EDITORIAL")
+  campaignId      String?
+  campaign        AiMarketingCampaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  lastMessageAt   DateTime  @default(now())
+  archivedAt      DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  messages  AiMessage[]
+  drafts    AiMarketingDraft[]
+  usageLogs AiUsageLog[]
+
+  @@index([adminUserId, lastMessageAt(sort: Desc)])
+  @@index([archivedAt])
+  @@index([campaignId])
+  @@map("ai_conversations")
+}
+
+model AiMessage {
+  id               String        @id @default(cuid())
+  conversationId   String
+  conversation     AiConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role             AiMessageRole
+  content          String        @db.Text
+  toolCallsJson    Json?
+  sourcesJson      Json?
+  deliverableJson  Json?
+  provider         String?
+  model            String?
+  inputTokens      Int           @default(0)
+  outputTokens     Int           @default(0)
+  estimatedCostUsd Float         @default(0)
+  latencyMs        Int           @default(0)
+  createdAt        DateTime      @default(now())
+
+  @@index([conversationId, createdAt])
+  @@map("ai_messages")
+}
+
+model AiKnowledgeDocument {
+  id               String                @id @default(cuid())
+  slug             String                @unique
+  title            String
+  category         String                @default("EDITORIAL") // IDENTITY | PRODUCT | BETA | EDITORIAL | CHANGELOG | PRICING | FAQ
+  version          String                @default("1.0")
+  source           String                @default("Equipe Kanto MG")
+  validationStatus AiKnowledgeStatus     @default(DRAFT)
+  visibilityScope  AiKnowledgeVisibility @default(ADMIN_ONLY)
+  content          String                @db.Text
+  createdById      String?
+  updatedById      String?
+  validatedAt      DateTime?
+  lastIndexedAt    DateTime?
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+
+  chunks AiKnowledgeChunk[]
+
+  @@index([category, validationStatus])
+  @@index([validationStatus, visibilityScope])
+  @@index([updatedAt(sort: Desc)])
+  @@map("ai_knowledge_documents")
+}
+
+model AiKnowledgeChunk {
+  id            String              @id @default(cuid())
+  documentId    String
+  document      AiKnowledgeDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  chunkIndex    Int
+  heading       String?
+  content       String              @db.Text
+  tokenEstimate Int                 @default(0)
+  embedding     Float[]             @default([])
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  @@unique([documentId, chunkIndex])
+  @@index([documentId])
+  @@map("ai_knowledge_chunks")
+}
+
+model AiFeatureRegistryItem {
+  id          String          @id @default(cuid())
+  key         String          @unique
+  nameFr      String
+  nameMg      String
+  category    String          @default("CORE") // PATRIMOINE | PEDAGOGIE | JEUX | SOCIAL | SYSTEME
+  status      AiFeatureStatus @default(AVAILABLE)
+  platforms   String[]        @default(["android", "ios"])
+  description String          @db.Text
+  notes       String?         @db.Text
+  updatedById String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([status])
+  @@index([category])
+  @@map("ai_feature_registry")
+}
+
+model AiMarketingCampaign {
+  id             String           @id @default(cuid())
+  name           String
+  objective      String
+  description    String?          @db.Text
+  targetAudience String?
+  startDate      DateTime?
+  endDate        DateTime?
+  platforms      String[]         @default([])
+  status         AiCampaignStatus @default(DRAFT)
+  resultsNotes   String?          @db.Text
+  createdById    String?
+  updatedById    String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  conversations AiConversation[]
+  drafts        AiMarketingDraft[]
+
+  @@index([status])
+  @@index([createdAt(sort: Desc)])
+  @@map("ai_marketing_campaigns")
+}
+
+model AiMarketingDraft {
+  id                String               @id @default(cuid())
+  campaignId        String?
+  campaign          AiMarketingCampaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  conversationId    String?
+  conversation      AiConversation?      @relation(fields: [conversationId], references: [id], onDelete: SetNull)
+  sourceMessageId   String?
+  title             String
+  platform          String               @default("FACEBOOK") // FACEBOOK | INSTAGRAM | TIKTOK | YOUTUBE | THREADS | LINKEDIN | NEWSLETTER | PRESS | SEO_BLOG | VIDEO_SCRIPT
+  language          String               @default("FR") // FR | MG | BILINGUAL
+  tone              String?              @default("EDITORIAL")
+  body              String               @db.Text
+  hashtags          String[]             @default([])
+  cta               String?
+  visualConcept     String?              @db.Text
+  visualAspectRatio String?              @default("4:5")
+  imagePrompt       String?              @db.Text
+  sourcesJson       Json?
+  status            AiDraftStatus        @default(DRAFT)
+  createdById       String?
+  updatedById       String?
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+
+  @@index([status, updatedAt(sort: Desc)])
+  @@index([platform])
+  @@index([campaignId])
+  @@index([conversationId])
+  @@map("ai_marketing_drafts")
+}
+
+model AiUsageLog {
+  id               String          @id @default(cuid())
+  adminUserId      String
+  conversationId   String?
+  conversation     AiConversation? @relation(fields: [conversationId], references: [id], onDelete: SetNull)
+  provider         String
+  model            String
+  operation        String          @default("CHAT_STREAM") // CHAT_STREAM | REGENERATE | EMBEDDING | SUMMARY
+  inputTokens      Int             @default(0)
+  outputTokens     Int             @default(0)
+  estimatedCostUsd Float           @default(0)
+  latencyMs        Int             @default(0)
+  status           String          @default("SUCCESS") // SUCCESS | ERROR | ABORTED | RATE_LIMITED
+  errorCode        String?
+  createdAt        DateTime        @default(now())
+
+  @@index([adminUserId, createdAt(sort: Desc)])
+  @@index([provider, model])
+  @@index([createdAt(sort: Desc)])
+  @@map("ai_usage_logs")
+}
