@@ -278,6 +278,7 @@ export class ConversationService {
         if (signal.aborted) break;
 
         let roundToolCalls: AiToolCall[] = [];
+        let roundRawParts: unknown[] = [];
         let roundText = '';
 
         for await (const ev of this.aiProvider.streamChat(
@@ -303,6 +304,7 @@ export class ConversationService {
             totalCostUsd += ev.usage.estimatedCostUsd;
           } else if (ev.type === 'tool_calls' && ev.toolCalls) {
             roundToolCalls = ev.toolCalls;
+            roundRawParts = ev.rawParts || [];
           }
         }
 
@@ -315,6 +317,7 @@ export class ConversationService {
           role: 'assistant',
           content: roundText,
           toolCalls: roundToolCalls,
+          providerRawParts: roundRawParts,
         });
 
         for (const tc of roundToolCalls) {

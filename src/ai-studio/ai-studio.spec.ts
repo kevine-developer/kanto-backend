@@ -8,6 +8,7 @@ import { FeatureRegistryService } from './services/feature-registry.service.js';
 import { UsageAndCostService } from './services/usage-cost.service.js';
 import { AiToolExecutorService } from './services/ai-tool-executor.service.js';
 import { MarketingStudioService } from './services/marketing-studio.service.js';
+import { GeminiAiProviderAdapter } from './providers/gemini-ai-provider.adapter.js';
 import { AiFeatureStatus } from '../../generated/prisma/client.js';
 
 describe('Kanto AI Studio — Socle Lot 1', () => {
@@ -151,6 +152,64 @@ describe('Kanto AI Studio — Socle Lot 1', () => {
       );
       expect(deliverable?.platform).toBe('INSTAGRAM');
       expect(deliverable?.body).toBe('Texte du post');
+    });
+  });
+
+  describe('GeminiAiProviderAdapter (Thought Signatures & Tool Calling)', () => {
+    it('préserve providerRawParts / thoughtSignature et regroupe les functionResponse consécutifs', () => {
+      const adapter = new GeminiAiProviderAdapter();
+      const mapFn = (adapter as any).mapMessagesToGeminiContents.bind(adapter);
+      const contents = mapFn([
+        { role: 'user', content: 'Cherche un proverbe' },
+        {
+          role: 'assistant',
+          content: '',
+          toolCalls: [
+            {
+              id: 'c1',
+              name: 'search_cultural_corpus',
+              args: { query: 'fihavanana' },
+              thoughtSignature: 'sig_abc123',
+            },
+          ],
+          providerRawParts: [
+            {
+              functionCall: {
+                id: 'c1',
+                name: 'search_cultural_corpus',
+                args: { query: 'fihavanana' },
+              },
+              thoughtSignature: 'sig_abc123',
+            },
+          ],
+        },
+        {
+          role: 'tool',
+          content: '',
+          toolCallId: 'c1',
+          toolName: 'search_cultural_corpus',
+          toolResult: { totalReturned: 1 },
+        },
+        {
+          role: 'tool',
+          content: '',
+          toolCallId: 'c2',
+          toolName: 'get_product_metrics',
+          toolResult: { users: 10 },
+        },
+      ]);
+
+      expect(contents).toHaveLength(3);
+      expect(contents[1].role).toBe('model');
+      expect(contents[1].parts[0].thoughtSignature).toBe('sig_abc123');
+      expect(contents[2].role).toBe('user');
+      expect(contents[2].parts).toHaveLength(2);
+      expect(contents[2].parts[0].functionResponse.name).toBe(
+        'search_cultural_corpus',
+      );
+      expect(contents[2].parts[1].functionResponse.name).toBe(
+        'get_product_metrics',
+      );
     });
   });
 });
