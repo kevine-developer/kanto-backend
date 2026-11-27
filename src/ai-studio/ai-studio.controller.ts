@@ -15,12 +15,7 @@ import {
 } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { Throttle } from '@nestjs/throttler';
-import {
-  AuthGuard,
-  Roles,
-  Session,
-  type UserSession,
-} from '../auth/index.js';
+import { AuthGuard, Roles, Session, type UserSession } from '../auth/index.js';
 import { AdminAuditService } from '../admin/admin-audit.service.js';
 import { ConversationService } from './services/conversation.service.js';
 import { KnowledgeBaseService } from './services/knowledge-base.service.js';
