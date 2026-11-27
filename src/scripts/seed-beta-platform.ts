@@ -23,28 +23,7 @@ const DEFAULT_TEMPLATES = [
     accentColor: '#4A6741',
     contentHtml: `<p>Manao ahoana {{userName}},</p>
 <p>Votre inscription au programme officiel de bêta-test de <strong>Kanto MG</strong> (plateforme : <strong>{{platform}}</strong>) a été enregistrée avec succès. Misaotra betsaka pour votre engagement à nos côtés pour faire rayonner la langue et la culture malgaches !</p>
-<p>Pour installer l'application sur votre appareil et débuter votre exploration, suivez simplement les étapes ci-dessous :</p>
-
-<div style="background-color: #F8FAF7; border: 1px solid #D6E4D3; border-left: 4px solid #4A6741; padding: 16px 18px; margin: 20px 0; border-radius: 8px;">
-  <div style="font-weight: 700; color: #16442A; font-size: 15px; margin-bottom: 10px;">
-    Pour les appareils Android (Google Play)
-  </div>
-  <ol style="margin: 0; padding-left: 20px; color: #2C3E33; line-height: 1.6; font-size: 14px;">
-    <li style="margin-bottom: 10px;">
-      <strong>Étape 1 : Valider votre accès testeur</strong><br>
-      Connectez-vous avec votre adresse <strong>{{userEmail}}</strong> et acceptez de participer au test :<br>
-      <a href="{{androidTestingLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #4A6741; font-weight: 600; text-decoration: underline;">Étape 1 : Confirmer mon compte sur Google Play &rarr;</a>
-    </li>
-    <li>
-      <strong>Étape 2 : Télécharger l'application</strong><br>
-      Une fois l'invitation acceptée, téléchargez Kanto MG sur votre smartphone ou tablette :<br>
-      <a href="{{downloadLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #4A6741; font-weight: 600; text-decoration: underline;">Étape 2 : Installer depuis le Play Store &rarr;</a>
-    </li>
-  </ol>
-  <div style="font-size: 12px; color: #5C6E5A; margin-top: 10px; font-style: italic;">
-    * Note importante : Vous devez obligatoirement être connecté avec l'adresse {{userEmail}} sur Google Play pour accéder à la version fermée.
-  </div>
-</div>
+<p>Pour installer l'application sur votre iPhone ou iPad via Apple TestFlight et débuter votre exploration, suivez simplement les étapes ci-dessous :</p>
 
 <div style="background-color: #FBF9F5; border: 1px solid #EAE3D5; border-left: 4px solid #C58B38; padding: 16px 18px; margin: 20px 0; border-radius: 8px;">
   <div style="font-weight: 700; color: #4A3515; font-size: 15px; margin-bottom: 10px;">
@@ -71,11 +50,7 @@ const DEFAULT_TEMPLATES = [
 <p style="margin-top: 18px;">Nous vous souhaitons une excellente découverte de Kanto MG !</p>`,
     contentText: `Manao ahoana {{userName}}, votre inscription au programme bêta Kanto MG ({{platform}}) est confirmée !
 
-Pour Android :
-1. Validez votre compte Google ({{userEmail}}) : {{androidTestingLink}}
-2. Téléchargez sur Google Play : {{downloadLink}}
-
-Pour iOS :
+Pour iOS (Apple TestFlight) :
 1. Téléchargez Apple TestFlight : https://apps.apple.com/app/testflight/id899247664
 2. Rejoignez la bêta sur TestFlight : {{testFlightLink}}
 
@@ -98,25 +73,7 @@ Support : {{supportEmail}}`,
     accentColor: '#4A6741',
     contentHtml: `<p>Manao ahoana {{userName}},</p>
 <p>Une demande d’inscription a été effectuée avec cette adresse e-mail (<strong>{{userEmail}}</strong>). Vous faites déjà partie de nos bêta-testeurs officiels pour la plateforme : <strong>{{platform}}</strong>.</p>
-<p>Vos accès sont actifs ! Voici la marche à suivre pour installer ou retrouver Kanto MG sur votre appareil :</p>
-
-<div style="background-color: #F8FAF7; border: 1px solid #D6E4D3; border-left: 4px solid #4A6741; padding: 16px 18px; margin: 20px 0; border-radius: 8px;">
-  <div style="font-weight: 700; color: #16442A; font-size: 15px; margin-bottom: 10px;">
-    Pour les appareils Android (Google Play)
-  </div>
-  <ol style="margin: 0; padding-left: 20px; color: #2C3E33; line-height: 1.6; font-size: 14px;">
-    <li style="margin-bottom: 10px;">
-      <strong>Étape 1 : Vérifier votre compte Google Play</strong><br>
-      Assurez-vous d’être connecté avec l'adresse <strong>{{userEmail}}</strong> et d’avoir validé votre accès fermé :<br>
-      <a href="{{androidTestingLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #4A6741; font-weight: 600; text-decoration: underline;">Étape 1 : Confirmer mon compte sur Google Play &rarr;</a>
-    </li>
-    <li>
-      <strong>Étape 2 : Télécharger ou mettre à jour l'application</strong><br>
-      Accédez directement à la fiche privée de Kanto MG :<br>
-      <a href="{{downloadLink}}" target="_blank" style="display: inline-block; margin-top: 4px; color: #4A6741; font-weight: 600; text-decoration: underline;">Étape 2 : Installer depuis le Play Store &rarr;</a>
-    </li>
-  </ol>
-</div>
+<p>Vos accès sont actifs ! Voici la marche à suivre pour installer ou retrouver Kanto MG sur votre appareil iOS :</p>
 
 <div style="background-color: #FBF9F5; border: 1px solid #EAE3D5; border-left: 4px solid #C58B38; padding: 16px 18px; margin: 20px 0; border-radius: 8px;">
   <div style="font-weight: 700; color: #4A3515; font-size: 15px; margin-bottom: 10px;">
@@ -138,15 +95,14 @@ Support : {{supportEmail}}`,
 
 <div style="margin-top: 22px; padding: 14px 18px; background-color: #FDF9F3; border: 1px solid #EADBCC; border-left: 4px solid #C58B38; border-radius: 8px; font-size: 13px; color: #4A3515; line-height: 1.5;">
   <strong>Un problème pour accéder aux tests ou une question ?</strong><br>
-  Si vous rencontrez la moindre difficulté technique pour installer l'application, si votre compte Google Play ou TestFlight n'est pas reconnu, ou si vous n'êtes pas à l'origine de cette demande, vous pouvez contacter directement l'administrateur à l'adresse <a href="mailto:{{supportEmail}}" style="color: #4A6741; font-weight: 700; text-decoration: underline;">{{supportEmail}}</a> ou simplement répondre à cet e-mail.
+  Si vous rencontrez la moindre difficulté technique pour installer l'application, si votre accès TestFlight n'est pas reconnu, ou si vous n'êtes pas à l'origine de cette demande, vous pouvez contacter directement l'administrateur à l'adresse <a href="mailto:{{supportEmail}}" style="color: #4A6741; font-weight: 700; text-decoration: underline;">{{supportEmail}}</a> ou simplement répondre à cet e-mail.
 </div>
 
 <p style="margin-top: 18px;">Misaotra betsaka pour votre fidélité et votre soutien continu !</p>`,
     contentText: `Manao ahoana {{userName}}, vous êtes déjà inscrit au programme bêta Kanto MG pour la plateforme {{platform}}.
 
-Vos accès sont actifs :
-- Android : Validez avec {{userEmail}} sur Google Play ({{androidTestingLink}}) puis installez ({{downloadLink}}).
-- iOS : Installez TestFlight puis ouvrez {{testFlightLink}}.
+Vos accès iOS sont actifs :
+- Installez TestFlight puis ouvrez {{testFlightLink}}.
 
 Portail de téléchargement : https://app-kanto.gastsar.fr/#telechargement
 
@@ -166,7 +122,7 @@ Si vous rencontrez un problème d'accès ou avez une question, contactez directe
     accentColor: '#C58B38',
     contentHtml: `<p>Bonjour {{userName}},</p>
 <p>Votre candidature pour tester <strong>Kanto MG</strong> sur <strong>{{platform}}</strong> est actuellement placée dans notre liste d’attente prioritaire.</p>
-<p>Nous ouvrons régulièrement de nouvelles places sur Google Play et TestFlight. Surveillez votre boîte de réception pour ne pas manquer votre invitation officielle.</p>`,
+<p>Nous ouvrons régulièrement de nouvelles places sur Apple TestFlight. Surveillez votre boîte de réception pour ne pas manquer votre invitation officielle.</p>`,
     contentText: `Bonjour {{userName}}, votre candidature Kanto MG sur {{platform}} est en attente. Vous serez notifié dès l'ouverture de nouveaux créneaux.`,
     footerText: 'Fihavanana & Fampandrosoana — Kanto MG.',
   },
@@ -326,7 +282,7 @@ Si vous rencontrez un problème d'accès ou avez une question, contactez directe
 <div style="background-color: #FDF7F7; border-left: 4px solid #C0392B; padding: 14px 18px; margin: 18px 0; border-radius: 6px;">
   <strong style="color: #922B21;">Protection de vos données &amp; Accès :</strong>
   <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #5B2C27; line-height: 1.5;">
-    <li>Vos accès aux versions de test fermé (Google Play / TestFlight) ont été révoqués.</li>
+    <li>Vos accès aux versions de test fermé (Apple TestFlight) ont été révoqués.</li>
     <li>Votre adresse e-mail a été immédiatement retirée de nos listes de diffusion.</li>
     <li>Conformément au RGPD, aucune sollicitation ultérieure ne vous sera adressée.</li>
   </ul>

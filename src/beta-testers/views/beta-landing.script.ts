@@ -1,11 +1,15 @@
-import { PUBLIC_REVIEWS_SCRIPT } from '../../common/web/public-layout.js';
+import {
+  PUBLIC_MODAL_A11Y_SCRIPT,
+  PUBLIC_REVIEWS_SCRIPT,
+} from '../../common/web/public-layout.js';
 
 export function renderBetaWaitlistScript(): string {
   return `
 (function() {
   'use strict';
 
-  // ─── SÉLECTEURS PRINCIPAUX ────────────────────────────────────────────────
+  ${PUBLIC_MODAL_A11Y_SCRIPT}
+
   var errBanner = document.getElementById('error-banner');
   var errText = document.getElementById('error-text');
   var succBanner = document.getElementById('success-banner');
@@ -16,29 +20,51 @@ export function renderBetaWaitlistScript(): string {
     currentTesterEmail = localStorage.getItem('kanto_tester_email') || '';
   } catch (e) {}
 
-  // ─── GESTION DES NOTIFICATIONS & BANNIÈRES ────────────────────────────────
-  function hideBanners() {
+  function displayFeedbackState(type, msg) {
     if (errBanner) errBanner.style.display = 'none';
     if (succBanner) succBanner.style.display = 'none';
+    if (type === 'error' && errBanner && errText) {
+      errText.innerText = msg || '';
+      errBanner.style.display = 'flex';
+      if (typeof errBanner.scrollIntoView === 'function') {
+        errBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    } else if (type === 'success' && succBanner && succText) {
+      succText.innerText = msg || '';
+      succBanner.style.display = 'flex';
+      if (typeof succBanner.scrollIntoView === 'function') {
+        succBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  }
+
+  function hideBanners() {
+    displayFeedbackState('none', '');
   }
 
   function showError(msg) {
-    if (errBanner && errText) {
-      errText.innerText = msg;
-      errBanner.style.display = 'flex';
-      errBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    displayFeedbackState('error', msg);
+  }
+
+  function openModal(modalEl, triggerEl) {
+    if (!modalEl) return;
+    if (typeof window !== 'undefined' && window.__kantoModalHelper) {
+      window.__kantoModalHelper.open(modalEl, triggerEl);
+    } else {
+      modalEl.style.display = 'flex';
     }
   }
 
-  function showSuccess(msg) {
-    if (succBanner && succText) {
-      succText.innerText = msg;
-      succBanner.style.display = 'flex';
-      succBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  function closeModal(modalEl) {
+    if (!modalEl) return;
+    if (typeof window !== 'undefined' && window.__kantoModalHelper) {
+      window.__kantoModalHelper.close(modalEl);
+    } else {
+      modalEl.style.display = 'none';
     }
   }
 
-  // ─── DÉTECTION AUTOMATIQUE DE LA PLATEFORME (OS MOBILE) ───────────────────
+  // ─── DÉTECTION AUTOMATIQUE DE LA PLATEFORME MOBILE ────────────────────────
   var detectedPlatform = 'IOS';
   var nav = typeof navigator !== 'undefined' ? navigator : null;
   var ua = nav ? (nav.userAgent || nav.vendor || '') : '';
@@ -48,7 +74,6 @@ export function renderBetaWaitlistScript(): string {
     detectedPlatform = 'ANDROID';
   }
 
-  // Mise en exergue du badge "Votre appareil" sur les cartes correspondantes
   var recBadgeAndroid = document.getElementById('rec-badge-android');
   var recBadgeIos = document.getElementById('rec-badge-ios');
   if (detectedPlatform === 'IOS' && /iPad|iPhone|iPod|MacIntel/.test(ua)) {
@@ -61,7 +86,7 @@ export function renderBetaWaitlistScript(): string {
     if (cardDlAndroid) cardDlAndroid.classList.add('is-detected');
   }
 
-  // ─── BASCULE PLATEFORME : ANDROID (GOOGLE GROUPS) VS IOS (FORMULAIRE) ─────
+  // ─── BASCULE PLATEFORME : ANDROID (GOOGLE GROUPS) VS IOS (TESTFLIGHT) ─────
   var cardAndroid = document.getElementById('card-android');
   var cardIos = document.getElementById('card-ios');
   var androidPanel = document.getElementById('android-group-panel');
@@ -75,10 +100,12 @@ export function renderBetaWaitlistScript(): string {
     if (cardAndroid) {
       cardAndroid.classList.toggle('checked', isAndroid);
       cardAndroid.setAttribute('aria-pressed', isAndroid ? 'true' : 'false');
+      cardAndroid.setAttribute('aria-selected', isAndroid ? 'true' : 'false');
     }
     if (cardIos) {
       cardIos.classList.toggle('checked', isIos);
       cardIos.setAttribute('aria-pressed', isIos ? 'true' : 'false');
+      cardIos.setAttribute('aria-selected', isIos ? 'true' : 'false');
     }
     if (androidPanel) {
       androidPanel.style.display = isAndroid ? 'block' : 'none';
@@ -104,11 +131,10 @@ export function renderBetaWaitlistScript(): string {
       hideBanners();
       updatePlatformButtons();
       var regInput = document.getElementById('reg-email');
-      if (regInput) setTimeout(function() { regInput.focus(); }, 100);
+      if (regInput) setTimeout(function() { regInput.focus(); }, 80);
     });
   }
 
-  // Clic CTA En-tête « Rejoindre »
   var headerBtnReg = document.getElementById('header-btn-register');
   if (headerBtnReg) {
     headerBtnReg.addEventListener('click', function() {
@@ -119,45 +145,80 @@ export function renderBetaWaitlistScript(): string {
     });
   }
 
-  // ─── PILIER A : SOUMISSION DU FORMULAIRE D'INSCRIPTION (IOS UNIQUEMENT) ────
+  // ─── VALIDATION INLINE & SOUMISSION DU FORMULAIRE IOS ─────────────────────
+  var emailEl = document.getElementById('reg-email');
+  var fullNameEl = document.getElementById('reg-fullname');
+  var cguEl = document.getElementById('consent-cgu');
+  var emailErrEl = document.getElementById('reg-email-error');
+  var cguErrEl = document.getElementById('consent-cgu-error');
   var btnSubmitReg = document.getElementById('btn-submit-reg');
+
   var modalConfirmed = document.getElementById('modal-registration-confirmed');
   var btnCloseConfirmed = document.getElementById('confirmed-modal-close');
   var btnOkConfirmed = document.getElementById('confirmed-modal-btn-ok');
+  var cguModal = document.getElementById('kanto-cgu-modal');
+  var privacyModal = document.getElementById('kanto-privacy-modal');
+  var cookieModal = document.getElementById('kanto-cookie-modal');
 
-  function openConfirmedModal() {
-    if (modalConfirmed) {
-      modalConfirmed.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
+  function setInlineError(inputEl, errorEl, msg) {
+    if (errorEl) {
+      errorEl.textContent = msg || '';
+      errorEl.style.display = msg ? 'block' : 'none';
+    }
+    if (inputEl && typeof inputEl.setAttribute === 'function') {
+      if (msg) inputEl.setAttribute('aria-invalid', 'true');
+      else inputEl.removeAttribute('aria-invalid');
     }
   }
 
-  function closeConfirmedModal() {
-    if (modalConfirmed) {
-      modalConfirmed.style.display = 'none';
-      document.body.style.overflow = '';
-    }
+  function isValidEmailFormat(val) {
+    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$/.test(val);
   }
 
-  if (btnCloseConfirmed) btnCloseConfirmed.addEventListener('click', closeConfirmedModal);
-  if (btnOkConfirmed) btnOkConfirmed.addEventListener('click', closeConfirmedModal);
-  if (modalConfirmed) {
-    modalConfirmed.addEventListener('click', function(e) {
-      if (e.target === modalConfirmed) closeConfirmedModal();
+  function validateEmailField() {
+    var val = emailEl ? emailEl.value.trim() : '';
+    if (!val) {
+      setInlineError(emailEl, emailErrEl, 'Veuillez saisir votre adresse e-mail Apple.');
+      return false;
+    }
+    if (!isValidEmailFormat(val)) {
+      setInlineError(emailEl, emailErrEl, 'Ce format d’adresse e-mail semble invalide (ex. : prenom@icloud.com).');
+      return false;
+    }
+    setInlineError(emailEl, emailErrEl, '');
+    return true;
+  }
+
+  function validateConsentField() {
+    var accepted = cguEl ? Boolean(cguEl.checked) : false;
+    if (!accepted) {
+      setInlineError(cguEl, cguErrEl, 'Veuillez cocher cette case pour accepter les CGU et la Politique de confidentialité.');
+      return false;
+    }
+    setInlineError(cguEl, cguErrEl, '');
+    return true;
+  }
+
+  if (emailEl) {
+    emailEl.addEventListener('blur', function() {
+      if (emailEl.value.trim()) validateEmailField();
+    });
+    emailEl.addEventListener('input', function() {
+      if (emailErrEl && emailErrEl.style.display === 'block') validateEmailField();
     });
   }
 
-  // Fonction de feedback sobre vers la modale (sans carte verbeuse)
-  function displayFeedbackState(email) {
-    openConfirmedModal();
+  if (cguEl) {
+    cguEl.addEventListener('change', function() {
+      validateConsentField();
+    });
   }
 
-  // Fermeture des modales avec la touche Échap
-  if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' || e.keyCode === 27) {
-        closeConfirmedModal();
-      }
+  if (btnCloseConfirmed) btnCloseConfirmed.addEventListener('click', function() { closeModal(modalConfirmed); });
+  if (btnOkConfirmed) btnOkConfirmed.addEventListener('click', function() { closeModal(modalConfirmed); });
+  if (modalConfirmed) {
+    modalConfirmed.addEventListener('click', function(e) {
+      if (e.target === modalConfirmed) closeModal(modalConfirmed);
     });
   }
 
@@ -166,75 +227,86 @@ export function renderBetaWaitlistScript(): string {
       e.preventDefault();
       hideBanners();
 
-      var emailEl = document.getElementById('reg-email');
-      var cguEl = document.getElementById('consent-cgu');
-      var hpEl = document.getElementById('hp-website');
+      var emailOk = validateEmailField();
+      var consentOk = validateConsentField();
+      if (!emailOk) {
+        if (emailEl && typeof emailEl.focus === 'function') emailEl.focus();
+        return;
+      }
+      if (!consentOk) {
+        if (cguEl && typeof cguEl.focus === 'function') cguEl.focus();
+        return;
+      }
 
+      var hpEl = document.getElementById('hp-website');
       var email = emailEl ? emailEl.value.trim() : '';
-      var termsAccepted = cguEl ? cguEl.checked : true;
+      var fullName = fullNameEl ? fullNameEl.value.trim() : '';
       var website = hpEl ? hpEl.value.trim() : '';
 
-      if (!email || email.indexOf('@') === -1) {
-        showError('Veuillez saisir une adresse e-mail valide.');
-        return;
-      }
-      if (!termsAccepted) {
-        showError('Veuillez accepter les Conditions Générales et la Politique de Confidentialité.');
-        return;
-      }
+      var payload = {
+        email: email,
+        platforms: ['IOS'],
+        termsAccepted: true,
+        website: website
+      };
+      if (fullName) payload.fullName = fullName;
 
       if (btnSubmitReg) {
         btnSubmitReg.disabled = true;
-        btnSubmitReg.innerHTML = '<span>Inscription en cours...</span>';
+        btnSubmitReg.innerHTML = '<span>Enregistrement de la demande...</span>';
       }
 
       try {
         var res = await fetch('/api/beta-testers/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: email,
-            platforms: ['IOS'],
-            termsAccepted: true,
-            website: website
-          })
+          body: JSON.stringify(payload)
         });
 
-        var data = await res.json();
-        if (res.ok && data.success) {
-          hideBanners();
+        var data = null;
+        try {
+          data = await res.json();
+        } catch (parseErr) {
+          data = null;
+        }
 
-          // 1. Vidage et réinitialisation complète du formulaire
+        if (res.ok && data && data.success) {
+          hideBanners();
           if (emailEl) emailEl.value = '';
+          if (fullNameEl) fullNameEl.value = '';
           if (hpEl) hpEl.value = '';
+          setInlineError(emailEl, emailErrEl, '');
+          setInlineError(cguEl, cguErrEl, '');
           activePlatform = 'IOS';
           updatePlatformButtons();
 
-          // 2. Mise à jour discrète du compteur de testeurs
           var countBadge = document.getElementById('header-tester-count');
           if (countBadge) {
             var m = countBadge.innerText.match(/[0-9]+/);
             if (m) countBadge.innerText = (parseInt(m[0], 10) + 1) + ' testeurs pionniers';
           }
 
-          // 3. Affichage sobre de la modale de confirmation (sans carte de détails verbeuse)
-          openConfirmedModal();
+          openModal(modalConfirmed, btnSubmitReg);
         } else {
-          showError(data.message || 'Une erreur est survenue lors de l’inscription.');
+          var humanMsg = (data && typeof data.message === 'string' && !/^HTTP\\s/i.test(data.message))
+            ? data.message
+            : (data && Array.isArray(data.message) && data.message[0])
+              ? data.message[0]
+              : 'Nous n’avons pas pu enregistrer votre demande pour le moment. Vérifiez votre adresse e-mail ou réessayez dans un instant.';
+          showError(humanMsg);
         }
       } catch (err) {
-        showError('Impossible de joindre le serveur. Veuillez vérifier votre connexion.');
+        showError('La connexion au serveur a échoué. Vérifiez votre accès Internet et réessayez.');
       } finally {
         if (btnSubmitReg) {
           btnSubmitReg.disabled = false;
-          btnSubmitReg.innerHTML = '<span>Recevoir l’invitation TestFlight (iOS)</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>';
+          btnSubmitReg.innerHTML = '<span>Demander mon accès TestFlight (iOS)</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>';
         }
       }
     });
   }
 
-  // ─── PILIER B : VALIDATION DU STATUT DE TESTEUR ───────────────────────────
-  // ─── SYNCHRONISATION DYNAMIQUE DES LIENS DE TÉLÉCHARGEMENT ────────────────
+  // ─── SYNCHRONISATION DES LIENS STORES DEPUIS L'API ─────────────────────────
   async function loadDownloadInfo() {
     try {
       var res = await fetch('/api/beta-testers/download-info');
@@ -243,11 +315,15 @@ export function renderBetaWaitlistScript(): string {
 
       if (data.android) {
         var aPanelConfirmBtn = document.getElementById('btn-android-play-confirm');
+        var aPanelDlBtn = document.getElementById('btn-android-play-download');
         var aConfirmBtn = document.getElementById('confirm-link-google-play');
         var aDlBtn = document.getElementById('dl-btn-android-main');
         var aBadge = document.getElementById('dl-android-badge');
         if (aPanelConfirmBtn && data.android.playStoreWebLink) {
           aPanelConfirmBtn.href = data.android.playStoreWebLink;
+        }
+        if (aPanelDlBtn && (data.android.playStoreAppLink || data.android.playStoreWebLink)) {
+          aPanelDlBtn.href = data.android.playStoreAppLink || data.android.playStoreWebLink;
         }
         if (aConfirmBtn && data.android.playStoreWebLink) {
           aConfirmBtn.href = data.android.playStoreWebLink;
@@ -274,9 +350,7 @@ export function renderBetaWaitlistScript(): string {
           iBadge.innerText = (data.ios.availability === 'PUBLIC') ? 'App Store (Public)' : 'Apple TestFlight';
         }
       }
-    } catch (err) {
-      // Les liens statiques par défaut dans le HTML restent opérationnels
-    }
+    } catch (err) {}
   }
 
   loadDownloadInfo();
@@ -309,68 +383,55 @@ export function renderBetaWaitlistScript(): string {
     });
   }
 
-  // ─── MENU DE NAVIGATION MOBILE ───────────────────────────────────────────
+  // ─── MENU TIROIR MOBILE ACCESSIBLE ────────────────────────────────────────
   var mobileMenuBtn = document.getElementById('mobile-menu-toggle');
   var mobileMenuDrawer = document.getElementById('mobile-nav-drawer');
+  function closeMobileDrawer() {
+    if (mobileMenuDrawer && mobileMenuDrawer.classList.contains('open')) {
+      mobileMenuDrawer.classList.remove('open');
+      if (mobileMenuBtn) mobileMenuBtn.setAttribute('aria-expanded', 'false');
+    }
+  }
   if (mobileMenuBtn && mobileMenuDrawer) {
     mobileMenuBtn.addEventListener('click', function() {
       var isOpen = mobileMenuDrawer.classList.toggle('open');
       mobileMenuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
+    mobileMenuDrawer.addEventListener('click', function(e) {
+      if (e.target && typeof e.target.closest === 'function' && e.target.closest('a')) {
+        closeMobileDrawer();
+      }
+    });
   }
 
-  // ─── MODALES CGU & POLITIQUE DE CONFIDENTIALITÉ ──────────────────────────
-  var cguModal = document.getElementById('kanto-cgu-modal');
+  // ─── MODALES CGU, CONFIDENTIALITÉ & COOKIES (ACCESSIBILITÉ CLAVIER) ───────
   var openCguBtn = document.getElementById('btn-open-cgu-modal');
   var closeCguBtn = document.getElementById('cgu-modal-close');
   var acceptCguBtn = document.getElementById('cgu-modal-btn-accept');
   var footerCguBtn = document.getElementById('footer-link-cgu');
 
-  function openCgu(e) {
-    if (e) e.preventDefault();
-    if (cguModal) cguModal.style.display = 'flex';
-  }
-  function closeCgu() {
-    if (cguModal) cguModal.style.display = 'none';
-  }
-
-  if (openCguBtn) openCguBtn.addEventListener('click', openCgu);
-  if (closeCguBtn) closeCguBtn.addEventListener('click', closeCgu);
-  if (acceptCguBtn) acceptCguBtn.addEventListener('click', closeCgu);
-  if (footerCguBtn) footerCguBtn.addEventListener('click', openCgu);
+  if (openCguBtn) openCguBtn.addEventListener('click', function(e) { e.preventDefault(); openModal(cguModal, openCguBtn); });
+  if (footerCguBtn) footerCguBtn.addEventListener('click', function(e) { e.preventDefault(); openModal(cguModal, footerCguBtn); });
+  if (closeCguBtn) closeCguBtn.addEventListener('click', function() { closeModal(cguModal); });
+  if (acceptCguBtn) acceptCguBtn.addEventListener('click', function() { closeModal(cguModal); });
   if (cguModal) {
-    cguModal.addEventListener('click', function(e) {
-      if (e.target === cguModal) closeCgu();
-    });
+    cguModal.addEventListener('click', function(e) { if (e.target === cguModal) closeModal(cguModal); });
   }
 
-  var privacyModal = document.getElementById('kanto-privacy-modal');
   var openPrivBtn = document.getElementById('btn-open-privacy-modal');
   var closePrivBtn = document.getElementById('privacy-modal-close');
   var acceptPrivBtn = document.getElementById('privacy-modal-btn-accept');
   var footerPrivBtn = document.getElementById('footer-link-privacy');
 
-  function openPrivacy(e) {
-    if (e) e.preventDefault();
-    if (privacyModal) privacyModal.style.display = 'flex';
-  }
-  function closePrivacy() {
-    if (privacyModal) privacyModal.style.display = 'none';
-  }
-
-  if (openPrivBtn) openPrivBtn.addEventListener('click', openPrivacy);
-  if (closePrivBtn) closePrivBtn.addEventListener('click', closePrivacy);
-  if (acceptPrivBtn) acceptPrivBtn.addEventListener('click', closePrivacy);
-  if (footerPrivBtn) footerPrivBtn.addEventListener('click', openPrivacy);
+  if (openPrivBtn) openPrivBtn.addEventListener('click', function(e) { e.preventDefault(); openModal(privacyModal, openPrivBtn); });
+  if (footerPrivBtn) footerPrivBtn.addEventListener('click', function(e) { e.preventDefault(); openModal(privacyModal, footerPrivBtn); });
+  if (closePrivBtn) closePrivBtn.addEventListener('click', function() { closeModal(privacyModal); });
+  if (acceptPrivBtn) acceptPrivBtn.addEventListener('click', function() { closeModal(privacyModal); });
   if (privacyModal) {
-    privacyModal.addEventListener('click', function(e) {
-      if (e.target === privacyModal) closePrivacy();
-    });
+    privacyModal.addEventListener('click', function(e) { if (e.target === privacyModal) closeModal(privacyModal); });
   }
 
-  // ─── GESTION DES COOKIES (KantoConsent) ───────────────────────────────────
   var cookieBanner = document.getElementById('kanto-cookie-banner');
-  var cookieModal = document.getElementById('kanto-cookie-modal');
   var btnAcceptAll = document.getElementById('cookie-btn-accept-all');
   var btnRejectAll = document.getElementById('cookie-btn-reject-all');
   var btnCustomize = document.getElementById('cookie-btn-customize');
@@ -382,21 +443,23 @@ export function renderBetaWaitlistScript(): string {
 
   function checkConsent() {
     try {
-      var c = localStorage.getItem('kanto_cookie_consent');
+      var c = localStorage.getItem('kanto_cookie_consent') || localStorage.getItem('kanto_cookie_consent_v1');
       if (!c && cookieBanner) cookieBanner.style.display = 'block';
-    } catch(e) {}
+    } catch (e) {}
   }
 
   function saveConsent(pref) {
     try {
-      localStorage.setItem('kanto_cookie_consent', JSON.stringify({
+      var payload = JSON.stringify({
         necessary: true,
         preferences: Boolean(pref),
         date: new Date().toISOString()
-      }));
-    } catch(e) {}
+      });
+      localStorage.setItem('kanto_cookie_consent', payload);
+      localStorage.setItem('kanto_cookie_consent_v1', payload);
+    } catch (e) {}
     if (cookieBanner) cookieBanner.style.display = 'none';
-    if (cookieModal) cookieModal.style.display = 'none';
+    closeModal(cookieModal);
   }
 
   window.KantoConsent = {
@@ -406,40 +469,44 @@ export function renderBetaWaitlistScript(): string {
 
   if (btnAcceptAll) btnAcceptAll.addEventListener('click', function() { saveConsent(true); });
   if (btnRejectAll) btnRejectAll.addEventListener('click', function() { saveConsent(false); });
-  if (btnCustomize) btnCustomize.addEventListener('click', function() { if (cookieModal) cookieModal.style.display = 'flex'; });
-  if (btnCookieSettings) btnCookieSettings.addEventListener('click', function(e) { e.preventDefault(); if (cookieModal) cookieModal.style.display = 'flex'; });
-  if (cookieModalClose) cookieModalClose.addEventListener('click', function() { if (cookieModal) cookieModal.style.display = 'none'; });
+  if (btnCustomize) btnCustomize.addEventListener('click', function() { openModal(cookieModal, btnCustomize); });
+  if (btnCookieSettings) btnCookieSettings.addEventListener('click', function(e) { e.preventDefault(); openModal(cookieModal, btnCookieSettings); });
+  if (cookieModalClose) cookieModalClose.addEventListener('click', function() { closeModal(cookieModal); });
   if (cookieModalBtnReject) cookieModalBtnReject.addEventListener('click', function() { saveConsent(false); });
   if (cookieModalBtnSave) cookieModalBtnSave.addEventListener('click', function() { saveConsent(optPreferences ? optPreferences.checked : false); });
+  if (cookieModal) {
+    cookieModal.addEventListener('click', function(e) { if (e.target === cookieModal) closeModal(cookieModal); });
+  }
+
+  if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
+    document.addEventListener('keydown', function(e) {
+      var allModals = [modalConfirmed, cguModal, privacyModal, cookieModal];
+      if (e.key === 'Escape' || e.keyCode === 27) {
+        closeMobileDrawer();
+        allModals.forEach(function(m) {
+          if (m && m.style.display === 'flex') closeModal(m);
+        });
+      } else if (e.key === 'Tab' && window.__kantoModalHelper) {
+        allModals.forEach(function(m) {
+          if (m && m.style.display === 'flex') window.__kantoModalHelper.trapTab(m, e);
+        });
+      }
+    });
+  }
 
   checkConsent();
 
-  // ─── UTILITAIRE ÉCHAPPEMENT HTML ──────────────────────────────────────────
-  function escapeHtml(str) {
-    if (str === null || str === undefined) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-  }
-
-  // --- MODULE AVIS DE LA COMMUNAUTÉ (PARTAGÉ VIA PUBLIC-LAYOUT.TS) ---
+  // ─── MODULE AVIS DE LA COMMUNAUTÉ (PARTAGÉ VIA PUBLIC-LAYOUT.TS) ──────────
   ${PUBLIC_REVIEWS_SCRIPT}
 
-  // ─── INITIALISATION SI E-MAIL PRÉSENT DANS L'URL OU STOCKÉ ────────────────
+  // ─── PRÉ-REMPLISSAGE E-MAIL SI PRÉSENT DANS L'URL OU STOCKÉ ──────────────
   try {
     var qEmail = new URLSearchParams(window.location.search).get('email') || '';
     var initEmail = qEmail || currentTesterEmail;
-    if (initEmail && initEmail.indexOf('@') !== -1) {
-      var regInput = document.getElementById('reg-email');
-      if (regInput && !regInput.value) {
-        regInput.value = initEmail;
-      }
+    if (initEmail && initEmail.indexOf('@') !== -1 && emailEl && !emailEl.value) {
+      emailEl.value = initEmail;
     }
   } catch (e) {}
-
 })();
-  `.trim();
+`;
 }

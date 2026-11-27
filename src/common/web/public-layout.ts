@@ -1,11 +1,12 @@
 /**
- * Kanto MG — Design System & Layout Web Public Unifié
- * Source unique de vérité pour l'en-tête, le pied de page, les tokens chromatiques
- * et le basculeur de thème clair/sombre sur l'ensemble des pages publiques :
- * - Portail Bêta & Accueil (/, /beta)
- * - Rubriques Patrimoine (/ohabolana, /angano, /kabary, /tononkalo, /raki-teny, /histoire)
- * - Pages institutionnelles & légales (/pages/terms, /pages/privacy, /pages/about, /pages/help, /pages/licenses)
- * - Portail de signalement (/feedback)
+ * Kanto MG — Design System Éditorial & Socle Web Public Unifié
+ * Direction artistique : L'édition culturelle contemporaine + abstraction géométrique malgache (Zafimaniry / Lamba)
+ *
+ * Source unique de vérité pour :
+ * - Les tokens chromatiques Light (Papier minéral #F5F4F0) / Dark (Ébène mat #0D0D0B)
+ * - La signature chromatique Tany Mena (#A62C21 / #D64F42) & accompagnement Vert végétal sourd (#3D5A38 / #6D9666)
+ * - La typographie bilingue FR/MG : Newsreader (Display/Éditorial) + Plus Jakarta Sans (Interface/Lecture)
+ * - L'en-tête, le pied de page, la section Voix de la communauté (#avis) et les utilitaires d'accessibilité
  */
 
 export const PUBLIC_THEME_INIT_SCRIPT = `
@@ -25,136 +26,250 @@ export const PUBLIC_THEME_INIT_SCRIPT = `
   </script>
 `;
 
+/**
+ * Ornement géométrique sobre inspiré de l'art sculptural Zafimaniry / tissage Lamba.
+ * Utilisé avec retenue comme séparateur éditorial ou repère de section.
+ */
+export const KANTO_ZAFIMANIRY_DIVIDER = `
+  <div class="kanto-ornament-rule" aria-hidden="true">
+    <span class="kanto-ornament-line"></span>
+    <svg class="kanto-ornament-mark" width="28" height="14" viewBox="0 0 28 14" fill="none" stroke="currentColor" stroke-width="1.2">
+      <polygon points="7,7 14,1 21,7 14,13"></polygon>
+      <polygon points="11,7 14,4 17,7 14,10"></polygon>
+      <line x1="0" y1="7" x2="7" y2="7"></line>
+      <line x1="21" y1="7" x2="28" y2="7"></line>
+    </svg>
+    <span class="kanto-ornament-line"></span>
+  </div>
+`;
+
 export const PUBLIC_SHELL_CSS = `
-  /* ─── TOKENS UNIFIÉS KANTO MG (TERRE & ENCRE) ─────────────────────────────── */
+  /* ─── TOKENS DU DESIGN SYSTEM ÉDITORIAL KANTO MG ──────────────────────────── */
   :root, [data-theme="light"] {
+    /* Surfaces minérales */
     --color-bg: #F5F4F0;
-    --color-bg-alt: #EFECE6;
-    --color-surface: #FEFEFC;
-    --color-surface-elevated: #FFFFFF;
-    --color-surface-hover: #F8F7F3;
-    --color-border: #E5E2DB;
-    --color-border-subtle: #ECE8E0;
-    --color-divider: #DCE1D7;
-    --color-ink: #1A1A1A;
-    --color-ink-muted: #5C5C5C;
-    --color-ink-subtle: #8A8A8A;
-    --color-heading: #141412;
-    --color-tanimbary: #4A6741;
-    --color-tanimbary-dark: #374E30;
-    --color-tanimbary-soft: #EBF2E8;
-    --color-tanimbary-border: #CBD8C6;
-    --color-ochre: #C58B38;
-    --color-ochre-soft: #FDF6EB;
-    --color-ochre-border: #F3DEC0;
-    --color-terracotta: #C0392B;
-    --color-terracotta-soft: #FDF2F0;
-    --color-error: #B84040;
-    --color-error-bg: #FDF0F0;
-    --color-error-text: #B84040;
-    --color-success: #4A6741;
-    --color-success-bg: #EFF7ED;
-    --color-success-text: #374E30;
-    --color-android: #1F8B4C;
-    --color-android-soft: #E8F5E9;
-    --color-android-border: #C8E6C9;
-    --color-ios: #0066CC;
-    --color-ios-soft: #E8F1FA;
-    --color-ios-border: #BBD6F2;
-    --color-card-shadow: 0 4px 20px rgba(26, 26, 26, 0.04);
-    --color-card-shadow-hover: 0 10px 30px rgba(26, 26, 26, 0.08);
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 20px;
-    --radius-full: 999px;
+    --color-bg-alt: #ECE9E1;
+    --color-surface: #FAF9F6;
+    --color-surface-elevated: #FDFCF9;
+    --color-surface-hover: #F0EDE5;
+
+    /* Filets & Bordures franches */
+    --color-border: #D9D5CC;
+    --color-border-subtle: #E6E2DA;
+    --color-border-strong: #B8B3A8;
+    --color-divider: #D4CFC4;
+
+    /* Encre & Hiérarchie typographique (WCAG AAA sur corps) */
+    --color-ink: #181715;
+    --color-ink-muted: #4E4C46;
+    --color-ink-subtle: #6E6B63;
+    --color-heading: #11100E;
+
+    /* Couleur signature : Rouge terre malgache (Tany Mena) */
+    --color-accent: #A62C21;
+    --color-accent-hover: #872219;
+    --color-accent-soft: #F7EAE8;
+    --color-accent-border: #DEC0BC;
+
+    /* Accompagnement : Vert végétal sourd (validation & patrimoine naturel) */
+    --color-sage: #3D5A38;
+    --color-sage-dark: #2C4328;
+    --color-sage-soft: #EBF0EA;
+    --color-sage-border: #C4D0C1;
+
+    /* Rétrocompatibilité sémantique vers Tany Mena / Sage / Ocre */
+    --color-tanimbary: var(--color-sage);
+    --color-tanimbary-dark: var(--color-sage-dark);
+    --color-tanimbary-soft: var(--color-sage-soft);
+    --color-tanimbary-border: var(--color-sage-border);
+    --color-terracotta: var(--color-accent);
+    --color-terracotta-soft: var(--color-accent-soft);
+    --color-ochre: #9C6B21;
+    --color-ochre-soft: #F7F0E4;
+    --color-ochre-border: #E0CEAF;
+
+    /* États fonctionnels distincts */
+    --color-error: #A62C21;
+    --color-error-bg: #F9EAE8;
+    --color-error-text: #821F16;
+    --color-success: #3D5A38;
+    --color-success-bg: #EBF0EA;
+    --color-success-text: #273D24;
+    --color-warning: #9C6B21;
+    --color-warning-bg: #F7F0E4;
+
+    /* Plateformes */
+    --color-android: #2D5A3C;
+    --color-android-soft: #EBF0EA;
+    --color-android-border: #C4D0C1;
+    --color-ios: #181715;
+    --color-ios-soft: #ECE9E1;
+    --color-ios-border: #D4CFC4;
+
+    /* Aplats francs, zéro ombre diffuse */
+    --color-card-shadow: none;
+    --color-card-shadow-hover: none;
+
+    /* Rayons contenus stricts (0px à 4px max) */
+    --radius-none: 0px;
+    --radius-xs: 2px;
+    --radius-sm: 2px;
+    --radius-md: 3px;
+    --radius-lg: 4px;
+    --radius-full: 2px;
+
+    /* Échelle & Familles typographiques */
     --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
     --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+    /* Espacements & Transitions */
+    --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+    --transition-fast: 160ms ease-out;
+    --transition-base: 220ms ease-out;
   }
 
   [data-theme="dark"] {
+    /* Surfaces ébène mat sans noir pur agressif */
     --color-bg: #0D0D0B;
-    --color-bg-alt: #141412;
-    --color-surface: #141412;
-    --color-surface-elevated: #1A1A18;
-    --color-surface-hover: #1E1E1A;
-    --color-border: #242420;
-    --color-border-subtle: #1E1E1C;
-    --color-divider: #252E25;
-    --color-ink: #F0F0EC;
-    --color-ink-muted: #9C9C98;
-    --color-ink-subtle: #707070;
-    --color-heading: #F0F0EC;
-    --color-tanimbary: #6B9E61;
-    --color-tanimbary-dark: #82B378;
-    --color-tanimbary-soft: #1B241A;
-    --color-tanimbary-border: #2E3E2C;
-    --color-ochre: #E0A24A;
-    --color-ochre-soft: #241B10;
-    --color-ochre-border: #47341D;
-    --color-terracotta: #E75A4D;
-    --color-terracotta-soft: #2C1715;
-    --color-error: #E05555;
-    --color-error-bg: #2B1616;
-    --color-error-text: #FFAAA0;
-    --color-success: #6B9E61;
-    --color-success-bg: #1B2B1B;
-    --color-success-text: #B5E8AC;
-    --color-android: #3DDC84;
-    --color-android-soft: #132A1C;
-    --color-android-border: #1F4A2F;
-    --color-ios: #409CFF;
-    --color-ios-soft: #10243C;
-    --color-ios-border: #1B406A;
-    --color-card-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
-    --color-card-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.6);
+    --color-bg-alt: #141411;
+    --color-surface: #161613;
+    --color-surface-elevated: #1C1C18;
+    --color-surface-hover: #21201C;
+
+    --color-border: #2D2C26;
+    --color-border-subtle: #22211C;
+    --color-border-strong: #46443B;
+    --color-divider: #2A2923;
+
+    --color-ink: #ECEAE3;
+    --color-ink-muted: #B2AFA6;
+    --color-ink-subtle: #88857C;
+    --color-heading: #F5F3EC;
+
+    --color-accent: #D64F42;
+    --color-accent-hover: #E36B5F;
+    --color-accent-soft: #2A1614;
+    --color-accent-border: #5C2B26;
+
+    --color-sage: #6D9666;
+    --color-sage-dark: #85AD7E;
+    --color-sage-soft: #182217;
+    --color-sage-border: #2F422C;
+
+    --color-tanimbary: var(--color-sage);
+    --color-tanimbary-dark: var(--color-sage-dark);
+    --color-tanimbary-soft: var(--color-sage-soft);
+    --color-tanimbary-border: var(--color-sage-border);
+    --color-terracotta: var(--color-accent);
+    --color-terracotta-soft: var(--color-accent-soft);
+    --color-ochre: #D69E4E;
+    --color-ochre-soft: #241C11;
+    --color-ochre-border: #4A381F;
+
+    --color-error: #E36B5F;
+    --color-error-bg: #2B1715;
+    --color-error-text: #F7B6AF;
+    --color-success: #79A672;
+    --color-success-bg: #192418;
+    --color-success-text: #C3DFBF;
+    --color-warning: #D69E4E;
+    --color-warning-bg: #241C11;
+
+    --color-android: #6D9666;
+    --color-android-soft: #182217;
+    --color-android-border: #2F422C;
+    --color-ios: #ECEAE3;
+    --color-ios-soft: #21201C;
+    --color-ios-border: #38362F;
+
+    --color-card-shadow: none;
+    --color-card-shadow-hover: none;
   }
 
-  /* ─── EN-TÊTE UNIFIÉ KANTO MG ────────────────────────────────────────────── */
+  /* Focus accessible net sur l'ensemble du portail */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* Lien d'évitement clavier */
+  .skip-to-content {
+    position: absolute;
+    left: -9999px;
+    top: 8px;
+    z-index: 1500;
+    background: var(--color-accent);
+    color: #FAF9F6;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: var(--radius-xs);
+    text-decoration: none;
+  }
+
+  .skip-to-content:focus {
+    left: 16px;
+  }
+
+  /* Ornement géométrique Zafimaniry */
+  .kanto-ornament-rule {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    color: var(--color-accent);
+    margin: 4px 0;
+  }
+
+  .kanto-ornament-line {
+    flex: 1;
+    height: 1px;
+    background: var(--color-border);
+  }
+
+  .kanto-ornament-mark {
+    flex-shrink: 0;
+    display: block;
+  }
+
+  /* ─── EN-TÊTE ÉDITORIAL UNIFIÉ KANTO MG ─────────────────────────────────── */
   .site-header {
     position: sticky;
     top: 0;
     z-index: 100;
     width: 100%;
     background: var(--color-surface);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--color-border);
-    transition: background-color 0.25s ease, border-color 0.25s ease;
+    transition: background-color var(--transition-base), border-color var(--transition-base);
   }
 
   .site-header-inner {
-    max-width: 1180px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 10px 14px;
+    padding: 10px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
-  }
-
-  @media (min-width: 480px) {
-    .site-header-inner {
-      padding: 12px 20px;
-      gap: 14px;
-    }
+    gap: 12px;
   }
 
   @media (min-width: 768px) {
     .site-header-inner {
-      padding: 14px 32px;
-      gap: 16px;
+      padding: 13px 32px;
+      gap: 20px;
     }
   }
 
   body.hide-header .site-header,
-  body.hide-header .mobile-nav-drawer {
+  body.hide-header .mobile-nav-drawer,
+  body.hide-header .skip-to-content {
     display: none !important;
   }
 
   .brand {
     display: inline-flex;
     align-items: center;
-    gap: 9px;
+    gap: 10px;
     text-decoration: none;
     color: var(--color-ink);
     flex-shrink: 1;
@@ -174,7 +289,7 @@ export const PUBLIC_SHELL_CSS = `
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-xs);
     overflow: hidden;
     border: 1px solid var(--color-border);
     background: var(--color-bg);
@@ -203,9 +318,9 @@ export const PUBLIC_SHELL_CSS = `
 
   .brand-name {
     font-family: var(--font-serif);
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     font-weight: 600;
-    line-height: 1.1;
+    line-height: 1.08;
     color: var(--color-heading);
     letter-spacing: -0.02em;
     white-space: nowrap;
@@ -213,26 +328,27 @@ export const PUBLIC_SHELL_CSS = `
 
   @media (min-width: 480px) {
     .brand-name {
-      font-size: 1.25rem;
+      font-size: 1.32rem;
     }
   }
 
   .brand-domain {
-    color: var(--color-ochre);
+    color: var(--color-accent);
     font-weight: 500;
   }
 
   .brand-tag {
     display: none;
-    font-size: 0.68rem;
-    color: var(--color-ink-muted);
-    letter-spacing: 0.06em;
+    font-size: 0.64rem;
+    color: var(--color-ink-subtle);
+    letter-spacing: 0.11em;
     text-transform: uppercase;
     font-weight: 600;
     white-space: nowrap;
+    margin-top: 2px;
   }
 
-  @media (min-width: 400px) {
+  @media (min-width: 420px) {
     .brand-tag {
       display: block;
     }
@@ -241,7 +357,7 @@ export const PUBLIC_SHELL_CSS = `
   .header-nav {
     display: none;
     align-items: center;
-    gap: 22px;
+    gap: 24px;
   }
 
   @media (min-width: 960px) {
@@ -253,20 +369,20 @@ export const PUBLIC_SHELL_CSS = `
   .header-nav-link {
     text-decoration: none;
     color: var(--color-ink-muted);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 500;
-    padding: 6px 2px;
+    padding: 8px 2px;
     position: relative;
-    transition: color 0.15s ease;
+    transition: color var(--transition-fast);
     white-space: nowrap;
   }
 
   .header-nav-link:hover {
-    color: var(--color-tanimbary);
+    color: var(--color-heading);
   }
 
   .header-nav-link.active {
-    color: var(--color-tanimbary);
+    color: var(--color-accent);
     font-weight: 600;
   }
 
@@ -275,10 +391,9 @@ export const PUBLIC_SHELL_CSS = `
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -2px;
+    bottom: -1px;
     height: 2px;
-    border-radius: 2px;
-    background: var(--color-tanimbary);
+    background: var(--color-accent);
   }
 
   .header-actions {
@@ -288,12 +403,6 @@ export const PUBLIC_SHELL_CSS = `
     flex-shrink: 0;
   }
 
-  @media (min-width: 480px) {
-    .header-actions {
-      gap: 10px;
-    }
-  }
-
   .theme-toggle-btn,
   .mobile-menu-btn {
     width: 44px;
@@ -301,18 +410,18 @@ export const PUBLIC_SHELL_CSS = `
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: transparent;
+    background: var(--color-bg);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-xs);
     color: var(--color-ink);
     cursor: pointer;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
   }
 
   .theme-toggle-btn:hover,
   .mobile-menu-btn:hover {
     background: var(--color-surface-hover);
-    border-color: var(--color-ink-subtle);
+    border-color: var(--color-border-strong);
   }
 
   @media (min-width: 960px) {
@@ -327,34 +436,35 @@ export const PUBLIC_SHELL_CSS = `
     align-items: center;
     justify-content: center;
     min-height: 44px;
-    padding: 9px 13px;
-    font-size: 0.83rem;
+    padding: 8px 14px;
+    font-size: 0.84rem;
     font-weight: 600;
-    color: #FFFFFF;
-    background: var(--color-tanimbary);
-    border-radius: var(--radius-md);
-    transition: background-color 0.15s ease, transform 0.1s ease;
+    color: #FAF9F6;
+    background: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-xs);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
     white-space: nowrap;
   }
 
   @media (min-width: 480px) {
     .header-cta-btn {
       padding: 9px 18px;
-      font-size: 0.88rem;
+      font-size: 0.875rem;
     }
   }
 
   .header-cta-btn:hover {
-    background: var(--color-tanimbary-dark);
-    transform: translateY(-1px);
+    background: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
   }
 
-  /* Menu tiroir mobile */
+  /* Menu tiroir mobile ergonomique pour le pouce */
   .mobile-nav-drawer {
     display: none;
     background: var(--color-surface);
     border-top: 1px solid var(--color-border);
-    padding: 14px 16px 20px;
+    padding: 16px;
   }
 
   .mobile-nav-drawer.open {
@@ -374,7 +484,7 @@ export const PUBLIC_SHELL_CSS = `
     gap: 8px;
   }
 
-  @media (min-width: 440px) {
+  @media (min-width: 460px) {
     .mobile-nav-grid {
       grid-template-columns: 1fr 1fr;
     }
@@ -383,30 +493,32 @@ export const PUBLIC_SHELL_CSS = `
   .mobile-nav-link {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     min-height: 44px;
     padding: 10px 14px;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-xs);
     border: 1px solid var(--color-border);
     background: var(--color-bg);
     color: var(--color-ink);
     font-size: 0.88rem;
     font-weight: 500;
     text-decoration: none;
-    transition: border-color 0.15s ease, color 0.15s ease;
+    transition: border-color var(--transition-fast), color var(--transition-fast), background-color var(--transition-fast);
   }
 
   .mobile-nav-link.active,
   .mobile-nav-link:hover {
-    border-color: var(--color-tanimbary);
-    color: var(--color-tanimbary);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: var(--color-surface);
   }
 
-  /* ─── PIED DE PAGE UNIFIÉ KANTO MG ───────────────────────────────────────── */
+  /* ─── PIED DE PAGE ÉDITORIAL UNIFIÉ KANTO MG ─────────────────────────────── */
   .site-footer {
     width: 100%;
     background: var(--color-surface);
     border-top: 1px solid var(--color-border);
-    padding: 48px 20px 32px;
+    padding: 48px 16px 32px;
     display: flex;
     justify-content: center;
     margin-top: auto;
@@ -414,13 +526,13 @@ export const PUBLIC_SHELL_CSS = `
 
   @media (min-width: 768px) {
     .site-footer {
-      padding: 60px 32px 36px;
+      padding: 64px 32px 36px;
     }
   }
 
   .footer-container {
     width: 100%;
-    max-width: 1120px;
+    max-width: 1200px;
     display: flex;
     flex-direction: column;
     gap: 36px;
@@ -440,15 +552,15 @@ export const PUBLIC_SHELL_CSS = `
 
   @media (min-width: 960px) {
     .footer-grid {
-      grid-template-columns: 1.8fr 1fr 1fr 1fr;
-      gap: 40px;
+      grid-template-columns: 1.6fr 1fr 1fr;
+      gap: 48px;
     }
   }
 
   .footer-brand-col {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
   }
 
   .footer-brand-wrap {
@@ -459,39 +571,46 @@ export const PUBLIC_SHELL_CSS = `
 
   .footer-brand-name {
     font-family: var(--font-serif);
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     font-weight: 600;
     color: var(--color-heading);
+    letter-spacing: -0.015em;
   }
 
   .footer-brand-desc {
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     color: var(--color-ink-muted);
-    line-height: 1.55;
-    max-width: 340px;
+    line-height: 1.62;
+    max-width: 38ch;
   }
 
   .footer-quote-mg {
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: 0.86rem;
-    color: var(--color-ink-subtle);
-    margin-top: 2px;
+    font-size: 0.94rem;
+    line-height: 1.5;
+    color: var(--color-heading);
+    border-left: 2px solid var(--color-accent);
+    padding-left: 12px;
+    margin-top: 4px;
+    max-width: 40ch;
   }
 
   .footer-links-col {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
   }
 
   .footer-heading {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     color: var(--color-ink-subtle);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--color-border-subtle);
   }
 
   .footer-links-col a,
@@ -509,24 +628,24 @@ export const PUBLIC_SHELL_CSS = `
     font-family: inherit;
     cursor: pointer;
     overflow-wrap: anywhere;
-    transition: color 0.15s ease;
+    transition: color var(--transition-fast);
   }
 
   @media (min-width: 768px) {
     .footer-links-col a,
     .btn-text-link {
-      padding: 1px 0;
+      padding: 2px 0;
       min-height: auto;
     }
   }
 
   .footer-links-col a:hover,
   .btn-text-link:hover {
-    color: var(--color-tanimbary);
+    color: var(--color-accent);
   }
 
   .footer-bottom-line {
-    padding-top: 24px;
+    padding-top: 22px;
     border-top: 1px solid var(--color-border-subtle);
     display: flex;
     flex-direction: column;
@@ -543,129 +662,129 @@ export const PUBLIC_SHELL_CSS = `
     }
   }
 
-  /* ─── MODULE IMMERSIF DES AVIS COMMUNAUTÉ (NY FEON'NY FIKAMBANANA) ───────── */
+  /* ─── SECTION ÉDITORIALE : VOIX DE LA COMMUNAUTÉ (FEON'NY FIKAMBANANA) ─── */
   body.hide-header .kanto-reviews-section {
     display: none !important;
   }
 
   .kanto-reviews-section {
     width: 100%;
-    padding: 64px 20px 72px;
-    background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-alt) 48%, var(--color-bg) 100%);
-    border-top: 1px solid var(--color-border-subtle);
+    padding: 56px 16px 64px;
+    background: var(--color-bg-alt);
+    border-top: 1px solid var(--color-border);
     display: flex;
     justify-content: center;
-    position: relative;
   }
 
   @media (min-width: 768px) {
     .kanto-reviews-section {
-      padding: 84px 32px 92px;
+      padding: 76px 32px 84px;
     }
   }
 
   .kanto-reviews-section.is-compact {
-    padding: 52px 20px 60px;
+    padding: 48px 16px 56px;
   }
 
   @media (min-width: 768px) {
     .kanto-reviews-section.is-compact {
-      padding: 64px 32px 72px;
+      padding: 60px 32px 68px;
     }
   }
 
   .krv-container {
     width: 100%;
-    max-width: 1120px;
+    max-width: 1200px;
     display: flex;
     flex-direction: column;
     gap: 28px;
   }
 
-  /* En-tête éditorial asymétrique */
   .krv-header {
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    justify-content: space-between;
-    align-items: flex-start;
+    gap: 12px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--color-border);
   }
 
-  @media (min-width: 820px) {
+  @media (min-width: 860px) {
     .krv-header {
       flex-direction: row;
       align-items: flex-end;
+      justify-content: space-between;
       gap: 32px;
     }
   }
 
   .krv-header-copy {
-    max-width: 620px;
+    max-width: 62ch;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
   }
 
   .krv-eyebrow {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.09em;
-    color: var(--color-ochre);
+    letter-spacing: 0.12em;
+    color: var(--color-accent);
   }
 
   .krv-eyebrow::before {
     content: '';
-    width: 24px;
-    height: 2px;
-    border-radius: 2px;
-    background: var(--color-ochre);
+    width: 20px;
+    height: 1px;
+    background: var(--color-accent);
   }
 
   .krv-title {
     font-family: var(--font-serif);
-    font-size: 1.95rem;
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
     font-weight: 600;
-    line-height: 1.18;
+    line-height: 1.16;
     color: var(--color-heading);
     letter-spacing: -0.025em;
     margin: 0;
   }
 
-  @media (min-width: 768px) {
-    .krv-title {
-      font-size: 2.35rem;
-    }
-  }
-
   .krv-subtitle {
-    font-size: 0.96rem;
-    line-height: 1.6;
+    font-size: 0.94rem;
+    line-height: 1.62;
     color: var(--color-ink-muted);
     margin: 0;
   }
 
-  /* Baromètre Kanto (Score monumental + Histogramme interactif) */
+  .krv-context-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-ink-subtle);
+    flex-shrink: 0;
+  }
+
+  /* Panneau de synthèse éditorial (note réelle + histogramme conditionnel) */
   .krv-barometer {
     display: grid;
     grid-template-columns: 1fr;
     gap: 20px;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-top: 3px solid var(--color-ochre);
-    border-radius: var(--radius-lg);
-    padding: 22px;
-    box-shadow: var(--color-card-shadow);
+    border-top: 2px solid var(--color-accent);
+    border-radius: var(--radius-xs);
+    padding: 20px 18px;
   }
 
   @media (min-width: 820px) {
     .krv-barometer {
-      grid-template-columns: 0.95fr 1.45fr;
+      grid-template-columns: 0.9fr 1.5fr;
       gap: 32px;
-      padding: 26px 30px;
+      padding: 24px 28px;
       align-items: center;
     }
   }
@@ -675,16 +794,11 @@ export const PUBLIC_SHELL_CSS = `
     align-items: center;
     flex-wrap: wrap;
     gap: 14px 20px;
-    padding-bottom: 18px;
-    border-bottom: 1px solid var(--color-border-subtle);
   }
 
   @media (min-width: 820px) {
-    .krv-score-panel {
-      flex-wrap: nowrap;
-      padding-bottom: 0;
+    .krv-score-panel.has-dist {
       padding-right: 28px;
-      border-bottom: none;
       border-right: 1px solid var(--color-border-subtle);
     }
   }
@@ -697,16 +811,16 @@ export const PUBLIC_SHELL_CSS = `
 
   .krv-score-value {
     font-family: var(--font-serif);
-    font-size: clamp(2.35rem, 8vw, 3.1rem);
-    font-weight: 700;
+    font-size: clamp(2.25rem, 6vw, 3rem);
+    font-weight: 600;
     line-height: 0.95;
     color: var(--color-heading);
-    letter-spacing: -0.04em;
+    letter-spacing: -0.03em;
   }
 
   .krv-score-scale {
     font-family: var(--font-serif);
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     color: var(--color-ink-subtle);
   }
 
@@ -720,17 +834,17 @@ export const PUBLIC_SHELL_CSS = `
     display: inline-flex;
     align-items: center;
     gap: 3px;
-    color: var(--color-ochre);
+    color: var(--color-accent);
   }
 
   .star-icon-filled {
-    fill: var(--color-ochre);
-    color: var(--color-ochre);
+    fill: var(--color-accent);
+    color: var(--color-accent);
   }
 
   .star-icon-empty {
     fill: transparent;
-    color: var(--color-border);
+    color: var(--color-border-strong);
   }
 
   .krv-total-count {
@@ -743,12 +857,11 @@ export const PUBLIC_SHELL_CSS = `
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.77rem;
-    color: var(--color-tanimbary);
+    font-size: 0.78rem;
+    color: var(--color-sage);
     font-weight: 500;
   }
 
-  /* Histogramme & Filtres */
   .krv-dist-panel {
     display: flex;
     flex-direction: column;
@@ -758,31 +871,29 @@ export const PUBLIC_SHELL_CSS = `
   .krv-dist-bars {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 7px;
+    gap: 6px;
   }
 
   .krv-dist-row {
     display: grid;
-    grid-template-columns: 42px 1fr 38px;
+    grid-template-columns: 42px 1fr 40px;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     min-height: 36px;
     background: transparent;
-    border: none;
-    padding: 4px 6px;
-    border-radius: 6px;
+    border: 1px solid transparent;
+    padding: 4px 8px;
+    border-radius: var(--radius-xs);
     cursor: pointer;
     text-align: left;
     font-family: inherit;
-    transition: background-color 0.15s ease;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
   }
 
   @media (min-width: 768px) {
     .krv-dist-row {
       min-height: 28px;
-      grid-template-columns: 44px 1fr 40px;
-      gap: 10px;
-      padding: 3px 6px;
+      padding: 2px 8px;
     }
   }
 
@@ -791,21 +902,18 @@ export const PUBLIC_SHELL_CSS = `
   }
 
   .krv-dist-row.is-active {
-    background: var(--color-ochre-soft);
+    background: var(--color-accent-soft);
+    border-color: var(--color-accent-border);
   }
 
   .krv-dist-label {
     font-size: 0.78rem;
     font-weight: 600;
     color: var(--color-ink-muted);
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
   }
 
   .krv-dist-track {
-    height: 7px;
-    border-radius: var(--radius-full);
+    height: 6px;
     background: var(--color-bg-alt);
     border: 1px solid var(--color-border-subtle);
     overflow: hidden;
@@ -814,9 +922,8 @@ export const PUBLIC_SHELL_CSS = `
   .krv-dist-fill {
     height: 100%;
     width: 0%;
-    border-radius: var(--radius-full);
-    background: linear-gradient(90deg, var(--color-ochre) 0%, var(--color-tanimbary) 100%);
-    transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    background: var(--color-accent);
+    transition: width 0.45s var(--ease-editorial);
   }
 
   .krv-dist-pct {
@@ -832,7 +939,6 @@ export const PUBLIC_SHELL_CSS = `
     justify-content: space-between;
     gap: 12px;
     flex-wrap: wrap;
-    padding-top: 4px;
   }
 
   .krv-filter-pills {
@@ -844,8 +950,8 @@ export const PUBLIC_SHELL_CSS = `
 
   .krv-filter-btn {
     min-height: 40px;
-    padding: 7px 14px;
-    border-radius: var(--radius-full);
+    padding: 6px 14px;
+    border-radius: var(--radius-xs);
     border: 1px solid var(--color-border);
     background: var(--color-bg);
     color: var(--color-ink-muted);
@@ -853,42 +959,35 @@ export const PUBLIC_SHELL_CSS = `
     font-size: 0.8rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: border-color var(--transition-fast), color var(--transition-fast), background-color var(--transition-fast);
   }
 
   @media (min-width: 768px) {
     .krv-filter-btn {
       min-height: 36px;
-      padding: 6px 14px;
     }
   }
 
   .krv-filter-btn:hover {
-    border-color: var(--color-tanimbary);
-    color: var(--color-tanimbary);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
   }
 
   .krv-filter-btn.active {
-    background: var(--color-tanimbary-soft);
-    border-color: var(--color-tanimbary);
-    color: var(--color-tanimbary);
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #FAF9F6;
   }
 
-  .krv-context-tag {
-    font-size: 0.75rem;
-    color: var(--color-ink-subtle);
-    font-weight: 500;
-  }
-
-  /* Scène de Lecture Vedette (Tsiahy Misongadina) */
+  /* Citation vedette éditoriale (Tsiahy Misongadina) */
   .krv-spotlight {
     position: relative;
     overflow: hidden;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: 20px 18px;
-    box-shadow: var(--color-card-shadow);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-xs);
+    padding: 22px 18px;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -896,18 +995,18 @@ export const PUBLIC_SHELL_CSS = `
 
   @media (min-width: 768px) {
     .krv-spotlight {
-      padding: 32px 36px;
+      padding: 28px 34px;
       gap: 18px;
     }
   }
 
   .krv-spotlight-motif {
     position: absolute;
-    right: -18px;
-    top: -18px;
-    width: 190px;
-    height: 190px;
-    color: var(--color-ochre);
+    right: -12px;
+    top: -12px;
+    width: 140px;
+    height: 140px;
+    color: var(--color-accent);
     opacity: 0.06;
     pointer-events: none;
   }
@@ -923,18 +1022,11 @@ export const PUBLIC_SHELL_CSS = `
   }
 
   .krv-spotlight-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 0.74rem;
+    font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: var(--color-tanimbary);
-    background: var(--color-tanimbary-soft);
-    border: 1px solid var(--color-tanimbary-border);
-    padding: 4px 12px;
-    border-radius: var(--radius-full);
+    letter-spacing: 0.11em;
+    color: var(--color-accent);
   }
 
   .krv-spotlight-controls {
@@ -957,17 +1049,17 @@ export const PUBLIC_SHELL_CSS = `
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-xs);
     border: 1px solid var(--color-border);
     background: var(--color-bg);
     color: var(--color-ink);
     cursor: pointer;
-    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+    transition: border-color var(--transition-fast), color var(--transition-fast), background-color var(--transition-fast);
   }
 
   .krv-nav-btn:hover:not(:disabled) {
-    border-color: var(--color-tanimbary);
-    color: var(--color-tanimbary);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
     background: var(--color-surface-hover);
   }
 
@@ -979,22 +1071,22 @@ export const PUBLIC_SHELL_CSS = `
   .krv-spotlight-quote-wrap {
     position: relative;
     z-index: 1;
-    transition: opacity 0.22s ease, transform 0.22s ease;
+    transition: opacity 0.2s ease-out;
   }
 
   .krv-spotlight-quote-wrap.is-switching {
     opacity: 0;
-    transform: translateY(4px);
   }
 
   .krv-spotlight-quote {
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: clamp(1.12rem, 3.6vw, 1.48rem);
+    font-size: clamp(1.15rem, 3.2vw, 1.48rem);
     line-height: 1.54;
     color: var(--color-heading);
     overflow-wrap: anywhere;
     margin: 0;
+    max-width: 68ch;
   }
 
   .krv-spotlight-footer {
@@ -1009,7 +1101,7 @@ export const PUBLIC_SHELL_CSS = `
     border-top: 1px solid var(--color-border-subtle);
   }
 
-  /* Grille Desktop / Carrousel Tactile Mobile */
+  /* Grille / Carrousel tactile des témoignages */
   .krv-cards-viewport {
     position: relative;
     width: 100%;
@@ -1017,10 +1109,10 @@ export const PUBLIC_SHELL_CSS = `
 
   .krv-cards-grid {
     display: flex;
-    gap: 16px;
+    gap: 14px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    padding: 4px 2px 14px;
+    padding: 2px 2px 12px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: var(--color-border) transparent;
@@ -1030,7 +1122,7 @@ export const PUBLIC_SHELL_CSS = `
     .krv-cards-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+      gap: 16px;
       overflow-x: visible;
       scroll-snap-type: none;
       padding: 0;
@@ -1043,38 +1135,34 @@ export const PUBLIC_SHELL_CSS = `
     scroll-snap-align: start;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: 18px;
+    border-radius: var(--radius-xs);
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     gap: 16px;
-    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    transition: border-color var(--transition-fast), background-color var(--transition-fast);
   }
 
   @media (min-width: 600px) and (max-width: 899px) {
     .review-card-item {
       flex: 0 0 47%;
-      padding: 20px;
     }
   }
 
   @media (min-width: 900px) {
     .review-card-item {
       flex: initial;
-      padding: 20px;
     }
   }
 
   .review-card-item:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-tanimbary-border);
-    box-shadow: var(--color-card-shadow-hover);
+    border-color: var(--color-border-strong);
   }
 
   .review-card-item.is-spotlight {
-    border-color: var(--color-tanimbary);
-    box-shadow: 0 0 0 1px var(--color-tanimbary-border), var(--color-card-shadow);
+    border-color: var(--color-accent);
+    background: var(--color-surface-elevated);
   }
 
   .review-card-head {
@@ -1090,16 +1178,12 @@ export const PUBLIC_SHELL_CSS = `
     gap: 2px;
   }
 
-  .review-card-badge-verified {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 9px;
-    border-radius: var(--radius-full);
-    background: var(--color-tanimbary-soft);
-    color: var(--color-tanimbary);
+  .review-card-tag {
     font-size: 0.72rem;
     font-weight: 600;
+    color: var(--color-sage);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 
   .review-card-comment {
@@ -1128,9 +1212,9 @@ export const PUBLIC_SHELL_CSS = `
   }
 
   .review-avatar-circle {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-xs);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1138,21 +1222,21 @@ export const PUBLIC_SHELL_CSS = `
     font-size: 0.88rem;
     font-weight: 700;
     flex-shrink: 0;
-    background: var(--color-tanimbary-soft);
-    color: var(--color-tanimbary);
-    border: 1px solid var(--color-tanimbary-border);
+    background: var(--color-bg-alt);
+    color: var(--color-heading);
+    border: 1px solid var(--color-border);
   }
 
-  .review-avatar-circle.tone-ochre {
-    background: var(--color-ochre-soft);
-    color: var(--color-ochre);
-    border-color: var(--color-ochre-border);
+  .review-avatar-circle.tone-accent {
+    background: var(--color-accent-soft);
+    color: var(--color-accent);
+    border-color: var(--color-accent-border);
   }
 
-  .review-avatar-circle.tone-terracotta {
-    background: var(--color-terracotta-soft);
-    color: var(--color-terracotta);
-    border-color: var(--color-terracotta-soft);
+  .review-avatar-circle.tone-sage {
+    background: var(--color-sage-soft);
+    color: var(--color-sage);
+    border-color: var(--color-sage-border);
   }
 
   .review-author-meta {
@@ -1188,8 +1272,8 @@ export const PUBLIC_SHELL_CSS = `
     color: var(--color-ink-muted);
     background: var(--color-bg-alt);
     border: 1px solid var(--color-border);
-    padding: 2px 8px;
-    border-radius: var(--radius-full);
+    padding: 2px 7px;
+    border-radius: var(--radius-xs);
   }
 
   .krv-card-spot-btn {
@@ -1198,29 +1282,26 @@ export const PUBLIC_SHELL_CSS = `
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
+    border-radius: var(--radius-xs);
     border: 1px solid var(--color-border);
     background: transparent;
     color: var(--color-ink-muted);
     cursor: pointer;
-    transition: border-color 0.15s ease, color 0.15s ease;
+    transition: border-color var(--transition-fast), color var(--transition-fast);
   }
 
   .krv-card-spot-btn:hover {
-    border-color: var(--color-tanimbary);
-    color: var(--color-tanimbary);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
   }
 
-  /* État Skeleton & Vide */
   .krv-skeleton-card {
     flex: 0 0 84%;
     min-width: 240px;
-    height: 190px;
-    border-radius: var(--radius-md);
+    height: 170px;
+    border-radius: var(--radius-xs);
     border: 1px solid var(--color-border);
-    background: linear-gradient(90deg, var(--color-surface) 25%, var(--color-surface-hover) 50%, var(--color-surface) 75%);
-    background-size: 200% 100%;
-    animation: krvShimmer 1.5s infinite linear;
+    background: var(--color-surface);
   }
 
   @media (min-width: 600px) and (max-width: 899px) {
@@ -1236,35 +1317,18 @@ export const PUBLIC_SHELL_CSS = `
     }
   }
 
-  @keyframes krvShimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .krv-skeleton-card {
-      animation: none;
-    }
-    .krv-dist-fill,
-    .krv-spotlight-quote-wrap {
-      transition: none;
-    }
-  }
-
   .reviews-empty-state {
     grid-column: 1 / -1;
     width: 100%;
-    padding: 32px 24px;
-    text-align: center;
-    border: 1px dashed var(--color-border);
-    border-radius: var(--radius-md);
+    padding: 28px 20px;
+    text-align: left;
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-border-strong);
+    border-radius: var(--radius-xs);
     background: var(--color-surface);
     color: var(--color-ink-muted);
     font-size: 0.94rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
+    line-height: 1.6;
   }
 
   .krv-pagination-box {
@@ -1279,7 +1343,7 @@ export const PUBLIC_SHELL_CSS = `
     gap: 8px;
     min-height: 44px;
     padding: 10px 22px;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-xs);
     border: 1px solid var(--color-border);
     background: var(--color-surface);
     color: var(--color-ink);
@@ -1287,13 +1351,21 @@ export const PUBLIC_SHELL_CSS = `
     font-size: 0.88rem;
     font-weight: 600;
     cursor: pointer;
-    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+    transition: border-color var(--transition-fast), color var(--transition-fast), background-color var(--transition-fast);
   }
 
   .krv-btn-load-more:hover {
-    border-color: var(--color-tanimbary);
-    color: var(--color-tanimbary);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
     background: var(--color-surface-hover);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 `;
 
@@ -1311,13 +1383,11 @@ export function renderPublicHeader(options?: PublicHeaderOptions): string {
   const downloadHref = isLanding ? '#telechargement' : '/#telechargement';
 
   const navLinks = [
-    { href: inscriptionHref, label: 'Inscription', key: '/' },
+    { href: inscriptionHref, label: 'Programme Bêta', key: '/' },
     { href: downloadHref, label: 'Téléchargement', key: '/download' },
-    { href: '/ohabolana', label: 'Ohabolana', key: '/ohabolana' },
-    { href: '/angano', label: 'Angano', key: '/angano' },
-    { href: '/kabary', label: 'Kabary', key: '/kabary' },
     { href: '/pages/about', label: 'À propos', key: '/pages/about' },
     { href: '/pages/help', label: 'Aide', key: '/pages/help' },
+    { href: '/pages/terms', label: 'CGU', key: '/pages/terms' },
   ];
 
   const desktopNavHtml = navLinks
@@ -1328,26 +1398,23 @@ export function renderPublicHeader(options?: PublicHeaderOptions): string {
     .join('\n        ');
 
   const mobileNavLinks = [
-    { href: '/', label: 'Accueil & Bêta', key: '/' },
-    { href: '/ohabolana', label: 'Ohabolana', key: '/ohabolana' },
-    { href: '/angano', label: 'Angano', key: '/angano' },
-    { href: '/kabary', label: 'Kabary', key: '/kabary' },
-    { href: '/tononkalo', label: 'Tononkalo', key: '/tononkalo' },
-    { href: '/raki-teny', label: 'Raki-teny', key: '/raki-teny' },
-    { href: '/histoire', label: 'Tantara (Histoire)', key: '/histoire' },
+    { href: '/', label: 'Programme Bêta', key: '/' },
     { href: '/pages/about', label: 'À propos', key: '/pages/about' },
     { href: '/pages/help', label: 'Aide & FAQ', key: '/pages/help' },
+    { href: '/pages/terms', label: 'Conditions (CGU)', key: '/pages/terms' },
+    { href: '/pages/privacy', label: 'Confidentialité', key: '/pages/privacy' },
     { href: '/feedback', label: 'Signaler un bug', key: '/feedback' },
   ];
 
   const mobileNavHtml = mobileNavLinks
     .map(
       (link) =>
-        `<a href="${link.href}" class="mobile-nav-link${active === link.key ? ' active' : ''}">${link.label}</a>`,
+        `<a href="${link.href}" class="mobile-nav-link${active === link.key ? ' active' : ''}"><span>${link.label}</span><span aria-hidden="true">→</span></a>`,
     )
     .join('\n          ');
 
   return `
+  <a href="#main-content" class="skip-to-content">Aller au contenu principal</a>
   <header class="site-header">
     <div class="site-header-inner">
       <a href="/" class="brand" aria-label="Kanto MG - Accueil">
@@ -1381,7 +1448,7 @@ export function renderPublicHeader(options?: PublicHeaderOptions): string {
           <span>Rejoindre</span>
         </a>
 
-        <button type="button" class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Ouvrir le menu de navigation" aria-expanded="false">
+        <button type="button" class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Ouvrir le menu de navigation" aria-expanded="false" aria-controls="mobile-nav-drawer">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </button>
       </div>
@@ -1407,7 +1474,7 @@ export interface PublicFooterOptions {
 export function renderPublicFooter(options?: PublicFooterOptions): string {
   const legalBaseUrl = options?.legalBaseUrl || '';
   const supportEmail =
-    options?.supportEmail || process.env.SUPPORT_EMAIL || 'support@kanto.mg';
+    options?.supportEmail || process.env.SUPPORT_EMAIL || 'contact@kanto.mg';
   const cookieButtonId = options?.cookieButtonId || 'btn-open-cookie-modal';
   const year = options?.currentYear || new Date().getFullYear();
   const isLanding = Boolean(options?.isLanding);
@@ -1428,49 +1495,39 @@ export function renderPublicFooter(options?: PublicFooterOptions): string {
       <div class="footer-grid">
         <div class="footer-brand-col">
           <div class="footer-brand-wrap">
-            <img src="/logo.png" alt="Kanto MG" width="28" height="28" style="border-radius:6px;" onerror="this.onerror=null; this.src='/favicon.png';" />
+            <img src="/logo.png" alt="Kanto MG" width="28" height="28" style="border-radius:2px; border:1px solid var(--color-border);" onerror="this.onerror=null; this.src='/favicon.png';" />
             <span class="footer-brand-name">kanto.mg</span>
           </div>
           <p class="footer-brand-desc">
-            Sanctuaire numérique contemporain dédié à la valorisation, à la transmission et au rayonnement de la culture malgache.
+            Sanctuaire numérique dédié à la valorisation, à la transmission et au rayonnement de la langue et du patrimoine culturel malgaches.
           </p>
-          <p class="footer-quote-mg">« Ny hazo no vanon-ko lakana, ny tany naniriany no tsara. »</p>
+          <blockquote class="footer-quote-mg">« Ny hazo no vanon-ko lakana, ny tany naniriany no tsara. »</blockquote>
         </div>
 
         <div class="footer-links-col">
-          <span class="footer-heading">Patrimoine vivant</span>
-          <a href="/ohabolana">Ohabolana (Proverbes)</a>
-          <a href="/angano">Angano (Contes)</a>
-          <a href="/kabary">Kabary (Discours)</a>
-          <a href="/tononkalo">Tononkalo (Poésies)</a>
-          <a href="/raki-teny">Raki-teny (Vocabulaire)</a>
-          <a href="/histoire">Tantara (Histoire)</a>
-        </div>
-
-        <div class="footer-links-col">
-          <span class="footer-heading">Application &amp; Bêta</span>
+          <span class="footer-heading">Programme &amp; Portail</span>
           <a href="${inscriptionHref}">1. Inscription iOS (TestFlight)</a>
           <a href="https://groups.google.com/g/communaute-kanto" target="_blank" rel="noopener noreferrer">2. Bêta Android (Google Groups)</a>
           <a href="${downloadHref}">3. Téléchargement direct</a>
-          <a href="#avis">Avis de la communauté</a>
+          <a href="#avis">Voix de la communauté</a>
           <a href="/pages/about">À propos de Kanto</a>
           <a href="/pages/help">Centre d'aide &amp; FAQ</a>
         </div>
 
         <div class="footer-links-col">
-          <span class="footer-heading">Transparence &amp; Support</span>
+          <span class="footer-heading">Juridique &amp; Support</span>
           <a href="${cguHref}" id="footer-link-cgu">Conditions Générales (CGU)</a>
           <a href="${privacyHref}" id="footer-link-privacy">Confidentialité &amp; RGPD</a>
           <a href="${licensesHref}">Mentions légales &amp; Licences</a>
           <a href="/feedback">Signaler une anomalie</a>
           <button type="button" class="btn-text-link" id="${cookieButtonId}">Cookies &amp; Préférences</button>
-          <a href="mailto:${supportEmail}">Support : ${supportEmail}</a>
+          <a href="mailto:${escapePublicHtml(supportEmail)}">Support : ${escapePublicHtml(supportEmail)}</a>
         </div>
       </div>
 
       <div class="footer-bottom-line">
         <span>© ${year} Kanto MG • Lova sy Kolontsaina Malagasy. Tous droits réservés.</span>
-        <span>Version Bêta Officielle • app-kanto.gastsar.fr</span>
+        <span>Portail Bêta Officiel • app-kanto.gastsar.fr</span>
       </div>
     </div>
   </footer>
@@ -1489,7 +1546,7 @@ function escapePublicHtml(str: string): string {
 export interface PublicReviewsOptions {
   /** Mode plus resserré pour les pages secondaires (3 cartes par page au lieu de 6) */
   compact?: boolean;
-  /** Étiquette contextuelle affichée sur le bandeau (ex: "Patrimoine • Ohabolana") */
+  /** Étiquette contextuelle affichée en en-tête */
   contextLabel?: string;
 }
 
@@ -1508,7 +1565,7 @@ export function renderPublicReviewsSection(
           <button type="button" class="krv-dist-row" data-rating="${star}" aria-label="Filtrer les avis ${star} étoiles">
             <span class="krv-dist-label">${star} ★</span>
             <span class="krv-dist-track"><span class="krv-dist-fill" id="krv-bar-${star}"></span></span>
-            <span class="krv-dist-pct" id="krv-pct-${star}">0%</span>
+            <span class="krv-dist-pct" id="krv-pct-${star}"></span>
           </button>`,
     )
     .join('');
@@ -1516,41 +1573,35 @@ export function renderPublicReviewsSection(
   return `
   <section class="kanto-reviews-section${isCompact ? ' is-compact' : ''}" id="avis" aria-labelledby="krv-section-title" data-reviews-limit="${limit}">
     <div class="krv-container">
-      <!-- En-tête éditorial -->
       <div class="krv-header">
         <div class="krv-header-copy">
           <span class="krv-eyebrow">Feon'ny Fikambanana • Voix de la communauté</span>
           <h2 id="krv-section-title" class="krv-title">Ce que la communauté retient de Kanto</h2>
           <p class="krv-subtitle">
-            Retours authentiques, vérifiés et publiés avec le consentement explicite de leurs auteurs autour de la langue et du patrimoine malgaches.
+            Retours d'expérience recueillis dans l'application, modérés et publiés uniquement avec le consentement explicite de leurs auteurs.
           </p>
         </div>
+        <span class="krv-context-tag">${contextLabel}</span>
       </div>
 
-      <!-- Baromètre de confiance & histogramme interactif -->
+      <!-- Baromètre de confiance (masque l'histogramme s'il n'y a aucun avis publié) -->
       <div class="krv-barometer">
-        <div class="krv-score-panel">
+        <div class="krv-score-panel" id="krv-score-panel">
           <div class="krv-score-number-wrap">
-            <span class="krv-score-value" id="reviews-avg-rating">5,0</span>
+            <span class="krv-score-value" id="reviews-avg-rating">—</span>
             <span class="krv-score-scale">/ 5</span>
           </div>
           <div class="krv-score-details">
-            <div class="krv-stars-row" id="reviews-avg-stars" aria-label="Note moyenne">
-              <svg width="15" height="15" viewBox="0 0 24 24" class="star-icon-filled" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg width="15" height="15" viewBox="0 0 24 24" class="star-icon-filled" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg width="15" height="15" viewBox="0 0 24 24" class="star-icon-filled" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg width="15" height="15" viewBox="0 0 24 24" class="star-icon-filled" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg width="15" height="15" viewBox="0 0 24 24" class="star-icon-filled" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            </div>
-            <span class="krv-total-count" id="reviews-total-count">Avis 4★ et 5★ certifiés</span>
+            <div class="krv-stars-row" id="reviews-avg-stars" aria-label="Note moyenne"></div>
+            <span class="krv-total-count" id="reviews-total-count">Évaluations de la communauté</span>
             <span class="krv-trust-note">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
-              <span>Modération &amp; consentement vérifiés</span>
+              <span>Avis modérés et consentis</span>
             </span>
           </div>
         </div>
 
-        <div class="krv-dist-panel">
+        <div class="krv-dist-panel" id="krv-dist-panel" style="display: none;">
           <div class="krv-dist-bars" id="krv-distribution-bars">
             ${distRows}
           </div>
@@ -1560,26 +1611,21 @@ export function renderPublicReviewsSection(
               <button type="button" class="krv-filter-btn" data-filter-rating="5" aria-pressed="false">5 étoiles</button>
               <button type="button" class="krv-filter-btn" data-filter-rating="4" aria-pressed="false">4 étoiles</button>
             </div>
-            <span class="krv-context-tag">${contextLabel}</span>
           </div>
         </div>
       </div>
 
-      <!-- Scène de lecture vedette (Tsiahy Misongadina) -->
+      <!-- Citation vedette éditoriale (Tsiahy Misongadina) -->
       <article class="krv-spotlight" id="krv-spotlight" style="display: none;" aria-live="polite">
-        <svg class="krv-spotlight-motif" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-          <polygon points="60,6 114,60 60,114 6,60"></polygon>
-          <polygon points="60,24 96,60 60,96 24,60"></polygon>
-          <polygon points="60,42 78,60 60,78 42,60"></polygon>
+        <svg class="krv-spotlight-motif" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+          <polygon points="60,8 112,60 60,112 8,60"></polygon>
+          <polygon points="60,26 94,60 60,94 26,60"></polygon>
           <line x1="60" y1="0" x2="60" y2="120"></line>
           <line x1="0" y1="60" x2="120" y2="60"></line>
         </svg>
 
         <div class="krv-spotlight-top">
-          <span class="krv-spotlight-badge">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-            <span>Tsiahy Misongadina • Parole à la une</span>
-          </span>
+          <span class="krv-spotlight-badge">Tsiahy Misongadina • Parole à la une</span>
           <div class="krv-spotlight-controls">
             <button type="button" class="krv-nav-btn" id="krv-spot-prev" aria-label="Avis précédent">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -1610,7 +1656,7 @@ export function renderPublicReviewsSection(
         </div>
       </article>
 
-      <!-- Grille desktop / Carrousel tactile mobile des avis -->
+      <!-- Grille / Carrousel tactile des avis -->
       <div class="krv-cards-viewport">
         <div class="krv-cards-grid" id="reviews-cards-list">
           <div class="krv-skeleton-card" aria-hidden="true"></div>
@@ -1622,7 +1668,7 @@ export function renderPublicReviewsSection(
       <!-- Pagination -->
       <div class="krv-pagination-box" id="reviews-pagination-box" style="display: none;">
         <button type="button" class="krv-btn-load-more" id="btn-load-more-reviews">
-          <span>Découvrir plus de témoignages</span>
+          <span>Afficher davantage de témoignages</span>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
       </div>
@@ -1632,9 +1678,64 @@ export function renderPublicReviewsSection(
 }
 
 /**
- * Script autonome du module Avis Communautaire (baromètre, scène vedette
- * et grille/carrousel filtrable). Idempotent et compatible avec les
- * environnements DOM légers de test.
+ * Helper d'accessibilité partagé pour les modales (focus trap + fermeture Échap + restauration focus).
+ */
+export const PUBLIC_MODAL_A11Y_SCRIPT = `
+(function initModalA11yHelper() {
+  if (typeof window === 'undefined' || window.__kantoModalHelper) return;
+  var lastTrigger = null;
+
+  function getFocusable(container) {
+    if (!container || typeof container.querySelectorAll !== 'function') return [];
+    return Array.prototype.slice.call(
+      container.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')
+    ).filter(function(el) {
+      return el && el.offsetParent !== null;
+    });
+  }
+
+  window.__kantoModalHelper = {
+    open: function(modalEl, triggerEl) {
+      if (!modalEl) return;
+      lastTrigger = triggerEl || document.activeElement || null;
+      modalEl.style.display = 'flex';
+      if (document.body && document.body.style) document.body.style.overflow = 'hidden';
+      var focusables = getFocusable(modalEl);
+      if (focusables.length > 0 && typeof focusables[0].focus === 'function') {
+        setTimeout(function() { focusables[0].focus(); }, 30);
+      }
+    },
+    close: function(modalEl) {
+      if (!modalEl) return;
+      modalEl.style.display = 'none';
+      if (document.body && document.body.style) document.body.style.overflow = '';
+      if (lastTrigger && typeof lastTrigger.focus === 'function') {
+        try { lastTrigger.focus(); } catch (e) {}
+      }
+      lastTrigger = null;
+    },
+    trapTab: function(modalEl, e) {
+      if (!modalEl || modalEl.style.display === 'none' || e.key !== 'Tab') return;
+      var focusables = getFocusable(modalEl);
+      if (focusables.length === 0) return;
+      var first = focusables[0];
+      var last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  };
+})();
+`;
+
+/**
+ * Script autonome du module Voix de la Communauté.
+ * Corrige l'affichage en absence d'avis (masque les barres à 0%) et
+ * reste 100% compatible avec les environnements DOM minimaux de test.
  */
 export const PUBLIC_REVIEWS_SCRIPT = `
 (function initCommunityReviews() {
@@ -1642,6 +1743,8 @@ export const PUBLIC_REVIEWS_SCRIPT = `
   if (typeof window !== 'undefined') window.__kantoReviewsInitialized = true;
 
   var sectionEl = document.getElementById('avis');
+  var scorePanelEl = document.getElementById('krv-score-panel');
+  var distPanelEl = document.getElementById('krv-dist-panel');
   var avgScoreEl = document.getElementById('reviews-avg-rating');
   var avgStarsEl = document.getElementById('reviews-avg-stars');
   var totalCountEl = document.getElementById('reviews-total-count');
@@ -1721,7 +1824,7 @@ export const PUBLIC_REVIEWS_SCRIPT = `
     var code = 0;
     var s = String(name || 'K');
     for (var i = 0; i < s.length; i++) code += s.charCodeAt(i);
-    var tones = ['', ' tone-ochre', ' tone-terracotta'];
+    var tones = ['', ' tone-accent', ' tone-sage'];
     return tones[code % tones.length];
   }
 
@@ -1771,7 +1874,7 @@ export const PUBLIC_REVIEWS_SCRIPT = `
 
     if (spotQuoteWrap && typeof setTimeout === 'function') {
       spotQuoteWrap.classList.add('is-switching');
-      setTimeout(applyContent, 140);
+      setTimeout(applyContent, 120);
     } else {
       applyContent();
     }
@@ -1796,17 +1899,28 @@ export const PUBLIC_REVIEWS_SCRIPT = `
       .then(function(stats) {
         if (!stats || typeof stats.totalReviews !== 'number') return;
         var total = stats.totalReviews;
+
+        if (total <= 0) {
+          if (avgScoreEl) avgScoreEl.textContent = '—';
+          if (avgStarsEl) avgStarsEl.innerHTML = '';
+          if (totalCountEl) totalCountEl.textContent = 'En attente des premiers avis publiés';
+          if (distPanelEl) distPanelEl.style.display = 'none';
+          if (scorePanelEl && scorePanelEl.classList) scorePanelEl.classList.remove('has-dist');
+          return;
+        }
+
         if (avgScoreEl) {
-          avgScoreEl.textContent = total > 0 ? stats.averageRating.toFixed(1).replace('.', ',') : '5,0';
+          avgScoreEl.textContent = stats.averageRating.toFixed(1).replace('.', ',');
         }
         if (avgStarsEl) {
-          avgStarsEl.innerHTML = renderStarsRow(total > 0 ? stats.averageRating : 5, 15);
+          avgStarsEl.innerHTML = renderStarsRow(stats.averageRating, 15);
         }
         if (totalCountEl) {
-          totalCountEl.textContent = total > 0
-            ? total + ' avis certifié' + (total > 1 ? 's' : '') + ' (4★ et 5★)'
-            : 'Avis 4★ et 5★ certifiés';
+          totalCountEl.textContent = total + ' avis certifié' + (total > 1 ? 's' : '');
         }
+        if (distPanelEl) distPanelEl.style.display = 'flex';
+        if (scorePanelEl && scorePanelEl.classList) scorePanelEl.classList.add('has-dist');
+
         if (stats.distribution) {
           for (var s = 1; s <= 5; s++) {
             var entry = stats.distribution[s] || { percentage: 0 };
@@ -1819,6 +1933,7 @@ export const PUBLIC_REVIEWS_SCRIPT = `
         }
       })
       .catch(function(err) {
+        if (distPanelEl) distPanelEl.style.display = 'none';
         console.warn('[Reviews] Erreur chargement stats:', err);
       });
   }
@@ -1853,7 +1968,7 @@ export const PUBLIC_REVIEWS_SCRIPT = `
           if (spotlightEl) spotlightEl.style.display = 'none';
           cardsListEl.innerHTML =
             '<div class="reviews-empty-state">' +
-              '<span>Mbola tsy misy hevitra ho an\\u2019ity sivana ity. Aucun avis disponible pour ce filtre pour le moment.</span>' +
+              'Mbola tsy misy hevitra naseho ho an\\u2019ity sivana ity. Les retours approuvés des testeurs apparaîtront ici.' +
             '</div>';
           if (paginationBox) paginationBox.style.display = 'none';
           return;
@@ -1877,10 +1992,7 @@ export const PUBLIC_REVIEWS_SCRIPT = `
           card.innerHTML =
             '<div class="review-card-head">' +
               '<div class="review-card-stars">' + renderStarsRow(item.rating, 14) + '</div>' +
-              '<div class="review-card-badge-verified">' +
-                '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>' +
-                '<span>Vérifié</span>' +
-              '</div>' +
+              '<span class="review-card-tag">' + item.rating + '/5</span>' +
             '</div>' +
             '<p class="review-card-comment">« ' + escHtml(item.comment) + ' »</p>' +
             '<div class="review-card-footer">' +
@@ -1893,7 +2005,7 @@ export const PUBLIC_REVIEWS_SCRIPT = `
               '</div>' +
               '<div class="review-card-actions">' +
                 versionBadge +
-                '<button type="button" class="krv-card-spot-btn" data-spot-idx="' + itemIdx + '" aria-label="Lire cet avis à la une">' +
+                '<button type="button" class="krv-card-spot-btn" data-spot-idx="' + itemIdx + '" aria-label="Lire ce témoignage en grand format">' +
                   '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>' +
                 '</button>' +
               '</div>' +
@@ -2007,9 +2119,8 @@ export const PUBLIC_REVIEWS_SCRIPT = `
 `;
 
 /**
- * Script léger autonome pour les pages utilisant le header unifié
- * (synchronisation du thème Clair/Sombre, tiroir mobile et module Avis Communauté).
- * Sur la landing page et /feedback, les scripts dédiés incluent PUBLIC_REVIEWS_SCRIPT.
+ * Script autonome partagé pour les pages secondaires utilisant le header unifié
+ * (bascule Clair/Sombre, tiroir mobile accessible, modales et module Voix de la communauté).
  */
 export const PUBLIC_HEADER_INTERACTION_SCRIPT = `
   <script>
@@ -2043,14 +2154,29 @@ export const PUBLIC_HEADER_INTERACTION_SCRIPT = `
 
     var mobileBtn = document.getElementById('mobile-menu-toggle');
     var mobileDrawer = document.getElementById('mobile-nav-drawer');
+    function closeMobileDrawer() {
+      if (mobileDrawer && mobileDrawer.classList.contains('open')) {
+        mobileDrawer.classList.remove('open');
+        if (mobileBtn) mobileBtn.setAttribute('aria-expanded', 'false');
+      }
+    }
     if (mobileBtn && mobileDrawer) {
       mobileBtn.addEventListener('click', function() {
         var isOpen = mobileDrawer.classList.toggle('open');
         mobileBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       });
+      mobileDrawer.addEventListener('click', function(e) {
+        if (e.target && typeof e.target.closest === 'function' && e.target.closest('a')) {
+          closeMobileDrawer();
+        }
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeMobileDrawer();
+      });
     }
   })();
 
+  ${PUBLIC_MODAL_A11Y_SCRIPT}
   ${PUBLIC_REVIEWS_SCRIPT}
   </script>
 `;
