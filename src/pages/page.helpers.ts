@@ -45,8 +45,8 @@ export const PAGE_CSS = `
     --terracotta-border: var(--color-accent-border);
     --amber: var(--color-ochre);
     --amber-light: var(--color-ochre-soft);
-    --btn-bg: var(--color-accent);
-    --btn-hover: var(--color-accent-hover);
+    --btn-bg: var(--color-btn-primary);
+    --btn-hover: var(--color-btn-primary-hover);
     --radius: var(--radius-xs);
     --shadow-sm: none;
     --shadow-md: none;
@@ -76,8 +76,8 @@ export const PAGE_CSS = `
     --terracotta-border: var(--color-accent-border);
     --amber: var(--color-ochre);
     --amber-light: var(--color-ochre-soft);
-    --btn-bg: var(--color-accent);
-    --btn-hover: var(--color-accent-hover);
+    --btn-bg: var(--color-btn-primary);
+    --btn-hover: var(--color-btn-primary-hover);
     --shadow-sm: none;
     --shadow-md: none;
     --shadow-lg: none;

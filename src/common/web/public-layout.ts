@@ -65,38 +65,40 @@ export const PUBLIC_SHELL_CSS = `
     --color-ink-subtle: #6E6B63;
     --color-heading: #11100E;
 
-    /* Couleur signature : Rouge terre malgache (Tany Mena) */
-    --color-accent: #A62C21;
-    --color-accent-hover: #872219;
-    --color-accent-soft: #F7EAE8;
-    --color-accent-border: #DEC0BC;
+    /* Couleur principale : Vert olive Tanimbary (identique à l'application Kanto MG) */
+    --color-accent: #4A6741;
+    --color-accent-hover: #3B5334;
+    --color-accent-soft: #E5ECE2;
+    --color-accent-border: #CBD8C6;
+    --color-btn-primary: #4A6741;
+    --color-btn-primary-hover: #3B5334;
 
-    /* Accompagnement : Vert végétal sourd (validation & patrimoine naturel) */
-    --color-sage: #3D5A38;
-    --color-sage-dark: #2C4328;
-    --color-sage-soft: #EBF0EA;
-    --color-sage-border: #C4D0C1;
+    /* Accompagnement : Vert végétal sourd & Terracotta de l'app */
+    --color-sage: #4A6741;
+    --color-sage-dark: #3B5334;
+    --color-sage-soft: #E5ECE2;
+    --color-sage-border: #CBD8C6;
 
-    /* Rétrocompatibilité sémantique vers Tany Mena / Sage / Ocre */
-    --color-tanimbary: var(--color-sage);
-    --color-tanimbary-dark: var(--color-sage-dark);
-    --color-tanimbary-soft: var(--color-sage-soft);
-    --color-tanimbary-border: var(--color-sage-border);
-    --color-terracotta: var(--color-accent);
-    --color-terracotta-soft: var(--color-accent-soft);
-    --color-ochre: #9C6B21;
-    --color-ochre-soft: #F7F0E4;
-    --color-ochre-border: #E0CEAF;
+    /* Rétrocompatibilité sémantique vers Tanimbary / Terracotta / Ocre */
+    --color-tanimbary: var(--color-accent);
+    --color-tanimbary-dark: var(--color-accent-hover);
+    --color-tanimbary-soft: var(--color-accent-soft);
+    --color-tanimbary-border: var(--color-accent-border);
+    --color-terracotta: #C0392B;
+    --color-terracotta-soft: #FDF2F0;
+    --color-ochre: #C58B38;
+    --color-ochre-soft: #FDF6EB;
+    --color-ochre-border: #F3DEC0;
 
     /* États fonctionnels distincts */
-    --color-error: #A62C21;
-    --color-error-bg: #F9EAE8;
-    --color-error-text: #821F16;
-    --color-success: #3D5A38;
-    --color-success-bg: #EBF0EA;
-    --color-success-text: #273D24;
-    --color-warning: #9C6B21;
-    --color-warning-bg: #F7F0E4;
+    --color-error: #B84040;
+    --color-error-bg: #FDF0F0;
+    --color-error-text: #9E2A28;
+    --color-success: #4A6741;
+    --color-success-bg: #EFF7ED;
+    --color-success-text: #2D4227;
+    --color-warning: #B25E1A;
+    --color-warning-bg: #FDF4E7;
 
     /* Plateformes */
     --color-android: #2D5A3C;
@@ -146,38 +148,40 @@ export const PUBLIC_SHELL_CSS = `
     --color-ink-subtle: #88857C;
     --color-heading: #F5F3EC;
 
-    --color-accent: #D64F42;
-    --color-accent-hover: #E36B5F;
-    --color-accent-soft: #2A1614;
-    --color-accent-border: #5C2B26;
+    --color-accent: #6B9E61;
+    --color-accent-hover: #7FB275;
+    --color-accent-soft: #1B221B;
+    --color-accent-border: #2F3D2F;
+    --color-btn-primary: #4A6741;
+    --color-btn-primary-hover: #56794C;
 
-    --color-sage: #6D9666;
+    --color-sage: #6B9E61;
     --color-sage-dark: #85AD7E;
-    --color-sage-soft: #182217;
-    --color-sage-border: #2F422C;
+    --color-sage-soft: #1B221B;
+    --color-sage-border: #2F3D2F;
 
-    --color-tanimbary: var(--color-sage);
-    --color-tanimbary-dark: var(--color-sage-dark);
-    --color-tanimbary-soft: var(--color-sage-soft);
-    --color-tanimbary-border: var(--color-sage-border);
-    --color-terracotta: var(--color-accent);
-    --color-terracotta-soft: var(--color-accent-soft);
-    --color-ochre: #D69E4E;
-    --color-ochre-soft: #241C11;
-    --color-ochre-border: #4A381F;
+    --color-tanimbary: var(--color-accent);
+    --color-tanimbary-dark: var(--color-btn-primary);
+    --color-tanimbary-soft: var(--color-accent-soft);
+    --color-tanimbary-border: var(--color-accent-border);
+    --color-terracotta: #E75A4D;
+    --color-terracotta-soft: #2C1715;
+    --color-ochre: #E0A24A;
+    --color-ochre-soft: #241B10;
+    --color-ochre-border: #47341D;
 
-    --color-error: #E36B5F;
-    --color-error-bg: #2B1715;
+    --color-error: #E05555;
+    --color-error-bg: #2B1616;
     --color-error-text: #F7B6AF;
-    --color-success: #79A672;
-    --color-success-bg: #192418;
+    --color-success: #6B9E61;
+    --color-success-bg: #1B2B1B;
     --color-success-text: #C3DFBF;
-    --color-warning: #D69E4E;
-    --color-warning-bg: #241C11;
+    --color-warning: #E08A38;
+    --color-warning-bg: #2B1F12;
 
-    --color-android: #6D9666;
-    --color-android-soft: #182217;
-    --color-android-border: #2F422C;
+    --color-android: #6B9E61;
+    --color-android-soft: #1B221B;
+    --color-android-border: #2F3D2F;
     --color-ios: #ECEAE3;
     --color-ios-soft: #21201C;
     --color-ios-border: #38362F;
@@ -198,7 +202,7 @@ export const PUBLIC_SHELL_CSS = `
     left: -9999px;
     top: 8px;
     z-index: 1500;
-    background: var(--color-accent);
+    background: var(--color-btn-primary);
     color: #FAF9F6;
     padding: 10px 16px;
     font-size: 0.85rem;
@@ -440,7 +444,7 @@ export const PUBLIC_SHELL_CSS = `
     font-size: 0.84rem;
     font-weight: 600;
     color: #FAF9F6;
-    background: var(--color-accent);
+    background: var(--color-btn-primary);
     border: 1px solid var(--color-accent);
     border-radius: var(--radius-xs);
     transition: background-color var(--transition-fast), border-color var(--transition-fast);
@@ -455,8 +459,8 @@ export const PUBLIC_SHELL_CSS = `
   }
 
   .header-cta-btn:hover {
-    background: var(--color-accent-hover);
-    border-color: var(--color-accent-hover);
+    background: var(--color-btn-primary-hover);
+    border-color: var(--color-accent);
   }
 
   /* Menu tiroir mobile ergonomique pour le pouce */
@@ -974,7 +978,7 @@ export const PUBLIC_SHELL_CSS = `
   }
 
   .krv-filter-btn.active {
-    background: var(--color-accent);
+    background: var(--color-btn-primary);
     border-color: var(--color-accent);
     color: #FAF9F6;
   }

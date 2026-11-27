@@ -548,7 +548,7 @@ export const BETA_LANDING_CSS = `
     justify-content: center;
     gap: 10px;
     padding: 12px 20px;
-    background: var(--color-accent);
+    background: var(--color-btn-primary);
     border: 1px solid var(--color-accent);
     border-radius: var(--radius-xs);
     color: #FAF9F6;
@@ -561,8 +561,8 @@ export const BETA_LANDING_CSS = `
   }
 
   .btn-primary-action:hover:not(:disabled) {
-    background: var(--color-accent-hover);
-    border-color: var(--color-accent-hover);
+    background: var(--color-btn-primary-hover);
+    border-color: var(--color-accent);
   }
 
   .btn-primary-action:disabled {
@@ -827,7 +827,7 @@ export const BETA_LANDING_CSS = `
   }
 
   .btn-store-step.primary {
-    background: var(--color-accent);
+    background: var(--color-btn-primary);
     color: #FAF9F6;
     border: 1px solid var(--color-accent);
   }
@@ -837,8 +837,8 @@ export const BETA_LANDING_CSS = `
   }
 
   .btn-store-step.primary:hover {
-    background: var(--color-accent-hover);
-    border-color: var(--color-accent-hover);
+    background: var(--color-btn-primary-hover);
+    border-color: var(--color-accent);
   }
 
   /* ─── SECTION FAQ ÉDITORIALE (2 COLONNES SUR DESKTOP) ────────────────────── */
@@ -1004,14 +1004,14 @@ export const BETA_LANDING_CSS = `
   }
 
   .btn-cookie.primary {
-    background: var(--color-accent);
+    background: var(--color-btn-primary);
     border-color: var(--color-accent);
     color: #FAF9F6;
   }
 
   .btn-cookie.primary:hover {
-    background: var(--color-accent-hover);
-    border-color: var(--color-accent-hover);
+    background: var(--color-btn-primary-hover);
+    border-color: var(--color-accent);
   }
 
   .btn-cookie.secondary {

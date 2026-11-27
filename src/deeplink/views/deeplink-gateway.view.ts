@@ -161,12 +161,14 @@ export function renderDeeplinkGatewayPage(
       font-display: swap;
     }
     :root {
-      --kanto-accent: #A62C21;
-      --kanto-accent-hover: #8C231A;
-      --kanto-accent-soft: rgba(166, 44, 33, 0.08);
-      --kanto-sage: #3D5A38;
-      --kanto-sage-soft: rgba(61, 90, 56, 0.1);
-      --kanto-sage-border: rgba(61, 90, 56, 0.25);
+      --kanto-accent: #4A6741;
+      --kanto-accent-hover: #3B5334;
+      --kanto-accent-soft: #E5ECE2;
+      --kanto-btn-bg: #4A6741;
+      --kanto-btn-hover: #3B5334;
+      --kanto-sage: #4A6741;
+      --kanto-sage-soft: #E5ECE2;
+      --kanto-sage-border: #CBD8C6;
       --kanto-bg: #F5F4F0;
       --kanto-card-bg: #FCFBF8;
       --kanto-card-border: #DDD8CE;
@@ -181,12 +183,14 @@ export function renderDeeplinkGatewayPage(
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --kanto-accent: #D64F42;
-        --kanto-accent-hover: #E06356;
-        --kanto-accent-soft: rgba(214, 79, 66, 0.12);
-        --kanto-sage: #6D9666;
-        --kanto-sage-soft: rgba(109, 150, 102, 0.12);
-        --kanto-sage-border: rgba(109, 150, 102, 0.28);
+        --kanto-accent: #6B9E61;
+        --kanto-accent-hover: #7FB275;
+        --kanto-accent-soft: #1B221B;
+        --kanto-btn-bg: #4A6741;
+        --kanto-btn-hover: #56794C;
+        --kanto-sage: #6B9E61;
+        --kanto-sage-soft: #1B221B;
+        --kanto-sage-border: #2F3D2F;
         --kanto-bg: #0D0D0B;
         --kanto-card-bg: #141412;
         --kanto-card-border: #262520;
@@ -292,7 +296,7 @@ export function renderDeeplinkGatewayPage(
       border-radius: var(--radius-xs);
       background-color: var(--kanto-accent-soft);
       color: var(--kanto-accent);
-      border: 1px solid rgba(166, 44, 33, 0.25);
+      border: 1px solid var(--kanto-sage-border);
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
@@ -473,13 +477,13 @@ export function renderDeeplinkGatewayPage(
     }
 
     .btn-primary {
-      background-color: var(--kanto-accent);
+      background-color: var(--kanto-btn-bg);
       color: #FFFFFF;
       border: 1px solid var(--kanto-accent);
     }
 
     .btn-primary:hover {
-      background-color: var(--kanto-accent-hover);
+      background-color: var(--kanto-btn-hover);
       border-color: var(--kanto-accent-hover);
     }
 
