@@ -22,10 +22,7 @@ import {
   type ToolExecutionTrace,
 } from './ai-tool-executor.service.js';
 import { UsageAndCostService } from './usage-cost.service.js';
-import {
-  MarketingStudioService,
-  type StructuredDeliverable,
-} from './marketing-studio.service.js';
+import { MarketingStudioService } from './marketing-studio.service.js';
 import {
   CreateConversationDto,
   SendChatMessageDto,
@@ -207,10 +204,7 @@ export class ConversationService {
       conv.title === 'Nouvelle session éditoriale' &&
       conv.messages.length === 0
     ) {
-      const autoTitle = userContent
-        .replace(/\s+/g, ' ')
-        .slice(0, 64)
-        .trim();
+      const autoTitle = userContent.replace(/\s+/g, ' ').slice(0, 64).trim();
       if (autoTitle) {
         await this.prisma.aiConversation.update({
           where: { id: conversationId },
@@ -348,9 +342,7 @@ export class ConversationService {
 
       const persistedText =
         cleanText ||
-        (signal.aborted
-          ? '[Génération interrompue par l’administrateur]'
-          : '');
+        (signal.aborted ? '[Génération interrompue par l’administrateur]' : '');
 
       if (persistedText) {
         const savedMsg = await this.prisma.aiMessage.create({

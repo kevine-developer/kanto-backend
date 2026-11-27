@@ -4,7 +4,8 @@
  */
 
 const EMAIL_REGEX = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
-const PHONE_REGEX = /(?:\+?\d{1,3}[\s.-]?)?(?:\(?\d{2,4}\)?[\s.-]?){2,4}\d{2,4}/g;
+const PHONE_REGEX =
+  /(?:\+?\d{1,3}[\s.-]?)?(?:\(?\d{2,4}\)?[\s.-]?){2,4}\d{2,4}/g;
 const SECRET_TOKEN_REGEX =
   /\b(?:AIza[0-9A-Za-z_-]{20,}|sk-[0-9A-Za-z]{20,}|re_[0-9A-Za-z_]{16,}|eyJ[0-9A-Za-z_-]+\.[0-9A-Za-z_-]+\.[0-9A-Za-z_-]+)\b/g;
 
@@ -34,7 +35,10 @@ export function sanitizeTextForLlm(input: string | null | undefined): string {
  * Encapsule des données potentiellement non fiables (avis utilisateurs, extraits RAG)
  * dans des balises strictes pour empêcher toute exécution d'instructions injectées.
  */
-export function wrapUntrustedContext(sourceLabel: string, payload: string): string {
+export function wrapUntrustedContext(
+  sourceLabel: string,
+  payload: string,
+): string {
   const safeLabel = sourceLabel.replace(/[^a-zA-Z0-9_-]/g, '_');
   const safePayload = sanitizeTextForLlm(payload)
     .replace(/<\/?untrusted_data[^>]*>/gi, '[balise_neutralisée]')

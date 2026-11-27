@@ -26,7 +26,7 @@ export class AiToolExecutorService {
       {
         name: 'get_product_metrics',
         description:
-          "Récupère les statistiques agrégées réelles de Kanto MG (utilisateurs, bêta-testeurs iOS/Android, volumes du corpus culturel, parcours Apprendre, bannières). Aucune donnée nominative. À appeler OBLIGATOIREMENT avant de citer le moindre chiffre.",
+          'Récupère les statistiques agrégées réelles de Kanto MG (utilisateurs, bêta-testeurs iOS/Android, volumes du corpus culturel, parcours Apprendre, bannières). Aucune donnée nominative. À appeler OBLIGATOIREMENT avant de citer le moindre chiffre.',
         parametersSchema: {
           type: 'object',
           properties: {
@@ -121,7 +121,9 @@ export class AiToolExecutorService {
       case 'search_cultural_corpus': {
         const query = typeof args.query === 'string' ? args.query.trim() : '';
         const category =
-          typeof args.category === 'string' ? args.category.toUpperCase() : 'ALL';
+          typeof args.category === 'string'
+            ? args.category.toUpperCase()
+            : 'ALL';
         const limit = this.clampInt(args.limit, 1, 6, 4);
         result = await this.searchCulturalCorpus(query, category, limit);
         summary = `Recherche corpus "${query.slice(0, 40)}" (${category})`;
@@ -158,7 +160,9 @@ export class AiToolExecutorService {
     };
   }
 
-  async getProductMetrics(periodDays: number): Promise<Record<string, unknown>> {
+  async getProductMetrics(
+    periodDays: number,
+  ): Promise<Record<string, unknown>> {
     const since = new Date(Date.now() - periodDays * 24 * 60 * 60 * 1000);
 
     const [
@@ -576,10 +580,9 @@ export class AiToolExecutorService {
       status: f.status,
       excerpt: wrapUntrustedContext(
         `beta_feedback_${i + 1}`,
-        sanitizeTextForLlm(`${f.title ? `${f.title} — ` : ''}${f.description}`).slice(
-          0,
-          320,
-        ),
+        sanitizeTextForLlm(
+          `${f.title ? `${f.title} — ` : ''}${f.description}`,
+        ).slice(0, 320),
       ),
     }));
 

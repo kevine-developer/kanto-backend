@@ -37,9 +37,12 @@ describe('Kanto AI Studio — Socle Lot 1', () => {
 
   describe('KnowledgeBaseService (Chunking RAG)', () => {
     it('découpe un document structuré par sections avec estimation de tokens', () => {
-      const kb = new KnowledgeBaseService({} as any, {
-        isConfigured: () => false,
-      } as any);
+      const kb = new KnowledgeBaseService(
+        {} as any,
+        {
+          isConfigured: () => false,
+        } as any,
+      );
       const doc = `## Titre A\nParagraphe un.\n\nParagraphe deux.\n\n## Titre B\nContenu B.`;
       const chunks = kb.splitIntoChunks(doc, 100);
       expect(chunks.length).toBeGreaterThanOrEqual(2);
@@ -83,7 +86,10 @@ describe('Kanto AI Studio — Socle Lot 1', () => {
             .mockResolvedValue({ _sum: { estimatedCostUsd: 0.25 } }),
         },
       };
-      const usageService = new UsageAndCostService(prismaMock as any, {} as any);
+      const usageService = new UsageAndCostService(
+        prismaMock as any,
+        {} as any,
+      );
       await expect(usageService.assertWithinQuota('admin_1')).rejects.toThrow(
         'Quota journalier Kanto AI atteint',
       );

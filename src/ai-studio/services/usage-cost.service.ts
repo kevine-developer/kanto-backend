@@ -203,9 +203,7 @@ export class UsageAndCostService {
         requests: row._count.id,
         inputTokens: row._sum.inputTokens ?? 0,
         outputTokens: row._sum.outputTokens ?? 0,
-        estimatedCostUsd: Number(
-          (row._sum.estimatedCostUsd ?? 0).toFixed(6),
-        ),
+        estimatedCostUsd: Number((row._sum.estimatedCostUsd ?? 0).toFixed(6)),
       })),
       recentLogs,
     };

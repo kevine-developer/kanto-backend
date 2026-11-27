@@ -1,5 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { GoogleGenAI, Type, type Content, type FunctionDeclaration } from '@google/genai';
+import {
+  GoogleGenAI,
+  Type,
+  type Content,
+  type FunctionDeclaration,
+} from '@google/genai';
 import {
   AiProviderAdapter,
   AiProviderMessage,
@@ -226,7 +231,9 @@ export class GeminiAiProviderAdapter implements AiProviderAdapter {
       : new Error('Aucun modèle Gemini compatible disponible.');
   }
 
-  private mapMessagesToGeminiContents(messages: AiProviderMessage[]): Content[] {
+  private mapMessagesToGeminiContents(
+    messages: AiProviderMessage[],
+  ): Content[] {
     const contents: Content[] = [];
 
     for (const msg of messages) {

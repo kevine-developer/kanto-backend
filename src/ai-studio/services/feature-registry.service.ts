@@ -76,7 +76,9 @@ export class FeatureRegistryService implements OnModuleInit {
       where: { id },
     });
     if (!existing) {
-      throw new NotFoundException('Fonctionnalité introuvable dans le registre.');
+      throw new NotFoundException(
+        'Fonctionnalité introuvable dans le registre.',
+      );
     }
 
     return this.prisma.aiFeatureRegistryItem.update({

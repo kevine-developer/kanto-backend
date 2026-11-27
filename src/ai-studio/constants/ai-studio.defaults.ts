@@ -203,7 +203,8 @@ Les relations et les prises de parole de Kanto MG reposent sur deux valeurs card
   },
   {
     slug: 'kanto-programme-beta-distribution',
-    title: 'Modalités du Programme Bêta (Android Google Groups & iOS TestFlight)',
+    title:
+      'Modalités du Programme Bêta (Android Google Groups & iOS TestFlight)',
     category: 'BETA',
     version: '1.1',
     source: 'Équipe Produit & Release Kanto MG',
