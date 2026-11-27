@@ -526,7 +526,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
       width: 100%;
       min-height: 46px;
       padding: 12px 20px;
-      background: var(--color-accent);
+      background: var(--color-btn-primary);
       color: #FFFFFF;
       border: 1px solid var(--color-accent);
       border-radius: var(--radius-xs);
@@ -543,8 +543,8 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
     }
 
     .btn-submit-report:hover {
-      background: var(--color-accent-hover);
-      border-color: var(--color-accent-hover);
+      background: var(--color-btn-primary-hover);
+      border-color: var(--color-accent);
     }
 
     .btn-submit-report:disabled {
@@ -977,7 +977,7 @@ export function renderBugReportPage(options?: BugReportPageOptions): string {
             </svg>
             <span>Nouveau signalement</span>
           </button>
-          <a href="/beta" class="btn-conf-secondary" style="background: var(--color-accent); color: #FFF; border-color: var(--color-accent);">
+          <a href="/beta" class="btn-conf-secondary" style="background: var(--color-btn-primary); color: #FFF; border-color: var(--color-accent);">
             <span>Retour à l'Espace Bêta</span>
           </a>
         </div>
