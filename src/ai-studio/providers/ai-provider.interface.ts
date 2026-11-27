@@ -16,12 +16,14 @@ export interface AiToolCall {
   id: string;
   name: string;
   args: Record<string, unknown>;
+  thoughtSignature?: string;
 }
 
 export interface AiProviderMessage {
   role: 'user' | 'assistant' | 'tool';
   content: string;
   toolCalls?: AiToolCall[];
+  providerRawParts?: unknown[];
   toolCallId?: string;
   toolName?: string;
   toolResult?: Record<string, unknown>;
@@ -46,6 +48,7 @@ export interface AiStreamEvent {
   type: 'delta' | 'tool_calls' | 'usage' | 'done';
   text?: string;
   toolCalls?: AiToolCall[];
+  rawParts?: unknown[];
   usage?: AiUsageMetrics;
   modelUsed?: string;
 }

@@ -4,6 +4,7 @@ import {
   Type,
   type Content,
   type FunctionDeclaration,
+  type Part,
 } from '@google/genai';
 import {
   AiProviderAdapter,
@@ -151,6 +152,7 @@ export class GeminiAiProviderAdapter implements AiProviderAdapter {
         let totalInputTokens = 0;
         let totalOutputTokens = 0;
         const collectedCalls: AiToolCall[] = [];
+        const rawModelParts: Part[] = [];
         let callCounter = 0;
 
         for await (const chunk of stream) {
@@ -167,7 +169,18 @@ export class GeminiAiProviderAdapter implements AiProviderAdapter {
 
           const parts = chunk.candidates?.[0]?.content?.parts ?? [];
           for (const part of parts) {
-            if (part.text) {
+            // Préserver les parts brutes (incluant thought, thoughtSignature et functionCall)
+            // afin de pouvoir les réinjecter telles quelles dans les tours suivants Gemini 2.5/3+.
+            if (
+              part.text ||
+              part.functionCall ||
+              part.thoughtSignature ||
+              part.thought
+            ) {
+              rawModelParts.push(part);
+            }
+
+            if (part.text && !part.thought) {
               yield {
                 type: 'delta',
                 text: part.text,
@@ -180,6 +193,9 @@ export class GeminiAiProviderAdapter implements AiProviderAdapter {
                 id: part.functionCall.id || `call_${Date.now()}_${callCounter}`,
                 name: part.functionCall.name,
                 args: (part.functionCall.args as Record<string, unknown>) || {},
+                ...(part.thoughtSignature
+                  ? { thoughtSignature: part.thoughtSignature }
+                  : {}),
               });
             }
           }
@@ -203,6 +219,7 @@ export class GeminiAiProviderAdapter implements AiProviderAdapter {
           yield {
             type: 'tool_calls',
             toolCalls: collectedCalls,
+            rawParts: rawModelParts,
             modelUsed: modelName,
           };
         }
@@ -235,15 +252,47 @@ export class GeminiAiProviderAdapter implements AiProviderAdapter {
     messages: AiProviderMessage[],
   ): Content[] {
     const contents: Content[] = [];
+    let pendingToolParts: Part[] = [];
+
+    const flushPendingToolParts = () => {
+      if (pendingToolParts.length > 0) {
+        contents.push({
+          role: 'user',
+          parts: pendingToolParts,
+        });
+        pendingToolParts = [];
+      }
+    };
 
     for (const msg of messages) {
+      if (msg.role === 'tool' && msg.toolName) {
+        pendingToolParts.push({
+          functionResponse: {
+            id: msg.toolCallId,
+            name: msg.toolName,
+            response: msg.toolResult || { ok: false },
+          },
+        });
+        continue;
+      }
+
+      flushPendingToolParts();
+
       if (msg.role === 'user') {
         contents.push({
           role: 'user',
           parts: [{ text: msg.content }],
         });
       } else if (msg.role === 'assistant') {
-        const parts: Content['parts'] = [];
+        if (msg.providerRawParts && msg.providerRawParts.length > 0) {
+          contents.push({
+            role: 'model',
+            parts: msg.providerRawParts as Part[],
+          });
+          continue;
+        }
+
+        const parts: Part[] = [];
         if (msg.content) {
           parts.push({ text: msg.content });
         }
@@ -255,28 +304,19 @@ export class GeminiAiProviderAdapter implements AiProviderAdapter {
                 name: tc.name,
                 args: tc.args,
               },
+              ...(tc.thoughtSignature
+                ? { thoughtSignature: tc.thoughtSignature }
+                : {}),
             });
           }
         }
         if (parts.length > 0) {
           contents.push({ role: 'model', parts });
         }
-      } else if (msg.role === 'tool' && msg.toolName) {
-        contents.push({
-          role: 'user',
-          parts: [
-            {
-              functionResponse: {
-                id: msg.toolCallId,
-                name: msg.toolName,
-                response: msg.toolResult || { ok: false },
-              },
-            },
-          ],
-        });
       }
     }
 
+    flushPendingToolParts();
     return contents;
   }
 
