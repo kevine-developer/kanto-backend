@@ -149,9 +149,9 @@ const BLOCKS_PER_VERSION = [
 ];
 
 const SIZE_PER_VERSION = [
-  0, 21, 25, 29, 33, 37, 41, 45, 49, 53, 57, 61, 65, 69, 73, 77, 81, 85, 89,
-  93, 97, 101, 105, 109, 113, 117, 121, 125, 129, 133, 137, 141, 145, 149,
-  153, 157, 161, 165, 169, 173, 177,
+  0, 21, 25, 29, 33, 37, 41, 45, 49, 53, 57, 61, 65, 69, 73, 77, 81, 85, 89, 93,
+  97, 101, 105, 109, 113, 117, 121, 125, 129, 133, 137, 141, 145, 149, 153, 157,
+  161, 165, 169, 173, 177,
 ];
 
 const ALIGNMENT_COORDS: number[][] = [
@@ -261,10 +261,15 @@ const encodeData = (
 
   for (let b = 0, offset = 0; b < numBlocks; b++) {
     const blockLen = b < numShortBlocks ? shortBlockLen : shortBlockLen + 1;
-    const ecBytes = encodeRS(data.subarray(offset, offset + blockLen), numEcBytes);
+    const ecBytes = encodeRS(
+      data.subarray(offset, offset + blockLen),
+      numEcBytes,
+    );
     for (let j = 0; j < blockLen; j++) {
       interleaved[
-        j < shortBlockLen ? j * numBlocks + b : shortBlockLen * numBlocks + (b - numShortBlocks)
+        j < shortBlockLen
+          ? j * numBlocks + b
+          : shortBlockLen * numBlocks + (b - numShortBlocks)
       ] = data[offset + j];
     }
     for (let j = 0; j < numEcBytes; j++) {
@@ -504,9 +509,11 @@ const writeFormatInfo = (
   for (let i = 0; i < 6; i++) mat[(5 - i) * dim + 8] = (format >> bit--) & 1;
 
   bit = 14;
-  for (let i = 0; i < 7; i++) mat[(dim - 1 - i) * dim + 8] = (format >> bit--) & 1;
+  for (let i = 0; i < 7; i++)
+    mat[(dim - 1 - i) * dim + 8] = (format >> bit--) & 1;
   mat[(dim - 8) * dim + 8] = 1;
-  for (let i = 0; i < 8; i++) mat[8 * dim + dim - 8 + i] = (format >> bit--) & 1;
+  for (let i = 0; i < 8; i++)
+    mat[8 * dim + dim - 8 + i] = (format >> bit--) & 1;
 };
 
 const encoder = new TextEncoder();

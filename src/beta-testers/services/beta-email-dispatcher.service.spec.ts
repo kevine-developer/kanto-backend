@@ -2,42 +2,51 @@ import { jest } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { BetaEmailDispatcherService } from './beta-email-dispatcher.service.js';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
-import { ResendService } from '../../integrations/resend/resend.service.js';
+import {
+  ResendService,
+  SendEmailOptions,
+} from '../../integrations/resend/resend.service.js';
 import { encryptEmail } from '../utils/beta-crypto.util.js';
+
+type SendEmailFn = (options: SendEmailOptions) => Promise<{ id: string }>;
 
 describe('BetaEmailDispatcherService', () => {
   let service: BetaEmailDispatcherService;
   let prisma: {
     betaAutomationConfig: {
-      findFirst: jest.Mock<any>;
+      findFirst: jest.Mock<() => Promise<Record<string, string> | null>>;
     };
     betaEmailTemplate: {
-      findUnique: jest.Mock<any>;
+      findUnique: jest.Mock<() => Promise<Record<string, unknown> | null>>;
     };
   };
   let resendService: {
-    sendEmail: jest.Mock<any>;
+    sendEmail: jest.Mock<SendEmailFn>;
   };
 
   beforeEach(async () => {
     prisma = {
       betaAutomationConfig: {
-        findFirst: jest.fn<any>().mockResolvedValue({
-          supportEmail: 'support@kanto.mg',
-          playStoreWebLink:
-            'https://play.google.com/apps/testing/com.devengalere.kantomg',
-          playStoreAppLink:
-            'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
-          testFlightPublicLink: 'https://testflight.apple.com/join/kantomg',
-        }),
+        findFirst: jest
+          .fn<() => Promise<Record<string, string> | null>>()
+          .mockResolvedValue({
+            supportEmail: 'support@kanto.mg',
+            playStoreWebLink:
+              'https://play.google.com/apps/testing/com.devengalere.kantomg',
+            playStoreAppLink:
+              'https://play.google.com/store/apps/details?id=com.devengalere.kantomg',
+            testFlightPublicLink: 'https://testflight.apple.com/join/kantomg',
+          }),
       },
       betaEmailTemplate: {
-        findUnique: jest.fn<any>(),
+        findUnique: jest.fn<() => Promise<Record<string, unknown> | null>>(),
       },
     };
 
     resendService = {
-      sendEmail: jest.fn<any>().mockResolvedValue({ id: 'resend_mock_id' }),
+      sendEmail: jest
+        .fn<SendEmailFn>()
+        .mockResolvedValue({ id: 'resend_mock_id' }),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -209,7 +218,7 @@ describe('BetaEmailDispatcherService', () => {
 
     expect(emojiRegex.test(callArgs.subject)).toBe(false);
     expect(emojiRegex.test(callArgs.html)).toBe(false);
-    expect(emojiRegex.test(callArgs.text)).toBe(false);
+    expect(emojiRegex.test(callArgs.text ?? '')).toBe(false);
     expect(callArgs.subject).toBe('Bienvenue dans la bêta !');
     expect(callArgs.html).toContain('Cliquez ici pour installer ! Merci');
   });
