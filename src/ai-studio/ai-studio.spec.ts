@@ -211,5 +211,54 @@ describe('Kanto AI Studio — Socle Lot 1', () => {
         'get_product_metrics',
       );
     });
+
+    it('bascule automatiquement sur le modèle de repli en cas d’erreur 503 UNAVAILABLE', async () => {
+      const adapter = new GeminiAiProviderAdapter();
+      let callCount = 0;
+      (adapter as any).ai = {
+        models: {
+          generateContentStream: jest.fn<any>().mockImplementation(async () => {
+            await Promise.resolve();
+            callCount += 1;
+            if (callCount <= 2) {
+              throw new Error('503 UNAVAILABLE: high demand');
+            }
+            return (async function* () {
+              await Promise.resolve();
+              yield {
+                candidates: [
+                  { content: { parts: [{ text: 'Réponse via repli' }] } },
+                ],
+                usageMetadata: {
+                  promptTokenCount: 10,
+                  candidatesTokenCount: 5,
+                },
+              };
+            })();
+          }),
+        },
+      };
+
+      const events: any[] = [];
+      for await (const ev of adapter.streamChat({
+        model: 'gemini-3.8-flash',
+        systemPrompt: 'sys',
+        messages: [{ role: 'user', content: 'Bonjour' }],
+      })) {
+        events.push(ev);
+      }
+
+      expect(callCount).toBe(3);
+      expect(
+        events.some(
+          (e) => e.type === 'delta' && e.text === 'Réponse via repli',
+        ),
+      ).toBe(true);
+      expect(
+        events.some(
+          (e) => e.type === 'done' && e.modelUsed === 'gemini-2.5-flash',
+        ),
+      ).toBe(true);
+    });
   });
 });
