@@ -164,7 +164,20 @@ export function sanitizeCsvCell(value: unknown): string {
     return '""';
   }
 
-  let str = String(value);
+  let str: string;
+  if (typeof value === 'string') {
+    str = value;
+  } else if (
+    typeof value === 'number' ||
+    typeof value === 'boolean' ||
+    typeof value === 'bigint'
+  ) {
+    str = String(value);
+  } else if (value instanceof Date) {
+    str = value.toISOString();
+  } else {
+    str = JSON.stringify(value) ?? '';
+  }
   // Neutralisation des formules malveillantes Excel / Calc (CWE-1236)
   if (/^[=+\-@\t\r]/.test(str.trimStart()) || /^[=+\-@\t\r]/.test(str)) {
     str = `'${str}`;
