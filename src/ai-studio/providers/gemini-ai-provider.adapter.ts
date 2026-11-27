@@ -131,121 +131,168 @@ export class GeminiAiProviderAdapter implements AiProviderAdapter {
     let lastErr: unknown;
 
     for (const modelName of modelsToTry) {
-      if (signal?.aborted) {
-        return;
-      }
-
-      try {
-        const stream = await this.ai.models.generateContentStream({
-          model: modelName,
-          contents,
-          config: {
-            systemInstruction: options.systemPrompt,
-            temperature: options.temperature ?? 0.55,
-            maxOutputTokens: options.maxOutputTokens ?? 2500,
-            ...(functionDeclarations.length > 0
-              ? { tools: [{ functionDeclarations }] }
-              : {}),
-          },
-        });
-
-        let totalInputTokens = 0;
-        let totalOutputTokens = 0;
-        const collectedCalls: AiToolCall[] = [];
-        const rawModelParts: Part[] = [];
-        let callCounter = 0;
-
-        for await (const chunk of stream) {
-          if (signal?.aborted) {
-            return;
-          }
-
-          if (chunk.usageMetadata) {
-            totalInputTokens =
-              chunk.usageMetadata.promptTokenCount ?? totalInputTokens;
-            totalOutputTokens =
-              chunk.usageMetadata.candidatesTokenCount ?? totalOutputTokens;
-          }
-
-          const parts = chunk.candidates?.[0]?.content?.parts ?? [];
-          for (const part of parts) {
-            // Préserver les parts brutes (incluant thought, thoughtSignature et functionCall)
-            // afin de pouvoir les réinjecter telles quelles dans les tours suivants Gemini 2.5/3+.
-            if (
-              part.text ||
-              part.functionCall ||
-              part.thoughtSignature ||
-              part.thought
-            ) {
-              rawModelParts.push(part);
-            }
-
-            if (part.text && !part.thought) {
-              yield {
-                type: 'delta',
-                text: part.text,
-                modelUsed: modelName,
-              };
-            }
-            if (part.functionCall?.name) {
-              callCounter += 1;
-              collectedCalls.push({
-                id: part.functionCall.id || `call_${Date.now()}_${callCounter}`,
-                name: part.functionCall.name,
-                args: (part.functionCall.args as Record<string, unknown>) || {},
-                ...(part.thoughtSignature
-                  ? { thoughtSignature: part.thoughtSignature }
-                  : {}),
-              });
-            }
-          }
+      const maxAttempts = 2;
+      for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        if (signal?.aborted) {
+          return;
         }
 
-        yield {
-          type: 'usage',
-          modelUsed: modelName,
-          usage: {
-            inputTokens: totalInputTokens,
-            outputTokens: totalOutputTokens,
-            estimatedCostUsd: this.estimateCostUsd(
-              modelName,
-              totalInputTokens,
-              totalOutputTokens,
-            ),
-          },
-        };
+        let hasEmittedDelta = false;
 
-        if (collectedCalls.length > 0) {
+        try {
+          const stream = await this.ai.models.generateContentStream({
+            model: modelName,
+            contents,
+            config: {
+              systemInstruction: options.systemPrompt,
+              temperature: options.temperature ?? 0.55,
+              maxOutputTokens: options.maxOutputTokens ?? 2500,
+              ...(functionDeclarations.length > 0
+                ? { tools: [{ functionDeclarations }] }
+                : {}),
+            },
+          });
+
+          let totalInputTokens = 0;
+          let totalOutputTokens = 0;
+          const collectedCalls: AiToolCall[] = [];
+          const rawModelParts: Part[] = [];
+          let callCounter = 0;
+
+          for await (const chunk of stream) {
+            if (signal?.aborted) {
+              return;
+            }
+
+            if (chunk.usageMetadata) {
+              totalInputTokens =
+                chunk.usageMetadata.promptTokenCount ?? totalInputTokens;
+              totalOutputTokens =
+                chunk.usageMetadata.candidatesTokenCount ?? totalOutputTokens;
+            }
+
+            const parts = chunk.candidates?.[0]?.content?.parts ?? [];
+            for (const part of parts) {
+              // Préserver les parts brutes (incluant thought, thoughtSignature et functionCall)
+              // afin de pouvoir les réinjecter telles quelles dans les tours suivants Gemini 2.5/3+.
+              if (
+                part.text ||
+                part.functionCall ||
+                part.thoughtSignature ||
+                part.thought
+              ) {
+                rawModelParts.push(part);
+              }
+
+              if (part.text && !part.thought) {
+                hasEmittedDelta = true;
+                yield {
+                  type: 'delta',
+                  text: part.text,
+                  modelUsed: modelName,
+                };
+              }
+              if (part.functionCall?.name) {
+                callCounter += 1;
+                collectedCalls.push({
+                  id:
+                    part.functionCall.id || `call_${Date.now()}_${callCounter}`,
+                  name: part.functionCall.name,
+                  args:
+                    (part.functionCall.args as Record<string, unknown>) || {},
+                  ...(part.thoughtSignature
+                    ? { thoughtSignature: part.thoughtSignature }
+                    : {}),
+                });
+              }
+            }
+          }
+
           yield {
-            type: 'tool_calls',
-            toolCalls: collectedCalls,
-            rawParts: rawModelParts,
+            type: 'usage',
             modelUsed: modelName,
+            usage: {
+              inputTokens: totalInputTokens,
+              outputTokens: totalOutputTokens,
+              estimatedCostUsd: this.estimateCostUsd(
+                modelName,
+                totalInputTokens,
+                totalOutputTokens,
+              ),
+            },
           };
-        }
 
-        yield { type: 'done', modelUsed: modelName };
-        return;
-      } catch (err: unknown) {
-        lastErr = err;
-        const msg = err instanceof Error ? err.message : String(err);
-        if (
-          msg.includes('404') ||
-          msg.includes('NOT_FOUND') ||
-          msg.includes('not found')
-        ) {
-          this.logger.warn(
-            `[Kanto AI / Gemini] Modèle "${modelName}" indisponible (404), repli sur le suivant...`,
-          );
-          continue;
+          if (collectedCalls.length > 0) {
+            yield {
+              type: 'tool_calls',
+              toolCalls: collectedCalls,
+              rawParts: rawModelParts,
+              modelUsed: modelName,
+            };
+          }
+
+          yield { type: 'done', modelUsed: modelName };
+          return;
+        } catch (err: unknown) {
+          lastErr = err;
+          const msg = err instanceof Error ? err.message : String(err);
+
+          // Ne jamais retenter/basculer si du texte a déjà été envoyé au client SSE
+          if (hasEmittedDelta || signal?.aborted) {
+            throw err;
+          }
+
+          if (this.isNotFoundError(msg)) {
+            this.logger.warn(
+              `[Kanto AI / Gemini] Modèle "${modelName}" indisponible (404), repli sur le suivant...`,
+            );
+            break;
+          }
+
+          if (this.isTransientError(msg)) {
+            if (attempt < maxAttempts) {
+              this.logger.warn(
+                `[Kanto AI / Gemini] Surcharge temporaire sur "${modelName}" (tentative ${attempt}/${maxAttempts}), nouvel essai dans 900ms...`,
+              );
+              await new Promise((resolve) => setTimeout(resolve, 900));
+              continue;
+            }
+            this.logger.warn(
+              `[Kanto AI / Gemini] Modèle "${modelName}" surchargé/indisponible après ${maxAttempts} tentatives, repli sur le modèle suivant...`,
+            );
+            break;
+          }
+
+          throw err;
         }
-        throw err;
       }
     }
 
     throw lastErr instanceof Error
       ? lastErr
       : new Error('Aucun modèle Gemini compatible disponible.');
+  }
+
+  private isNotFoundError(msg: string): boolean {
+    return (
+      msg.includes('404') ||
+      msg.includes('NOT_FOUND') ||
+      msg.includes('not found')
+    );
+  }
+
+  private isTransientError(msg: string): boolean {
+    return (
+      msg.includes('503') ||
+      msg.includes('UNAVAILABLE') ||
+      msg.includes('high demand') ||
+      msg.includes('429') ||
+      msg.includes('RESOURCE_EXHAUSTED') ||
+      msg.includes('fetch failed') ||
+      msg.includes('ECONNRESET') ||
+      msg.includes('ETIMEDOUT') ||
+      msg.includes('ENOTFOUND')
+    );
   }
 
   private mapMessagesToGeminiContents(

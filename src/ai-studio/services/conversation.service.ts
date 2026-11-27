@@ -426,8 +426,7 @@ export class ConversationService {
         errorCode: msg.slice(0, 120),
       });
       emit('error', {
-        message:
-          'Une erreur est survenue lors de la génération Kanto AI : ' + msg,
+        message: this.formatHumanProviderError(msg),
       });
     }
   }
@@ -478,6 +477,30 @@ export class ConversationService {
       signal: params.signal,
       skipUserPersist: true,
     });
+  }
+
+  private formatHumanProviderError(rawMessage: string): string {
+    if (
+      rawMessage.includes('503') ||
+      rawMessage.includes('UNAVAILABLE') ||
+      rawMessage.includes('high demand')
+    ) {
+      return 'Le fournisseur d’IA est temporairement surchargé (pic de demande). Veuillez réessayer dans quelques secondes.';
+    }
+    if (
+      rawMessage.includes('429') ||
+      rawMessage.includes('RESOURCE_EXHAUSTED')
+    ) {
+      return 'La limite de débit de l’API IA est temporairement atteinte. Veuillez patienter un instant avant de relancer.';
+    }
+    if (
+      rawMessage.includes('401') ||
+      rawMessage.includes('403') ||
+      rawMessage.includes('API_KEY')
+    ) {
+      return 'La clé API du fournisseur IA semble invalide ou non autorisée. Vérifiez GEMINI_API_KEY côté serveur.';
+    }
+    return `Une erreur technique est survenue lors de la génération : ${rawMessage.slice(0, 180)}`;
   }
 
   private buildSystemPrompt(params: {
