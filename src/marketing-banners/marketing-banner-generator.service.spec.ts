@@ -123,6 +123,7 @@ describe('MarketingBannerGeneratorService (Tolérance aux pannes et Repli cultur
     expect(result.bannerId).toBe('banner_test_id');
     expect(geminiContent.getFallbackBannerContent).toHaveBeenCalledWith(
       'culture et patrimoine malgache (musique, danse, fady)',
+      'BILINGUAL',
     );
     expect(prisma.marketingBanner.create).toHaveBeenCalledWith({
       data: expect.objectContaining({
@@ -195,5 +196,103 @@ describe('MarketingBannerGeneratorService (Tolérance aux pannes et Repli cultur
 
     expect(result.success).toBe(true);
     expect(prisma.marketingBanner.create).toHaveBeenCalled();
+  });
+
+  it('transmet le mode linguistique explicite (MG_ONLY) à Gemini lors de la génération manuelle', async () => {
+    geminiContent.generateBannerContent.mockResolvedValue({
+      badgeFr: 'HAJA & SOATOAVINA',
+      badgeMg: 'HAJA & SOATOAVINA',
+      titleFr: 'Mianara ohabolana malagasy',
+      titleMg: 'Mianara ohabolana malagasy',
+      descriptionFr: 'Harena saro-bidy ny teny malagasy.',
+      descriptionMg: 'Harena saro-bidy ny teny malagasy.',
+      ctaFr: 'Hijery',
+      ctaMg: 'Hijery',
+      accentColor: '#C58B38',
+      deepLink: '/(tabs)/explore',
+    });
+
+    const result = await service.generateAndSaveBanner({
+      force: true,
+      languageMode: 'MG_ONLY',
+    });
+
+    expect(result.success).toBe(true);
+    expect(geminiContent.generateBannerContent).toHaveBeenCalledWith(
+      expect.anything(),
+      'MG_ONLY',
+    );
+  });
+
+  it('lit le mode linguistique sauvegardé en base (FR_ONLY) si languageMode est omis', async () => {
+    prisma.moduleLock.findUnique.mockImplementation(
+      ({ where }: { where: { key: string } }) => {
+        if (where.key === 'feature:marketing_banner_ai_language') {
+          return Promise.resolve({
+            key: 'feature:marketing_banner_ai_language',
+            isLocked: false,
+            isVisible: false,
+            lockReason: 'FR_ONLY',
+          });
+        }
+        return Promise.resolve({
+          key: 'feature:marketing_banner_ai',
+          isLocked: false,
+          isVisible: true,
+        });
+      },
+    );
+
+    geminiContent.generateBannerContent.mockResolvedValue({
+      badgeFr: 'PATRIMOINE',
+      badgeMg: 'PATRIMOINE',
+      titleFr: 'Découvrez les contes malgaches',
+      titleMg: 'Découvrez les contes malgaches',
+      descriptionFr: 'Explorez notre patrimoine oral.',
+      descriptionMg: 'Explorez notre patrimoine oral.',
+      ctaFr: 'Découvrir',
+      ctaMg: 'Découvrir',
+      accentColor: '#4A6741',
+      deepLink: '/(tabs)/explore',
+    });
+
+    const result = await service.generateAndSaveBanner({ force: true });
+
+    expect(result.success).toBe(true);
+    expect(geminiContent.generateBannerContent).toHaveBeenCalledWith(
+      expect.anything(),
+      'FR_ONLY',
+    );
+  });
+
+  it('utilise le thème personnalisé fourni sans appeler pickRandomTheme', async () => {
+    const customTheme =
+      'Fête nationale et transmission des proverbes malgaches';
+    geminiContent.generateBannerContent.mockResolvedValue({
+      badgeFr: 'SPÉCIAL 26 JUIN',
+      badgeMg: 'MANOKANA',
+      titleFr: 'Célébrez le patrimoine malgache',
+      titleMg: 'Ankalazao ny vakoka malagasy',
+      descriptionFr: 'Découvrez les plus beaux proverbes de l’île.',
+      descriptionMg: 'Tsidiho ireo ohabolana tsara indrindra.',
+      ctaFr: 'Découvrir',
+      ctaMg: 'Hijery',
+      accentColor: '#C0392B',
+      deepLink: '/(tabs)/explore',
+    });
+
+    const result = await service.generateAndSaveBanner({
+      force: true,
+      languageMode: 'BILINGUAL',
+      theme: customTheme,
+    });
+
+    expect(result.success).toBe(true);
+    expect(geminiContent.pickRandomTheme).not.toHaveBeenCalled();
+    expect(geminiContent.generateBannerContent).toHaveBeenCalledWith(
+      customTheme,
+      'BILINGUAL',
+    );
+    expect(result.message).toContain(customTheme);
   });
 });
