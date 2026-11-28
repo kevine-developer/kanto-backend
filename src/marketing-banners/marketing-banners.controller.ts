@@ -59,13 +59,16 @@ export class MarketingBannersController {
   }
 
   /**
-   * Activer ou désactiver la génération automatique IA de bannières (admin uniquement)
+   * Activer, désactiver ou configurer la langue de la génération automatique IA (admin uniquement)
    */
   @Patch('ai-status')
   @UseGuards(AuthGuard)
   @Roles(['ADMIN', 'admin'])
   updateAiStatus(@Body() dto: UpdateMarketingBannerAiStatusDto) {
-    return this.marketingBannersService.updateAiGenerationStatus(dto.enabled);
+    return this.marketingBannersService.updateAiGenerationStatus(
+      dto.enabled,
+      dto.languageMode,
+    );
   }
 
   /**
@@ -87,6 +90,8 @@ export class MarketingBannersController {
   generate(@Body() dto?: GenerateMarketingBannerDto) {
     return this.bannerGeneratorService.generateAndSaveBanner({
       force: dto?.force ?? true,
+      languageMode: dto?.languageMode,
+      theme: dto?.theme?.trim() || undefined,
     });
   }
 

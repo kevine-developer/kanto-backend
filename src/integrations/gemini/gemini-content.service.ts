@@ -5,6 +5,8 @@ import {
   FallbackBannerThemeContent,
 } from '../../marketing-banners/constants/fallback-banner-themes.constant.js';
 
+export type BannerLanguageMode = 'MG_ONLY' | 'BILINGUAL' | 'FR_ONLY';
+
 /**
  * Structure attendue en sortie de Gemini pour une bannière marketing.
  * Tous les champs sont bilingues (français + malgache).
@@ -121,8 +123,13 @@ export class GeminiContentService {
    * Retourne un contenu de bannière prédéfini de haute qualité culturelle
    * en cas d'indisponibilité de Gemini (panne réseau, quota, fetch failed).
    */
-  getFallbackBannerContent(theme: string): GeneratedBannerContent {
+  getFallbackBannerContent(
+    theme: string,
+    languageMode: BannerLanguageMode = 'BILINGUAL',
+  ): GeneratedBannerContent {
     const cleanTheme = theme.trim().toLowerCase();
+
+    let base: FallbackBannerThemeContent | undefined;
 
     // 1. Recherche par correspondance exacte ou partielle
     for (const [key, fallback] of Object.entries(FALLBACK_BANNER_THEMES)) {
@@ -130,59 +137,75 @@ export class GeminiContentService {
         cleanTheme.includes(key.toLowerCase()) ||
         key.toLowerCase().includes(cleanTheme)
       ) {
-        return {
+        base = {
           ...fallback,
           deepLink: fallback.deepLink || this.resolveDeepLink(theme),
         };
+        break;
       }
     }
 
     // 2. Recherche par mot-clé thématique
-    if (
-      cleanTheme.includes('culture') ||
-      cleanTheme.includes('musique') ||
-      cleanTheme.includes('danse') ||
-      cleanTheme.includes('fady')
-    ) {
-      return FALLBACK_BANNER_THEMES[
-        'culture et patrimoine malgache (musique, danse, fady)'
-      ];
-    }
-    if (cleanTheme.includes('angano') || cleanTheme.includes('conte')) {
-      return FALLBACK_BANNER_THEMES[
-        'contes et récits traditionnels malgaches (angano)'
-      ];
-    }
-    if (cleanTheme.includes('proverbe') || cleanTheme.includes('langue')) {
-      return FALLBACK_BANNER_THEMES[
-        'apprentissage de la langue malgache (vocabulaire, proverbes)'
-      ];
+    if (!base) {
+      if (
+        cleanTheme.includes('culture') ||
+        cleanTheme.includes('musique') ||
+        cleanTheme.includes('danse') ||
+        cleanTheme.includes('fady')
+      ) {
+        base =
+          FALLBACK_BANNER_THEMES[
+            'culture et patrimoine malgache (musique, danse, fady)'
+          ];
+      } else if (
+        cleanTheme.includes('angano') ||
+        cleanTheme.includes('conte')
+      ) {
+        base =
+          FALLBACK_BANNER_THEMES[
+            'contes et récits traditionnels malgaches (angano)'
+          ];
+      } else if (
+        cleanTheme.includes('proverbe') ||
+        cleanTheme.includes('langue')
+      ) {
+        base =
+          FALLBACK_BANNER_THEMES[
+            'apprentissage de la langue malgache (vocabulaire, proverbes)'
+          ];
+      } else {
+        base =
+          FALLBACK_BANNER_THEMES[
+            'culture et patrimoine malgache (musique, danse, fady)'
+          ];
+      }
     }
 
-    // 3. Repli général sur le patrimoine
-    return FALLBACK_BANNER_THEMES[
-      'culture et patrimoine malgache (musique, danse, fady)'
-    ];
+    return this.applyLanguageMode(base, languageMode);
   }
 
   /**
-   * Génère le contenu d'une bannière marketing bilingue via Gemini.
+   * Génère le contenu d'une bannière marketing via Gemini selon le mode de langue choisi.
    * Retourne un objet structuré prêt à être inséré en base de données.
    *
    * @param theme - Le thème marketing à utiliser pour la génération
+   * @param languageMode - 'MG_ONLY' | 'BILINGUAL' | 'FR_ONLY'
    * @throws Error si la génération échoue ou si le JSON retourné est invalide
    */
-  async generateBannerContent(theme: string): Promise<GeneratedBannerContent> {
+  async generateBannerContent(
+    theme: string,
+    languageMode: BannerLanguageMode = 'BILINGUAL',
+  ): Promise<GeneratedBannerContent> {
     if (!this.ai) {
       throw new Error(
         '[GeminiContent] Service non initialisé (GEMINI_API_KEY manquante)',
       );
     }
 
-    const prompt = this.buildPrompt(theme);
+    const prompt = this.buildPrompt(theme, languageMode);
 
     this.logger.log(
-      `🎨 [GeminiContent] Génération bannière marketing — thème : "${theme}"`,
+      `🎨 [GeminiContent] Génération bannière marketing — thème : "${theme}" (${languageMode})`,
     );
 
     let lastError: unknown;
@@ -203,7 +226,7 @@ export class GeminiContentService {
           const rawText =
             response.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
 
-          return this.parseResponse(rawText, theme);
+          return this.parseResponse(rawText, theme, languageMode);
         } catch (err: unknown) {
           lastError = err;
           const msg = err instanceof Error ? err.message : String(err);
@@ -250,7 +273,56 @@ export class GeminiContentService {
 
   // ─── Privé ─────────────────────────────────────────────────────────────────
 
-  private buildPrompt(theme: string): string {
+  private buildPrompt(
+    theme: string,
+    languageMode: BannerLanguageMode = 'BILINGUAL',
+  ): string {
+    if (languageMode === 'MG_ONLY') {
+      return `Tu es un expert en marketing culturel et en langue malgache.
+Tu dois créer une bannière marketing UNIQUEMENT EN MALGACHE pour l'application mobile Kanto, dédiée à la culture et à la langue malgache.
+
+THÈME DE CETTE BANNIÈRE : ${theme}
+
+Génère un objet JSON STRICT avec exactement ces champs (aucun champ supplémentaire, aucune explication) :
+
+{
+  "badgeMg": "Un badge court en malgache (2-3 mots, ex: Vaovao, Fikarohana)",
+  "titleMg": "Un titre accrocheur en malgache (max 8 mots)",
+  "descriptionMg": "Description engageante en malgache (1-2 phrases, max 100 caractères)",
+  "ctaMg": "Texte du bouton d'action en malgache (1-3 mots, ex: Hizaha, Hilalao izao)",
+  "accentColor": "Une couleur hexadécimale moderne et vive cohérente avec le thème (ex: #4F46E5, #059669, #D97706)"
+}
+
+RÈGLES IMPORTANTES :
+- Tous les textes doivent être rédigés EXCLUSIVEMENT en malagasy officiel (IMERINA), naturel et grammaticalement irréprochable. Aucun mot français ni anglais.
+- L'accentColor doit être différente de #F59E0B (déjà utilisée).
+- Le ton doit être chaleureux, culturel et engageant.
+- Retourne UNIQUEMENT le JSON, sans texte avant ou après.`;
+    }
+
+    if (languageMode === 'FR_ONLY') {
+      return `Tu es un expert en marketing culturel.
+Tu dois créer une bannière marketing UNIQUEMENT EN FRANÇAIS pour l'application mobile Kanto, dédiée à la culture et à la langue malgache.
+
+THÈME DE CETTE BANNIÈRE : ${theme}
+
+Génère un objet JSON STRICT avec exactement ces champs (aucun champ supplémentaire, aucune explication) :
+
+{
+  "badgeFr": "Un badge court en français (2-3 mots, ex: Nouveau, Découverte, Défi du jour)",
+  "titleFr": "Un titre accrocheur en français (max 8 mots)",
+  "descriptionFr": "Description engageante en français (1-2 phrases, max 100 caractères)",
+  "ctaFr": "Texte du bouton d'action en français (1-3 mots, ex: Découvrir, Jouer maintenant)",
+  "accentColor": "Une couleur hexadécimale moderne et vive cohérente avec le thème (ex: #4F46E5, #059669, #D97706)"
+}
+
+RÈGLES IMPORTANTES :
+- Tous les textes doivent être rédigés EXCLUSIVEMENT en français clair, soigné et accessible.
+- L'accentColor doit être différente de #F59E0B (déjà utilisée).
+- Le ton doit être chaleureux, culturel et engageant.
+- Retourne UNIQUEMENT le JSON, sans texte avant ou après.`;
+    }
+
     return `Tu es un expert en marketing culturel et en langue malgache.
 Tu dois créer une bannière marketing pour l'application mobile Kanto, dédiée à la culture et à la langue malgache.
 
@@ -281,6 +353,7 @@ RÈGLES IMPORTANTES :
   private parseResponse(
     rawText: string,
     theme: string,
+    languageMode: BannerLanguageMode = 'BILINGUAL',
   ): GeneratedBannerContent {
     // Extraction du bloc JSON (au cas où Gemini ajouterait du texte malgré la consigne)
     const jsonMatch = rawText.match(/\{[\s\S]*\}/);
@@ -299,18 +372,23 @@ RÈGLES IMPORTANTES :
       );
     }
 
-    // Validation des champs obligatoires
-    const required = [
-      'badgeFr',
-      'badgeMg',
-      'titleFr',
-      'titleMg',
-      'descriptionFr',
-      'descriptionMg',
-      'ctaFr',
-      'ctaMg',
-      'accentColor',
-    ];
+    const required =
+      languageMode === 'MG_ONLY'
+        ? ['badgeMg', 'titleMg', 'descriptionMg', 'ctaMg', 'accentColor']
+        : languageMode === 'FR_ONLY'
+          ? ['badgeFr', 'titleFr', 'descriptionFr', 'ctaFr', 'accentColor']
+          : [
+              'badgeFr',
+              'badgeMg',
+              'titleFr',
+              'titleMg',
+              'descriptionFr',
+              'descriptionMg',
+              'ctaFr',
+              'ctaMg',
+              'accentColor',
+            ];
+
     const missing = required.filter((f) => !parsed[f]);
     if (missing.length > 0) {
       throw new Error(
@@ -318,17 +396,44 @@ RÈGLES IMPORTANTES :
       );
     }
 
-    return {
-      badgeFr: parsed.badgeFr,
-      badgeMg: parsed.badgeMg,
-      titleFr: parsed.titleFr,
-      titleMg: parsed.titleMg,
-      descriptionFr: parsed.descriptionFr,
-      descriptionMg: parsed.descriptionMg,
-      ctaFr: parsed.ctaFr,
-      ctaMg: parsed.ctaMg,
+    const resolved: GeneratedBannerContent = {
+      badgeFr: parsed.badgeFr || parsed.badgeMg,
+      badgeMg: parsed.badgeMg || parsed.badgeFr,
+      titleFr: parsed.titleFr || parsed.titleMg,
+      titleMg: parsed.titleMg || parsed.titleFr,
+      descriptionFr: parsed.descriptionFr || parsed.descriptionMg,
+      descriptionMg: parsed.descriptionMg || parsed.descriptionFr,
+      ctaFr: parsed.ctaFr || parsed.ctaMg,
+      ctaMg: parsed.ctaMg || parsed.ctaFr,
       accentColor: parsed.accentColor,
       deepLink: this.resolveDeepLink(theme),
     };
+
+    return this.applyLanguageMode(resolved, languageMode);
+  }
+
+  private applyLanguageMode(
+    content: GeneratedBannerContent,
+    languageMode: BannerLanguageMode,
+  ): GeneratedBannerContent {
+    if (languageMode === 'MG_ONLY') {
+      return {
+        ...content,
+        badgeFr: content.badgeMg,
+        titleFr: content.titleMg,
+        descriptionFr: content.descriptionMg,
+        ctaFr: content.ctaMg,
+      };
+    }
+    if (languageMode === 'FR_ONLY') {
+      return {
+        ...content,
+        badgeMg: content.badgeFr,
+        titleMg: content.titleFr,
+        descriptionMg: content.descriptionFr,
+        ctaMg: content.ctaFr,
+      };
+    }
+    return content;
   }
 }

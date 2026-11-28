@@ -55,4 +55,26 @@ describe('GeminiContentService', () => {
     expect(typeof theme).toBe('string');
     expect(theme.length).toBeGreaterThan(5);
   });
+
+  it('respecte le mode MG_ONLY dans le contenu de secours en alignant les champs FR sur MG', () => {
+    const fallback = service.getFallbackBannerContent(
+      'défis linguistiques et gamification',
+      'MG_ONLY',
+    );
+    expect(fallback.titleFr).toBe(fallback.titleMg);
+    expect(fallback.badgeFr).toBe(fallback.badgeMg);
+    expect(fallback.descriptionFr).toBe(fallback.descriptionMg);
+    expect(fallback.ctaFr).toBe(fallback.ctaMg);
+  });
+
+  it('respecte le mode FR_ONLY dans le contenu de secours en alignant les champs MG sur FR', () => {
+    const fallback = service.getFallbackBannerContent(
+      'défis linguistiques et gamification',
+      'FR_ONLY',
+    );
+    expect(fallback.titleMg).toBe(fallback.titleFr);
+    expect(fallback.badgeMg).toBe(fallback.badgeFr);
+    expect(fallback.descriptionMg).toBe(fallback.descriptionFr);
+    expect(fallback.ctaMg).toBe(fallback.ctaFr);
+  });
 });

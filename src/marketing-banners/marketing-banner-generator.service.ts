@@ -4,8 +4,12 @@ import { PrismaService } from '../prisma/prisma.service.js';
 import {
   GeminiContentService,
   GeneratedBannerContent,
+  type BannerLanguageMode,
 } from '../integrations/gemini/gemini-content.service.js';
-import { FEATURE_MARKETING_BANNER_AI } from './marketing-banners.service.js';
+import {
+  FEATURE_MARKETING_BANNER_AI,
+  FEATURE_MARKETING_BANNER_AI_LANG,
+} from './marketing-banners.service.js';
 
 /**
  * Service responsable de la génération automatique de bannières marketing
@@ -61,14 +65,41 @@ export class MarketingBannerGeneratorService {
     await this.generateAndSaveBanner({ force: false });
   }
 
+  private async resolveSavedLanguageMode(): Promise<BannerLanguageMode> {
+    try {
+      const langLock = await this.prisma.moduleLock.findUnique({
+        where: { key: FEATURE_MARKETING_BANNER_AI_LANG },
+      });
+      const candidate = langLock?.lockReason as BannerLanguageMode | undefined;
+      if (
+        candidate === 'MG_ONLY' ||
+        candidate === 'BILINGUAL' ||
+        candidate === 'FR_ONLY'
+      ) {
+        return candidate;
+      }
+      return 'BILINGUAL';
+    } catch {
+      return 'BILINGUAL';
+    }
+  }
+
   /**
    * Génère et sauvegarde une nouvelle bannière marketing.
    * Utilise Gemini AI en priorité, puis bascule sur le catalogue culturel
    * de repli en cas d'erreur réseau ou d'indisponibilité du service IA.
    *
    * @param options.force Si true (déclenchement manuel admin), ignore le statut de désactivation du cron automatique.
+   * @param options.languageMode Mode de langue ('MG_ONLY' | 'BILINGUAL' | 'FR_ONLY')
+   * @param options.theme Thème personnalisé optionnel saisi par l'administrateur
    */
-  async generateAndSaveBanner(options: { force?: boolean } = {}): Promise<{
+  async generateAndSaveBanner(
+    options: {
+      force?: boolean;
+      languageMode?: BannerLanguageMode;
+      theme?: string;
+    } = {},
+  ): Promise<{
     success: boolean;
     bannerId?: string;
     message: string;
@@ -88,9 +119,12 @@ export class MarketingBannerGeneratorService {
       }
     }
 
-    const theme = this.geminiContent.pickRandomTheme();
+    const languageMode =
+      options.languageMode || (await this.resolveSavedLanguageMode());
+    const customTheme = options.theme?.trim();
+    const theme = customTheme || this.geminiContent.pickRandomTheme();
     this.logger.log(
-      `🤖 [BannerGenerator] Démarrage génération bannière marketing — thème: "${theme}"`,
+      `🤖 [BannerGenerator] Démarrage génération bannière marketing — thème: "${theme}" (${languageMode})`,
     );
 
     // 1. Si la clé Gemini n'est pas configurée, bascule directe sur le fallback
@@ -98,15 +132,20 @@ export class MarketingBannerGeneratorService {
       this.logger.warn(
         `⚠️ [BannerGenerator] GEMINI_API_KEY non configurée — utilisation du catalogue culturel de secours pour "${theme}".`,
       );
-      const fallbackContent =
-        this.geminiContent.getFallbackBannerContent(theme);
-      return await this.saveBanner(fallbackContent, theme, true);
+      const fallbackContent = this.geminiContent.getFallbackBannerContent(
+        theme,
+        languageMode,
+      );
+      return await this.saveBanner(fallbackContent, theme, true, languageMode);
     }
 
     // 2. Tentative avec Gemini AI
     try {
-      const content = await this.geminiContent.generateBannerContent(theme);
-      return await this.saveBanner(content, theme, false);
+      const content = await this.geminiContent.generateBannerContent(
+        theme,
+        languageMode,
+      );
+      return await this.saveBanner(content, theme, false, languageMode);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       const cause = (err as any)?.cause?.message || (err as any)?.cause;
@@ -117,9 +156,11 @@ export class MarketingBannerGeneratorService {
       );
 
       // 3. Repli résilient sur le catalogue culturel de secours
-      const fallbackContent =
-        this.geminiContent.getFallbackBannerContent(theme);
-      return await this.saveBanner(fallbackContent, theme, true);
+      const fallbackContent = this.geminiContent.getFallbackBannerContent(
+        theme,
+        languageMode,
+      );
+      return await this.saveBanner(fallbackContent, theme, true, languageMode);
     }
   }
 
@@ -129,6 +170,7 @@ export class MarketingBannerGeneratorService {
     content: GeneratedBannerContent,
     theme: string,
     isFallback: boolean,
+    languageMode: BannerLanguageMode = 'BILINGUAL',
   ): Promise<{
     success: boolean;
     bannerId: string;
@@ -167,14 +209,20 @@ export class MarketingBannerGeneratorService {
     });
 
     const source = isFallback ? 'catalogue culturel de repli' : 'Gemini AI';
+    const langLabel =
+      languageMode === 'MG_ONLY'
+        ? 'Malgache uniquement'
+        : languageMode === 'FR_ONLY'
+          ? 'Français uniquement'
+          : 'Malgache & Français';
     this.logger.log(
-      `✅ [BannerGenerator] Bannière générée avec succès via ${source} — ID: ${banner.id} (en attente de validation admin)`,
+      `✅ [BannerGenerator] Bannière générée avec succès via ${source} (${langLabel}) — ID: ${banner.id} (en attente de validation admin)`,
     );
 
     return {
       success: true,
       bannerId: banner.id,
-      message: `Bannière "${content.titleFr}" créée avec succès (${source}, thème: ${theme})`,
+      message: `Bannière "${content.titleFr}" créée avec succès (${source}, ${langLabel}, thème: ${theme})`,
     };
   }
 }

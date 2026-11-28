@@ -11,8 +11,17 @@ import {
   ReorderMarketingBannersDto,
 } from './dto/marketing-banner.dto.js';
 import { DEFAULT_MARKETING_BANNERS } from './constants/default-marketing-banners.constant.js';
+import type { BannerLanguageMode } from '../integrations/gemini/gemini-content.service.js';
 
 export const FEATURE_MARKETING_BANNER_AI = 'feature:marketing_banner_ai';
+export const FEATURE_MARKETING_BANNER_AI_LANG =
+  'feature:marketing_banner_ai_language';
+
+const VALID_LANGUAGE_MODES: BannerLanguageMode[] = [
+  'MG_ONLY',
+  'BILINGUAL',
+  'FR_ONLY',
+];
 
 @Injectable()
 export class MarketingBannersService implements OnModuleInit {
@@ -134,30 +143,33 @@ export class MarketingBannersService implements OnModuleInit {
       orderIndex = (highest?.orderIndex ?? -1) + 1;
     }
 
+    const { languageMode, ...rest } = dto;
+    const localized = this.applyManualLanguageMode(rest, languageMode);
+
     return await this.prisma.marketingBanner.create({
       data: {
-        badgeFr: dto.badgeFr,
-        badgeMg: dto.badgeMg,
-        titleFr: dto.titleFr,
-        titleMg: dto.titleMg,
-        descriptionFr: dto.descriptionFr,
-        descriptionMg: dto.descriptionMg,
-        ctaFr: dto.ctaFr || 'Découvrir',
-        ctaMg: dto.ctaMg || 'Hizaha',
-        imageUrl: dto.imageUrl,
-        deepLink: dto.deepLink,
-        accentColor: dto.accentColor || '#F59E0B',
+        badgeFr: localized.badgeFr ?? rest.badgeFr,
+        badgeMg: localized.badgeMg ?? rest.badgeMg,
+        titleFr: localized.titleFr ?? rest.titleFr,
+        titleMg: localized.titleMg ?? rest.titleMg,
+        descriptionFr: localized.descriptionFr ?? rest.descriptionFr,
+        descriptionMg: localized.descriptionMg ?? rest.descriptionMg,
+        ctaFr: localized.ctaFr || 'Découvrir',
+        ctaMg: localized.ctaMg || 'Hizaha',
+        imageUrl: rest.imageUrl,
+        deepLink: rest.deepLink,
+        accentColor: rest.accentColor || '#F59E0B',
         orderIndex,
-        isActive: dto.isActive ?? true,
-        actionType: dto.actionType || 'DEEP_LINK',
-        modalBodyFr: dto.modalBodyFr,
-        modalBodyMg: dto.modalBodyMg,
-        modalImageUrl: dto.modalImageUrl,
-        modalCtaLabelFr: dto.modalCtaLabelFr,
-        modalCtaLabelMg: dto.modalCtaLabelMg,
-        modalCtaLink: dto.modalCtaLink,
-        targetLocation: dto.targetLocation || 'HOME',
-        categoryKey: dto.categoryKey ? dto.categoryKey.toLowerCase() : null,
+        isActive: rest.isActive ?? true,
+        actionType: rest.actionType || 'DEEP_LINK',
+        modalBodyFr: localized.modalBodyFr,
+        modalBodyMg: localized.modalBodyMg,
+        modalImageUrl: rest.modalImageUrl,
+        modalCtaLabelFr: localized.modalCtaLabelFr,
+        modalCtaLabelMg: localized.modalCtaLabelMg,
+        modalCtaLink: rest.modalCtaLink,
+        targetLocation: rest.targetLocation || 'HOME',
+        categoryKey: rest.categoryKey ? rest.categoryKey.toLowerCase() : null,
       },
     });
   }
@@ -166,11 +178,164 @@ export class MarketingBannersService implements OnModuleInit {
    * Mise à jour d'une bannière
    */
   async update(id: string, dto: UpdateMarketingBannerDto) {
-    await this.findOne(id);
+    const existing = await this.findOne(id);
+    const { languageMode, ...rest } = dto;
+    const localized = this.applyManualLanguageMode(
+      rest,
+      languageMode,
+      existing,
+    );
+
     return await this.prisma.marketingBanner.update({
       where: { id },
-      data: dto,
+      data: localized,
     });
+  }
+
+  /**
+   * Aligne les champs FR/MG lorsqu'un mode monolingue (MG_ONLY ou FR_ONLY) est choisi
+   * pour une création ou une modification manuelle, afin que l'application mobile
+   * affiche exclusivement la langue sélectionnée sans modifier le schéma Prisma.
+   */
+  private applyManualLanguageMode<
+    T extends {
+      badgeFr?: string;
+      badgeMg?: string;
+      titleFr?: string;
+      titleMg?: string;
+      descriptionFr?: string;
+      descriptionMg?: string;
+      ctaFr?: string;
+      ctaMg?: string;
+      modalBodyFr?: string;
+      modalBodyMg?: string;
+      modalCtaLabelFr?: string;
+      modalCtaLabelMg?: string;
+    },
+  >(
+    data: T,
+    languageMode?: BannerLanguageMode,
+    fallback?: {
+      badgeFr: string;
+      badgeMg: string;
+      titleFr: string;
+      titleMg: string;
+      descriptionFr: string;
+      descriptionMg: string;
+      ctaFr: string;
+      ctaMg: string;
+      modalBodyFr?: string | null;
+      modalBodyMg?: string | null;
+      modalCtaLabelFr?: string | null;
+      modalCtaLabelMg?: string | null;
+    },
+  ): T {
+    if (!languageMode || languageMode === 'BILINGUAL') {
+      return data;
+    }
+
+    if (languageMode === 'MG_ONLY') {
+      const badgeMg =
+        data.badgeMg ??
+        data.badgeFr ??
+        fallback?.badgeMg ??
+        fallback?.badgeFr ??
+        'TOLOTRA MANOKANA';
+      const titleMg =
+        data.titleMg ?? data.titleFr ?? fallback?.titleMg ?? fallback?.titleFr;
+      const descriptionMg =
+        data.descriptionMg ??
+        data.descriptionFr ??
+        fallback?.descriptionMg ??
+        fallback?.descriptionFr;
+      const ctaMg =
+        data.ctaMg ??
+        data.ctaFr ??
+        fallback?.ctaMg ??
+        fallback?.ctaFr ??
+        'Hizaha';
+      const modalBodyMg =
+        data.modalBodyMg !== undefined
+          ? data.modalBodyMg
+          : data.modalBodyFr !== undefined
+            ? data.modalBodyFr
+            : (fallback?.modalBodyMg ?? undefined);
+      const modalCtaLabelMg =
+        data.modalCtaLabelMg !== undefined
+          ? data.modalCtaLabelMg
+          : data.modalCtaLabelFr !== undefined
+            ? data.modalCtaLabelFr
+            : (fallback?.modalCtaLabelMg ?? undefined);
+
+      return {
+        ...data,
+        badgeFr: badgeMg,
+        badgeMg,
+        titleFr: titleMg,
+        titleMg,
+        descriptionFr: descriptionMg,
+        descriptionMg,
+        ctaFr: ctaMg,
+        ctaMg,
+        ...(modalBodyMg !== undefined
+          ? { modalBodyFr: modalBodyMg, modalBodyMg }
+          : {}),
+        ...(modalCtaLabelMg !== undefined
+          ? { modalCtaLabelFr: modalCtaLabelMg, modalCtaLabelMg }
+          : {}),
+      };
+    }
+
+    // FR_ONLY
+    const badgeFr =
+      data.badgeFr ??
+      data.badgeMg ??
+      fallback?.badgeFr ??
+      fallback?.badgeMg ??
+      'OFFRE SPÉCIALE';
+    const titleFr =
+      data.titleFr ?? data.titleMg ?? fallback?.titleFr ?? fallback?.titleMg;
+    const descriptionFr =
+      data.descriptionFr ??
+      data.descriptionMg ??
+      fallback?.descriptionFr ??
+      fallback?.descriptionMg;
+    const ctaFr =
+      data.ctaFr ??
+      data.ctaMg ??
+      fallback?.ctaFr ??
+      fallback?.ctaMg ??
+      'Découvrir';
+    const modalBodyFr =
+      data.modalBodyFr !== undefined
+        ? data.modalBodyFr
+        : data.modalBodyMg !== undefined
+          ? data.modalBodyMg
+          : (fallback?.modalBodyFr ?? undefined);
+    const modalCtaLabelFr =
+      data.modalCtaLabelFr !== undefined
+        ? data.modalCtaLabelFr
+        : data.modalCtaLabelMg !== undefined
+          ? data.modalCtaLabelMg
+          : (fallback?.modalCtaLabelFr ?? undefined);
+
+    return {
+      ...data,
+      badgeFr,
+      badgeMg: badgeFr,
+      titleFr,
+      titleMg: titleFr,
+      descriptionFr,
+      descriptionMg: descriptionFr,
+      ctaFr,
+      ctaMg: ctaFr,
+      ...(modalBodyFr !== undefined
+        ? { modalBodyFr, modalBodyMg: modalBodyFr }
+        : {}),
+      ...(modalCtaLabelFr !== undefined
+        ? { modalCtaLabelFr, modalCtaLabelMg: modalCtaLabelFr }
+        : {}),
+    };
   }
 
   /**
@@ -207,14 +372,31 @@ export class MarketingBannersService implements OnModuleInit {
     return { success: true, message: `Bannière #${id} supprimée avec succès` };
   }
 
+  async getAiLanguageMode(): Promise<BannerLanguageMode> {
+    try {
+      const langLock = await this.prisma.moduleLock.findUnique({
+        where: { key: FEATURE_MARKETING_BANNER_AI_LANG },
+      });
+      const candidate = langLock?.lockReason as BannerLanguageMode | undefined;
+      if (candidate && VALID_LANGUAGE_MODES.includes(candidate)) {
+        return candidate;
+      }
+      return 'BILINGUAL';
+    } catch {
+      return 'BILINGUAL';
+    }
+  }
+
   /**
-   * Récupère le statut d'activation de la génération IA des bannières marketing.
-   * Par défaut : DÉSACTIVÉ (false) si absent en base (conforme aux exigences métier).
+   * Récupère le statut d'activation et le mode de langue de la génération IA des bannières marketing.
+   * Par défaut : DÉSACTIVÉ (false) et BILINGUAL si absent en base (conforme aux exigences métier).
    */
   async getAiGenerationStatus(): Promise<{
     enabled: boolean;
     description: string;
+    languageMode: BannerLanguageMode;
   }> {
+    const languageMode = await this.getAiLanguageMode();
     try {
       const lock = await this.prisma.moduleLock.findUnique({
         where: { key: FEATURE_MARKETING_BANNER_AI },
@@ -224,6 +406,7 @@ export class MarketingBannersService implements OnModuleInit {
         return {
           enabled: false,
           description: 'Désactivé par défaut (non configuré en base).',
+          languageMode,
         };
       }
 
@@ -234,6 +417,7 @@ export class MarketingBannersService implements OnModuleInit {
           ? 'Génération automatique IA (Gemini) active toutes les 48 heures.'
           : lock.lockReason ||
             'Génération automatique IA désactivée par l’administrateur.',
+        languageMode,
       };
     } catch (err: unknown) {
       this.logger.warn(
@@ -242,46 +426,70 @@ export class MarketingBannersService implements OnModuleInit {
       return {
         enabled: false,
         description: 'Erreur de lecture — désactivé par sécurité.',
+        languageMode,
       };
     }
   }
 
   /**
-   * Active ou désactive la génération IA des bannières marketing.
+   * Active, désactive ou met à jour le mode de langue de la génération IA des bannières marketing.
    */
-  async updateAiGenerationStatus(enabled: boolean): Promise<{
+  async updateAiGenerationStatus(
+    enabled?: boolean,
+    languageMode?: BannerLanguageMode,
+  ): Promise<{
     enabled: boolean;
     description: string;
+    languageMode: BannerLanguageMode;
   }> {
-    const lock = await this.prisma.moduleLock.upsert({
-      where: { key: FEATURE_MARKETING_BANNER_AI },
-      create: {
-        key: FEATURE_MARKETING_BANNER_AI,
-        type: 'FEATURE',
-        nameFr: 'Génération automatique de bannières IA',
-        nameMg: 'Famoronana sora-baventy mandeha hoazy amin’ny alalan’ny AI',
-        isLocked: !enabled,
-        isVisible: enabled,
-        lockReason: enabled ? null : 'Désactivé par l’administrateur',
-        minTier: 'FREE',
-      },
-      update: {
-        isLocked: !enabled,
-        isVisible: enabled,
-        lockReason: enabled ? null : 'Désactivé par l’administrateur',
-      },
-    });
+    if (languageMode && VALID_LANGUAGE_MODES.includes(languageMode)) {
+      await this.prisma.moduleLock.upsert({
+        where: { key: FEATURE_MARKETING_BANNER_AI_LANG },
+        create: {
+          key: FEATURE_MARKETING_BANNER_AI_LANG,
+          type: 'FEATURE',
+          nameFr: 'Langue des bannières IA',
+          nameMg: 'Fitenin’ny sora-baventy AI',
+          isLocked: true,
+          isVisible: false,
+          lockReason: languageMode,
+          minTier: 'FREE',
+        },
+        update: {
+          lockReason: languageMode,
+        },
+      });
+      this.logger.log(
+        `⚙️ [MarketingBanners] Mode de langue IA mis à jour : ${languageMode}`,
+      );
+    }
 
-    const isNowEnabled = !lock.isLocked && lock.isVisible;
-    this.logger.log(
-      `⚙️ [MarketingBanners] Statut génération IA mis à jour : ${isNowEnabled ? 'ACTIVÉ' : 'DÉSACTIVÉ'}`,
-    );
+    if (typeof enabled === 'boolean') {
+      const lock = await this.prisma.moduleLock.upsert({
+        where: { key: FEATURE_MARKETING_BANNER_AI },
+        create: {
+          key: FEATURE_MARKETING_BANNER_AI,
+          type: 'FEATURE',
+          nameFr: 'Génération automatique de bannières IA',
+          nameMg: 'Famoronana sora-baventy mandeha hoazy amin’ny alalan’ny AI',
+          isLocked: !enabled,
+          isVisible: enabled,
+          lockReason: enabled ? null : 'Désactivé par l’administrateur',
+          minTier: 'FREE',
+        },
+        update: {
+          isLocked: !enabled,
+          isVisible: enabled,
+          lockReason: enabled ? null : 'Désactivé par l’administrateur',
+        },
+      });
 
-    return {
-      enabled: isNowEnabled,
-      description: isNowEnabled
-        ? 'Génération automatique IA (Gemini) active toutes les 48 heures.'
-        : 'Génération automatique IA désactivée par l’administrateur.',
-    };
+      const isNowEnabled = !lock.isLocked && lock.isVisible;
+      this.logger.log(
+        `⚙️ [MarketingBanners] Statut génération IA mis à jour : ${isNowEnabled ? 'ACTIVÉ' : 'DÉSACTIVÉ'}`,
+      );
+    }
+
+    return this.getAiGenerationStatus();
   }
 }
